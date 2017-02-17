@@ -1,0 +1,14 @@
+location / {
+    # try to serve file directly, fallback to rewrite
+    try_files $uri @rewriteapp;
+}
+
+location @rewriteapp {
+    # rewrite all to app.php
+    rewrite ^(.*)$ /index.php/$1 last;
+}
+
+location ~ ^/(app|app_dev|config)\.php(/|$) {
+    try_files @heroku-fcgi @heroku-fcgi;
+    internal;
+}

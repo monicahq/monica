@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>Watchclock</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M27,54 C41.912,54 54,41.912 54,27 C54,12.088 41.912,0 27,0 C12.088,0 0,12.088 0,27 C0,41.912 12.088,54 27,54 L27,54 Z"></path>
+    </defs>
+    <g id="outlined" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Interface_sliced" sketch:type="MSLayerGroup" transform="translate(-720.000000, -2400.000000)">
+            <g id="Imported-Layers" transform="translate(2.000000, 4.000000)">
+                <g id="Group-2217" transform="translate(721.000000, 2399.000000)">
+                    <mask id="mask-2" sketch:name="Clip 2216" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2216"></g>
+                    <path d="M0,0 L54,0 L54,54 L0,54 L0,0 Z" id="Fill-2215" fill="#E9E7D1" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+                </g>
+                <path d="M748,2454 C732.56,2454 720,2441.439 720,2426 C720,2410.561 732.56,2398 748,2398 C763.44,2398 776,2410.561 776,2426 C776,2441.439 763.44,2454 748,2454 L748,2454 Z M748,2400 C733.663,2400 722,2411.663 722,2426 C722,2440.337 733.663,2452 748,2452 C762.337,2452 774,2440.337 774,2426 C774,2411.663 762.337,2400 748,2400 L748,2400 Z" id="Fill-2218" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M748,2430 C745.794,2430 744,2428.206 744,2426 C744,2423.794 745.794,2422 748,2422 C750.206,2422 752,2423.794 752,2426 C752,2428.206 750.206,2430 748,2430 L748,2430 Z M748,2424 C746.898,2424 746,2424.897 746,2426 C746,2427.102 746.898,2428 748,2428 C749.102,2428 750,2427.102 750,2426 C750,2424.897 749.102,2424 748,2424 L748,2424 Z" id="Fill-2219" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M747,2406.967 L749,2406.967 L749,2424 L747,2424 L747,2406.967 Z" id="Fill-2220" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M761,2440.414 L749.586,2429 L751,2427.586 L762.414,2439 L761,2440.414" id="Fill-2221" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M766,2445.414 L763.005,2442.419 L764.419,2441.005 L767.414,2444 L766,2445.414 L766,2445.414 Z M729.5,2444.914 L728.086,2443.5 L731.081,2440.505 L732.495,2441.919 L729.5,2444.914 L729.5,2444.914 Z M764.919,2410.495 L763.505,2409.081 L766.5,2406.086 L767.914,2407.5 L764.919,2410.495 L764.919,2410.495 Z M731.581,2409.995 L728.586,2407 L730,2405.586 L732.995,2408.581 L731.581,2409.995 L731.581,2409.995 Z" id="Fill-2222" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M747,2398 L749,2398 L749,2404.123 L747,2404.123 L747,2398 Z" id="Fill-2223" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M747,2448 L749,2448 L749,2454.123 L747,2454.123 L747,2448 Z" id="Fill-2224" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M769,2425 L776,2425 L776,2427 L769,2427 L769,2425 Z" id="Fill-2225" fill="#314E55" sketch:type="MSShapeGroup"></path>
+                <path d="M720,2425 L727,2425 L727,2427 L720,2427 L720,2425 Z" id="Fill-2226" fill="#314E55" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>

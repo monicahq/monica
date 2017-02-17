@@ -1,0 +1,217 @@
+@charset "UTF-8";
+/*
+Trix 0.9.9
+Copyright © 2016 Basecamp, LLC
+http://trix-editor.org/*/
+trix-editor {
+  color: #111;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  margin: 0;
+  padding: 4px 8px;
+  min-height: 54px;
+  outline: none; }
+trix-toolbar * {
+  box-sizing: border-box; }
+trix-toolbar .button_group {
+  display: inline-block;
+  font-size: 0;
+  margin: 0 8px 4px 0;
+  border: 1px solid #bbb;
+  border-top-color: #ccc;
+  border-bottom-color: #888;
+  border-radius: 5px;
+  overflow: hidden; }
+  trix-toolbar .button_group:last-of-type {
+    margin-right: 0; }
+  trix-toolbar .button_group button, trix-toolbar .button_group input[type=button] {
+    position: relative;
+    font-size: 0;
+    margin: 0;
+    height: 28px;
+    width: 40px;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #ddd; }
+    trix-toolbar .button_group button::before, trix-toolbar .button_group input[type=button]::before {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: .6;
+      content: ""; }
+    trix-toolbar .button_group button.active, trix-toolbar .button_group input[type=button].active {
+      background: #cbeefa; }
+      trix-toolbar .button_group button.active::before, trix-toolbar .button_group input[type=button].active::before {
+        opacity: 1; }
+    trix-toolbar .button_group button:disabled::before, trix-toolbar .button_group input[type=button]:disabled::before {
+      opacity: .125; }
+    trix-toolbar .button_group button:not(:first-child), trix-toolbar .button_group input[type=button]:not(:first-child) {
+      border-left: 1px solid #ccc; }
+trix-toolbar .dialogs {
+  position: relative; }
+  trix-toolbar .dialogs .dialog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 8px;
+    line-height: 12px;
+    background: #fff;
+    box-shadow: 0 0.3rem 1rem #ccc;
+    border-top: 2px solid #888;
+    border-radius: 5px;
+    z-index: 5; }
+    trix-toolbar .dialogs .dialog input[type=button] {
+      font-size: 12px;
+      height: 24px;
+      width: 50px;
+      padding: 1px 8px 0 8px;
+      width: auto;
+      opacity: .6;
+      -webkit-appearance: none;
+      -webkit-border-radius: 0; }
+    trix-toolbar .dialogs .dialog input[type=url], trix-toolbar .dialogs .dialog input[type=text] {
+      display: inline-block;
+      height: 26px;
+      font-size: 12px;
+      padding: 0 8px;
+      margin: 0 8px 0 0;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+      background-color: #fff;
+      box-shadow: none;
+      outline: none;
+      -webkit-appearance: none;
+      -moz-appearance: none; }
+      trix-toolbar .dialogs .dialog input[type=url].validate:invalid, trix-toolbar .dialogs .dialog input[type=text].validate:invalid {
+        box-shadow: #F00 0px 0px 1.5px 1px; }
+    trix-toolbar .dialogs .dialog.link_dialog {
+      min-width: 300px;
+      max-width: 600px; }
+      trix-toolbar .dialogs .dialog.link_dialog .button_group {
+        max-width: 110px; }
+      trix-toolbar .dialogs .dialog.link_dialog input[type=url] {
+        float: left;
+        width: calc(100% - 120px); }
+trix-toolbar .button_group button.bold::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M15.6%2011.8c1-.7%201.6-1.8%201.6-2.8a4%204%200%200%200-4-4H7v14h7c2%200%203.7-1.7%203.7-3.8%200-1.5-.8-2.8-2-3.4zM10%207.5h3a1.5%201.5%200%200%201%200%203h-3v-3zm3.5%209H10v-3h3.5a1.5%201.5%200%200%201%200%203z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.italic::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M10%205v3h2.2l-3.4%208H6v3h8v-3h-2.2l3.4-8H18V5h-8z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.link::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M9.88%2013.7a4.3%204.3%200%200%201%200-6.07l3.37-3.37a4.26%204.26%200%200%201%206.07%200%204.3%204.3%200%200%201%200%206.06l-1.96%201.72a.9.9%200%200%201-1.3-1.3l1.97-1.7a2.46%202.46%200%200%200-3.48-3.5l-3.38%203.38a2.46%202.46%200%200%200%200%203.48.9.9%200%200%201-1.3%201.3z%22%2F%3E%3Cpath%20d%3D%22M4.25%2019.46a4.3%204.3%200%200%201%200-6.07l1.93-1.9a.9.9%200%200%201%201.3%201.27l-1.93%201.9a2.46%202.46%200%200%200%203.48%203.5l3.37-3.4c.96-.95.96-2.5%200-3.47a.9.9%200%200%201%201.3-1.28%204.3%204.3%200%200%201%200%206.06l-3.38%203.38a4.26%204.26%200%200%201-6.07%200z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.strike::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M12.73%2014l.28.14c.3.15.5.3.6.44.1.14.2.3.2.5%200%20.3-.1.56-.4.75-.3.2-.75.3-1.4.3a13.52%2013.52%200%200%201-5-1.18v3.38a10.64%2010.64%200%200%200%204.86.88%209.5%209.5%200%200%200%203.28-.5c.93-.34%201.64-.9%202.14-1.54s.74-1.45.74-2.32c0-.25%200-.5-.05-.74h-5.2zm-5.5-4c-.08-.34-.12-.7-.12-1.1%200-1.3.6-2.3%201.6-3.02a7.75%207.75%200%200%201%204.4-1.08c1.6%200%203.3.34%205%201l-1.3%202.93c-1.47-.6-2.73-.9-3.8-.9-.55%200-.96.08-1.2.26a.7.7%200%200%200-.38.6c0%20.2.16.5.48.7.18.1.54.3%201.06.5h-5.7zM3%2013h18v-2H3v2z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.quote::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20version%3D%221%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M6%2017h3l2-4V7H5v6h3zm8%200h3l2-4V7h-6v6h3z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.heading-1::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20version%3D%221%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M12%209v3H9v7H6v-7H3V9h9zM8%204h14v3h-6v12h-3V7H8V4z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.code::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M18.2%2012L15%2015.2l1.4%201.4L21%2012l-4.6-4.6L15%208.8l3.2%203.2zM5.8%2012L9%208.8%207.6%207.4%203%2012l4.6%204.6L9%2015.2%205.8%2012z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.bullets::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20version%3D%221%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M4%204a2%202%200%201%200%200%204%202%202%200%200%200%200-4zm0%206a2%202%200%201%200%200%204%202%202%200%200%200%200-4zm0%206a2%202%200%201%200%200%204%202%202%200%200%200%200-4zm4%203h14v-2H8v2zm0-6h14v-2H8v2zm0-8v2h14V5H8z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.numbers::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M2%2017h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1%203h1.8L2%2013v1h3v-1H3.2L5%2011v-1H2v1zm5-6v2h14V5H7zm0%2014h14v-2H7v2zm0-6h14v-2H7v2z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.nesting-level.decrease::before, trix-toolbar .button_group button.block-level.decrease::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M3%2019h19v-2H3v2zm7-6h12v-2H10v2zm-8.3-.3l2.8%203L6%2014l-2.3-2%202-2-1.3-1.5L1%2012l.7.7zM3%205v2h19V5H3z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.nesting-level.increase::before, trix-toolbar .button_group button.block-level.increase::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M3%2019h19v-2H3v2zm7-6h12v-2H10v2zm-7-1l-2%202.2%201.4%201.4L6%2012l-.8-.7-2.8-2.8L1%2010l2%202zm0-7v2h19V5H3z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.undo::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M12.5%208c-2.6%200-5%201-7%202.6L2%207v9h9l-3.6-3.6A8%208%200%200%201%2020%2016l2.4-.8a10.5%2010.5%200%200%200-10-7.2z%22%2F%3E%3C%2Fsvg%3E"); }
+trix-toolbar .button_group button.redo::before {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Cpath%20d%3D%22M18.4%2010.6a10.5%2010.5%200%200%200-17%204.6L4%2016a8%208%200%200%201%2012.6-3.6L13%2016h9V7l-3.6%203.6z%22%2F%3E%3C%2Fsvg%3E"); }
+@charset "UTF-8";
+trix-editor [data-trix-mutable=true] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  trix-editor [data-trix-mutable=true] img {
+    box-shadow: 0 0 0 2px highlight; }
+trix-editor .attachment .remove {
+  display: block;
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  line-height: 22px;
+  font-size: 0;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1); }
+  trix-editor .attachment .remove:after {
+    content: '×';
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0.6; }
+  trix-editor .attachment .remove:hover:after {
+    opacity: 1; }
+trix-editor .attachment .caption.caption-editing textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 13px;
+  text-align: center;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; }
+@charset "UTF-8";
+.trix-content h1 {
+  font-size: 1.6em;
+  margin: 10px 0; }
+.trix-content blockquote {
+  margin: 0 0 0 5px;
+  padding: 0 0 0 10px;
+  border-left: 5px solid #ccc; }
+.trix-content pre {
+  font-family: monospace;
+  font-size: 12px;
+  margin: 0;
+  padding: 10px;
+  white-space: pre-wrap;
+  background-color: #eee; }
+.trix-content ul, .trix-content ol, .trix-content li {
+  margin: 0;
+  padding: 0; }
+  .trix-content ul li, .trix-content ol li, .trix-content li li {
+    margin-left: 20px; }
+.trix-content img {
+  max-width: 100%;
+  height: auto; }
+.trix-content a[data-trix-attachment] {
+  color: inherit;
+  text-decoration: none; }
+  .trix-content a[data-trix-attachment]:hover, .trix-content a[data-trix-attachment]:visited:hover {
+    color: inherit; }
+.trix-content .attachment {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  color: #666;
+  font-size: 13px; }
+  .trix-content .attachment.attachment-file {
+    color: #333;
+    line-height: 30px;
+    padding: 0 16px;
+    border: 1px solid #bbb;
+    border-radius: 5px; }
+  .trix-content .attachment .caption {
+    display: block;
+    margin: 4px auto 0 auto;
+    padding: 0;
+    text-align: center; }
+    .trix-content .attachment .caption .size:before {
+      content: ' · '; }

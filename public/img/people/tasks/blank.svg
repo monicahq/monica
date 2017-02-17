@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="181px" height="149px" viewBox="0 0 181 149" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="3" y="3" width="172.967399" height="143" rx="10"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="172.967399" height="143" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <rect id="path-3" x="0" y="3" width="22" height="23" rx="3"></rect>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="22" height="23" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+        <rect id="path-5" x="0" y="3" width="22" height="23" rx="3"></rect>
+        <mask id="mask-6" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="22" height="23" fill="white">
+            <use xlink:href="#path-5"></use>
+        </mask>
+        <rect id="path-7" x="0" y="3" width="22" height="23" rx="3"></rect>
+        <mask id="mask-8" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="22" height="23" fill="white">
+            <use xlink:href="#path-7"></use>
+        </mask>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard">
+            <use id="Rectangle" stroke="#D0D0D0" mask="url(#mask-2)" stroke-width="2" fill="#FFFFFF" xlink:href="#path-1"></use>
+            <g id="Group" transform="translate(22.000000, 16.000000)">
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="9" width="107" height="4.37202613" rx="2.18601307"></rect>
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="17" width="74.9858667" height="4.37202613" rx="2.18601307"></rect>
+                <use id="Rectangle-4" stroke="#345875" mask="url(#mask-4)" stroke-width="4" fill="#FFFFFF" xlink:href="#path-3"></use>
+                <rect id="Rectangle-3" fill="#FFFFFF" x="11" y="0" width="14" height="13"></rect>
+                <path d="M13.5,6.5 L17.5,10.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M17.5,10.5 L23.5,3.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+            </g>
+            <g id="Group" transform="translate(22.000000, 56.000000)">
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="9" width="107" height="4.37202613" rx="2.18601307"></rect>
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="17" width="74.9858667" height="4.37202613" rx="2.18601307"></rect>
+                <use id="Rectangle-4" stroke="#345875" mask="url(#mask-6)" stroke-width="4" fill="#FFFFFF" xlink:href="#path-5"></use>
+                <rect id="Rectangle-3" fill="#FFFFFF" x="11" y="0" width="14" height="13"></rect>
+                <path d="M13.5,6.5 L17.5,10.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M17.5,10.5 L23.5,3.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+            </g>
+            <g id="Group" transform="translate(22.000000, 96.000000)">
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="9" width="107" height="4.37202613" rx="2.18601307"></rect>
+                <rect id="Rectangle-2" fill="#C7C7C7" x="30" y="17" width="74.9858667" height="4.37202613" rx="2.18601307"></rect>
+                <use id="Rectangle-4" stroke="#345875" mask="url(#mask-8)" stroke-width="4" fill="#FFFFFF" xlink:href="#path-7"></use>
+                <rect id="Rectangle-3" fill="#FFFFFF" x="11" y="0" width="14" height="13"></rect>
+                <path d="M13.5,6.5 L17.5,10.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M17.5,10.5 L23.5,3.5" id="Line" stroke="#DE6464" stroke-width="2" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>

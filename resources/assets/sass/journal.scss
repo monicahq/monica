@@ -1,0 +1,23 @@
+.journal {
+  .main-content {
+    margin-top: 40px;
+  }
+
+  .entry-row {
+    margin-bottom: 30px;
+
+    .entry-information {
+      background-color: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      font-size: 12px;
+      padding: 10px;
+    }
+  }
+
+  .modal {
+    textarea {
+      height: 300px;
+    }
+  }
+}

@@ -1,0 +1,808 @@
+.people-list {
+  .breadcrumb {
+    border-bottom: 1px solid #eee;
+  }
+
+  .main-content {
+    margin-top: 50px;
+  }
+
+  #search-list {
+    .search {
+      margin-bottom: 20px;
+      padding: 15px;
+      width: 100%;
+    }
+  }
+
+  .sidebar {
+    .sidebar-cta {
+      margin-bottom: 20px;
+      padding: 15px;
+      text-align: center;
+      width: 100%;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+  }
+
+  .people-list-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0 20px 10px;
+
+    &:hover {
+      background-color: #f7fbfc;
+    }
+
+    a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .people-list-item-name {
+      display: block;
+      font-size: 16px;
+    }
+
+    .avatar {
+      background-color: #93521e;
+      border-radius: 3px;
+      color: #fff;
+      display: inline-block;
+      float: left;
+      font-size: 17px;
+      height: 55px;
+      margin-right: 15px;
+      margin-top: 6px;
+      padding-left: 5px;
+      padding-top: 16px;
+      position: relative;
+      top: -11px;
+      width: 55px;
+
+      &.one-letter {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+
+    .avatar-photo {
+      img {
+        float: left;
+        margin-right: 15px;
+        position: relative;
+        top: -4px;
+      }
+    }
+  }
+}
+
+.blank-people-state {
+  margin-top: 30px;
+  text-align: center;
+
+  h3 {
+    font-weight: 400;
+    margin-bottom: 30px;
+  }
+
+  .cta-blank {
+    margin-bottom: 30px;
+  }
+
+  .illustration-blank {
+    p {
+      margin-top: 30px;
+    }
+
+    img {
+      display: block;
+      margin: 0 auto 20px;
+    }
+  }
+}
+
+.people-show {
+  .pagehead {
+    background-color: #f9f9fb;
+    border-bottom: 1px solid #eee;
+
+    .back-to-list {
+      margin-bottom: 10px;
+      margin-top: 30px;
+
+      span {
+        font-size: 13px;
+
+        &::after {
+          content: '/';
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .people-profile-information {
+      margin-bottom: 30px;
+
+      .avatar {
+        background-color: #93521e;
+        border-radius: 3px;
+        color: #fff;
+        display: inline-block;
+        height: 30px;
+        margin-right: 5px;
+        padding-left: 5px;
+        padding-top: 4px;
+        position: relative;
+        top: -3px;
+        width: 30px;
+
+        &.one-letter {
+          padding-left: 0;
+          text-align: center;
+        }
+      }
+
+      .avatar-photo {
+        img {
+          float: left;
+          margin-right: 10px;
+          position: relative;
+          top: 4px;
+        }
+      }
+
+      h2 {
+        display: inline;
+        font-size: 24px;
+        font-weight: 300;
+        margin-bottom: 0;
+      }
+
+      .profile-detail-summary {
+        li {
+          &:not(:last-child) {
+            margin-right: 10px;
+
+            &::after {
+              color: #ad8362;
+              content: '\f085';
+              font-family: octicons;
+              margin-left: 14px;
+            }
+          }
+        }
+      }
+    }
+
+    .nav-tabs {
+      border-bottom: 0;
+
+      .nav-item {
+        margin-bottom: -2px;
+      }
+
+      .nav-link {
+        border-top: 2px solid #f9f9fb;
+        color: #888;
+        text-decoration: none;
+
+        &.active,
+        &:hover {
+          background-color: #fff;
+          border-bottom-color: #fff;
+          border-top: 2px solid #fc4948;
+          color: #333;
+
+          img {
+            filter: grayscale(0%);
+            opacity: 1;
+          }
+        }
+
+        img {
+          filter: grayscale(100%);
+          margin-right: 5px;
+          opacity: .7;
+          position: relative;
+          width: 20px;
+
+          &.icon-dashboard {
+            top: -3px;
+          }
+
+          &.icon-activities {
+            top: -4px;
+            width: 20px;
+          }
+
+          &.icon-reminders {
+            top: -2px;
+            width: 17px;
+          }
+
+          &.icon-tasks {
+            top: -2px;
+            width: 17px;
+          }
+
+          &.icon-gifts {
+            top: -3px;
+            width: 17px;
+          }
+        }
+
+        .counter {
+          background-color: #ccc;
+          border-radius: 50%;
+          font-size: 11px;
+          margin-left: 5px;
+          padding: 1px 6px;
+        }
+      }
+    }
+  }
+
+  .main-content {
+    background-color: #fff;
+    padding-bottom: 20px;
+    padding-top: 20px;
+
+    .sidebar {
+      .sidebar-cta {
+        a {
+          margin-bottom: 20px;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .dashboard {
+    .sidebar-box {
+      background-color: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      padding: 10px;
+      position: relative;
+    }
+
+    .sidebar-heading {
+      color: #767676;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+    }
+
+    .people-information {
+      color: #999;
+      font-size: 12px;
+
+      li {
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        i {
+          text-align: center;
+          width: 17px;
+        }
+      }
+    }
+
+    .people-information-actions {
+      margin-top: 5px;
+
+      a {
+        font-size: 12px;
+      }
+    }
+
+    .section {
+      margin-bottom: 35px;
+
+      .inline-action {
+        display: inline;
+        margin-left: 10px;
+
+        a {
+          margin-right: 5px;
+        }
+      }
+
+      .section-heading {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
+
+        img {
+          width: 25px;
+        }
+      }
+
+      .section-action {
+        display: inline;
+        float: right;
+      }
+
+      &.kids,
+      &.food-preferencies,
+      &.notes {
+        .section-heading img {
+          position: relative;
+          top: -3px;
+        }
+      }
+
+      .section-blank {
+        text-align: center;
+      }
+    }
+
+    .notes {
+      .blank-note-state {
+        text-align: center;
+
+        img {
+          background-color: #e3f7f7;
+          border: 1px solid #d2caca;
+          border-radius: 50%;
+          filter: grayscale(30%);
+          margin-bottom: 10px;
+          padding: 4px;
+          width: 60px;
+        }
+      }
+
+      .notes-add-box {
+        background-color: #f6f8f9;
+        border-radius: 3px;
+        margin-bottom: 30px;
+        padding: 10px;
+
+        .actions {
+          margin-top: 10px;
+
+          .btn {
+            width: 49%;
+          }
+        }
+      }
+
+      .note-item {
+        border: 1px solid #eee;
+        border-radius: 3px;
+        margin-bottom: 15px;
+
+        .note-item-body {
+          padding: 10px;
+        }
+      }
+
+      .note-item-actions {
+        background-color: #f9f9f9;
+        color: #666;
+        font-size: 12px;
+        margin-top: 10px;
+        padding: 5px 10px;
+
+        li {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .activities {
+    .sidebar {
+      .activities-stats {
+        font-size: 12px;
+
+        span {
+          float: right;
+        }
+      }
+    }
+
+    .activities-summary {
+      ul {
+        background-color: #f7f7f7;
+        border: 1px solid $border-color;
+        padding: 6px;
+        text-align: center;
+      }
+
+      li {
+        display: inline-block;
+        width: 30%;
+      }
+    }
+
+    .activity-item-info {
+      margin-bottom: 5px;
+    }
+
+    .activity-item-info-type {
+      display: inline;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .activity-item-info-actions {
+      display: inline;
+
+      li:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .reminders {
+    .reminder-item {
+      margin-bottom: 20px;
+      padding-left: 33px;
+      position: relative;
+    }
+
+    .reminder-icon {
+      left: 0;
+      position: absolute;
+      top: 8px;
+
+      img {
+        width: 25px;
+      }
+    }
+
+    .reminder-description {
+      display: inline;
+      margin-bottom: 5px;
+    }
+
+    .reminder-info {
+      font-size: 12px;
+      margin-top: 4px;
+
+      .next-expected-date {
+        color: #999;
+      }
+    }
+
+    .reminder-frequency {
+      border: 1px solid #97bccd;
+      border-radius: 3px;
+      color: #97bccd;
+      display: inline;
+      margin-right: 5px;
+      padding-bottom: 2px;
+      padding-left: 5px;
+      padding-right: 2px;
+    }
+
+    .reminder-actions {
+      display: inline;
+
+      ul {
+        display: inline;
+      }
+
+      a {
+        color: #999;
+        font-size: 11px;
+        margin-right: 5px;
+        text-decoration: underline;
+      }
+    }
+
+    .reminder-comment {
+      border: 1px solid #dfdfdf;
+      border-radius: 3px;
+      font-size: 13px;
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+
+    &.modal {
+      .frequency {
+        margin-top: 20px;
+      }
+
+      .frequency-type {
+        display: inline;
+        width: 50px;
+      }
+    }
+  }
+
+  .tasks {
+    .task-item:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    .task-info {
+      color: #999;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+
+    .task-actions {
+      display: inline;
+
+      a {
+        color: #999;
+        font-size: 11px;
+        margin-right: 5px;
+        text-decoration: underline;
+      }
+    }
+
+    .task-comment {
+      border: 1px solid #dfdfdf;
+      border-radius: 3px;
+      font-size: 13px;
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+
+    .tasks-completed {
+      background-color: #eee;
+      padding: 5px;
+
+      .task-title {
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .gifts {
+    .gift-recipient {
+      font-size: 15px;
+
+      &:not(:first-child) {
+        margin-top: 25px;
+      }
+    }
+
+    .offered {
+      background-color: #5cb85c;
+      border-radius: 10rem;
+      display: inline-block;
+      font-size: 75%;
+      font-weight: 400;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      padding: 2px 0;
+      padding-right: .6em;
+      padding-left: .6em;
+    }
+
+    .gift-list-item {
+      border-top: 1px solid #eee;
+      padding: 5px 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    .gift-list-item-url {
+      display: inline;
+      font-size: 12px;
+      margin-left: 10px;
+      padding: 5px 0 0;
+    }
+
+    .gift-list-item-value {
+      background-color: #ecf9ff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: inline;
+      font-size: 12px;
+      margin-left: 10px;
+      padding: 0 6px;
+    }
+
+    .gift-list-item-information {
+      display: inline;
+      margin-left: 10px;
+    }
+
+    .gift-list-item-date,
+    .gift-list-item-actions {
+      color: #999;
+      display: inline;
+      font-size: 12px;
+
+      a {
+        color: #999;
+        font-size: 11px;
+        margin-right: 5px;
+        text-decoration: underline;
+      }
+
+      li {
+        display: inline;
+      }
+    }
+
+    .gift-list-item-actions {
+      margin-left: 5px;
+    }
+  }
+}
+
+
+// MOBILE
+@media (max-width: 480px) {
+
+  .people-list {
+    margin-top: 20px;
+
+    .people-list-mobile {
+      border-bottom: 1px solid $border-color;
+
+      li {
+        padding: 6px 0;
+      }
+    }
+  }
+
+  .people-show {
+    .pagehead {
+      .people-profile-information {
+        margin-bottom: 20px;
+        margin-top: 10px;
+
+        h2 {
+          span {
+            display: none;
+          }
+        }
+
+        .profile-detail-summary {
+          li {
+            display: block;
+            margin-right: 0;
+
+            &:not(:last-child) {
+              &::after {
+                content: '';
+                margin-left: 0;
+              }
+            }
+          }
+        }
+      }
+
+      .people-nav {
+        .nav-tabs {
+          background-color: #fff;
+          border: 1px solid $border-color;
+          margin-bottom: 20px;
+
+          .nav-item {
+            border-bottom: 1px solid $border-color;
+            display: block;
+            float: none;
+            margin-bottom: 0;
+
+            &:last-child {
+              border-bottom: 0;
+            }
+
+            &+.nav-item {
+              margin-left: 0;
+            }
+
+            .nav-link {
+              border: 0;
+              font-size: 13px;
+              padding: 6px 6px 4px;
+
+              &.active {
+                border-left: 2px solid #fc4948;
+                border-radius: 0;
+                border-top: 0;
+              }
+
+              img {
+                left: 4px;
+
+                &.icon-dashboard {
+                  top: -4px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .main-content {
+      &.modal {
+        margin-top: 0;
+
+        .dates {
+          .form-inline {
+            input[type="number"] {
+              display: inline;
+            }
+
+            input[type="date"] {
+              margin-left: 0;
+            }
+          }
+        }
+
+        .form-group.actions {
+          .btn {
+            width: 49%;
+          }
+        }
+      }
+
+      &.dashboard {
+        .sidebar-edit-actions {
+          right: 10px;
+          visibility: visible;
+        }
+      }
+
+      &.activities {
+        .cta-mobile {
+          margin-bottom: 20px;
+
+          a {
+            width: 100%;
+          }
+        }
+
+        .activities-list {
+          .activity-item-date {
+            top: -4px;
+          }
+        }
+      }
+    }
+  }
+
+  .create-people {
+    width: 100%;
+
+    .btn {
+      width: 100%;
+    }
+  }
+
+  .list-add-item {
+    margin-left: 0;
+  }
+
+  .inline-form {
+    .task-add-title {
+      width: 100%;
+    }
+
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .box-links {
+    margin-bottom: 10px;
+    position: relative;
+    right: 0;
+    top: 0;
+
+    li {
+      margin-left: 0;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>WomanWC</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path id="path-1" d="M17.982,25.054 L25.63,25.054 L19.049,0 L6.439,0 L0.46,25.054 L8.013,25.054 L8.013,36 L17.982,36 L17.982,25.054 L17.982,25.054 Z"></path>
+        <path id="path-3" d="M7,16 C10.866,16 14,12.418 14,8 C14,3.582 10.866,0 7,0 C3.134,0 0,3.582 0,8 C0,12.418 3.134,16 7,16 L7,16 Z"></path>
+    </defs>
+    <g id="colored" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Care_sliced" sketch:type="MSLayerGroup" transform="translate(-240.000000, -240.000000)"></g>
+        <g id="Imported-Layers" sketch:type="MSLayerGroup" transform="translate(-238.000000, -239.000000)">
+            <g id="Group-291" transform="translate(258.000000, 260.000000)">
+                <mask id="mask-2" sketch:name="Clip 290" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-290"></g>
+                <path d="M0.46,0 L25.63,0 L25.63,36 L0.46,36 L0.46,0 Z" id="Fill-289" fill="#D26CBA" sketch:type="MSShapeGroup" mask="url(#mask-2)"></path>
+            </g>
+            <path d="M275.982,297 L266.013,297 C265.461,297 265.013,296.552 265.013,296 L265.013,286.054 L258.46,286.054 C258.154,286.054 257.865,285.914 257.675,285.674 C257.485,285.434 257.416,285.12 257.487,284.822 L263.467,259.768 C263.574,259.318 263.977,259 264.44,259 L277.049,259 C277.503,259 277.9,259.307 278.016,259.746 L284.549,284.615 C284.614,284.748 284.65,284.896 284.65,285.054 C284.65,285.61 284.167,286.084 283.64,286.054 L283.63,286.054 L276.982,286.054 L276.982,296 C276.982,296.552 276.534,297 275.982,297 L275.982,297 Z M267.013,295 L274.982,295 L274.982,285.054 C274.982,284.502 275.43,284.054 275.982,284.054 L282.334,284.054 L276.278,261 L265.229,261 L259.727,284.054 L266.013,284.054 C266.565,284.054 267.013,284.502 267.013,285.054 L267.013,295 L267.013,295 Z" id="Fill-292" fill="#314E55" sketch:type="MSShapeGroup"></path>
+            <path d="M270,284 L272,284 L272,296 L270,296 L270,284 Z" id="Fill-293" fill="#314E55" sketch:type="MSShapeGroup"></path>
+            <g id="Group-296" transform="translate(264.000000, 241.000000)">
+                <mask id="mask-4" sketch:name="Clip 295" fill="white">
+                    <use xlink:href="#path-3"></use>
+                </mask>
+                <g id="Clip-295"></g>
+                <path d="M0,0 L14,0 L14,16 L0,16 L0,0 Z" id="Fill-294" fill="#D26CBA" sketch:type="MSShapeGroup" mask="url(#mask-4)"></path>
+            </g>
+            <path d="M271,258 C266.589,258 263,253.963 263,249 C263,244.038 266.589,240 271,240 C275.411,240 279,244.038 279,249 C279,253.963 275.411,258 271,258 L271,258 Z M271,242 C267.691,242 265,245.14 265,249 C265,252.86 267.691,256 271,256 C274.309,256 277,252.86 277,249 C277,245.14 274.309,242 271,242 L271,242 Z" id="Fill-297" fill="#314E55" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

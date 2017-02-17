@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.6
+  - 7.0
+  - 7.1
+
+services:
+  - mysql
+
+before_script:
+  - cp .env.travis .env
+  - mysql -e 'create database monica;'
+  - composer self-update
+  - composer install --no-interaction
+
+script:
+  - php artisan migrate --env=testing --no-interaction -vvv
+  - php artisan db:seed --env=testing --no-interaction -vvv
+  - vendor/bin/phpunit
