@@ -47,9 +47,7 @@ social interactions.
 
 ### Get started
 
-We provide a hosted version of this application on https://monicahq.com. This is
-a paid application, as I hope that one day I'll be able to work full-time on it,
-while being supported by its users.
+We provide a hosted version of this application on https://monicahq.com.
 
 If you prefer to, you can simply clone the repository and set it up yourself on
 any hosting provider, for free. I'm just asking that you don't try to make
