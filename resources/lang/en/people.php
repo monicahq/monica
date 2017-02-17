@@ -24,6 +24,8 @@ return [
     'section_personal_information' => 'Personal information',
     'section_personal_activities' => 'Activities',
     'section_personal_reminders' => 'Reminders',
+    'section_personal_tasks' => 'Tasks',
+    'section_personal_gifts' => 'Gifts',
 
     //
     'link_to_list' => 'List of people',

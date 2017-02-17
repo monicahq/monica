@@ -24,6 +24,8 @@ return [
     'section_personal_information' => 'Informations personnelles',
     'section_personal_activities' => 'Activités',
     'section_personal_reminders' => 'Rappels',
+    'section_personal_tasks' => 'Tâches',
+    'section_personal_gifts' => 'Cadeaux',
 
     //
     'link_to_list' => 'Retour à la liste',

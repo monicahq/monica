@@ -1,4 +1,5 @@
-<div class="col-xs-12">
+<div class="col-xs-12 section-title">
+  <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
   <h3>{{ trans('people.section_personal_reminders') }}</h3>
 </div>
 

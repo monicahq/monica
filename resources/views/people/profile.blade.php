@@ -45,6 +45,14 @@
           @include('people.reminders.index')
         </div>
 
+        <div class="row section tasks">
+          @include('people.tasks.index')
+        </div>
+
+        <div class="row section gifts">
+          @include('people.gifts.index')
+        </div>
+
       </div>
 
     </div>

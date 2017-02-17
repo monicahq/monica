@@ -449,7 +449,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_add_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -514,7 +514,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_update_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -543,7 +543,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -648,7 +648,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.reminders_create_success'));
 
-        return redirect('/people/'.$contact->id.'/reminders');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -671,7 +671,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.reminders_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/reminders');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -753,7 +753,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_add_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -778,7 +778,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_complete_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -804,7 +804,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -1278,7 +1278,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.gifts_add_success'));
 
-        return redirect('/people/'.$contact->id.'/gifts');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -1304,6 +1304,6 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.gifts_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/gifts');
+        return redirect('/people/'.$contact->id);
     }
 }

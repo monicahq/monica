@@ -51,13 +51,4 @@
       </div>
     </div>
   </div>
-  <div class="people-nav">
-    <div class="{{ Auth::user()->getFluidLayout() }}">
-      <div class="row">
-        <div class="col-xs-12">
-          @include('people._navigation')
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
