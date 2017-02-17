@@ -21,11 +21,9 @@ return [
     'people_add_cta' => 'Add this person',
 
     // show
-    'show_dashboard' => 'Dashboard',
-    'show_activities' => 'Activities',
-    'show_reminders' => 'Reminders',
-    'show_tasks' => 'Tasks',
-    'show_gifts' => 'Gifts',
+    'section_personal_information' => 'Personal information',
+    'section_personal_activities' => 'Activities',
+    'section_personal_reminders' => 'Reminders',
 
     //
     'link_to_list' => 'List of people',

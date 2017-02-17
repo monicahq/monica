@@ -250,6 +250,14 @@
     padding-bottom: 20px;
     padding-top: 20px;
 
+    h3 {
+      border-bottom: 1px solid #eee;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+
     .sidebar {
       .sidebar-cta {
         a {
@@ -266,13 +274,6 @@
       border: 1px solid #eee;
       border-radius: 3px;
       padding: 10px;
-      position: relative;
-    }
-
-    .sidebar-heading {
-      color: #767676;
-      font-weight: 600;
-      margin-bottom: 5px;
       position: relative;
     }
 
