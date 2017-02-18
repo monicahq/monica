@@ -143,7 +143,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.reminders_add_cta') }}</button>
-                <a href="/people/{{ $people->id }}/activities" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="/people/{{ $people->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

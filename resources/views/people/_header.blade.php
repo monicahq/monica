@@ -8,9 +8,7 @@
         <div class="people-profile-information">
 
           @if ($contact->has_avatar == 'true')
-            <div class="avatar-photo">
-              <img src="{{ $contact->getAvatarURL(110) }}" width="30">
-            </div>
+            <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
             @if (count($contact->getInitials()) == 1)
             <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">

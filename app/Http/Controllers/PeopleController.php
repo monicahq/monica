@@ -111,10 +111,6 @@ class PeopleController extends Controller
         $contact->gender = $request->input('gender');
         $contact->first_name = ucfirst($request->input('first_name'));
 
-        if (! empty($request->input('middle_name'))) {
-            $contact->middle_name = ucfirst($request->input('middle_name'));
-        }
-
         if (! empty($request->input('last_name'))) {
             $contact->last_name = ucfirst($request->input('last_name'));
         }

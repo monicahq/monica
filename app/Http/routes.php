@@ -57,7 +57,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Activities
-        Route::get('/people/{people}/activities', ['as' => '.activities', 'uses' => 'PeopleController@activities']);
         Route::get('/people/{people}/activities/add', ['as' => '.activities.add', 'uses' => 'PeopleController@addActivity']);
         Route::post('/people/{people}/activities/store', 'PeopleController@storeActivity');
         Route::get('/people/{people}/activities/{activity}/edit', ['as' => '.activities.edit', 'uses' => 'PeopleController@editActivity']);
@@ -65,7 +64,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{people}/activities/{activityId}/delete', 'PeopleController@deleteActivity');
 
         // Reminders
-        Route::get('/people/{people}/reminders', ['as' => '.reminders', 'uses' => 'PeopleController@reminders']);
         Route::get('/people/{people}/reminders/add', ['as' => '.reminders.add', 'uses' => 'PeopleController@addReminder']);
         Route::post('/people/{people}/reminders/store', 'PeopleController@storeReminder');
         Route::get('/people/{people}/reminders/{reminderId}/edit', ['as' => '.reminders.edit', 'uses' => 'PeopleController@editReminder']);
@@ -73,14 +71,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{people}/reminders/{reminderId}/delete', 'PeopleController@deleteReminder');
 
         // Tasks
-        Route::get('/people/{people}/tasks', ['as' => '.tasks', 'uses' => 'PeopleController@tasks']);
         Route::get('/people/{people}/tasks/add', ['as' => '.tasks.add', 'uses' => 'PeopleController@addTask']);
         Route::post('/people/{people}/tasks/store', 'PeopleController@storeTask');
         Route::get('/people/{people}/tasks/{taskId}/toggle', 'PeopleController@toggleTask');
         Route::get('/people/{people}/tasks/{taskId}/delete', 'PeopleController@deleteTask');
 
         // Gifts
-        Route::get('/people/{people}/gifts', ['as' => '.gifts', 'uses' => 'PeopleController@gifts']);
         Route::get('/people/{people}/gifts/add', ['as' => '.gifts.add', 'uses' => 'PeopleController@addGift']);
         Route::post('/people/{people}/gifts/store', 'PeopleController@storeGift');
         Route::get('/people/{people}/gifts/{giftId}/delete', 'PeopleController@deleteGift');

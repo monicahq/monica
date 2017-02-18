@@ -6,13 +6,9 @@
 @if ($contact->getNumberOfActivities() == 0)
 
   <div class="col-xs-12">
-    <h3>{{ trans('people.activities_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-    <div class="cta-blank">
-      <a href="/people/{{ $contact->id }}/activities/add" class="btn btn-primary">{{ trans('people.activities_blank_add_activity') }}</a>
-    </div>
-    <div class="illustration-blank">
-      <img src="/img/people/activities/blank.svg">
-      <p>{{ trans('people.activities_blank_description', ['name' => $contact->getFirstName()]) }}</p>
+    <div class="section-blank">
+      <h3>{{ trans('people.activities_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <a href="/people/{{ $contact->id }}/activities/add">{{ trans('people.activities_blank_add_activity') }}</a>
     </div>
   </div>
 
@@ -25,11 +21,6 @@
   </div>
 
   <div class="col-xs-12 col-sm-7 activities-list">
-
-    {{-- only on mobile --}}
-    <div class="cta-mobile hidden-sm-up">
-      <a href="/people/{{ $contact->id }}/activities/add" class="btn btn-primary">{{ trans('people.activities_add_activity') }}</a>
-    </div>
 
     {{-- List of activiites --}}
     @foreach($contact->getActivities() as $activity)
@@ -82,7 +73,7 @@
   <div class="col-xs-12 col-sm-2 sidebar">
 
     <!-- Add activity  -->
-    <div class="sidebar-cta hidden-xs-down">
+    <div class="sidebar-cta">
       <a href="/people/{{ $contact->id }}/activities/add" class="btn btn-primary">{{ trans('people.activities_add_activity') }}</a>
     </div>
 

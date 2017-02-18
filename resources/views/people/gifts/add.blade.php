@@ -67,7 +67,7 @@
               {{-- Value --}}
               <div class="form-group">
                 <label for="value">{{ trans('people.gifts_add_value') }}</label>
-                <input type="number" class="form-control" name="value" placeholder="$0.00">
+                <input type="number" class="form-control" name="value" placeholder="0.00">
               </div>
 
               {{-- Comment --}}
@@ -101,7 +101,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.gifts_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}/activities" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

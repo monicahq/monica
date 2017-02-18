@@ -12,7 +12,7 @@ return [
     'save' => 'Mettre à jour',
     'delete_notice' => 'Etes-vous sûr de vouloir supprimer votre compte?',
     'delete_cta' => 'Effacer le compte',
-    'locale' => 'langue utilisée par l\'application',
+    'locale' => 'Langue',
     'locale_en' => 'Anglais',
     'locale_fr' => 'Francais',
 ];

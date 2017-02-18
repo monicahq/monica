@@ -7829,6 +7829,15 @@ header .main-cta {
 
 .people-list .sidebar li {
   margin-bottom: 7px;
+  padding-left: 15px;
+  position: relative;
+}
+
+.people-list .sidebar li.selected::before {
+  color: #999;
+  content: '>';
+  left: 0;
+  position: absolute;
 }
 
 .people-list .people-list-item {
@@ -7922,7 +7931,8 @@ header .main-cta {
 }
 
 .people-show .pagehead .people-profile-information {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 .people-show .pagehead .people-profile-information .avatar {
@@ -7930,13 +7940,13 @@ header .main-cta {
   border-radius: 3px;
   color: #fff;
   display: inline-block;
-  height: 30px;
+  font-size: 30px;
+  height: 87px;
   margin-right: 5px;
   padding-left: 5px;
-  padding-top: 4px;
-  position: relative;
-  top: -3px;
-  width: 30px;
+  padding-top: 21px;
+  position: absolute;
+  width: 87px;
 }
 
 .people-show .pagehead .people-profile-information .avatar.one-letter {
@@ -7944,11 +7954,9 @@ header .main-cta {
   text-align: center;
 }
 
-.people-show .pagehead .people-profile-information .avatar-photo img {
-  float: left;
-  margin-right: 10px;
-  position: relative;
-  top: 4px;
+.people-show .pagehead .people-profile-information img {
+  border-radius: 3px;
+  position: absolute;
 }
 
 .people-show .pagehead .people-profile-information h2 {
@@ -7956,6 +7964,11 @@ header .main-cta {
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 0;
+  padding-left: 100px;
+}
+
+.people-show .pagehead .people-profile-information .profile-detail-summary {
+  padding-left: 100px;
 }
 
 .people-show .pagehead .people-profile-information .profile-detail-summary li:not(:last-child) {
@@ -7972,7 +7985,7 @@ header .main-cta {
 .people-show .main-content {
   background-color: #fff;
   padding-bottom: 20px;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .people-show .main-content .section-title {
@@ -8003,6 +8016,7 @@ header .main-cta {
   background-color: #fafafa;
   border: 1px solid #eee;
   border-radius: 3px;
+  color: #999;
   padding: 10px;
   position: relative;
 }
@@ -8037,6 +8051,11 @@ header .main-cta {
   margin-bottom: 35px;
 }
 
+.people-show .dashboard .section.kids .section-heading img, .people-show .dashboard .section.food-preferencies .section-heading img, .people-show .dashboard .section.notes .section-heading img {
+  position: relative;
+  top: -3px;
+}
+
 .people-show .dashboard .section .inline-action {
   display: inline;
   margin-left: 10px;
@@ -8061,13 +8080,17 @@ header .main-cta {
   float: right;
 }
 
-.people-show .dashboard .section.kids .section-heading img, .people-show .dashboard .section.food-preferencies .section-heading img, .people-show .dashboard .section.notes .section-heading img {
-  position: relative;
-  top: -3px;
+.people-show .dashboard .section .section-blank {
+  background-color: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 15px;
+  text-align: center;
 }
 
-.people-show .dashboard .section .section-blank {
-  text-align: center;
+.people-show .dashboard .section .section-blank h3 {
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .people-show .dashboard .notes .blank-note-state {
@@ -8375,39 +8398,6 @@ header .main-cta {
     content: '';
     margin-left: 0;
   }
-  .people-show .pagehead .people-nav .nav-tabs {
-    background-color: #fff;
-    border: 1px solid #dfdfdf;
-    margin-bottom: 20px;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item {
-    border-bottom: 1px solid #dfdfdf;
-    display: block;
-    float: none;
-    margin-bottom: 0;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item:last-child {
-    border-bottom: 0;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item + .nav-item {
-    margin-left: 0;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item .nav-link {
-    border: 0;
-    font-size: 13px;
-    padding: 6px 6px 4px;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item .nav-link.active {
-    border-left: 2px solid #fc4948;
-    border-radius: 0;
-    border-top: 0;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item .nav-link img {
-    left: 4px;
-  }
-  .people-show .pagehead .people-nav .nav-tabs .nav-item .nav-link img.icon-dashboard {
-    top: -4px;
-  }
   .people-show .main-content.modal {
     margin-top: 0;
   }
@@ -8420,9 +8410,14 @@ header .main-cta {
   .people-show .main-content.modal .form-group.actions .btn {
     width: 49%;
   }
-  .people-show .main-content.dashboard .sidebar-edit-actions {
-    right: 10px;
-    visibility: visible;
+  .people-show .main-content.dashboard .sidebar-box {
+    margin-bottom: 15px;
+  }
+  .people-show .main-content.dashboard .sidebar-cta {
+    margin-top: 15px;
+  }
+  .people-show .main-content.dashboard .people-information-actions {
+    margin-bottom: 20px;
   }
   .people-show .main-content.activities .cta-mobile {
     margin-bottom: 20px;

@@ -7,19 +7,21 @@
 @if ($contact->getTasksInProgress()->count() == 0 and $contact->getCompletedTasks()->count() == 0)
 
   <div class="col-xs-12">
-    <h3>{{ trans('people.tasks_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-    <div class="cta-blank">
-      <a href="/people/{{ $contact->id }}/tasks/add" class="btn btn-primary">{{ trans('people.tasks_blank_add_activity') }}</a>
-    </div>
-    <div class="illustration-blank">
-      <img src="/img/people/tasks/blank.svg">
-      <p>{{ trans('people.tasks_blank_description', ['name' => $contact->getFirstName()]) }}</p>
+    <div class="section-blank">
+      <h3>{{ trans('people.tasks_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <a href="/people/{{ $contact->id }}/tasks/add">{{ trans('people.tasks_blank_add_activity') }}</a>
     </div>
   </div>
 
 @else
 
-  <div class="col-xs-12 col-sm-9 tasks-list">
+  <div class="col-xs-12 col-sm-3">
+    <div class="sidebar-box">
+      {{ trans('people.tasks_desc', ['name' => $contact->getFirstName()]) }}
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 tasks-list">
 
     @foreach($contact->getTasksInProgress() as $task)
 
@@ -66,14 +68,12 @@
   </div>
 
   {{-- Sidebar --}}
-  <div class="col-xs-12 col-sm-3 sidebar">
+  <div class="col-xs-12 col-sm-2 sidebar">
 
     <!-- Add activity  -->
-    <div class="sidebar-cta hidden-xs-down">
+    <div class="sidebar-cta">
       <a href="/people/{{ $contact->id }}/tasks/add" class="btn btn-primary">{{ trans('people.tasks_add_task') }}</a>
     </div>
-
-    <p>{{ trans('people.reminders_description') }}</p>
 
   </div>
 

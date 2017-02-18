@@ -52,7 +52,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.tasks_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}/tasks" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

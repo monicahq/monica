@@ -3,6 +3,7 @@
 return [
     'reminders_title' => 'Prochains rappels dans les 30 prochains jours',
     'reminders_blank_description' => 'Aucun rappel planifié.',
+    'event_title' => 'Dernières actions',
     'event_create' => 'Vous avez ajouté',
     'event_update' => 'Vous avez mis à jour',
     'event_reminder' => 'un rappel',

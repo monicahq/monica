@@ -6,22 +6,24 @@
 @if ($contact->getGiftIdeas()->count() == 0 and $contact->getGiftsOffered()->count() == 0)
 
   <div class="col-xs-12">
-    <h3>{{ trans('people.gifts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-    <div class="cta-blank">
-      <a href="/people/{{ $contact->id }}/gifts/add" class="btn btn-primary">{{ trans('people.gifts_blank_add_gift') }}</a>
-    </div>
-    <div class="illustration-blank">
-      <img src="/img/people/gifts/blank.svg">
-      <p>{{ trans('people.gifts_blank_description', ['name' => $contact->getFirstName()]) }}</p>
+    <div class="section-blank">
+      <h3>{{ trans('people.gifts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <a href="/people/{{ $contact->id }}/gifts/add">{{ trans('people.gifts_blank_add_gift') }}</a>
     </div>
   </div>
 
 @else
 
-  <div class="col-xs-12 col-sm-9 gifts-list">
+  <div class="col-xs-12 col-sm-3">
+    <div class="sidebar-box">
+      {{ trans('people.gifts_blank_title', ['name' => $contact->getFirstName()]) }}
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 gifts-list">
 
     @if ($contact->getGiftIdeas()->count() != 0)
-      <h2 class="gift-recipient">Gifts ideas</h2>
+      <h2 class="gift-recipient">{{ trans('people.gifts_gift_idea') }}</h2>
 
       <ul class="gifts-list">
         @foreach ($contact->getGiftIdeas() as $gift)
@@ -89,10 +91,10 @@
   </div>
 
   {{-- Sidebar --}}
-  <div class="col-xs-12 col-sm-3 sidebar">
+  <div class="col-xs-12 col-sm-2 sidebar">
 
     <!-- Add activity  -->
-    <div class="sidebar-cta hidden-xs-down">
+    <div class="sidebar-cta">
       <a href="/people/{{ $contact->id }}/gifts/add" class="btn btn-primary">{{ trans('people.gifts_add_gift') }}</a>
     </div>
   </div>

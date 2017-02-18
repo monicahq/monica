@@ -7,19 +7,21 @@
 @if ($contact->getNumberOfReminders() == 0)
 
   <div class="col-xs-12">
-    <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-    <div class="cta-blank">
-      <a href="/people/{{ $contact->id }}/reminders/add" class="btn btn-primary">{{ trans('people.reminders_blank_add_activity') }}</a>
-    </div>
-    <div class="illustration-blank">
-      <img src="/img/people/reminders/clock.svg">
-      <p>{{ trans('people.reminders_blank_description', ['name' => $contact->getFirstName()]) }}</p>
+    <div class="section-blank">
+      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
 
 @else
 
-  <div class="col-xs-12 col-sm-9 reminders-list">
+  <div class="col-xs-12 col-sm-3">
+    <div class="sidebar-box">
+      {{ trans('people.reminders_description') }}
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 reminders-list">
 
     @foreach($contact->getReminders() as $reminder)
 
@@ -29,14 +31,12 @@
   </div>
 
   {{-- Sidebar --}}
-  <div class="col-xs-12 col-sm-3 sidebar">
+  <div class="col-xs-12 col-sm-2 sidebar">
 
     <!-- Add activity  -->
-    <div class="sidebar-cta hidden-xs-down">
+    <div class="sidebar-cta">
       <a href="/people/{{ $contact->id }}/reminders/add" class="btn btn-primary">{{ trans('people.reminders_cta') }}</a>
     </div>
-
-    <p>{{ trans('people.reminders_description') }}</p>
 
   </div>
 
