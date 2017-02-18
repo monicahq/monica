@@ -21,17 +21,17 @@ return [
     'people_add_cta' => 'Ajouter cette personne',
 
     // show
-    'show_dashboard' => 'Tableau de bord',
-    'show_activities' => 'Activités',
-    'show_reminders' => 'Rappels',
-    'show_tasks' => 'Tâches',
-    'show_gifts' => 'Cadeaux',
+    'section_personal_information' => 'Informations personnelles',
+    'section_personal_activities' => 'Activités',
+    'section_personal_reminders' => 'Rappels',
+    'section_personal_tasks' => 'Tâches',
+    'section_personal_gifts' => 'Cadeaux',
 
     //
     'link_to_list' => 'Retour à la liste',
 
     // age - birthday
-    'birthdate_not_set' => 'La date de naissance n\'est pas indiquée.',
+    'birthdate_not_set' => 'Non indiqué.',
     'age_approximate_in_years' => 'Env. :age ans',
     'age_approximate_in_months' => 'Env. :age mois',
     'age_exact_in_years' => ':age ans :html',
@@ -77,9 +77,8 @@ return [
     'food_preferencies_cta' => 'Ajouter',
 
     // reminders
-    'reminders_blank_title' => 'Il semble que vous n\'avez aucun rappel pour :name pour le moment.',
+    'reminders_blank_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
     'reminders_blank_add_activity' => 'Ajouter un rappel',
-    'reminders_blank_description' => 'Les rappels sont là pour vous informer des choses importantes concernant :name, comme des fêtes d\'anniversaire.',
     'reminders_add_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
     'reminders_add_description' => 'Merci de me tenir informer de...',
     'reminders_add_predefined' => 'Rappel pré-défini',
@@ -154,9 +153,9 @@ return [
     'kids_delete_success' => 'L\'enfant a été supprimé avec succès.',
 
     // tasks
+    'tasks_desc' => 'Gardez une trace des choses à faire pour :name.',
     'tasks_blank_title' => 'Il semble que vous n\'ayez aucune tâche définie pour :name pour le moment.',
     'tasks_blank_add_activity' => 'Ajouter une tâche',
-    'tasks_blank_description' => 'Les tâches vous permettent d\'enregistrer des informations pour vous en rappeler dans le futur.',
     'tasks_add_title_page' => 'Ajouter une nouvelle tâche pour :name',
     'tasks_add_title' => 'Quelle tâche souhaitez-vous ajouter ?',
     'tasks_add_optional_comment' => 'Commentaire (optionnel)',
@@ -173,7 +172,7 @@ return [
 
     // activities
     'activity_title' => 'Activités',
-    'activity_description' => 'Gardez une trace de toutes les activités que vous avez eu avec :name ou sa famille.',
+    'activity_description' => 'Gardez une trace de toutes les activités que vous avez eues avec :name ou sa famille.',
     'activity_type_group_simple_activities' => 'Activités simples',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Nourriture',
@@ -204,9 +203,8 @@ return [
     'activities_add_date_occured' => 'Date où l\'activité s\'est passée',
     'activities_add_optional_comment' => 'Commentaire (optionnel)',
     'activities_add_cta' => 'Enregistrer l\'activité',
-    'activities_blank_title' => 'Il semble que vous n\'avez encore aucune activité avec :name pour le moment.',
+    'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec :name par le passé.',
     'activities_blank_add_activity' => 'Ajouter une activité',
-    'activities_blank_description' => 'Les activités vous permettent d\'enregistrer ce que vous avez fait avec :name par le passé.',
     'activities_add_success' => ':L\'activité a été ajoutée avec succès.',
     'activities_update_success' => 'L\'activité a été mise à jour avec succès.',
     'activities_delete_success' => 'L\'activité a été supprimée avec succès.',
@@ -223,9 +221,8 @@ return [
     'notes_blank_name' => 'à propos de :name',
 
     // gifts
-    'gifts_blank_title' => 'Vous n\'avez fait encore aucun cadeau à :name.',
+    'gifts_blank_title' => 'Gérez vos idées de cadeaux ou les cadeaux que vous avez offert à :name.',
     'gifts_blank_add_gift' => 'Ajouter un cadeau',
-    'gifts_blank_description' => 'Vous pouvez utiliser cette fonctionnalité pour gérer les cadeaux que vous souhaitez offrir ou que vous avez déjà offert.',
     'gifts_add_success' => 'Le cadeau a été ajouté avec succès.',
     'gifts_delete_success' => 'Le cadeau a été supprimé.',
     'gifts_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce cadeau ?',
@@ -239,9 +236,10 @@ return [
     'gifts_add_gift_already_offered' => 'Cadeau déjà offert',
     'gifts_add_gift_title' => 'Quel est ce cadeau?',
     'gifts_add_link' => 'Lien de la page web (optionnel)',
-    'gifts_add_value' => 'Valeur en euros (optionnel)',
+    'gifts_add_value' => 'Valeur (optionnel)',
     'gifts_add_comment' => 'Commentaire (optionnel)',
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu\'un de la famille :name en particulier',
     'gifts_add_cta' => 'Ajouter',
+    'gifts_gift_idea' => 'Idée de cadeau',
 
 ];

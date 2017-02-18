@@ -8,9 +8,7 @@
         <div class="people-profile-information">
 
           @if ($contact->has_avatar == 'true')
-            <div class="avatar-photo">
-              <img src="{{ $contact->getAvatarURL(110) }}" width="30">
-            </div>
+            <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
             @if (count($contact->getInitials()) == 1)
             <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
@@ -47,15 +45,6 @@
               @endif
             </li>
           </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="people-nav">
-    <div class="{{ Auth::user()->getFluidLayout() }}">
-      <div class="row">
-        <div class="col-xs-12">
-          @include('people._navigation')
         </div>
       </div>
     </div>

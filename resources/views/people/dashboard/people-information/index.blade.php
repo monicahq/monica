@@ -1,7 +1,3 @@
-<p class="sidebar-heading">
-  Personal information
-</p>
-
 <div class="sidebar-box">
 
   <div class="people-information">

@@ -21,11 +21,11 @@ return [
     'people_add_cta' => 'Add this person',
 
     // show
-    'show_dashboard' => 'Dashboard',
-    'show_activities' => 'Activities',
-    'show_reminders' => 'Reminders',
-    'show_tasks' => 'Tasks',
-    'show_gifts' => 'Gifts',
+    'section_personal_information' => 'Personal information',
+    'section_personal_activities' => 'Activities',
+    'section_personal_reminders' => 'Reminders',
+    'section_personal_tasks' => 'Tasks',
+    'section_personal_gifts' => 'Gifts',
 
     //
     'link_to_list' => 'List of people',
@@ -77,9 +77,8 @@ return [
     'food_preferencies_cta' => 'Add food preferencies',
 
     // reminders
-    'reminders_blank_title' => 'It looks like you don\'t have any reminders about :name yet.',
+    'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
     'reminders_blank_add_activity' => 'Add a reminder',
-    'reminders_blank_description' => 'Reminders will warn you about important information about :name, like birthdays.',
     'reminders_add_title' => 'What would you like to be reminded of about :name?',
     'reminders_add_description' => 'Please remind me to...',
     'reminders_add_predefined' => 'Pre-defined reminder',
@@ -155,9 +154,9 @@ return [
     'kids_delete_success' => 'The child has been successfully deleted.',
 
     // tasks
+    'tasks_desc' => 'Keep tracks of things you need to do for :name.',
     'tasks_blank_title' => 'It looks like you don\'t have any tasks about :name yet.',
     'tasks_blank_add_activity' => 'Add task',
-    'tasks_blank_description' => 'Tasks lets you record things you should do about :name in the future.',
     'tasks_add_title_page' => 'Add a new task for :name',
     'tasks_add_title' => 'What is the task you want to be reminded of?',
     'tasks_add_optional_comment' => 'Comment (optional)',
@@ -205,9 +204,8 @@ return [
     'activities_add_date_occured' => 'Date this activity occured',
     'activities_add_optional_comment' => 'Optional comment',
     'activities_add_cta' => 'Record activity',
-    'activities_blank_title' => 'It looks like you haven\'t done any activities with :name yet.',
-    'activities_blank_add_activity' => 'Add activity',
-    'activities_blank_description' => 'Activities lets you track what you did with :name in the past.',
+    'activities_blank_title' => 'Keep track of what you\'ve done with :name in the past, and what you\'ve talked about.',
+    'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added with success.',
     'activities_update_success' => 'The activity has been updated with success.',
     'activities_delete_success' => 'The activity has been successfully deleted.',
@@ -224,9 +222,8 @@ return [
     'notes_blank_name' => 'about :name',
 
     // gifts
-    'gifts_blank_title' => 'It looks like you don\'t manage gifts about :name yet.',
+    'gifts_blank_title' => 'Manage your gifts ideas and the ones you\'ve offered to :name.',
     'gifts_blank_add_gift' => 'Add a gift',
-    'gifts_blank_description' => 'Here you can manage the gifts you are thinking to give or the one you have already given.',
     'gifts_add_success' => 'The gift has been added with success.',
     'gifts_delete_success' => 'The gift has been deleted with success.',
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
@@ -244,5 +241,6 @@ return [
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',
+    'gifts_gift_idea' => 'Gift idea',
 
 ];

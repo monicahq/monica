@@ -1,67 +1,27 @@
-@extends('layouts.skeleton')
+<div class="col-xs-12 section-title">
+  <img src="/img/people/dashboard.svg" class="icon-section icon-dashboard">
+  <h3>{{ trans('people.section_personal_information') }}</h3>
+</div>
 
-@section('content')
-  <div class="people-show">
-    {{ csrf_field() }}
+<div class="col-xs-12 col-sm-3">
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12">
-            <ul class="horizontal">
-              <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
-              </li>
-              <li>
-                <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
-              </li>
-              <li>
-                {{ $contact->getCompleteName() }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+  {{-- Section address, email, phone, contact --}}
+  @include('people.dashboard.people-information.index')
 
-    {{-- Page header --}}
-    @include('people._header')
+</div>
 
-    {{-- Page content --}}
-    <div class="main-content dashboard">
+<div class="col-xs-12 col-sm-9">
 
-      <div class="{{ Auth::user()->getFluidLayout() }}">
+  {{-- Significant Other --}}
+  @include('people.dashboard.significantother.index')
 
-        <div class="row">
+  {{-- Kids --}}
+  @include('people.dashboard.kids.index')
 
-          <div class="col-xs-12 col-sm-3">
+  {{-- Food preferences --}}
+  @include('people.dashboard.food-preferencies.index')
 
-            {{-- Section address, email, phone, contact --}}
-            @include('people.dashboard.people-information.index')
+  {{-- Notes --}}
+  @include('people.dashboard.notes.index')
 
-          </div>
-
-          <div class="col-xs-12 col-sm-9">
-
-            {{-- Significant Other --}}
-            @include('people.dashboard.significantother.index')
-
-            {{-- Kids --}}
-            @include('people.dashboard.kids.index')
-
-            {{-- Food preferences --}}
-            @include('people.dashboard.food-preferencies.index')
-
-            {{-- Notes --}}
-            @include('people.dashboard.notes.index')
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-@endsection
-
+</div>

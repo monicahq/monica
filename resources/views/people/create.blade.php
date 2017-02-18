@@ -32,12 +32,6 @@
             <dd class="error">{{ $errors->first('first_name') }}</dd>
             @endif
 
-            <dt><label for="middle_name">{{ trans('people.people_add_middlename') }}</label></dt>
-            <dd><input type="text" class="form-control" name="middle_name" placeholder="" value="{{ old('middle_name') }}"></dd>
-            @if ($errors->has('middle_name'))
-            <dd class="error">{{ $errors->first('middle_name') }}</dd>
-            @endif
-
             <dt><label for="last_name">{{ trans('people.people_add_lastname') }}</label></dt>
             <dd><input type="text" class="form-control" name="last_name" placeholder="" value="{{ old('last_name') }}"></dd>
             @if ($errors->has('last_name'))

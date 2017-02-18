@@ -98,7 +98,7 @@
               <ul>
 
                 @if (Auth::user()->contacts_sort_order == 'lastnameAZ')
-                  <li>
+                  <li class="selected">
                     {{ trans('people.people_list_lastnameAZ') }}
                   </li>
                 @else
@@ -108,7 +108,7 @@
                 @endif
 
                 @if (Auth::user()->contacts_sort_order == 'lastnameZA')
-                  <li>
+                  <li class="selected">
                     {{ trans('people.people_list_lastnameZA') }}
                   </li>
                 @else
@@ -118,7 +118,7 @@
                 @endif
 
                 @if (Auth::user()->contacts_sort_order == 'firstnameAZ')
-                  <li>
+                  <li class="selected">
                     {{ trans('people.people_list_firstnameAZ') }}
                   </li>
                 @else
@@ -128,7 +128,7 @@
                 @endif
 
                 @if (Auth::user()->contacts_sort_order == 'firstnameZA')
-                  <li>
+                  <li class="selected">
                     {{ trans('people.people_list_firstnameZA') }}
                   </li>
                 @else

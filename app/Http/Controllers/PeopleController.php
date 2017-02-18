@@ -111,10 +111,6 @@ class PeopleController extends Controller
         $contact->gender = $request->input('gender');
         $contact->first_name = ucfirst($request->input('first_name'));
 
-        if (! empty($request->input('middle_name'))) {
-            $contact->middle_name = ucfirst($request->input('middle_name'));
-        }
-
         if (! empty($request->input('last_name'))) {
             $contact->last_name = ucfirst($request->input('last_name'));
         }
@@ -142,7 +138,7 @@ class PeopleController extends Controller
             'contact' => $contact,
         ];
 
-        return view('people.dashboard.index', $data);
+        return view('people.profile', $data);
     }
 
     /**
@@ -449,7 +445,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_add_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -514,7 +510,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_update_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -543,7 +539,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.activities_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/activities');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -648,7 +644,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.reminders_create_success'));
 
-        return redirect('/people/'.$contact->id.'/reminders');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -671,7 +667,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.reminders_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/reminders');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -753,7 +749,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_add_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -778,7 +774,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_complete_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -804,7 +800,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.tasks_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/tasks');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -1278,7 +1274,7 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.gifts_add_success'));
 
-        return redirect('/people/'.$contact->id.'/gifts');
+        return redirect('/people/'.$contact->id);
     }
 
     /**
@@ -1304,6 +1300,6 @@ class PeopleController extends Controller
 
         $request->session()->flash('success', trans('people.gifts_delete_success'));
 
-        return redirect('/people/'.$contact->id.'/gifts');
+        return redirect('/people/'.$contact->id);
     }
 }

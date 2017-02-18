@@ -3,6 +3,7 @@
 return [
     'reminders_title' => 'Upcoming reminders in the next 30 days',
     'reminders_blank_description' => 'No reminders are planned.',
+    'event_title' => 'Latest actions',
     'event_create' => 'You added',
     'event_update' => 'You updated',
     'event_reminder' => 'a reminder',

@@ -25,6 +25,15 @@
 
     li {
       margin-bottom: 7px;
+      padding-left: 15px;
+      position: relative;
+
+      &.selected::before {
+        color: #999;
+        content: '>';
+        left: 0;
+        position: absolute;
+      }
     }
   }
 
@@ -124,20 +133,21 @@
     }
 
     .people-profile-information {
-      margin-bottom: 30px;
+      margin-bottom: 10px;
+      position: relative;
 
       .avatar {
         background-color: #93521e;
         border-radius: 3px;
         color: #fff;
         display: inline-block;
-        height: 30px;
+        font-size: 30px;
+        height: 87px;
         margin-right: 5px;
         padding-left: 5px;
-        padding-top: 4px;
-        position: relative;
-        top: -3px;
-        width: 30px;
+        padding-top: 21px;
+        position: absolute;
+        width: 87px;
 
         &.one-letter {
           padding-left: 0;
@@ -145,13 +155,9 @@
         }
       }
 
-      .avatar-photo {
-        img {
-          float: left;
-          margin-right: 10px;
-          position: relative;
-          top: 4px;
-        }
+      img {
+        border-radius: 3px;
+        position: absolute;
       }
 
       h2 {
@@ -159,9 +165,12 @@
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
+        padding-left: 100px;
       }
 
       .profile-detail-summary {
+        padding-left: 100px;
+
         li {
           &:not(:last-child) {
             margin-right: 10px;
@@ -176,79 +185,31 @@
         }
       }
     }
-
-    .nav-tabs {
-      border-bottom: 0;
-
-      .nav-item {
-        margin-bottom: -2px;
-      }
-
-      .nav-link {
-        border-top: 2px solid #f9f9fb;
-        color: #888;
-        text-decoration: none;
-
-        &.active,
-        &:hover {
-          background-color: #fff;
-          border-bottom-color: #fff;
-          border-top: 2px solid #fc4948;
-          color: #333;
-
-          img {
-            filter: grayscale(0%);
-            opacity: 1;
-          }
-        }
-
-        img {
-          filter: grayscale(100%);
-          margin-right: 5px;
-          opacity: .7;
-          position: relative;
-          width: 20px;
-
-          &.icon-dashboard {
-            top: -3px;
-          }
-
-          &.icon-activities {
-            top: -4px;
-            width: 20px;
-          }
-
-          &.icon-reminders {
-            top: -2px;
-            width: 17px;
-          }
-
-          &.icon-tasks {
-            top: -2px;
-            width: 17px;
-          }
-
-          &.icon-gifts {
-            top: -3px;
-            width: 17px;
-          }
-        }
-
-        .counter {
-          background-color: #ccc;
-          border-radius: 50%;
-          font-size: 11px;
-          margin-left: 5px;
-          padding: 1px 6px;
-        }
-      }
-    }
   }
 
   .main-content {
     background-color: #fff;
     padding-bottom: 20px;
-    padding-top: 20px;
+    padding-top: 40px;
+
+    .section-title {
+      position: relative;
+
+      h3 {
+        border-bottom: 1px solid #eee;
+        font-size: 18px;
+        font-weight: 400;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        padding-left: 29px;
+      }
+
+      .icon-section {
+        position: absolute;
+        top: 5px;
+        width: 17px;
+      }
+    }
 
     .sidebar {
       .sidebar-cta {
@@ -265,14 +226,8 @@
       background-color: #fafafa;
       border: 1px solid #eee;
       border-radius: 3px;
+      color: #999;
       padding: 10px;
-      position: relative;
-    }
-
-    .sidebar-heading {
-      color: #767676;
-      font-weight: 600;
-      margin-bottom: 5px;
       position: relative;
     }
 
@@ -305,6 +260,15 @@
     .section {
       margin-bottom: 35px;
 
+      &.kids,
+      &.food-preferencies,
+      &.notes {
+        .section-heading img {
+          position: relative;
+          top: -3px;
+        }
+      }
+
       .inline-action {
         display: inline;
         margin-left: 10px;
@@ -329,17 +293,17 @@
         float: right;
       }
 
-      &.kids,
-      &.food-preferencies,
-      &.notes {
-        .section-heading img {
-          position: relative;
-          top: -3px;
-        }
-      }
-
       .section-blank {
+        background-color: #fafafa;
+        border: 1px solid #eee;
+        border-radius: 3px;
+        padding: 15px;
         text-align: center;
+
+        h3 {
+          font-weight: 400;
+          font-size: 14px;
+        }
       }
     }
 
@@ -680,49 +644,6 @@
           }
         }
       }
-
-      .people-nav {
-        .nav-tabs {
-          background-color: #fff;
-          border: 1px solid $border-color;
-          margin-bottom: 20px;
-
-          .nav-item {
-            border-bottom: 1px solid $border-color;
-            display: block;
-            float: none;
-            margin-bottom: 0;
-
-            &:last-child {
-              border-bottom: 0;
-            }
-
-            &+.nav-item {
-              margin-left: 0;
-            }
-
-            .nav-link {
-              border: 0;
-              font-size: 13px;
-              padding: 6px 6px 4px;
-
-              &.active {
-                border-left: 2px solid #fc4948;
-                border-radius: 0;
-                border-top: 0;
-              }
-
-              img {
-                left: 4px;
-
-                &.icon-dashboard {
-                  top: -4px;
-                }
-              }
-            }
-          }
-        }
-      }
     }
 
     .main-content {
@@ -749,9 +670,16 @@
       }
 
       &.dashboard {
-        .sidebar-edit-actions {
-          right: 10px;
-          visibility: visible;
+        .sidebar-box {
+          margin-bottom: 15px;
+        }
+
+        .sidebar-cta {
+          margin-top: 15px;
+        }
+
+        .people-information-actions {
+          margin-bottom: 20px;
         }
       }
 

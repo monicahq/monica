@@ -32,7 +32,7 @@
             @endif
 
             {{-- Events list --}}
-            <h3>Latest actions in your account</h3>
+            <h3>{{ trans('dashboard.event_title') }}</h3>
             <ul class="event-list">
               @foreach($events as $event)
                 <li class="event-list-item">
