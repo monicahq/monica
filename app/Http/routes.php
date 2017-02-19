@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', 'MarketingController@index');
+Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
 
