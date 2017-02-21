@@ -96,4 +96,14 @@ class SignificantOther extends Model
 
         return $age;
     }
+
+    /**
+     * Returns 'true' if the birthdate is an approximation
+     *
+     * @return string
+     */
+    public function isBirthdateApproximate()
+    {
+        return $this->is_birthdate_approximate;
+    }
 }

@@ -32,10 +32,9 @@ return [
 
     // age - birthday
     'birthdate_not_set' => 'Non indiqué.',
-    'age_approximate_in_years' => 'Env. :age ans',
-    'age_approximate_in_months' => 'Env. :age mois',
-    'age_exact_in_years' => ':age ans :html',
-    'age_exact_in_months' => ':age mois :html',
+    'age_approximate_in_years' => 'env. :age ans',
+    'age_exact_in_years' => ':age ans',
+    'age_exact_birthdate' => 'né le :date',
 
     // Last called
     'last_called' => 'Dernier appel : :date',

@@ -193,8 +193,7 @@ class Contact extends Model
     }
 
     /**
-     * Gets the birthdate as a full sentence ('Born on Oct 29, 1981'),
-     * or as an approximation if this is the case.
+     * Returns 'true' if the birthdate is an approximation
      *
      * @return string
      */

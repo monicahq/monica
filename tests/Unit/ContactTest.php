@@ -865,4 +865,15 @@ class ContactTest extends TestCase
             $contact->getAvatarURL(100)
         );
     }
+
+    public function testIsBirthdateApproximate()
+    {
+        $contact = new Contact;
+        $contact->is_birthdate_approximate = 'true';
+
+        $this->assertEquals(
+            'true',
+            $contact->isBirthdateApproximate()
+        );
+    }
 }

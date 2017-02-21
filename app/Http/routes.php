@@ -1,14 +1,10 @@
 <?php
 
-Route::get('/', 'MarketingController@index');
+Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
 
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
-
-Route::get('/changelog', 'MarketingController@release');
-Route::get('/privacy', 'MarketingController@privacy');
-Route::get('/statistics', 'MarketingController@statistics');
 
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');

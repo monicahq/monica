@@ -21,9 +21,17 @@
     {{-- Information about the significant other --}}
     <ul class="significantother-list">
       <li>
-        {{ $contact->getCurrentSignificantOther()->getCompleteName() }}
-        ({{ $contact->getCurrentSignificantOther()->getAge() }}).
-        Birthday: {{ App\Helpers\DateHelper::getShortDate($contact->getCurrentSignificantOther()->getBirthdate(), Auth::user()->locale) }}
+        <strong>{{ $contact->getCurrentSignificantOther()->getCompleteName() }}</strong>
+
+        @if ($contact->getCurrentSignificantOther()->isBirthdateApproximate() == 'true')
+
+        ({{ trans('people.age_approximate_in_years', ['age' => $contact->getCurrentSignificantOther()->getAge()]) }})
+
+        @else
+
+        ({{ trans('people.age_exact_in_years', ['age' => $contact->getCurrentSignificantOther()->getAge()]) }} - {{ trans('people.age_exact_birthdate', ['date' =>  App\Helpers\DateHelper::getShortDate($contact->getCurrentSignificantOther()->getBirthdate(), Auth::user()->locale)]) }})
+
+        @endif
 
         <div class="inline-action">
           <a href="/people/{{ $contact->id }}/significantother/{{ $contact->getCurrentSignificantOther()->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
