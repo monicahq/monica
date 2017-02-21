@@ -106,4 +106,15 @@ class SignificantOtherTest extends TestCase
             $significantOther->getAge()
         );
     }
+
+    public function testIsBirthdateApproximate()
+    {
+        $significantOther = new SignificantOther;
+        $significantOther->is_birthdate_approximate = 'true';
+
+        $this->assertEquals(
+            'true',
+            $significantOther->isBirthdateApproximate()
+        );
+    }
 }

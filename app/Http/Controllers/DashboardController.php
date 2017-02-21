@@ -9,6 +9,7 @@ use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
 use App\Http\Requests;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -42,7 +43,7 @@ class DashboardController extends Controller
 
             $eventsArray->push([
                 'id' => $event->id,
-                'date' => $event->created_at,
+                'date' => DateHelper::createDateFromFormat($event->created_at, Auth::user()->timezone),
                 'object_type' => $event->object_type,
                 'object_id' => $event->object_id,
                 'contact_id' => $contact->id,

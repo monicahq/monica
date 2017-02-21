@@ -32,10 +32,9 @@ return [
 
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set.',
-    'age_approximate_in_years' => 'Approx. :age years old',
-    'age_approximate_in_months' => 'Approx. :age months old',
-    'age_exact_in_years' => ':age years old :html',
-    'age_exact_in_months' => ':age months old :html',
+    'age_approximate_in_years' => 'around :age years old',
+    'age_exact_in_years' => ':age years old',
+    'age_exact_birthdate' => 'born :date',
 
     // Last called
     'last_called' => 'Last called: :date',
