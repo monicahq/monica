@@ -883,7 +883,17 @@ class Contact extends Model
     }
 
     /**
-     * Get all the tasks in the in progress state, if any.
+     * Get all the tasks no matter the state, if any.
+     */
+    public function getTasks()
+    {
+        return Task::where('account_id', $this->account_id)
+                        ->where('contact_id', $this->id)
+                        ->get();
+    }
+
+    /**
+     * Get all the tasks in the in completed state, if any.
      */
     public function getCompletedTasks()
     {

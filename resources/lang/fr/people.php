@@ -102,7 +102,7 @@ return [
     'reminders_delete_cta' => 'Supprimer',
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
-    'reminders_description' => 'Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
+    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
 
     // significant other
     'significant_other_blank_link' => 'Ajouter des informations',
@@ -190,8 +190,6 @@ return [
     'activity_type_went_play' => 'aller au théâtre',
     'activity_type_went_museum' => 'aller au musée',
     'activity_type_ate_restaurant' => 'aller au restaurant',
-    'activities_statistics_sidebar_header' => 'Statistiques',
-    'activities_statistics_sidebar' => '1 activité|:count activités',
     'activities_add_activity' => 'Ajouter activité',
     'activities_more_details' => 'Voir détails',
     'activities_hide_details' => 'Cacher les détails',

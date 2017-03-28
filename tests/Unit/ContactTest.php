@@ -845,6 +845,16 @@ class ContactTest extends TestCase
         );
     }
 
+    public function testGetTasksReturns0WhenNoTasksDefined()
+    {
+        $contact = new Contact;
+
+        $this->assertEquals(
+            0,
+            $contact->getTasks()->count()
+        );
+    }
+
     public function testGetCompletedReturns0WhenNoTasksDefined()
     {
         $contact = new Contact;

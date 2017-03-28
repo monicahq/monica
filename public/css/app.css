@@ -7999,6 +7999,7 @@ header .main-cta {
   margin-bottom: 20px;
   padding-bottom: 10px;
   padding-left: 29px;
+  position: relative;
 }
 
 .people-show .main-content .section-title .icon-section {
@@ -8007,9 +8008,35 @@ header .main-cta {
   width: 17px;
 }
 
+.people-show .main-content .section-title span {
+  font-size: 14px;
+  position: absolute;
+  right: 0;
+  top: 4px;
+}
+
 .people-show .main-content .sidebar .sidebar-cta a {
   margin-bottom: 20px;
   width: 100%;
+}
+
+.people-show .main-content table td.actions,
+.people-show .main-content table th.actions {
+  text-align: right;
+  width: 190px;
+}
+
+.people-show .main-content table td.actions li:not(:last-child),
+.people-show .main-content table th.actions li:not(:last-child) {
+  margin-right: 5px;
+}
+
+.people-show .main-content table td.date {
+  width: 130px;
+}
+
+.people-show .main-content table td.task-completed {
+  text-decoration: line-through;
 }
 
 .people-show .dashboard .sidebar-box {
@@ -8143,155 +8170,6 @@ header .main-cta {
 
 .people-show .dashboard .notes .note-item-actions li {
   margin-right: 10px;
-}
-
-.people-show .activities .sidebar .activities-stats {
-  font-size: 12px;
-}
-
-.people-show .activities .sidebar .activities-stats span {
-  float: right;
-}
-
-.people-show .activities .activities-summary ul {
-  background-color: #f7f7f7;
-  border: 1px solid #dfdfdf;
-  padding: 6px;
-  text-align: center;
-}
-
-.people-show .activities .activities-summary li {
-  display: inline-block;
-  width: 30%;
-}
-
-.people-show .activities .activity-item-info {
-  margin-bottom: 5px;
-}
-
-.people-show .activities .activity-item-info-type {
-  display: inline;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.people-show .activities .activity-item-info-actions {
-  display: inline;
-}
-
-.people-show .activities .activity-item-info-actions li:not(:last-child) {
-  margin-right: 5px;
-}
-
-.people-show .reminders .reminder-item {
-  margin-bottom: 20px;
-  padding-left: 33px;
-  position: relative;
-}
-
-.people-show .reminders .reminder-icon {
-  left: 0;
-  position: absolute;
-  top: 8px;
-}
-
-.people-show .reminders .reminder-icon img {
-  width: 25px;
-}
-
-.people-show .reminders .reminder-description {
-  display: inline;
-  margin-bottom: 5px;
-}
-
-.people-show .reminders .reminder-info {
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.people-show .reminders .reminder-info .next-expected-date {
-  color: #999;
-}
-
-.people-show .reminders .reminder-frequency {
-  border: 1px solid #97bccd;
-  border-radius: 3px;
-  color: #97bccd;
-  display: inline;
-  margin-right: 5px;
-  padding-bottom: 2px;
-  padding-left: 5px;
-  padding-right: 2px;
-}
-
-.people-show .reminders .reminder-actions {
-  display: inline;
-}
-
-.people-show .reminders .reminder-actions ul {
-  display: inline;
-}
-
-.people-show .reminders .reminder-actions a {
-  color: #999;
-  font-size: 11px;
-  margin-right: 5px;
-  text-decoration: underline;
-}
-
-.people-show .reminders .reminder-comment {
-  border: 1px solid #dfdfdf;
-  border-radius: 3px;
-  font-size: 13px;
-  margin-top: 10px;
-  padding: 5px 10px;
-}
-
-.people-show .reminders.modal .frequency {
-  margin-top: 20px;
-}
-
-.people-show .reminders.modal .frequency-type {
-  display: inline;
-  width: 50px;
-}
-
-.people-show .tasks .task-item:not(:last-child) {
-  margin-bottom: 10px;
-}
-
-.people-show .tasks .task-info {
-  color: #999;
-  font-size: 12px;
-  margin-left: 5px;
-}
-
-.people-show .tasks .task-actions {
-  display: inline;
-}
-
-.people-show .tasks .task-actions a {
-  color: #999;
-  font-size: 11px;
-  margin-right: 5px;
-  text-decoration: underline;
-}
-
-.people-show .tasks .task-comment {
-  border: 1px solid #dfdfdf;
-  border-radius: 3px;
-  font-size: 13px;
-  margin-top: 10px;
-  padding: 5px 10px;
-}
-
-.people-show .tasks .tasks-completed {
-  background-color: #eee;
-  padding: 5px;
-}
-
-.people-show .tasks .tasks-completed .task-title {
-  text-decoration: line-through;
 }
 
 .people-show .gifts .gift-recipient {
