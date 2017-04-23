@@ -7993,26 +7993,30 @@ header .main-cta {
 }
 
 .people-show .main-content .section-title h3 {
-  border-bottom: 1px solid #eee;
+  background-color: #f6f7f9;
+  border: 1px solid #e1e2e3;
   font-size: 18px;
   font-weight: 400;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  padding-left: 29px;
+  padding-left: 36px;
+  padding-top: 10px;
   position: relative;
 }
 
 .people-show .main-content .section-title .icon-section {
+  left: 24px;
   position: absolute;
-  top: 5px;
+  top: 14px;
   width: 17px;
+  z-index: 1000;
 }
 
 .people-show .main-content .section-title span {
   font-size: 14px;
   position: absolute;
-  right: 0;
-  top: 4px;
+  right: 10px;
+  top: 13px;
 }
 
 .people-show .main-content .sidebar .sidebar-cta a {
@@ -8032,6 +8036,10 @@ header .main-cta {
 }
 
 .people-show .main-content table td.date {
+  color: #92969d;
+  font-size: 12px;
+  position: relative;
+  top: 3px;
   width: 130px;
 }
 

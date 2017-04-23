@@ -37,6 +37,10 @@
           @include('people.dashboard.index')
         </div>
 
+        <div class="row section notes">
+          @include('people.notes.index')
+        </div>
+
         <div class="row section activities">
           @include('people.activities.index')
         </div>

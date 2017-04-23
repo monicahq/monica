@@ -21,7 +21,4 @@
   {{-- Food preferences --}}
   @include('people.dashboard.food-preferencies.index')
 
-  {{-- Notes --}}
-  @include('people.dashboard.notes.index')
-
 </div>
