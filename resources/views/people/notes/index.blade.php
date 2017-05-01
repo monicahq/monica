@@ -4,7 +4,7 @@
     {{ trans('people.notes_title') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/notes/add">{{ trans('people.notes_add_one_more') }}</a>
+      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_add_one_more') }}</a>
     </span>
   </h3>
 </div>

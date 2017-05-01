@@ -146,7 +146,13 @@ of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
 
-For development purposes, we use [Mailtrap](https://mailtrap.io/) to test them.
+For development purposes, you have two choices:
+1. You can use [Mailtrap](https://mailtrap.io/). This is an amazing service that
+provides a free plan that is plenty enough to test all the emails that are sent.
+1. If you use Homestead to code on your local machine, you can use
+[mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you
+first need to start mailhog (`sudo service mailhog restart`). Then, head up to
+http://localhost:8025 in your browser to load Mailhog's UI.
 
 #### Email reminders
 

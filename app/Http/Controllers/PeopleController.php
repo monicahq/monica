@@ -869,7 +869,7 @@ class PeopleController extends Controller
             'contact' => $contact,
         ];
 
-        return view('people.dashboard.notes.add', $data);
+        return view('people.notes.add', $data);
     }
 
     /**
