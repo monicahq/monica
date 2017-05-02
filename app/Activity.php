@@ -32,7 +32,7 @@ class Activity extends Model
             return null;
         }
 
-        return decrypt($this->description);
+        return $this->description;
     }
 
     /**

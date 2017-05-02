@@ -23,7 +23,7 @@ class SignificantOtherTest extends TestCase
     public function testGetFirstnameReturnsNameWhenDefined()
     {
         $significantOther = new SignificantOther;
-        $significantOther->first_name = encrypt('Peter');
+        $significantOther->first_name = 'Peter';
 
         $this->assertEquals(
             'Peter',
@@ -41,7 +41,7 @@ class SignificantOtherTest extends TestCase
     public function testGetLastnameReturnsNameWhenDefined()
     {
         $significantOther = new SignificantOther;
-        $significantOther->last_name = encrypt('Jackson');
+        $significantOther->last_name = 'Jackson';
 
         $this->assertEquals(
             'Jackson',
@@ -52,8 +52,8 @@ class SignificantOtherTest extends TestCase
     public function testGetCompleteName()
     {
         $significantOther = new SignificantOther;
-        $significantOther->first_name = encrypt('Peter');
-        $significantOther->last_name = encrypt('Gregory');
+        $significantOther->first_name = 'Peter';
+        $significantOther->last_name = 'Gregory';
 
         $this->assertEquals(
             'Peter Gregory',
@@ -61,7 +61,7 @@ class SignificantOtherTest extends TestCase
         );
 
         $significantOther = new SignificantOther;
-        $significantOther->first_name = encrypt('Peter');
+        $significantOther->first_name = 'Peter';
         $significantOther->last_name = null;
 
         $this->assertEquals(

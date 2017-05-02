@@ -1854,11 +1854,6 @@ output {
   opacity: 1;
 }
 
-.form-control::-moz-placeholder {
-  color: #999;
-  opacity: 1;
-}
-
 .form-control:-ms-input-placeholder {
   color: #999;
   opacity: 1;
@@ -8052,8 +8047,26 @@ header .main-cta {
   border: 1px solid #eee;
   border-radius: 3px;
   color: #999;
+  margin-bottom: 25px;
   padding: 10px;
   position: relative;
+}
+
+.people-show .dashboard .sidebar-box-title {
+  position: relative;
+}
+
+.people-show .dashboard .sidebar-box-title a {
+  position: absolute;
+  right: 7px;
+}
+
+.people-show .dashboard .sidebar-box-title img {
+  width: 20px;
+}
+
+.people-show .dashboard .sidebar-box-paragraph {
+  margin-bottom: 0;
 }
 
 .people-show .dashboard .people-information {
@@ -8072,14 +8085,6 @@ header .main-cta {
 .people-show .dashboard .people-information li i {
   text-align: center;
   width: 17px;
-}
-
-.people-show .dashboard .people-information-actions {
-  margin-top: 5px;
-}
-
-.people-show .dashboard .people-information-actions a {
-  font-size: 12px;
 }
 
 .people-show .dashboard .section {

@@ -24,7 +24,7 @@ class ActivityTest extends TestCase
     public function testGetDescriptionReturnsDescription()
     {
         $activity = new Activity;
-        $activity->description = encrypt('This is a test');
+        $activity->description = 'This is a test';
 
         $this->assertEquals(
             'This is a test',

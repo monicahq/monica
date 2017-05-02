@@ -24,7 +24,7 @@ class Note extends Model
             return null;
         }
 
-        return decrypt($this->body);
+        return $this->body;
     }
 
     /**

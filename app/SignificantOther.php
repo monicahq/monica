@@ -33,7 +33,7 @@ class SignificantOther extends Model
             return null;
         }
 
-        return decrypt($this->first_name);
+        return $this->first_name;
     }
 
     /**
@@ -47,7 +47,7 @@ class SignificantOther extends Model
             return null;
         }
 
-        return decrypt($this->last_name);
+        return $this->last_name;
     }
 
     /**

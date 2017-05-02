@@ -1,30 +1,29 @@
-<div class="section food-preferencies">
-
-  <div class="section-heading">
-
-    <img src="/img/people/food_preferencies.svg">
-    {{ trans('people.food_preferencies_title') }}
-
-    @if (! is_null($contact->getFoodPreferencies()))
-      <div class="section-action">
-        <a href="/people/{{ $contact->id }}/food" class="edit-food-preferencies">{{ trans('app.edit') }}</a>
-      </div>
-    @endif
-
-  </div>
+<div class="sidebar-box">
 
   @if (is_null($contact->getFoodPreferencies()))
 
-    {{-- Blank state --}}
-    <div class="section-blank">
-      <p>
-        <a href="/people/{{ $contact->id }}/food">{{ trans('people.food_preferencies_cta') }}</a>
-      </p>
-    </div>
+    <p class="sidebar-box-title">
+      <img src="/img/people/food_preferencies.svg">
+      {{ trans('people.food_preferencies_title') }}
+      <a href="/people/{{ $contact->id }}/significantother/add">{{ trans('app.add') }}</a>
+    </p>
+
+    <p class="sidebar-box-paragraph">
+      {{ trans('people.significant_other_sidebar_blank') }}
+    </p>
 
   @else
 
-    {{ $contact->getFoodPreferencies() }}
+    <p class="sidebar-box-title">
+      <img src="/img/people/food_preferencies.svg">
+      {{ trans('people.food_preferencies_title') }}
+      <a href="/people/{{ $contact->id }}/food" class="edit-food-preferencies">{{ trans('app.edit') }}</a>
+    </p>
+
+    {{-- Information about the significant other --}}
+    <p class="sidebar-box-paragraph">
+      {{ $contact->getFoodPreferencies() }}
+    </p>
 
   @endif
 

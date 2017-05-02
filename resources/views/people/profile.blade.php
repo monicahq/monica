@@ -34,7 +34,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
 
         <div class="row">
-          <div class="col-xs-12 col-sm-3">
+          <div class="col-xs-12 col-sm-3 profile-sidebar">
             @include('people.dashboard.index')
           </div>
 

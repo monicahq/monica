@@ -263,8 +263,26 @@
       border: 1px solid #eee;
       border-radius: 3px;
       color: #999;
+      margin-bottom: 25px;
       padding: 10px;
       position: relative;
+    }
+
+    .sidebar-box-title {
+      position: relative;
+
+      a {
+        position: absolute;
+        right: 7px;
+      }
+
+      img {
+        width: 20px;
+      }
+    }
+
+    .sidebar-box-paragraph {
+      margin-bottom: 0;
     }
 
     .people-information {
@@ -282,14 +300,6 @@
           text-align: center;
           width: 17px;
         }
-      }
-    }
-
-    .people-information-actions {
-      margin-top: 5px;
-
-      a {
-        font-size: 12px;
       }
     }
 

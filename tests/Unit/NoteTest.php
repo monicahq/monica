@@ -23,7 +23,7 @@ class NoteTest extends TestCase
     public function testGetBodyReturnsTextIfDefined()
     {
         $note = new Note;
-        $note->body = encrypt('This is a text');
+        $note->body = 'This is a text';
 
         $this->assertEquals(
             'This is a text',

@@ -60,11 +60,9 @@ return [
     'information_edit_probably_yo' => 'ans',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est',
     'information_edit_help' => 'Si vous indiquez la date de naissance exacte de cette personne, nous allons créer un rappel pour vous - ainsi vous serez informé chaque année que c\'est le moment de célébrer son anniversaire.',
-    'information_edit_cta' => 'Mettre à jour ce profil',
     'information_no_address_defined' => 'Aucune adresse définie',
     'information_no_email_defined' => 'Aucun courriel défini',
     'information_no_phone_defined' => 'Aucun numéro de téléphone défini',
-    'information_edit_cta' => 'Mettre à jour les informations',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
@@ -105,11 +103,9 @@ return [
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
 
     // significant other
-    'significant_other_blank_link' => 'Ajouter des informations',
-    'significant_other_blank_link_description_male' => 'à propos de son conjoint',
-    'significant_other_blank_link_description_female' => 'à propos de son conjoint',
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
+    'significant_other_sidebar_blank' => 'Aucun conjoint défini',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
     'significant_other_add_male' => 'Homme',
     'significant_other_add_female' => 'Femme',
@@ -128,9 +124,7 @@ return [
     'significant_other_delete_success' => 'Le conjoint a été supprimé avec succès.',
 
     // kids
-    'kids_blank_link' => 'Ajouter des informations',
-    'kids_blank_link_description_male' => 'à propos de sa progéniture',
-    'kids_blank_link_description_female' => 'à propos de sa progéniture',
+    'kids_blank' => 'Aucun enfant défini',
     'kids_sidebar_title' => 'Enfants',
     'kids_sidebar_cta' => 'Ajouter un autre enfant',
     'kids_blank_cta' => 'Ajouter un enfant',
