@@ -92,7 +92,7 @@ class FakeContentTableSeeder extends Seeder
 
             // add food preferencies
             if (rand(1, 2) == 1) {
-                $contact->food_preferencies = encrypt($faker->realText());
+                $contact->food_preferencies = $faker->realText();
             }
 
             $contact->save();
@@ -118,7 +118,7 @@ class FakeContentTableSeeder extends Seeder
             }
 
             // // create kids
-            if (rand(1, 3) == 1) {
+            if (rand(1, 2) == 1) {
                 foreach (range(1, rand(2, 6)) as $index) {
                     $gender = (rand(1, 2) == 1) ? 'male' : 'female';
                     $name = $faker->firstName($gender);
