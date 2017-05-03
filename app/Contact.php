@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use App\Note;
+use App\Event;
 use App\Account;
 use App\Country;
 use App\Reminder;
@@ -526,27 +527,35 @@ class Contact extends Model
      * @param int $age
      * @return int
      */
-    public function addSignificantOther($firstname, $lastname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
+    public function addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
         $significantOther = new SignificantOther;
         $significantOther->account_id = $this->account_id;
         $significantOther->contact_id = $this->id;
         $significantOther->first_name = ucfirst($firstname);
-        if (! is_null($lastname)) {
-            $significantOther->last_name = ucfirst($lastname);
-        }
         $significantOther->gender = $gender;
         $significantOther->is_birthdate_approximate = $birthdate_approximate;
         $significantOther->status = 'active';
-        if ($birthdate_approximate == 'true') {
+        if ($birthdate_approximate == 'approximate') {
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
             $significantOther->birthdate = $birthdate;
+        } elseif ($birthdate_approximate == 'unknown') {
+            $significantOther->birthdate = null;
         } else {
             $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
             $significantOther->birthdate = $birthdate;
         }
         $significantOther->save();
+
+        // Event
+        $eventToSave = new Event;
+        $eventToSave->account_id = $significantOther->account_id;
+        $eventToSave->contact_id = $significantOther->contact_id;
+        $eventToSave->object_type = 'significantother';
+        $eventToSave->object_id = $significantOther->id;
+        $eventToSave->nature_of_operation = 'create';
+        $eventToSave->save();
 
         return $significantOther->id;
     }
@@ -564,32 +573,36 @@ class Contact extends Model
      * @param  string $timezone
      * @return Response
      */
-    public function editSignificantOther($significantOtherId, $firstname, $lastname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
+    public function editSignificantOther($significantOtherId, $firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
         $significantOther = SignificantOther::findOrFail($significantOtherId);
 
         $significantOther->first_name = ucfirst($firstname);
-
-        if (is_null($lastname)) {
-            $significantOther->last_name = null;
-        } else {
-            $significantOther->last_name = ucfirst($lastname);
-        }
-
         $significantOther->gender = $gender;
         $significantOther->is_birthdate_approximate = $birthdate_approximate;
         $significantOther->status = 'active';
 
-        if ($birthdate_approximate == 'true') {
+        if ($birthdate_approximate == 'approximate') {
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
             $significantOther->birthdate = $birthdate;
+        } elseif ($birthdate_approximate == 'unknown') {
+            $significantOther->birthdate = null;
         } else {
             $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
             $significantOther->birthdate = $birthdate;
         }
 
         $significantOther->save();
+
+        // Event
+        $eventToSave = new Event;
+        $eventToSave->account_id = $significantOther->account_id;
+        $eventToSave->contact_id = $significantOther->contact_id;
+        $eventToSave->object_type = 'significantother';
+        $eventToSave->object_id = $significantOther->id;
+        $eventToSave->nature_of_operation = 'update';
+        $eventToSave->save();
 
         return $significantOther->id;
     }
@@ -601,6 +614,16 @@ class Contact extends Model
     {
         $significantOther = SignificantOther::findOrFail($significantOtherId);
         $significantOther->delete();
+
+        $events = Event::where('contact_id', $significantOther->contact_id)
+                          ->where('account_id', $significantOther->account_id)
+                          ->where('object_type', 'significantother')
+                          ->where('object_id', $significantOther->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
     }
 
     /**

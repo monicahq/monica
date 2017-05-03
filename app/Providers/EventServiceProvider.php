@@ -58,15 +58,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Activity\RemoveAllActivityEvents',
             'App\Listeners\Activity\DecreaseNumberOfActivities',
         ],
-        'App\Events\SignificantOther\SignificantOtherCreated' => [
-            'App\Listeners\SignificantOther\LogSignificantOtherCreatedEvent',
-        ],
-        'App\Events\SignificantOther\SignificantOtherUpdated' => [
-            'App\Listeners\SignificantOther\LogSignificantOtherUpdatedEvent',
-        ],
-        'App\Events\SignificantOther\SignificantOtherDeleted' => [
-            'App\Listeners\SignificantOther\RemoveAllSignificantOtherEvents',
-        ],
         'App\Events\Kid\KidCreated' => [
             'App\Listeners\Kid\LogKidCreatedEvent',
             'App\Listeners\Kid\IncrementNumberOfKids',

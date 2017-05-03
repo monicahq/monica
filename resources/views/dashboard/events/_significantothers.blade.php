@@ -1,6 +1,6 @@
 {{-- You added Jane Doe as Regis's significant other --}}
 
-{{ App\SignificantOther::find($event['object_id'])->getCompleteName() }}
+{{ App\SignificantOther::find($event['object_id'])->getName() }}
 
 {{ trans('dashboard.event_as') }}
 

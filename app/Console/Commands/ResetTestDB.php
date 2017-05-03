@@ -19,7 +19,7 @@ class ResetTestDB extends Command
      *
      * @var string
      */
-    protected $description = 'Reset the testing database';
+    protected $description = 'Reset the local database';
 
     /**
      * Create a new command instance.
@@ -39,19 +39,15 @@ class ResetTestDB extends Command
     public function handle()
     {
         if (env('APP_ENV') == 'local') {
-            DB::table('tasks')->delete();
-            DB::table('significant_others')->delete();
-            DB::table('reminders')->delete();
-            DB::table('peoples')->delete();
-            DB::table('notes')->delete();
-            DB::table('kids')->delete();
-            DB::table('important_dates')->delete();
-            DB::table('gifts')->delete();
-            DB::table('entities')->delete();
-            DB::table('contacts')->delete();
-            DB::table('accounts')->delete();
+            foreach(\DB::select('SHOW TABLES') as $table) {
+                $table_array = get_object_vars($table);
+                \Schema::drop($table_array[key($table_array)]);
+            }
 
-            $this->info('Test database has been reset');
+            $this->call('migrate');
+            $this->call('db:seed');
+
+            $this->info('Local database has been reset');
         } else {
             $this->info('Can\'t execute this command in this environment');
         }

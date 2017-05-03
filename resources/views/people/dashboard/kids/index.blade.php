@@ -2,10 +2,9 @@
 
   <p class="sidebar-box-title">
     <img src="/img/people/dashboard/kids/children.svg">
-    {{ trans('people.kids_sidebar_title') }}
+    <strong>{{ trans('people.kids_sidebar_title') }}</strong>
     <a href="/people/{{ $contact->id }}/kid/add">{{ trans('app.add') }}</a>
   </p>
-
 
   @if ($contact->getNumberOfKids() == 0)
     <p class="sidebar-box-paragraph">

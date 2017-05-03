@@ -1058,22 +1058,21 @@ class PeopleController extends Controller
         }
 
         $firstname = $request->input('firstname');
-        $lastname = $request->input('lastname');
-        if ($lastname == '' or is_null($lastname)) {
-            $lastname = null;
-        }
         $gender = $request->input('gender');
         $birthdateApproximate = $request->input('birthdateApproximate');
 
-        if ($birthdateApproximate == 'true') {
+        if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
+            $birthdate = null;
+        } elseif ($birthdateApproximate == 'unknown') {
+            $age = null;
             $birthdate = null;
         } else {
             $age = null;
             $birthdate = $request->input('specificDate');
         }
 
-        $significantOtherId = $contact->addSignificantOther($firstname, $lastname, $gender, $birthdateApproximate, $birthdate, $age, Auth::user()->timezone);
+        $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdateApproximate, $birthdate, $age, Auth::user()->timezone);
 
         $request->session()->flash('success', trans('people.significant_other_add_success'));
 
@@ -1129,22 +1128,21 @@ class PeopleController extends Controller
         }
 
         $firstname = $request->input('firstname');
-        $lastname = $request->input('lastname');
-        if ($lastname == '') {
-            $lastname = null;
-        }
         $gender = $request->input('gender');
         $birthdateApproximate = $request->input('birthdateApproximate');
 
-        if ($birthdateApproximate == 'true') {
+        if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
+            $birthdate = null;
+        } elseif ($birthdateApproximate == 'unknown') {
+            $age = null;
             $birthdate = null;
         } else {
             $age = null;
             $birthdate = $request->input('specificDate');
         }
 
-        $significantOtherId = $contact->editSignificantOther($significantOther->id, $firstname, $lastname, $gender, $birthdateApproximate, $birthdate, $age, Auth::user()->timezone);
+        $significantOtherId = $contact->editSignificantOther($significantOther->id, $firstname, $gender, $birthdateApproximate, $birthdate, $age, Auth::user()->timezone);
 
         $request->session()->flash('success', trans('people.significant_other_edit_success'));
 

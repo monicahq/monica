@@ -634,9 +634,8 @@ class ContactTest extends TestCase
             'int',
             $contact->addSignificantOther(
                 'John',
-                'Doe',
                 'male',
-                'true',
+                'approximate',
                 '2017-01-01',
                 1,
                 'America/New_York'
@@ -656,9 +655,8 @@ class ContactTest extends TestCase
             $contact->editSignificantOther(
                 $significantOther->id,
                 'John',
-                'Doe',
                 'male',
-                'true',
+                'approximate',
                 '2017-01-01',
                 1,
                 'America/New_York'

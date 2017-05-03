@@ -53,26 +53,28 @@
               </fieldset>
 
               {{-- First name --}}
-                <div class="form-group">
-                  <label for="firstname">{{ trans('people.significant_other_add_firstname') }}</label>
-                  <input type="text" class="form-control" name="firstname" maxlength="254" autofocus required>
-                </div>
-
-              {{-- Last name --}}
               <div class="form-group">
-                <label for="lastname">{{ trans('people.significant_other_add_lastname') }}</label>
-                <input type="text" class="form-control" maxlength="254" name="lastname">
+                <label for="firstname">{{ trans('people.significant_other_add_firstname') }}</label>
+                <input type="text" class="form-control" name="firstname" maxlength="254" autofocus required>
               </div>
 
               <fieldset class="form-group dates">
 
+                {{-- Don't know the birthdate --}}
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="unknown" checked>
+
+                    <div class="form-inline">
+                      {{ trans('people.significant_other_add_unknown') }}
+                    </div>
+                  </label>
+                </div>
+
                 {{-- Approximate birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_approximate"
-                              v-model="birthdate_approximate"
-                              v-bind:value="true"
-                              :checked="true">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="approximate">
 
                     <div class="form-inline">
                       {{ trans('people.significant_other_add_probably') }}
@@ -80,8 +82,7 @@
                       <input type="number" class="form-control" name="age"
                               value="1"
                               min="1"
-                              max="99"
-                              :disabled="birthdate_approximate == false">
+                              max="99">
 
                       {{ trans('people.significant_other_add_probably_yo') }}
                     </div>
@@ -91,24 +92,20 @@
                 {{-- Exact birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_exact"
-                              v-model="birthdate_approximate"
-                              v-bind:value="false"
-                              :checked="false">
+                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="exact">
 
                       <div class="form-inline">
                         {{ trans('people.significant_other_add_exact') }}
                         <input type="date" name="specificDate" class="form-control"
                               value="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
                               min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(50)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                              :disabled="birthdate_approximate == true">
+                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
                 </div>
               </fieldset>
 
-              <div class="classname" v-show="birthdate_approximate == false">
+              <div class="classname">
                 <p>{{ trans('people.significant_other_add_help') }}</p>
               </div>
 

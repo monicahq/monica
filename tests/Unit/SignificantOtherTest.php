@@ -17,7 +17,7 @@ class SignificantOtherTest extends TestCase
     {
         $significantOther = new SignificantOther;
 
-        $this->assertNull($significantOther->getFirstName());
+        $this->assertNull($significantOther->getName());
     }
 
     public function testGetFirstnameReturnsNameWhenDefined()
@@ -27,46 +27,7 @@ class SignificantOtherTest extends TestCase
 
         $this->assertEquals(
             'Peter',
-            $significantOther->getFirstName()
-        );
-    }
-
-    public function testGetLastnameReturnsNullWhenUndefined()
-    {
-        $significantOther = new SignificantOther;
-
-        $this->assertNull($significantOther->getLastName());
-    }
-
-    public function testGetLastnameReturnsNameWhenDefined()
-    {
-        $significantOther = new SignificantOther;
-        $significantOther->last_name = 'Jackson';
-
-        $this->assertEquals(
-            'Jackson',
-            $significantOther->getLastName()
-        );
-    }
-
-    public function testGetCompleteName()
-    {
-        $significantOther = new SignificantOther;
-        $significantOther->first_name = 'Peter';
-        $significantOther->last_name = 'Gregory';
-
-        $this->assertEquals(
-            'Peter Gregory',
-            $significantOther->getCompleteName()
-        );
-
-        $significantOther = new SignificantOther;
-        $significantOther->first_name = 'Peter';
-        $significantOther->last_name = null;
-
-        $this->assertEquals(
-            'Peter',
-            $significantOther->getCompleteName()
+            $significantOther->getName()
         );
     }
 

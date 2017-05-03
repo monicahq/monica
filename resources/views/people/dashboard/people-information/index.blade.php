@@ -1,8 +1,8 @@
 <div class="sidebar-box">
 
   <p class="sidebar-box-title">
-    <img src="/img/people/dashboard.svg">
-    {{ trans('people.section_personal_information') }}
+    <img class="people-information" src="/img/people/dashboard.svg">
+    <strong>{{ trans('people.section_personal_information') }}</strong>
     <a href="/people/{{ $contact->id }}/edit">{{ trans('app.edit') }}</a>
   </p>
 
