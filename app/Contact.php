@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use App\Note;
+use App\Event;
 use App\Account;
 use App\Country;
 use App\Reminder;
@@ -547,6 +548,15 @@ class Contact extends Model
         }
         $significantOther->save();
 
+        // Event
+        $eventToSave = new Event;
+        $eventToSave->account_id = $significantOther->account_id;
+        $eventToSave->contact_id = $significantOther->contact_id;
+        $eventToSave->object_type = 'significantother';
+        $eventToSave->object_id = $significantOther->id;
+        $eventToSave->nature_of_operation = 'create';
+        $eventToSave->save();
+
         return $significantOther->id;
     }
 
@@ -585,6 +595,15 @@ class Contact extends Model
 
         $significantOther->save();
 
+        // Event
+        $eventToSave = new Event;
+        $eventToSave->account_id = $significantOther->account_id;
+        $eventToSave->contact_id = $significantOther->contact_id;
+        $eventToSave->object_type = 'significantother';
+        $eventToSave->object_id = $significantOther->id;
+        $eventToSave->nature_of_operation = 'update';
+        $eventToSave->save();
+
         return $significantOther->id;
     }
 
@@ -595,6 +614,16 @@ class Contact extends Model
     {
         $significantOther = SignificantOther::findOrFail($significantOtherId);
         $significantOther->delete();
+
+        $events = Event::where('contact_id', $significantOther->contact_id)
+                          ->where('account_id', $significantOther->account_id)
+                          ->where('object_type', 'significantother')
+                          ->where('object_id', $significantOther->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
     }
 
     /**

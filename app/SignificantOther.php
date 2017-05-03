@@ -4,9 +4,6 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Events\SignificantOther\SignificantOtherCreated;
-use App\Events\SignificantOther\SignificantOtherDeleted;
-use App\Events\SignificantOther\SignificantOtherUpdated;
 
 class SignificantOther extends Model
 {
@@ -14,12 +11,6 @@ class SignificantOther extends Model
 
     protected $dates = [
         'birthdate',
-    ];
-
-    protected $events = [
-        'created' => SignificantOtherCreated::class,
-        'updated' => SignificantOtherUpdated::class,
-        'deleted' => SignificantOtherDeleted::class,
     ];
 
     /**

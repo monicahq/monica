@@ -109,12 +109,12 @@ class FakeContentTableSeeder extends Seeder
                 $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
                 $age = rand(18, 78);
                 if (rand(1, 2) == 1) {
-                    $birthdate_approximate = 'false';
+                    $birthdate_approximate = 'unknown';
                 } else {
-                    $birthdate_approximate = 'true';
+                    $birthdate_approximate = 'exact';
                 }
 
-                $significantOtherId = $contact->addSignificantOther($firstname, $lastname, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+                $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
             }
 
             // // create kids
