@@ -8310,7 +8310,9 @@ header .main-cta {
     margin-left: 0;
   }
   .people-show .main-content.modal .form-group.actions .btn {
-    width: 49%;
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
   }
   .people-show .main-content.dashboard .sidebar-box {
     margin-bottom: 15px;

@@ -560,7 +560,9 @@
 
         .form-group.actions {
           .btn {
-            width: 49%;
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
           }
         }
       }
