@@ -19,7 +19,6 @@ const app = new Vue({
     el: '#app',
 
     data: {
-      birthdate_approximate: false,
       activities_description_show: false,
       reminders_frequency: 'once',
       reminders_predefined: true

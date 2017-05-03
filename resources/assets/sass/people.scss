@@ -269,7 +269,12 @@
     }
 
     .sidebar-box-title {
+      padding-left: 2px;
       position: relative;
+
+      strong {
+        font-weight: 500;
+      }
 
       a {
         position: absolute;
@@ -277,7 +282,13 @@
       }
 
       img {
+        left: -3px;
+        position: relative;
         width: 20px;
+
+        &.people-information {
+          top: -4px;
+        }
       }
     }
 

@@ -27,43 +27,13 @@ class SignificantOther extends Model
      *
      * @return string
      */
-    public function getFirstName()
+    public function getName()
     {
         if ($this->first_name == '') {
             return null;
         }
 
         return $this->first_name;
-    }
-
-    /**
-     * Get the last name of the significant other.
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        if ($this->last_name == '') {
-            return null;
-        }
-
-        return $this->last_name;
-    }
-
-    /**
-     * Get the complete name of the significant other.
-     *
-     * @return string
-     */
-    public function getCompleteName()
-    {
-        $completeName = $this->getFirstName();
-
-        if (! is_null($this->getLastName())) {
-            $completeName = $completeName.' '.$this->getLastName();
-        }
-
-        return $completeName;
     }
 
     /**
@@ -93,7 +63,6 @@ class SignificantOther extends Model
         }
 
         $age = $this->birthdate->diffInYears(Carbon::now());
-
         return $age;
     }
 

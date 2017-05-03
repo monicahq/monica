@@ -4,7 +4,7 @@
 
     <p class="sidebar-box-title">
       <img src="/img/people/food_preferencies.svg">
-      {{ trans('people.food_preferencies_title') }}
+      <strong>{{ trans('people.food_preferencies_title') }}</strong>
       <a href="/people/{{ $contact->id }}/significantother/add">{{ trans('app.add') }}</a>
     </p>
 
@@ -16,7 +16,7 @@
 
     <p class="sidebar-box-title">
       <img src="/img/people/food_preferencies.svg">
-      {{ trans('people.food_preferencies_title') }}
+      <strong>{{ trans('people.food_preferencies_title') }}</strong>
       <a href="/people/{{ $contact->id }}/food" class="edit-food-preferencies">{{ trans('app.edit') }}</a>
     </p>
 

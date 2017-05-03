@@ -63,34 +63,34 @@
               {{-- First name --}}
                 <div class="form-group">
                   <label for="firstname">{{ trans('people.significant_other_add_firstname') }}</label>
-                  <input type="text" class="form-control" name="firstname" value="{{ $contact->getCurrentSignificantOther()->getFirstName() }}" autofocus required>
+                  <input type="text" class="form-control" name="firstname" value="{{ $contact->getCurrentSignificantOther()->getName() }}" autofocus required>
                 </div>
 
-              {{-- Last name --}}
-              <div class="form-group">
-                <label for="lastname">{{ trans('people.significant_other_add_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname" value="{{ $contact->getCurrentSignificantOther()->getLastName() }}">
-              </div>
-
               <fieldset class="form-group dates">
+
+                {{-- Don't know the birthdate --}}
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="unknown" {{ ($contact->getCurrentSignificantOther()->is_birthdate_approximate == 'unknown')?'checked':'' }}>
+
+                    <div class="form-inline">
+                      {{ trans('people.significant_other_add_unknown') }}
+                    </div>
+                  </label>
+                </div>
 
                 {{-- Approximate birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_approximate"
-                              v-model="birthdate_approximate"
-                              v-bind:value="true"
-                              :checked="true">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="approximate" {{ ($contact->getCurrentSignificantOther()->is_birthdate_approximate == 'approximate')?'checked':'' }}>
 
                     <div class="form-inline">
                       {{ trans('people.significant_other_add_probably') }}
 
                       <input type="number" class="form-control" name="age"
-                              value="{{ $contact->getCurrentSignificantOther()->getAge() }}"
-                              value="1"
+                              value="{{ (is_null($contact->getCurrentSignificantOther()->getAge())) ? 1 : $contact->getCurrentSignificantOther()->getAge() }}"
                               min="1"
-                              max="99"
-                              :disabled="birthdate_approximate == false">
+                              max="99">
 
                       {{ trans('people.significant_other_add_probably_yo') }}
                     </div>
@@ -100,24 +100,20 @@
                 {{-- Exact birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_exact"
-                              v-model="birthdate_approximate"
-                              v-bind:value="false"
-                              :checked="false">
+                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="exact" {{ ($contact->getCurrentSignificantOther()->is_birthdate_approximate == 'exact')?'checked':'' }}>
 
                       <div class="form-inline">
                         {{ trans('people.significant_other_add_exact') }}
                         <input type="date" name="specificDate" class="form-control"
-                              value="{{ $contact->getCurrentSignificantOther()->getBirthdate()->format('Y-m-d') }}"
+                              value="{{ (is_null($contact->getCurrentSignificantOther()->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getCurrentSignificantOther()->getBirthdate()->format('Y-m-d') }}"
                               min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(50)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                              :disabled="birthdate_approximate == true">
+                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
                 </div>
               </fieldset>
 
-              <div class="classname" v-show="birthdate_approximate == false">
+              <div class="classname">
                 <p>{{ trans('people.significant_other_add_help') }}</p>
               </div>
 

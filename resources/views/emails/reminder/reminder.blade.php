@@ -38,7 +38,7 @@ COMMENT:
 @if (! is_null($contact->getCurrentSignificantOther()) or $contact->getNumberOfKids() != 0)
 -------
 @if (! is_null($contact->getCurrentSignificantOther()))
-Significant other: {{ $contact->getCurrentSignificantOther()->getCompleteName() }}, {{ $contact->getCurrentSignificantOther()->getAge() }}
+Significant other: {{ $contact->getCurrentSignificantOther()->getName() }}, {{ $contact->getCurrentSignificantOther()->getAge() }}
 @endif
 @if ($contact->getNumberOfKids() != 0)
 Kids:

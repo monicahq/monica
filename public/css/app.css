@@ -8053,7 +8053,12 @@ header .main-cta {
 }
 
 .people-show .dashboard .sidebar-box-title {
+  padding-left: 2px;
   position: relative;
+}
+
+.people-show .dashboard .sidebar-box-title strong {
+  font-weight: 500;
 }
 
 .people-show .dashboard .sidebar-box-title a {
@@ -8062,7 +8067,13 @@ header .main-cta {
 }
 
 .people-show .dashboard .sidebar-box-title img {
+  left: -3px;
+  position: relative;
   width: 20px;
+}
+
+.people-show .dashboard .sidebar-box-title img.people-information {
+  top: -4px;
 }
 
 .people-show .dashboard .sidebar-box-paragraph {
