@@ -26,16 +26,6 @@
           </h2>
 
           <ul class="horizontal profile-detail-summary">
-
-            {{-- Last called information --}}
-            <li>
-              @if (is_null($contact->getLastCalled(Auth::user()->timezone)))
-                {{ trans('people.last_called_empty') }}
-              @else
-                {{ trans('people.last_called', ['date' => $contact->getLastCalled(Auth::user()->timezone)]) }}
-              @endif
-            </li>
-
             {{-- Last activity information --}}
             <li>
               @if (is_null($contact->getLastActivityDate(Auth::user()->timezone)))
