@@ -459,7 +459,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->food_preferencies);
+        return $this->food_preferencies;
     }
 
     /**
@@ -531,9 +531,9 @@ class Contact extends Model
         $significantOther = new SignificantOther;
         $significantOther->account_id = $this->account_id;
         $significantOther->contact_id = $this->id;
-        $significantOther->first_name = encrypt(ucfirst($firstname));
+        $significantOther->first_name = ucfirst($firstname);
         if (! is_null($lastname)) {
-            $significantOther->last_name = encrypt(ucfirst($lastname));
+            $significantOther->last_name = ucfirst($lastname);
         }
         $significantOther->gender = $gender;
         $significantOther->is_birthdate_approximate = $birthdate_approximate;
@@ -568,12 +568,12 @@ class Contact extends Model
     {
         $significantOther = SignificantOther::findOrFail($significantOtherId);
 
-        $significantOther->first_name = encrypt(ucfirst($firstname));
+        $significantOther->first_name = ucfirst($firstname);
 
         if (is_null($lastname)) {
             $significantOther->last_name = null;
         } else {
-            $significantOther->last_name = encrypt(ucfirst($lastname));
+            $significantOther->last_name = ucfirst($lastname);
         }
 
         $significantOther->gender = $gender;
@@ -617,14 +617,14 @@ class Contact extends Model
             return false;
         }
 
-        $this->first_name = encrypt($firstName);
+        $this->first_name = $firstName;
 
         if (! is_null($middleName)) {
-            $this->middle_name = encrypt($middleName);
+            $this->middle_name = $middleName;
         }
 
         if (! is_null($lastName)) {
-            $this->last_name = encrypt($lastName);
+            $this->last_name = $lastName;
         }
         $this->save();
 
@@ -642,7 +642,7 @@ class Contact extends Model
         if ($foodPreferencies == '') {
             $this->food_preferencies = null;
         } else {
-            $this->food_preferencies = encrypt($foodPreferencies);
+            $this->food_preferencies = $foodPreferencies;
         }
 
         $this->save();
@@ -663,7 +663,7 @@ class Contact extends Model
         $kid = new Kid;
         $kid->account_id = $this->account_id;
         $kid->child_of_contact_id = $this->id;
-        $kid->first_name = encrypt(ucfirst($name));
+        $kid->first_name = ucfirst($name);
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
 
@@ -694,7 +694,7 @@ class Contact extends Model
     public function editKid($kidId, $name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
         $kid = Kid::findOrFail($kidId);
-        $kid->first_name = encrypt(ucfirst($name));
+        $kid->first_name = ucfirst($name);
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
 
@@ -731,7 +731,7 @@ class Contact extends Model
         $note = new Note;
         $note->account_id = $this->account_id;
         $note->contact_id = $this->id;
-        $note->body = encrypt($body);
+        $note->body = $body;
         $note->save();
 
         return $note->id;
@@ -883,7 +883,17 @@ class Contact extends Model
     }
 
     /**
-     * Get all the tasks in the in progress state, if any.
+     * Get all the tasks no matter the state, if any.
+     */
+    public function getTasks()
+    {
+        return Task::where('account_id', $this->account_id)
+                        ->where('contact_id', $this->id)
+                        ->get();
+    }
+
+    /**
+     * Get all the tasks in the in completed state, if any.
      */
     public function getCompletedTasks()
     {

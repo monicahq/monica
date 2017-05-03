@@ -66,12 +66,14 @@ This is what is used to develop Monica and will provide a common base for
 everyone who wants to contribute to the project. Once Homestead is installed,
 you can pull the repository and start setup Monica.
 
+1. `composer install`
 1. `cp .env.example .env` to configure Monica
 1. `npm install` to install bower and gulp.
-2. `bower install` to install front-end dependencies in the `vendor` folder.
-3. `php artisan migrate` to run all migrations
-4. `php artisan db:seed` to load all seeds.
-5. `php artisan storage:link` to access the avatars.
+1. `bower install` to install front-end dependencies in the `vendor` folder.
+1. Create 2 databases: `monica` and `monica_test`
+1. `php artisan migrate` to run all migrations
+1. `php artisan db:seed` to load all seeds.
+1. `php artisan storage:link` to access the avatars.
 
 Note that the seeders will create two accounts.
 
@@ -87,14 +89,15 @@ testing. While all code will have to go through to Travis before being merged,
 tests can still be executed locally before pushing them. In fact, we encourage
 you strongly to do it first.
 
-To setup the test environment, create a separate testing database locally. We
-have provided smart defaults in `.env.example`.
+To setup the test environment, create a separate testing database locally. Smart
+defaults are provided in `.env.example`.
 
-When testing locally, you have to run the migrations before running your tests,
-otherwise tests will fail.
+Don't forget to run the migrations and seeders before running the first test.
 
 * `php artisan migrate --database testing`
 * `php artisan db:seed --database testing`
+
+To run the tests, use the `phpunit` command.
 
 If you use TravisCI to test the application, it is setup to automatically do
 these actions.
@@ -143,7 +146,13 @@ of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
 
-For development purposes, we use [Mailtrap](https://mailtrap.io/) to test them.
+For development purposes, you have two choices:
+1. You can use [Mailtrap](https://mailtrap.io/). This is an amazing service that
+provides a free plan that is plenty enough to test all the emails that are sent.
+1. If you use Homestead to code on your local machine, you can use
+[mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you
+first need to start mailhog (`sudo service mailhog restart`). Then, head up to
+http://localhost:8025 in your browser to load Mailhog's UI.
 
 #### Email reminders
 

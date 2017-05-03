@@ -60,11 +60,9 @@ return [
     'information_edit_probably_yo' => 'years old',
     'information_edit_exact' => 'I know the exact birthdate of this person, which is',
     'information_edit_help' => 'If you indicate an exacte birthdate for this person, we will create a new reminder for you - so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
-    'information_edit_cta' => 'Edit this profile',
     'information_no_address_defined' => 'No address defined',
     'information_no_email_defined' => 'No email address defined',
     'information_no_phone_defined' => 'No phone number defined',
-    'information_edit_cta' => 'Edit personal information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferencies have been saved.',
@@ -99,17 +97,15 @@ return [
     'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
-    'reminders_description' => 'Reminders are sent every morning the day events will happen.',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen.',
     'reminders_frequency' => 'every',
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'month',
     'reminders_type_year' => 'year',
 
     // significant other
-    'significant_other_blank_link' => 'Add information',
-    'significant_other_blank_link_description_male' => 'about his loved one',
-    'significant_other_blank_link_description_female' => 'about her loved one',
     'significant_other_sidebar_title' => 'Significant other',
+    'significant_other_sidebar_blank' => 'No significant other defined',
     'significant_other_cta' => 'Add significant other',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
     'significant_other_add_male' => 'Man',
@@ -129,9 +125,7 @@ return [
     'significant_other_delete_success' => 'The significant other has been successfully deleted.',
 
     // kids
-    'kids_blank_link' => 'Add information',
-    'kids_blank_link_description_male' => 'about his loved ones',
-    'kids_blank_link_description_female' => 'about her loved ones',
+    'kids_blank' => 'No kid defined',
     'kids_sidebar_title' => 'Children',
     'kids_sidebar_cta' => 'Add another child',
     'kids_blank_cta' => 'Add a child',
@@ -191,8 +185,6 @@ return [
     'activity_type_went_play' => 'went to a play',
     'activity_type_went_museum' => 'went to the museum',
     'activity_type_ate_restaurant' => 'ate at a restaurant',
-    'activities_statistics_sidebar_header' => 'Stats',
-    'activities_statistics_sidebar' => '1 activity|:count activities',
     'activities_add_activity' => 'Add activity',
     'activities_more_details' => 'More details',
     'activities_hide_details' => 'Hide details',

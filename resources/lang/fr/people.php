@@ -60,11 +60,9 @@ return [
     'information_edit_probably_yo' => 'ans',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est',
     'information_edit_help' => 'Si vous indiquez la date de naissance exacte de cette personne, nous allons créer un rappel pour vous - ainsi vous serez informé chaque année que c\'est le moment de célébrer son anniversaire.',
-    'information_edit_cta' => 'Mettre à jour ce profil',
     'information_no_address_defined' => 'Aucune adresse définie',
     'information_no_email_defined' => 'Aucun courriel défini',
     'information_no_phone_defined' => 'Aucun numéro de téléphone défini',
-    'information_edit_cta' => 'Mettre à jour les informations',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
@@ -102,14 +100,12 @@ return [
     'reminders_delete_cta' => 'Supprimer',
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
-    'reminders_description' => 'Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
+    'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
 
     // significant other
-    'significant_other_blank_link' => 'Ajouter des informations',
-    'significant_other_blank_link_description_male' => 'à propos de son conjoint',
-    'significant_other_blank_link_description_female' => 'à propos de son conjoint',
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
+    'significant_other_sidebar_blank' => 'Aucun conjoint défini',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
     'significant_other_add_male' => 'Homme',
     'significant_other_add_female' => 'Femme',
@@ -128,9 +124,7 @@ return [
     'significant_other_delete_success' => 'Le conjoint a été supprimé avec succès.',
 
     // kids
-    'kids_blank_link' => 'Ajouter des informations',
-    'kids_blank_link_description_male' => 'à propos de sa progéniture',
-    'kids_blank_link_description_female' => 'à propos de sa progéniture',
+    'kids_blank' => 'Aucun enfant défini',
     'kids_sidebar_title' => 'Enfants',
     'kids_sidebar_cta' => 'Ajouter un autre enfant',
     'kids_blank_cta' => 'Ajouter un enfant',
@@ -190,8 +184,6 @@ return [
     'activity_type_went_play' => 'aller au théâtre',
     'activity_type_went_museum' => 'aller au musée',
     'activity_type_ate_restaurant' => 'aller au restaurant',
-    'activities_statistics_sidebar_header' => 'Statistiques',
-    'activities_statistics_sidebar' => '1 activité|:count activités',
     'activities_add_activity' => 'Ajouter activité',
     'activities_more_details' => 'Voir détails',
     'activities_hide_details' => 'Cacher les détails',

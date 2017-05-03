@@ -599,7 +599,7 @@ class ContactTest extends TestCase
     public function testGetFoodPreferenciesReturnsDataWhenDefined()
     {
         $contact = new Contact;
-        $contact->food_preferencies = encrypt('Allergic to peanuts');
+        $contact->food_preferencies = 'Allergic to peanuts';
 
         $this->assertEquals(
             'Allergic to peanuts',
@@ -842,6 +842,16 @@ class ContactTest extends TestCase
         $this->assertEquals(
             0,
             $contact->getTasksInProgress()->count()
+        );
+    }
+
+    public function testGetTasksReturns0WhenNoTasksDefined()
+    {
+        $contact = new Contact;
+
+        $this->assertEquals(
+            0,
+            $contact->getTasks()->count()
         );
     }
 

@@ -33,24 +33,32 @@
 
       <div class="{{ Auth::user()->getFluidLayout() }}">
 
-        <div class="row section">
-          @include('people.dashboard.index')
-        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-3 profile-sidebar">
+            @include('people.dashboard.index')
+          </div>
 
-        <div class="row section activities">
-          @include('people.activities.index')
-        </div>
+          <div class="col-xs-12 col-sm-9">
+            <div class="row section notes">
+              @include('people.notes.index')
+            </div>
 
-        <div class="row section reminders">
-          @include('people.reminders.index')
-        </div>
+            <div class="row section activities">
+              @include('people.activities.index')
+            </div>
 
-        <div class="row section tasks">
-          @include('people.tasks.index')
-        </div>
+            <div class="row section reminders">
+              @include('people.reminders.index')
+            </div>
 
-        <div class="row section gifts">
-          @include('people.gifts.index')
+            <div class="row section tasks">
+              @include('people.tasks.index')
+            </div>
+
+            <div class="row section gifts">
+              @include('people.gifts.index')
+            </div>
+          </div>
         </div>
 
       </div>

@@ -1,6 +1,12 @@
 <div class="col-xs-12 section-title">
   <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
-  <h3>{{ trans('people.section_personal_reminders') }}</h3>
+  <h3>
+    {{ trans('people.section_personal_reminders') }}
+
+    <span>
+      <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_cta') }}</a>
+    </span>
+  </h3>
 </div>
 
 
@@ -15,29 +21,60 @@
 
 @else
 
-  <div class="col-xs-12 col-sm-3">
-    <div class="sidebar-box">
-      {{ trans('people.reminders_description') }}
-    </div>
-  </div>
+  <div class="col-xs-12 reminders-list">
 
-  <div class="col-xs-12 col-sm-7 reminders-list">
+    <p>{{ trans('people.reminders_description') }}</p>
 
-    @foreach($contact->getReminders() as $reminder)
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Frequency</th>
+          <th>Content</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($contact->getReminders() as $reminder)
+          <tr>
+            <td class="date">{{ $reminder->getNextExpectedDate() }}</td>
 
-      @include('people.reminders._reminder_item')
+            <td class="date">
+              @if ($reminder->frequency_type != 'one_time')
+                {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
+              @else
+                One time
+              @endif
+            </td>
 
-    @endforeach
-  </div>
+            <td>
+              {{ $reminder->getTitle() }}
+            </td>
 
-  {{-- Sidebar --}}
-  <div class="col-xs-12 col-sm-2 sidebar">
+            <td class="actions">
 
-    <!-- Add activity  -->
-    <div class="sidebar-cta">
-      <a href="/people/{{ $contact->id }}/reminders/add" class="btn btn-primary">{{ trans('people.reminders_cta') }}</a>
-    </div>
+              @if ($reminder->getReminderType() != 'birthday' and $reminder->getReminderType() != 'birthday_kid')
 
+              <div class="reminder-actions">
+                <ul class="horizontal">
+                  <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
+                </ul>
+              </div>
+
+              @endif
+
+            </td>
+
+            @if (!is_null($reminder->getDescription()))
+            <td class="reminder-comment">
+              {{ $reminder->getDescription() }}
+            </td>
+            @endif
+
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
   </div>
 
 @endif

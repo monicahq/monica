@@ -55,13 +55,13 @@
               {{-- First name --}}
                 <div class="form-group">
                   <label for="firstname">{{ trans('people.significant_other_add_firstname') }}</label>
-                  <input type="text" class="form-control" name="firstname" autofocus required>
+                  <input type="text" class="form-control" name="firstname" maxlength="254" autofocus required>
                 </div>
 
               {{-- Last name --}}
               <div class="form-group">
                 <label for="lastname">{{ trans('people.significant_other_add_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname">
+                <input type="text" class="form-control" maxlength="254" name="lastname">
               </div>
 
               <fieldset class="form-group dates">

@@ -44,7 +44,7 @@ class KidTest extends TestCase
     public function testGetFirstnameReturnsNameWhenDefined()
     {
         $kid = new Kid;
-        $kid->first_name = encrypt('Peter');
+        $kid->first_name = 'Peter';
 
         $this->assertEquals(
             'Peter',

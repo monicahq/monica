@@ -196,18 +196,30 @@
       position: relative;
 
       h3 {
-        border-bottom: 1px solid #eee;
+        background-color: #f6f7f9;
+        border: 1px solid #e1e2e3;
         font-size: 18px;
         font-weight: 400;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        padding-left: 29px;
+        padding-left: 36px;
+        padding-top: 10px;
+        position: relative;
       }
 
       .icon-section {
+        left: 24px;
         position: absolute;
-        top: 5px;
+        top: 14px;
         width: 17px;
+        z-index: 1000;
+      }
+
+      span {
+        font-size: 14px;
+        position: absolute;
+        right: 10px;
+        top: 13px;
       }
     }
 
@@ -219,6 +231,30 @@
         }
       }
     }
+
+    table {
+      td.actions,
+      th.actions {
+        text-align: right;
+        width: 190px;
+
+        li:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+
+      td.date {
+        color: #92969d;
+        font-size: 12px;
+        position: relative;
+        top: 3px;
+        width: 130px;
+      }
+
+      td.task-completed {
+        text-decoration: line-through;
+      }
+    }
   }
 
   .dashboard {
@@ -227,8 +263,26 @@
       border: 1px solid #eee;
       border-radius: 3px;
       color: #999;
+      margin-bottom: 25px;
       padding: 10px;
       position: relative;
+    }
+
+    .sidebar-box-title {
+      position: relative;
+
+      a {
+        position: absolute;
+        right: 7px;
+      }
+
+      img {
+        width: 20px;
+      }
+    }
+
+    .sidebar-box-paragraph {
+      margin-bottom: 0;
     }
 
     .people-information {
@@ -246,14 +300,6 @@
           text-align: center;
           width: 17px;
         }
-      }
-    }
-
-    .people-information-actions {
-      margin-top: 5px;
-
-      a {
-        font-size: 12px;
       }
     }
 
@@ -357,167 +403,6 @@
         li {
           margin-right: 10px;
         }
-      }
-    }
-  }
-
-  .activities {
-    .sidebar {
-      .activities-stats {
-        font-size: 12px;
-
-        span {
-          float: right;
-        }
-      }
-    }
-
-    .activities-summary {
-      ul {
-        background-color: #f7f7f7;
-        border: 1px solid $border-color;
-        padding: 6px;
-        text-align: center;
-      }
-
-      li {
-        display: inline-block;
-        width: 30%;
-      }
-    }
-
-    .activity-item-info {
-      margin-bottom: 5px;
-    }
-
-    .activity-item-info-type {
-      display: inline;
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-
-    .activity-item-info-actions {
-      display: inline;
-
-      li:not(:last-child) {
-        margin-right: 5px;
-      }
-    }
-  }
-
-  .reminders {
-    .reminder-item {
-      margin-bottom: 20px;
-      padding-left: 33px;
-      position: relative;
-    }
-
-    .reminder-icon {
-      left: 0;
-      position: absolute;
-      top: 8px;
-
-      img {
-        width: 25px;
-      }
-    }
-
-    .reminder-description {
-      display: inline;
-      margin-bottom: 5px;
-    }
-
-    .reminder-info {
-      font-size: 12px;
-      margin-top: 4px;
-
-      .next-expected-date {
-        color: #999;
-      }
-    }
-
-    .reminder-frequency {
-      border: 1px solid #97bccd;
-      border-radius: 3px;
-      color: #97bccd;
-      display: inline;
-      margin-right: 5px;
-      padding-bottom: 2px;
-      padding-left: 5px;
-      padding-right: 2px;
-    }
-
-    .reminder-actions {
-      display: inline;
-
-      ul {
-        display: inline;
-      }
-
-      a {
-        color: #999;
-        font-size: 11px;
-        margin-right: 5px;
-        text-decoration: underline;
-      }
-    }
-
-    .reminder-comment {
-      border: 1px solid #dfdfdf;
-      border-radius: 3px;
-      font-size: 13px;
-      margin-top: 10px;
-      padding: 5px 10px;
-    }
-
-    &.modal {
-      .frequency {
-        margin-top: 20px;
-      }
-
-      .frequency-type {
-        display: inline;
-        width: 50px;
-      }
-    }
-  }
-
-  .tasks {
-    .task-item:not(:last-child) {
-      margin-bottom: 10px;
-    }
-
-    .task-info {
-      color: #999;
-      font-size: 12px;
-      margin-left: 5px;
-    }
-
-    .task-actions {
-      display: inline;
-
-      a {
-        color: #999;
-        font-size: 11px;
-        margin-right: 5px;
-        text-decoration: underline;
-      }
-    }
-
-    .task-comment {
-      border: 1px solid #dfdfdf;
-      border-radius: 3px;
-      font-size: 13px;
-      margin-top: 10px;
-      padding: 5px 10px;
-    }
-
-    .tasks-completed {
-      background-color: #eee;
-      padding: 5px;
-
-      .task-title {
-        text-decoration: line-through;
       }
     }
   }

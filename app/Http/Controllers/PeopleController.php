@@ -438,7 +438,7 @@ class PeopleController extends Controller
         if ($description == null) {
             $activity->description = null;
         } else {
-            $activity->description = encrypt($description);
+            $activity->description = $description;
         }
         $activity->date_it_happened = $dateItHappened;
         $activity->save();
@@ -503,7 +503,7 @@ class PeopleController extends Controller
         if ($description == null || $description == '') {
             $activity->description = null;
         } else {
-            $activity->description = encrypt($description);
+            $activity->description = $description;
         }
         $activity->date_it_happened = Carbon::createFromFormat('Y-m-d', $request->input('specific_date'));
         $activity->save();
@@ -869,7 +869,7 @@ class PeopleController extends Controller
             'contact' => $contact,
         ];
 
-        return view('people.dashboard.notes.add', $data);
+        return view('people.notes.add', $data);
     }
 
     /**
@@ -1028,6 +1028,10 @@ class PeopleController extends Controller
             return redirect()->route('people.index');
         }
 
+        if (! is_null($contact->getCurrentSignificantOther())) {
+            return redirect()->route('people.index');
+        }
+
         $data = [
             'contact' => $contact,
         ];
@@ -1049,9 +1053,13 @@ class PeopleController extends Controller
             return redirect()->route('people.index');
         }
 
+        if (! is_null($contact->getCurrentSignificantOther())) {
+            return redirect()->route('people.index');
+        }
+
         $firstname = $request->input('firstname');
         $lastname = $request->input('lastname');
-        if ($lastname == '') {
+        if ($lastname == '' or is_null($lastname)) {
             $lastname = null;
         }
         $gender = $request->input('gender');
