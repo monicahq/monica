@@ -2,7 +2,7 @@
 <h1 align="center">Monica</h1>
 
 <p align="center">
-<a href="https://travis-ci.org/djaiss/monica"><img src="https://travis-ci.org/djaiss/monica.svg?branch=master" alt="Build Status"></a>
+<a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/djaiss/monica.svg?branch=master" alt="Build Status"></a>
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a>
 </p>
 
