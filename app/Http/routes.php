@@ -1,5 +1,9 @@
 <?php
 
+if (App::environment('production')) {
+    URL::forceScheme('https');
+}
+
 Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
