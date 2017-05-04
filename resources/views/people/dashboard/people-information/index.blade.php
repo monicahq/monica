@@ -1,9 +1,7 @@
 <div class="sidebar-box">
 
   <p class="sidebar-box-title">
-    <img class="people-information" src="/img/people/dashboard.svg">
     <strong>{{ trans('people.section_personal_information') }}</strong>
-    <a href="/people/{{ $contact->id }}/edit">{{ trans('app.edit') }}</a>
   </p>
 
   <div class="people-information">
@@ -49,6 +47,8 @@
         @endif
       </li>
     </ul>
+
+    <a href="/people/{{ $contact->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
   </div>
 
 </div>

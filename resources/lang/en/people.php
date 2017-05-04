@@ -105,7 +105,6 @@ return [
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
-    'significant_other_sidebar_blank' => 'No significant other defined',
     'significant_other_cta' => 'Add significant other',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
     'significant_other_add_male' => 'Man',
@@ -124,11 +123,10 @@ return [
     'significant_other_delete_success' => 'The significant other has been successfully deleted.',
 
     // kids
-    'kids_blank' => 'No kid defined',
     'kids_sidebar_title' => 'Children',
     'kids_sidebar_cta' => 'Add another child',
     'kids_blank_cta' => 'Add a child',
-    'kids_add_title' => 'Add a child to :name\'s family',
+    'kids_add_title' => 'Add a child',
     'kids_add_boy' => 'Boy',
     'kids_add_girl' => 'Girl',
     'kids_add_gender' => 'Gender',

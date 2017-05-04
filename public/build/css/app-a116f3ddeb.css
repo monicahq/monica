@@ -7988,8 +7988,7 @@ header .main-cta {
 }
 
 .people-show .main-content .section-title h3 {
-  background-color: #f6f7f9;
-  border: 1px solid #e1e2e3;
+  border-bottom: 1px solid #e1e2e3;
   font-size: 18px;
   font-weight: 400;
   margin-bottom: 20px;
@@ -8053,12 +8052,14 @@ header .main-cta {
 }
 
 .people-show .dashboard .sidebar-box-title {
-  padding-left: 2px;
+  margin-bottom: 4px;
   position: relative;
 }
 
 .people-show .dashboard .sidebar-box-title strong {
+  font-size: 12px;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .people-show .dashboard .sidebar-box-title a {
@@ -8078,6 +8079,10 @@ header .main-cta {
 
 .people-show .dashboard .sidebar-box-paragraph {
   margin-bottom: 0;
+}
+
+.people-show .dashboard .people-list li {
+  margin-bottom: 4px;
 }
 
 .people-show .dashboard .people-information {

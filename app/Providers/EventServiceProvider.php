@@ -58,17 +58,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Activity\RemoveAllActivityEvents',
             'App\Listeners\Activity\DecreaseNumberOfActivities',
         ],
-        'App\Events\Kid\KidCreated' => [
-            'App\Listeners\Kid\LogKidCreatedEvent',
-            'App\Listeners\Kid\IncrementNumberOfKids',
-        ],
-        'App\Events\Kid\KidUpdated' => [
-            'App\Listeners\Kid\LogKidUpdatedEvent',
-        ],
-        'App\Events\Kid\KidDeleted' => [
-            'App\Listeners\Kid\RemoveAllKidEvents',
-            'App\Listeners\Kid\DecreaseNumberOfKids',
-        ],
         'App\Events\Note\NoteCreated' => [
             'App\Listeners\Note\LogNoteCreatedEvent',
             'App\Listeners\Note\IncrementNumberOfNotes',

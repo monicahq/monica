@@ -549,13 +549,7 @@ class Contact extends Model
         $significantOther->save();
 
         // Event
-        $eventToSave = new Event;
-        $eventToSave->account_id = $significantOther->account_id;
-        $eventToSave->contact_id = $significantOther->contact_id;
-        $eventToSave->object_type = 'significantother';
-        $eventToSave->object_id = $significantOther->id;
-        $eventToSave->nature_of_operation = 'create';
-        $eventToSave->save();
+        $this->logEvent('significantother', $significantOther->id, 'create');
 
         return $significantOther->id;
     }
@@ -596,13 +590,7 @@ class Contact extends Model
         $significantOther->save();
 
         // Event
-        $eventToSave = new Event;
-        $eventToSave->account_id = $significantOther->account_id;
-        $eventToSave->contact_id = $significantOther->contact_id;
-        $eventToSave->object_type = 'significantother';
-        $eventToSave->object_id = $significantOther->id;
-        $eventToSave->nature_of_operation = 'update';
-        $eventToSave->save();
+        $this->logEvent('significantother', $significantOther->id, 'update');
 
         return $significantOther->id;
     }
@@ -690,16 +678,24 @@ class Contact extends Model
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
 
-        if ($birthdate_approximate == 'true') {
+        if ($birthdate_approximate == 'approximate') {
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
             $kid->birthdate = $birthdate;
+        } elseif ($birthdate_approximate == 'unknown') {
+            $kid->birthdate = null;
         } else {
             $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
             $kid->birthdate = $birthdate;
         }
 
         $kid->save();
+
+        $this->has_kids = 'true';
+        $this->number_of_kids = $this->number_of_kids + 1;
+        $this->save();
+
+        $this->logEvent('kid', $kid->id, 'create');
 
         return $kid->id;
     }
@@ -721,16 +717,20 @@ class Contact extends Model
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
 
-        if ($birthdate_approximate == 'true') {
+        if ($birthdate_approximate == 'approximate') {
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
             $kid->birthdate = $birthdate;
+        } elseif ($birthdate_approximate == 'unknown') {
+            $kid->birthdate = null;
         } else {
             $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
             $kid->birthdate = $birthdate;
         }
 
         $kid->save();
+
+        $this->logEvent('kid', $kid->id, 'update');
 
         return $kid->id;
     }
@@ -742,6 +742,26 @@ class Contact extends Model
     {
         $kid = Kid::findOrFail($kidId);
         $kid->delete();
+
+        // Delete all events
+        $events = Event::where('contact_id', $kid->child_of_contact_id)
+                          ->where('account_id', $kid->account_id)
+                          ->where('object_type', 'kid')
+                          ->where('object_id', $kid->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        // Decrease number of kids
+        $this->number_of_kids = $this->number_of_kids - 1;
+
+        if ($this->number_of_kids < 1) {
+            $this->number_of_kids = 0;
+            $this->has_kids = 'false';
+        }
+        $this->save();
     }
 
     /**
