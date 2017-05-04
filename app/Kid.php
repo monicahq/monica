@@ -37,7 +37,7 @@ class Kid extends Model
     public function getBirthdate()
     {
         if (is_null($this->birthdate)) {
-            return Carbon::now()->format('Y-m-d');
+            return null;
         }
 
         return $this->birthdate;

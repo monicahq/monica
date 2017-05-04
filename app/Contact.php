@@ -12,8 +12,6 @@ use Carbon\Carbon;
 use App\ReminderType;
 use App\Helpers\DateHelper;
 use Gmopx\LaravelOWM\LaravelOWM;
-use App\Events\Contact\ContactCreated;
-use App\Events\Contact\ContactUpdated;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,10 +19,6 @@ class Contact extends Model
 {
     protected $dates = [
         'birthdate',
-    ];
-
-    protected $events = [
-        'created' => ContactCreated::class,
     ];
 
     /**
@@ -190,7 +184,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->phone_number);
+        return $this->phone_number;
     }
 
     /**
@@ -233,7 +227,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->street);
+        return $this->street;
     }
 
     /**
@@ -246,7 +240,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->province);
+        return $this->province;
     }
 
     /**
@@ -259,7 +253,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->postal_code);
+        return $this->postal_code;
     }
 
     /**
@@ -288,7 +282,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->city);
+        return $this->city;
     }
 
     /**
@@ -392,7 +386,7 @@ class Contact extends Model
             return null;
         }
 
-        return decrypt($this->email);
+        return $this->email;
     }
 
     /**
