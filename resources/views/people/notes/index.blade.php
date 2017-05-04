@@ -4,7 +4,7 @@
     {{ trans('people.notes_title') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_add_one_more') }}</a>
+      <a href="/people/{{ $contact->id }}/note/add" class="btn">{{ trans('people.notes_add_one_more') }}</a>
     </span>
   </h3>
 </div>
@@ -13,7 +13,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
+      <a href="/people/{{ $contact->id }}/note/add" class="btn">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
     </div>
   </div>
 
@@ -21,32 +21,17 @@
 
   <div class="col-xs-12">
 
-    <table class="table table-sm table-hover">
-      <thead>
-        <tr>
-          <th>Date added</th>
-          <th>Description</th>
-          <th class="actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($contact->getNotes() as $note)
-          <tr>
-            <td class="date">
-              {{ $note->getCreatedAt(Auth::user()->locale) }}
-            </td>
-            <td>
-              {{ $note->getBody() }}
-            </td>
-            <td class="actions">
-              <ul class="horizontal">
-                <li><a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete">{{ trans('app.delete') }}</a></li>
-              </ul>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+    <ul class="notes-list">
+      @foreach ($contact->getNotes() as $note)
+        <li>
+          <span class="note-date">
+            {{ $note->getCreatedAt(Auth::user()->locale) }}
+            <a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
+          </span>
+          {{ $note->getBody() }}
+        </li>
+      @endforeach
+    </ul>
 
   </div>
 

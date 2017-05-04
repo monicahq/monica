@@ -208,6 +208,7 @@ return [
     'notes_title' => 'Notes',
     'notes_blank_link' => 'Add a note',
     'notes_blank_name' => 'about :name',
+    'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent.',
 
     // gifts
     'gifts_blank_title' => 'Manage your gifts ideas and the ones you\'ve offered to :name.',
