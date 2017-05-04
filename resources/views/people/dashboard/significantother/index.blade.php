@@ -1,27 +1,20 @@
 <div class="sidebar-box">
 
+  <p class="sidebar-box-title significantother">
+    <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
+  </p>
+
   @if (is_null($contact->getCurrentSignificantOther()))
 
-    <p class="sidebar-box-title significantother">
-      <img src="/img/people/dashboard/significantother/love.svg">
-      <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
-      <a href="/people/{{ $contact->id }}/significantother/add">{{ trans('app.add') }}</a>
-    </p>
-
     <p class="sidebar-box-paragraph">
-      {{ trans('people.significant_other_sidebar_blank') }}
+      <a href="/people/{{ $contact->id }}/significantother/add">{{ trans('people.significant_other_cta') }}</a>
     </p>
 
   @else
 
-    <p class="sidebar-box-title">
-      <img src="/img/people/dashboard/significantother/love.svg">
-      <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
-    </p>
-
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
-      <strong>{{ $contact->getCurrentSignificantOther()->getName() }}</strong>
+      {{ $contact->getCurrentSignificantOther()->getName() }}
 
       @if (! is_null($contact->getCurrentSignificantOther()->getAge()))
       ({{ $contact->getCurrentSignificantOther()->getAge() }})

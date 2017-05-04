@@ -909,8 +909,11 @@ class PeopleController extends Controller
         $gender = $request->input('gender');
         $birthdateApproximate = $request->input('birthdateApproximate');
 
-        if ($birthdateApproximate == 'true') {
+        if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
+            $birthdate = null;
+        } elseif ($birthdateApproximate == 'unknown') {
+            $age = null;
             $birthdate = null;
         } else {
             $age = null;
@@ -974,8 +977,11 @@ class PeopleController extends Controller
         $gender = $request->input('gender');
         $birthdateApproximate = $request->input('birthdateApproximate');
 
-        if ($birthdateApproximate == 'true') {
+        if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
+            $birthdate = null;
+        } elseif ($birthdateApproximate == 'unknown') {
+            $age = null;
             $birthdate = null;
         } else {
             $age = null;

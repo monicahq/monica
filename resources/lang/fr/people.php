@@ -105,7 +105,6 @@ return [
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
-    'significant_other_sidebar_blank' => 'Aucun conjoint défini',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
     'significant_other_add_male' => 'Homme',
     'significant_other_add_female' => 'Femme',
@@ -123,11 +122,10 @@ return [
     'significant_other_delete_success' => 'Le conjoint a été supprimé avec succès.',
 
     // kids
-    'kids_blank' => 'Aucun enfant défini',
     'kids_sidebar_title' => 'Enfants',
     'kids_sidebar_cta' => 'Ajouter un autre enfant',
     'kids_blank_cta' => 'Ajouter un enfant',
-    'kids_add_title' => 'Ajouter un enfant pour la famille de :name',
+    'kids_add_title' => 'Ajouter un enfant',
     'kids_add_boy' => 'Garçon',
     'kids_add_girl' => 'Fille',
     'kids_add_gender' => 'Sexe',

@@ -6,20 +6,11 @@ use App\Gift;
 use App\User;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
-use App\Events\Kid\KidCreated;
-use App\Events\Kid\KidDeleted;
-use App\Events\Kid\KidUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 class Kid extends Model
 {
     protected $dates = ['birthdate'];
-
-    protected $events = [
-        'created' => KidCreated::class,
-        'updated' => KidUpdated::class,
-        'deleted' => KidDeleted::class,
-    ];
 
     /**
      * Gets the age of the kid in years, or returns null if the birthdate

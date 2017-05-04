@@ -685,7 +685,7 @@ class ContactTest extends TestCase
             $contact->addKid(
                 'John',
                 'male',
-                'true',
+                'approximate',
                 '2017-01-01',
                 1,
                 'America/New_York'
@@ -706,7 +706,7 @@ class ContactTest extends TestCase
                 $kid->id,
                 'John',
                 'male',
-                'true',
+                'approximate',
                 '2017-01-01',
                 1,
                 'America/New_York'
