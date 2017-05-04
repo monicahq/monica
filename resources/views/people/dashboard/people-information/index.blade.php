@@ -13,7 +13,7 @@
         @if (is_null($contact->getBirthdate()))
           {{ trans('people.birthdate_not_set') }}
         @else
-          {{ $contact->getAge() }} ({{ $contact->getBirthdate()->format('Y-m-d') }})
+          {{ $contact->getAge() }}
         @endif
       </li>
 

@@ -13,10 +13,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Contact\ContactCreated' => [
-            'App\Listeners\Contact\SetAvatarColor',
-            'App\Listeners\Contact\LogContactCreatedEvent',
-        ],
         'App\Events\Reminder\ReminderCreated' => [
             'App\Listeners\Reminder\LogReminderCreatedEvent',
             'App\Listeners\Reminder\IncrementNumberOfReminders',

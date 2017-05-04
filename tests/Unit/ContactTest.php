@@ -325,10 +325,10 @@ class ContactTest extends TestCase
         $city = 'Montreal';
 
         $contact = new Contact;
-        $contact->city = encrypt($city);
+        $contact->city = $city;
 
         $this->assertEquals(
-            decrypt($contact->city),
+            $contact->city,
             $contact->getCity()
         );
     }
@@ -343,7 +343,7 @@ class ContactTest extends TestCase
     public function testGetPartialAddressReturnsCityIfProvinceIsUndefined()
     {
         $contact = new Contact;
-        $contact->city = encrypt('Montreal');
+        $contact->city = 'Montreal';
 
         $this->assertEquals(
             'Montreal',
@@ -354,8 +354,8 @@ class ContactTest extends TestCase
     public function testGetPartialAddressReturnsCityAndProvince()
     {
         $contact = new Contact;
-        $contact->city = encrypt('Montreal');
-        $contact->province = encrypt('QC');
+        $contact->city = 'Montreal';
+        $contact->province = 'QC';
 
         $this->assertEquals(
             'Montreal, QC',
@@ -373,7 +373,7 @@ class ContactTest extends TestCase
     public function testGetProvinceReturnsProvinceWhenDefined()
     {
         $contact = new Contact;
-        $contact->province = encrypt('QC');
+        $contact->province = 'QC';
 
         $this->assertEquals(
             'QC',
@@ -391,7 +391,7 @@ class ContactTest extends TestCase
     public function testGetStreetReturnsStreetWhenDefined()
     {
         $contact = new Contact;
-        $contact->street = encrypt('12 Street Road');
+        $contact->street = '12 Street Road';
 
         $this->assertEquals(
             '12 Street Road',
@@ -409,7 +409,7 @@ class ContactTest extends TestCase
     public function testGetPostalCodeReturnsStreetWhenDefined()
     {
         $contact = new Contact;
-        $contact->postal_code = encrypt('90210');
+        $contact->postal_code = '90210';
 
         $this->assertEquals(
             '90210',
@@ -479,7 +479,7 @@ class ContactTest extends TestCase
     public function testGetEmailReturnsEmailIfDefined()
     {
         $contact = new Contact;
-        $contact->email = encrypt('john@gmail.com');
+        $contact->email = 'john@gmail.com';
 
         $this->assertEquals(
             'john@gmail.com',
@@ -497,7 +497,7 @@ class ContactTest extends TestCase
     public function testGetPhoneReturnsPhoneIfDefined()
     {
         $contact = new Contact;
-        $contact->phone_number = encrypt('123 456 7890');
+        $contact->phone_number = '123 456 7890';
 
         $this->assertEquals(
             '123 456 7890',

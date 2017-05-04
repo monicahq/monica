@@ -115,22 +115,29 @@
 
               <fieldset class="form-group dates">
 
+                {{-- Don't know the birthdate --}}
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="unknown" {{ ($contact->is_birthdate_approximate == 'unknown')?'checked':'' }}>
+
+                    <div class="form-inline">
+                      {{ trans('people.significant_other_add_unknown') }}
+                    </div>
+                  </label>
+                </div>
+
                 {{-- Approximate birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_approximate"
-                              v-model="birthdate_approximate"
-                              v-bind:value="true"
-                              :checked="true">
+                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="approximate" {{ ($contact->is_birthdate_approximate == 'approximate')?'checked':'' }}>
 
                     <div class="form-inline">
                       {{ trans('people.information_edit_probably') }}
 
                       <input type="number" class="form-control" name="age"
-                              value="{{ $contact->getAge() }}"
-                              min="1"
-                              max="99"
-                              :disabled="birthdate_approximate == false">
+                              value="{{ (is_null($contact->getAge())) ? 1 : $contact->getAge() }}"
+                              min="0"
+                              max="99">
 
                       {{ trans('people.information_edit_probably_yo') }}
                     </div>
@@ -140,42 +147,26 @@
                 {{-- Exact birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="birthdate_exact"
-                              v-model="birthdate_approximate"
-                              v-bind:value="false"
-                              :checked="false">
+                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="exact" {{ ($contact->is_birthdate_approximate == 'exact')?'checked':'' }}>
 
                       <div class="form-inline">
                         {{ trans('people.information_edit_exact') }}
 
-                        @if (is_null($contact->getBirthdate()))
-
                         <input type="date" name="specificDate" class="form-control"
-                              value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                              value="{{ (is_null($contact->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getBirthdate()->format('Y-m-d') }}"
                               min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(50)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                              :disabled="birthdate_approximate == true">
-
-                        @else
-
-                        <input type="date" name="specificDate" class="form-control"
-                              value="{{ $contact->getBirthdate()->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(50)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                              :disabled="birthdate_approximate == true">
-
-                        @endif
+                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
                 </div>
               </fieldset>
 
-              <div class="classname" v-show="birthdate_approximate == false">
+              <div class="classname">
                 <p>{{ trans('people.information_edit_help') }}</p>
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('people.information_edit_cta') }}</button>
+                <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
                 <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>

@@ -115,7 +115,10 @@ class PeopleController extends Controller
             $contact->last_name = ucfirst($request->input('last_name'));
         }
 
+        $contact->is_birthdate_approximate = 'unknown';
         $contact->save();
+
+        $contact->setAvatarColor();
 
         return redirect()->route('people.show', ['id' => $contact->id]);
     }
@@ -203,54 +206,60 @@ class PeopleController extends Controller
         }
 
         if ($request->input('email') != '') {
-            $contact->email = encrypt($request->input('email'));
+            $contact->email = $request->input('email');
         } else {
             $contact->email = null;
         }
 
         if ($request->input('phone') != '') {
-            $contact->phone_number = encrypt($request->input('phone'));
+            $contact->phone_number = $request->input('phone');
         } else {
             $contact->phone_number = null;
         }
 
         if ($request->input('street') != '') {
-            $contact->street = encrypt($request->input('street'));
+            $contact->street = $request->input('street');
         } else {
             $contact->street = null;
         }
 
         if ($request->input('postalcode') != '') {
-            $contact->postal_code = encrypt($request->input('postalcode'));
+            $contact->postal_code = $request->input('postalcode');
         } else {
             $contact->postal_code = null;
         }
 
         if ($request->input('province') != '') {
-            $contact->province = encrypt($request->input('province'));
+            $contact->province = $request->input('province');
         } else {
             $contact->province = null;
         }
 
         if ($request->input('city') != '') {
-            $contact->city = encrypt($request->input('city'));
+            $contact->city = $request->input('city');
         } else {
             $contact->city = null;
         }
 
         $contact->country_id = $request->input('country');
+        $birthdateApproximate = $request->input('birthdateApproximate');
 
-        if ($request->input('birthdateApproximate') == 'true') {
+        if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
             $contact->birthdate = $birthdate;
+        } elseif ($birthdateApproximate == 'unknown') {
+            $contact->birthdate = null;
         } else {
             $birthdate = Carbon::createFromFormat('Y-m-d', $request->input('specificDate'));
             $contact->birthdate = $birthdate;
         }
 
+        $contact->is_birthdate_approximate = $birthdateApproximate;
         $contact->save();
+
+        $contact->logEvent('contact', $contact->id, 'update');
 
         $request->session()->flash('success', trans('people.information_edit_success'));
 
