@@ -8266,6 +8266,28 @@ header .main-cta {
   margin-bottom: 10px;
 }
 
+.people-show .activities .activity-date {
+  color: #777;
+  font-size: 12px;
+  margin-right: 10px;
+  width: 100px;
+}
+
+.people-show .activities .activity-actions {
+  position: relative;
+  text-align: center;
+  width: 60px;
+}
+
+.people-show .activities .activity-actions a:first-child {
+  margin-right: 5px;
+}
+
+.people-show .activities .activity-actions a.edit {
+  position: relative;
+  top: 1px;
+}
+
 @media (max-width: 480px) {
   .people-list {
     margin-top: 20px;
@@ -8831,6 +8853,40 @@ input:disabled {
   background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
   background-position: 0 -0.5em;
   border-color: rgba(27, 31, 35, 0.5);
+}
+
+.table {
+  border-collapse: collapse;
+  display: table;
+  width: 100%;
+}
+
+.table .table-row {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  display: table-row;
+}
+
+.table .table-row:first-child .table-cell:first-child {
+  border-top-left-radius: 3px;
+}
+
+.table .table-row:first-child .table-cell:last-child {
+  border-top-right-radius: 3px;
+}
+
+.table .table-row:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+.table .table-row:hover {
+  background-color: #f6f8fa;
+}
+
+.table .table-cell {
+  display: table-cell;
+  padding: 8px 10px;
 }
 
 footer {

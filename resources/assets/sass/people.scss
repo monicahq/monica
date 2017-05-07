@@ -492,6 +492,30 @@
       }
     }
   }
+
+  .activities {
+    .activity-date {
+      color: #777;
+      font-size: 12px;
+      margin-right: 10px;
+      width: 100px;
+    }
+
+    .activity-actions {
+      position: relative;
+      text-align: center;
+      width: 60px;
+
+      a:first-child {
+        margin-right: 5px;
+      }
+
+      a.edit {
+        position: relative;
+        top: 1px;
+      }
+    }
+  }
 }
 
 

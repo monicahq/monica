@@ -37,10 +37,32 @@
 
               <h2>{{ trans('people.activities_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
+              {{-- Summary --}}
+              <div class="form-group">
+                <label for="summary">{{ trans('people.activities_summary') }}</label>
+                <input type="text" class="form-control" name="summary" autofocus required maxlength="254">
+              </div>
+
+              {{-- Date --}}
+              <div class="form-group">
+                <label for="specific_date">{{ trans('people.activities_add_date_occured') }}</label>
+                <input type="date" id="specific_date" name="specific_date" class="form-control"
+                    value="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
+                    min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
+                    max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
+              </div>
+
               {{-- Build the Activity types dropdown --}}
               <div class="form-group">
                 <label for="activityType">{{ trans('people.activities_add_pick_activity') }}</label>
                 <select id="activityType" name="activityType" class="form-control" required>
+
+                  {{-- Blank option --}}
+                  <option value="0">
+                    -
+                  </option>
+
+                  {{-- Predefined options --}}
                   @foreach (App\ActivityTypeGroup::all() as $activityTypeGroup)
                     <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
                       @foreach (App\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
@@ -51,14 +73,6 @@
                     </optgroup>
                   @endforeach
                 </select>
-              </div>
-
-              <div class="form-group">
-                <label for="specific_date">{{ trans('people.activities_add_date_occured') }}</label>
-                <input type="date" id="specific_date" name="specific_date" class="form-control"
-                    value="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                    min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
-                    max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
               </div>
 
               <div class="form-group">
