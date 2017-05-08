@@ -16,6 +16,7 @@ class RemoveEncryptionTasks extends Migration
     {
         $tasks = Task::all();
         foreach ($tasks as $task) {
+            echo $task->id.' ';
             if (!is_null ($task->title)) {
                 $task->title = decrypt($task->title);
             }

@@ -29,17 +29,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Gift\RemoveAllGiftEvents',
             'App\Listeners\Gift\DecreaseNumberOfGifts',
         ],
-        'App\Events\Task\TaskCreated' => [
-            'App\Listeners\Task\LogTaskCreatedEvent',
-            'App\Listeners\Task\IncrementNumberOfTasks',
-        ],
-        'App\Events\Task\TaskUpdated' => [
-            'App\Listeners\Task\ChangeNumberOfTasks',
-        ],
-        'App\Events\Task\TaskDeleted' => [
-            'App\Listeners\Task\RemoveAllTaskEvents',
-            'App\Listeners\Task\DecreaseNumberOfTasks',
-        ],
     ];
 
     /**

@@ -787,16 +787,23 @@ class PeopleController extends Controller
         $task = new Task;
         $task->account_id = $contact->account_id;
         $task->contact_id = $contact->id;
-        $task->title = encrypt($request->input('title'));
+        $task->title = $request->input('title');
 
         if ($request->input('comment') != '') {
-            $task->description = encrypt($request->input('comment'));
+            $task->description = $request->input('comment');
         } else {
             $task->description = null;
         }
 
         $task->status = 'inprogress';
         $task->save();
+
+        // increment number of tasks
+        $contact->number_of_tasks_in_progress = $contact->number_of_tasks_in_progress + 1;
+        $contact->save();
+
+        // log task add
+        $contact->logEvent('task', $task->id, 'create');
 
         $request->session()->flash('success', trans('people.tasks_add_success'));
 
@@ -849,8 +856,25 @@ class PeopleController extends Controller
 
         $task->delete();
 
-        $request->session()->flash('success', trans('people.tasks_delete_success'));
+        // Delete all events
+        $events = Event::where('contact_id', $task->contact_id)
+                          ->where('account_id', $task->account_id)
+                          ->where('object_type', 'task')
+                          ->where('object_id', $task->id)
+                          ->get();
 
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        // Decrease number of notes
+        if ($task->status == 'inprogress') {
+            $contact->number_of_tasks_in_progress = $contact->number_of_tasks_in_progress - 1;
+        } else {
+            $contact->number_of_tasks_completed = $contact->number_of_tasks_completed - 1;
+        }
+
+        $request->session()->flash('success', trans('people.tasks_delete_success'));
         return redirect('/people/'.$contact->id);
     }
 
