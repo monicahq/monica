@@ -526,6 +526,7 @@ class PeopleController extends Controller
 
 
         $activity->summary = $request->input('summary');
+        $activityTypeId = $request->input('activityType');
 
         if ($activityTypeId == 0) {
             $activity->activity_type_id = null;
