@@ -25,43 +25,23 @@
 
     <p>{{ trans('people.tasks_desc', ['name' => $contact->getFirstName()]) }}</p>
 
-    <table class="table table-sm table-hover">
-      <thead>
-        <tr>
-          <th>Date added</th>
-          <th>Description</th>
-          <th class="actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($contact->getTasks() as $task)
-          <tr>
-            <td class="date task-{{ $task->status }}">
-              {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt(), Auth::user()->locale) }}
-            </td>
-            <td class="task-{{ $task->status }}">
-              {{ $task->getTitle() }}
-
-              @if($task->getDescription())
-                - {{ $task->getDescription() }}
-              @endif
-            </td>
-            <td class="actions">
-              <ul class="task-actions horizontal">
-                <li>
-                  @if($task->status == 'inprogress')
-                  <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/toggle">{{ trans('people.tasks_mark_complete') }}</a>
-                  @else
-                  <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/toggle">{{ trans('people.tasks_reactivate') }}</a>
-                  @endif
-                </li>
-                <li><a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">{{ trans('people.tasks_delete') }}</a></li>
-              </ul>
-            </td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+    <ul class="table">
+      @foreach($contact->getTasks() as $task)
+      <li class="table-row">
+        <div class="table-cell activity-date">
+          {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt(), Auth::user()->locale) }}
+        </div>
+        <div class="table-cell">
+          {{ $task->getTitle() }}
+        </div>
+        <div class="table-cell activity-actions">
+          <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">
+            <i class="fa fa-trash-o" aria-hidden="true"></i>
+          </a>
+        </div>
+      </li>
+      @endforeach
+    </ul>
 
   </div>
 
