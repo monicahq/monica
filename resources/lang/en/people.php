@@ -163,7 +163,6 @@ return [
 
     // activities
     'activity_title' => 'Activities',
-    'activity_description' => 'Record all activities you\'ve done with :name or his family.',
     'activity_type_group_simple_activities' => 'Simple activities',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Food',
@@ -188,7 +187,8 @@ return [
     'activities_delete_confirmation' => 'Are you sure you want to delete this activity?',
     'activities_item_information' => ':Activity. Happened on :date.',
     'activities_add_title' => 'What did you do with :name?',
-    'activities_add_pick_activity' => 'Pick an activity',
+    'activities_summary' => 'Describe what you did',
+    'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don\'t have to, but it will give you statistics later on.',
     'activities_add_date_occured' => 'Date this activity occured',
     'activities_add_optional_comment' => 'Optional comment',
     'activities_add_cta' => 'Record activity',
@@ -208,6 +208,7 @@ return [
     'notes_title' => 'Notes',
     'notes_blank_link' => 'Add a note',
     'notes_blank_name' => 'about :name',
+    'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent.',
 
     // gifts
     'gifts_blank_title' => 'Manage your gifts ideas and the ones you\'ve offered to :name.',

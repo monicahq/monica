@@ -40,28 +40,6 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\Task\RemoveAllTaskEvents',
             'App\Listeners\Task\DecreaseNumberOfTasks',
         ],
-        'App\Events\Activity\ActivityCreated' => [
-            'App\Listeners\Activity\IncreaseActivitiesStatistics',
-            'App\Listeners\Activity\LogActivityCreatedEvent',
-            'App\Listeners\Activity\IncrementNumberOfActivities',
-        ],
-        'App\Events\Activity\ActivityUpdated' => [
-            'App\Listeners\Activity\UpdateActivitiesStatistics',
-            'App\Listeners\Activity\LogActivityUpdatedEvent',
-        ],
-        'App\Events\Activity\ActivityDeleted' => [
-            'App\Listeners\Activity\DecreaseActivitiesStatistics',
-            'App\Listeners\Activity\RemoveAllActivityEvents',
-            'App\Listeners\Activity\DecreaseNumberOfActivities',
-        ],
-        'App\Events\Note\NoteCreated' => [
-            'App\Listeners\Note\LogNoteCreatedEvent',
-            'App\Listeners\Note\IncrementNumberOfNotes',
-        ],
-        'App\Events\Note\NoteDeleted' => [
-            'App\Listeners\Note\RemoveAllNoteEvents',
-            'App\Listeners\Note\DecreaseNumberOfNotes',
-        ],
     ];
 
     /**

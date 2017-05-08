@@ -4,7 +4,7 @@
     {{ trans('people.section_personal_gifts') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/gifts/add">{{ trans('people.gifts_add_gift') }}</a>
+      <a href="/people/{{ $contact->id }}/gifts/add" class="btn">{{ trans('people.gifts_add_gift') }}</a>
     </span>
   </h3>
 </div>

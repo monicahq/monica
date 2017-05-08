@@ -3,17 +3,10 @@
 namespace App;
 
 use App\Helpers\DateHelper;
-use App\Events\Note\NoteCreated;
-use App\Events\Note\NoteDeleted;
 use Illuminate\Database\Eloquent\Model;
 
 class Note extends Model
 {
-    protected $events = [
-        'created' => NoteCreated::class,
-        'deleted' => NoteDeleted::class,
-    ];
-
     /**
      * Get the description of a note.
      * @return string

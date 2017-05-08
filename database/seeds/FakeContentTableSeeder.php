@@ -73,20 +73,20 @@ class FakeContentTableSeeder extends Seeder
 
             // add email
             if (rand(1, 2) == 1) {
-                $contact->email = encrypt($faker->email);
+                $contact->email = $faker->email;
             }
 
             // add phonenumber
             if (rand(1, 2) == 1) {
-                $contact->phone_number = encrypt($faker->phoneNumber);
+                $contact->phone_number = $faker->phoneNumber;
             }
 
             // add address
             if (rand(1, 2) == 1) {
-                $contact->street = encrypt($faker->streetAddress);
-                $contact->postal_code = encrypt($faker->postcode);
-                $contact->province = encrypt($faker->state);
-                $contact->city = encrypt($faker->city);
+                $contact->street = $faker->streetAddress;
+                $contact->postal_code = $faker->postcode;
+                $contact->province = $faker->state;
+                $contact->city = $faker->city;
                 $countryID = '1';
             }
 
@@ -136,7 +136,7 @@ class FakeContentTableSeeder extends Seeder
             // // notes
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 13); $j++) {
-                    $body = $faker->realText(rand(40, 80));
+                    $body = $faker->realText(rand(40, 500));
                     $noteId = $contact->addNote($body);
                 }
             }

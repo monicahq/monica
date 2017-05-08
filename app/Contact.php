@@ -771,6 +771,11 @@ class Contact extends Model
         $note->body = $body;
         $note->save();
 
+        $this->number_of_notes = $this->number_of_notes + 1;
+        $this->save();
+
+        $this->logEvent('note', $note->id, 'create');
+
         return $note->id;
     }
 
@@ -781,6 +786,25 @@ class Contact extends Model
     {
         $note = Note::findOrFail($noteId);
         $note->delete();
+
+        // Decrease number of notes
+        $this->number_of_notes = $this->number_of_notes - 1;
+
+        if ($this->number_of_notes < 1) {
+            $this->number_of_notes = 0;
+        }
+        $this->save();
+
+        // Delete all events
+        $events = Event::where('contact_id', $note->contact_id)
+                          ->where('account_id', $note->account_id)
+                          ->where('object_type', 'note')
+                          ->where('object_id', $note->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
     }
 
     /**

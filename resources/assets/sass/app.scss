@@ -165,6 +165,103 @@ input:disabled {
   }
 }
 
+.btn {
+  color: #24292e;
+  background-color: #eff3f6;
+  background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-repeat: repeat-x;
+  background-position: -1px -1px;
+  background-size: 110% 110%;
+  border: 1px solid rgba(27,31,35,0.2);
+  border-radius: 0.25em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-decoration: none;
+
+  &:hover, &:visited {
+    text-decoration: none;
+    background-color: #e6ebf1;
+    background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
+    background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
+    background-position: 0 -0.5em;
+    background-repeat: repeat-x;
+    border-color: rgba(27,31,35,0.35);
+  }
+
+  &:active {
+    background-color: #e9ecef;
+    background-image: none;
+    border-color: rgba(27,31,35,0.35);
+    box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15)
+  }
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #28a745;
+  background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
+  background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+
+  &:hover {
+    background-color: #269f42;
+    background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
+    background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
+    background-position: 0 -0.5em;
+    border-color: rgba(27,31,35,0.5);
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  display: table;
+  width: 100%;
+
+  .table-row {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    display: table-row;
+
+    &:first-child {
+      .table-cell:first-child {
+        border-top-left-radius: 3px;
+      }
+
+      .table-cell:last-child {
+        border-top-right-radius: 3px;
+      }
+    }
+
+    &:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    &:hover {
+      background-color: #f6f8fa;
+    }
+  }
+
+  .table-cell {
+    display: table-cell;
+    padding: 8px 10px;
+  }
+}
+
 footer {
   margin-bottom: 30px;
   margin-top: 30px;

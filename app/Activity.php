@@ -5,9 +5,7 @@ namespace App;
 use App\ActivityType;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Events\Activity\ActivityCreated;
-use App\Events\Activity\ActivityDeleted;
-use App\Events\Activity\ActivityUpdated;
+
 
 class Activity extends Model
 {
@@ -15,11 +13,19 @@ class Activity extends Model
 
     protected $dates = ['date_it_happened'];
 
-    protected $events = [
-        'created' => ActivityCreated::class,
-        'updated' => ActivityUpdated::class,
-        'deleted' => ActivityDeleted::class,
-    ];
+    /**
+     * Get the summary for this activity.
+     *
+     * @return string or null
+     */
+    public function getSummary()
+    {
+        if (is_null($this->summary)) {
+            return null;
+        }
+
+        return $this->summary;
+    }
 
     /**
      * Get the description for this activity.
@@ -52,8 +58,11 @@ class Activity extends Model
      */
     public function getTitle()
     {
-        $activityType = ActivityType::find($this->activity_type_id);
+        if (is_null($this->activity_type_id)) {
+            return null;
+        }
 
+        $activityType = ActivityType::find($this->activity_type_id);
         return $activityType->key;
     }
 }

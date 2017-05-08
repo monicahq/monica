@@ -435,14 +435,21 @@ class PeopleController extends Controller
             return redirect()->route('people.index');
         }
 
+        $summary = $request->input('summary');
         $activityTypeId = $request->input('activityType');
         $description = $request->input('comment');
         $dateItHappened = Carbon::createFromFormat('Y-m-d', $request->input('specific_date'));
 
         $activity = new Activity;
+        $activity->summary = $summary;
         $activity->account_id = $contact->account_id;
         $activity->contact_id = $contact->id;
-        $activity->activity_type_id = $activityTypeId;
+
+        if ($activityTypeId == 0) {
+            $activity->activity_type_id = null;
+        } else {
+            $activity->activity_type_id = $activityTypeId;
+        }
 
         if ($description == null) {
             $activity->description = null;
@@ -453,6 +460,16 @@ class PeopleController extends Controller
         $activity->save();
 
         $request->session()->flash('success', trans('people.activities_add_success'));
+
+        // Event
+        $contact->logEvent('activity', $activity->id, 'create');
+
+        // Update statistics about activities
+        $contact->calculateActivitiesStatistics();
+
+        // Increment the number of activities
+        $contact->number_of_activities = $contact->number_of_activities + 1;
+        $contact->save();
 
         return redirect('/people/'.$contact->id);
     }
@@ -507,7 +524,16 @@ class PeopleController extends Controller
             return redirect()->route('people.index');
         }
 
-        $activity->activity_type_id = $request->input('activityType');
+
+        $activity->summary = $request->input('summary');
+        $activityTypeId = $request->input('activityType');
+
+        if ($activityTypeId == 0) {
+            $activity->activity_type_id = null;
+        } else {
+            $activity->activity_type_id = $request->input('activityType');
+        }
+
         $description = $request->input('comment');
         if ($description == null || $description == '') {
             $activity->description = null;
@@ -516,6 +542,12 @@ class PeopleController extends Controller
         }
         $activity->date_it_happened = Carbon::createFromFormat('Y-m-d', $request->input('specific_date'));
         $activity->save();
+
+        // Event
+        $contact->logEvent('activity', $activity->id, 'update');
+
+        // Calculate the statistics about activities
+        $contact->calculateActivitiesStatistics();
 
         $request->session()->flash('success', trans('people.activities_update_success'));
 
@@ -545,6 +577,16 @@ class PeopleController extends Controller
         }
 
         $activity->delete();
+
+        // Decrease number of activities
+        $contact->number_of_activities = $contact->number_of_activities - 1;
+        if ($contact->number_of_activities < 1) {
+            $contact->number_of_activities = 0;
+        }
+        $contact->save();
+
+        // Calculate the statistics about activities
+        $contact->calculateActivitiesStatistics();
 
         $request->session()->flash('success', trans('people.activities_delete_success'));
 

@@ -201,13 +201,12 @@
         font-weight: 400;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        padding-left: 36px;
+        padding-left: 23px;
         padding-top: 10px;
         position: relative;
       }
 
       .icon-section {
-        left: 24px;
         position: absolute;
         top: 14px;
         width: 17px;
@@ -217,8 +216,8 @@
       span {
         font-size: 14px;
         position: absolute;
-        right: 10px;
-        top: 13px;
+        right: 0px;
+        top: 5px;
       }
     }
 
@@ -228,30 +227,6 @@
           margin-bottom: 20px;
           width: 100%;
         }
-      }
-    }
-
-    table {
-      td.actions,
-      th.actions {
-        text-align: right;
-        width: 190px;
-
-        li:not(:last-child) {
-          margin-right: 5px;
-        }
-      }
-
-      td.date {
-        color: #92969d;
-        font-size: 12px;
-        position: relative;
-        top: 3px;
-        width: 130px;
-      }
-
-      td.task-completed {
-        text-decoration: line-through;
       }
     }
   }
@@ -501,6 +476,44 @@
 
     .gift-list-item-actions {
       margin-left: 5px;
+    }
+  }
+
+  .notes {
+    .notes-list {
+      .note-date {
+        color: #777;
+        font-size: 12px;
+        margin-right: 10px;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .activities {
+    .activity-date {
+      color: #777;
+      font-size: 12px;
+      margin-right: 10px;
+      width: 100px;
+    }
+
+    .activity-actions {
+      position: relative;
+      text-align: center;
+      width: 60px;
+
+      a:first-child {
+        margin-right: 5px;
+      }
+
+      a.edit {
+        position: relative;
+        top: 1px;
+      }
     }
   }
 }

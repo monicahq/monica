@@ -41,7 +41,7 @@
 
               {{-- Body note --}}
               <div class="form-group">
-                <textarea class="form-control" id="body" name="body" rows="3"></textarea>
+                <textarea class="form-control" id="body" name="body" rows="10"></textarea>
               </div>
 
               <div class="form-group actions">

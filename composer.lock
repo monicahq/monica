@@ -1048,16 +1048,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v3.0.5",
+            "version": "v3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "2771ab96004b6149d0974f8a469e08c8e54474a5"
+                "reference": "bca777a8526983e0ebdf3350f1b6e031923a473b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/2771ab96004b6149d0974f8a469e08c8e54474a5",
-                "reference": "2771ab96004b6149d0974f8a469e08c8e54474a5",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/bca777a8526983e0ebdf3350f1b6e031923a473b",
+                "reference": "bca777a8526983e0ebdf3350f1b6e031923a473b",
                 "shasum": ""
             },
             "require": {
@@ -1090,7 +1090,7 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylor@laravel.com"
                 }
             ],
             "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries.",
@@ -1098,7 +1098,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2017-04-20T16:24:07+00:00"
+            "time": "2017-05-05T14:17:11+00:00"
         },
         {
             "name": "league/flysystem",

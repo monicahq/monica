@@ -37,34 +37,40 @@
 
               <h2>{{ trans('people.activities_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
-              {{-- Build the Activity types dropdown --}}
+              {{-- Summary --}}
               <div class="form-group">
-                <label for="activityType">{{ trans('people.activities_add_pick_activity') }}</label>
-                <select id="activityType" name="activityType" class="form-control" required>
-                  @foreach (App\ActivityTypeGroup::all() as $activityTypeGroup)
-                    <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
-                      @foreach (App\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
-                        @if ($activity->getTitle() == $activityType->key)
-                        <option value="{{ $activityType->id }}" selected>
-                          {{ trans('people.activity_type_'.$activityType->key) }}
-                        </option>
-                        @else
-                        <option value="{{ $activityType->id }}">
-                          {{ trans('people.activity_type_'.$activityType->key) }}
-                        </option>
-                        @endif
-                      @endforeach
-                    </optgroup>
-                  @endforeach
-                </select>
+                <label for="summary">{{ trans('people.activities_summary') }}</label>
+                <input type="text" class="form-control" name="summary" value="{{ $activity->getSummary() }}"autofocus required maxlength="254">
               </div>
 
+              {{-- Date --}}
               <div class="form-group">
                 <label for="specific_date">{{ trans('people.activities_add_date_occured') }}</label>
                 <input type="date" id="specific_date" name="specific_date" class="form-control"
                     value="{{ $activity->date_it_happened->format('Y-m-d') }}"
                     min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
                     max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
+              </div>
+
+              {{-- Build the Activity types dropdown --}}
+              <div class="form-group">
+                <label for="activityType">{{ trans('people.activities_add_pick_activity') }}</label>
+                <select id="activityType" name="activityType" class="form-control" required>
+                  {{-- Blank option --}}
+                  <option value="0" {{ (is_null($activity->activity_type_id)?'selected':'') }}>
+                    -
+                  </option>
+                  @foreach (App\ActivityTypeGroup::all() as $activityTypeGroup)
+                    <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
+                      @foreach (App\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
+                      {{ $activity->activity_type_id }}
+                        <option value="{{ $activityType->id }}" {{ ($activity->activity_type_id == $activityType->id)?'selected':'' }}>
+                          {{ trans('people.activity_type_'.$activityType->key) }}
+                        </option>
+                      @endforeach
+                    </optgroup>
+                  @endforeach
+                </select>
               </div>
 
               <div class="form-group">

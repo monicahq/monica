@@ -162,7 +162,6 @@ return [
 
     // activities
     'activity_title' => 'Activités',
-    'activity_description' => 'Gardez une trace de toutes les activités que vous avez eues avec :name ou sa famille.',
     'activity_type_group_simple_activities' => 'Activités simples',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Nourriture',
@@ -187,7 +186,8 @@ return [
     'activities_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer l\'activité ?',
     'activities_item_information' => ':Activity. S\'est passée le :date.',
     'activities_add_title' => 'Qu\'avez-vous fait avec :name?',
-    'activities_add_pick_activity' => 'Choisissez une activité',
+    'activities_summary' => 'Décrivez ce que vous avez fait',
+    'activities_add_pick_activity' => '(Optionel) Souhaitez-vous catégoriser cette activitié ? Vous n\'avez pas à le faire, mais cela nous permettra de faire des statistiques plus tard.',
     'activities_add_date_occured' => 'Date où l\'activité s\'est passée',
     'activities_add_optional_comment' => 'Commentaire (optionnel)',
     'activities_add_cta' => 'Enregistrer l\'activité',
@@ -207,6 +207,7 @@ return [
     'notes_title' => 'Notes',
     'notes_blank_link' => 'Ajouter une note',
     'notes_blank_name' => 'à propos de :name',
+    'notes_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer cette note ?',
 
     // gifts
     'gifts_blank_title' => 'Gérez vos idées de cadeaux ou les cadeaux que vous avez offert à :name.',
