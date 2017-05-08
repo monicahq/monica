@@ -8266,24 +8266,28 @@ header .main-cta {
   margin-bottom: 10px;
 }
 
-.people-show .activities .activity-date {
+.people-show .activities .activity-date,
+.people-show .tasks .activity-date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
   width: 100px;
 }
 
-.people-show .activities .activity-actions {
+.people-show .activities .activity-actions,
+.people-show .tasks .activity-actions {
   position: relative;
   text-align: center;
   width: 60px;
 }
 
-.people-show .activities .activity-actions a:first-child {
+.people-show .activities .activity-actions a:first-child,
+.people-show .tasks .activity-actions a:first-child {
   margin-right: 5px;
 }
 
-.people-show .activities .activity-actions a.edit {
+.people-show .activities .activity-actions a.edit,
+.people-show .tasks .activity-actions a.edit {
   position: relative;
   top: 1px;
 }

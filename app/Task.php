@@ -25,7 +25,7 @@ class Task extends Model
             return null;
         }
 
-        return decrypt($this->title);
+        return $this->title;
     }
 
     public function getDescription()
@@ -34,7 +34,7 @@ class Task extends Model
             return null;
         }
 
-        return decrypt($this->description);
+        return $this->description;
     }
 
     public function getCreatedAt()

@@ -24,7 +24,7 @@ class TaskTest extends TestCase
     public function testGetTitleReturnsTitle()
     {
         $task = new Task;
-        $task->title = encrypt('This is a test');
+        $task->title = 'This is a test';
 
         $this->assertEquals(
             'This is a test',
@@ -42,7 +42,7 @@ class TaskTest extends TestCase
     public function testGetDescriptionReturnsDescription()
     {
         $task = new Task;
-        $task->description = encrypt('This is a test');
+        $task->description = 'This is a test';
 
         $this->assertEquals(
             'This is a test',
