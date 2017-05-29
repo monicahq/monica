@@ -13,11 +13,12 @@ Think of it as a CRM for your friends or family.
 
 ### Purpose
 
-It allows people to keep track of activities done with your friends and family.
+Monica allows people to keep track of everything that's important about their
+friends and family. Like the activities done with them.
 When you last called someone. What you talked about. It will help you remember
 the name and the age of the kids. It can also remind you to call someone you
 haven't talked to in a while. It's like an assistant (some call it spouse) you
-dream of having.
+dream you had.
 
 ### What Monica isn't
 
