@@ -26,6 +26,30 @@ class DashboardController extends Controller
                                     ->limit(10)
                                     ->get();
 
+        // Latest statistics
+        $contacts = Contact::where('account_id', Auth::user()->account_id)
+                                    ->get();
+
+        $number_of_contacts = $contacts->count();
+        $number_of_reminders = 0;
+        $number_of_notes = 0;
+        $number_of_activities = 0;
+        $number_of_gifts = 0;
+        $number_of_tasks = 0;
+        $number_of_kids = 0;
+
+        foreach ($contacts as $contact) {
+            $number_of_reminders = $number_of_reminders + $contact->number_of_reminders;
+            $number_of_notes = $number_of_notes + $contact->number_of_notes;
+            $number_of_activities = $number_of_activities + $contact->number_of_activities;
+            $number_of_gifts = $number_of_gifts + $contact->number_of_gift_ideas;
+            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_received;
+            $number_of_gifts = $number_of_gifts + $contact->number_of_offered;
+            $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_in_progress;
+            $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_completed;
+            $number_of_kids = $number_of_kids + $contact->number_of_kids;
+        }
+
         // List of events
         $events = Event::where('account_id', Auth::user()->account_id)
                       ->orderBy('created_at', 'desc')
@@ -62,6 +86,13 @@ class DashboardController extends Controller
             'events' => $eventsArray,
             'lastUpdatedContacts' => $lastUpdatedContacts,
             'upcomingReminders' => $upcomingReminders,
+            'number_of_contacts' => $number_of_contacts,
+            'number_of_reminders' => $number_of_reminders,
+            'number_of_notes' => $number_of_notes,
+            'number_of_activities' => $number_of_activities,
+            'number_of_gifts' => $number_of_gifts,
+            'number_of_tasks' => $number_of_tasks,
+            'number_of_kids' => $number_of_kids
         ];
 
         return view('dashboard.index', $data);

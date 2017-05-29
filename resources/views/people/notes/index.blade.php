@@ -13,7 +13,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <a href="/people/{{ $contact->id }}/note/add" class="btn">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
+      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
     </div>
   </div>
 
@@ -24,11 +24,11 @@
     <ul class="notes-list">
       @foreach ($contact->getNotes() as $note)
         <li>
+          {{ $note->getBody() }}
           <span class="note-date">
             {{ $note->getCreatedAt(Auth::user()->locale) }}
             <a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
           </span>
-          {{ $note->getBody() }}
         </li>
       @endforeach
     </ul>
