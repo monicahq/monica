@@ -36,7 +36,6 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,
-        'reminder_type_id' => rand(1, 6),
     ];
 });
 
