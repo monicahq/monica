@@ -1017,6 +1017,9 @@ class PeopleController extends Controller
             // date is in the past - we need to calculate next occuring date
             $reminder->calculateNextExpectedDate($reminder->next_expected_date, 'year', 1);
             $reminder->save();
+
+            $contact->number_of_reminders = $contact->number_of_reminders + 1;
+            $contact->save();
         }
 
         $request->session()->flash('success', trans('people.kids_add_success'));
@@ -1192,6 +1195,9 @@ class PeopleController extends Controller
             // date is in the past - we need to calculate next occuring date
             $reminder->calculateNextExpectedDate($reminder->next_expected_date, 'year', 1);
             $reminder->save();
+
+            $contact->number_of_reminders = $contact->number_of_reminders + 1;
+            $contact->save();
         }
 
         $request->session()->flash('success', trans('people.significant_other_add_success'));
