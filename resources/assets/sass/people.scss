@@ -485,6 +485,9 @@
         color: #777;
         font-size: 12px;
         margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        display: block;
       }
 
       li {
@@ -514,6 +517,20 @@
       a.edit {
         position: relative;
         top: 1px;
+      }
+    }
+  }
+
+  .reminders {
+    input[type="date"] {
+      margin-bottom: 20px;
+      width: 170px;
+    }
+
+    .form-check {
+      input[type="number"] {
+        display: inline;
+        width: 50px;
       }
     }
   }

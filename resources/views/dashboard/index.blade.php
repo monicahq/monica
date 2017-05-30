@@ -10,6 +10,18 @@
         <div class="row">
           <div class="col-xs-12 col-sm-9">
 
+            <!-- {{-- Stats --}}
+            {{ $number_of_contacts }}
+            {{ $number_of_kids }}
+            {{ $number_of_reminders }}
+            {{ $number_of_notes }}
+            {{ $number_of_activities }}
+            {{ $number_of_gifts }}
+            {{ $number_of_tasks }}
+
+            % contacts with significant other
+            % contacts with kids -->
+
             {{-- Upcoming reminders --}}
             <h3>{{ trans('dashboard.reminders_title') }}</h3>
 

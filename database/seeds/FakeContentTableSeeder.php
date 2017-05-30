@@ -5,7 +5,6 @@ use App\Event;
 use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
-use App\ReminderType;
 use Faker\Factory as Faker;
 use App\Helpers\RandomHelper;
 use Illuminate\Database\Seeder;

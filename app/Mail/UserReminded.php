@@ -37,8 +37,10 @@ class UserReminded extends Mailable
     {
         $contact = Contact::findOrFail($this->reminder->contact_id);
 
+        \App::setLocale($this->user->locale);
+
         return $this->text('emails.reminder.reminder')
-                    ->subject('REMINDER FOR: '.$contact->getCompleteName())
+                    ->subject(trans('mail.subject_line', ['contact' => $contact->getCompleteName()]))
                     ->with([
                         'contact' => $contact,
                         'reminder' => $this->reminder,

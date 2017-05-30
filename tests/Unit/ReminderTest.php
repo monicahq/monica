@@ -23,7 +23,7 @@ class ReminderTest extends TestCase
     public function testGetTitleReturnsStringIfDefined()
     {
         $reminder = new Reminder;
-        $reminder->title = encrypt('this is a test');
+        $reminder->title = 'this is a test';
 
         $this->assertInternalType('string', $reminder->getTitle());
     }
@@ -38,23 +38,9 @@ class ReminderTest extends TestCase
     public function testGetDescriptionReturnsStringIfDefined()
     {
         $reminder = new Reminder;
-        $reminder->description = encrypt('this is a test');
+        $reminder->description = 'this is a test';
 
         $this->assertInternalType('string', $reminder->getDescription());
-    }
-
-    public function testGetReminderTypeReturnsNullIfNotDefined()
-    {
-        $reminder = new Reminder;
-
-        $this->assertNull($reminder->getReminderType());
-    }
-
-    public function testGetReminderTypeReturnsStringIfDefined()
-    {
-        $reminder = factory(\App\Reminder::class)->make();
-
-        $this->assertInternalType('string', $reminder->getReminderType());
     }
 
     public function testGetNextExpectedDateReturnsString()

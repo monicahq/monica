@@ -2814,9 +2814,9 @@ input[type="checkbox"].disabled {
   }
 }
 
-/*! Hint.css - v2.4.1 - 2016-11-08
+/*! Hint.css - v2.5.0 - 2017-04-23
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2016 Kushagra Gour */
+* Copyright (c) 2017 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block;
@@ -2830,16 +2830,13 @@ input[type="checkbox"].disabled {
   opacity: 0;
   z-index: 1000000;
   pointer-events: none;
-  -webkit-transition: .3s ease;
   transition: .3s ease;
-  -webkit-transition-delay: 0s;
   transition-delay: 0s;
 }
 
 [class*=hint--]:hover:after, [class*=hint--]:hover:before {
   visibility: visible;
   opacity: 1;
-  -webkit-transition-delay: .1s;
   transition-delay: .1s;
 }
 
@@ -3239,12 +3236,10 @@ input[type="checkbox"].disabled {
 }
 
 .hint--no-animate:after, .hint--no-animate:before {
-  -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
 
 .hint--bounce:after, .hint--bounce:before {
-  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24), -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
@@ -7567,7 +7562,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   -ms-user-select: none;
   user-select: none;
   background-color: #eee;
-  background-image: -webkit-linear-gradient(#fcfcfc, #eee);
   background-image: linear-gradient(#fcfcfc, #eee);
   border: 1px solid #d5d5d5;
   border-radius: 3px;
@@ -7580,7 +7574,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn:hover {
   background-color: #ddd;
-  background-image: -webkit-linear-gradient(#eee, #ddd);
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc;
   color: #333;
@@ -7589,7 +7582,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary {
   background-color: #60b044;
-  background-image: -webkit-linear-gradient(#8add6d, #60b044);
   background-image: linear-gradient(#8add6d, #60b044);
   border-color: #5ca941;
   color: #fff;
@@ -7598,7 +7590,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary:hover {
   background-color: #569e3d;
-  background-image: -webkit-linear-gradient(#79d858, #569e3d);
   background-image: linear-gradient(#79d858, #569e3d);
   border-color: #4a993e;
   color: #fff;
@@ -7610,7 +7601,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-danger:hover {
   background-color: #b33630;
-  background-image: -webkit-linear-gradient(#dc5f59, #b33630);
   background-image: linear-gradient(#dc5f59, #b33630);
   border-color: #cd504a;
   color: #fff;
@@ -8260,6 +8250,9 @@ header .main-cta {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .people-show .notes .notes-list li {
@@ -8290,6 +8283,16 @@ header .main-cta {
 .people-show .tasks .activity-actions a.edit {
   position: relative;
   top: 1px;
+}
+
+.people-show .reminders input[type="date"] {
+  margin-bottom: 20px;
+  width: 170px;
+}
+
+.people-show .reminders .form-check input[type="number"] {
+  display: inline;
+  width: 50px;
 }
 
 @media (max-width: 480px) {
@@ -8797,8 +8800,6 @@ input:disabled {
 .btn {
   color: #24292e;
   background-color: #eff3f6;
-  background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
-  background-image: -webkit-linear-gradient(top, #fafbfc 0%, #eff3f6 90%);
   background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
   position: relative;
   display: inline-block;
@@ -8827,8 +8828,6 @@ input:disabled {
 .btn:hover, .btn:visited {
   text-decoration: none;
   background-color: #e6ebf1;
-  background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
-  background-image: -webkit-linear-gradient(top, #f0f3f6 0%, #e6ebf1 90%);
   background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
   background-position: 0 -0.5em;
   background-repeat: repeat-x;
@@ -8845,15 +8844,11 @@ input:disabled {
 .btn-primary {
   color: #fff;
   background-color: #28a745;
-  background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
-  background-image: -webkit-linear-gradient(top, #34d058 0%, #28a745 90%);
   background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
 }
 
 .btn-primary:hover {
   background-color: #269f42;
-  background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
-  background-image: -webkit-linear-gradient(top, #2fcb53 0%, #269f42 90%);
   background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
   background-position: 0 -0.5em;
   border-color: rgba(27, 31, 35, 0.5);

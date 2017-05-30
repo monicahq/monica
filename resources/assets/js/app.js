@@ -21,7 +21,6 @@ const app = new Vue({
     data: {
       activities_description_show: false,
       reminders_frequency: 'once',
-      reminders_predefined: true
     },
     methods: {
     },
