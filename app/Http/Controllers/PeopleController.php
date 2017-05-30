@@ -1159,6 +1159,23 @@ class PeopleController extends Controller
 
         $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdateApproximate, $birthdate, $age, Auth::user()->timezone);
 
+        // add reminder
+        if ($birthdateApproximate != 'approximate' and $birthdateApproximate != 'unknown') {
+            $reminder = new Reminder;
+
+            $reminder->title = trans('people.significant_other_add_birthday_reminder', ['name' => $firstname, 'contact_firstname' => $contact->getFirstName()]);
+            $reminder->frequency_type = 'year';
+            $reminder->frequency_number = 1;
+            $reminder->next_expected_date = Carbon::createFromFormat('Y-m-d', $birthdate);
+            $reminder->account_id = $contact->account_id;
+            $reminder->contact_id = $contact->id;
+            $reminder->save();
+
+            // date is in the past - we need to calculate next occuring date
+            $reminder->calculateNextExpectedDate($reminder->next_expected_date, 'year', 1);
+            $reminder->save();
+        }
+
         $request->session()->flash('success', trans('people.significant_other_add_success'));
 
         return redirect('/people/'.$contact->id);

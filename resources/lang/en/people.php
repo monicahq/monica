@@ -121,6 +121,7 @@ return [
     'significant_other_add_success' => 'The significant other has been added with success.',
     'significant_other_edit_success' => 'The significant other has been updated with success.',
     'significant_other_delete_success' => 'The significant other has been successfully deleted.',
+    'significant_other_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s significant other.',
 
     // kids
     'kids_sidebar_title' => 'Children',
