@@ -80,6 +80,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{people}/gifts/add', ['as' => '.gifts.add', 'uses' => 'PeopleController@addGift']);
         Route::post('/people/{people}/gifts/store', 'PeopleController@storeGift');
         Route::get('/people/{people}/gifts/{giftId}/delete', 'PeopleController@deleteGift');
+
+        // Debt
+        Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
+        Route::post('/people/{people}/debt/store', 'PeopleController@storeDebt');
+        Route::get('/people/{people}/debt/{debtId}/delete', 'PeopleController@deleteDebt');
     });
 
     Route::group(['as' => 'journal'], function () {

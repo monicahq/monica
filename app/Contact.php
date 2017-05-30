@@ -5,7 +5,7 @@ namespace App;
 use Auth;
 use App\Note;
 use App\Event;
-use App\Money;
+use App\Debt;
 use App\Account;
 use App\Country;
 use App\Reminder;
@@ -985,10 +985,20 @@ class Contact extends Model
      */
     public function hasDebt()
     {
-        return Money::where('account_id', $this->account_id)
+        return Debt::where('account_id', $this->account_id)
                         ->where('contact_id', $this->id)
                         ->where('status', 'inprogress')
                         ->count();
+    }
+
+    /**
+     * Get all the tasks no matter the state, if any.
+     */
+    public function getDebts()
+    {
+        return Debt::where('account_id', $this->account_id)
+                        ->where('contact_id', $this->id)
+                        ->get();
     }
 
 }

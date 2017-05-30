@@ -59,8 +59,8 @@
               @include('people.gifts.index')
             </div>
 
-            <div class="row section money">
-              @include('people.money.index')
+            <div class="row section debts">
+              @include('people.debt.index')
             </div>
           </div>
         </div>

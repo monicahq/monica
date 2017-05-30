@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Kid;
+use App\Debt;
 use App\Gift;
 use App\Note;
 use App\Task;
@@ -1431,6 +1432,92 @@ class PeopleController extends Controller
         $gift->delete();
 
         $request->session()->flash('success', trans('people.gifts_delete_success'));
+
+        return redirect('/people/'.$contact->id);
+    }
+
+    /**
+     * Show the Add money view.
+     * @param int $peopleId
+     */
+    public function addDebt($contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id != Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $data = [
+            'contact' => $contact,
+        ];
+
+        return view('people.debt.add', $data);
+    }
+
+    /**
+     * Actually store the debt.
+     * @param  Request $request
+     * @param  int  $peopleId
+     * @return
+     */
+    public function storeDebt(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id != Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $amount = $request->input('amount');
+        $reason = $request->input('reason');
+        $indebt = $request->input('in-debt');
+
+        $debt = new Debt;
+        $debt->account_id = $contact->account_id;
+        $debt->contact_id = $contact->id;
+        $debt->in_debt = $indebt;
+        $debt->amount = $amount;
+        if ($reason != '') {
+            $debt->reason = $reason;
+        }
+
+        $debt->save();
+
+        $contact->logEvent('debt', $debt->id, 'create');
+
+        $request->session()->flash('success', trans('people.debt_add_success'));
+
+        return redirect('/people/'.$contact->id);
+    }
+
+    public function deleteDebt(Request $request, $contactId, $debtId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $debt = Debt::findOrFail($debtId);
+
+        if ($contact->account_id != Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($debt->contact_id != $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        // Delete all events
+        $events = Event::where('contact_id', $debt->contact_id)
+                          ->where('account_id', $debt->account_id)
+                          ->where('object_type', 'debt')
+                          ->where('object_id', $debt->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        $debt->delete();
+
+        $request->session()->flash('success', trans('people.debt_delete_success'));
 
         return redirect('/people/'.$contact->id);
     }

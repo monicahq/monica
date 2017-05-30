@@ -13,7 +13,7 @@ class CreateMoneyTable extends Migration
      */
     public function up()
     {
-        Schema::create('money', function ($table) {
+        Schema::create('debts', function ($table) {
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('contact_id');

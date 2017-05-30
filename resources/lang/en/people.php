@@ -234,4 +234,18 @@ return [
     'gifts_add_cta' => 'Add',
     'gifts_gift_idea' => 'Gift idea',
 
+    // debts
+    'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',
+    'debt_delete_success' => 'The debt has been deleted with success',
+    'debt_add_success' => 'The debt has been added with success',
+    'debt_title' => 'Debts',
+    'debt_add_cta' => 'Add debt',
+    'debt_you_owe' => 'You owe $:amount',
+    'debt_they_owe' => ':name owes you $:amount',
+    'debt_add_title' => 'Debt management',
+    'debt_add_you_owe' => 'You owe :name',
+    'debt_add_they_owe' => ':name owes you',
+    'debt_add_amount' => 'the sum of (in dollars)',
+    'debt_add_reason' => 'for the following reason (optional)',
+    'debt_add_add_cta' => 'Add debt',
 ];

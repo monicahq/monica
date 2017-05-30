@@ -497,7 +497,8 @@
   }
 
   .activities,
-  .tasks {
+  .tasks,
+  .debts {
     .activity-date {
       color: #777;
       font-size: 12px;
@@ -531,6 +532,14 @@
       input[type="number"] {
         display: inline;
         width: 50px;
+      }
+    }
+  }
+
+  .debts {
+    .debts-list {
+      .debt-nature {
+        width: 220px;
       }
     }
   }

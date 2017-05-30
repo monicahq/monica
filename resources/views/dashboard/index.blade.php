@@ -112,6 +112,11 @@
                       @include('dashboard.events._gifts')
                     @endif
 
+                    {{-- DEBTS --}}
+                    @if ($event['object_type'] == 'debt')
+                      @include('dashboard.events._debts')
+                    @endif
+
                   </div>
 
                   {{-- DATE --}}
