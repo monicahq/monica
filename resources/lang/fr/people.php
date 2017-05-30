@@ -120,6 +120,7 @@ return [
     'significant_other_add_success' => 'Le conjoint a été ajouté avec succès.',
     'significant_other_edit_success' => 'Le conjoint a été mis à jour avec succès.',
     'significant_other_delete_success' => 'Le conjoint a été supprimé avec succès.',
+    'significant_other_add_birthday_reminder' => 'Souhaiter bon anniversaire à :name, conjoint de :contact_firstname.',
 
     // kids
     'kids_sidebar_title' => 'Enfants',
@@ -141,6 +142,7 @@ return [
     'kids_add_success' => 'L\'enfant a été ajouté avec succès.',
     'kids_update_success' => 'L\'enfant a été mis à jour avec succès.',
     'kids_delete_success' => 'L\'enfant a été supprimé avec succès.',
+    'kids_add_birthday_reminder' => 'Souhaiter bon anniversaire à :name, enfant de :contact_firstname.',
 
     // tasks
     'tasks_desc' => 'Gardez une trace des choses à faire pour :name.',

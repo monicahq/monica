@@ -143,6 +143,7 @@ return [
     'kids_add_success' => 'The child has been added with success.',
     'kids_update_success' => 'The child has been updated with success.',
     'kids_delete_success' => 'The child has been successfully deleted.',
+    'kids_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s child.',
 
     // tasks
     'tasks_desc' => 'Keep tracks of things you need to do for :name.',
