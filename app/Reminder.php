@@ -6,26 +6,11 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
-use App\Events\Reminder\ReminderCreated;
-use App\Events\Reminder\ReminderDeleted;
 use MartinJoiner\OrdinalNumber\OrdinalNumber;
 
 class Reminder extends Model
 {
     protected $dates = ['last_triggered', 'next_expected_date'];
-
-    protected $events = [
-        'created' => ReminderCreated::class,
-        'deleted' => ReminderDeleted::class,
-    ];
-
-    /**
-     * Get the reminder type associated with this reminder.
-     */
-    public function reminderType()
-    {
-        return $this->hasOne('App\ReminderType', 'reminder_type_id');
-    }
 
     /**
      * Get the title of a reminder.
@@ -37,7 +22,7 @@ class Reminder extends Model
             return null;
         }
 
-        return decrypt($this->title);
+        return $this->title;
     }
 
     /**
@@ -50,7 +35,7 @@ class Reminder extends Model
             return null;
         }
 
-        return decrypt($this->description);
+        return $this->description;
     }
 
     /**
@@ -61,19 +46,6 @@ class Reminder extends Model
     public function getNextExpectedDate()
     {
         return $this->next_expected_date->format('Y-m-d');
-    }
-
-    /**
-     * Get the type of the reminder.
-     * @return  string
-     */
-    public function getReminderType()
-    {
-        if (is_null($this->reminder_type_id)) {
-            return null;
-        }
-
-        return ReminderType::find($this->reminder_type_id)->description;
     }
 
     /**

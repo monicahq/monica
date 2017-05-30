@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\User;
+use App\Contact;
 use App\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -36,6 +37,10 @@ class SetNextReminderDate implements ShouldQueue
     public function handle()
     {
         if ($this->reminder->frequency_type == 'one_time') {
+            $contact = Contact::findOrFail($this->reminder->contact_id);
+            $contact->number_of_reminders = $contact->number_of_reminders - 1;
+            $contact->save();
+
             $this->reminder->delete();
         } else {
             $frequencyType = $this->reminder->frequency_type;

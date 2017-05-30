@@ -9,7 +9,6 @@ use App\Account;
 use App\Country;
 use App\Reminder;
 use Carbon\Carbon;
-use App\ReminderType;
 use App\Helpers\DateHelper;
 use Gmopx\LaravelOWM\LaravelOWM;
 use Illuminate\Support\Facades\Storage;

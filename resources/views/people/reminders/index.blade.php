@@ -53,15 +53,11 @@
 
             <td class="actions">
 
-              @if ($reminder->getReminderType() != 'birthday' and $reminder->getReminderType() != 'birthday_kid')
-
               <div class="reminder-actions">
                 <ul class="horizontal">
                   <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
                 </ul>
               </div>
-
-              @endif
 
             </td>
 

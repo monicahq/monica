@@ -520,6 +520,20 @@
       }
     }
   }
+
+  .reminders {
+    input[type="date"] {
+      margin-bottom: 20px;
+      width: 170px;
+    }
+
+    .form-check {
+      input[type="number"] {
+        display: inline;
+        width: 50px;
+      }
+    }
+  }
 }
 
 

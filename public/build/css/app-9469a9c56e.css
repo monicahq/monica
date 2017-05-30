@@ -8285,6 +8285,16 @@ header .main-cta {
   top: 1px;
 }
 
+.people-show .reminders input[type="date"] {
+  margin-bottom: 20px;
+  width: 170px;
+}
+
+.people-show .reminders .form-check input[type="number"] {
+  display: inline;
+  width: 50px;
+}
+
 @media (max-width: 480px) {
   .people-list {
     margin-top: 20px;

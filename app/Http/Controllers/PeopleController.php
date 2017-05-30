@@ -15,7 +15,6 @@ use App\Activity;
 use App\Reminder;
 use Carbon\Carbon;
 use App\ActivityType;
-use App\ReminderType;
 use App\Http\Requests;
 use App\SignificantOther;
 use App\ActivityTypeGroup;
@@ -646,9 +645,7 @@ class PeopleController extends Controller
             return redirect()->route('people.index');
         }
 
-        $reminderIsPredefined = $request->input('reminderIsPredefined');
-        $reminderPredefinedTypeId = $request->input('reminderPredefinedTypeId');
-        $reminderCustomText = $request->input('reminderCustomText');
+        $reminderText = $request->input('reminder');
         $reminderNextExpectedDate = $request->input('reminderNextExpectedDate');
 
         $frequencyType = $request->input('frequencyType');
@@ -657,28 +654,13 @@ class PeopleController extends Controller
         $reminderRecurringFrequency = $request->input('reminderRecurringFrequency');
         $comment = $request->input('comment');
 
-        // Validation rules
-        if ($reminderIsPredefined == 'false' and $reminderCustomText == '') {
-            return back()
-              ->withInput()
-              ->withErrors(['error' => trans('people.reminders_add_error_custom_text')]);
-        }
-
         // Create the reminder
         $reminder = new Reminder;
 
-        // Set the reminder_type_id and title fields
-        if ($reminderIsPredefined == 'true') {
-            $reminderType = ReminderType::find($reminderPredefinedTypeId);
-            $reminder->reminder_type_id = $reminderPredefinedTypeId;
-            $reminder->title = encrypt(trans($reminderType->translation_key).' '.$contact->getFirstName());
-        } else {
-            $reminder->reminder_type_id = null;
-            $reminder->title = encrypt($reminderCustomText);
-        }
+        $reminder->title = $reminderText;
 
         if ($comment != '') {
-            $reminder->description = encrypt($comment);
+            $reminder->description = $comment;
         }
 
         if ($frequencyType == 'once') {
@@ -694,6 +676,13 @@ class PeopleController extends Controller
         $reminder->save();
 
         $request->session()->flash('success', trans('people.reminders_create_success'));
+
+        // log event
+        $contact->logEvent('reminder', $reminder->id, 'create');
+
+        // increment number of tasks
+        $contact->number_of_reminders = $contact->number_of_reminders + 1;
+        $contact->save();
 
         return redirect('/people/'.$contact->id);
     }
@@ -713,6 +702,21 @@ class PeopleController extends Controller
         if ($reminder->contact_id != $contact->id) {
             return redirect()->route('people.index');
         }
+
+        // Delete all events
+        $events = Event::where('contact_id', $reminder->contact_id)
+                          ->where('account_id', $reminder->account_id)
+                          ->where('object_type', 'reminder')
+                          ->where('object_id', $reminder->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        // Decrease number of reminders
+        $contact->number_of_reminders = $contact->number_of_reminders - 1;
+        $contact->save();
 
         $reminder->delete();
 

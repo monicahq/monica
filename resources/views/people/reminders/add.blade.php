@@ -43,47 +43,9 @@
 
               {{-- Nature of reminder --}}
               <fieldset class="form-group nature">
-
-                {{-- Pre defined reminder --}}
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="reminderIsPredefined" value="true"
-                              v-model="reminders_predefined"
-                              v-bind:value="true"
-                              :checked="true">
-
-                    {{ trans('people.reminders_add_predefined') }}
-                  </label>
-
                   <div class="form-group">
-                    <select class="form-control" name="reminderPredefinedTypeId">
-                      @foreach (\App\ReminderType::all() as $reminderType)
-                        @if ($reminderType->id != 1 and $reminderType->id != 6)
-                        <option value="{{ $reminderType->id }}">
-                            {{ trans($reminderType->translation_key) }} {{ $contact->getFirstName() }}
-                        </option>
-                        @endif
-                      @endforeach
-                    </select>
+                    <input type="text" class="form-control" name="reminder">
                   </div>
-                </div>
-
-                {{-- Custom reminder --}}
-                <div class="form-check">
-                  <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="reminderIsPredefined" value="false"
-                              v-model="reminders_predefined"
-                              v-bind:value="false"
-                              :checked="false">
-
-                      {{ trans('people.reminders_add_custom') }}
-                  </label>
-
-                  <div class="form-group">
-                    <input type="text" class="form-control" name="reminderCustomText"
-                          :disabled="reminders_predefined == true">
-                  </div>
-                </div>
               </fieldset>
 
               {{-- Date --}}
