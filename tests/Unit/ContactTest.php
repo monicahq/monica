@@ -884,4 +884,14 @@ class ContactTest extends TestCase
             $contact->isBirthdateApproximate()
         );
     }
+
+    public function testHasDebt()
+    {
+        $contact = new Contact;
+
+        $this->assertEquals(
+            0,
+            $contact->hasDebt()
+        );
+    }
 }

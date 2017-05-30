@@ -1,4 +1,4 @@
-<p align="center"><img src="http://monicahq.com/img/small-logo.png"></p>
+<p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
 <h1 align="center">Monica</h1>
 
 <p align="center">
