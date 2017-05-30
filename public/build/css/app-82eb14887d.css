@@ -8260,7 +8260,8 @@ header .main-cta {
 }
 
 .people-show .activities .activity-date,
-.people-show .tasks .activity-date {
+.people-show .tasks .activity-date,
+.people-show .debts .activity-date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
@@ -8268,19 +8269,22 @@ header .main-cta {
 }
 
 .people-show .activities .activity-actions,
-.people-show .tasks .activity-actions {
+.people-show .tasks .activity-actions,
+.people-show .debts .activity-actions {
   position: relative;
   text-align: center;
   width: 60px;
 }
 
 .people-show .activities .activity-actions a:first-child,
-.people-show .tasks .activity-actions a:first-child {
+.people-show .tasks .activity-actions a:first-child,
+.people-show .debts .activity-actions a:first-child {
   margin-right: 5px;
 }
 
 .people-show .activities .activity-actions a.edit,
-.people-show .tasks .activity-actions a.edit {
+.people-show .tasks .activity-actions a.edit,
+.people-show .debts .activity-actions a.edit {
   position: relative;
   top: 1px;
 }
@@ -8293,6 +8297,10 @@ header .main-cta {
 .people-show .reminders .form-check input[type="number"] {
   display: inline;
   width: 50px;
+}
+
+.people-show .debts .debts-list .debt-nature {
+  width: 220px;
 }
 
 @media (max-width: 480px) {

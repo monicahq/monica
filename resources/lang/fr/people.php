@@ -233,4 +233,19 @@ return [
     'gifts_add_cta' => 'Ajouter',
     'gifts_gift_idea' => 'Idée de cadeau',
 
+    // debts
+    'debt_delete_confirmation' => 'Etes-vous sûr de vouloir effacer cette dette ?',
+    'debt_delete_success' => 'La dette a été effacée avec succès.',
+    'debt_add_success' => 'La dette a été ajoutée avec succès',
+    'debt_title' => 'Dettes',
+    'debt_add_cta' => 'Ajouter une dette',
+    'debt_you_owe' => 'Vous devez $:amount',
+    'debt_they_owe' => ':name vous doit $:amount',
+    'debt_add_title' => 'Gestion des dettes',
+    'debt_add_you_owe' => 'Vous devez :name',
+    'debt_add_they_owe' => ':name vous doit',
+    'debt_add_amount' => 'la somme de (en dollars)',
+    'debt_add_reason' => 'pour la raison suivante (optionelle)',
+    'debt_add_add_cta' => 'Ajouter la dette',
+
 ];

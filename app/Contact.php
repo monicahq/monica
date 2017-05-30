@@ -5,6 +5,7 @@ namespace App;
 use Auth;
 use App\Note;
 use App\Event;
+use App\Debt;
 use App\Account;
 use App\Country;
 use App\Reminder;
@@ -976,6 +977,28 @@ class Contact extends Model
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
         return Storage::disk('public')->url($resized_avatar);
+    }
+
+    /**
+     * Check if the contact has debt (by the contact or the user for this contact)
+     * @return int amount
+     */
+    public function hasDebt()
+    {
+        return Debt::where('account_id', $this->account_id)
+                        ->where('contact_id', $this->id)
+                        ->where('status', 'inprogress')
+                        ->count();
+    }
+
+    /**
+     * Get all the tasks no matter the state, if any.
+     */
+    public function getDebts()
+    {
+        return Debt::where('account_id', $this->account_id)
+                        ->where('contact_id', $this->id)
+                        ->get();
     }
 
 }

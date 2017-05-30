@@ -18,5 +18,6 @@ return [
     'blank_title' => 'You don\'t have any activity yet.',
     'blank_cta' => 'Add or edit a contact',
     'event_gift_about' => 'a gift for',
+    'event_debt_about' => 'a debt concerning',
 
 ];

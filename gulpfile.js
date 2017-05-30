@@ -36,5 +36,5 @@ elixir((mix) => {
         'js/app.js'
     ]);
 
-    mix.phpUnit();
+    //mix.phpUnit();
 });

@@ -58,6 +58,10 @@
             <div class="row section gifts">
               @include('people.gifts.index')
             </div>
+
+            <div class="row section debts">
+              @include('people.debt.index')
+            </div>
           </div>
         </div>
 
