@@ -1,4 +1,4 @@
-<div class="sidebar-box">
+<div class="sidebar-box kids">
 
   <p class="sidebar-box-title">
     <strong>{{ trans('people.kids_sidebar_title') }}</strong>
@@ -12,7 +12,7 @@
     <ul class="people-list">
       @foreach($contact->getKids() as $kid)
       <li>
-        {{ $kid->getFirstName() }}
+        <span class="name">{{ $kid->getFirstName() }}</span>
 
         @if (! is_null($kid->getAge()))
         ({{ $kid->getAge() }})

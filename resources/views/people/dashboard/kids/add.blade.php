@@ -1,4 +1,4 @@
-@extends('layouts.skeleton')
+k@extends('layouts.skeleton')
 
 @section('content')
   <div class="people-show kids">

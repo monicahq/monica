@@ -8011,7 +8011,7 @@ header .main-cta {
   background-color: #fafafa;
   border: 1px solid #eee;
   border-radius: 3px;
-  color: #999;
+  color: #333;
   margin-bottom: 25px;
   padding: 10px;
   position: relative;
@@ -8703,7 +8703,7 @@ body {
 }
 
 a {
-  color: #0645ad;
+  color: #0366d6;
   text-decoration: underline;
 }
 
