@@ -45,6 +45,7 @@
     <script>
       window.intercomSettings = {
         app_id: "j25qx4na",
+        user_id: {{ \Auth::user()->id }},
         name: "{{ \Auth::user()->first_name.' '.\Auth::user()->last_name }}",
         email: "{{ \Auth::user()->email }}",
         created_at: {{ \Auth::user()->created_at->timestamp }}
