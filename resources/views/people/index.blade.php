@@ -57,30 +57,10 @@
 
                 <li class="people-list-item">
                   <a href="/people/{{ $contact->id }}">
-
-                    @if ($contact->has_avatar == 'true')
-
-                      <div class="avatar-photo">
-                        <img src="{{ $contact->getAvatarURL(110) }}" width="55">
-                      </div>
-
-                    @else
-
-                      @if (count($contact->getInitials()) == 1)
-                      <span class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-                        {{ $contact->getInitials() }}
-                      </span>
-                      @else
-                      <span class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
-                        {{ $contact->getInitials() }}
-                      </span>
-                      @endif
-
-                    @endif
-
                     <span class="people-list-item-name">
                       {{ $contact->getCompleteName() }}
                     </span>
+
                     <span class="people-list-item-information">
                       {{ trans_choice('people.people_list_number_kids', $contact->getNumberOfKids(), ['count' => $contact->getNumberOfKids()]) }} • Last consulted: {{ $contact->getLastUpdated() }}
                     </span>

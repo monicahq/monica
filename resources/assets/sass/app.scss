@@ -57,11 +57,14 @@ body {
 }
 
 a {
-  color: #0645ad;
+  color: #0366d6;
+  padding: 1px;
   text-decoration: underline;
 
   &:hover {
-    color: #0645ad;
+    background-color: #0366d6;
+    color: #fff;
+    text-decoration: none;
   }
 
   &.action-link {

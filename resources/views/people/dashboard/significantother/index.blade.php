@@ -1,6 +1,6 @@
-<div class="sidebar-box">
+<div class="sidebar-box significantother">
 
-  <p class="sidebar-box-title significantother">
+  <p class="sidebar-box-title">
     <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
   </p>
 
@@ -14,7 +14,7 @@
 
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
-      {{ $contact->getCurrentSignificantOther()->getName() }}
+      <span class="name">{{ $contact->getCurrentSignificantOther()->getName() }}</span>
 
       @if (! is_null($contact->getCurrentSignificantOther()->getAge()))
       ({{ $contact->getCurrentSignificantOther()->getAge() }})

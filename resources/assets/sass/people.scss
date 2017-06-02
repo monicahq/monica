@@ -37,9 +37,14 @@
     }
   }
 
+  .list {
+    border: 1px solid #eee;
+    border-radius: 3px;
+  }
+
   .people-list-item {
     border-bottom: 1px solid #eee;
-    padding: 20px 0 20px 10px;
+    padding: 10px;
 
     &:hover {
       background-color: #f7fbfc;
@@ -48,42 +53,19 @@
     a {
       color: #333;
       text-decoration: none;
+
+      &:hover {
+        background-color: transparent;
+        color: #333;
+      }
     }
 
-    .people-list-item-name {
-      display: block;
-      font-size: 16px;
-    }
-
-    .avatar {
-      background-color: #93521e;
-      border-radius: 3px;
-      color: #fff;
-      display: inline-block;
-      float: left;
-      font-size: 17px;
-      height: 55px;
-      margin-right: 15px;
-      margin-top: 6px;
-      padding-left: 5px;
-      padding-top: 16px;
+    .people-list-item-information {
+      color: #999;
+      font-style: italic;
+      float: right;
       position: relative;
-      top: -11px;
-      width: 55px;
-
-      &.one-letter {
-        padding-left: 0;
-        text-align: center;
-      }
-    }
-
-    .avatar-photo {
-      img {
-        float: left;
-        margin-right: 15px;
-        position: relative;
-        top: -4px;
-      }
+      top: 3px;
     }
   }
 }
@@ -236,7 +218,7 @@
       background-color: #fafafa;
       border: 1px solid #eee;
       border-radius: 3px;
-      color: #999;
+      color: #333;
       margin-bottom: 25px;
       padding: 10px;
       position: relative;
