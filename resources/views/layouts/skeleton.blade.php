@@ -41,7 +41,7 @@
 
     </script>
 
-    @if (env('APP_ENV') == 'local')
+    @if (env('APP_ENV') != 'local')
     <script>
       window.intercomSettings = {
         app_id: "j25qx4na",
