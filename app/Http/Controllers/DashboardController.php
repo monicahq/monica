@@ -77,9 +77,9 @@ class DashboardController extends Controller
         }
 
         // List of upcoming reminders
-        $thirtyDaysFromNow = Carbon::now()->addDays(30);
         $upcomingReminders = Reminder::where('account_id', Auth::user()->account_id)
-                                    ->where('next_expected_date', '<', $thirtyDaysFromNow)
+                                    ->where('next_expected_date', '>', Carbon::now())
+                                    ->orderBy('next_expected_date', 'asc')
                                     ->get();
 
         $data = [

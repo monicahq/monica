@@ -1,131 +1,147 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="dashboard-view">
+  <div class="dashboard">
 
     <!-- Page content -->
     <div class="main-content">
 
       <div class="{{ Auth::user()->getFluidLayout() }}">
+
         <div class="row">
+
           <div class="col-xs-12 col-sm-9">
-
-            <!-- {{-- Stats --}}
-            {{ $number_of_contacts }}
-            {{ $number_of_kids }}
-            {{ $number_of_reminders }}
-            {{ $number_of_notes }}
-            {{ $number_of_activities }}
-            {{ $number_of_gifts }}
-            {{ $number_of_tasks }}
-
+          <!--
             % contacts with significant other
             % contacts with kids -->
 
-            {{-- Upcoming reminders --}}
-            <h3>{{ trans('dashboard.reminders_title') }}</h3>
-
-            @if ($upcomingReminders->count() != 0)
-            <ul>
-              @foreach ($upcomingReminders as $reminder)
-                <li>
-                  <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
-                  {{ $reminder->getTitle() }}
-                  -
-                  {{ $reminder->getNextExpectedDate() }}
-                </li>
-              @endforeach
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#coming" role="tab">What's coming</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#actions" role="tab">Latest actions</a>
+              </li>
             </ul>
 
-            @else
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane active" id="coming" role="tabpanel">
+                <div class="reminders">
+                  {{-- Upcoming reminders --}}
+                  <h3>{{ trans('dashboard.reminders_title') }}</h3>
 
-            <p>{{ trans('dashboard.reminders_blank_description') }}</p>
+                  @if ($upcomingReminders->count() != 0)
+                  <ul>
+                    @foreach ($upcomingReminders as $reminder)
+                      <li>
+                        <span class="reminder-in-days">
+                          in
 
-            @endif
+                          {{ $reminder->next_expected_date->diffInDays(Carbon\Carbon::now()) }}
 
-            {{-- Events list --}}
-            <h3>{{ trans('dashboard.event_title') }}</h3>
-            <ul class="event-list">
-              @foreach($events as $event)
-                <li class="event-list-item">
+                          days
 
-                  {{-- ICON--}}
-                  <div class="event-icon">
-                    @if ($event['nature_of_operation'] == 'create')
-                      <i class="fa fa-plus-square-o"></i>
-                    @endif
+                          ({{ $reminder->getNextExpectedDate() }})
+                        </span>
+                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
+                        {{ $reminder->getTitle() }}
+                      </li>
+                    @endforeach
+                  </ul>
 
-                    @if ($event['nature_of_operation'] == 'update')
-                      <i class="fa fa-pencil-square-o"></i>
-                    @endif
-                  </div>
+                  @else
 
-                  {{-- DESCRIPTION --}}
-                  <div class="event-description">
+                  <p>{{ trans('dashboard.reminders_blank_description') }}</p>
 
-                    {{-- YOU ADDED/YOU UPDATED --}}
-                    @if ($event['nature_of_operation'] == 'create')
-                      {{ trans('dashboard.event_create') }}
-                    @endif
+                  @endif
+                </div>
+              </div>
+              <div class="tab-pane" id="actions" role="tabpanel">
+                <h3>{{ trans('dashboard.event_title') }}</h3>
+                <ul class="event-list">
+                  @foreach($events as $event)
+                    <li class="event-list-item">
 
-                    @if ($event['nature_of_operation'] == 'update')
-                      {{ trans('dashboard.event_update') }}
-                    @endif
+                      {{-- ICON--}}
+                      <div class="event-icon">
+                        @if ($event['nature_of_operation'] == 'create')
+                          <i class="fa fa-plus-square-o"></i>
+                        @endif
 
-                    {{-- PEOPLE --}}
-                    @if ($event['object_type'] == 'contact')
-                      @include('dashboard.events._people')
-                    @endif
+                        @if ($event['nature_of_operation'] == 'update')
+                          <i class="fa fa-pencil-square-o"></i>
+                        @endif
+                      </div>
 
-                    {{-- REMINDERS --}}
-                    @if ($event['object_type'] == 'reminder')
-                      @include('dashboard.events._reminders')
-                    @endif
+                      {{-- DESCRIPTION --}}
+                      <div class="event-description">
 
-                    {{-- SIGNIFICANT OTHER --}}
-                    @if ($event['object_type'] == 'significantother')
-                      @include('dashboard.events._significantothers')
-                    @endif
+                        {{-- YOU ADDED/YOU UPDATED --}}
+                        @if ($event['nature_of_operation'] == 'create')
+                          {{ trans('dashboard.event_create') }}
+                        @endif
 
-                    {{-- KIDS --}}
-                    @if ($event['object_type'] == 'kid')
-                      @include('dashboard.events._kids')
-                    @endif
+                        @if ($event['nature_of_operation'] == 'update')
+                          {{ trans('dashboard.event_update') }}
+                        @endif
 
-                    {{-- NOTES --}}
-                    @if ($event['object_type'] == 'note')
-                      @include('dashboard.events._notes')
-                    @endif
+                        {{-- PEOPLE --}}
+                        @if ($event['object_type'] == 'contact')
+                          @include('dashboard.events._people')
+                        @endif
 
-                    {{-- ACTIVITIES --}}
-                    @if ($event['object_type'] == 'activity')
-                      @include('dashboard.events._activities')
-                    @endif
+                        {{-- REMINDERS --}}
+                        @if ($event['object_type'] == 'reminder')
+                          @include('dashboard.events._reminders')
+                        @endif
 
-                    {{-- TASKS --}}
-                    @if ($event['object_type'] == 'task')
-                      @include('dashboard.events._tasks')
-                    @endif
+                        {{-- SIGNIFICANT OTHER --}}
+                        @if ($event['object_type'] == 'significantother')
+                          @include('dashboard.events._significantothers')
+                        @endif
 
-                    {{-- GIFTS --}}
-                    @if ($event['object_type'] == 'gift')
-                      @include('dashboard.events._gifts')
-                    @endif
+                        {{-- KIDS --}}
+                        @if ($event['object_type'] == 'kid')
+                          @include('dashboard.events._kids')
+                        @endif
 
-                    {{-- DEBTS --}}
-                    @if ($event['object_type'] == 'debt')
-                      @include('dashboard.events._debts')
-                    @endif
+                        {{-- NOTES --}}
+                        @if ($event['object_type'] == 'note')
+                          @include('dashboard.events._notes')
+                        @endif
 
-                  </div>
+                        {{-- ACTIVITIES --}}
+                        @if ($event['object_type'] == 'activity')
+                          @include('dashboard.events._activities')
+                        @endif
 
-                  {{-- DATE --}}
-                  <div class="event-date">
-                    {{ $event['date'] }}
-                  </div>
-                </li>
-              @endforeach
-            </ul>
+                        {{-- TASKS --}}
+                        @if ($event['object_type'] == 'task')
+                          @include('dashboard.events._tasks')
+                        @endif
+
+                        {{-- GIFTS --}}
+                        @if ($event['object_type'] == 'gift')
+                          @include('dashboard.events._gifts')
+                        @endif
+
+                        {{-- DEBTS --}}
+                        @if ($event['object_type'] == 'debt')
+                          @include('dashboard.events._debts')
+                        @endif
+
+                      </div>
+
+                      {{-- DATE --}}
+                      <div class="event-date">
+                        {{ $event['date'] }}
+                      </div>
+                    </li>
+                  @endforeach
+                </ul>
+              </div>
+            </div>
 
           </div>
 
@@ -156,6 +172,44 @@
               <p><a href="/people">See all other contacts</a></p>
             </div>
 
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="dashboard-box">
+              <h2>Statistics about your account</h2>
+              <ul class="horizontal dashboard-stat">
+                <li>
+                  <span class="stat-number">{{ $number_of_contacts }}</span>
+                  <span class="stat-description">Number of contacts</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_kids }}</span>
+                  <span class="stat-description">Number of kids</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_reminders }}</span>
+                  <span class="stat-description">Number of reminders</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_notes }}</span>
+                  <span class="stat-description">Number of notes</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_activities }}</span>
+                  <span class="stat-description">Number of activities</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_gifts }}</span>
+                  <span class="stat-description">Number of gifts</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_tasks }}</span>
+                  <span class="stat-description">Number of tasks</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

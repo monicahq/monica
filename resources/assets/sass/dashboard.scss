@@ -1,5 +1,48 @@
-.dashboard-view {
-  margin-top: 50px;
+.dashboard {
+  background-color: #fff;
+  padding-top: 50px;
+
+  .reminders {
+    .reminder-in-days {
+      font-style: italic;
+      font-size: 12px;
+    }
+  }
+
+  .dashboard-box {
+    background-color: #fff;
+    border: 1px solid #f3f4f5;
+    border-radius: 3px;
+    padding: 15px;
+
+    h2 {
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      font-weight: 600;
+      padding-bottom: 5px;
+    }
+
+    .dashboard-stat {
+      text-align: center;
+
+      li {
+        display: inline-block;
+
+        &:not(:last-child) {
+          margin-right: 25px;
+        }
+      }
+
+      .stat-number {
+        display: block;
+        font-size: 25px;
+      }
+
+      .stat-description {
+        font-size: 13px;
+      }
+    }
+  }
 
   h3 {
     font-size: 16px;
