@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Event;
+use App\Task;
 use Validator;
 use App\Contact;
 use App\Reminder;
@@ -80,7 +81,13 @@ class DashboardController extends Controller
         $upcomingReminders = Reminder::where('account_id', Auth::user()->account_id)
                                     ->where('next_expected_date', '>', Carbon::now())
                                     ->orderBy('next_expected_date', 'asc')
+                                    ->limit(10)
                                     ->get();
+
+        // Active tasks
+        $tasks = Task::where('account_id', Auth::user()->account_id)
+                        ->where('status', 'inprogress')
+                        ->get();
 
         $data = [
             'events' => $eventsArray,
@@ -92,7 +99,8 @@ class DashboardController extends Controller
             'number_of_activities' => $number_of_activities,
             'number_of_gifts' => $number_of_gifts,
             'number_of_tasks' => $number_of_tasks,
-            'number_of_kids' => $number_of_kids
+            'number_of_kids' => $number_of_kids,
+            'tasks' => $tasks
         ];
 
         return view('dashboard.index', $data);

@@ -27,8 +27,9 @@
             <!-- Tab panes -->
             <div class="tab-content">
               <div class="tab-pane active" id="coming" role="tabpanel">
+
+                {{-- REMINDERS --}}
                 <div class="reminders">
-                  {{-- Upcoming reminders --}}
                   <h3>{{ trans('dashboard.reminders_title') }}</h3>
 
                   @if ($upcomingReminders->count() != 0)
@@ -42,7 +43,7 @@
 
                           days
 
-                          ({{ $reminder->getNextExpectedDate() }})
+                          ({{ App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate(), Auth::user()->locale) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
                         {{ $reminder->getTitle() }}
@@ -53,6 +54,28 @@
                   @else
 
                   <p>{{ trans('dashboard.reminders_blank_description') }}</p>
+
+                  @endif
+                </div>
+
+                {{-- TASKS --}}
+                <div class="tasks">
+                  <h3>Tasks</h3>
+
+                  @if ($tasks->count() != 0)
+                  <ul>
+                    @foreach ($tasks as $task)
+                      <li>
+                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
+                        {{ $task->getTitle() }}
+                        {{ $task->getDescription() }}
+                      </li>
+                    @endforeach
+                  </ul>
+
+                  @else
+
+                  <p>No tasks are planned.</p>
 
                   @endif
                 </div>

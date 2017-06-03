@@ -7713,6 +7713,22 @@ header .main-cta {
   padding-top: 50px;
 }
 
+.dashboard .tab-content {
+  border-left: 1px solid #dfdfdf;
+  border-right: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  border-radius: 0 0 3px 3px;
+  padding: 15px;
+}
+
+.dashboard li {
+  padding: 5px 0;
+}
+
+.dashboard li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
 .dashboard .reminders .reminder-in-days {
   font-style: italic;
   font-size: 12px;
