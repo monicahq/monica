@@ -10,7 +10,13 @@
     padding: 15px;
   }
 
-  li {
+  .nav-tabs {
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .tab-content li {
     padding: 5px 0;
 
     &:not(:last-child) {
@@ -27,7 +33,7 @@
 
   .dashboard-box {
     background-color: #fff;
-    border: 1px solid #f3f4f5;
+    border: 1px solid $border-color;
     border-radius: 3px;
     padding: 15px;
 
@@ -38,7 +44,8 @@
       padding-bottom: 5px;
     }
 
-    .dashboard-stat {
+    &.dashboard-stat {
+      margin-bottom: 40px;
       text-align: center;
 
       li {
@@ -60,12 +67,19 @@
     }
   }
 
+  .section-icon {
+    width: 19px;
+  }
+
   h3 {
+    display: inline;
     font-size: 16px;
     font-weight: 500;
+  }
 
+  .dashboard-section {
     &:not(:first-child) {
-      margin-top: 30px;
+      margin-top: 20px;
     }
   }
 
@@ -118,7 +132,6 @@
   }
 
   .event-list-item {
-    border-top: 1px solid #f1f1f1;
     color: #717171;
     margin-bottom: 5px;
     padding: 10px;

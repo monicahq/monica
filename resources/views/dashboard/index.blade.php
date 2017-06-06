@@ -9,18 +9,67 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
 
         <div class="row">
+          <div class="col-xs-9">
+
+          </div>
+        </div>
+
+        <div class="row">
 
           <div class="col-xs-12 col-sm-9">
-          <!--
+
+            <div class="dashboard-box dashboard-stat">
+              <h2>{{ trans('dashboard.statistics_title') }}</h2>
+              <ul class="horizontal">
+                <li>
+                  <span class="stat-number">{{ $number_of_contacts }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_contacts') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_kids }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_kids') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_reminders }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_reminders') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_notes }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_notes') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_activities }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_activities') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_gifts }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_gifts') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">{{ $number_of_tasks }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_tasks') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">${{ $debt_owed }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_deb_owed') }}</span>
+                </li>
+                <li>
+                  <span class="stat-number">${{ $debt_due }}</span>
+                  <span class="stat-description">{{ trans('dashboard.statistics_debt_due') }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <!--
             % contacts with significant other
             % contacts with kids -->
 
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#coming" role="tab">What's coming</a>
+                <a class="nav-link active" data-toggle="tab" href="#coming" role="tab">{{ trans('dashboard.tab_whats_coming') }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#actions" role="tab">Latest actions</a>
+                <a class="nav-link" data-toggle="tab" href="#actions" role="tab">{{ trans('dashboard.tab_lastest_actions') }}</a>
               </li>
             </ul>
 
@@ -29,7 +78,8 @@
               <div class="tab-pane active" id="coming" role="tabpanel">
 
                 {{-- REMINDERS --}}
-                <div class="reminders">
+                <div class="reminders dashboard-section">
+                  <img src="/img/people/reminders.svg" class="section-icon">
                   <h3>{{ trans('dashboard.reminders_title') }}</h3>
 
                   @if ($upcomingReminders->count() != 0)
@@ -37,12 +87,7 @@
                     @foreach ($upcomingReminders as $reminder)
                       <li>
                         <span class="reminder-in-days">
-                          in
-
-                          {{ $reminder->next_expected_date->diffInDays(Carbon\Carbon::now()) }}
-
-                          days
-
+                          {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
                           ({{ App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate(), Auth::user()->locale) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
@@ -59,8 +104,9 @@
                 </div>
 
                 {{-- TASKS --}}
-                <div class="tasks">
-                  <h3>Tasks</h3>
+                <div class="tasks dashboard-section">
+                  <img src="/img/people/tasks.svg" class="section-icon">
+                  <h3>{{ trans('dashboard.tasks_title') }}</h3>
 
                   @if ($tasks->count() != 0)
                   <ul>
@@ -75,7 +121,41 @@
 
                   @else
 
-                  <p>No tasks are planned.</p>
+                  <p>{{ trans('dashboard.tasks_blank') }}</p>
+
+                  @endif
+                </div>
+
+                {{-- DEBTS --}}
+                <div class="debts dashboard-section">
+                  <img src="/img/people/debt/bill.svg" class="section-icon">
+                  <h3>{{ trans('dashboard.section_debts') }}</h3>
+
+                  @if ($debts->count() != 0)
+                  <ul>
+                    @foreach ($debts as $debt)
+                      <li>
+                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName() }}</a>:
+
+                        @if ($debt->in_debt == 'yes')
+                        <span class="debt-description">{{ trans('dashboard.debts_you_owe') }}</span>
+                        @else
+                        <span class="debt-description">{{ trans('dashboard.debts_you_due') }}</span>
+                        @endif
+
+                        ${{ $debt->amount }}
+
+                        @if (! is_null($debt->reason))
+                        <span class="debt-description">{{ trans('dashboard.for') }}</span>
+                        {{ $debt->reason }}
+                        @endif
+                      </li>
+                    @endforeach
+                  </ul>
+
+                  @else
+
+                  <p>{{ trans('dashboard.debts_blank') }}</p>
 
                   @endif
                 </div>
@@ -177,62 +257,14 @@
             </div>
 
             <div class="sidebar-box last-seen">
-              <h3>Last edited contacts</h3>
-              @foreach ($lastUpdatedContacts as $contact)
-
-                @if (count($contact->getInitials()) == 1)
-                <div class="avatar one-letter hint--bottom" aria-label="{{ $contact->getCompleteName() }}" style="background-color: {{ $contact->getAvatarColor() }};">
-                  {{ $contact->getInitials() }}
-                </div>
-                @else
-                <div class="avatar hint--bottom" aria-label="{{ $contact->getCompleteName() }}" style="background-color: {{ $contact->getAvatarColor() }};">
-                  {{ $contact->getInitials() }}
-                </div>
-                @endif
-
-              @endforeach
-
-              <p><a href="/people">See all other contacts</a></p>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="dashboard-box">
-              <h2>Statistics about your account</h2>
-              <ul class="horizontal dashboard-stat">
-                <li>
-                  <span class="stat-number">{{ $number_of_contacts }}</span>
-                  <span class="stat-description">Number of contacts</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_kids }}</span>
-                  <span class="stat-description">Number of kids</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_reminders }}</span>
-                  <span class="stat-description">Number of reminders</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_notes }}</span>
-                  <span class="stat-description">Number of notes</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_activities }}</span>
-                  <span class="stat-description">Number of activities</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_gifts }}</span>
-                  <span class="stat-description">Number of gifts</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_tasks }}</span>
-                  <span class="stat-description">Number of tasks</span>
-                </li>
+              <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
+              <ul>
+                @foreach ($lastUpdatedContacts as $contact)
+                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName() }}</a></li>
+                @endforeach
               </ul>
             </div>
+
           </div>
         </div>
       </div>

@@ -7721,11 +7721,15 @@ header .main-cta {
   padding: 15px;
 }
 
-.dashboard li {
+.dashboard .nav-tabs a {
+  text-decoration: none;
+}
+
+.dashboard .tab-content li {
   padding: 5px 0;
 }
 
-.dashboard li:not(:last-child) {
+.dashboard .tab-content li:not(:last-child) {
   border-bottom: 1px solid #dfdfdf;
 }
 
@@ -7736,7 +7740,7 @@ header .main-cta {
 
 .dashboard .dashboard-box {
   background-color: #fff;
-  border: 1px solid #f3f4f5;
+  border: 1px solid #dfdfdf;
   border-radius: 3px;
   padding: 15px;
 }
@@ -7748,34 +7752,40 @@ header .main-cta {
   padding-bottom: 5px;
 }
 
-.dashboard .dashboard-box .dashboard-stat {
+.dashboard .dashboard-box.dashboard-stat {
+  margin-bottom: 40px;
   text-align: center;
 }
 
-.dashboard .dashboard-box .dashboard-stat li {
+.dashboard .dashboard-box.dashboard-stat li {
   display: inline-block;
 }
 
-.dashboard .dashboard-box .dashboard-stat li:not(:last-child) {
+.dashboard .dashboard-box.dashboard-stat li:not(:last-child) {
   margin-right: 25px;
 }
 
-.dashboard .dashboard-box .dashboard-stat .stat-number {
+.dashboard .dashboard-box.dashboard-stat .stat-number {
   display: block;
   font-size: 25px;
 }
 
-.dashboard .dashboard-box .dashboard-stat .stat-description {
+.dashboard .dashboard-box.dashboard-stat .stat-description {
   font-size: 13px;
 }
 
+.dashboard .section-icon {
+  width: 19px;
+}
+
 .dashboard h3 {
+  display: inline;
   font-size: 16px;
   font-weight: 500;
 }
 
-.dashboard h3:not(:first-child) {
-  margin-top: 30px;
+.dashboard .dashboard-section:not(:first-child) {
+  margin-top: 20px;
 }
 
 .dashboard .sidebar-cta a {
@@ -7823,7 +7833,6 @@ header .main-cta {
 }
 
 .dashboard .event-list-item {
-  border-top: 1px solid #f1f1f1;
   color: #717171;
   margin-bottom: 5px;
   padding: 10px;
@@ -8048,7 +8057,7 @@ header .main-cta {
   width: 100%;
 }
 
-.people-show .dashboard .sidebar-box {
+.people-show .profile .sidebar-box {
   background-color: #fafafa;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -8058,92 +8067,92 @@ header .main-cta {
   position: relative;
 }
 
-.people-show .dashboard .sidebar-box-title {
+.people-show .profile .sidebar-box-title {
   margin-bottom: 4px;
   position: relative;
 }
 
-.people-show .dashboard .sidebar-box-title strong {
+.people-show .profile .sidebar-box-title strong {
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
 }
 
-.people-show .dashboard .sidebar-box-title a {
+.people-show .profile .sidebar-box-title a {
   position: absolute;
   right: 7px;
 }
 
-.people-show .dashboard .sidebar-box-title img {
+.people-show .profile .sidebar-box-title img {
   left: -3px;
   position: relative;
   width: 20px;
 }
 
-.people-show .dashboard .sidebar-box-title img.people-information {
+.people-show .profile .sidebar-box-title img.people-information {
   top: -4px;
 }
 
-.people-show .dashboard .sidebar-box-paragraph {
+.people-show .profile .sidebar-box-paragraph {
   margin-bottom: 0;
 }
 
-.people-show .dashboard .people-list li {
+.people-show .profile .people-list li {
   margin-bottom: 4px;
 }
 
-.people-show .dashboard .people-information {
+.people-show .profile .people-information {
   color: #999;
   font-size: 12px;
 }
 
-.people-show .dashboard .people-information li {
+.people-show .profile .people-information li {
   margin-bottom: 10px;
 }
 
-.people-show .dashboard .people-information li:last-child {
+.people-show .profile .people-information li:last-child {
   margin-bottom: 0;
 }
 
-.people-show .dashboard .people-information li i {
+.people-show .profile .people-information li i {
   text-align: center;
   width: 17px;
 }
 
-.people-show .dashboard .section {
+.people-show .profile .section {
   margin-bottom: 35px;
 }
 
-.people-show .dashboard .section.kids .section-heading img, .people-show .dashboard .section.food-preferencies .section-heading img, .people-show .dashboard .section.notes .section-heading img {
+.people-show .profile .section.kids .section-heading img, .people-show .profile .section.food-preferencies .section-heading img, .people-show .profile .section.notes .section-heading img {
   position: relative;
   top: -3px;
 }
 
-.people-show .dashboard .section .inline-action {
+.people-show .profile .section .inline-action {
   display: inline;
   margin-left: 10px;
 }
 
-.people-show .dashboard .section .inline-action a {
+.people-show .profile .section .inline-action a {
   margin-right: 5px;
 }
 
-.people-show .dashboard .section .section-heading {
+.people-show .profile .section .section-heading {
   border-bottom: 1px solid #eee;
   padding-bottom: 4px;
   margin-bottom: 10px;
 }
 
-.people-show .dashboard .section .section-heading img {
+.people-show .profile .section .section-heading img {
   width: 25px;
 }
 
-.people-show .dashboard .section .section-action {
+.people-show .profile .section .section-action {
   display: inline;
   float: right;
 }
 
-.people-show .dashboard .section .section-blank {
+.people-show .profile .section .section-blank {
   background-color: #fafafa;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -8151,16 +8160,16 @@ header .main-cta {
   text-align: center;
 }
 
-.people-show .dashboard .section .section-blank h3 {
+.people-show .profile .section .section-blank h3 {
   font-weight: 400;
   font-size: 14px;
 }
 
-.people-show .dashboard .notes .blank-note-state {
+.people-show .profile .notes .blank-note-state {
   text-align: center;
 }
 
-.people-show .dashboard .notes .blank-note-state img {
+.people-show .profile .notes .blank-note-state img {
   background-color: #e3f7f7;
   border: 1px solid #d2caca;
   border-radius: 50%;
@@ -8171,32 +8180,32 @@ header .main-cta {
   width: 60px;
 }
 
-.people-show .dashboard .notes .notes-add-box {
+.people-show .profile .notes .notes-add-box {
   background-color: #f6f8f9;
   border-radius: 3px;
   margin-bottom: 30px;
   padding: 10px;
 }
 
-.people-show .dashboard .notes .notes-add-box .actions {
+.people-show .profile .notes .notes-add-box .actions {
   margin-top: 10px;
 }
 
-.people-show .dashboard .notes .notes-add-box .actions .btn {
+.people-show .profile .notes .notes-add-box .actions .btn {
   width: 49%;
 }
 
-.people-show .dashboard .notes .note-item {
+.people-show .profile .notes .note-item {
   border: 1px solid #eee;
   border-radius: 3px;
   margin-bottom: 15px;
 }
 
-.people-show .dashboard .notes .note-item .note-item-body {
+.people-show .profile .notes .note-item .note-item-body {
   padding: 10px;
 }
 
-.people-show .dashboard .notes .note-item-actions {
+.people-show .profile .notes .note-item-actions {
   background-color: #f9f9f9;
   color: #666;
   font-size: 12px;
@@ -8204,7 +8213,7 @@ header .main-cta {
   padding: 5px 10px;
 }
 
-.people-show .dashboard .notes .note-item-actions li {
+.people-show .profile .notes .note-item-actions li {
   margin-right: 10px;
 }
 
