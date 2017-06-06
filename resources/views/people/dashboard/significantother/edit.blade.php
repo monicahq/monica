@@ -106,7 +106,7 @@
                         {{ trans('people.significant_other_add_exact') }}
                         <input type="date" name="specificDate" class="form-control"
                               value="{{ (is_null($contact->getCurrentSignificantOther()->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getCurrentSignificantOther()->getBirthdate()->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(50)->format('Y-m-d') }}"
+                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(90)->format('Y-m-d') }}"
                               max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
