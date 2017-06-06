@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         //'App\Console\Commands\MigrateActivities'
         //'App\Console\Commands\MigratePeopleInformation',
         //'App\Console\Commands\RemoveEncryption'
+        'App\Console\Commands\ImportCSV',
     ];
 
     /**
