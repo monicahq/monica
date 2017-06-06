@@ -46,19 +46,19 @@ We've already received numerous feedback of users who suffer from Asperger's
 syndrome who use this application on a daily basis. It helps them have better
 social interactions.
 
-### Get started
+### The 5 years vision
+
+Monica is the simplest, yet most complete, open-source tool to manage your
+personal relationships. It's available on any platform, is easy to contribute to
+and has a robust API to talk to other systems.
+
+## Get started
 
 We provide a hosted version of this application on https://monicahq.com.
 
 If you prefer to, you can simply clone the repository and set it up yourself on
 any hosting provider, for free. I'm just asking that you don't try to make
 money out of it yourself.
-
-## The 5 years vision
-
-Monica is the simplest, yet most complete, open-source tool to manage your
-personal relationships. It's available on any platform, is easy to contribute to
-and has a robust API to talk to other systems.
 
 ## Setup the project
 
@@ -179,6 +179,10 @@ written in a way we don't understand. Again, the number 1 priority should be to
 simplify the maintenance on the long run.
 * It's better to move forward fast by shipping good features, than waiting for
 months and ship a perfect feature.
+
+### How the community can help
+
+I'm looking for people willing to write tests for the existing features.
 
 ## License
 
