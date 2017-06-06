@@ -34,7 +34,7 @@
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-86013324-1', 'auto');
+      ga('create', '{{ env('GOOGLE_ANALYTICS') }}', 'auto');
       ga('send', 'pageview');
 
     </script>
@@ -42,7 +42,7 @@
     @if (env('APP_ENV') != 'local')
     <script>
       window.intercomSettings = {
-        app_id: "j25qx4na",
+        app_id: "{{ env('INTERCOM') }}",
         user_id: {{ \Auth::user()->id }},
         name: "{{ \Auth::user()->first_name.' '.\Auth::user()->last_name }}",
         email: "{{ \Auth::user()->email }}",
