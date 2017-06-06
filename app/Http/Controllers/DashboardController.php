@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Event;
+use App\Task;
+use App\Debt;
 use Validator;
 use App\Contact;
 use App\Reminder;
@@ -30,6 +32,10 @@ class DashboardController extends Controller
         $contacts = Contact::where('account_id', Auth::user()->account_id)
                                     ->get();
 
+        if (count($contacts) == 0) {
+            return view('dashboard.blank');
+        }
+
         $number_of_contacts = $contacts->count();
         $number_of_reminders = 0;
         $number_of_notes = 0;
@@ -37,6 +43,8 @@ class DashboardController extends Controller
         $number_of_gifts = 0;
         $number_of_tasks = 0;
         $number_of_kids = 0;
+        $debt_owed = 0;
+        $debt_due = 0;
 
         foreach ($contacts as $contact) {
             $number_of_reminders = $number_of_reminders + $contact->number_of_reminders;
@@ -50,15 +58,29 @@ class DashboardController extends Controller
             $number_of_kids = $number_of_kids + $contact->number_of_kids;
         }
 
+        $debts = Debt::where('account_id', Auth::user()->account_id)
+                        ->where('status', 'inprogress')
+                        ->where('in_debt', 'yes')
+                        ->get();
+
+        foreach ($debts as $debt) {
+            $debt_due = $debt_due + $debt->amount;
+        }
+
+        $debts = Debt::where('account_id', Auth::user()->account_id)
+                    ->where('status', 'inprogress')
+                    ->where('in_debt', 'no')
+                    ->get();
+
+        foreach ($debts as $debt) {
+            $debt_owed = $debt_owed + $debt->amount;
+        }
+
         // List of events
         $events = Event::where('account_id', Auth::user()->account_id)
                       ->orderBy('created_at', 'desc')
                       ->limit(30)
                       ->get();
-
-        if (count($events) == 0) {
-            return view('dashboard.blank');
-        }
 
         $eventsArray = collect();
 
@@ -77,10 +99,21 @@ class DashboardController extends Controller
         }
 
         // List of upcoming reminders
-        $thirtyDaysFromNow = Carbon::now()->addDays(30);
         $upcomingReminders = Reminder::where('account_id', Auth::user()->account_id)
-                                    ->where('next_expected_date', '<', $thirtyDaysFromNow)
+                                    ->where('next_expected_date', '>', Carbon::now())
+                                    ->orderBy('next_expected_date', 'asc')
+                                    ->limit(10)
                                     ->get();
+
+        // Active tasks
+        $tasks = Task::where('account_id', Auth::user()->account_id)
+                        ->where('status', 'inprogress')
+                        ->get();
+
+        // Debts
+        $debts = Debt::where('account_id', Auth::user()->account_id)
+                        ->where('status', 'inprogress')
+                        ->get();
 
         $data = [
             'events' => $eventsArray,
@@ -92,7 +125,11 @@ class DashboardController extends Controller
             'number_of_activities' => $number_of_activities,
             'number_of_gifts' => $number_of_gifts,
             'number_of_tasks' => $number_of_tasks,
-            'number_of_kids' => $number_of_kids
+            'number_of_kids' => $number_of_kids,
+            'debt_due' => $debt_due,
+            'debt_owed' => $debt_owed,
+            'tasks' => $tasks,
+            'debts' => $debts,
         ];
 
         return view('dashboard.index', $data);

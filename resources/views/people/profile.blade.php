@@ -29,7 +29,7 @@
     @include('people._header')
 
     {{-- Page content --}}
-    <div class="main-content dashboard">
+    <div class="main-content profile">
 
       <div class="{{ Auth::user()->getFluidLayout() }}">
 

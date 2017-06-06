@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Monica</title>
+    <title>Monica - a CRM for your friends and family</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
@@ -21,8 +21,6 @@
     @include('partials.footer')
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.10.1/trix-core.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.10.1/trix.js"></script>
     <script>
       var options = {
         valueNames: [ 'people-list-item-name' ]

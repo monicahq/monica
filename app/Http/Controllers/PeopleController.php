@@ -120,6 +120,8 @@ class PeopleController extends Controller
 
         $contact->setAvatarColor();
 
+        $contact->logEvent('contact', $contact->id, 'create');
+
         return redirect()->route('people.show', ['id' => $contact->id]);
     }
 
