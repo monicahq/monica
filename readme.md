@@ -1,4 +1,4 @@
-<p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
+e<p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
 <h1 align="center">Monica</h1>
 
 <p align="center">
@@ -9,7 +9,10 @@
 ## Introduction
 
 Monica is an open-source web application to manage your personal relationships.
-Think of it as a CRM for your friends or family.
+Think of it as a CRM for your friends or family. This is what it currently
+looks like:
+
+![screenshot of the application](https://app.monicahq.com/img/screenshot.png)
 
 ### Purpose
 
