@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Monica - a CRM for your friends and family</title>
+    <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
