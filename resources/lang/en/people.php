@@ -19,6 +19,7 @@ return [
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
     'people_add_cta' => 'Add this person',
+    'people_add_gender' => 'Gender',
 
     // show
     'section_personal_information' => 'Personal information',
@@ -48,8 +49,6 @@ return [
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name\'s personal information',
-    'information_edit_male' => 'Male',
-    'information_edit_female' => 'Female',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
     'information_edit_street' => 'Street (optional)',
@@ -110,8 +109,6 @@ return [
     'significant_other_sidebar_title' => 'Significant other',
     'significant_other_cta' => 'Add significant other',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
-    'significant_other_add_male' => 'Man',
-    'significant_other_add_female' => 'Woman',
     'significant_other_add_firstname' => 'Name',
     'significant_other_add_unknown' => 'I do not know this person\'s age',
     'significant_other_add_probably' => 'This person is probably',

@@ -39,10 +39,22 @@
 
               <h2>{{ trans('people.kids_add_title', ['name' => $contact->getLastName()]) }}</h2>
 
+              {{-- First name --}}
+              <div class="form-group">
+                <label for="firstname">{{ trans('people.kids_add_firstname') }}</label>
+                <input type="text" class="form-control" name="firstname" autofocus required>
+              </div>
+
               {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
               <fieldset class="form-group">
                 <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  {{ trans('app.gender_none') }}
+                </label>
+
+                <label class="form-check-inline">
+                  <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
                   {{ trans('people.kids_add_boy') }}
                 </label>
 
@@ -51,12 +63,6 @@
                   {{ trans('people.kids_add_girl') }}
                 </label>
               </fieldset>
-
-              {{-- First name --}}
-              <div class="form-group">
-                <label for="firstname">{{ trans('people.kids_add_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" autofocus required>
-              </div>
 
               <fieldset class="form-group dates">
 

@@ -19,6 +19,7 @@ return [
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
     'people_add_cta' => 'Ajouter cette personne',
+    'people_add_gender' => 'Sexe',
 
     // show
     'section_personal_information' => 'Informations personnelles',
@@ -48,8 +49,6 @@ return [
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
-    'information_edit_male' => 'Homme',
-    'information_edit_female' => 'Femme',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_street' => 'Rue (optionnel)',
@@ -109,8 +108,6 @@ return [
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
-    'significant_other_add_male' => 'Homme',
-    'significant_other_add_female' => 'Femme',
     'significant_other_add_firstname' => 'Nom',
     'significant_other_add_unknown' => 'Je ne connais pas son âge.',
     'significant_other_add_probably' => 'Cette personne a probablement',
