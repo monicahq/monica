@@ -979,6 +979,11 @@ class Contact extends Model
         return Storage::disk('public')->url($resized_avatar);
     }
 
+    public function getGravatar($size)
+    {
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) ) . "&s=" . $size;
+    }
+
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
      * @return int amount
