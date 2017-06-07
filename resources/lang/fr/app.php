@@ -28,4 +28,8 @@ return [
     'breadcrumb_dashboard' => 'Tableau de bord',
     'breadcrumb_list_contacts' => 'Liste de contacts',
     'breadcrumb_journal' => 'Journal',
+
+    'gender_male' => 'Homme',
+    'gender_female' => 'Femme',
+    'gender_none' => 'Aucun',
 ];

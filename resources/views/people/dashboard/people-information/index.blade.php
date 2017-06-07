@@ -47,8 +47,6 @@
         @endif
       </li>
     </ul>
-
-    <a href="/people/{{ $contact->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
   </div>
 
 </div>
