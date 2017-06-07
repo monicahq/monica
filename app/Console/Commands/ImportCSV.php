@@ -43,25 +43,31 @@ class ImportCSV extends Command
         $user = User::find($this->argument('user'));
         $this->info("Importing CSV file $file to user {$user->id}");
         $row = 0;
+        $imported = 0;
         if (($handle = fopen($file, "r")) !== FALSE) {
             while (($data = fgetcsv($handle)) !== FALSE) {
                 $row++;
-                
+                $has_data = false;
+
                 // don't import the columns
                 if ( $row == 1 ) { continue; }
 
                 $contact = new Contact();
                 $contact->account_id = $user->id;
+
                 if ( ! empty( $data[1] ) ) {
                     $contact->first_name = $data[1];    // Given Name
+                    $has_data = true;
                 }
 
                 if ( ! empty( $data[2] ) ) {
                     $contact->middle_name = $data[2];   // Additional Name
+                    $has_data = true;
                 }
 
                 if ( ! empty( $data[3] ) ) {
                     $contact->last_name = $data[3];     // Family Name
+                    $has_data = true;
                 }
 
                 if ( ! empty( $data[14] ) ) {
@@ -82,6 +88,7 @@ class ImportCSV extends Command
                 if ( ! empty( $data[49] ) ) {
                     $contact->street = $data[49];       // address 1 street
                 }
+
                 if ( ! empty( $data[50] ) ) {
                     $contact->city = $data[50];         // address 1 city
                 }
@@ -101,10 +108,14 @@ class ImportCSV extends Command
                     $contact->email = NULL;
                 }
 
-                $contact->save();
-                $contact->setAvatarColor();
+                if ( $has_data ) {
+                    $contact->save();
+                    $contact->setAvatarColor();
+                    $imported++;
+                }
             }
             fclose($handle);
-        }        
+        }
+        $this->info("Imported {$imported} Contacts");
     }
 }
