@@ -16,7 +16,7 @@ return [
     'event_activity_about' => 'an activity about',
     'event_tasks_about' => 'a task about',
     'blank_title' => 'You don\'t have any activity yet.',
-    'blank_cta' => 'Add or edit a contact',
+    'blank_cta' => 'Add contact',
     'event_gift_about' => 'a gift for',
     'event_debt_about' => 'a debt concerning',
 
