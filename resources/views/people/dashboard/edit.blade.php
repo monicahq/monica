@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show kids">
+  <div class="people-show">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -39,15 +39,31 @@
 
               <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
 
+              <p class="delete-contact">
+                {{ trans('people.people_delete_message') }}
+                <a href="/people/{{ $contact->id }}/delete" onclick="return confirm('{{ trans('people.people_delete_confirmation') }}')">{{ trans('people.people_delete_click_here') }}</a>.
+              </p>
+
               {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
+
               <fieldset class="form-group">
+                <label class="form-check-inline">
+                  @if ($contact->gender == 'none')
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  @else
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none">
+                  @endif
+                  {{ trans('app.gender_none') }}
+                </label>
+
                 <label class="form-check-inline">
                   @if ($contact->gender == 'male')
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
                   @endif
-                  {{ trans('people.information_edit_male') }}
+                  {{ trans('app.gender_male') }}
                 </label>
 
                 <label class="form-check-inline">
@@ -56,7 +72,7 @@
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
                   @endif
-                  {{ trans('people.information_edit_female') }}
+                  {{ trans('app.gender_female') }}
                 </label>
               </fieldset>
 
@@ -154,7 +170,7 @@
 
                         <input type="date" name="specificDate" class="form-control"
                               value="{{ (is_null($contact->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getBirthdate()->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(90)->format('Y-m-d') }}"
+                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
                               max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
