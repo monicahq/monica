@@ -25,7 +25,7 @@ git checkout -b 325-add-japanese-translations
 Make sure you follow the [readme's instructions](https://github.com/djaiss/monica#setup-the-testing-environment)
 on how to setup the test suite.
 
-#### 4. Did you find a bug?
+### 4. Did you find a bug?
 
 * **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/djaiss/monica/issues).
 
