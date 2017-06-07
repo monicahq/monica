@@ -9,7 +9,7 @@
           <div class="signup-box">
             <img class="logo" src="/img/small-logo.png" alt="">
             <h2>Create your Monica account</h2>
-            <h3><a href="/login">Log in</a> if you already have an account. Or <a href="/auth/facebook">sign up with Facebook</a>.</h3>
+            <h3><a href="/login">Log in</a> if you already have an account.</h3>
 
             @include ('partials.errors')
 

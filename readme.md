@@ -3,7 +3,7 @@
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
-<a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a>
+<a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
 
 ## Introduction
@@ -17,8 +17,7 @@ Monica allows people to keep track of everything that's important about their
 friends and family. Like the activities done with them.
 When you last called someone. What you talked about. It will help you remember
 the name and the age of the kids. It can also remind you to call someone you
-haven't talked to in a while. It's like an assistant (some call it spouse) you
-dream you had.
+haven't talked to in a while.
 
 ### What Monica isn't
 
@@ -179,6 +178,10 @@ written in a way we don't understand. Again, the number 1 priority should be to
 simplify the maintenance on the long run.
 * It's better to move forward fast by shipping good features, than waiting for
 months and ship a perfect feature.
+* Our product philosophy is simple. Things do not have to be perfect. They just
+need to be shipped. As long as it works and aligns with the vision, you should
+ship as soon as possible. Even if it's ugly, or very small, that does not
+matter.
 
 ### How the community can help
 
@@ -188,4 +191,4 @@ I'm looking for people willing to write tests for the existing features.
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the MIT License
+Licensed under the AGPL License
