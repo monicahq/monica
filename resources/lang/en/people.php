@@ -3,8 +3,8 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 kid|{1,1} 1 kid|{2,*} :count kids',
-    'people_list_number_reminders' => '{0} 0 reminder|{1,1} 1 reminder|{2, *} :count reminders',
+    'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_search' => 'Search contact by name',
