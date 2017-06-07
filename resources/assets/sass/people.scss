@@ -99,20 +99,7 @@
   .pagehead {
     background-color: #f9f9fb;
     border-bottom: 1px solid #eee;
-
-    .back-to-list {
-      margin-bottom: 10px;
-      margin-top: 30px;
-
-      span {
-        font-size: 13px;
-
-        &::after {
-          content: '/';
-          margin-left: 5px;
-        }
-      }
-    }
+    position: relative;
 
     .people-profile-information {
       margin-bottom: 10px;
@@ -166,6 +153,12 @@
           }
         }
       }
+    }
+
+    .edit-information {
+      position: absolute;
+      right: 0;
+      top: 14px;
     }
   }
 
@@ -568,6 +561,12 @@
             }
           }
         }
+      }
+
+      .edit-information {
+        position: relative;
+        width: 100%;
+        margin-bottom: 10px;
       }
     }
 

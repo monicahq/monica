@@ -35,6 +35,8 @@
               @endif
             </li>
           </ul>
+
+          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">Edit contact information</a>
         </div>
       </div>
     </div>

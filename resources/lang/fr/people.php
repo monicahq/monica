@@ -30,6 +30,9 @@ return [
     //
     'link_to_list' => 'Retour à la liste',
 
+    // Header
+    'edit_contact_information' => 'Mettre à jour les informations',
+
     // age - birthday
     'birthdate_not_set' => 'Non indiqué.',
     'age_approximate_in_years' => 'env. :age ans',
