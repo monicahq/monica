@@ -154,7 +154,7 @@
 
                         <input type="date" name="specificDate" class="form-control"
                               value="{{ (is_null($contact->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getBirthdate()->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(90)->format('Y-m-d') }}"
+                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
                               max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>
                   </label>
