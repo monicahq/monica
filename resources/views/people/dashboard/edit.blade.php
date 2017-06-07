@@ -106,15 +106,9 @@
                 <label for="city">{{ trans('people.information_edit_city') }}</label>
                 <input type="text" class="form-control" name="city" value="{{ $contact->getCity() }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
-                <select name="country" class="form-control" required>
-                  @foreach (App\Country::all() as $country)
-                    @if ($country->id == $contact->getCountryID())
-                    <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
-                    @else
-                    <option value="{{ $country->id }}" >{{ $country->country }}</option>
-                    @endif
-                  @endforeach
-                </select>
+                
+                @include('partials.components.country-select',['selectionID'=>$contact->getCountryID()])
+
               </div>
 
               {{-- Email address --}}
