@@ -20,6 +20,10 @@ return [
     'people_add_lastname' => 'Last name (Optional)',
     'people_add_cta' => 'Add this person',
     'people_add_gender' => 'Gender',
+    'people_delete_success' => 'The contact has been deleted',
+    'people_delete_message' => 'If you need to delete this contact,',
+    'people_delete_click_here' => 'click here',
+    'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
 
     // show
     'section_personal_information' => 'Personal information',
