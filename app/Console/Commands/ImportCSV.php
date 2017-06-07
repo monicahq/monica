@@ -102,6 +102,7 @@ class ImportCSV extends Command
                 }
 
                 $contact->save();
+                $contact->setAvatarColor();
             }
             fclose($handle);
         }        
