@@ -65,13 +65,13 @@ return [
     'information_no_phone_defined' => 'No phone number defined',
 
     // food preferencies
-    'food_preferencies_add_success' => 'Food preferencies have been saved.',
+    'food_preferencies_add_success' => 'Food preferences have been saved.',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family\'s family has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner.',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner.',
-    'food_preferencies_edit_title' => 'Indicate food preferencies',
-    'food_preferencies_edit_cta' => 'Edit food preferencies',
-    'food_preferencies_title' => 'Food preferencies',
-    'food_preferencies_cta' => 'Add food preferencies',
+    'food_preferencies_edit_title' => 'Indicate food preferences',
+    'food_preferencies_edit_cta' => 'Edit food preferences',
+    'food_preferencies_title' => 'Food preferences',
+    'food_preferencies_cta' => 'Add food preferences',
 
     // reminders
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
