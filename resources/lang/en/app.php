@@ -29,4 +29,7 @@ return [
     'breadcrumb_list_contacts' => 'List of contacts',
     'breadcrumb_journal' => 'Journal',
 
+    'gender_male' => 'Man',
+    'gender_female' => 'Woman',
+    'gender_none' => 'Rather not say',
 ];
