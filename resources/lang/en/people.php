@@ -30,6 +30,9 @@ return [
     //
     'link_to_list' => 'List of people',
 
+    // Header
+    'edit_contact_information' => 'Edit contact information',
+
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set',
     'age_approximate_in_years' => 'around :age years old',
