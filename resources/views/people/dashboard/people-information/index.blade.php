@@ -48,7 +48,7 @@
       </li>
     </ul>
 
-    <a href="/people/{{ $contact->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
+    <a href="/people/{{ $contact->id }}/edit" class="btn" style="margin-top:32px">{{ trans('app.edit') }}</a>
   </div>
 
 </div>
