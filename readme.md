@@ -188,4 +188,4 @@ I'm looking for people willing to write tests for the existing features.
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the MIT License
+Licensed under the AGPL License
