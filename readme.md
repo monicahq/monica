@@ -59,7 +59,9 @@ If you prefer to, you can simply clone the repository and set it up yourself on
 any hosting provider, for free. I'm just asking that you don't try to make
 money out of it yourself.
 
-## Setup the project
+To update your own instance, follow the instructions below.
+
+## Setup the project on your server or locally
 
 The best way to setup the project locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
 This is what is used to develop Monica and will provide a common base for
@@ -72,8 +74,14 @@ you can pull the repository and start setup Monica.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create 2 databases: `monica` and `monica_test`
 1. `php artisan migrate` to run all migrations
-1. `php artisan db:seed` to load all seeds.
 1. `php artisan storage:link` to access the avatars.
+
+Optional step:
+
+This step is to populate the instance with fake data, so you can test with real
+data instead of lorem ipsum.
+
+1. `php artisan db:seed` to load all seeds.
 
 Note that the seeders will create two accounts.
 
@@ -92,7 +100,7 @@ you strongly to do it first.
 To setup the test environment, create a separate testing database locally. Smart
 defaults are provided in `.env.example`.
 
-Don't forget to run the migrations and seeders before running the first test.
+You need to setup the test database and seeds before running your tests:
 
 * `php artisan migrate --database testing`
 * `php artisan db:seed --database testing`
@@ -101,6 +109,23 @@ To run the tests, use the `phpunit` command.
 
 If you use TravisCI to test the application, it is setup to automatically do
 these actions.
+
+Each time you change the schema of the database, you need to run again the
+migrations and the seeders by running the two commands above.
+
+## Update your local instance (or your server if you run it on production)
+
+There is no concept of releases at the moment. If you run the project locally,
+or if you have installed Monica on your own server, to update it, you need to
+follow these steps below, **every single time**, or you will run into problems.
+
+```
+composer update
+git pull origin master
+php artisan migrate
+```
+
+That should be it.
 
 ## Front-end
 
@@ -131,13 +156,6 @@ dependency with Bower. If you do, make sure that everything is thorougly tested
 as when Bootstrap changes version, a lot of changes are introduced.
 
 ## Backend
-
-### Events and observers
-
-Monica makes use of events and [observers](https://laravel.com/docs/5.4/eloquent#observers).
-For instance, once a contact is created, an event `ContactCreated` is
-broadcasted and a couple of things happen after this (for instance, the action
-is logged in the database so it can appear later on the dashboard).
 
 ### Email testing
 
