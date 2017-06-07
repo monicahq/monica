@@ -12,6 +12,8 @@ class CountriesSeederTable extends Seeder
      */
     public function run()
     {
+        DB::table('countries')->truncate();
+
         DB::table('countries')->insert(['iso' => 'us', 'country' => 'United States']);
         DB::table('countries')->insert(['iso' => 'ca', 'country' => 'Canada']);
         DB::table('countries')->insert(['iso' => 'fr', 'country' => 'France']);
