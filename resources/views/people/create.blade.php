@@ -13,18 +13,6 @@
         <form action="/people" method="POST">
           {{ csrf_field() }}
 
-          <fieldset class="form-group">
-            <label class="form-check-inline">
-              <input type="radio" class="form-check-input" name="gender" id="male" value="male" checked>
-              {{ trans('people.significant_other_add_male') }}
-            </label>
-
-            <label class="form-check-inline">
-              <input type="radio" class="form-check-input" name="gender" id="female" value="female">
-              {{ trans('people.significant_other_add_female') }}
-            </label>
-          </fieldset>
-
           <dl class="form-group {{ $errors->has('first_name') ? ' errored' : '' }}">
             <dt><label for="first_name">{{ trans('people.people_add_firstname') }}</label></dt>
             <dd><input type="text" class="form-control" name="first_name" placeholder="" autofocus  value="{{ old('first_name') }}"></dd>
@@ -38,6 +26,25 @@
             <dd class="error">{{ $errors->first('last_name') }}</dd>
             @endif
           </dl>
+
+          <label>{{ trans('people.people_add_gender') }}</label>
+
+          <fieldset class="form-group">
+            <label class="form-check-inline">
+              <input type="radio" class="form-check-input" name="gender" id="none" value="none" checked>
+              {{ trans('app.gender_none') }}
+            </label>
+
+            <label class="form-check-inline">
+              <input type="radio" class="form-check-input" name="gender" id="male" value="male">
+              {{ trans('app.gender_male') }}
+            </label>
+
+            <label class="form-check-inline">
+              <input type="radio" class="form-check-input" name="gender" id="female" value="female">
+              {{ trans('app.gender_female') }}
+            </label>
+          </fieldset>
 
           <button class="btn btn-primary" type="submit">{{ trans('people.people_add_cta') }}</button>
           <a href="/people" class="btn btn-secondary">{{ trans('app.cancel') }}</a>

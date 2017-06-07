@@ -40,14 +40,25 @@
               <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
 
               {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
+
               <fieldset class="form-group">
+                <label class="form-check-inline">
+                  @if ($contact->gender == 'none')
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  @else
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none">
+                  @endif
+                  {{ trans('app.gender_none') }}
+                </label>
+
                 <label class="form-check-inline">
                   @if ($contact->gender == 'male')
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
                   @endif
-                  {{ trans('people.information_edit_male') }}
+                  {{ trans('app.gender_male') }}
                 </label>
 
                 <label class="form-check-inline">
@@ -56,7 +67,7 @@
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
                   @endif
-                  {{ trans('people.information_edit_female') }}
+                  {{ trans('app.gender_female') }}
                 </label>
               </fieldset>
 
