@@ -112,7 +112,7 @@
                   <ul>
                     @foreach ($tasks as $task)
                       <li>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
+                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
                         {{ $task->getTitle() }}
                         {{ $task->getDescription() }}
                       </li>
