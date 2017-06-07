@@ -88,7 +88,7 @@
 
                   {{-- Significant other --}}
                   @if (! is_null($contact->getCurrentSignificantOther()))
-                    <option value="S{{ $contact->getCurrentSignificantOther()->id }}">{{ $contact->getCurrentSignificantOther()->getFirstName() }}</option>
+                    <option value="S{{ $contact->getCurrentSignificantOther()->id }}">{{ $contact->getCurrentSignificantOther()->getName() }}</option>
                   @endif
 
                   {{-- Kids --}}
