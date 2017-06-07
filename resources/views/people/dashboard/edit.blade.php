@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show kids">
+  <div class="people-show">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -38,6 +38,11 @@
               @include('partials.errors')
 
               <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
+
+              <p class="delete-contact">
+                {{ trans('people.people_delete_message') }}
+                <a href="/people/{{ $contact->id }}/delete" onclick="return confirm('{{ trans('people.people_delete_confirmation') }}')">{{ trans('people.people_delete_click_here') }}</a>.
+              </p>
 
               {{-- Gender --}}
               <label>{{ trans('people.people_add_gender') }}</label>
