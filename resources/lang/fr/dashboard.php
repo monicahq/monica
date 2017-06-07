@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'reminders_title' => 'Prochains rappels dans les 30 prochains jours',
+    'reminders_title' => 'Prochains rappels',
     'reminders_blank_description' => 'Aucun rappel planifié.',
     'event_title' => 'Dernières actions',
     'event_create' => 'Vous avez ajouté',
