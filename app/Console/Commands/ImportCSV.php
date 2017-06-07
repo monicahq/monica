@@ -52,17 +52,49 @@ class ImportCSV extends Command
 
                 $contact = new Contact();
                 $contact->account_id = $user->id;
-                $contact->first_name = $data[1];    // Given Name
-                $contact->middle_name = $data[2];   // Additional Name
-                $contact->last_name = $data[3];     // Family Name
-                $contact->birthdate = date('Y-m-d', strtotime($data[14]));
-                $contact->email = $data[28];        // Email 1 Value
-                $contact->phone_number = $data[42]; // Phone 1 Value
-                $contact->street = $data[49];       // address 1 street
-                $contact->city = $data[50];         // address 1 city
-                $contact->province = $data[52];     // address 1 region (state)
-                $contact->postal_code = $data[53];  // address 1 postal code (zip) 53
-                $contact->job = $data[66];          // organization 1 name 66
+                if ( ! empty( $data[1] ) ) {
+                    $contact->first_name = $data[1];    // Given Name
+                }
+
+                if ( ! empty( $data[2] ) ) {
+                    $contact->middle_name = $data[2];   // Additional Name
+                }
+
+                if ( ! empty( $data[3] ) ) {
+                    $contact->last_name = $data[3];     // Family Name
+                }
+
+                if ( ! empty( $data[14] ) ) {
+                    $contact->birthdate = date('Y-m-d', strtotime($data[14]));
+                }
+
+                // gender required - default to female
+                $contact->gender = ( substr($data[15], 0, 1 ) == 'm' ) ? 'male' : 'female';
+
+                if ( ! empty( $data[28] ) ) {
+                    $contact->email = $data[28];        // Email 1 Value
+                }
+
+                if ( ! empty( $data[42 ] ) ) {
+                    $contact->phone_number = $data[42]; // Phone 1 Value
+                }
+
+                if ( ! empty( $data[49] ) ) {
+                    $contact->street = $data[49];       // address 1 street
+                }
+                if ( ! empty( $data[50] ) ) {
+                    $contact->city = $data[50];         // address 1 city
+                }
+                if ( ! empty( $data[52] ) ) {
+                    $contact->province = $data[52];     // address 1 region (state)
+                }
+
+                if ( ! empty( $data[53] ) ) {
+                    $contact->postal_code = $data[53];  // address 1 postal code (zip) 53
+                }
+                if ( ! empty( $data[66] ) ) {
+                    $contact->job = $data[66];          // organization 1 name 66
+                }
              
                 // can't have empty email
                 if ( empty( $contact->email ) ) {
