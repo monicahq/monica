@@ -73,8 +73,16 @@ This has the nice properties that you don't have to install lots of
 software directly onto your system, and you can be up and running
 quickly with a known working environment.
 
-Before you start, run `cp .env.example .env` and open `.env` in an
-editor:
+Before you start, you need to get and edit a `.env` file. If you've already cloned the
+[MonicaHQ Git repo](https://github.com/monicahq/monica), run:
+
+`$ cp .env.example .env`
+
+to create it. If not, you can fetch it from GitHub like:
+
+`$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env`
+
+Then open `.env` in an editor and update it for your own needs:
 
 - Set `APP_KEY` to a random 32-character string. For example, if you
   have the `pwgen` utility installed, you could copy and paste the
