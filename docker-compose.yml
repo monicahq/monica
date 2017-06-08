@@ -1,11 +1,12 @@
 version: "2"
 services:
-  monica:
+  monicahq:
     build: .
     links:
       - mysql
     ports:
       - 80:80
+    env_file: .env
     volumes:
       - ./persist/storage/app/public:/var/www/monica/storage/app/public
 
