@@ -5,6 +5,7 @@ New features:
 * Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
 
 Improvements:
+* Dramatically reduce the number of queries necessary to load the list of contacts on the People's tab.
 * Phone number are now treated like a string and not integers on the front-end side.
 * Breaking change: Add a new env variable to define which email address should be used when sending notifications about new user signups. You need to add this new env variable (APP_EMAIL_NEW_USERS_NOTIFICATION) to your `.env` file.
 * Fix typos
