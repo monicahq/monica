@@ -41,7 +41,17 @@ everyone is a beginner at first :smile_cat:
 
 To write good commit messages, please follow [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). There are important to maintain an healthy commit logs.
 
-### 6. What can I contribute to?
+### 6. Wait for the code to be reviewed
+
+It can take several days before we can review the code you've submitted. We
+all have a lot of work to do and while we truly appreciate pull requests that
+are submitted, we can't review them instantly. We'll do our best to review
+them as fast as possible, but there are only 24 hours in a day and we can't
+sometimes be as fast as we wish we were. Moreover, there are little chances that
+the PR will be reviewed over the weekend, a time dedicated to spend time with 
+friends and families (those you manage with MonicaHQ anyway :-)).
+
+### 7. What can I contribute to?
 
 Even the simplest change is appreciated. It can be a typo error, translating the
 application in a new language, fix a bug. No change is too small.
