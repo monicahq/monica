@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get install -y git netcat
 
 # PHP
-RUN apt-get install -y composer npm php7.0 php7.0-intl php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
+RUN apt-get install -y composer npm php7.0 php7.0-gd php7.0-intl php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
 
 # Apache
 RUN apt-get install -y apache2 libapache2-mod-php7.0
