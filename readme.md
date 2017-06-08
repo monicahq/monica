@@ -3,13 +3,16 @@
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
-<a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="License"></a>
+<a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
 
 ## Introduction
 
 Monica is an open-source web application to manage your personal relationships.
-Think of it as a CRM for your friends or family.
+Think of it as a CRM for your friends or family. This is what it currently
+looks like:
+
+![screenshot of the application](https://app.monicahq.com/img/screenshot.png)
 
 ### Purpose
 
@@ -17,8 +20,7 @@ Monica allows people to keep track of everything that's important about their
 friends and family. Like the activities done with them.
 When you last called someone. What you talked about. It will help you remember
 the name and the age of the kids. It can also remind you to call someone you
-haven't talked to in a while. It's like an assistant (some call it spouse) you
-dream you had.
+haven't talked to in a while.
 
 ### What Monica isn't
 
@@ -60,7 +62,9 @@ If you prefer to, you can simply clone the repository and set it up yourself on
 any hosting provider, for free. I'm just asking that you don't try to make
 money out of it yourself.
 
-## Setup the project
+To update your own instance, follow the instructions below.
+
+## Setup the project on your server or locally
 
 The best way to setup the project locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
 This is what is used to develop Monica and will provide a common base for
@@ -73,8 +77,14 @@ you can pull the repository and start setup Monica.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create 2 databases: `monica` and `monica_test`
 1. `php artisan migrate` to run all migrations
-1. `php artisan db:seed` to load all seeds.
 1. `php artisan storage:link` to access the avatars.
+
+Optional step:
+
+This step is to populate the instance with fake data, so you can test with real
+data instead of lorem ipsum.
+
+1. `php artisan db:seed` to load all seeds.
 
 Note that the seeders will create two accounts.
 
@@ -93,7 +103,7 @@ you strongly to do it first.
 To setup the test environment, create a separate testing database locally. Smart
 defaults are provided in `.env.example`.
 
-Don't forget to run the migrations and seeders before running the first test.
+You need to setup the test database and seeds before running your tests:
 
 * `php artisan migrate --database testing`
 * `php artisan db:seed --database testing`
@@ -102,6 +112,23 @@ To run the tests, use the `phpunit` command.
 
 If you use TravisCI to test the application, it is setup to automatically do
 these actions.
+
+Each time you change the schema of the database, you need to run again the
+migrations and the seeders by running the two commands above.
+
+## Update your local instance (or your server if you run it on production)
+
+There is no concept of releases at the moment. If you run the project locally,
+or if you have installed Monica on your own server, to update it, you need to
+follow these steps below, **every single time**, or you will run into problems.
+
+```
+composer update
+git pull origin master
+php artisan migrate
+```
+
+That should be it.
 
 ## Front-end
 
@@ -132,13 +159,6 @@ dependency with Bower. If you do, make sure that everything is thorougly tested
 as when Bootstrap changes version, a lot of changes are introduced.
 
 ## Backend
-
-### Events and observers
-
-Monica makes use of events and [observers](https://laravel.com/docs/5.4/eloquent#observers).
-For instance, once a contact is created, an event `ContactCreated` is
-broadcasted and a couple of things happen after this (for instance, the action
-is logged in the database so it can appear later on the dashboard).
 
 ### Email testing
 
@@ -179,6 +199,10 @@ written in a way we don't understand. Again, the number 1 priority should be to
 simplify the maintenance on the long run.
 * It's better to move forward fast by shipping good features, than waiting for
 months and ship a perfect feature.
+* Our product philosophy is simple. Things do not have to be perfect. They just
+need to be shipped. As long as it works and aligns with the vision, you should
+ship as soon as possible. Even if it's ugly, or very small, that does not
+matter.
 
 ### How the community can help
 
