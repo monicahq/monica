@@ -39,6 +39,8 @@ demonstrating the expected behavior that is not occurring.
 At this point, you're ready to make your changes! Feel free to ask for help;
 everyone is a beginner at first :smile_cat:
 
+To write good commit messages, please follow [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). There are important to maintain an healthy commit logs.
+
 ### 6. What can I contribute to?
 
 Even the simplest change is appreciated. It can be a typo error, translating the
