@@ -1,0 +1,14 @@
+2017-06-08
+----------
+
+New features:
+* Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
+
+Improvements:
+* Fix typos
+
+2017-06-07
+----------
+
+* Add ability to delete a contact
+* Add a changelog

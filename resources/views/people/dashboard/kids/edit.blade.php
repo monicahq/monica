@@ -39,8 +39,28 @@
 
               <h2>{{ trans('people.kids_edit_title', ['name' => $kid->getFirstName()]) }}</h2>
 
+              {{-- First name --}}
+              <div class="form-group">
+                <label for="firstname">{{ trans('people.kids_add_firstname') }}</label>
+                <input type="text" class="form-control" name="firstname" value="{{ $kid->getFirstName() }}" autofocus required>
+
+                @if (! is_null($contact->getLastName()))
+                <small id="firstNameHelp" class="form-text text-muted">{{ trans('people.kids_add_firstname_help', ['name' => $contact->getLastName()]) }}.</small>
+                @endif
+              </div>
+
               {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
               <fieldset class="form-group">
+                <label class="form-check-inline">
+                  @if ($contact->gender == 'none')
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  @else
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none">
+                  @endif
+                  {{ trans('app.gender_none') }}
+                </label>
+
                 <label class="form-check-inline">
                   @if ($kid->gender == 'male')
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
@@ -59,16 +79,6 @@
                   {{ trans('people.kids_add_girl') }}
                 </label>
               </fieldset>
-
-              {{-- First name --}}
-              <div class="form-group">
-                <label for="firstname">{{ trans('people.kids_add_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" value="{{ $kid->getFirstName() }}" autofocus required>
-
-                @if (! is_null($contact->getLastName()))
-                <small id="firstNameHelp" class="form-text text-muted">{{ trans('people.kids_add_firstname_help', ['name' => $contact->getLastName()]) }}.</small>
-                @endif
-              </div>
 
               <fieldset class="form-group dates">
 

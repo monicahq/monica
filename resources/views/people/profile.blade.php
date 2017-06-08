@@ -1,5 +1,5 @@
 @extends('layouts.skeleton')
-
+@section('title', $contact->getCompleteName() )
 @section('content')
   <div class="people-show">
     {{ csrf_field() }}
