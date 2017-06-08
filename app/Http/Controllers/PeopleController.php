@@ -276,64 +276,62 @@ class PeopleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request, $contactId)
     {
-        $people = People::findOrFail($id);
+        $contact = Contact::findOrFail($contactId);
 
-        if ($people->account_id != Auth::user()->account_id) {
+        if ($contact->account_id != Auth::user()->account_id) {
             return redirect()->route('people.index');
         }
 
-        $people->deleted_at = Carbon::now();
-        $people->save();
-
-        // soft deleting all the reminders for this people
-        $reminders = Reminder::where('people_id', $people->id)
-                              ->get();
-
-        foreach ($reminders as $reminder) {
-            $reminder->deleted_at = Carbon::now();
-            $reminder->save();
-        }
-
-        // soft deleting all contact objects
-        $contacts = Contact::where('people_id', $people->id)
-                              ->get();
-
-        foreach ($contacts as $contact) {
-            $contact->deleted_at = Carbon::now();
-            $contact->save();
-        }
-
-        // soft deleting the kids
-        $kids = Kid::where('child_of_people_id', $people->id)
-                              ->get();
-
-        foreach ($kids as $kid) {
-            $kid->deleted_at = Carbon::now();
-            $kid->save();
-        }
-
-        // soft deleting the notes
-        $notes = Note::where('people_id', $people->id)->get();
-        foreach ($notes as $note) {
-            $note->deleted_at = Carbon::now();
-            $note->save();
-        }
-
-        // soft deleting the significant_others
-        $signficantOthers = SignificantOther::where('people_id', $people->id)->get();
-        foreach ($signficantOthers as $signficantOther) {
-            $signficantOther->deleted_at = Carbon::now();
-            $signficantOther->save();
-        }
-
-        // soft deleting the activities
-        $activities = Activity::where('people_id', $people->id)->get();
+        $activities = Activity::where('contact_id', $contact->id)->get();
         foreach ($activities as $activity) {
-            $activity->deleted_at = Carbon::now();
-            $activity->save();
+            $activity->delete();
         }
+
+        $debts = Debt::where('contact_id', $contact->id)->get();
+        foreach ($debts as $debt) {
+            $debt->delete();
+        }
+
+        $events = Event::where('contact_id', $contact->id)->get();
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        $gifts = Event::where('contact_id', $contact->id)->get();
+        foreach ($gifts as $gift) {
+            $gift->delete();
+        }
+
+        $kids = Kid::where('child_of_contact_id', $contact->id)->get();
+        foreach ($kids as $kid) {
+            $kid->delete();
+        }
+
+        $notes = Note::where('contact_id', $contact->id)->get();
+        foreach ($notes as $note) {
+            $note->delete();
+        }
+
+        $reminders = Reminder::where('contact_id', $contact->id)->get();
+        foreach ($reminders as $reminder) {
+            $reminder->delete();
+        }
+
+        $signficantOthers = SignificantOther::where('contact_id', $contact->id)->get();
+        foreach ($signficantOthers as $signficantOther) {
+            $signficantOther->delete();
+        }
+
+        $tasks = Task::where('contact_id', $contact->id)->get();
+        foreach ($tasks as $task) {
+            $task->delete();
+        }
+
+        $contact->delete();
+
+        $request->session()->flash('success', trans('people.people_delete_success'));
 
         return redirect()->route('people.index');
     }

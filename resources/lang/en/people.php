@@ -3,8 +3,8 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 kid|{1,1} 1 kid|{2,*} :count kids',
-    'people_list_number_reminders' => '{0} 0 reminder|{1,1} 1 reminder|{2, *} :count reminders',
+    'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_search' => 'Search contact by name',
@@ -19,6 +19,11 @@ return [
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
     'people_add_cta' => 'Add this person',
+    'people_add_gender' => 'Gender',
+    'people_delete_success' => 'The contact has been deleted',
+    'people_delete_message' => 'If you need to delete this contact,',
+    'people_delete_click_here' => 'click here',
+    'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
 
     // show
     'section_personal_information' => 'Personal information',
@@ -29,6 +34,9 @@ return [
 
     //
     'link_to_list' => 'List of people',
+
+    // Header
+    'edit_contact_information' => 'Edit contact information',
 
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set',
@@ -45,8 +53,6 @@ return [
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name\'s personal information',
-    'information_edit_male' => 'Male',
-    'information_edit_female' => 'Female',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
     'information_edit_street' => 'Street (optional)',
@@ -65,13 +71,13 @@ return [
     'information_no_phone_defined' => 'No phone number defined',
 
     // food preferencies
-    'food_preferencies_add_success' => 'Food preferencies have been saved',
+    'food_preferencies_add_success' => 'Food preferences have been saved',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family\'s family has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_title' => 'Indicate food preferencies',
-    'food_preferencies_edit_cta' => 'Edit food preferencies',
-    'food_preferencies_title' => 'Food preferencies',
-    'food_preferencies_cta' => 'Add food preferencies',
+    'food_preferencies_edit_title' => 'Indicate food preferences',
+    'food_preferencies_edit_cta' => 'Edit food preferences',
+    'food_preferencies_title' => 'Food preferences',
+    'food_preferencies_cta' => 'Add food preferences',
 
     // reminders
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
@@ -107,8 +113,6 @@ return [
     'significant_other_sidebar_title' => 'Significant other',
     'significant_other_cta' => 'Add significant other',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
-    'significant_other_add_male' => 'Man',
-    'significant_other_add_female' => 'Woman',
     'significant_other_add_firstname' => 'Name',
     'significant_other_add_unknown' => 'I do not know this person\'s age',
     'significant_other_add_probably' => 'This person is probably',

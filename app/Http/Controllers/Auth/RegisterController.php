@@ -45,6 +45,20 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        if (env('APP_DISABLE_SIGNUP') == 'true') {
+            abort(403, trans('auth.signup_disabled'));
+        }
+
+        return view('auth.register');
+    }
+
+    /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
@@ -113,6 +127,12 @@ class RegisterController extends Controller
         $userObject = User::where('email', $user->getEmail())->first();
 
         if (count($userObject) == 0) {
+
+            // Abort if signup is disabled
+            if (env('APP_DISABLE_SIGNUP') == 'true') {
+                abort(403);
+            }
+
             $userObject = new User;
             $userObject->first_name = 'Facebook';
             $userObject->last_name = 'User';

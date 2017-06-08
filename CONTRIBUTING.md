@@ -5,7 +5,7 @@ you to make Monica the best tool it can be.
 
 ### 1. Where do I go from here?
 
-If you've noticed a bug or have a question, [make an issue](https://github.com/djaiss/monica/issues/new),
+If you've noticed a bug or have a question, [make an issue](https://github.com/monicahq/monica/issues/new),
 we'll try to answer it as fast as possible.
 
 ### 2. Fork & create a branch
@@ -22,14 +22,14 @@ git checkout -b 325-add-japanese-translations
 
 ### 3. Get the test suite running
 
-Make sure you follow the [readme's instructions](https://github.com/djaiss/monica#setup-the-testing-environment)
+Make sure you follow the [readme's instructions](https://github.com/monicahq/monica#setup-the-testing-environment)
 on how to setup the test suite.
 
 ### 4. Did you find a bug?
 
-* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/djaiss/monica/issues).
+* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/monicahq/monica/issues).
 
-* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/djaiss/monica/issues/new).
+* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/monicahq/monica/issues/new).
 Be sure to include a **title and clear description**, as much relevant
 information as possible, and a **code sample** or an **executable test case**
 demonstrating the expected behavior that is not occurring.
@@ -39,7 +39,19 @@ demonstrating the expected behavior that is not occurring.
 At this point, you're ready to make your changes! Feel free to ask for help;
 everyone is a beginner at first :smile_cat:
 
-### 6. What can I contribute to?
+To write good commit messages, please follow [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). There are important to maintain an healthy commit logs.
+
+### 6. Wait for the code to be reviewed
+
+It can take several days before we can review the code you've submitted. We
+all have a lot of work to do and while we truly appreciate pull requests that
+are submitted, we can't review them instantly. We'll do our best to review
+them as fast as possible, but there are only 24 hours in a day and we can't
+sometimes be as fast as we wish we were. Moreover, there are little chances that
+the PR will be reviewed over the weekend, a time dedicated to spend time with 
+friends and families (those you manage with MonicaHQ anyway :-)).
+
+### 7. What can I contribute to?
 
 Even the simplest change is appreciated. It can be a typo error, translating the
 application in a new language, fix a bug. No change is too small.

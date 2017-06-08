@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'reminders_title' => 'Prochains rappels dans les 30 prochains jours',
+    'reminders_title' => 'Prochains rappels',
     'reminders_blank_description' => 'Aucun rappel planifié.',
     'event_title' => 'Dernières actions',
     'event_create' => 'Vous avez ajouté',
@@ -16,7 +16,7 @@ return [
     'event_activity_about' => 'une activité à propos de',
     'event_tasks_about' => 'une tâche concernant',
     'blank_title' => 'Vous n\'avez encore aucune activité.',
-    'blank_cta' => 'Ajoutez ou éditez un contact',
+    'blank_cta' => 'Ajoutez un contact',
     'event_gift_about' => 'un cadeau pour',
     'event_debt_about' => 'une dette concernant',
 

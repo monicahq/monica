@@ -51,7 +51,7 @@
               </div>
 
               <div class="help">
-                Signing up signifies you’ve read and agree to our <a href="/privacy">Privacy Policy</a>.
+                Signing up signifies you’ve read and agree to our <a href="https://monicahq.com/privacy">Privacy Policy</a>.
               </div>
 
             </form>
