@@ -66,9 +66,9 @@ To update your own instance, follow the instructions below.
 
 ## Running with Docker
 
-You can use [Docker](https://www.docker.com)
-and [docker-compose](https://docs.docker.com/compose/) to build and
-run a Monica image, complete with a self-contained MySQL database.
+You can use [Docker](https://www.docker.com) and
+[docker-compose](https://docs.docker.com/compose/) to pull or build
+and run a Monica image, complete with a self-contained MySQL database.
 This has the nice properties that you don't have to install lots of
 software directly onto your system, and you can be up and running
 quickly with a known working environment.
@@ -79,27 +79,58 @@ editor:
 - Set `APP_KEY` to a random 32-character string. For example, if you
   have the `pwgen` utility installed, you could copy and paste the
   output of `pwgen -s 32 1`.
-- If you want to use docker-compose to launch a Dockerized MySQL
-  database, set `DB_HOST=mysql` (as `mysql` is the creative name of
-  the MySQL container).
 - Edit the `MAIL_*` settings to point to your own mailserver.
 
-Then either:
+Now select one of these methods to be up and running quickly:
 
-**Use docker-compose to build and run a working self-contained system**:
+### Use docker-compose to run a pre-built image
 
+This is the easiest and fastest way to try MonicaHQ! Use this process
+if you want to download the newest image from Docker Hub and run it
+with a pre-packaged MySQL database.
+
+Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
+the MySQL container).
+
+```shell
+$ docker-compose pull
+$ docker-compose up
+```
+
+### Use docker-compose to build and run your own image
+
+Use this process if you want to modify MonicaHQ source code and build
+your image to run.
+
+Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
+the MySQL container).
+
+Then run:
 
 ```shell
 $ docker-compose build
 $ docker-compose up
 ```
 
-**Use Docker directly to run with your own MySQL database**
+### Use Docker directly to run with your own database
+
+Use this process if you're a developer and want complete control over
+your MonicaHQ container.
+
+Edit `.env` again to set the `DB_*` variables to match your
+database. Then run:
 
 ```shell
-$ docker build -t monica .
-$ docker run monica  # or "docker run monical shell" to get a prompt
+$ docker build -t monicahq/monicahq .
+$ docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
+# ...or...
+$ docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
 ```
+
+Note that uploaded files, like avatars, will disappear when you
+restart the container. Map a volume to
+`/var/www/monica/storage/app/public` if you want that data to persist
+between runs. See `docker-compose.yml` for examples.
 
 ## Setup the project on your server or locally
 

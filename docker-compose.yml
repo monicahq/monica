@@ -2,6 +2,7 @@ version: "2"
 services:
   monicahq:
     build: .
+    image: monicahq/monicahq
     links:
       - mysql
     ports:
