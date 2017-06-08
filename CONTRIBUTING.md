@@ -41,6 +41,9 @@ everyone is a beginner at first :smile_cat:
 
 To write good commit messages, please follow [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). There are important to maintain an healthy commit logs.
 
+If you wish to appear as a contributor, update the CONTRIBUTORS file and 
+add your name to it. Include this change in your pull request.
+
 ### 6. Wait for the code to be reviewed
 
 It can take several days before we can review the code you've submitted. We
