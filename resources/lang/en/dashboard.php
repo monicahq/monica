@@ -1,8 +1,9 @@
 <?php
 
 return [
+
     'reminders_title' => 'Upcoming reminders',
-    'reminders_blank_description' => 'No reminders are planned.',
+    'reminders_blank_description' => 'No reminders are planned',
     'event_title' => 'Latest actions',
     'event_create' => 'You added',
     'event_update' => 'You updated',
@@ -15,7 +16,7 @@ return [
     'event_note_about' => 'a note about',
     'event_activity_about' => 'an activity about',
     'event_tasks_about' => 'a task about',
-    'blank_title' => 'You don\'t have any activity yet.',
+    'blank_title' => 'You don\'t have any activity yet',
     'blank_cta' => 'Add or edit a contact',
     'event_gift_about' => 'a gift for',
     'event_debt_about' => 'a debt concerning',
@@ -24,7 +25,7 @@ return [
     'tab_whats_coming' => 'What\'s coming',
     'tab_lastest_actions' => 'Latest actions',
     'tasks_title' => 'Tasks',
-    'tasks_blank' => 'No tasks are planned.',
+    'tasks_blank' => 'No tasks are planned',
     'reminders_in_days' => 'in :number days',
     'statistics_title' => 'Statistics about your account',
     'statistics_contacts' => 'Contacts',
@@ -40,6 +41,6 @@ return [
     'debts_you_owe' => 'You owe',
     'debts_you_due' => 'You are due',
     'debts_for' => 'for',
-    'debts_blank' => 'You don\'t have debts.',
+    'debts_blank' => 'You don\'t have debts',
 
 ];
