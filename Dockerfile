@@ -1,32 +1,15 @@
-FROM ubuntu
+FROM alpine:3.6
 
 EXPOSE 80:80
 
-RUN apt-get update
+RUN apk update && apk add apache2 curl git make netcat-openbsd nodejs-current-npm openssl php7 php7-apache2 php7-ctype php7-dom php7-fileinfo php7-gd php7-iconv php7-intl php7-json php7-mbstring php7-mysqli php7-openssl php7-pdo_mysql php7-phar php7-session php7-tokenizer php7-xml php7-xmlwriter php7-zip php7-zlib
 
-# Required system tools
-RUN apt-get install -y git netcat
-
-# PHP
-RUN apt-get install -y composer npm php7.0 php7.0-gd php7.0-intl php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
-
-# Apache
-RUN apt-get install -y apache2 libapache2-mod-php7.0
-
-# Handy troubleshooting and experimentation tools
-RUN apt-get install -y telnet vim-tiny
-
-# Apache needs mod_rewrite
-RUN a2enmod rewrite
-
-# Configure Node and Bower
-RUN cd /usr/bin && ln -s nodejs node
 RUN npm install -g bower
+RUN mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN useradd -m monica
-RUN usermod -a -G monica www-data
+RUN adduser -D monica && addgroup apache monica
 WORKDIR /var/www/monica
 
 # As an optimization, install Node stuff early in the process so that
@@ -34,23 +17,19 @@ WORKDIR /var/www/monica
 # time we change a config file or edit some CSS. Yes, this is ugly,
 # but it shaves a few minutes off repeated build times.
 ADD package.json .
-RUN chown -R monica .
-USER monica
-RUN npm install
-USER root
+RUN chown -R monica . && su monica -c "npm install"
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
 ADD . .
-RUN cp docker/000-default.conf /etc/apache2/sites-available/
-RUN chown -R monica:monica .
-RUN chmod -R g+w storage
-RUN chmod -R g+w bootstrap/cache
+RUN cp docker/000-default.conf /etc/apache2/conf.d \
+    && chown -R monica:monica . \
+    && chmod -R g+w bootstrap/cache storage
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install
+RUN docker/install-composer.sh && ./composer.phar install
 RUN bower install
 USER root
 
