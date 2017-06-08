@@ -64,12 +64,51 @@ money out of it yourself.
 
 To update your own instance, follow the instructions below.
 
+## Running with Docker
+
+You can use [Docker](https://www.docker.com)
+and [docker-compose](https://docs.docker.com/compose/) to build and
+run a Monica image, complete with a self-contained MySQL database.
+This has the nice properties that you don't have to install lots of
+software directly onto your system, and you can be up and running
+quickly with a known working environment.
+
+Before you start, run `cp .env.example .env` and open `.env` in an
+editor:
+
+- Set `APP_KEY` to a random 32-character string. For example, if you
+  have the `pwgen` utility installed, you could copy and paste the
+  output of `pwgen -s 32 1`.
+- If you want to use docker-compose to launch a Dockerized MySQL
+  database, set `DB_HOST=mysql` (as `mysql` is the creative name of
+  the MySQL container).
+- Edit the `MAIL_*` settings to point to your own mailserver.
+
+Then either:
+
+**Use docker-compose to build and run a working self-contained system**:
+
+
+```shell
+$ docker-compose build
+$ docker-compose up
+```
+
+**Use Docker directly to run with your own MySQL database**
+
+```shell
+$ docker build -t monica .
+$ docker run monica
+```
+
 ## Setup the project on your server or locally
 
-The best way to setup the project locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
-This is what is used to develop MonicaHQ and will provide a common base for
-everyone who wants to contribute to the project. Once Homestead is installed,
-you can pull the repository and start setup MonicaHQ.
+If you don't want to use Docker, the best way to setup the project
+locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
+This is what is used to develop MonicaHQ and will provide a common
+base for everyone who wants to contribute to the project. Once
+Homestead is installed, you can pull the repository and start setup
+MonicaHQ.
 
 1. `composer install`
 1. `cp .env.example .env` to configure MonicaHQ

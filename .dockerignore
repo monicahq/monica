@@ -1,0 +1,4 @@
+readme.md
+Dockerfile
+docker-compose.yml
+persist/

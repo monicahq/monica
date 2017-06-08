@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  monica:
+    build: .
+    links:
+      - mysql
+    ports:
+      - 80:80
+
+  mysql:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - ./persist/mysql:/var/lib/mysql
