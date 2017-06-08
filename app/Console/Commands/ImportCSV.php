@@ -47,7 +47,6 @@ class ImportCSV extends Command
         if (($handle = fopen($file, "r")) !== FALSE) {
             while (($data = fgetcsv($handle)) !== FALSE) {
                 $row++;
-                $has_data = false;
 
                 // don't import the columns
                 if ( $row == 1 ) { continue; }
@@ -55,27 +54,26 @@ class ImportCSV extends Command
                 $contact = new Contact();
                 $contact->account_id = $user->id;
 
+                // if first & last name do not exist skip row
+                if ( empty( $data[1] ) && empty( $data[3] ) ) {
+                    continue;
+                }
+
                 if ( ! empty( $data[1] ) ) {
                     $contact->first_name = $data[1];    // Given Name
-                    $has_data = true;
                 }
 
                 if ( ! empty( $data[2] ) ) {
                     $contact->middle_name = $data[2];   // Additional Name
-                    $has_data = true;
                 }
 
                 if ( ! empty( $data[3] ) ) {
                     $contact->last_name = $data[3];     // Family Name
-                    $has_data = true;
                 }
 
                 if ( ! empty( $data[14] ) ) {
                     $contact->birthdate = date('Y-m-d', strtotime($data[14]));
                 }
-
-                // gender required - default to female
-                $contact->gender = ( substr($data[15], 0, 1 ) == 'm' ) ? 'male' : 'female';
 
                 if ( ! empty( $data[28] ) ) {
                     $contact->email = $data[28];        // Email 1 Value
@@ -108,11 +106,9 @@ class ImportCSV extends Command
                     $contact->email = NULL;
                 }
 
-                if ( $has_data ) {
-                    $contact->save();
-                    $contact->setAvatarColor();
-                    $imported++;
-                }
+                $contact->save();
+                $contact->setAvatarColor();
+                $imported++;
             }
             fclose($handle);
         }
