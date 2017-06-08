@@ -11,7 +11,7 @@ return [
     'layout_big' => 'Full width of the browser',
     'save' => 'Update preferences',
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
-    'delete_cta' => 'Delete account',
+    'delete_cta' => 'Удалить account',
     'locale' => 'Language used in the app',
     'locale_en' => 'Английский',
     'locale_fr' => 'Французкий',
