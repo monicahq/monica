@@ -5,7 +5,7 @@ you to make Monica the best tool it can be.
 
 ### 1. Where do I go from here?
 
-If you've noticed a bug or have a question, [make an issue](https://github.com/djaiss/monica/issues/new),
+If you've noticed a bug or have a question, [make an issue](https://github.com/monicahq/monica/issues/new),
 we'll try to answer it as fast as possible.
 
 ### 2. Fork & create a branch
@@ -22,14 +22,14 @@ git checkout -b 325-add-japanese-translations
 
 ### 3. Get the test suite running
 
-Make sure you follow the [readme's instructions](https://github.com/djaiss/monica#setup-the-testing-environment)
+Make sure you follow the [readme's instructions](https://github.com/monicahq/monica#setup-the-testing-environment)
 on how to setup the test suite.
 
 ### 4. Did you find a bug?
 
-* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/djaiss/monica/issues).
+* **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/monicahq/monica/issues).
 
-* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/djaiss/monica/issues/new).
+* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/monicahq/monica/issues/new).
 Be sure to include a **title and clear description**, as much relevant
 information as possible, and a **code sample** or an **executable test case**
 demonstrating the expected behavior that is not occurring.
