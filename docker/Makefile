@@ -1,5 +1,5 @@
 test_server: waitfordb
-	docker/test_server.sh
+	docker/test-server.sh
 
 shell:
 	/bin/bash
