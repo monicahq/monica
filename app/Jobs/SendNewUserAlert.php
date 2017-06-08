@@ -33,6 +33,6 @@ class SendNewUserAlert implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to(env('APP_EMAIL'))->send(new NewUserAlert($this->user));
+        Mail::to(env('APP_EMAIL_NEW_USERS_NOTIFICATION'))->send(new NewUserAlert($this->user));
     }
 }
