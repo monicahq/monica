@@ -25,6 +25,7 @@
             <select class="form-control" name="locale" id="locale">
               <option value='en' {{ (Auth::user()->locale == 'en')?'selected':'' }}>{{ trans('settings.locale_en') }}</option>
               <option value='fr' {{ (Auth::user()->locale == 'fr')?'selected':'' }}>{{ trans('settings.locale_fr') }}</option>
+              <option value='ru' {{ (Auth::user()->locale == 'ru')?'selected':'' }}>{{ trans('settings.locale_ru') }}</option>
             </select>
           </div>
           <div class="form-group">

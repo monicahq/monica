@@ -13,6 +13,7 @@ return [
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
     'delete_cta' => 'Delete account',
     'locale' => 'Language used in the app',
-    'locale_en' => 'English',
-    'locale_fr' => 'French',
+    'locale_en' => 'Английский',
+    'locale_fr' => 'Французкий',
+    'locale_ru' => 'Русский',
 ];

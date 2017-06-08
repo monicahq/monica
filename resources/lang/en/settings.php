@@ -15,4 +15,5 @@ return [
     'locale' => 'Language used in the app',
     'locale_en' => 'English',
     'locale_fr' => 'French',
+    'locale_ru' => 'Russian',
 ];

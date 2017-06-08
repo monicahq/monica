@@ -15,4 +15,5 @@ return [
     'locale' => 'Langue',
     'locale_en' => 'Anglais',
     'locale_fr' => 'Francais',
+    'locale_ru' => 'Russe',
 ];

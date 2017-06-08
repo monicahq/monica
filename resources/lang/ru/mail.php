@@ -2,10 +2,10 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
+    'subject_line' => 'Напоминание для :contact',
+    'greetings' => 'Привет :username',
     'want_reminded_of' => 'YOU WANTED TO BE REMINDED OF',
     'for' => 'FOR:',
-    'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
+    'footer_contact_info' => 'Добавить, просмотреть, завершить и изменить информацию об этом контакте',
 
 ];
