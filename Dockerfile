@@ -23,15 +23,16 @@ RUN a2enmod rewrite
 RUN cd /usr/bin && ln -s nodejs node
 RUN npm install -g bower
 
-# Create a user to own all the code and assets and give them a working directory
+# Create a user to own all the code and assets and give them a working
+# directory
 RUN useradd -m monica
 RUN usermod -a -G monica www-data
 WORKDIR /var/www/monica
 
-# As an optimization, run install Node stuff early in the process so
-# that it gets cached. That way we don't have to rerun all of this
-# every time we change a config file or edit some CSS. Yes, this is
-# ugly, but it shaves a few minutes off repeated build times.
+# As an optimization, install Node stuff early in the process so that
+# it gets cached. That way we don't have to rerun all of this every
+# time we change a config file or edit some CSS. Yes, this is ugly,
+# but it shaves a few minutes off repeated build times.
 ADD package.json .
 RUN chown -R monica .
 USER monica
@@ -39,7 +40,7 @@ RUN npm install
 USER root
 
 # Copy the local (outside Docker) source into the working directory,
-# link system files into their proper homes, and set file ownership
+# copy system files into their proper homes, and set file ownership
 # correctly
 ADD . .
 RUN cp docker/000-default.conf /etc/apache2/sites-available/
@@ -53,5 +54,5 @@ RUN composer install
 RUN bower install
 USER root
 
-# This is the script that the container will run by default
+# This is the command that the container will run by default
 ENTRYPOINT ["make", "-f", "/var/www/monica/docker/Makefile"]
