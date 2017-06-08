@@ -7949,20 +7949,7 @@ header .main-cta {
 .people-show .pagehead {
   background-color: #f9f9fb;
   border-bottom: 1px solid #eee;
-}
-
-.people-show .pagehead .back-to-list {
-  margin-bottom: 10px;
-  margin-top: 30px;
-}
-
-.people-show .pagehead .back-to-list span {
-  font-size: 13px;
-}
-
-.people-show .pagehead .back-to-list span::after {
-  content: '/';
-  margin-left: 5px;
+  position: relative;
 }
 
 .people-show .pagehead .people-profile-information {
@@ -8017,10 +8004,22 @@ header .main-cta {
   margin-left: 14px;
 }
 
+.people-show .pagehead .edit-information {
+  position: absolute;
+  right: 0;
+  top: 14px;
+}
+
 .people-show .main-content {
   background-color: #fff;
   padding-bottom: 20px;
   padding-top: 40px;
+}
+
+.people-show .main-content .delete-contact {
+  font-size: 12px;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .people-show .main-content .section-title {
@@ -8377,6 +8376,11 @@ header .main-cta {
   .people-show .pagehead .people-profile-information .profile-detail-summary li:not(:last-child)::after {
     content: '';
     margin-left: 0;
+  }
+  .people-show .pagehead .edit-information {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
   }
   .people-show .main-content.modal {
     margin-top: 0;
