@@ -126,7 +126,7 @@
               {{-- Email address --}}
               <div class="form-group">
                 <label for="phone">{{ trans('people.information_edit_phone') }}</label>
-                <input type="number" class="form-control" name="phone" value="{{ $contact->getPhone() }}">
+                <input class="form-control" name="phone" value="{{ $contact->getPhone() }}">
               </div>
 
               <fieldset class="form-group dates">

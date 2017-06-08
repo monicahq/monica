@@ -1,5 +1,5 @@
 <p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
-<h1 align="center">Monica</h1>
+<h1 align="center">MonicaHQ</h1>
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Monica is an open-source web application to manage your personal relationships.
+MonicaHQ is an open-source web application to manage your personal relationships.
 Think of it as a CRM for your friends or family. This is what it currently
 looks like:
 
@@ -16,16 +16,16 @@ looks like:
 
 ### Purpose
 
-Monica allows people to keep track of everything that's important about their
+MonicaHQ allows people to keep track of everything that's important about their
 friends and family. Like the activities done with them.
 When you last called someone. What you talked about. It will help you remember
 the name and the age of the kids. It can also remind you to call someone you
 haven't talked to in a while.
 
-### What Monica isn't
+### What MonicaHQ isn't
 
-Monica is not a social network. It's not meant to be social. In fact, it's for
-your eyes only. Monica is also not a smart assistant - it won't guess what you
+MonicaHQ is not a social network. It's not meant to be social. In fact, it's for
+your eyes only. MonicaHQ is also not a smart assistant - it won't guess what you
 want to do. In fact it's pretty dumb: it will send you emails only for the things
 you asked to be reminded of.
 
@@ -50,7 +50,7 @@ social interactions.
 
 ### The 5 years vision
 
-Monica is the simplest, yet most complete, open-source tool to manage your
+MonicaHQ is the simplest, yet most complete, open-source tool to manage your
 personal relationships. It's available on any platform, is easy to contribute to
 and has a robust API to talk to other systems.
 
@@ -67,12 +67,12 @@ To update your own instance, follow the instructions below.
 ## Setup the project on your server or locally
 
 The best way to setup the project locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
-This is what is used to develop Monica and will provide a common base for
+This is what is used to develop MonicaHQ and will provide a common base for
 everyone who wants to contribute to the project. Once Homestead is installed,
-you can pull the repository and start setup Monica.
+you can pull the repository and start setup MonicaHQ.
 
 1. `composer install`
-1. `cp .env.example .env` to configure Monica
+1. `cp .env.example .env` to configure MonicaHQ
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create 2 databases: `monica` and `monica_test`
@@ -95,7 +95,7 @@ does not contain any data and shall be used to check all the blank states.
 
 ### Setup the testing environment
 
-Monica uses the testing capabilities of Laravel to do unit and functional
+MonicaHQ uses the testing capabilities of Laravel to do unit and functional
 testing. While all code will have to go through to Travis before being merged,
 tests can still be executed locally before pushing them. In fact, we encourage
 you strongly to do it first.
@@ -119,7 +119,7 @@ migrations and the seeders by running the two commands above.
 ## Update your local instance (or your server if you run it on production)
 
 There is no concept of releases at the moment. If you run the project locally,
-or if you have installed Monica on your own server, to update it, you need to
+or if you have installed MonicaHQ on your own server, to update it, you need to
 follow these steps below, **every single time**, or you will run into problems.
 
 ```
@@ -162,7 +162,7 @@ as when Bootstrap changes version, a lot of changes are introduced.
 
 ### Email testing
 
-Emails are an important of Monica. Emails are still the most significant means
+Emails are an important of MonicaHQ. Emails are still the most significant means
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
@@ -190,8 +190,8 @@ every night at midnight and this cron is defined in `app/console/Kernel.php`.
 
 We welcome contributions of all kinds from anyone. We do however have rules.
 
-* Monica is written with a great framework, Laravel. We care deeply about
-keeping Monica very simple on purpose. The simpler the code is, the simpler it
+* MonicaHQ is written with a great framework, Laravel. We care deeply about
+keeping MonicaHQ very simple on purpose. The simpler the code is, the simpler it
 will be to maintain it and debug it when needed. That means we don't want to
 make it a one page application, or add any kind of complexities whatsoever.
 * That means we won't accept pull requests that add too much complexity, or
