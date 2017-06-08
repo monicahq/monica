@@ -10,8 +10,8 @@
           @if ($contact->has_avatar == 'true')
             <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
-            @if ( ! empty( $contact->email ) )
-              <img src="{{ $contact->getGravatar(110) }}">
+            @if ( $gravatarUrl = $contact->getGravatar(174) )
+              <img src="{{ $gravatarUrl }}" width="87">
             @else
               @if (count($contact->getInitials()) == 1)
               <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">

@@ -981,7 +981,17 @@ class Contact extends Model
 
     public function getGravatar($size)
     {
-        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) ) . "&s=" . $size;
+        if ( empty( $this->email ) ) {
+            return false;
+        }
+        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) );
+        // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
+        $gravatarHeaders = get_headers( $gravatar_url . "?d=404" );
+        if ($gravatarHeaders[0] == "HTTP/1.1 404 Not Found") {
+            return false;
+        }
+
+        return $gravatar_url . "?s=" . $size;
     }
 
     /**
