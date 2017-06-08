@@ -98,7 +98,7 @@ $ docker-compose up
 
 ```shell
 $ docker build -t monica .
-$ docker run monica
+$ docker run monica  # or "docker run monical shell" to get a prompt
 ```
 
 ## Setup the project on your server or locally

@@ -50,6 +50,7 @@ RUN chmod -R g+w bootstrap/cache
 # Install composer dependencies and prepare permissions for Apache
 USER monica
 RUN composer install
+RUN bower install
 USER root
 
 # This is the script that the container will run by default
