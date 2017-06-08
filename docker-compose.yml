@@ -6,6 +6,8 @@ services:
       - mysql
     ports:
       - 80:80
+    volumes:
+      - ./persist/storage/app/public:/var/www/monica/storage/app/public
 
   mysql:
     image: mysql
