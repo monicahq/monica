@@ -1,3 +1,13 @@
+2017-06-08
+----------
+
+New features:
+* Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
+
+Improvements:
+* Fix typos
+* Breaking change: Add a new env variable to define which email address should be used when sending notifications about new user signups. You need to add this new env variable (APP_EMAIL_NEW_USERS_NOTIFICATION) to your `.env` file.
+
 2017-06-07
 ----------
 

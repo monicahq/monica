@@ -979,6 +979,21 @@ class Contact extends Model
         return Storage::disk('public')->url($resized_avatar);
     }
 
+    public function getGravatar($size)
+    {
+        if ( empty( $this->email ) ) {
+            return false;
+        }
+        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) );
+        // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
+        $gravatarHeaders = get_headers( $gravatar_url . "?d=404" );
+        if ($gravatarHeaders[0] == "HTTP/1.1 404 Not Found") {
+            return false;
+        }
+
+        return $gravatar_url . "?s=" . $size;
+    }
+
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
      * @return int amount
