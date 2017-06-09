@@ -17,4 +17,5 @@ return [
     'locale_en' => 'English',
     'locale_fr' => 'French',
     'locale_pt-br' => 'Portuguese',
+    'locale_ru' => 'Russian',
 ];

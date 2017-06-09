@@ -5,5 +5,6 @@ return [
         'en',
         'fr',
         'pt-br',
+        'ru',
     ],
 ];
