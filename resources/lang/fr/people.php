@@ -107,11 +107,11 @@ return [
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
-    'reminders_frequency' => 'every',
+    'reminders_frequency' => 'chaque',
     'reminders_date' => 'Date',
-    'reminders_content' => 'Content',
-    'reminders_actions' => 'Actions',
-    'reminders_one_time' => 'One time',
+    'reminders_content' => 'Contenu',
+    'reminders_actions' => 'Actes',
+    'reminders_one_time' => 'Unique',
 
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',
