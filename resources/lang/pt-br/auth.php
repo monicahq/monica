@@ -13,8 +13,9 @@ return [
     |
     */
 
-    'failed'   => 'Ces identifiants ne correspondent pas à nos enregistrements',
-    'throttle' => 'Trop de tentatives de connexion. Veuillez essayer de nouveau dans :seconds secondes.',
-    'not_authorized' => 'Vous n\'êtes pas autorisé à exécuter cette action',
-    'signup_disabled' => 'L\'inscription est actuellement désactivée',
+    'failed' => 'As informações de login não foram encontradas.',
+    'throttle' => 'Muitas tentativas de login. Por favor tente novamente em :seconds segundos.',
+    'not_authorized' => 'Você não está autorizado a executar esta ação',
+    'signup_disabled' => 'Atualmente o registro está desativado',
+
 ];

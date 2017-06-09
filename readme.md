@@ -75,7 +75,7 @@ you can pull the repository and start setup MonicaHQ.
 1. `cp .env.example .env` to configure MonicaHQ
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create 2 databases: `monica` and `monica_test`
+1. Create a database called `monica`
 1. `php artisan migrate` to run all migrations
 1. `php artisan storage:link` to access the avatars.
 
@@ -105,6 +105,7 @@ defaults are provided in `.env.example`.
 
 You need to setup the test database and seeds before running your tests:
 
+* Create a database called `monica_test`
 * `php artisan migrate --database testing`
 * `php artisan db:seed --database testing`
 

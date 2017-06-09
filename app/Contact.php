@@ -22,6 +22,21 @@ class Contact extends Model
     ];
 
     /**
+     * Eager load user with every contact.
+     */
+    protected $with = [
+        'user',
+    ];
+
+    /**
+     * Get the user associated with the contact.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'account_id');
+    }
+
+    /**
      * Get the complete name of the contact.
      *
      * @return string
@@ -329,10 +344,7 @@ class Contact extends Model
      */
     public function getLastUpdated()
     {
-        $user = User::where('account_id', $this->account_id)->first();
-        $lastUpdated = DateHelper::createDateFromFormat($this->updated_at, $user->timezone);
-
-        return $lastUpdated->format('Y/m/d');
+        return DateHelper::createDateFromFormat($this->updated_at, $this->user->timezone)->format('Y/m/d');
     }
 
     /**

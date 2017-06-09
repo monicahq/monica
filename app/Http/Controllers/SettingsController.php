@@ -54,7 +54,7 @@ class SettingsController extends Controller
         Auth::user()->locale = $locale;
         Auth::user()->save();
 
-        return redirect('settings')->with('status', 'Profile updated!');
+        return redirect('settings')->with('status', trans('settings.settings_success'));
     }
 
     public function delete()
