@@ -1,5 +1,5 @@
 <p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
-<h1 align="center">MonicaHQ</h1>
+<h1 align="center">Monica</h1>
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
@@ -8,7 +8,7 @@
 
 ## Introduction
 
-MonicaHQ is an open-source web application to manage your personal relationships.
+Monica is an open-source web application to manage your personal relationships.
 Think of it as a CRM for your friends or family. This is what it currently
 looks like:
 
@@ -16,18 +16,11 @@ looks like:
 
 ### Purpose
 
-MonicaHQ allows people to keep track of everything that's important about their
-friends and family. Like the activities done with them.
-When you last called someone. What you talked about. It will help you remember
-the name and the age of the kids. It can also remind you to call someone you
-haven't talked to in a while.
-
-### What MonicaHQ isn't
-
-MonicaHQ is not a social network. It's not meant to be social. In fact, it's for
-your eyes only. MonicaHQ is also not a smart assistant - it won't guess what you
-want to do. In fact it's pretty dumb: it will send you emails only for the things
-you asked to be reminded of.
+Monica allows people to keep track of everything that's important about their
+friends and family. Like the activities done with them. When you last called
+someone. What you talked about. It will help you remember the name and the age
+of the kids. It can also remind you to call someone you haven't talked to in a
+while.
 
 ### Who is it for?
 
@@ -48,11 +41,18 @@ We've already received numerous feedback of users who suffer from Asperger's
 syndrome who use this application on a daily basis. It helps them have better
 social interactions.
 
+### What Monica isn't
+
+Monica is not a social network and never will be. It's not meant to be social.
+In fact, it's for your eyes only. Monica is also not a smart assistant - it
+won't guess what you want to do. In fact it's pretty dumb: it will send you
+emails only for the things you asked to be reminded of.
+
 ### The 5 years vision
 
-MonicaHQ is the simplest, yet most complete, open-source tool to manage your
+Monica is the simplest, yet most complete, open-source tool to manage your
 personal relationships. It's available on any platform, is easy to contribute to
-and has a robust API to talk to other systems.
+and has a robust API to integrate with other systems.
 
 ## Get started
 
@@ -107,7 +107,7 @@ $ docker-compose up
 
 ### Use docker-compose to build and run your own image
 
-Use this process if you want to modify MonicaHQ source code and build
+Use this process if you want to modify Monica source code and build
 your image to run.
 
 Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
@@ -123,7 +123,7 @@ $ docker-compose up
 ### Use Docker directly to run with your own database
 
 Use this process if you're a developer and want complete control over
-your MonicaHQ container.
+your Monica container.
 
 Edit `.env` again to set the `DB_*` variables to match your
 database. Then run:
@@ -144,7 +144,7 @@ between runs. See `docker-compose.yml` for examples.
 
 If you don't want to use Docker, the best way to setup the project
 locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
-This is what is used to develop MonicaHQ and will provide a common
+This is what is used to develop Monica and will provide a common
 base for everyone who wants to contribute to the project. Once
 Homestead is installed, you can pull the repository and start setup
 MonicaHQ.
@@ -241,7 +241,7 @@ as when Bootstrap changes version, a lot of changes are introduced.
 
 ### Email testing
 
-Emails are an important of MonicaHQ. Emails are still the most significant means
+Emails are an important of Monica. Emails are still the most significant means
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
@@ -269,8 +269,8 @@ every night at midnight and this cron is defined in `app/console/Kernel.php`.
 
 We welcome contributions of all kinds from anyone. We do however have rules.
 
-* MonicaHQ is written with a great framework, Laravel. We care deeply about
-keeping MonicaHQ very simple on purpose. The simpler the code is, the simpler it
+* Monica is written with a great framework, Laravel. We care deeply about
+keeping Monica very simple on purpose. The simpler the code is, the simpler it
 will be to maintain it and debug it when needed. That means we don't want to
 make it a one page application, or add any kind of complexities whatsoever.
 * That means we won't accept pull requests that add too much complexity, or
