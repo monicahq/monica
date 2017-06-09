@@ -17,11 +17,6 @@ class ConvertMysqlEncoding extends Migration
         $connection = DB::connection();
 
         if ($connection instanceof MySqlConnection) {
-            // originally from https://dba.stackexchange.com/a/104866/125329 which generates these statements below
-
-            // https://parvezmahbub.wordpress.com/2017/06/04/laravel-5-4-specified-key-was-too-long-error/
-            // https://stackoverflow.com/a/34545211/4127142
-            // http://aoverton.com/web-development/using-mysql-utf8mb4-with-laravel-5/http://aoverton.com/web-development/using-mysql-utf8mb4-with-laravel-5/
 
             // varchar columns
             DB::statement("ALTER TABLE `accounts` CHANGE `api_key` `api_key` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
