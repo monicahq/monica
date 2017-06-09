@@ -66,8 +66,7 @@
               <option value='America/Santiago' {{ (Auth::user()->timezone == 'America/Santiago')?'selected':'' }}>(UTC-04:00) Santiago</option>
               <option value='Canada/Newfoundland' {{ (Auth::user()->timezone == 'Canada/Newfoundland')?'selected':'' }}>(UTC-03:30) Newfoundland</option>
               <option value='America/Sao_Paulo' {{ (Auth::user()->timezone == 'America/Sao_Paulo')?'selected':'' }}>(UTC-03:00) Brasilia</option>
-              <option value='America/Argentina/ {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}Buenos_Aires'>(UTC-03:00) Buenos Aires</option>
-              <option value='America/Argentina/ {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}Buenos_Aires'>(UTC-03:00) Georgetown</option>
+              <option value='America/Argentina/Buenos_Aires' {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}>(UTC-03:00) Buenos Aires</option>
               <option value='America/Godthab' {{ (Auth::user()->timezone == 'America/Godthab')?'selected':'' }}>(UTC-03:00) Greenland</option>
               <option value='America/Noronha' {{ (Auth::user()->timezone == 'America/Noronha')?'selected':'' }}>(UTC-02:00) Mid-Atlantic</option>
               <option value='Atlantic/Azores' {{ (Auth::user()->timezone == 'Atlantic/Azores')?'selected':'' }}>(UTC-01:00) Azores</option>
