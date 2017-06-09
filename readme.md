@@ -76,6 +76,7 @@ you can pull the repository and start setup MonicaHQ.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create a database called `monica`
+1. `php artisan key:generate` to generate a random APP_KEY
 1. `php artisan migrate` to run all migrations
 1. `php artisan storage:link` to access the avatars.
 
