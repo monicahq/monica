@@ -78,9 +78,9 @@
 
               {{-- Avatar --}}
               <div class="form-group">
-                <label for="avatar">Photo/avatar of the contact</label>
+                <label for="avatar">{{ trans('people.information_edit_avatar') }}</label>
                 <input type="file" class="form-control-file" name="avatar">
-                <small id="fileHelp" class="form-text text-muted">Max 10Mb.</small>
+                <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
               </div>
 
               {{-- First name --}}
