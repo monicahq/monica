@@ -5,6 +5,10 @@ New features:
 * Add Russian language
 * Add Portuguese (Brazil) language
 
+Improvements:
+* Fix emails being sent too often
+* Breaking change: Email name and address of the user who sends reminders are now ENV variables (MAIL_FROM_ADDRESS and MAIL_FROM_NAME).
+
 2017-06-08
 ----------
 
