@@ -6,6 +6,35 @@
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
 
+* [Introduction](#introduction)
+   * [Purpose](#purpose)
+   * [Who is it for?](#who-is-it-for)
+   * [What Monica isn't](#what-monica-isnt)
+* [Vision, goals and strategy](#vision-goals-and-strategy)
+   * [Vision](#vision)
+   * [Goals](#goals)
+   * [Strategy](#strategy)
+   * [Values](#values)
+* [Get started](#get-started)
+   * [Running with Docker](#running-with-docker)
+      * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
+      * [Use docker-compose to build and run your own image](#use-docker-compose-to-build-and-run-your-own-image)
+      * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
+   * [Setup the project on your server or locally](#setup-the-project-on-your-server-or-locally)
+   * [Setup the testing environment](#setup-the-testing-environment)
+   * [Update your local instance (or your server if you run it on production)](#update-your-local-instance-or-your-server-if-you-run-it-on-production)
+   * [Front-end](#front-end)
+      * [Bower](#bower)
+      * [Watching and compiling assets](#watching-and-compiling-assets)
+      * [Bootstrap 4](#bootstrap-4)
+   * [Backend](#backend)
+      * [Email testing](#email-testing)
+      * [Email reminders](#email-reminders)
+   * [Statistics](#statistics)
+* [Contributing](#contributing)
+   * [How the community can help](#how-the-community-can-help)
+* [License](#license)
+
 ## Introduction
 
 Monica is an open-source web application to manage your personal relationships.
@@ -124,7 +153,7 @@ money out of it yourself.
 
 To update your own instance, follow the instructions below.
 
-## Running with Docker
+### Running with Docker
 
 You can use [Docker](https://www.docker.com) and
 [docker-compose](https://docs.docker.com/compose/) to pull or build
@@ -151,7 +180,7 @@ Then open `.env` in an editor and update it for your own needs:
 
 Now select one of these methods to be up and running quickly:
 
-### Use docker-compose to run a pre-built image
+#### Use docker-compose to run a pre-built image
 
 This is the easiest and fastest way to try MonicaHQ! Use this process
 if you want to download the newest image from Docker Hub and run it
@@ -165,7 +194,7 @@ $ docker-compose pull
 $ docker-compose up
 ```
 
-### Use docker-compose to build and run your own image
+#### Use docker-compose to build and run your own image
 
 Use this process if you want to modify Monica source code and build
 your image to run.
@@ -180,7 +209,7 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-### Use Docker directly to run with your own database
+#### Use Docker directly to run with your own database
 
 Use this process if you're a developer and want complete control over
 your Monica container.
@@ -200,7 +229,7 @@ restart the container. Map a volume to
 `/var/www/monica/storage/app/public` if you want that data to persist
 between runs. See `docker-compose.yml` for examples.
 
-## Setup the project on your server or locally
+### Setup the project on your server or locally
 
 If you don't want to use Docker, the best way to setup the project
 locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
@@ -255,7 +284,7 @@ these actions.
 Each time you change the schema of the database, you need to run again the
 migrations and the seeders by running the two commands above.
 
-## Update your local instance (or your server if you run it on production)
+### Update your local instance (or your server if you run it on production)
 
 There is no concept of releases at the moment. If you run the project locally,
 or if you have installed MonicaHQ on your own server, to update it, you need to
@@ -269,9 +298,9 @@ php artisan migrate
 
 That should be it.
 
-## Front-end
+### Front-end
 
-### Bower
+#### Bower
 
 We use Bower to manage front-end dependencies. The first time you install the
 project, you need to `bower install` in the root of the project. When you want
@@ -282,14 +311,14 @@ update bower.json to lock the specific version.
 
 All the assets are stored in `resources/vendor`.
 
-### Watching and compiling assets
+#### Watching and compiling assets
 
 CSS is written in SASS and therefore needs to be compiled before being used by
 the application. To compile those front-end assets, use `gulp`.
 
 To monitor changes and compile assets on the fly, use `gulp watch`.
 
-### Bootstrap 4
+#### Bootstrap 4
 
 At the current time, we are using Bootstrap 4 Alpha 2. Not everything though -
 we do use only what we need. I would have wanted to use something completely
@@ -297,9 +326,9 @@ custom, but why reinvent the wheel? Anyway, make sure you don't update this
 dependency with Bower. If you do, make sure that everything is thorougly tested
 as when Bootstrap changes version, a lot of changes are introduced.
 
-## Backend
+### Backend
 
-### Email testing
+#### Email testing
 
 Emails are an important of Monica. Emails are still the most significant means
 of communication and people like receiving them when they are relevant. That
