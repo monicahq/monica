@@ -48,11 +48,71 @@ In fact, it's for your eyes only. Monica is also not a smart assistant - it
 won't guess what you want to do. In fact it's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
 
-### The 5 years vision
+## Vision, goals and strategy
 
-Monica is the simplest, yet most complete, open-source tool to manage your
-personal relationships. It's available on any platform, is easy to contribute to
-and has a robust API to integrate with other systems.
+We want to use technology in a way that does not harm human relationships, like
+big social networks can do.
+
+### Vision
+
+Monica's vision is to **help people have more meaningful relationships**.
+
+### Goals
+
+We want to provide a platform that is:
+
+* **really easy to use**: we value simplicity over anything else.
+* **open-source**: we believe everyone should be able to contribute to this
+tool, and see for themselves that nothing nasty is done behind the scenes that
+would go against the best interests of the users. We also want to leverage the
+community to build attractive features and do things that would not be possible
+otherwise.
+* **easy to contribute to**: we want to keep the codebase as simple as possible.
+This has two big advantages: anyone can contribute, and it's easily maintainable
+on the long run.
+* **available everywhere**: Monica should be able to run on any desktop OS
+or mobile phone easily. This will be made possible by making sure the tool is
+easily installable by anyone who wants to either contribute or host the platform
+themselves.
+* **robust API**: the platform will have a robust API so it can communicate both
+ways to other systems.
+
+### Strategy
+
+To reach this ambitious vision, we'll use technology in a way that does not harm
+human relationships, like big social networks can do.
+
+We think Monica has to become a platform more than an application, so people can
+build upon it.
+
+Here what we should do in order to realize our vision:
+* Build an API in order to create an ecosystem. The ecosystem is what will make
+Monica a successful platform.
+* Build importers and exporters of data. We don't want to have any vendor
+lock-ins. Data is the property of the users and they should be able to do
+whatever they want with it.
+* Create mobile apps.
+* Create a smart recommandation system for gifts. For instance, if my nephew is
+soon 6 years old in a month, I will be able to receive an email with a list of
+5 potential gifts I can offer to a 6 year old boy.
+* Add more ways of being reminded: Telegram, SMS,...
+* Create Chrome extensions to load Monica's data in a sidebar when viewing a
+contact on Facebook, letting us take additional notes as we see them on Facebook.
+* Add modules that can be activated on demand. One would be for instance, for
+the people who wants to use Monica for dating purposes (yes, we've received this
+kind of feedback already).
+* Add functional and unit tests so the main features are tested. Stability is
+key.
+
+### Values
+
+Monica's values are simple. When we'll struggle, these values will guide us to
+make the right decisions.
+
+* Always do what's best for the users
+* Be kind
+* Be transparent
+* Listen to the community
 
 ## Get started
 
@@ -73,8 +133,8 @@ This has the nice properties that you don't have to install lots of
 software directly onto your system, and you can be up and running
 quickly with a known working environment.
 
-Before you start, you need to get and edit a `.env` file. If you've already cloned the
-[MonicaHQ Git repo](https://github.com/monicahq/monica), run:
+Before you start, you need to get and edit a `.env` file. If you've already
+cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
 
 `$ cp .env.example .env`
 
@@ -252,7 +312,16 @@ provides a free plan that is plenty enough to test all the emails that are sent.
 1. If you use Homestead to code on your local machine, you can use
 [mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you
 first need to start mailhog (`sudo service mailhog restart`). Then, head up to
-http://localhost:8025 in your browser to load Mailhog's UI.
+http://localhost:8025 in your browser to load Mailhog's UI. If you do use
+mailhog, the .env file has to have those settings:
+```
+MAIL_DRIVER=smtp
+MAIL_HOST=0.0.0.0
+MAIL_PORT=1025
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=
+```
 
 #### Email reminders
 
