@@ -1,6 +1,6 @@
 <?php
 
-return [
+$config = [
 
     /*
     |--------------------------------------------------------------------------
@@ -130,3 +130,11 @@ return [
     ],
 
 ];
+
+if (substr($config['connections']['mysql']['host'], 0, 1) == '/') {
+    $config['connections']['mysql']['unix_socket'] = $config['connections']['mysql']['host'];
+    unset($config['connections']['mysql']['host']);
+    unset($config['connections']['mysql']['port']);
+}
+
+return $config;
