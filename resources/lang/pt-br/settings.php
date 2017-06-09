@@ -12,6 +12,7 @@ return [
     'save' => 'Salvar Preferências',
     'delete_notice' => 'Tem certeza que deseja excluir sua conta? Não há como voltar atrás.',
     'delete_cta' => 'Deletar conta',
+    'settings_success' => 'Preferências atualizadas!',
     'locale' => 'Idioma usado no aplicativo',
     'locale_en' => 'Inglês',
     'locale_fr' => 'Francês',
