@@ -121,6 +121,27 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Disable User registration
+    |--------------------------------------------------------------------------
+    |
+    | Disables registration of new users
+    |
+    */
+    'disable_signup' => env('APP_DISABLE_SIGNUP'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | New User Email Notification
+    |--------------------------------------------------------------------------
+    |
+    | Email to notify when new user registers.
+    |
+    */
+    'email_new_user_notification' => env('APP_EMAIL_NEW_USERS_NOTIFICATION'),
+
+
     'providers' => [
 
         /*
