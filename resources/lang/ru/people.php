@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => ':count ребёнок|:count ребёнка|:count детей',
+    'people_list_last_updated' => 'Последнее обновление:',
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
@@ -240,7 +241,11 @@ return [
     'gifts_add_comment' => 'Комментарий (не обязательно)',
     'gifts_add_someone' => 'Этот подарок в том числе для кого-то из семьи :name',
     'gifts_add_cta' => 'Добавить',
-    'gifts_gift_idea' => 'Идея подарка',
+    'gifts_gift_idea' => 'Идеи',
+    'gifts_gift_already_offered' => 'Подаренные',
+    'gifts_table_date_added' => 'Дата создания',
+    'gifts_table_description' => 'Описание',
+    'gifts_table_actions' => 'Действия',
 
     // debts
     'debt_delete_confirmation' => 'Вы уверены что хотите удалить этот долг?',

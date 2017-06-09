@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
@@ -241,6 +242,10 @@ return [
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',
     'gifts_gift_idea' => 'Gift idea',
+    'gifts_gift_already_offered' => 'Gifts already offered',
+    'gifts_table_date_added' => 'Date added',
+    'gifts_table_description' => 'Description',
+    'gifts_table_actions' => 'Actions',
 
     // debts
     'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',
