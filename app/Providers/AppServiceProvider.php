@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
       View::composer(
         'partials.components.country-select','App\Http\ViewComposers\CountrySelectViewComposer'
       );
+
+      Schema::defaultStringLength(191);
+
     }
 
     /**
