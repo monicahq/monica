@@ -40,7 +40,7 @@
             </li>
           </ul>
 
-          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">Edit contact information</a>
+          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
         </div>
       </div>
     </div>
