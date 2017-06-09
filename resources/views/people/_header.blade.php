@@ -10,14 +10,18 @@
           @if ($contact->has_avatar == 'true')
             <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
-            @if (count($contact->getInitials()) == 1)
-            <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-              {{ $contact->getInitials() }}
-            </div>
+            @if ( $gravatarUrl = $contact->getGravatar(174) )
+              <img src="{{ $gravatarUrl }}" width="87">
             @else
-            <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
-              {{ $contact->getInitials() }}
-            </div>
+              @if (count($contact->getInitials()) == 1)
+              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                {{ $contact->getInitials() }}
+              </div>
+              @else
+              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                {{ $contact->getInitials() }}
+              </div>
+              @endif
             @endif
           @endif
 
@@ -36,7 +40,7 @@
             </li>
           </ul>
 
-          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">Edit contact information</a>
+          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
         </div>
       </div>
     </div>
