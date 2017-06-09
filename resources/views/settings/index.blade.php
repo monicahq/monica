@@ -23,8 +23,9 @@
           <div class="form-group">
             <label for="locale">{{ trans('settings.locale') }}</label>
             <select class="form-control" name="locale" id="locale">
-              <option value='en' {{ (Auth::user()->locale == 'en')?'selected':'' }}>{{ trans('settings.locale_en') }}</option>
-              <option value='fr' {{ (Auth::user()->locale == 'fr')?'selected':'' }}>{{ trans('settings.locale_fr') }}</option>
+              @foreach(config('monica.langs') as $lang)
+                <option value="{{ $lang }}" {{ (Auth::user()->locale == $lang)?'selected':'' }}>{{ trans('settings.locale_'.$lang) }}</option>
+              @endforeach
             </select>
           </div>
           <div class="form-group">
