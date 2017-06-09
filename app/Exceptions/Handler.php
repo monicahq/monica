@@ -45,6 +45,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        // hopefully catches those pesky token expiries
+        // and send them back to login.
+        if ( $e instanceof TokenMismatchException ){
+            return redirect('login');
+        }
+
         return parent::render($request, $e);
     }
 }
