@@ -2,6 +2,7 @@
 /resources/vendor
 /node_modules
 /public/storage
+/persist
 Homestead.yaml
 Homestead.json
 .env
