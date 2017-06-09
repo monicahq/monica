@@ -13,6 +13,8 @@ class AlterActivityNullable extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE `activities` MODIFY `activity_type_id` INTEGER UNSIGNED NULL;');
+        Schema::table('activities', function(Blueprint $table) {
+            $table->integer('activity_type_id')->unsigned()->nullable()->change();
+        });
     }
 }
