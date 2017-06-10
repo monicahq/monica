@@ -20,9 +20,11 @@
       * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
       * [Use docker-compose to build and run your own image](#use-docker-compose-to-build-and-run-your-own-image)
       * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
-   * [Setup the project on your server or locally](#setup-the-project-on-your-server-or-locally)
+   * [Setup the project on your server](#setup-the-project-on-your-server)
+   * [Update your server](#update-your-server)
+* [Contribute as a developer](#contribute-as-a-developer)
+   * [Setup Monica](#setup-monica)
    * [Setup the testing environment](#setup-the-testing-environment)
-   * [Update your local instance (or your server if you run it on production)](#update-your-local-instance-or-your-server-if-you-run-it-on-production)
    * [Front-end](#front-end)
       * [Bower](#bower)
       * [Watching and compiling assets](#watching-and-compiling-assets)
@@ -229,62 +231,60 @@ restart the container. Map a volume to
 `/var/www/monica/storage/app/public` if you want that data to persist
 between runs. See `docker-compose.yml` for examples.
 
-### Setup the project on your server or locally
+### Setup the project on your server
 
-If you don't want to use Docker, the best way to setup the project
-locally is to use [Homestead](https://laravel.com/docs/5.3/homestead).
-This is what is used to develop Monica and will provide a common
-base for everyone who wants to contribute to the project. Once
-Homestead is installed, you can pull the repository and start setup
-MonicaHQ.
+If you don't want to use Docker, the best way to setup the project is to use the
+same configuration that [Homestead](https://laravel.com/docs/5.3/homestead)
+uses. Basically, Monica depends on the following:
 
-1. `composer install`
-1. `cp .env.example .env` to configure MonicaHQ
-1. `npm install` to install bower and gulp.
-1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create a database called `monica`
-1. `php artisan migrate` to run all migrations
-1. `php artisan storage:link` to access the avatars.
+* PHP 7.0+
+* MySQL, SQLite or Postgre
+* Git
+* Composer
+* Optional: Redis or Beanstalk
 
-Optional step:
+The preferred OS distribution is Ubuntu 16.04, simply because all the
+development is made on it and we know it works. However, any OS that lets you
+install the above package should work.
 
-This step is to populate the instance with fake data, so you can test with real
-data instead of lorem ipsum.
+Once the softwares above are installed, clone the repository and proceed as
+follow:
 
-1. `php artisan db:seed` to load all seeds.
+1. `composer install` in the folder the repository has been cloned.
+1. `cp .env.example .env` to configure Monica.
+1. Update `.env` with your specific needs.
+1. Create a database called `monica`.
+1. `php artisan migrate` to run all migrations.
+1. `php artisan storage:link` to enable avatar uploads for the contacts.
+1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
+activity types.
+1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
+table.
+1. In order for the reminders to be sent (reminders are created inside the
+  application and associated to contacts), you need to setup a cron that runs
+  every minute with the following command `php artisan schedule:run`.
 
-Note that the seeders will create two accounts.
+**Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
 
-* First account is `admin@admin.com` with the password `admin`. This account
-contains a lot of fake data that will let you play with the product.
-* Second account is `blank@blank.com` with the password `blank`. This account
-does not contain any data and shall be used to check all the blank states.
+Monica can work with a queue mechanism to handle different events, so we don't
+block the main thread while processing stuff that can be run asynchronously,
+like sending emails. By default, Monica does not use a queue mechanism but can
+be setup to do so.
 
-### Setup the testing environment
+There are three choices for the queue mechanism:
+* Database (this will use the database used by the application to act as a queue)
+* Redis
+* Beanstalk
+* Amazon SQS
 
-Monica uses the testing capabilities of Laravel to do unit and functional
-testing. While all code will have to go through to Travis before being merged,
-tests can still be executed locally before pushing them. In fact, we encourage
-you strongly to do it first.
+The simplest queue is the database driver. To set it up, simply change in your
+`.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
 
-To setup the test environment, create a separate testing database locally. Smart
-defaults are provided in `.env.example`.
+To configure the other queues, refer to the
+[official Laravel documentation](https://laravel.com/docs/5.4/queues#driver-prerequisites)
+on the topic.
 
-You need to setup the test database and seeds before running your tests:
-
-* Create a database called `monica_test`
-* `php artisan migrate --database testing`
-* `php artisan db:seed --database testing`
-
-To run the tests, use the `phpunit` command.
-
-If you use TravisCI to test the application, it is setup to automatically do
-these actions.
-
-Each time you change the schema of the database, you need to run again the
-migrations and the seeders by running the two commands above.
-
-### Update your local instance (or your server if you run it on production)
+### Update your server
 
 There is no concept of releases at the moment. If you run the project locally,
 or if you have installed Monica on your own server, you need to follow these
@@ -298,16 +298,83 @@ php artisan migrate
 
 That should be it.
 
+## Contribute as a developer
+
+You want to help build Monica? That's awesome. We can't thank you enough.
+
+### Setup Monica
+
+The best way to contribute to Monica is to use
+[Homestead](https://laravel.com/docs/5.3/homestead), which is an official,
+pre-packaged Vagrant box that provides you a wonderful development environment
+without requiring you to install PHP, a web server, and any other server
+software on your local machine. The big advantage is that it runs on any
+Windows, Mac, or Linux system.
+
+This is what is used to develop Monica and will provide a common base for
+everyone who wants to contribute to the project. Once Homestead is installed,
+you can pull the repository and start setup Monica.
+
+1. `composer install` in the folder the repository has been cloned.
+1. `cp .env.example .env`
+1. Update `.env` to your specific needs.
+1. `npm install` to install bower and gulp.
+1. `bower install` to install front-end dependencies in the `vendor` folder.
+1. Create a database called `monica`.
+1. `php artisan migrate` to run all migrations.
+1. `php artisan storage:link` to access the avatars.
+1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
+activity types.
+1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
+table.
+
+**Optional step**: Seeding the database with fake data
+
+This step is to populate the instance with fake data, so you can test with real
+data instead of lorem ipsum.
+
+1. `php artisan db:seed --class FakeContentTableSeeder` to load all seeds.
+
+Note that this will create two accounts:
+
+* First account is `admin@admin.com` with the password `admin`. This account
+contains a lot of fake data that will let you play with the product.
+* Second account is `blank@blank.com` with the password `blank`. This account
+does not contain any data and shall be used to check all the blank states.
+
+### Setup the testing environment
+
+Monica uses the testing capabilities of Laravel to do unit and functional
+testing. While all code will have to go through to Travis before being merged,
+tests can still be executed locally before pushing them. In fact, we encourage
+you strongly to do it first.
+
+To setup the test environment, create a separate testing database locally:
+
+* Create a database called `monica_test`
+
+Then you need to run the migrations specific to the testing database and runs
+the seeders to populate it:
+
+* `php artisan migrate --database testing`
+* `php artisan db:seed --database testing`
+
+Once this is done, you have to use `phpunit` command every time you want to run
+the test suite.
+
+Each time the schema of the database changes, you need to run again the
+migrations and the seeders by running the two commands above.
+
 ### Front-end
 
 #### Bower
 
 We use Bower to manage front-end dependencies. The first time you install the
 project, you need to `bower install` in the root of the project. When you want
-to update the dependencies, it's `bower update`.
+to update the dependencies, run `bower update`.
 
 To install a new package, use `bower install jquery -S`. The `-S` option is to
-update bower.json to lock the specific version.
+update `bower.json` to lock the specific version.
 
 All the assets are stored in `resources/vendor`.
 
@@ -323,26 +390,29 @@ To monitor changes and compile assets on the fly, use `gulp watch`.
 At the current time, we are using Bootstrap 4 Alpha 2. Not everything though -
 we do use only what we need. I would have wanted to use something completely
 custom, but why reinvent the wheel? Anyway, make sure you don't update this
-dependency with Bower. If you do, make sure that everything is thorougly tested
+dependency with Bower. If you do, make sure that everything is thoroughly tested
 as when Bootstrap changes version, a lot of changes are introduced.
 
 ### Backend
 
 #### Email testing
 
-Emails are an important of Monica. Emails are still the most significant means
+Emails are an important of Monica. Emails are still the most significant mean
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
 
-For development purposes, you have two choices:
+For development purposes, you have two choices to test emails:
+
 1. You can use [Mailtrap](https://mailtrap.io/). This is an amazing service that
 provides a free plan that is plenty enough to test all the emails that are sent.
 1. If you use Homestead to code on your local machine, you can use
 [mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you
 first need to start mailhog (`sudo service mailhog restart`). Then, head up to
-http://localhost:8025 in your browser to load Mailhog's UI. If you do use
-mailhog, the .env file has to have those settings:
+http://localhost:8025 in your browser to load Mailhog's UI.
+
+If you want to use mailhog, you need the following settings in your `.env` file:
+
 ```
 MAIL_DRIVER=smtp
 MAIL_HOST=0.0.0.0
@@ -359,6 +429,10 @@ Reminders are generated and sent using an Artisan command
 in `app/console/Kernel.php`.
 
 ### Statistics
+
+Monica calculates every night (ie once per day) a set of metrics to help you
+understand how the instance is being used by users. That will also allow to
+measure growth over time.
 
 Statistics are generated by the Artisan command `monica:calculatestatistics`
 every night at midnight and this cron is defined in `app/console/Kernel.php`.
