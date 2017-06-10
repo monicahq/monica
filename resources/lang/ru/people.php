@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => ':count ребёнок|:count ребёнка|:count детей',
+    'people_list_last_updated' => 'Последнее обновление:',
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
@@ -36,7 +37,7 @@ return [
     'link_to_list' => 'Список людей',
 
     // Header
-    'edit_contact_information' => 'Редактировать контактную информацию',
+    'edit_contact_information' => 'Редактировать контакты',
 
     // age - birthday
     'birthdate_not_set' => 'День рождения не указан',
@@ -53,6 +54,8 @@ return [
     // additional information
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
+    'information_edit_avatar' => 'Фото/Аватар контакта',
+    'information_edit_max_size' => 'Макс :size Мб.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обязательно)',
     'information_edit_street' => 'Улица (не обязательно)',
@@ -129,7 +132,7 @@ return [
     'significant_other_add_success' => 'Вторая половинка была успешно добавлена',
     'significant_other_edit_success' => 'Вторая половинка была успешно обновлена',
     'significant_other_delete_success' => 'Вторая половинка была успешно удалена',
-    'significant_other_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s significant other',
+    'significant_other_add_birthday_reminder' => 'Поздравьте с днём рождения :name, вторую половинку :contact_firstname',
 
     // kids
     'kids_sidebar_title' => 'Дети',
@@ -140,7 +143,7 @@ return [
     'kids_add_girl' => 'Девочка',
     'kids_add_gender' => 'Пол',
     'kids_add_firstname' => 'Имя',
-    'kids_add_firstname_help' => 'We assume the last name is :name',
+    'kids_add_firstname_help' => 'Мы предполагаем что имя: :name',
     'kids_add_probably' => 'Этому ребёнку вероятно',
     'kids_add_probably_yo' => 'лет',
     'kids_add_exact' => 'Я знаю точную дату рождения и она:',
@@ -151,7 +154,7 @@ return [
     'kids_add_success' => 'Запись о ребёнке была успешно добавлена!',
     'kids_update_success' => 'Запись о ребёнке была успешно обновлена!',
     'kids_delete_success' => 'Запись о ребёнке была удалена!',
-    'kids_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s child',
+    'kids_add_birthday_reminder' => 'Поздравьте с днём рождения :name, ребёнка :contact_firstname',
 
     // tasks
     'tasks_desc' => 'Управляйте Задачами связанными с :name',
@@ -198,7 +201,7 @@ return [
     'activities_item_information' => ':Activity. Дата: :date',
     'activities_add_title' => 'Что вы делали с :name?',
     'activities_summary' => 'Опишите что вы делали',
-    'activities_add_pick_activity' => '(Не обязательно) Вы хотите классифицировать эту деятельность? Это не обязательно, но это даст вам статистику позже',
+    'activities_add_pick_activity' => '(Не обязательно) Вы хотите классифицировать эту активность? Это не обязательно, но это даст вам статистику позже',
     'activities_add_date_occured' => 'Дата когда это произошло',
     'activities_add_optional_comment' => 'Комментарий (не обязательно)',
     'activities_add_cta' => 'Записать активность',
@@ -214,7 +217,7 @@ return [
     'notes_add_title' => 'Добавить заметку о :name',
     'notes_add_cta' => 'Добавить заметку',
     'notes_written_on' => 'Дата создания: :date',
-    'notes_add_one_more' => 'Добавить ещё одну заметку',
+    'notes_add_one_more' => 'Добавить заметку',
     'notes_title' => 'Заметки',
     'notes_blank_link' => 'Добавить заметку',
     'notes_blank_name' => 'о :name',
@@ -240,7 +243,11 @@ return [
     'gifts_add_comment' => 'Комментарий (не обязательно)',
     'gifts_add_someone' => 'Этот подарок в том числе для кого-то из семьи :name',
     'gifts_add_cta' => 'Добавить',
-    'gifts_gift_idea' => 'Идея подарка',
+    'gifts_gift_idea' => 'Идеи',
+    'gifts_gift_already_offered' => 'Подаренные',
+    'gifts_table_date_added' => 'Дата создания',
+    'gifts_table_description' => 'Описание',
+    'gifts_table_actions' => 'Действия',
 
     // debts
     'debt_delete_confirmation' => 'Вы уверены что хотите удалить этот долг?',
