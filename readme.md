@@ -262,7 +262,7 @@ does not contain any data and shall be used to check all the blank states.
 
 ### Setup the testing environment
 
-MonicaHQ uses the testing capabilities of Laravel to do unit and functional
+Monica uses the testing capabilities of Laravel to do unit and functional
 testing. While all code will have to go through to Travis before being merged,
 tests can still be executed locally before pushing them. In fact, we encourage
 you strongly to do it first.
@@ -287,12 +287,12 @@ migrations and the seeders by running the two commands above.
 ### Update your local instance (or your server if you run it on production)
 
 There is no concept of releases at the moment. If you run the project locally,
-or if you have installed MonicaHQ on your own server, to update it, you need to
-follow these steps below, **every single time**, or you will run into problems.
+or if you have installed Monica on your own server, you need to follow these
+steps below to update it, **every single time**, or you will run into problems.
 
 ```
-composer update
 git pull origin master
+composer update
 php artisan migrate
 ```
 
