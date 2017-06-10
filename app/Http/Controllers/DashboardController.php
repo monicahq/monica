@@ -50,9 +50,9 @@ class DashboardController extends Controller
             $number_of_reminders = $number_of_reminders + $contact->number_of_reminders;
             $number_of_notes = $number_of_notes + $contact->number_of_notes;
             $number_of_activities = $number_of_activities + $contact->number_of_activities;
-            $number_of_gifts = $number_of_gifts + $contact->number_of_gift_ideas;
+            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_ideas;
             $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_received;
-            $number_of_gifts = $number_of_gifts + $contact->number_of_offered;
+            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_offered;
             $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_in_progress;
             $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_completed;
             $number_of_kids = $number_of_kids + $contact->number_of_kids;
