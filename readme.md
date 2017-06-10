@@ -14,7 +14,6 @@
    * [Vision](#vision)
    * [Goals](#goals)
    * [Strategy](#strategy)
-   * [Values](#values)
 * [Get started](#get-started)
    * [Running with Docker](#running-with-docker)
       * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
