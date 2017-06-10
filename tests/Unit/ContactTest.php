@@ -487,6 +487,60 @@ class ContactTest extends TestCase
         );
     }
 
+    public function testGetFacebookReturnsNullIfUndefined()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getFacebook());
+    }
+
+    public function testGetFacebookReturnsFacebookIfDefined()
+    {
+        $contact = new Contact;
+        $contact->facebook_profile_url = 'https://facebook.com/johndoe';
+
+        $this->assertEquals(
+            'https://facebook.com/johndoe',
+            $contact->getFacebook()
+        );
+    }
+
+    public function testGetTwitterReturnsNullIfUndefined()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getTwitter());
+    }
+
+    public function testGetTwitterReturnsTwitterIfDefined()
+    {
+        $contact = new Contact;
+        $contact->twitter_profile_url = 'https://twitter.com/johndoe';
+
+        $this->assertEquals(
+            'https://twitter.com/johndoe',
+            $contact->getTwitter()
+        );
+    }
+
+    public function testGetLinkedinReturnsNullIfUndefined()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getLinkedin());
+    }
+
+    public function testGetLinkedinReturnsLinkedinIfDefined()
+    {
+        $contact = new Contact;
+        $contact->linkedin_profile_url = 'https://linkedin.com/johndoe';
+
+        $this->assertEquals(
+            'https://linkedin.com/johndoe',
+            $contact->getLinkedin()
+        );
+    }
+
     public function testGetPhoneReturnsNullIfPhoneIsUndefined()
     {
         $contact = new Contact;
