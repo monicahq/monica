@@ -219,6 +219,24 @@ class PeopleController extends Controller
             $contact->phone_number = null;
         }
 
+        if ($request->input('facebook') != '') {
+            $contact->facebook_profile_url = $request->input('facebook');
+        } else {
+            $contact->facebook_profile_url = null;
+        }
+
+        if ($request->input('twitter') != '') {
+            $contact->twitter_profile_url = $request->input('twitter');
+        } else {
+            $contact->twitter_profile_url = null;
+        }
+
+        if ($request->input('linkedin') != '') {
+            $contact->linkedin_profile_url = $request->input('linkedin');
+        } else {
+            $contact->linkedin_profile_url = null;
+        }
+
         if ($request->input('street') != '') {
             $contact->street = $request->input('street');
         } else {
