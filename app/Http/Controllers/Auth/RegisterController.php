@@ -11,6 +11,7 @@ use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -69,7 +70,9 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => ['required', 'email', 'max:255',  Rule::unique('users')->where(function ($query) {
+                $query->whereNull('deleted_at');
+            })],
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -82,21 +85,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User;
-        $user->first_name = $data['first_name'];
-        $user->last_name = $data['last_name'];
-        $user->email = $data['email'];
-        $user->password = bcrypt($data['password']);
-        $user->timezone = 'America/New_York';
-        $user->save();
-
         // create a new account
         $account = new Account;
         $account->api_key = RandomHelper::generateString(30);
         $account->save();
 
-        $user->account_id = $account->id;
-        $user->save();
+        //Check if user already exists in trashed
+        $user = User::where('email', $data['email'])->withTrashed()->first();
+        if($user->exists){
+            $user->account_id = $account->id;
+            $user->restore();
+        }else{
+            //Create new user
+            $user = new User;
+            $user->first_name = $data['first_name'];
+            $user->last_name = $data['last_name'];
+            $user->email = $data['email'];
+            $user->password = bcrypt($data['password']);
+            $user->timezone = 'America/New_York';
+            $user->account_id = $account->id;
+            $user->save();
+        }
 
         // send me an alert
         dispatch(new SendNewUserAlert($user));
