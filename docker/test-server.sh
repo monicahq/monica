@@ -1,9 +1,13 @@
 #!/bin/sh
 
-ARTISAN=/var/www/monica/artisan
+ARTISAN="php /var/www/monica/artisan"
 
-php ${ARTISAN} migrate --force
-php ${ARTISAN} storage:link
-php ${ARTISAN} db:seed --class ActivityTypesTableSeeder
-php ${ARTISAN} db:seed --class CountriesSeederTable
-httpd -e info -DFOREGROUND
+${ARTISAN} migrate --force
+${ARTISAN} storage:link
+${ARTISAN} db:seed --class ActivityTypesTableSeeder
+${ARTISAN} db:seed --class CountriesSeederTable
+httpd
+while true; do
+    sleep 60
+    ${ARTISAN} schedule:run
+done
