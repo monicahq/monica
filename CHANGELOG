@@ -1,6 +1,9 @@
 2017-06-10
 ----------
 
+New features:
+* Add ability to define main social network accounts to a contact (Facebook, Twitter, LinkedIn)
+
 Improvements:
 * Fix counter showing number of gifts on the dashboard
 * Docker image now runs the cron to send emails
