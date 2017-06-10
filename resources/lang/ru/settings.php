@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'currency' => 'Валюта',
     'name' => 'Ваше имя: :firstname :lastname',
     'email' => 'Email',
     'email_placeholder' => 'Введите email',

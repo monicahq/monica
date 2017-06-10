@@ -190,6 +190,13 @@
               <option value='true' {{ (Auth::user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
             </select>
           </div>
+
+          <!--currency for user-->
+          <div class="form-group">
+            <label for="layout">{{ trans('settings.currency') }}</label>
+            @include('partials.components.currency-select',['selectionID'=>Auth::user()->currency_id ])
+          </div>
+
           {{-- <div class="form-group">
             <label for="layout">Temperature metric</label>
             <select class="form-control" name="layout" id="layout">

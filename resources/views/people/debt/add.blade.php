@@ -54,7 +54,7 @@
 
               {{-- Amount --}}
               <div class="form-group">
-                <label for="amount">{{ trans('people.debt_add_amount') }}</label>
+                <label for="amount">{{ trans('people.debt_add_amount') }} ({{ Auth::user()->currency->symbol}})</label>
                 <input type="number" class="form-control" name="amount" maxlength="254" autofocus required>
               </div>
 

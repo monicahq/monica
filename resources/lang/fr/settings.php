@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'currency' => 'Devise',
     'name' => 'Votre nom : :firstname :lastname',
     'email' => 'Adresse courriel',
     'email_placeholder' => 'Entrez le courriel',

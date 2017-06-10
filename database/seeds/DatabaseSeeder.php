@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             $this->call(ActivityTypesTableSeeder::class);
             $this->call(CountriesSeederTable::class);
             $this->call(FakeContentTableSeeder::class);
+            $this->call(CurrencyTableSeeder::class);
         }
 
         if (env('APP_ENV') == 'testing') {
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         if (env('APP_ENV') == 'production') {
             $this->call(ActivityTypesTableSeeder::class);
             $this->call(CountriesSeederTable::class);
+            $this->call(CurrencyTableSeeder::class);
         }
     }
 }
