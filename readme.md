@@ -114,7 +114,7 @@ To reach this ambitious vision, we'll use technology in a way that does not harm
 human relationships, like big social networks can do.
 
 We think Monica has to become a platform more than an application, so people can
-build upon it.
+build on it.
 
 Here what we should do in order to realize our vision:
 * Build an API in order to create an ecosystem. The ecosystem is what will make
@@ -123,6 +123,7 @@ Monica a successful platform.
 lock-ins. Data is the property of the users and they should be able to do
 whatever they want with it.
 * Create mobile apps.
+* Build great reports so people can have interesting insights.
 * Create a smart recommandation system for gifts. For instance, if my nephew is
 soon 6 years old in a month, I will be able to receive an email with a list of
 5 potential gifts I can offer to a 6 year old boy.
@@ -134,16 +135,6 @@ the people who wants to use Monica for dating purposes (yes, we've received this
 kind of feedback already).
 * Add functional and unit tests so the main features are tested. Stability is
 key.
-
-### Values
-
-Monica's values are simple. When we'll struggle, these values will guide us to
-make the right decisions.
-
-* Always do what's best for the users
-* Be kind
-* Be transparent
-* Listen to the community
 
 ## Get started
 
@@ -245,7 +236,7 @@ uses. Basically, Monica depends on the following:
 
 The preferred OS distribution is Ubuntu 16.04, simply because all the
 development is made on it and we know it works. However, any OS that lets you
-install the above package should work.
+install the above packages should work.
 
 Once the softwares above are installed, clone the repository and proceed as
 follow:
