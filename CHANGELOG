@@ -1,3 +1,11 @@
+2017-06-10
+----------
+
+Improvements:
+* Fix counter showing number of gifts on the dashboard
+* Docker image now runs the cron to send emails
+* Fix Russian translations
+
 2017-06-09
 ----------
 
