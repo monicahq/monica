@@ -58,6 +58,9 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
+    'information_edit_facebook' => 'Facebook profile (optional)',
+    'information_edit_twitter' => 'Twitter profile (optional)',
+    'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_street' => 'Rua (Opcional)',
     'information_edit_province' => 'Estado (Opcional)',
     'information_edit_postalcode' => 'CEP (Opcional)',
@@ -72,6 +75,9 @@ return [
     'information_no_address_defined' => 'Nenhum endereço definido',
     'information_no_email_defined' => 'Nenhum email definido',
     'information_no_phone_defined' => 'Nenhum número de telefone definido',
+    'information_no_facebook_defined' => 'No Facebook defined',
+    'information_no_twitter_defined' => 'No Twitter defined',
+    'information_no_linkedin_defined' => 'No LinkedIn defined',
 
     // food preferencies
     'food_preferencies_add_success' => 'As preferências de alimentos foram salvas',
