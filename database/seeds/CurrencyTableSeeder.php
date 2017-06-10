@@ -16,5 +16,6 @@ class CurrencyTableSeeder extends Seeder
       DB::table('currencies')->insert([ 'iso' => 'USD', 'name' => 'US Dollar', 'symbol'=>'$' ]);
       DB::table('currencies')->insert([ 'iso' => 'GBP', 'name' => 'British Pound', 'symbol'=>'£' ]);
       DB::table('currencies')->insert([ 'iso' => 'EUR', 'name' => 'Euro', 'symbol'=>'€' ]);
+      DB::table('currencies')->insert([ 'iso' => 'RUB', 'name' => 'Russian Ruble', 'symbol'=>'₽' ]);
     }
 }
