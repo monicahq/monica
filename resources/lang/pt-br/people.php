@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 crianças|{1,1} 1 criança|{2,*} :count crianças',
+    'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
@@ -53,6 +54,8 @@ return [
     // additional information
     'information_edit_success' => 'O perfil foi atualizado com sucesso',
     'information_edit_title' => 'Editar informações pessoais para :name',
+    'information_edit_avatar' => 'Photo/avatar of the contact',
+    'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
     'information_edit_street' => 'Rua (Opcional)',
@@ -241,6 +244,10 @@ return [
     'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
     'gifts_add_cta' => 'Adicionar',
     'gifts_gift_idea' => 'Idéia de presente',
+    'gifts_gift_already_offered' => 'Gifts already offered',
+    'gifts_table_date_added' => 'Date added',
+    'gifts_table_description' => 'Description',
+    'gifts_table_actions' => 'Actions',
 
     // debts
     'debt_delete_confirmation' => 'Tem certeza de que deseja excluir esta dívida?',

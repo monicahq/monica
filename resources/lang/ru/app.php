@@ -31,5 +31,5 @@ return [
 
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',
-    'gender_none' => 'Не хочу указывать',
+    'gender_none' => 'Неизвестно',
 ];
