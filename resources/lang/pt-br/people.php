@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'Você deve a :name',
     'debt_add_they_owe' => ':name te deve',
-    'debt_add_amount' => 'a soma de (em dólares)',
+    'debt_add_amount' => 'a soma de',
     'debt_add_reason' => 'Pelo seguinte motivo (Opcional)',
     'debt_add_add_cta' => 'Adicionar dívida',
 ];

@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Управление долгами',
     'debt_add_you_owe' => 'Вы должны :name',
     'debt_add_they_owe' => ':name должен вам',
-    'debt_add_amount' => 'сумма долга ',
+    'debt_add_amount' => 'сумма ',
     'debt_add_reason' => 'причина долга (не обязательно)',
     'debt_add_add_cta' => 'Добавить долг',
 ];

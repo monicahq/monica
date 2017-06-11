@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Gestion des dettes',
     'debt_add_you_owe' => 'Vous devez :name',
     'debt_add_they_owe' => ':name vous doit',
-    'debt_add_amount' => 'la somme de (en dollars)',
+    'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
 

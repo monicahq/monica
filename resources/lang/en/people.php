@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'You owe :name',
     'debt_add_they_owe' => ':name owes you',
-    'debt_add_amount' => 'the sum of (in dollars)',
+    'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
 ];
