@@ -33,7 +33,9 @@
         @if (is_null($contact->getEmail()))
         {{ trans('people.information_no_email_defined') }}
         @else
-        {{ $contact->getEmail() }}
+        <a href="mailto:{{ $contact->getEmail() }}">
+          {{ $contact->getEmail() }}
+        </a>
         @endif
       </li>
 
