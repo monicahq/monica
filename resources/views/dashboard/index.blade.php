@@ -157,7 +157,7 @@
                         ${{ $debt->amount }}
 
                         @if (! is_null($debt->reason))
-                        <span class="debt-description">{{ trans('dashboard.for') }}</span>
+                        <span class="debt-description">{{ trans('dashboard.debts_for') }}</span>
                         {{ $debt->reason }}
                         @endif
                       </li>

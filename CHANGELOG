@@ -2,6 +2,8 @@
 ----------
 
 Improvements:
+* Email address of a contact is now a mailto:// field.
+* Phone number of a contact is now a tel:// field.
 * Fix Bootstrap tabs on the dashboard
 
 2017-06-10
