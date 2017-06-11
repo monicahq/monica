@@ -10,7 +10,7 @@
 
       @if (!is_null($gift->getValue()))
       <div class="gift-list-item-value">
-        $ {{ $gift->getValue() }}
+        {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
       </div>
       @endif
 
@@ -46,7 +46,7 @@
 
       @if (!is_null($gift->getValue()))
       <div class="gift-list-item-value">
-        $ {{ $gift->getValue() }}
+        {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
       </div>
       @endif
 

@@ -245,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Gift already offered',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_link' => 'Link to the web page (optional)',
-    'gifts_add_value' => 'Value in dollars (optional)',
+    'gifts_add_value' => 'Value (optional)',
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',

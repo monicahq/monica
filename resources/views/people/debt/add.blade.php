@@ -54,11 +54,11 @@
 
               {{-- Amount --}}
               <div class="form-group">
-                <label for="amount">{{ trans('people.debt_add_amount') }} ({{ Auth::user()->currency->symbol}})</label>
+                <label for="amount">{{ trans('people.debt_add_amount') }} ({{ Auth::user()->currency->symbol }})</label>
                 <input type="number" class="form-control" name="amount" maxlength="254" autofocus required>
               </div>
 
-              {{-- Amount --}}
+              {{-- Reason --}}
               <div class="form-group">
                 <label for="reason">{{ trans('people.debt_add_reason') }}</label>
                 <input type="text" class="form-control" name="reason" maxlength="2500">

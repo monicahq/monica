@@ -245,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Presente já oferecido',
     'gifts_add_gift_title' => 'O que é esse presente?',
     'gifts_add_link' => 'Ligar com o site (Opcional)',
-    'gifts_add_value' => 'Valor em dólares (Opcional)',
+    'gifts_add_value' => 'Valor (Opcional)',
     'gifts_add_comment' => 'Comentário (Opcional)',
     'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
     'gifts_add_cta' => 'Adicionar',
