@@ -164,7 +164,7 @@ class PeopleController extends Controller
             'contact' => $contact,
         ];
 
-        return view('people.dashboard.edit', $data);
+        return view('people.edit', $data);
     }
 
     /**
