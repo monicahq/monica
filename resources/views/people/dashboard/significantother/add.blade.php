@@ -39,24 +39,30 @@
 
               <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
-              {{-- Gender --}}
-              <fieldset class="form-group">
-                <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
-                  {{ trans('people.significant_other_add_male') }}
-                </label>
-
-                <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
-                  {{ trans('people.significant_other_add_female') }}
-                </label>
-              </fieldset>
-
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.significant_other_add_firstname') }}</label>
                 <input type="text" class="form-control" name="firstname" maxlength="254" autofocus required>
               </div>
+
+              {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
+              <fieldset class="form-group">
+                <label class="form-check-inline">
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  {{ trans('app.gender_none') }}
+                </label>
+
+                <label class="form-check-inline">
+                  <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
+                  {{ trans('app.gender_male') }}
+                </label>
+
+                <label class="form-check-inline">
+                  <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
+                  {{ trans('app.gender_female') }}
+                </label>
+              </fieldset>
 
               <fieldset class="form-group dates">
 

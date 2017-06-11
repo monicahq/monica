@@ -23,8 +23,9 @@
           <div class="form-group">
             <label for="locale">{{ trans('settings.locale') }}</label>
             <select class="form-control" name="locale" id="locale">
-              <option value='en' {{ (Auth::user()->locale == 'en')?'selected':'' }}>{{ trans('settings.locale_en') }}</option>
-              <option value='fr' {{ (Auth::user()->locale == 'fr')?'selected':'' }}>{{ trans('settings.locale_fr') }}</option>
+              @foreach(config('monica.langs') as $lang)
+                <option value="{{ $lang }}" {{ (Auth::user()->locale == $lang)?'selected':'' }}>{{ trans('settings.locale_'.$lang) }}</option>
+              @endforeach
             </select>
           </div>
           <div class="form-group">
@@ -36,7 +37,6 @@
             <label for="timezone">{{ trans('settings.timezone') }}</label>
             <select class="form-control" name="timezone" id="timezone">
               <option value='US/Eastern' {{ (Auth::user()->timezone == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Montreal/New-York</option>
-              <option value='Europe/Paris' {{ (Auth::user()->timezone == 'Europe/Paris')?'selected':'' }}>(UTC+01:00) Paris</option>
               <option value='US/Central' {{ (Auth::user()->timezone == 'US/Central')?'selected':'' }}>(UTC-06:00) Central Time (US &amp; Canada)</option>
               <option value='America/Los_Angeles' {{ (Auth::user()->timezone == 'America/Los_Angeles')?'selected':'' }}>(UTC-08:00) Pacific Time (US &amp; Canada)</option>
               <option value='Pacific/Midway' {{ (Auth::user()->timezone == 'Pacific/Midway')?'selected':'' }}>(UTC-11:00) Midway Island</option>
@@ -66,8 +66,7 @@
               <option value='America/Santiago' {{ (Auth::user()->timezone == 'America/Santiago')?'selected':'' }}>(UTC-04:00) Santiago</option>
               <option value='Canada/Newfoundland' {{ (Auth::user()->timezone == 'Canada/Newfoundland')?'selected':'' }}>(UTC-03:30) Newfoundland</option>
               <option value='America/Sao_Paulo' {{ (Auth::user()->timezone == 'America/Sao_Paulo')?'selected':'' }}>(UTC-03:00) Brasilia</option>
-              <option value='America/Argentina/ {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}Buenos_Aires'>(UTC-03:00) Buenos Aires</option>
-              <option value='America/Argentina/ {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}Buenos_Aires'>(UTC-03:00) Georgetown</option>
+              <option value='America/Argentina/Buenos_Aires' {{ (Auth::user()->timezone == 'America/Argentina')?'selected':'' }}>(UTC-03:00) Buenos Aires</option>
               <option value='America/Godthab' {{ (Auth::user()->timezone == 'America/Godthab')?'selected':'' }}>(UTC-03:00) Greenland</option>
               <option value='America/Noronha' {{ (Auth::user()->timezone == 'America/Noronha')?'selected':'' }}>(UTC-02:00) Mid-Atlantic</option>
               <option value='Atlantic/Azores' {{ (Auth::user()->timezone == 'Atlantic/Azores')?'selected':'' }}>(UTC-01:00) Azores</option>
@@ -78,11 +77,11 @@
               <option value='Europe/Lisbon' {{ (Auth::user()->timezone == 'Europe/Lisbon')?'selected':'' }}>(UTC+00:00) Lisbon</option>
               <option value='Europe/London' {{ (Auth::user()->timezone == 'Europe/London')?'selected':'' }}>(UTC+00:00) London</option>
               <option value='Africa/Monrovia' {{ (Auth::user()->timezone == 'Africa/Monrovia')?'selected':'' }}>(UTC+00:00) Monrovia</option>
-              <option value='UTC' {{ (Auth::user()->timezone == 'UTC')?'selected':'' }}>(UTC+ 00:00) UTC</option>
+              <option value='UTC' {{ (Auth::user()->timezone == 'UTC')?'selected':'' }}>(UTC+00:00) UTC</option>
               <option value='Europe/Amsterdam' {{ (Auth::user()->timezone == 'Europe/Amsterdam')?'selected':'' }}>(UTC+01:00) Amsterdam</option>
               <option value='Europe/Belgrade' {{ (Auth::user()->timezone == 'Europe/Belgrade')?'selected':'' }}>(UTC+01:00) Belgrade</option>
               <option value='Europe/Berlin' {{ (Auth::user()->timezone == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Berlin</option>
-              <option value='Europe/Berlin' {{ (Auth::user()->timezone == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Bern</option>
+              <option value='Europe/Bern' {{ (Auth::user()->timezone == 'Europe/Bern')?'selected':'' }}>(UTC+01:00) Bern</option>
               <option value='Europe/Bratislava' {{ (Auth::user()->timezone == 'Europe/Bratislava')?'selected':'' }}>(UTC+01:00) Bratislava</option>
               <option value='Europe/Brussels' {{ (Auth::user()->timezone == 'Europe/Brussels')?'selected':'' }}>(UTC+01:00) Brussels</option>
               <option value='Europe/Budapest' {{ (Auth::user()->timezone == 'Europe/Budapest')?'selected':'' }}>(UTC+01:00) Budapest</option>
@@ -191,6 +190,13 @@
               <option value='true' {{ (Auth::user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
             </select>
           </div>
+
+          <!--currency for user-->
+          <div class="form-group">
+            <label for="layout">{{ trans('settings.currency') }}</label>
+            @include('partials.components.currency-select',['selectionID'=>Auth::user()->currency_id ])
+          </div>
+
           {{-- <div class="form-group">
             <label for="layout">Temperature metric</label>
             <select class="form-control" name="layout" id="layout">

@@ -50,11 +50,11 @@
                   <span class="stat-description">{{ trans('dashboard.statistics_tasks') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">${{ $debt_owed }}</span>
+                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_owed }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_deb_owed') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">${{ $debt_due }}</span>
+                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_due }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_debt_due') }}</span>
                 </li>
               </ul>

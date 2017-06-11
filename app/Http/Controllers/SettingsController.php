@@ -46,15 +46,18 @@ class SettingsController extends Controller
         $timezone = $request->input('timezone');
         $layout = $request->input('layout');
         $locale = $request->input('locale');
+        $currency = $request->input('currency_id');
 
-        Auth::user()->email = $email;
-        Auth::user()->timezone = $timezone;
-        Auth::user()->fluid_container = $layout;
-        Auth::user()->metric = $layout;
-        Auth::user()->locale = $locale;
-        Auth::user()->save();
+        $user = Auth::user();
+        $user->email = $email;
+        $user->timezone = $timezone;
+        $user->fluid_container = $layout;
+        $user->metric = $layout;
+        $user->locale = $locale;
+        $user->currency_id = $currency;
+        $user->save();
 
-        return redirect('settings')->with('status', 'Profile updated!');
+        return redirect('settings')->with('status', trans('settings.settings_success'));
     }
 
     public function delete()

@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show kids">
+  <div class="people-show">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -39,15 +39,31 @@
 
               <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
 
+              <p class="delete-contact">
+                {{ trans('people.people_delete_message') }}
+                <a href="/people/{{ $contact->id }}/delete" onclick="return confirm('{{ trans('people.people_delete_confirmation') }}')">{{ trans('people.people_delete_click_here') }}</a>.
+              </p>
+
               {{-- Gender --}}
+              <label>{{ trans('people.people_add_gender') }}</label>
+
               <fieldset class="form-group">
+                <label class="form-check-inline">
+                  @if ($contact->gender == 'none')
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
+                  @else
+                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none">
+                  @endif
+                  {{ trans('app.gender_none') }}
+                </label>
+
                 <label class="form-check-inline">
                   @if ($contact->gender == 'male')
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" checked>
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
                   @endif
-                  {{ trans('people.information_edit_male') }}
+                  {{ trans('app.gender_male') }}
                 </label>
 
                 <label class="form-check-inline">
@@ -56,15 +72,15 @@
                   @else
                   <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
                   @endif
-                  {{ trans('people.information_edit_female') }}
+                  {{ trans('app.gender_female') }}
                 </label>
               </fieldset>
 
               {{-- Avatar --}}
               <div class="form-group">
-                <label for="avatar">Photo/avatar of the contact</label>
+                <label for="avatar">{{ trans('people.information_edit_avatar') }}</label>
                 <input type="file" class="form-control-file" name="avatar">
-                <small id="fileHelp" class="form-text text-muted">Max 10Mb.</small>
+                <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
               </div>
 
               {{-- First name --}}
@@ -90,15 +106,9 @@
                 <label for="city">{{ trans('people.information_edit_city') }}</label>
                 <input type="text" class="form-control" name="city" value="{{ $contact->getCity() }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
-                <select name="country" class="form-control" required>
-                  @foreach (App\Country::all() as $country)
-                    @if ($country->id == $contact->getCountryID())
-                    <option value="{{ $country->id }}" selected>{{ $country->country }}</option>
-                    @else
-                    <option value="{{ $country->id }}" >{{ $country->country }}</option>
-                    @endif
-                  @endforeach
-                </select>
+
+                @include('partials.components.country-select',['selectionID'=>$contact->getCountryID()])
+
               </div>
 
               {{-- Email address --}}
@@ -107,12 +117,31 @@
                 <input type="email" class="form-control" name="email" value="{{ $contact->getEmail() }}">
               </div>
 
-              {{-- Email address --}}
+              {{-- Phone --}}
               <div class="form-group">
                 <label for="phone">{{ trans('people.information_edit_phone') }}</label>
-                <input type="number" class="form-control" name="phone" value="{{ $contact->getPhone() }}">
+                <input class="form-control" name="phone" value="{{ $contact->getPhone() }}">
               </div>
 
+              {{-- Facebook --}}
+              <div class="form-group">
+                <label for="facebook">{{ trans('people.information_edit_facebook') }}</label>
+                <input class="form-control" name="facebook" value="{{ $contact->getFacebook() }}" placeholder="https://facebook.com/john.doe">
+              </div>
+
+              {{-- Twitter --}}
+              <div class="form-group">
+                <label for="twitter">{{ trans('people.information_edit_twitter') }}</label>
+                <input class="form-control" name="twitter" value="{{ $contact->getTwitter() }}" placeholder="https://twitter.com/john.doe">
+              </div>
+
+              {{-- LinkedIn --}}
+              <div class="form-group">
+                <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
+                <input class="form-control" name="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
+              </div>
+
+              {{-- Birthdate --}}
               <fieldset class="form-group dates">
 
                 {{-- Don't know the birthdate --}}
