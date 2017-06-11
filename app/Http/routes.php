@@ -1,11 +1,5 @@
 <?php
 
-Route::get('/test', function() {
-    $contact = App\Contact::whereHas('events')->get()->first();
-
-    dd($contact->significantOthers->where('id', 1)->first());
-});
-
 if (App::environment('production')) {
     URL::forceScheme('https');
 }
