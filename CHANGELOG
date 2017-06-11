@@ -2,6 +2,7 @@
 ----------
 
 New features:
+* Add support for other currencies (CAD $, EUR €, GBP £, RUB ₽) for the gifts and debts section. This is set in the User setting. Default is USD $.
 * Add ability to define main social network accounts to a contact (Facebook, Twitter, LinkedIn)
 
 Improvements:
