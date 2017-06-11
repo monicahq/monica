@@ -46,6 +46,36 @@
         {{ $contact->getPhone() }}
         @endif
       </li>
+
+      {{-- Facebook --}}
+      <li>
+        <i class="fa fa-facebook-official"></i>
+        @if (is_null($contact->getFacebook()))
+        {{ trans('people.information_no_facebook_defined') }}
+        @else
+        <a href="{{ $contact->getFacebook() }}">Facebook</a>
+        @endif
+      </li>
+
+      {{-- Twitter --}}
+      <li>
+        <i class="fa fa-twitter-square"></i>
+        @if (is_null($contact->getTwitter()))
+        {{ trans('people.information_no_twitter_defined') }}
+        @else
+        <a href="{{ $contact->getTwitter() }}">Twitter</a>
+        @endif
+      </li>
+
+      {{-- LinkedIn --}}
+      <li>
+        <i class="fa fa-linkedin-square"></i>
+        @if (is_null($contact->getLinkedin()))
+        {{ trans('people.information_no_linkedin_defined') }}
+        @else
+        <a href="{{ $contact->getLinkedin() }}">Twitter</a>
+        @endif
+      </li>
     </ul>
   </div>
 
