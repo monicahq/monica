@@ -3,6 +3,10 @@
 First off, thank you for considering contributing to Monica. We need people like
 you to make Monica the best tool it can be.
 
+Before you do anything else, please read the README.md of this project first.
+This is where we highlight the vision and the strategy. Please make sure you
+accept this vision before contributing to this project.
+
 ### 1. Where do I go from here?
 
 If you've noticed a bug or have a question, [make an issue](https://github.com/monicahq/monica/issues/new),
