@@ -25,10 +25,10 @@ class DashboardController extends Controller
     {
         $account = Auth::user()->account;
 
-        $lastUpdatedContacts = $account->contacts->take(10);
+        $lastUpdatedContacts = $account->contacts()->limit(10)->get();
 
         // Latest statistics
-        if (count($account->contacts) === 0) {
+        if ($account->contacts()->count() === 0) {
             return view('dashboard.blank');
         }
 
