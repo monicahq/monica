@@ -15,6 +15,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
+    protected $apinamespace = 'App\Http\Controllers\Api';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -38,8 +39,30 @@ class RouteServiceProvider extends ServiceProvider
     public function map(Router $router)
     {
         $this->mapWebRoutes($router);
-
+        $this->mapApiRoutes($router);
         //
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @param $router
+     * @param $namespace
+     * @param $path
+     *
+     * @return void
+     */
+    protected function mapApiRoutes($router)
+    {
+        $router->group([
+            'middleware' => 'api',
+            'namespace'  => $this->apinamespace,
+            'prefix'     => 'api'
+        ], function ($router) {
+            require app_path('Http/api.php');
+        });
     }
 
     /**
