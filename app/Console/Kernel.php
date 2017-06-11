@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ResetTestDB',
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\CalculateStatistics',
+        'App\Console\Commands\Setup',
         //'App\Console\Commands\EncryptAllTheThings'
         //'App\Console\Commands\MigrateActivities'
         //'App\Console\Commands\MigratePeopleInformation',

@@ -1,0 +1,45 @@
+{
+  "name": "Monica",
+  "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
+  "repository": "https://github.com/monicahq/monica",
+  "logo": "https://raw.githubusercontent.com/monicahq/monicahq.github.io/master/assets/img/monica-logo.svg",
+  "keywords": ["CRM", "family", "friends", "relationship"],
+  "addons": [{"plan": "cleardb:ignite"}],
+  "scripts": {
+    "postdeploy": "php artisan setup:production"
+  },
+  "env": {
+    "APP_KEY": {
+      "description": "Please enter a 32 character random key.",
+      "value": "please-change-me-to-a-random-key"
+    },
+    "HEROKU": {
+      "description": "Informs Monica that the app is running on Heroku.",
+      "value": "true"
+    },
+    "DB_CONNECTION": {
+      "description": "Informs Monica to use the Heroku database.",
+      "value": "heroku"
+    },
+    "APP_DISABLE_SIGNUP": {
+      "description": "Disable user signup.",
+      "value": "false"
+    },
+    "APP_DEBUG": {
+      "description": "Enables or disables debug mode.",
+      "value": "false"
+    },
+    "APP_EMAIL_NEW_USERS_NOTIFICATION": {
+      "description": "",
+      "value": "noreply@example.com"
+    },
+    "MAIL_FROM_ADDRESS": {
+      "description": "",
+      "value": "noreply@example.com"
+    },
+    "MAIL_FROM_NAME": {
+      "description": "",
+      "value": "Bob Smith"
+    }
+  }
+}

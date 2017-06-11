@@ -1,6 +1,6 @@
 <?php
 
-return [
+$db = [
 
     /*
     |--------------------------------------------------------------------------
@@ -130,3 +130,23 @@ return [
     ],
 
 ];
+
+// If the app is deployed on Heroku interpret the postgres URL
+if( env('HEROKU') )
+{
+    $url = parse_url(env("CLEARDB_DATABASE_URL"));
+
+    $db['connections']['heroku'] = [
+        'driver' => 'mysql',
+        'host' => $url['host'],
+        'port' => $url['port'],
+        'database' => substr($url["path"], 1),
+        'username' => $url["user"],
+        'password' => $url["pass"],
+        'charset' => 'utf8',
+        'prefix' => '',
+        'schema' => 'public',
+    ];
+}
+
+return $db;
