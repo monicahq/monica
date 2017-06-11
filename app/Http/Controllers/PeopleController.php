@@ -261,7 +261,12 @@ class PeopleController extends Controller
             $contact->city = null;
         }
 
-        $contact->country_id = $request->input('country');
+        if ($request->input('country') != '---') {
+            $contact->country_id = $request->input('country');
+        } else {
+            $contact->country_id = null;
+        }
+
         $birthdateApproximate = $request->input('birthdateApproximate');
 
         if ($birthdateApproximate == 'approximate') {
