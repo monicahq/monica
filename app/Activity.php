@@ -14,6 +14,30 @@ class Activity extends Model
     protected $dates = ['date_it_happened'];
 
     /**
+     * Get the account record associated with the gift.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the gift.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    /**
+     * Get the activity type record associated with the activity.
+     */
+    public function type()
+    {
+        return $this->belongsTo('App\ActivityType');
+    }
+
+    /**
      * Get the summary for this activity.
      *
      * @return string or null

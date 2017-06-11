@@ -1,5 +1,16 @@
 @extends('layouts.skeleton')
 
+{{-- Temp Fix for Bootstrap Tabs: Issue #26 --}}
+@push('scripts')
+  <script type="text/javascript">
+      $( ".nav-item" ).click(function() {
+          $(this).children().addClass('active');
+          $(this).siblings().children().removeClass('active');
+      });
+  </script>
+@endpush
+
+
 @section('content')
   <div class="dashboard">
 
@@ -146,7 +157,7 @@
                         ${{ $debt->amount }}
 
                         @if (! is_null($debt->reason))
-                        <span class="debt-description">{{ trans('dashboard.for') }}</span>
+                        <span class="debt-description">{{ trans('dashboard.debts_for') }}</span>
                         {{ $debt->reason }}
                         @endif
                       </li>
