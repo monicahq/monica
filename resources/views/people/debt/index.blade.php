@@ -13,7 +13,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.debts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
       <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>

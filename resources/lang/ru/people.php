@@ -269,4 +269,5 @@ return [
     'debt_add_amount' => 'сумма ',
     'debt_add_reason' => 'причина долга (не обязательно)',
     'debt_add_add_cta' => 'Добавить долг',
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
 ];
