@@ -65,6 +65,13 @@ class User extends Authenticatable
     }
 
     /**
+     * Gets the currency for this user.
+     */
+    public function currency()
+    {
+        return $this->belongsTo('App\Currency', 'currency_id');
+    }
+    /**
      * Set the contact view preference.
      *
      * @param  string $preference

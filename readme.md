@@ -243,6 +243,7 @@ follow:
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env` to configure Monica.
 1. Update `.env` with your specific needs.
+1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Create a database called `monica`.
 1. `php artisan migrate` to run all migrations.
 1. `php artisan storage:link` to enable avatar uploads for the contacts.
@@ -308,6 +309,7 @@ you can pull the repository and start setup Monica.
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env`
 1. Update `.env` to your specific needs.
+1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create a database called `monica`.

@@ -58,6 +58,9 @@ return [
     'information_edit_max_size' => 'Макс :size Мб.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обязательно)',
+    'information_edit_facebook' => 'Facebook profile (optional)',
+    'information_edit_twitter' => 'Twitter profile (optional)',
+    'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_street' => 'Улица (не обязательно)',
     'information_edit_province' => 'Область (не обязательно)',
     'information_edit_postalcode' => 'Индекс (не обязательно)',
@@ -72,6 +75,9 @@ return [
     'information_no_address_defined' => 'Адрес не указан',
     'information_no_email_defined' => 'Email не указан',
     'information_no_phone_defined' => 'Номер телефона не указан',
+    'information_no_facebook_defined' => 'No Facebook defined',
+    'information_no_twitter_defined' => 'No Twitter defined',
+    'information_no_linkedin_defined' => 'No LinkedIn defined',
 
     // food preferencies
     'food_preferencies_add_success' => 'Предпочтения в еде были сохранены',
@@ -260,7 +266,7 @@ return [
     'debt_add_title' => 'Управление долгами',
     'debt_add_you_owe' => 'Вы должны :name',
     'debt_add_they_owe' => ':name должен вам',
-    'debt_add_amount' => 'сумма долга ',
+    'debt_add_amount' => 'сумма ',
     'debt_add_reason' => 'причина долга (не обязательно)',
     'debt_add_add_cta' => 'Добавить долг',
 ];

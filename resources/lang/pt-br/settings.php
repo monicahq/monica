@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'currency' => 'Moneda',
     'name' => 'Seu nome: :firstname :lastname',
     'email' => 'Endereço de email',
     'email_placeholder' => 'Digite o email',
