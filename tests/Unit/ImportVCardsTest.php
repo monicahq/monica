@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Account;
 use App\Contact;
 use App\Country;
+use App\Helpers\RandomHelper;
 use App\User;
 use Mockery as m;
 use Tests\TestCase;
@@ -33,7 +35,7 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesFile()
     {
-        $user = User::find(1);
+        $user = $this->getUser();
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
 
@@ -48,7 +50,7 @@ class ImportVCardsTest extends TestCase
 
     public function testItImportsContacts()
     {
-        $user = User::find(1);
+        $user = $this->getUser();
         $path = 'tests/stubs/vcard_stub.vcf';
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
@@ -86,6 +88,23 @@ class ImportVCardsTest extends TestCase
         );
 
         $this->assertEquals(0, $exitCode);
+    }
+
+    private function getUser() {
+        $user = new User();
+        $user->first_name = 'John';
+        $user->last_name = 'Doe';
+        $user->email = 'johndoe@example.com';
+        $user->password = bcrypt('secret');
+
+        $account = new Account();
+        $account->api_key = RandomHelper::generateString(30);
+        $account->save();
+
+        $user->account_id = $account->id;
+        $user->save();
+
+        return $user;
     }
 
 }
