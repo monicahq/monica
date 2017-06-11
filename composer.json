@@ -15,7 +15,9 @@
         "fzaninotto/faker": "^1.6",
         "doctrine/dbal": "^2.5",
         "laravel/socialite": "^3.0",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "dingo/api": "1.0.*@dev",
+        "tymon/jwt-auth": "0.5.*"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
@@ -29,7 +31,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Monica\\": "app/Monica"
         }
     },
     "autoload-dev": {

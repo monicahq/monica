@@ -8,6 +8,7 @@ use Validator;
 use Carbon\Carbon;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Monica\Repositories\EntryRepository;
 
 class JournalController extends Controller
 {
@@ -18,14 +19,11 @@ class JournalController extends Controller
      */
     public function index()
     {
-        $entries = Entry::where('account_id', Auth::user()->account_id)
-                      ->orderBy('created_at', 'desc')
-                      ->get();
-
+        $repo = new EntryRepository();
+        $entries = $repo->getJournalEntriesByAccount( Auth::user()->account_id );
         $data = [
             'entries' => $entries,
         ];
-
         return view('journal.index', $data);
     }
 
