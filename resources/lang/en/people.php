@@ -58,6 +58,9 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
+    'information_edit_facebook' => 'Facebook profile (optional)',
+    'information_edit_twitter' => 'Twitter profile (optional)',
+    'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_street' => 'Street (optional)',
     'information_edit_province' => 'Province (optional)',
     'information_edit_postalcode' => 'Postal code (optional)',
@@ -72,13 +75,16 @@ return [
     'information_no_address_defined' => 'No address defined',
     'information_no_email_defined' => 'No email address defined',
     'information_no_phone_defined' => 'No phone number defined',
+    'information_no_facebook_defined' => 'No Facebook defined',
+    'information_no_twitter_defined' => 'No Twitter defined',
+    'information_no_linkedin_defined' => 'No LinkedIn defined',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferences have been saved',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family\'s family has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Edit food preferences',
+    'food_preferencies_edit_cta' => 'Save food preferences',
     'food_preferencies_title' => 'Food preferences',
     'food_preferencies_cta' => 'Add food preferences',
 
@@ -239,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Gift already offered',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_link' => 'Link to the web page (optional)',
-    'gifts_add_value' => 'Value in dollars (optional)',
+    'gifts_add_value' => 'Value (optional)',
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',
@@ -260,7 +266,8 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'You owe :name',
     'debt_add_they_owe' => ':name owes you',
-    'debt_add_amount' => 'the sum of (in dollars)',
+    'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
 ];

@@ -243,6 +243,7 @@ follow:
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env` to configure Monica.
 1. Update `.env` with your specific needs.
+1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Create a database called `monica`.
 1. `php artisan migrate` to run all migrations.
 1. `php artisan storage:link` to enable avatar uploads for the contacts.
@@ -308,6 +309,7 @@ you can pull the repository and start setup Monica.
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env`
 1. Update `.env` to your specific needs.
+1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create a database called `monica`.
@@ -447,7 +449,21 @@ matter.
 
 ### How the community can help
 
-I'm looking for people willing to write tests for the existing features.
+There are several ways to help this project to move forward:
+* Unlike Fight Club, the best way to help is to actually talk about the project
+as much as you can.
+* You can answer questions in the issue tracker to help other community members.
+* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+ if you are looking to have an immediate impact on the project.
+* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+ These are issues that you can solve relatively easily.
+ * If you are an advanced developer, you can try to tackle
+ [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
+ Beware though - they are harder to do and will require a lot of back and forth
+ with the repository administrator in order to make sure we are going to the right
+ direction with the product.
+* Finally, and most importantly, we are looking for people willing to write
+ tests for the existing features.
 
 ## License
 

@@ -58,6 +58,9 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
+    'information_edit_facebook' => 'Facebook profile (optional)',
+    'information_edit_twitter' => 'Twitter profile (optional)',
+    'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_street' => 'Rua (Opcional)',
     'information_edit_province' => 'Estado (Opcional)',
     'information_edit_postalcode' => 'CEP (Opcional)',
@@ -72,13 +75,16 @@ return [
     'information_no_address_defined' => 'Nenhum endereço definido',
     'information_no_email_defined' => 'Nenhum email definido',
     'information_no_phone_defined' => 'Nenhum número de telefone definido',
+    'information_no_facebook_defined' => 'No Facebook defined',
+    'information_no_twitter_defined' => 'No Twitter defined',
+    'information_no_linkedin_defined' => 'No LinkedIn defined',
 
     // food preferencies
     'food_preferencies_add_success' => 'As preferências de alimentos foram salvas',
     'food_preferencies_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_title' => 'Indique preferências de alimentos',
-    'food_preferencies_edit_cta' => 'Editar preferências de alimentos',
+    'food_preferencies_edit_cta' => 'Guardar preferências de alimentos',
     'food_preferencies_title' => 'Preferências alimentares',
     'food_preferencies_cta' => 'Adicione preferências de alimentos',
 
@@ -239,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Presente já oferecido',
     'gifts_add_gift_title' => 'O que é esse presente?',
     'gifts_add_link' => 'Ligar com o site (Opcional)',
-    'gifts_add_value' => 'Valor em dólares (Opcional)',
+    'gifts_add_value' => 'Valor (Opcional)',
     'gifts_add_comment' => 'Comentário (Opcional)',
     'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
     'gifts_add_cta' => 'Adicionar',
@@ -260,7 +266,8 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'Você deve a :name',
     'debt_add_they_owe' => ':name te deve',
-    'debt_add_amount' => 'a soma de (em dólares)',
+    'debt_add_amount' => 'a soma de',
     'debt_add_reason' => 'Pelo seguinte motivo (Opcional)',
     'debt_add_add_cta' => 'Adicionar dívida',
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
 ];
