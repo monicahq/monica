@@ -66,7 +66,7 @@
 
               {{-- Value --}}
               <div class="form-group">
-                <label for="value">{{ trans('people.gifts_add_value') }}</label>
+                <label for="value">{{ trans('people.gifts_add_value') }}  ({{ Auth::user()->currency->symbol}})</label>
                 <input type="number" class="form-control" name="value" placeholder="0.00">
               </div>
 

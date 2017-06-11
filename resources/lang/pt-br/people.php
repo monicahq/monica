@@ -84,7 +84,7 @@ return [
     'food_preferencies_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_title' => 'Indique preferências de alimentos',
-    'food_preferencies_edit_cta' => 'Editar preferências de alimentos',
+    'food_preferencies_edit_cta' => 'Guardar preferências de alimentos',
     'food_preferencies_title' => 'Preferências alimentares',
     'food_preferencies_cta' => 'Adicione preferências de alimentos',
 
@@ -245,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Presente já oferecido',
     'gifts_add_gift_title' => 'O que é esse presente?',
     'gifts_add_link' => 'Ligar com o site (Opcional)',
-    'gifts_add_value' => 'Valor em dólares (Opcional)',
+    'gifts_add_value' => 'Valor (Opcional)',
     'gifts_add_comment' => 'Comentário (Opcional)',
     'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
     'gifts_add_cta' => 'Adicionar',
@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'Você deve a :name',
     'debt_add_they_owe' => ':name te deve',
-    'debt_add_amount' => 'a soma de (em dólares)',
+    'debt_add_amount' => 'a soma de',
     'debt_add_reason' => 'Pelo seguinte motivo (Opcional)',
     'debt_add_add_cta' => 'Adicionar dívida',
 ];

@@ -84,7 +84,7 @@ return [
     'food_preferencies_edit_description' => 'Возможно у :firstname или кого-то из его(её) семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом.',
     'food_preferencies_edit_description_no_last_name' => 'Возможно у :firstname или кого-то из её семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом.',
     'food_preferencies_edit_title' => 'Укажите предпочтения в еде',
-    'food_preferencies_edit_cta' => 'Редактировать предпочтения в еде',
+    'food_preferencies_edit_cta' => 'Сохранить предпочтения в еде',
     'food_preferencies_title' => 'Предпочтения в еде',
     'food_preferencies_cta' => 'Добавить предпочтения в еде',
 
@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Управление долгами',
     'debt_add_you_owe' => 'Вы должны :name',
     'debt_add_they_owe' => ':name должен вам',
-    'debt_add_amount' => 'сумма долга ',
+    'debt_add_amount' => 'сумма ',
     'debt_add_reason' => 'причина долга (не обязательно)',
     'debt_add_add_cta' => 'Добавить долг',
 ];

@@ -84,7 +84,7 @@ return [
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family\'s family has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Edit food preferences',
+    'food_preferencies_edit_cta' => 'Save food preferences',
     'food_preferencies_title' => 'Food preferences',
     'food_preferencies_cta' => 'Add food preferences',
 
@@ -245,7 +245,7 @@ return [
     'gifts_add_gift_already_offered' => 'Gift already offered',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_link' => 'Link to the web page (optional)',
-    'gifts_add_value' => 'Value in dollars (optional)',
+    'gifts_add_value' => 'Value (optional)',
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',
@@ -266,7 +266,7 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'You owe :name',
     'debt_add_they_owe' => ':name owes you',
-    'debt_add_amount' => 'the sum of (in dollars)',
+    'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
 ];
