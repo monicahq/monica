@@ -84,7 +84,7 @@ return [
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu\'un dans la famille :family a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Mettre à jour',
+    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
     'food_preferencies_title' => 'Préférences alimentaires',
     'food_preferencies_cta' => 'Ajouter',
 

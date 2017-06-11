@@ -84,7 +84,7 @@ return [
     'food_preferencies_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
     'food_preferencies_edit_title' => 'Indique preferências de alimentos',
-    'food_preferencies_edit_cta' => 'Editar preferências de alimentos',
+    'food_preferencies_edit_cta' => 'Guardar preferências de alimentos',
     'food_preferencies_title' => 'Preferências alimentares',
     'food_preferencies_cta' => 'Adicione preferências de alimentos',
 
