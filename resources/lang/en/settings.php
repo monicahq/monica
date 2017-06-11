@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'currency' => 'Currency',
     'name' => 'Your name: :firstname :lastname',
     'email' => 'Email address',
     'email_placeholder' => 'Enter email',
@@ -12,7 +13,10 @@ return [
     'save' => 'Update preferences',
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
     'delete_cta' => 'Delete account',
+    'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
     'locale_en' => 'English',
     'locale_fr' => 'French',
+    'locale_pt-br' => 'Portuguese',
+    'locale_ru' => 'Russian',
 ];

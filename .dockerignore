@@ -1,0 +1,15 @@
+.git/
+node_modules/
+persist/
+public/storage/
+resources/vendor/
+vendor/
+.dockerignore
+.env
+.gitignore
+Dockerfile
+Homestead.json
+Homestead.yaml
+docker-compose.yml
+monica.sublime-workspace
+readme.md

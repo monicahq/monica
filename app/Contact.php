@@ -402,6 +402,48 @@ class Contact extends Model
     }
 
     /**
+     * Gets the Twitter URL or returns null if undefined.
+     *
+     * @return string
+     */
+    public function getTwitter()
+    {
+        if (is_null($this->twitter_profile_url)) {
+            return null;
+        }
+
+        return $this->twitter_profile_url;
+    }
+
+    /**
+     * Gets the Facebook URL or returns null if undefined.
+     *
+     * @return string
+     */
+    public function getFacebook()
+    {
+        if (is_null($this->facebook_profile_url)) {
+            return null;
+        }
+
+        return $this->facebook_profile_url;
+    }
+
+    /**
+     * Gets the LinkedIn URL or returns null if undefined.
+     *
+     * @return string
+     */
+    public function getLinkedin()
+    {
+        if (is_null($this->linkedin_profile_url)) {
+            return null;
+        }
+
+        return $this->linkedin_profile_url;
+    }
+
+    /**
      * Get the current Significant Other, if it exists, or return null otherwise.
      *
      * @return SignificantOther

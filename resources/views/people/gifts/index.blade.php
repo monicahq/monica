@@ -30,9 +30,9 @@
       <table class="table table-sm table-hover">
         <thead>
           <tr>
-            <th>Date added</th>
-            <th>Description</th>
-            <th class="actions">Actions</th>
+            <th>{{ trans('people.gifts_table_date_added') }}</th>
+            <th>{{ trans('people.gifts_table_description') }}</th>
+            <th class="actions">{{ trans('people.gifts_table_actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
 
                 @if (! is_null($gift->getValue()))
                   <div class="gift-list-item-value">
-                    $ {{ $gift->getValue() }}
+                    {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
                   </div>
                 @endif
 
@@ -68,14 +68,14 @@
     @endif
 
     @if ($contact->getGiftsOffered()->count() != 0)
-      <h2 class="gift-recipient">Gifts already offered</h2>
+      <h2 class="gift-recipient">{{ trans('people.gifts_gift_already_offered') }}</h2>
 
       <table class="table table-sm table-hover">
         <thead>
           <tr>
-            <th>Date added</th>
-            <th>Description</th>
-            <th class="actions">Actions</th>
+            <th>{{ trans('people.gifts_table_date_added') }}</th>
+            <th>{{ trans('people.gifts_table_description') }}</th>
+            <th class="actions">{{ trans('people.gifts_table_actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -89,7 +89,7 @@
 
                 @if (! is_null($gift->getValue()))
                   <div class="gift-list-item-value">
-                    $ {{ $gift->getValue() }}
+                    {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
                   </div>
                 @endif
 

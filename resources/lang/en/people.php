@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
@@ -53,8 +54,13 @@ return [
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name\'s personal information',
+    'information_edit_avatar' => 'Photo/avatar of the contact',
+    'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
+    'information_edit_facebook' => 'Facebook profile (optional)',
+    'information_edit_twitter' => 'Twitter profile (optional)',
+    'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_street' => 'Street (optional)',
     'information_edit_province' => 'Province (optional)',
     'information_edit_postalcode' => 'Postal code (optional)',
@@ -69,13 +75,16 @@ return [
     'information_no_address_defined' => 'No address defined',
     'information_no_email_defined' => 'No email address defined',
     'information_no_phone_defined' => 'No phone number defined',
+    'information_no_facebook_defined' => 'No Facebook defined',
+    'information_no_twitter_defined' => 'No Twitter defined',
+    'information_no_linkedin_defined' => 'No LinkedIn defined',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferences have been saved',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family\'s family has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn\'t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Edit food preferences',
+    'food_preferencies_edit_cta' => 'Save food preferences',
     'food_preferencies_title' => 'Food preferences',
     'food_preferencies_cta' => 'Add food preferences',
 
@@ -105,6 +114,10 @@ return [
     'reminders_cta' => 'Add a reminder',
     'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen',
     'reminders_frequency' => 'every',
+    'reminders_date' => 'Date',
+    'reminders_content' => 'Content',
+    'reminders_actions' => 'Actions',
+    'reminders_one_time' => 'One time',
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'month',
     'reminders_type_year' => 'year',
@@ -232,11 +245,15 @@ return [
     'gifts_add_gift_already_offered' => 'Gift already offered',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_link' => 'Link to the web page (optional)',
-    'gifts_add_value' => 'Value in dollars (optional)',
+    'gifts_add_value' => 'Value (optional)',
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_someone' => 'This gift is for someone in :name\'s family in particular',
     'gifts_add_cta' => 'Add',
     'gifts_gift_idea' => 'Gift idea',
+    'gifts_gift_already_offered' => 'Gifts already offered',
+    'gifts_table_date_added' => 'Date added',
+    'gifts_table_description' => 'Description',
+    'gifts_table_actions' => 'Actions',
 
     // debts
     'debt_delete_confirmation' => 'Are you sure you want to delete this debt?',
@@ -249,7 +266,7 @@ return [
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'You owe :name',
     'debt_add_they_owe' => ':name owes you',
-    'debt_add_amount' => 'the sum of (in dollars)',
+    'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
 ];

@@ -4,6 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 enfant |{1,1} 1 enfant|{2,*} :count enfants',
+    'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 rappel |{1,1} 1 rappel |{2,*} :count rappels',
     'people_list_blank_title' => 'Vous n\'avez encore ajouté aucun contact.',
     'people_list_blank_cta' => 'Ajouter quelqu\'un',
@@ -53,8 +54,13 @@ return [
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
+    'information_edit_avatar' => 'Photo/avatar of the contact',
+    'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
+    'information_edit_facebook' => 'Profil Facebook (optionel)',
+    'information_edit_twitter' => 'Profil Twitter (optionel)',
+    'information_edit_linkedin' => 'Profil LinkedIn (optionel)',
     'information_edit_street' => 'Rue (optionnel)',
     'information_edit_province' => 'Province (optionnel)',
     'information_edit_postalcode' => 'Code postal (optionnel)',
@@ -69,13 +75,16 @@ return [
     'information_no_address_defined' => 'Aucune adresse définie',
     'information_no_email_defined' => 'Aucun courriel défini',
     'information_no_phone_defined' => 'Aucun numéro de téléphone défini',
+    'information_no_facebook_defined' => 'Aucun Facebook défini',
+    'information_no_twitter_defined' => 'Aucun Twitter défini',
+    'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu\'un dans la famille :family a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Mettre à jour',
+    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
     'food_preferencies_title' => 'Préférences alimentaires',
     'food_preferencies_cta' => 'Ajouter',
 
@@ -107,6 +116,11 @@ return [
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
+    'reminders_frequency' => 'chaque',
+    'reminders_date' => 'Date',
+    'reminders_content' => 'Contenu',
+    'reminders_actions' => 'Actes',
+    'reminders_one_time' => 'Unique',
 
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',
@@ -236,6 +250,10 @@ return [
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu\'un de la famille :name en particulier',
     'gifts_add_cta' => 'Ajouter',
     'gifts_gift_idea' => 'Idée de cadeau',
+    'gifts_gift_already_offered' => 'Gifts already offered',
+    'gifts_table_date_added' => 'Date added',
+    'gifts_table_description' => 'Description',
+    'gifts_table_actions' => 'Actions',
 
     // debts
     'debt_delete_confirmation' => 'Etes-vous sûr de vouloir effacer cette dette ?',
@@ -248,7 +266,7 @@ return [
     'debt_add_title' => 'Gestion des dettes',
     'debt_add_you_owe' => 'Vous devez :name',
     'debt_add_they_owe' => ':name vous doit',
-    'debt_add_amount' => 'la somme de (en dollars)',
+    'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
 
