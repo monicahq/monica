@@ -14,7 +14,7 @@ class Entry extends Model
             return null;
         }
 
-        return decrypt($this->post);
+        return $this->post;
     }
 
     public function getTitle()
@@ -23,6 +23,6 @@ class Entry extends Model
             return null;
         }
 
-        return decrypt($this->title);
+        return $this->title;
     }
 }
