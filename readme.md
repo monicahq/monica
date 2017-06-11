@@ -449,7 +449,21 @@ matter.
 
 ### How the community can help
 
-I'm looking for people willing to write tests for the existing features.
+There are several ways to help this project to move forward:
+* Unlike Fight Club, the best way to help is to actually talk about the project
+as much as you can.
+* You can answer questions in the issue tracker to help other community members.
+* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+ if you are looking to have an immediate impact on the project.
+* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+ These are issues that you can solve relatively easily.
+ * If you are an advanced developer, you can try to tackle
+ [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
+ Beware though - they are harder to do and will require a lot of back and forth
+ with the repository administrator in order to make sure we are going to the right
+ direction with the product.
+* Finally, and most importantly, we are looking for people willing to write
+ tests for the existing features.
 
 ## License
 
