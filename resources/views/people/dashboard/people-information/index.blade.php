@@ -33,7 +33,9 @@
         @if (is_null($contact->getEmail()))
         {{ trans('people.information_no_email_defined') }}
         @else
-        {{ $contact->getEmail() }}
+        <a href="mailto:{{ $contact->getEmail() }}">
+          {{ $contact->getEmail() }}
+        </a>
         @endif
       </li>
 
@@ -73,7 +75,7 @@
         @if (is_null($contact->getLinkedin()))
         {{ trans('people.information_no_linkedin_defined') }}
         @else
-        <a href="{{ $contact->getLinkedin() }}">Twitter</a>
+        <a href="{{ $contact->getLinkedin() }}">LinkedIn</a>
         @endif
       </li>
     </ul>
