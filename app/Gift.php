@@ -5,6 +5,7 @@ namespace App;
 use App\Helpers\DateHelper;
 use App\Events\Gift\GiftCreated;
 use App\Events\Gift\GiftDeleted;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Gift extends Model
@@ -17,6 +18,32 @@ class Gift extends Model
         'created' => GiftCreated::class,
         'deleted' => GiftDeleted::class,
     ];
+
+    /**
+     * Get the account record associated with the gift.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the gift.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    public function scopeOffered(Builder $query)
+    {
+        return $query->where('has_been_offered', 'true');
+    }
+
+    public function scopeIsIdea(Builder $query)
+    {
+        return $query->where('is_an_idea', 'true');
+    }
 
     public function getName()
     {
