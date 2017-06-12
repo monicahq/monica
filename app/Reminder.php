@@ -13,6 +13,22 @@ class Reminder extends Model
     protected $dates = ['last_triggered', 'next_expected_date'];
 
     /**
+     * Get the account record associated with the reminder.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the reminder.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    /**
      * Get the title of a reminder.
      * @return string
      */
