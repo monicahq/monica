@@ -9,14 +9,6 @@
     "postdeploy": "php artisan setup:heroku"
   },
   "env": {
-    "HEROKU": {
-      "description": "Informs Monica that the app is running on Heroku.",
-      "value": "true"
-    },
-    "DB_CONNECTION": {
-      "description": "Informs Monica to use the Heroku database.",
-      "value": "heroku"
-    },
     "APP_DISABLE_SIGNUP": {
       "description": "Disable user signup.",
       "value": "false"
