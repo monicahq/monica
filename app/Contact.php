@@ -57,7 +57,7 @@ class Contact extends Model
     /**
      * Get the debt records associated with the contact.
      */
-    public function debt()
+    public function debts()
     {
         return $this->hasMany('App\Debt');
     }
