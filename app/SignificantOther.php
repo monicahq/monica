@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class SignificantOther extends Model
@@ -12,6 +13,33 @@ class SignificantOther extends Model
     protected $dates = [
         'birthdate',
     ];
+
+    /**
+     * Get the account record associated with the significant other.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the significant other.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    /**
+     * Limit the query to active significant others
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeActive(Builder $query)
+    {
+        return $query->where('status', 'active');
+    }
 
     /**
      * Get the first name of the significant other.

@@ -261,10 +261,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfReminders()
     {
         $contact = new Contact;
-        $contact->number_of_reminders = 3;
 
         $this->assertEquals(
-            3,
+            0,
             $contact->getNumberOfReminders()
         );
     }
@@ -272,11 +271,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfGifts()
     {
         $contact = new Contact;
-        $contact->number_of_gifts_offered = 3;
-        $contact->number_of_gifts_ideas = 2;
 
         $this->assertEquals(
-            5,
+            0,
             $contact->getNumberOfGifts()
         );
     }
@@ -284,10 +281,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfActivities()
     {
         $contact = new Contact;
-        $contact->number_of_activities = 3;
 
         $this->assertEquals(
-            3,
+            0,
             $contact->getNumberOfActivities()
         );
     }
@@ -943,8 +939,7 @@ class ContactTest extends TestCase
     {
         $contact = new Contact;
 
-        $this->assertEquals(
-            0,
+        $this->assertFalse(
             $contact->hasDebt()
         );
     }
