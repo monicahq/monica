@@ -324,6 +324,15 @@ php artisan migrate
 
 That should be it.
 
+### Deploy on Heroku
+
+Monica can be deployed on Heroku using the button below:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will utilise a 
+[ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by default.
+
 ## Contribute as a developer
 
 You want to help build Monica? That's awesome. We can't thank you enough.
