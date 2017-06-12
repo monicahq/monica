@@ -1,3 +1,9 @@
+2017-06-12
+----------
+
+New features:
+* Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
+
 2017-06-11
 ----------
 
