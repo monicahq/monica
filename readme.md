@@ -22,6 +22,7 @@
       * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
    * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
+   * [Importing vCards (CLI only)](#importing-vcards-cli-only)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
    * [Setup the testing environment](#setup-the-testing-environment)
