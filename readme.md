@@ -22,6 +22,7 @@
       * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
    * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
+   * [Deploy on Heroku](#deploy-on-heroku)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
@@ -173,12 +174,14 @@ users will follow.
 
 ## Get started
 
-There are several ways of getting started with Monica. You can use our
-hosted-version (this is the simplest way to use the product).
+There are currently three ways of getting started with Monica.
+1. You can use our hosted-version (this is the simplest way to use the product).
+1. You can run it with Docker
+1. You can deploy to Heroku
 
-If you prefer to, you can simply clone the repository and set it up yourself on
-any hosting provider, for free. I'm just asking that you don't try to make
-money out of it yourself.
+You have the liberty to clone the repository and set it up yourself on any
+hosting provider, for free. I'm just asking that you don't try to make money out
+of it yourself.
 
 ### Account on MonicaHQ.com
 
@@ -334,9 +337,17 @@ Monica can be deployed on Heroku using the button below:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will utilise a 
-[ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by default. Additional environment
-variables, such as details of the mail server, can be added after setup through the Heroku interface.
+Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will
+utilise a [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by
+default. Additional environment variables, such as details of the mail server,
+can be added after setup through the Heroku interface.
+
+Monica doesn't require a lot of power - it means it will run on the free plan
+provided by Heroku.
+
+There is one issue with it though at the moment: you won't be able to upload
+photos to your contacts, as Heroku doesn't support storage. We'll need to fix
+this in the future.
 
 ### Importing vCards (CLI only)
 
