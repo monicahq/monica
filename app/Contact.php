@@ -3,15 +3,9 @@
 namespace App;
 
 use Auth;
-use App\Note;
-use App\Event;
-use App\Debt;
-use App\Account;
-use App\Country;
-use App\Reminder;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
-use Gmopx\LaravelOWM\LaravelOWM;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,18 +16,116 @@ class Contact extends Model
     ];
 
     /**
-     * Eager load user with every contact.
+     * Eager load account with every contact.
      */
     protected $with = [
-        'user',
+        'account',
     ];
 
     /**
      * Get the user associated with the contact.
      */
-    public function user()
+    public function account()
     {
-        return $this->belongsTo('App\User', 'account_id');
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the activity records associated with the contact.
+     */
+    public function activities()
+    {
+        return $this->hasMany('App\Activity')->orderBy('date_it_happened', 'desc');
+    }
+
+    /**
+     * Get the activity records associated with the contact.
+     */
+    public function activityStatistics()
+    {
+        return $this->hasMany('App\ActivityStatistic');
+    }
+
+    /**
+     * Get the contact records associated with the contact.
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Country');
+    }
+
+    /**
+     * Get the debt records associated with the contact.
+     */
+    public function debt()
+    {
+        return $this->hasMany('App\Debt');
+    }
+
+    /**
+     * Get the gift records associated with the contact.
+     */
+    public function gifts()
+    {
+        return $this->hasMany('App\Gift');
+    }
+
+    /**
+     * Get the event records associated with the contact.
+     */
+    public function events()
+    {
+        return $this->hasMany('App\Event')->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the kid records associated with the contact.
+     */
+    public function kids()
+    {
+        return $this->hasMany('App\Kid', 'child_of_contact_id');
+    }
+
+    /**
+     * Get the note records associated with the contact.
+     */
+    public function notes()
+    {
+        return $this->hasMany('App\Note');
+    }
+
+    /**
+     * Get the reminder records associated with the contact.
+     */
+    public function reminders()
+    {
+        return $this->hasMany('App\Reminder')->orderBy('next_expected_date', 'asc');
+    }
+
+    /**
+     * Get the current significant other associated with the contact.
+     *
+     * @return SignificantOther
+     */
+    public function significantOther()
+    {
+        return $this->hasOne('App\SignificantOther')->active();
+    }
+
+    /**
+     * Get the significant others associated with the contact.
+     */
+    public function significantOthers()
+    {
+        return $this->hasMany('App\SignificantOther');
+    }
+
+    /**
+     * Get the task records associated with the contact.
+     */
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
     }
 
     /**
@@ -45,12 +137,12 @@ class Contact extends Model
     {
         $completeName = $this->first_name;
 
-        if (! is_null($this->middle_name)) {
-            $completeName = $completeName.' '.$this->middle_name;
+        if (!is_null($this->middle_name)) {
+            $completeName = $completeName . ' ' . $this->middle_name;
         }
 
-        if (! is_null($this->last_name)) {
-            $completeName = $completeName.' '.$this->last_name;
+        if (!is_null($this->last_name)) {
+            $completeName = $completeName . ' ' . $this->last_name;
         }
 
         return $completeName;
@@ -63,10 +155,6 @@ class Contact extends Model
      */
     public function getFirstName()
     {
-        if (is_null($this->first_name)) {
-            return null;
-        }
-
         return $this->first_name;
     }
 
@@ -77,10 +165,6 @@ class Contact extends Model
      */
     public function getMiddleName()
     {
-        if (is_null($this->middle_name)) {
-            return null;
-        }
-
         return $this->middle_name;
     }
 
@@ -91,10 +175,6 @@ class Contact extends Model
      */
     public function getLastName()
     {
-        if (is_null($this->last_name)) {
-            return null;
-        }
-
         return $this->last_name;
     }
 
@@ -105,19 +185,9 @@ class Contact extends Model
      */
     public function getInitials()
     {
-        $initials = $this->getFirstName()[0];
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
 
-        if (! is_null($this->getMiddleName())) {
-            $initial = $this->getMiddleName()[0];
-            $initials .= $initial;
-        }
-
-        if (! is_null($this->getLastName())) {
-            $initial = $this->getLastName()[0];
-            $initials .= $initial;
-        }
-
-        return $initials;
+        return implode('', $initials[0]);
     }
 
     /**
@@ -127,18 +197,16 @@ class Contact extends Model
      */
     public function getLastActivityDate($timezone)
     {
-        $activity = Activity::where('account_id', $this->account_id)
-                            ->where('contact_id', $this->id)
-                            ->orderBy('date_it_happened', 'desc')
-                            ->first();
-
-        if (count($activity) == 0) {
+        if ($this->activities->count() === 0) {
             return null;
         }
 
-        $last_activity_date = DateHelper::createDateFromFormat($activity->date_it_happened, $timezone);
+        $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
-        return DateHelper::getShortDate($last_activity_date, 'en');
+        return DateHelper::getShortDate(
+            DateHelper::createDateFromFormat($lastActivity->date_it_happened, $timezone),
+            'en'
+        );
     }
 
     /**
@@ -152,9 +220,7 @@ class Contact extends Model
             return null;
         }
 
-        $lastTalkedTo = DateHelper::createDateFromFormat($this->last_talked_to, $timezone)->diffForHumans();
-
-        return $lastTalkedTo;
+        return DateHelper::createDateFromFormat($this->last_talked_to, $timezone)->diffForHumans();
     }
 
     /**
@@ -183,9 +249,7 @@ class Contact extends Model
             return null;
         }
 
-        $age = $this->birthdate->diffInYears(Carbon::now());
-
-        return $age;
+        return $this->birthdate->diffInYears(Carbon::now());
     }
 
     /**
@@ -209,6 +273,14 @@ class Contact extends Model
      */
     public function isBirthdateApproximate()
     {
+        if ($this->is_birthdate_approximate === 'unknown') {
+            return true;
+        }
+
+        if ($this->is_birthdate_approximate === 'exact') {
+            return false;
+        }
+
         return $this->is_birthdate_approximate;
     }
 
@@ -225,8 +297,8 @@ class Contact extends Model
             return null;
         }
 
-        if (! is_null($this->getProvince())) {
-            $address = $address.', '.$this->getProvince();
+        if (!is_null($this->getProvince())) {
+            $address = $address . ', ' . $this->getProvince();
         }
 
         return $address;
@@ -277,14 +349,11 @@ class Contact extends Model
      */
     public function getCountryName()
     {
-        $country = null;
-
-        if (! is_null($this->country_id)) {
-            $country = Country::findOrFail($this->country_id);
-            $country = $country->country;
+        if ($this->country) {
+            return $this->country->country;
         }
 
-        return $country;
+        return null;
     }
 
     /**
@@ -315,13 +384,11 @@ class Contact extends Model
      */
     public function getCountryISO()
     {
-        $country = Country::find($this->country_id);
-
-        if (count($country) == 0) {
-            return null;
+        if ($this->country) {
+            return $this->country->iso;
         }
 
-        return $country->iso;
+        return null;
     }
 
     /**
@@ -344,7 +411,7 @@ class Contact extends Model
      */
     public function getLastUpdated()
     {
-        return DateHelper::createDateFromFormat($this->updated_at, $this->user->timezone)->format('Y/m/d');
+        return DateHelper::createDateFromFormat($this->updated_at, $this->account->user->timezone)->format('Y/m/d');
     }
 
     /**
@@ -354,7 +421,7 @@ class Contact extends Model
      */
     public function getNumberOfReminders()
     {
-        return $this->number_of_reminders;
+        return $this->reminders->count();
     }
 
     /**
@@ -364,7 +431,7 @@ class Contact extends Model
      */
     public function getNumberOfKids()
     {
-        return $this->number_of_kids;
+        return $this->kids->count();
     }
 
     /**
@@ -374,7 +441,7 @@ class Contact extends Model
      */
     public function getNumberOfActivities()
     {
-        return $this->number_of_activities;
+        return $this->activities->count();
     }
 
     /**
@@ -384,7 +451,7 @@ class Contact extends Model
      */
     public function getNumberOfGifts()
     {
-        return $this->number_of_gifts_ideas + $this->number_of_gifts_offered;
+        return $this->gifts->count();
     }
 
     /**
@@ -450,27 +517,17 @@ class Contact extends Model
      */
     public function getCurrentSignificantOther()
     {
-        $significantOther = SignificantOther::where('account_id', $this->account_id)
-                                ->where('contact_id', $this->id)
-                                ->where('status', 'active')
-                                ->first();
-
-        return $significantOther;
+        return $this->significantOther;
     }
 
     /**
      * Get the notes for this contact. Return an empty collection if no notes.
      *
-     * @return Notes
+     * @return Note
      */
     public function getNotes()
     {
-        $notes = Note::where('contact_id', $this->id)
-                          ->where('account_id', $this->account_id)
-                          ->orderBy('id', 'desc')
-                          ->get();
-
-        return $notes;
+        return $this->notes;
     }
 
     /**
@@ -480,7 +537,7 @@ class Contact extends Model
      */
     public function getNumberOfNotes()
     {
-        return $this->number_of_notes;
+        return $this->notes->count();
     }
 
     /**
@@ -490,11 +547,7 @@ class Contact extends Model
      */
     public function getKids()
     {
-        $kids = Kid::where('account_id', $this->account_id)
-                        ->where('child_of_contact_id', $this->id)
-                        ->get();
-
-        return $kids;
+        return $this->kids;
     }
 
     /**
@@ -524,39 +577,39 @@ class Contact extends Model
     /**
      * Set the default avatar color for this object.
      *
+     * @param string|null $color
      * @return void
      */
-    public function setAvatarColor()
+    public function setAvatarColor($color = null)
     {
         $colors = [
-          '#fdb660',
-          '#93521e',
-          '#bd5067',
-          '#b3d5fe',
-          '#ff9807',
-          '#709512',
-          '#5f479a',
-          '#e5e5cd',
+            '#fdb660',
+            '#93521e',
+            '#bd5067',
+            '#b3d5fe',
+            '#ff9807',
+            '#709512',
+            '#5f479a',
+            '#e5e5cd',
         ];
-        $randomColorChosen = $colors[mt_rand(0, count($colors) - 1)];
 
-        $this->default_avatar_color = $randomColorChosen;
+        $this->default_avatar_color = $color ?? $colors[mt_rand(0, count($colors) - 1)];
+
         $this->save();
     }
 
     /**
      * Log an event in the Event table about this contact.
      *
-     * @param  string $objectType           Contact, Activity, Kid,...
-     * @param  int $objectId                ID of the object
-     * @param  string $natureOfOperation    'add', 'edit', 'delete'
+     * @param  string $objectType Contact, Activity, Kid,...
+     * @param  int $objectId ID of the object
+     * @param  string $natureOfOperation 'add', 'edit', 'delete'
      * @return int                          Id of the created event
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
-        $event = new Event;
+        $event = $this->events()->create([]);
         $event->account_id = $this->account_id;
-        $event->contact_id = $this->id;
         $event->object_type = $objectType;
         $event->object_id = $objectId;
         $event->nature_of_operation = $natureOfOperation;
@@ -568,22 +621,24 @@ class Contact extends Model
     /**
      * Add a significant other.
      *
-     * @param string $name
+     * @param string $firstname
      * @param string $gender
      * @param bool $birthdate_approximate
      * @param string $birthdate
      * @param int $age
+     * @param string $timezone
      * @return int
      */
     public function addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
-        $significantOther = new SignificantOther;
+        $significantOther = $this->significantOthers()->create([]);
+
         $significantOther->account_id = $this->account_id;
-        $significantOther->contact_id = $this->id;
         $significantOther->first_name = ucfirst($firstname);
         $significantOther->gender = $gender;
         $significantOther->is_birthdate_approximate = $birthdate_approximate;
         $significantOther->status = 'active';
+
         if ($birthdate_approximate == 'approximate') {
             $year = Carbon::now()->subYears($age)->year;
             $birthdate = Carbon::createFromDate($year, 1, 1);
@@ -594,6 +649,7 @@ class Contact extends Model
             $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
             $significantOther->birthdate = $birthdate;
         }
+
         $significantOther->save();
 
         // Event
@@ -605,19 +661,20 @@ class Contact extends Model
     /**
      * Update the information about the Significant other.
      *
-     * @param  int $significantOtherId
+     * @param  SignificantOther|int $significantOther
      * @param  string $firstname
-     * @param  string $lastname
      * @param  string $gender
      * @param  string $birthdate_approximate
      * @param  string $birthdate
      * @param  int $age
      * @param  string $timezone
-     * @return Response
+     * @return int
      */
-    public function editSignificantOther($significantOtherId, $firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
+    public function editSignificantOther($significantOther, $firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
-        $significantOther = SignificantOther::findOrFail($significantOtherId);
+        if (!$significantOther instanceof SignificantOther) {
+            $significantOther = SignificantOther::findOrFail($significantOther);
+        }
 
         $significantOther->first_name = ucfirst($firstname);
         $significantOther->gender = $gender;
@@ -645,21 +702,23 @@ class Contact extends Model
 
     /**
      * Delete the significant other.
+     *
+     * @param SignificantOther|int $significantOther
      */
-    public function deleteSignificantOther($significantOtherId)
+    public function deleteSignificantOther($significantOther)
     {
-        $significantOther = SignificantOther::findOrFail($significantOtherId);
+        if (!$significantOther instanceof SignificantOther) {
+            $significantOther = SignificantOther::findOrFail($significantOther);
+        }
+
         $significantOther->delete();
 
-        $events = Event::where('contact_id', $significantOther->contact_id)
-                          ->where('account_id', $significantOther->account_id)
-                          ->where('object_type', 'significantother')
-                          ->where('object_id', $significantOther->id)
-                          ->get();
-
-        foreach ($events as $event) {
-            $event->delete();
-        }
+        $this->events()
+            ->where('object_type', 'significantother')
+            ->where('object_id', $significantOther->id)
+            ->get()
+            ->each
+            ->delete();
     }
 
     /**
@@ -678,13 +737,14 @@ class Contact extends Model
 
         $this->first_name = $firstName;
 
-        if (! is_null($middleName)) {
+        if (!is_null($middleName)) {
             $this->middle_name = $middleName;
         }
 
-        if (! is_null($lastName)) {
+        if (!is_null($lastName)) {
             $this->last_name = $lastName;
         }
+
         $this->save();
 
         return true;
@@ -719,9 +779,8 @@ class Contact extends Model
      */
     public function addKid($name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
-        $kid = new Kid;
+        $kid = $this->kids()->create([]);
         $kid->account_id = $this->account_id;
-        $kid->child_of_contact_id = $this->id;
         $kid->first_name = ucfirst($name);
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
@@ -751,16 +810,21 @@ class Contact extends Model
     /**
      * Edit a kid.
      *
+     * @param Kid|int $kid
      * @param string $name
      * @param string $gender
      * @param bool $birthdate_approximate
      * @param string $birthdate
      * @param int $age
+     * @param $timezone
      * @return int the Kid ID
      */
-    public function editKid($kidId, $name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
+    public function editKid($kid, $name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
     {
-        $kid = Kid::findOrFail($kidId);
+        if (!$kid instanceof Kid) {
+            $kid = Kid::findOrFail($kid);
+        }
+
         $kid->first_name = ucfirst($name);
         $kid->gender = $gender;
         $kid->is_birthdate_approximate = $birthdate_approximate;
@@ -785,22 +849,24 @@ class Contact extends Model
 
     /**
      * Delete the kid.
+     *
+     * @param Kid|int $kid
      */
-    public function deleteKid($kidId)
+    public function deleteKid($kid)
     {
-        $kid = Kid::findOrFail($kidId);
+        if (!$kid instanceof Kid) {
+            $kid = Kid::findOrFail($kid);
+        }
+
         $kid->delete();
 
         // Delete all events
-        $events = Event::where('contact_id', $kid->child_of_contact_id)
-                          ->where('account_id', $kid->account_id)
-                          ->where('object_type', 'kid')
-                          ->where('object_id', $kid->id)
-                          ->get();
-
-        foreach ($events as $event) {
-            $event->delete();
-        }
+        $this->events()
+            ->where('object_type', 'kid')
+            ->where('object_id', $kid->id)
+            ->get()
+            ->each
+            ->delete();
 
         // Decrease number of kids
         $this->number_of_kids = $this->number_of_kids - 1;
@@ -809,19 +875,20 @@ class Contact extends Model
             $this->number_of_kids = 0;
             $this->has_kids = 'false';
         }
+
         $this->save();
     }
 
     /**
      * Create a note.
      *
-     * @param string
+     * @param string $body
+     * @return mixed
      */
     public function addNote($body)
     {
-        $note = new Note;
+        $note = $this->notes()->create([]);
         $note->account_id = $this->account_id;
-        $note->contact_id = $this->id;
         $note->body = $body;
         $note->save();
 
@@ -835,10 +902,15 @@ class Contact extends Model
 
     /**
      * Delete the note.
+     *
+     * @param Note|int $note
      */
-    public function deleteNote($noteId)
+    public function deleteNote($note)
     {
-        $note = Note::findOrFail($noteId);
+        if (!$note instanceof Note) {
+            $note = Note::findOrFail($note);
+        }
+
         $note->delete();
 
         // Decrease number of notes
@@ -847,18 +919,16 @@ class Contact extends Model
         if ($this->number_of_notes < 1) {
             $this->number_of_notes = 0;
         }
+
         $this->save();
 
         // Delete all events
-        $events = Event::where('contact_id', $note->contact_id)
-                          ->where('account_id', $note->account_id)
-                          ->where('object_type', 'note')
-                          ->where('object_id', $note->id)
-                          ->get();
-
-        foreach ($events as $event) {
-            $event->delete();
-        }
+        $this->events()
+            ->where('object_type', 'note')
+            ->where('object_id', $note->id)
+            ->get()
+            ->each
+            ->delete();
     }
 
     /**
@@ -868,12 +938,7 @@ class Contact extends Model
      */
     public function getActivities()
     {
-        $activities = Activity::where('account_id', $this->account_id)
-                                ->where('contact_id', $this->id)
-                                ->orderBy('date_it_happened', 'desc')
-                                ->get();
-
-        return $activities;
+        return $this->activities;
     }
 
     /**
@@ -885,56 +950,26 @@ class Contact extends Model
     public function calculateActivitiesStatistics()
     {
         // Delete the Activities statistics table for this contact
-        $activitiesStatistics = ActivityStatistic::where('account_id', $this->account_id)
-                                                    ->where('contact_id', $this->id)
-                                                    ->get();
-
-        foreach ($activitiesStatistics as $activityStatistic) {
-            $activityStatistic->delete();
-        }
+        $this->activityStatistics->each->delete();
 
         // Create the statistics again
-        foreach ($this->getActivities() as $activity) {
-            $year = $activity->date_it_happened->year;
-
-            // Check to see if there is a year for this activity already
-            $activityStatistic = ActivityStatistic::where('account_id', $this->account_id)
-                                                ->where('contact_id', $this->id)
-                                                ->where('year', $year)
-                                                ->first();
-
-            if (count($activityStatistic) == 0) {
-
-                // Year does not exist, create the record
-                $activityStatistic = new ActivityStatistic;
+        $this->activities->groupBy('date_it_happened.year')
+            ->map(function (Collection $activities, $year) {
+                $activityStatistic = $this->activityStatistics()->create([]);
                 $activityStatistic->account_id = $this->account_id;
-                $activityStatistic->contact_id = $this->id;
                 $activityStatistic->year = $year;
-                $activityStatistic->count = 1;
+                $activityStatistic->count = $activities->count();;
                 $activityStatistic->save();
-
-            } else {
-
-                // Year does exist, increment the record
-                $activityStatistic->count = $activityStatistic->count + 1;
-                $activityStatistic->save();
-            }
-        }
+            });
     }
 
     /**
      * Get statistics for the contact
      * TODO: add unit test.
-     *
-     * @param  int $contactId
      */
     public function getActivitiesStats()
     {
-        $statistics = ActivityStatistic::where('contact_id', $this->id)
-                                        ->orderBy('year', 'desc')
-                                        ->get();
-
-        return $statistics;
+        return $this->activityStatistics;
     }
 
     /**
@@ -944,12 +979,7 @@ class Contact extends Model
      */
     public function getReminders()
     {
-        $reminders = Reminder::where('account_id', $this->account_id)
-                                ->where('contact_id', $this->id)
-                                ->orderBy('next_expected_date', 'asc')
-                                ->get();
-
-        return $reminders;
+        return $this->reminders;
     }
 
     /**
@@ -959,9 +989,7 @@ class Contact extends Model
      */
     public function getGifts()
     {
-        return Gift::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->get();
+        return $this->gifts;
     }
 
     /**
@@ -969,10 +997,7 @@ class Contact extends Model
      */
     public function getGiftsOffered()
     {
-        return Gift::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->where('has_been_offered', 'true')
-                        ->get();
+        return $this->gifts()->offered()->get();
     }
 
     /**
@@ -980,10 +1005,7 @@ class Contact extends Model
      */
     public function getGiftIdeas()
     {
-        return Gift::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->where('is_an_idea', 'true')
-                        ->get();
+        return $this->gifts()->isIdea()->get();
     }
 
     /**
@@ -991,10 +1013,7 @@ class Contact extends Model
      */
     public function getTasksInProgress()
     {
-        return Task::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->where('status', 'inprogress')
-                        ->get();
+        return $this->tasks()->inProgress()->get();
     }
 
     /**
@@ -1002,9 +1021,7 @@ class Contact extends Model
      */
     public function getTasks()
     {
-        return Task::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->get();
+        return $this->tasks;
     }
 
     /**
@@ -1012,10 +1029,7 @@ class Contact extends Model
      */
     public function getCompletedTasks()
     {
-        return Task::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->where('status', 'completed')
-                        ->get();
+        return $this->tasks()->completed()->get();
     }
 
     /**
@@ -1028,19 +1042,19 @@ class Contact extends Model
         $original_avatar_url = Storage::disk('public')->url($this->avatar_file_name);
         $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
-        $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
+        $resized_avatar = 'avatars/' . $avatar_filename . '_' . $size . '.' . $avatar_extension;
 
         return Storage::disk('public')->url($resized_avatar);
     }
 
     public function getGravatar($size)
     {
-        if ( empty( $this->email ) ) {
+        if (empty($this->email)) {
             return false;
         }
-        $gravatar_url = "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) );
+        $gravatar_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email)));
         // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
-        $gravatarHeaders = get_headers( $gravatar_url . "?d=404" );
+        $gravatarHeaders = get_headers($gravatar_url . "?d=404");
         if ($gravatarHeaders[0] == "HTTP/1.1 404 Not Found") {
             return false;
         }
@@ -1054,10 +1068,7 @@ class Contact extends Model
      */
     public function hasDebt()
     {
-        return Debt::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->where('status', 'inprogress')
-                        ->count();
+        return $this->debts !== null;
     }
 
     /**
@@ -1065,9 +1076,7 @@ class Contact extends Model
      */
     public function getDebts()
     {
-        return Debt::where('account_id', $this->account_id)
-                        ->where('contact_id', $this->id)
-                        ->get();
+        return $this->debts;
     }
 
 }
