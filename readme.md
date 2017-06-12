@@ -464,7 +464,7 @@ as when Bootstrap changes version, a lot of changes are introduced.
 
 #### Email testing
 
-Emails are an important of Monica. Emails are still the most significant mean
+Emails are an important part of Monica. Emails are still the most significant mean
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
