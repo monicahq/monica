@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
     /**
+     * Get the account record associated with the note.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the note.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    /**
      * Get the description of a note.
      * @return string
      */

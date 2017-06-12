@@ -22,6 +22,7 @@
       * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
    * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
+   * [Importing vCards (CLI only)](#importing-vcards-cli-only)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
    * [Setup the testing environment](#setup-the-testing-environment)
@@ -172,13 +173,16 @@ users will follow.
 
 ## Get started
 
-We provide a hosted version of this application on https://monicahq.com.
+There are several ways of getting started with Monica. You can use our
+hosted-version (this is the simplest way to use the product).
 
 If you prefer to, you can simply clone the repository and set it up yourself on
 any hosting provider, for free. I'm just asking that you don't try to make
 money out of it yourself.
 
-To update your own instance, follow the instructions below.
+### Account on MonicaHQ.com
+
+We provide a hosted version of this application on https://monicahq.com.
 
 ### Running with Docker
 
@@ -333,6 +337,21 @@ Monica can be deployed on Heroku using the button below:
 Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will utilise a 
 [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by default. Additional environment
 variables, such as details of the mail server, can be added after setup through the Heroku interface.
+
+### Importing vCards (CLI only)
+
+**Note**: this is only possible if you install Monica on your server or locally.
+
+You can import your contacts in vCard format in your account with one simple
+CLI command:
+`php artisan import:vcard {email user} {path}`
+
+where `{email user}` is the email of the user in your Monica instance who will
+be associated the new contacts to, and `{path}` being the path to a .vcf file.
+
+Example: `php artisan import:vcard john@doe.com ~/Downloads/contacts.vcf`
+
+The `.vcf` can contain as many contacts as you want.
 
 ## Contribute as a developer
 

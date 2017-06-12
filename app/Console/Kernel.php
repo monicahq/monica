@@ -18,10 +18,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\CalculateStatistics',
         'App\Console\Commands\SetupProduction',
-        //'App\Console\Commands\EncryptAllTheThings'
-        //'App\Console\Commands\MigrateActivities'
-        //'App\Console\Commands\MigratePeopleInformation',
-        //'App\Console\Commands\RemoveEncryption'
+        'App\Console\Commands\ImportVCards'
     ];
 
     /**
