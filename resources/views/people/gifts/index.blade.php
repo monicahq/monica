@@ -39,7 +39,7 @@
           @foreach ($contact->getGiftIdeas() as $gift)
             <tr>
               <td class="date">
-                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt(), Auth::user()->locale) }}
+                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
               </td>
               <td>
                 {{ $gift->getName() }}
@@ -82,7 +82,7 @@
           @foreach ($contact->getGiftsOffered() as $gift)
             <tr>
               <td class="date">
-                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt(), Auth::user()->locale) }}
+                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
               </td>
               <td>
                 {{ $gift->getName() }}

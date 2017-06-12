@@ -59,7 +59,7 @@
                   <div class="col-xs-12 col-sm-2">
                     <div class="entry-information">
                       <ul>
-                        <li>{{ App\Helpers\DateHelper::getShortDate($entry->created_at, Auth::user()->locale) }}</li>
+                        <li>{{ \App\Helpers\DateHelper::getShortDate($entry->created_at) }}</li>
                         <li>
                           <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
                         </li>
