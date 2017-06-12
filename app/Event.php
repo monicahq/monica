@@ -9,6 +9,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    /**
+     * Get the account record associated with the event.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the event.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
     public function getDescription()
     {
         if ($this->nature_of_operation == 'create') {

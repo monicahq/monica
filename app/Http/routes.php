@@ -10,9 +10,6 @@ Auth::routes();
 
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 
-Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
-Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
-
 Route::group(['middleware' => 'auth'], function () {
 
     //Route::resource('people', 'PeopleController');
