@@ -46,28 +46,22 @@ class PeopleController extends Controller
                 break;
         }
 
+        $contacts = Contact::with('kids')->where('account_id', Auth::user()->account_id);
+
         if (Auth::user()->contacts_sort_order == 'firstnameAZ') {
-            $contacts = Contact::where('account_id', Auth::user()->account_id)
-                              ->orderBy('first_name', 'asc')
-                              ->get();
+            $contacts = $contacts->orderBy('first_name', 'asc')->get();
         }
 
         if (Auth::user()->contacts_sort_order == 'firstnameZA') {
-            $contacts = Contact::where('account_id', Auth::user()->account_id)
-                              ->orderBy('first_name', 'desc')
-                              ->get();
+            $contacts = $contacts->orderBy('first_name', 'desc')->get();
         }
 
         if (Auth::user()->contacts_sort_order == 'lastnameAZ') {
-            $contacts = Contact::where('account_id', Auth::user()->account_id)
-                              ->orderBy('last_name', 'asc')
-                              ->get();
+            $contacts = $contacts->orderBy('last_name', 'asc')->get();
         }
 
         if (Auth::user()->contacts_sort_order == 'lastnameZA') {
-            $contacts = Contact::where('account_id', Auth::user()->account_id)
-                              ->orderBy('last_name', 'desc')
-                              ->get();
+            $contacts = $contacts->orderBy('last_name', 'desc')->get();
         }
 
         $data = [
