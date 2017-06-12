@@ -3,8 +3,18 @@
   "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
   "repository": "https://github.com/monicahq/monica",
   "logo": "https://raw.githubusercontent.com/monicahq/monicahq.github.io/master/assets/img/monica-logo.svg",
-  "keywords": ["CRM", "family", "friends", "relationship", "PRM"],
-  "addons": [{"plan": "cleardb:ignite"}],
+  "keywords": [
+    "CRM",
+    "family",
+    "friends",
+    "relationship",
+    "PRM"
+  ],
+  "addons": [
+    {
+      "plan": "cleardb:ignite"
+    }
+  ],
   "scripts": {
     "postdeploy": "php artisan setup:heroku"
   },
@@ -38,3 +48,4 @@
       "value": "true"
     }
   }
+}
