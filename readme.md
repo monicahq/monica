@@ -22,6 +22,7 @@
       * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
    * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
+   * [Deploy on Heroku](#deploy-on-heroku)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
@@ -77,7 +78,7 @@ social interactions.
 
 Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
-won't guess what you want to do. In fact it's pretty dumb: it will send you
+won't guess what you want to do. In fact, it's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
 
 ## Vision, goals and strategy
@@ -125,7 +126,7 @@ lock-ins. Data is the property of the users and they should be able to do
 whatever they want with it.
 * Create mobile apps.
 * Build great reports so people can have interesting insights.
-* Create a smart recommandation system for gifts. For instance, if my nephew is
+* Create a smart recommendation system for gifts. For instance, if my nephew is
 soon 6 years old in a month, I will be able to receive an email with a list of
 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...
@@ -173,12 +174,14 @@ users will follow.
 
 ## Get started
 
-There are several ways of getting started with Monica. You can use our
-hosted-version (this is the simplest way to use the product).
+There are currently three ways of getting started with Monica.
+1. You can use our hosted-version (this is the simplest way to use the product).
+1. You can run it with Docker
+1. You can deploy to Heroku
 
-If you prefer to, you can simply clone the repository and set it up yourself on
-any hosting provider, for free. I'm just asking that you don't try to make
-money out of it yourself.
+You have the liberty to clone the repository and set it up yourself on any
+hosting provider, for free. I'm just asking that you don't try to make money out
+of it yourself.
 
 ### Account on MonicaHQ.com
 
@@ -334,9 +337,17 @@ Monica can be deployed on Heroku using the button below:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will utilise a 
-[ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by default. Additional environment
-variables, such as details of the mail server, can be added after setup through the Heroku interface.
+Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will
+utilise a [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by
+default. Additional environment variables, such as details of the mail server,
+can be added after setup through the Heroku interface.
+
+Monica doesn't require a lot of power - it means it will run on the free plan
+provided by Heroku.
+
+There is one issue with it though at the moment: you won't be able to upload
+photos to your contacts, as Heroku doesn't support storage. We'll need to fix
+this in the future.
 
 ### Importing vCards (CLI only)
 
