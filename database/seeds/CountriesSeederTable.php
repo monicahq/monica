@@ -218,7 +218,6 @@ class CountriesSeederTable extends Seeder
         DB::table('countries')->insert(['iso' => 'sx', 'country' => 'Sint Maarten']);
         DB::table('countries')->insert(['iso' => 'tc', 'country' => 'Turks and Caicos Islands']);
         DB::table('countries')->insert(['iso' => 'tt', 'country' => 'Trinidad and Tobago']);
-        DB::table('countries')->insert(['iso' => 'us', 'country' => 'United States']);
         DB::table('countries')->insert(['iso' => 'vc', 'country' => 'Saint Vincent and the Grenadines']);
         DB::table('countries')->insert(['iso' => 'vg', 'country' => 'Virgin Islands - British']);
         DB::table('countries')->insert(['iso' => 'vi', 'country' => 'Virgin Islands US']);
