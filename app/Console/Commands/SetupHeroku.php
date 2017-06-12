@@ -49,7 +49,7 @@ class SetupHeroku extends Command
         }
 
         $this->call('key:generate', ['--force' => true]);
-        $this->call('migrate', ['--force' => true,]);
+        $this->call('migrate', ['--force' => true]);
         $this->call('db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => true]);
         $this->call('db:seed', ['--class' => 'CountriesSeederTable', '--force' => true]);
         $this->call('storage:link');
