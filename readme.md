@@ -328,6 +328,16 @@ php artisan migrate
 
 That should be it.
 
+### Deploy on Heroku
+
+Monica can be deployed on Heroku using the button below:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will utilise a 
+[ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by default. Additional environment
+variables, such as details of the mail server, can be added after setup through the Heroku interface.
+
 ### Importing vCards (CLI only)
 
 **Note**: this is only possible if you install Monica on your server or locally.
