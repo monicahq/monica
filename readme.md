@@ -14,6 +14,7 @@
    * [Vision](#vision)
    * [Goals](#goals)
    * [Strategy](#strategy)
+   * [Why Open Source?](#why-open-source)
 * [Get started](#get-started)
    * [Running with Docker](#running-with-docker)
       * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
@@ -134,6 +135,40 @@ the people who wants to use Monica for dating purposes (yes, we've received this
 kind of feedback already).
 * Add functional and unit tests so the main features are tested. Stability is
 key.
+
+### Why Open Source?
+
+Why is Monica open source? Is it risky? Will someone steal my code and do a
+for-profit business that will kill my own business? Why reveal my strategy to
+the world? This is the kind of questions we've received by email already.
+
+The answer to these questions is simple: yes, you can fork the project and do a
+competing project, make money out of it (even if the license is not super
+friendly to achieve that) and I'll never know. But it's ok, I don't mind.
+
+I wanted to open source this project for several reasons:
+
+* I believe, perhaps naively, that this project can really change people's
+lives. While I aim to make money out of it, I also want everyone to benefit
+from it. Open sourcing a project like this will help Monica become much bigger
+than what I imagine myself. While I strongly believe that the project has to
+follow the vision I have for it, I need to be humble enough to know that ideas
+come from everywhere, and people have much better ideas than what I can have.
+* You can't do something great alone. While Monica could become a company and
+hire a bunch of super smart people to work on it, you can't beat the manpower of
+an entire community. Open sourcing the product means bugs will be fixed faster,
+features will be developed faster, and more importantly, developers will be able
+to contribute to the project that changes either their own lives, or other
+people's lives.
+* Doing things in a transparent manner, like it's the case when you open source
+something, lead to formidable things. People respect the project more. You can't
+hide nasty piece of code. You can't do things behind the back of your users.
+It's a major driving force that motivates you to keep doing what's right.
+* I believe that once you have created a community of passionate developers
+around your project, you've won - because developers are very powerful
+influencers. Developers will create apps around your product, talk about it on
+forums, and tell about the project to their friends. Cherish the developers -
+users will follow.
 
 ## Get started
 
