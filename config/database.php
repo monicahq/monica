@@ -131,7 +131,12 @@ $db = [
 
 ];
 
-// If the app is deployed on Heroku interpret the postgres URL
+
+/*
+ * If the instance is hosted on Heroku, then the database information
+ * needs to be parsed from the environment variable provided by Heroku.
+ * This is done below, added to the $db variable and then returned.
+ */
 if( env('HEROKU') )
 {
     $url = parse_url(env("CLEARDB_DATABASE_URL"));

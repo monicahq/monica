@@ -3,19 +3,25 @@
   "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
   "repository": "https://github.com/monicahq/monica",
   "logo": "https://raw.githubusercontent.com/monicahq/monicahq.github.io/master/assets/img/monica-logo.svg",
-  "keywords": ["CRM", "family", "friends", "relationship", "PRM"],
-  "addons": [{"plan": "cleardb:ignite"}],
+  "keywords": [
+    "CRM",
+    "family",
+    "friends",
+    "relationship",
+    "PRM"
+  ],
+  "addons": [
+    {
+      "plan": "cleardb:ignite"
+    }
+  ],
   "scripts": {
-    "postdeploy": "php artisan setup:heroku"
+    "postdeploy": "php artisan setup:production --force"
   },
   "env": {
-    "HEROKU": {
-      "description": "Informs Monica that the app is running on Heroku.",
-      "value": "true"
-    },
-    "DB_CONNECTION": {
-      "description": "Informs Monica to use the Heroku database.",
-      "value": "heroku"
+    "APP_KEY": {
+      "description": "Please change this to a 32-character string.",
+      "value": "change-me-to-a-random-string----"
     },
     "APP_DISABLE_SIGNUP": {
       "description": "Disable user signup.",
@@ -36,6 +42,14 @@
     "MAIL_FROM_NAME": {
       "description": "",
       "value": "Bob Smith"
+    },
+    "DB_CONNECTION": {
+      "description": "Tells the application to use Heroku's database connection.",
+      "value": "heroku"
+    },
+    "HEROKU": {
+      "description": "Tells the application this application is hosted on Heroku.",
+      "value": "true"
     }
   }
 }
