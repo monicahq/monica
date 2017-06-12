@@ -19,6 +19,11 @@ class Task extends Model
         return $this->belongsTo('App\Account');
     }
 
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
     public function scopeCompleted(Builder $query)
     {
         return $query->where('status', 'completed');

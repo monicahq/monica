@@ -57,7 +57,7 @@ class Contact extends Model
     /**
      * Get the debt records associated with the contact.
      */
-    public function debt()
+    public function debts()
     {
         return $this->hasMany('App\Debt');
     }
@@ -1064,11 +1064,11 @@ class Contact extends Model
 
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
-     * @return int amount
+     * @return boolean
      */
     public function hasDebt()
     {
-        return $this->debts !== null;
+        return $this->debts()->count() !== 0;
     }
 
     /**
