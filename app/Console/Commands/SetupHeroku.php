@@ -45,7 +45,6 @@ class SetupHeroku extends Command
         if( !file_exists('.env') )
         {
             touch('.env');
-            file_put_contents('.env', "HEROKU=true\r\nDB_CONNECTION=heroku");
         }
 
         $this->call('key:generate', ['--force' => true]);

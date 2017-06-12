@@ -28,6 +28,13 @@
     "MAIL_FROM_NAME": {
       "description": "",
       "value": "Bob Smith"
+    },
+    "DB_CONNECTION": {
+      "description": "Tells the application to use Heroku's database connection.",
+      "value": "heroku"
+    },
+    "HEROKU": {
+      "description": "Tells the application this application is hosted on Heroku.",
+      "value": "true"
     }
   }
-}

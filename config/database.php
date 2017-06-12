@@ -131,7 +131,7 @@ $db = [
 
 ];
 
-// If the app is deployed on Heroku interpret the postgres URL
+
 if( env('HEROKU') )
 {
     $url = parse_url(env("CLEARDB_DATABASE_URL"));
