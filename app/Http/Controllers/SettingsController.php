@@ -264,7 +264,8 @@ class SettingsController extends Controller
                 }
             }
         }
-//dd(Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($fullPath));
-        return response()->download(Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($fullPath))->deleteFileAfterSend(true);
+
+        return response()->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$fullPath, 'monica.sql');
+        //return response()->download(Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($fullPath), 'monica.sql', $headers)->deleteFileAfterSend(true);
     }
 }
