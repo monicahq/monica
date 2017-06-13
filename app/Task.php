@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @method static Builder completed()
+ * @method static Builder inProgress()
+ */
 class Task extends Model
 {
 
