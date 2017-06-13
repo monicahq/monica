@@ -6,6 +6,7 @@ use App\ActivityType;
 use App\Helpers\DateHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account
@@ -44,6 +45,8 @@ class Activity extends Model
 
     /**
      * Get the account record associated with the gift.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -52,6 +55,8 @@ class Activity extends Model
 
     /**
      * Get the contact record associated with the gift.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
@@ -60,6 +65,8 @@ class Activity extends Model
 
     /**
      * Get the activity type record associated with the activity.
+     *
+     * @return BelongsTo
      */
     public function type()
     {

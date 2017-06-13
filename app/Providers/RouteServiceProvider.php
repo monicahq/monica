@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Activity;
+use App\Reminder;
 use Route;
 use App\Contact;
 use Illuminate\Routing\Router;
@@ -36,6 +37,13 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('activity', function($value, $route) {
             return  Activity::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('reminder', function($value, $route) {
+            return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
                 ->firstOrFail();

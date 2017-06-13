@@ -63,11 +63,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/activities/{activity}/delete', 'People\\ActivitiesController@destroy')->name('.activities.delete');
 
         // Reminders
-        Route::get('/people/{people}/reminders/add', ['as' => '.reminders.add', 'uses' => 'PeopleController@addReminder']);
-        Route::post('/people/{people}/reminders/store', 'PeopleController@storeReminder');
-        Route::get('/people/{people}/reminders/{reminderId}/edit', ['as' => '.reminders.edit', 'uses' => 'PeopleController@editReminder']);
-        Route::post('/people/{people}/reminders/{reminderId}/save', 'PeopleController@updateReminder');
-        Route::get('/people/{people}/reminders/{reminderId}/delete', 'PeopleController@deleteReminder');
+        Route::get('/people/{contact}/reminders/add', 'People\\RemindersController@create')->name('.reminders.add');
+        Route::post('/people/{contact}/reminders/store', 'People\\RemindersController@store')->name('.reminders.store');
+        Route::get('/people/{contact}/reminders/{reminder}/edit', 'People\\RemindersController@edit')->name('.reminders.edit');
+        Route::put('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@update')->name('.reminders.update');
+        Route::get('/people/{contact}/reminders/{reminder}/delete', 'People\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
         Route::get('/people/{people}/tasks/add', ['as' => '.tasks.add', 'uses' => 'PeopleController@addTask']);

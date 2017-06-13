@@ -6,26 +6,76 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MartinJoiner\OrdinalNumber\OrdinalNumber;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ */
 class Reminder extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['last_triggered', 'next_expected_date'];
 
     /**
      * Get the account record associated with the reminder.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
      * Get the contact record associated with the reminder.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the next_expected_date field according to user's timezone
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getNextExpectedDateAttribute($value)
+    {
+        if($this->account) {
+            return Carbon::parse($value, $this->account->user->timezone);
+        }
+
+        elseif(auth()->user()) {
+            return Carbon::parse($value, auth()->user()->timezone);
+        }
+
+        return Carbon::parse($value);
+    }
+
+    /**
+     * Correctly set the frequency type
+     *
+     * @param string $value
+     */
+    public function setFrequencyTypeAttribute($value)
+    {
+        $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
     }
 
     /**
