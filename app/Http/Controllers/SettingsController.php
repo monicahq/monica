@@ -141,17 +141,19 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $sql = "# ************************************************************
-# ".Auth::user()->first_name." ".Auth::user()->last_name." dump of data
-# Export date: ".Carbon::now()."
-# ************************************************************
-
-";
         $filename = rand().'.sql';
         $path = 'sql/';
         $fullPath = $path.$filename;
 
-        Storage::disk('public')->put($fullPath, $sql);
+        $sql = "# ************************************************************
+# ".Auth::user()->first_name." ".Auth::user()->last_name." dump of data
+# {$filename}
+# Export date: ".Carbon::now()."
+# ************************************************************
+
+".PHP_EOL;
+
+        //Storage::disk('public')->put($fullPath, $sql);
 
         $ignoredTables = [
             'activity_type_groups',
@@ -186,7 +188,7 @@ class SettingsController extends Controller
             // Looping over the rows
             foreach ($tableData as $data) {
 
-                $sql = 'INSERT INTO '.$tableName.' (';
+                $newSQLLine = 'INSERT INTO '.$tableName.' (';
                 $tableValues = [];
                 $skipLine = false;
 
@@ -196,7 +198,7 @@ class SettingsController extends Controller
                     array_push($tableColumnNames, $columnName);
                 }
 
-                $sql .= implode(',', $tableColumnNames).') VALUES (';
+                $newSQLLine .= implode(',', $tableColumnNames).') VALUES (';
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
@@ -218,13 +220,15 @@ class SettingsController extends Controller
                 }
 
                 if ($skipLine == false) {
-                    $sql .= implode(',', $tableValues).');';
-                    Storage::disk('public')->append($fullPath, $sql);
+                    $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
+                    $sql .= $newSQLLine;
+                    //Storage::disk('public')->append($fullPath, $sql);
                 }
             }
         }
 
         // Specific to `accounts` table
+        // TODO: simplify this
         foreach ($tables as $table) {
             $tableName = $table->table_name;
 
@@ -236,7 +240,7 @@ class SettingsController extends Controller
 
             foreach ($tableData as $data) {
 
-                $sql = 'INSERT INTO '.$tableName.' VALUES (';
+                $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
                 $tableValues = [];
                 $skipLine = false;
 
@@ -259,13 +263,14 @@ class SettingsController extends Controller
                 }
 
                 if ($skipLine == false) {
-                    $sql .= implode(',', $tableValues).');';
-                    Storage::disk('public')->append($fullPath, $sql);
+                    $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
+                    $sql .= $newSQLLine;
                 }
             }
         }
 
-        return response()->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$fullPath, 'monica.sql');
-        //return response()->download(Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($fullPath), 'monica.sql', $headers)->deleteFileAfterSend(true);
+        Storage::disk('public')->put($fullPath, $sql);
+
+        return response()->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$fullPath, 'monica.sql')->deleteFileAfterSend(true);
     }
 }
