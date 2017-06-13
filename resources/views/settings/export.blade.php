@@ -46,7 +46,7 @@
         <p>{{ trans('settings.export_sql_explanation') }}</p>
         <p>{{ trans('settings.export_be_patient') }}</p>
         <p><a href="/settings/exportToSql" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>
-        <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica#contributing']) !!}</p>
+        <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica#importing-sql-from-the-exporter-feature']) !!}</p>
 
       </div>
     </div>
