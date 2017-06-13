@@ -1386,10 +1386,10 @@ class PeopleController extends Controller
         $gift = new Gift;
         $gift->contact_id = $contact->id;
         $gift->account_id = $contact->account_id;
-        $gift->name = encrypt($title);
+        $gift->name = $title;
 
         if ($url != '') {
-            $gift->url = encrypt($url);
+            $gift->url = $url;
         }
 
         if ($value != '') {
@@ -1397,7 +1397,7 @@ class PeopleController extends Controller
         }
 
         if ($comment != '') {
-            $gift->comment = encrypt($comment);
+            $gift->comment = $comment;
         }
 
         if ($giftOffered == 'is_an_idea') {
@@ -1428,6 +1428,17 @@ class PeopleController extends Controller
 
         $gift->save();
 
+        $contact->logEvent('gift', $gift->id, 'create');
+
+        // increment counter
+        if ($gift->is_an_idea == 'true') {
+            $contact->number_of_gifts_ideas = $contact->number_of_gifts_ideas + 1;
+        } else {
+            $contact->number_of_gifts_offered = $contact->number_of_gifts_offered + 1;
+        }
+
+        $contact->save();
+
         $request->session()->flash('success', trans('people.gifts_add_success'));
 
         return redirect('/people/'.$contact->id);
@@ -1451,6 +1462,33 @@ class PeopleController extends Controller
         if ($gift->contact_id != $contact->id) {
             return redirect()->route('people.index');
         }
+
+        // Delete all events
+        $events = Event::where('contact_id', $gift->contact_id)
+                          ->where('account_id', $gift->account_id)
+                          ->where('object_type', 'gift')
+                          ->where('object_id', $gift->id)
+                          ->get();
+
+        foreach ($events as $event) {
+            $event->delete();
+        }
+
+        // Decrease number of gifts
+        if ($gift->is_an_idea == 'true') {
+            $contact->number_of_gifts_ideas = $contact->number_of_gifts_ideas - 1;
+
+            if ($contact->number_of_gifts_ideas < 1) {
+                $contact->number_of_gifts_ideas = 0;
+            }
+        } else {
+            $contact->number_of_gifts_offered = $contact->number_of_gifts_offered - 1;
+
+            if ($contact->number_of_gifts_offered < 1) {
+                $contact->number_of_gifts_offered = 0;
+            }
+        }
+        $contact->save();
 
         $gift->delete();
 
