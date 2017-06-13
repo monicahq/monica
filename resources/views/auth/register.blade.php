@@ -7,13 +7,13 @@
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
           <div class="signup-box">
-            <img class="logo" src="/img/small-logo.png" alt="">
+            <img class="logo" src="{{ asset('/img/small-logo.png') }}" alt="">
             <h2>Create your Monica account</h2>
-            <h3><a href="/login">Log in</a> if you already have an account.</h3>
+            <h3><a href="{{ route('login') }}">Log in</a> if you already have an account.</h3>
 
             @include ('partials.errors')
 
-            <form class="" action="/register" method="post">
+            <form class="" action="{{ route('register') }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">

@@ -4,7 +4,7 @@
     {{ trans('people.section_personal_gifts') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/gifts/add" class="btn">{{ trans('people.gifts_add_gift') }}</a>
+      <a href="{{ route('people.gifts.add', ['people' => $contact->id]) }}" class="btn">{{ trans('people.gifts_add_gift') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.gifts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-      <a href="/people/{{ $contact->id }}/gifts/add">{{ trans('people.gifts_blank_add_gift') }}</a>
+      <a href="{{ route('people.gifts.add', ['people' => $contact->id]) }}">{{ trans('people.gifts_blank_add_gift') }}</a>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="{{ route('people.gifts.delete', ['people' => $contact->id, 'giftId' => $gift->id]) }}" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>
@@ -95,7 +95,7 @@
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="{{ route('people.gifts.delete', ['people' => $contact->id, 'giftId' => $gift->id]) }}" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>

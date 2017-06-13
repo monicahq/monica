@@ -8,7 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
-    <link rel="shortcut icon" href="/img/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
   </head>
   <body>
 

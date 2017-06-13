@@ -90,7 +90,7 @@
 
                 {{-- REMINDERS --}}
                 <div class="reminders dashboard-section">
-                  <img src="/img/people/reminders.svg" class="section-icon">
+                  <img src="{{ asset('/img/people/reminders.svg') }}" class="section-icon">
                   <h3>{{ trans('dashboard.reminders_title') }}</h3>
 
                   @if ($upcomingReminders->count() != 0)
@@ -101,7 +101,7 @@
                           {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
+                        <a href="{{ route('people.show', ['people' => $reminder->contact_id]) }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
                         {{ $reminder->getTitle() }}
                       </li>
                     @endforeach
@@ -116,14 +116,14 @@
 
                 {{-- TASKS --}}
                 <div class="tasks dashboard-section">
-                  <img src="/img/people/tasks.svg" class="section-icon">
+                  <img src="{{ asset('/img/people/tasks.svg') }}" class="section-icon">
                   <h3>{{ trans('dashboard.tasks_title') }}</h3>
 
                   @if ($tasks->count() != 0)
                   <ul>
                     @foreach ($tasks as $task)
                       <li>
-                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
+                        <a href="{{ route('people.show', ['people' => $task->contact_id]) }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
                         {{ $task->getTitle() }}
                         {{ $task->getDescription() }}
                       </li>
@@ -139,14 +139,14 @@
 
                 {{-- DEBTS --}}
                 <div class="debts dashboard-section">
-                  <img src="/img/people/debt/bill.svg" class="section-icon">
+                  <img src="{{ asset('/img/people/debt/bill.svg') }}" class="section-icon">
                   <h3>{{ trans('dashboard.section_debts') }}</h3>
 
                   @if ($debts->count() != 0)
                   <ul>
                     @foreach ($debts as $debt)
                       <li>
-                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName() }}</a>:
+                        <a href="{{ route('people.show', ['people' => $debt->contact_id]) }}">{{ App\Contact::find($debt->contact_id)->getCompleteName() }}</a>:
 
                         @if ($debt->in_debt == 'yes')
                         <span class="debt-description">{{ trans('dashboard.debts_you_owe') }}</span>
@@ -264,14 +264,14 @@
 
             <!-- Add activity  -->
             <div class="sidebar-cta hidden-xs-down">
-              <a href="/people/add" class="btn btn-primary">{{ trans('app.main_nav_cta') }}</a>
+              <a href="{{ route('people.create') }}" class="btn btn-primary">{{ trans('app.main_nav_cta') }}</a>
             </div>
 
             <div class="sidebar-box last-seen">
               <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
               <ul>
                 @foreach ($lastUpdatedContacts as $contact)
-                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName() }}</a></li>
+                  <li><a href="{{ route('people.show', ['people' => $contact->id]) }}">{{ $contact->getCompleteName() }}</a></li>
                 @endforeach
               </ul>
             </div>

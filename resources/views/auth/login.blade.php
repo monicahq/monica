@@ -7,12 +7,12 @@
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
           <div class="signup-box">
-            <img class="logo" src="/img/small-logo.png" alt="">
+            <img class="logo" src="{{ asset('/img/small-logo.png') }}" alt="">
             <h2>Login to your account</h2>
 
             @include ('partials.errors')
 
-            <form class="" action="/login" method="post">
+            <form class="" action="{{ route('login') }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
@@ -37,9 +37,9 @@
 
               <div class="form-group links">
                 <ul>
-                  <li>Forget your password? <a href="/password/reset">Reset your password</a></li>
+                  <li>Forget your password? <a href="{{ url('/password/reset') }}">Reset your password</a></li>
                   @if(env('APP_DISABLE_SIGNUP') != 'true')
-                    <li>Don't have an account? <a href="/register">Sign up</a></li>
+                    <li>Don't have an account? <a href="{{ route('register') }}">Sign up</a></li>
                   @endif
                 </ul>
               </div>

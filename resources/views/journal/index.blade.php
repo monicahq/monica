@@ -11,7 +11,7 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_journal') }}
@@ -32,10 +32,10 @@
               <div class="col-xs-12">
                 <h3>{{ trans('journal.journal_blank_description') }}</h3>
                 <div class="cta-blank">
-                  <a href="/journal/add" class="btn btn-primary">{{ trans('journal.journal_blank_cta') }}</a>
+                  <a href="{{ route('journal.create') }}" class="btn btn-primary">{{ trans('journal.journal_blank_cta') }}</a>
                 </div>
                 <div class="illustration-blank">
-                  <img src="/img/people/blank.svg">
+                  <img src="{{ asset('/img/people/blank.svg') }}">
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@
                       <ul>
                         <li>{{ \App\Helpers\DateHelper::getShortDate($entry->created_at) }}</li>
                         <li>
-                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
+                          <a href="{{ route('journal.delete', ['entry_id' => $entry->id]) }}" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
                         </li>
                       </ul>
                     </div>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="col-sm-3">
-              <a class="btn btn-primary btn-add-people" href="/journal/add">{{ trans('journal.journal_add') }}</a>
+              <a class="btn btn-primary btn-add-people" href="{{ route('journal.create') }}">{{ trans('journal.journal_add') }}</a>
             </div>
 
           </div>

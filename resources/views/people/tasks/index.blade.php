@@ -1,10 +1,9 @@
 <div class="col-xs-12 section-title">
-  <img src="/img/people/tasks.svg" class="icon-section icon-tasks">
+  <img src="{{ asset('/img/people/tasks.svg') }}" class="icon-section icon-tasks">
   <h3>
     {{ trans('people.section_personal_tasks') }}
-
     <span>
-      <a href="/people/{{ $contact->id }}/tasks/add" class="btn">{{ trans('people.tasks_add_task') }}</a>
+      <a href="{{ route('people.tasks.add', ['people' => $contact->id]) }}" class="btn">{{ trans('people.tasks_add_task') }}</a>
     </span>
   </h3>
 </div>
@@ -15,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.tasks_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-      <a href="/people/{{ $contact->id }}/tasks/add">{{ trans('people.tasks_blank_add_activity') }}</a>
+      <a href="{{ route('people.tasks.add', ['people' => $contact->id]) }}">{{ trans('people.tasks_blank_add_activity') }}</a>
     </div>
   </div>
 
@@ -35,7 +34,7 @@
           {{ $task->getTitle() }}
         </div>
         <div class="table-cell list-actions">
-          <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">
+          <a href="{{ route('people.tasks.delete', ['people' => $contact->id, 'taskId' => $task->id]) }}" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
