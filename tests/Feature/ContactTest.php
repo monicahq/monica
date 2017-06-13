@@ -157,44 +157,39 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas('tasks', $task);
     }
 
-    /*
-     * Waiting until encryption has been removed from gifts before this test
-     * is added.
-     */
+    public function test_user_can_add_a_gift_idea_to_a_contact()
+    {
+        $user = $this->signIn();
 
-//    public function test_user_can_add_a_gift_idea_to_a_contact()
-//    {
-//        $user = $this->signIn();
-//
-//        $contact = factory('App\Contact')->create([
-//            'account_id' => $user->account_id
-//        ]);
-//
-//        $gift = [
-//            'gift-offered' => 'is_an_idea',
-//            'title' => $this->faker->word,
-//            'url' => $this->faker->url,
-//            'value' => $this->faker->numberBetween(1,2000),
-//            'comment' => $this->faker->sentence()
-//        ];
-//
-//        $this->post(
-//            '/people/' . $contact->id . '/gifts/store',
-//            $gift
-//        );
-//
-//        $gift['contact_id'] = $contact->id;
-//        $gift['account_id'] = $user->account_id;
-//
-//
-//        // Change values to match database column names.
-//        $this->changeArrayKey('title', 'name', $gift);
-//        $this->changeArrayKey('value', 'value_in_dollars', $gift);
-//        $gift['is_an_idea'] = true;
-//        unset($gift['gift-offered']);
-//
-//        $this->assertDatabaseHas('gifts', $gift);
-//    }
+        $contact = factory('App\Contact')->create([
+            'account_id' => $user->account_id
+        ]);
+
+        $gift = [
+            'gift-offered' => 'is_an_idea',
+            'title' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1,2000),
+            'comment' => $this->faker->sentence()
+        ];
+
+        $this->post(
+            '/people/' . $contact->id . '/gifts/store',
+            $gift
+        );
+
+        $gift['contact_id'] = $contact->id;
+        $gift['account_id'] = $user->account_id;
+
+
+        // Change values to match database column names.
+        $this->changeArrayKey('title', 'name', $gift);
+        $this->changeArrayKey('value', 'value_in_dollars', $gift);
+        $gift['is_an_idea'] = "true";
+        unset($gift['gift-offered']);
+
+        $this->assertDatabaseHas('gifts', $gift);
+    }
 
     public function test_user_can_be_in_debt_to_a_contact()
     {
