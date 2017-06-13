@@ -62,7 +62,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans_choice('people.people_list_number_kids', $contact->getNumberOfKids(), ['count' => $contact->getNumberOfKids()]) }} • {{ trans('people.people_list_last_updated') }} {{ App\Helpers\DateHelper::getShortDate($contact->getLastUpdated()) }}
+                      {{ trans_choice('people.people_list_number_kids', $contact->kids_count, ['count' => $contact->kids_count]) }} • {{ trans('people.people_list_last_updated') }} {{ $contact->getLastUpdated() }}
                     </span>
                   </a>
                 </li>
