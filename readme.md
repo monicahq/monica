@@ -177,7 +177,7 @@ on [https://monicahq.com](https://monicahq.com).
 1. You can install it on your server
 ([generic instructions](docs/installation/generic.md)).
 1. You can install it from scratch on Debian Stretch
-([instructions](docs/installation/docker.md)).
+([instructions](docs/installation/debian.md)).
 1. You can deploy to Heroku ([instructions](docs/installation/heroku.md)).
 
 You have the liberty to clone the repository and set it up yourself on any
