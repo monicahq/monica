@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: brandon
- * Date: 12/06/2017
- * Time: 17:53
- */
 
 namespace Tests;
-
-
-use Illuminate\Support\Facades\Auth;
 
 class FeatureTestCase extends TestCase
 {
