@@ -422,16 +422,6 @@
       padding: 5px 0 0;
     }
 
-    .gift-list-item-value {
-      background-color: #ecf9ff;
-      border: 1px solid #eee;
-      border-radius: 3px;
-      display: inline;
-      font-size: 12px;
-      margin-left: 10px;
-      padding: 0 6px;
-    }
-
     .gift-list-item-information {
       display: inline;
       margin-left: 10px;
@@ -479,15 +469,25 @@
 
   .activities,
   .tasks,
-  .debts {
-    .activity-date {
+  .debts,
+  .gifts {
+    .date {
       color: #777;
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
     }
 
-    .activity-actions {
+    .value {
+      background-color: #ecf9ff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: inline;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+
+    .list-actions {
       position: relative;
       text-align: center;
       width: 60px;
@@ -514,6 +514,13 @@
         display: inline;
         width: 50px;
       }
+    }
+  }
+
+  .gifts {
+    .for {
+      font-style: italic;
+      margin-left: 10px;
     }
   }
 

@@ -28,13 +28,13 @@
     <ul class="table">
       @foreach($contact->getTasks() as $task)
       <li class="table-row">
-        <div class="table-cell activity-date">
+        <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt()) }}
         </div>
         <div class="table-cell">
           {{ $task->getTitle() }}
         </div>
-        <div class="table-cell activity-actions">
+        <div class="table-cell list-actions">
           <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>

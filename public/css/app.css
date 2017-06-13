@@ -8256,16 +8256,6 @@ header .main-cta {
   padding: 5px 0 0;
 }
 
-.people-show .gifts .gift-list-item-value {
-  background-color: #ecf9ff;
-  border: 1px solid #eee;
-  border-radius: 3px;
-  display: inline;
-  font-size: 12px;
-  margin-left: 10px;
-  padding: 0 6px;
-}
-
 .people-show .gifts .gift-list-item-information {
   display: inline;
   margin-left: 10px;
@@ -8308,32 +8298,48 @@ header .main-cta {
   margin-bottom: 10px;
 }
 
-.people-show .activities .activity-date,
-.people-show .tasks .activity-date,
-.people-show .debts .activity-date {
+.people-show .activities .date,
+.people-show .tasks .date,
+.people-show .debts .date,
+.people-show .gifts .date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
   width: 100px;
 }
 
-.people-show .activities .activity-actions,
-.people-show .tasks .activity-actions,
-.people-show .debts .activity-actions {
+.people-show .activities .value,
+.people-show .tasks .value,
+.people-show .debts .value,
+.people-show .gifts .value {
+  background-color: #ecf9ff;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  display: inline;
+  font-size: 12px;
+  padding: 0 6px;
+}
+
+.people-show .activities .list-actions,
+.people-show .tasks .list-actions,
+.people-show .debts .list-actions,
+.people-show .gifts .list-actions {
   position: relative;
   text-align: center;
   width: 60px;
 }
 
-.people-show .activities .activity-actions a:first-child,
-.people-show .tasks .activity-actions a:first-child,
-.people-show .debts .activity-actions a:first-child {
+.people-show .activities .list-actions a:first-child,
+.people-show .tasks .list-actions a:first-child,
+.people-show .debts .list-actions a:first-child,
+.people-show .gifts .list-actions a:first-child {
   margin-right: 5px;
 }
 
-.people-show .activities .activity-actions a.edit,
-.people-show .tasks .activity-actions a.edit,
-.people-show .debts .activity-actions a.edit {
+.people-show .activities .list-actions a.edit,
+.people-show .tasks .list-actions a.edit,
+.people-show .debts .list-actions a.edit,
+.people-show .gifts .list-actions a.edit {
   position: relative;
   top: 1px;
 }
@@ -8346,6 +8352,11 @@ header .main-cta {
 .people-show .reminders .form-check input[type="number"] {
   display: inline;
   width: 50px;
+}
+
+.people-show .gifts .for {
+  font-style: italic;
+  margin-left: 10px;
 }
 
 .people-show .debts .debts-list .debt-nature {

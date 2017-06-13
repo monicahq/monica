@@ -22,92 +22,86 @@
 
   <div class="col-xs-12 gifts-list">
 
-    <p>{{ trans('people.gifts_blank_title', ['name' => $contact->getFirstName()]) }}</p>
-
     @if ($contact->getGiftIdeas()->count() != 0)
       <h2 class="gift-recipient">{{ trans('people.gifts_gift_idea') }}</h2>
 
-      <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <th>{{ trans('people.gifts_table_date_added') }}</th>
-            <th>{{ trans('people.gifts_table_description') }}</th>
-            <th class="actions">{{ trans('people.gifts_table_actions') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($contact->getGiftIdeas() as $gift)
-            <tr>
-              <td class="date">
-                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
-              </td>
-              <td>
-                {{ $gift->getName() }}
-
-                @if (! is_null($gift->getValue()))
-                  <div class="gift-list-item-value">
-                    {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
-                  </div>
-                @endif
-
-                @if (! is_null($gift->getUrl()))
-                  <div class="gift-list-item-url">
-                    <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
-                  </div>
-                @endif
-              </td>
-              <td class="actions">
-                <ul class="gift-list-item-actions">
-                  <li><a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
-                </ul>
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
+      <ul class="table">
+        @foreach($contact->getGiftIdeas() as $gift)
+        <li class="table-row">
+          <div class="table-cell date">
+            {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
+          </div>
+          <div class="table-cell">
+            @if (! is_null($gift->getValue()))
+              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @endif
+            {{ $gift->getName() }}
+            @if (! is_null($gift->getUrl()))
+              <span class="gift-list-item-url">
+                <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
+              </span>
+            @endif
+            @if(!is_null($gift->getWhoIsItFor()))
+              <span class="for">
+              For:
+                {{ $gift->getWhoIsItFor() }}
+              </span>
+            @endif
+          </div>
+          <div class="table-cell comment">
+            @if (! is_null($gift->getComment()))
+              {{ $gift->getComment() }}
+            @endif
+          </div>
+          <div class="table-cell list-actions">
+            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+        @endforeach
+      </ul>
     @endif
 
     @if ($contact->getGiftsOffered()->count() != 0)
       <h2 class="gift-recipient">{{ trans('people.gifts_gift_already_offered') }}</h2>
 
-      <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <th>{{ trans('people.gifts_table_date_added') }}</th>
-            <th>{{ trans('people.gifts_table_description') }}</th>
-            <th class="actions">{{ trans('people.gifts_table_actions') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($contact->getGiftsOffered() as $gift)
-            <tr>
-              <td class="date">
-                {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
-              </td>
-              <td>
-                {{ $gift->getName() }}
-
-                @if (! is_null($gift->getValue()))
-                  <div class="gift-list-item-value">
-                    {{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}
-                  </div>
-                @endif
-
-                @if (! is_null($gift->getUrl()))
-                  <div class="gift-list-item-url">
-                    <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
-                  </div>
-                @endif
-              </td>
-              <td class="actions">
-                <ul class="gift-list-item-actions">
-                  <li><a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
-                </ul>
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
+      <ul class="table">
+        @foreach($contact->getGiftsOffered() as $gift)
+        <li class="table-row">
+          <div class="table-cell date">
+            {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
+          </div>
+          <div class="table-cell">
+            @if (! is_null($gift->getValue()))
+              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @endif
+            {{ $gift->getName() }}
+            @if (! is_null($gift->getUrl()))
+              <span class="gift-list-item-url">
+                <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
+              </span>
+            @endif
+            @if(!is_null($gift->getWhoIsItFor()))
+              <span class="for">
+              For:
+                {{ $gift->getWhoIsItFor() }}
+              </span>
+            @endif
+          </div>
+          <div class="table-cell comment">
+            @if (! is_null($gift->getComment()))
+              {{ $gift->getComment() }}
+            @endif
+          </div>
+          <div class="table-cell list-actions">
+            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+          </div>
+        </li>
+        @endforeach
+      </ul>
     @endif
 
   </div>

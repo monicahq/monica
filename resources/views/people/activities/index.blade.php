@@ -23,13 +23,13 @@
     <ul class="table">
       @foreach($contact->getActivities() as $activity)
       <li class="table-row">
-        <div class="table-cell activity-date">
+        <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($activity->getDateItHappened()) }}
         </div>
         <div class="table-cell">
           {{ $activity->getSummary() }}
         </div>
-        <div class="table-cell activity-actions">
+        <div class="table-cell list-actions">
           <a href="/people/{{ $contact->id }}/activities/{{ $activity->id }}/edit" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
