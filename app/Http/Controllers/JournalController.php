@@ -56,7 +56,7 @@ class JournalController extends Controller
         $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {
-          $entry->title = $request->input('title');
+            $entry->title = $request->input('title');
         }
 
         $entry->save();

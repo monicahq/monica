@@ -7,10 +7,8 @@ use App\Currency;
 
 class CurrencySelectViewComposer
 {
-
     public function __construct()
     {
-
     }
 
     /**
@@ -21,7 +19,7 @@ class CurrencySelectViewComposer
      */
     public function compose(View $view)
     {
-      $currencies = Currency::orderBy('name', 'asc')->get();
-      $view->with('currencies', $currencies );
+        $currencies = Currency::orderBy('name', 'asc')->get();
+        $view->with('currencies', $currencies);
     }
 }

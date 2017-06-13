@@ -7,7 +7,6 @@ use Illuminate\Console\ConfirmableTrait;
 
 class SetupProduction extends Command
 {
-
     use ConfirmableTrait;
 
     /**
@@ -47,8 +46,7 @@ class SetupProduction extends Command
          * If the .env file does not exist, then key generation
          * will fail. So we create one if it does not already exist.
          */
-        if( ! file_exists('.env') )
-        {
+        if (! file_exists('.env')) {
             touch('.env');
         }
 

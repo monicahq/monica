@@ -65,7 +65,6 @@ class ImportVCards extends Command
         $this->info("We found {$matchCount} contacts in {$path}.");
 
         if ($this->confirm('Would you like to import them?', true)) {
-
             $this->info("Importing contacts from {$path}");
 
             $this->output->progressStart($matchCount);
@@ -75,7 +74,6 @@ class ImportVCards extends Command
             collect($matches[0])->map(function ($vcard) {
                 return Reader::read($vcard);
             })->each(function (VCard $vcard) use ($user, $skippedContacts) {
-
                 if ($this->contactExists($vcard, $user)) {
                     $this->output->progressAdvance();
                     $skippedContacts++;
@@ -94,7 +92,7 @@ class ImportVCards extends Command
                 $contact = new Contact();
                 $contact->account_id = $user->account_id;
 
-                if($vcard->N && ! empty($vcard->N->getParts()[1])) {
+                if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
                     $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
                     $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
                     $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
@@ -112,7 +110,7 @@ class ImportVCards extends Command
                 $contact->email = $this->formatValue($vcard->EMAIL);
                 $contact->phone_number = $this->formatValue($vcard->TEL);
 
-                if($vcard->ADR) {
+                if ($vcard->ADR) {
                     $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
                     $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
                     $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
@@ -142,7 +140,6 @@ class ImportVCards extends Command
 
             $this->info("Successfully imported {$matchCount} contacts and skipped {$skippedContacts}.");
         }
-
     }
 
     /**
@@ -182,7 +179,7 @@ class ImportVCards extends Command
      * @param VCard $vcard
      * @return bool
      */
-    function contactHasName(VCard $vcard): bool
+    public function contactHasName(VCard $vcard): bool
     {
         return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
     }

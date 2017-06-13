@@ -6,7 +6,6 @@ use App\ActivityType;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 
-
 class Activity extends Model
 {
     protected $table = 'activities';

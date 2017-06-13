@@ -185,7 +185,6 @@ class SettingsController extends Controller
 
             // Looping over the rows
             foreach ($tableData as $data) {
-
                 $newSQLLine = 'INSERT INTO '.$tableName.' (';
                 $tableValues = [];
                 $skipLine = false;
@@ -200,7 +199,6 @@ class SettingsController extends Controller
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
-
                     if ($columnName == 'account_id') {
                         if ($value !== $account->id) {
                             $skipLine = true;
@@ -236,13 +234,11 @@ class SettingsController extends Controller
             $tableData = DB::table($tableName)->get();
 
             foreach ($tableData as $data) {
-
                 $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
                 $tableValues = [];
                 $skipLine = false;
 
                 foreach ($data as $columnName => $value) {
-
                     if ($columnName == 'id') {
                         if ($value !== $account->id) {
                             $skipLine = true;
