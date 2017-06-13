@@ -10,11 +10,6 @@
    * [Purpose](#purpose)
    * [Who is it for?](#who-is-it-for)
    * [What Monica isn't](#what-monica-isnt)
-* [Vision, goals and strategy](#vision-goals-and-strategy)
-   * [Vision](#vision)
-   * [Goals](#goals)
-   * [Strategy](#strategy)
-   * [Why Open Source?](#why-open-source)
 * [Get started](#get-started)
    * [Update your server](#update-your-server)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
@@ -32,6 +27,13 @@
    * [Statistics](#statistics)
 * [Contributing](#contributing)
    * [How the community can help](#how-the-community-can-help)
+* [Vision, goals and strategy](#vision-goals-and-strategy)
+   * [Vision](#vision)
+   * [Goals](#goals)
+   * [Strategy](#strategy)
+   * [Monetization](#monetization)
+      * [The API](#the-api)
+   * [Why Open Source?](#why-open-source)
 * [License](#license)
 
 ## Introduction
@@ -75,97 +77,6 @@ Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
 won't guess what you want to do. In fact, it's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
-
-## Vision, goals and strategy
-
-We want to use technology in a way that does not harm human relationships, like
-big social networks can do.
-
-### Vision
-
-Monica's vision is to **help people have more meaningful relationships**.
-
-### Goals
-
-We want to provide a platform that is:
-
-* **really easy to use**: we value simplicity over anything else.
-* **open-source**: we believe everyone should be able to contribute to this
-tool, and see for themselves that nothing nasty is done behind the scenes that
-would go against the best interests of the users. We also want to leverage the
-community to build attractive features and do things that would not be possible
-otherwise.
-* **easy to contribute to**: we want to keep the codebase as simple as possible.
-This has two big advantages: anyone can contribute, and it's easily maintainable
-on the long run.
-* **available everywhere**: Monica should be able to run on any desktop OS
-or mobile phone easily. This will be made possible by making sure the tool is
-easily installable by anyone who wants to either contribute or host the platform
-themselves.
-* **robust API**: the platform will have a robust API so it can communicate both
-ways to other systems.
-
-### Strategy
-
-To reach this ambitious vision, we'll use technology in a way that does not harm
-human relationships, like big social networks can do.
-
-We think Monica has to become a platform more than an application, so people can
-build on it.
-
-Here what we should do in order to realize our vision:
-* Build an API in order to create an ecosystem. The ecosystem is what will make
-Monica a successful platform.
-* Build importers and exporters of data. We don't want to have any vendor
-lock-ins. Data is the property of the users and they should be able to do
-whatever they want with it.
-* Create mobile apps.
-* Build great reports so people can have interesting insights.
-* Create a smart recommendation system for gifts. For instance, if my nephew is
-soon 6 years old in a month, I will be able to receive an email with a list of
-5 potential gifts I can offer to a 6 year old boy.
-* Add more ways of being reminded: Telegram, SMS,...
-* Create Chrome extensions to load Monica's data in a sidebar when viewing a
-contact on Facebook, letting us take additional notes as we see them on Facebook.
-* Add modules that can be activated on demand. One would be for instance, for
-the people who wants to use Monica for dating purposes (yes, we've received this
-kind of feedback already).
-* Add functional and unit tests so the main features are tested. Stability is
-key.
-
-### Why Open Source?
-
-Why is Monica open source? Is it risky? Will someone steal my code and do a
-for-profit business that will kill my own business? Why reveal my strategy to
-the world? This is the kind of questions we've received by email already.
-
-The answer to these questions is simple: yes, you can fork the project and do a
-competing project, make money out of it (even if the license is not super
-friendly to achieve that) and I'll never know. But it's ok, I don't mind.
-
-I wanted to open source this project for several reasons:
-
-* I believe, perhaps naively, that this project can really change people's
-lives. While I aim to make money out of it, I also want everyone to benefit
-from it. Open sourcing a project like this will help Monica become much bigger
-than what I imagine myself. While I strongly believe that the project has to
-follow the vision I have for it, I need to be humble enough to know that ideas
-come from everywhere, and people have much better ideas than what I can have.
-* You can't do something great alone. While Monica could become a company and
-hire a bunch of super smart people to work on it, you can't beat the manpower of
-an entire community. Open sourcing the product means bugs will be fixed faster,
-features will be developed faster, and more importantly, developers will be able
-to contribute to the project that changes either their own lives, or other
-people's lives.
-* Doing things in a transparent manner, like it's the case when you open source
-something, lead to formidable things. People respect the project more. You can't
-hide nasty piece of code. You can't do things behind the back of your users.
-It's a major driving force that motivates you to keep doing what's right.
-* I believe that once you have created a community of passionate developers
-around your project, you've won - because developers are very powerful
-influencers. Developers will create apps around your product, talk about it on
-forums, and tell about the project to their friends. Cherish the developers -
-users will follow.
 
 ## Get started
 
@@ -415,6 +326,125 @@ as much as you can.
  direction with the product.
 * Finally, and most importantly, we are looking for people willing to write
  tests for the existing features.
+
+## Vision, goals and strategy
+
+We want to use technology in a way that does not harm human relationships, like
+big social networks can do.
+
+### Vision
+
+Monica's vision is to **help people have more meaningful relationships**.
+
+### Goals
+
+We want to provide a platform that is:
+
+* **really easy to use**: we value simplicity over anything else.
+* **open-source**: we believe everyone should be able to contribute to this
+tool, and see for themselves that nothing nasty is done behind the scenes that
+would go against the best interests of the users. We also want to leverage the
+community to build attractive features and do things that would not be possible
+otherwise.
+* **easy to contribute to**: we want to keep the codebase as simple as possible.
+This has two big advantages: anyone can contribute, and it's easily maintainable
+on the long run.
+* **available everywhere**: Monica should be able to run on any desktop OS
+or mobile phone easily. This will be made possible by making sure the tool is
+easily installable by anyone who wants to either contribute or host the platform
+themselves.
+* **robust API**: the platform will have a robust API so it can communicate both
+ways to other systems.
+
+### Strategy
+
+To reach this ambitious vision, we'll use technology in a way that does not harm
+human relationships, like big social networks can do.
+
+We think Monica has to become a platform more than an application, so people can
+build on it.
+
+Here what we should do in order to realize our vision:
+* Build an API in order to create an ecosystem. The ecosystem is what will make
+Monica a successful platform.
+* Build importers and exporters of data. We don't want to have any vendor
+lock-ins. Data is the property of the users and they should be able to do
+whatever they want with it.
+* Create mobile apps.
+* Build great reports so people can have interesting insights.
+* Create a smart recommendation system for gifts. For instance, if my nephew is
+soon 6 years old in a month, I will be able to receive an email with a list of
+5 potential gifts I can offer to a 6 year old boy.
+* Add more ways of being reminded: Telegram, SMS,...
+* Create Chrome extensions to load Monica's data in a sidebar when viewing a
+contact on Facebook, letting us take additional notes as we see them on Facebook.
+* Add modules that can be activated on demand. One would be for instance, for
+the people who wants to use Monica for dating purposes (yes, we've received this
+kind of feedback already).
+* Add functional and unit tests so the main features are tested. Stability is
+key.
+
+### Monetization
+
+The big topic. Yes, we plan to make money out of this tool to sustain it on the
+long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab
+and we believe this kind of business model is inspiring, where everyone wins.
+
+* On https://monicahq.com, Monica will be offered in two versions:
+  * a free plan (called **Joe**):
+    * No limits of contacts
+    * Importers/exporters
+    * Email reminders
+  * a paid plan (called **Chandler**):
+    * Advanced features
+* You can also **run it yourself**. This is the **Ross** version. This is
+sometimes also called on-premise. Download the code, run it on Heroku, with
+Docker. The choice is yours.
+  * The downloadable version will always be the most complete version - the same
+  offered on the paid plan on `.com`.
+  * This version will be completely free with no strings attached and you will
+  be in complete control.
+* There will be a Patreon account for those who still want to support the tool.
+Keep in mind that the best way to support it is to actually talk about it around
+you.
+
+#### The API
+
+The API will be opened to everyone, for both on `.com` and on-premises.
+
+### Why Open Source?
+
+Why is Monica open source? Is it risky? Will someone steal my code and do a
+for-profit business that will kill my own business? Why reveal my strategy to
+the world? This is the kind of questions we've received by email already.
+
+The answer to these questions is simple: yes, you can fork the project and do a
+competing project, make money out of it (even if the license is not super
+friendly to achieve that) and I'll never know. But it's ok, I don't mind.
+
+I wanted to open source this project for several reasons:
+
+* I believe, perhaps naively, that this project can really change people's
+lives. While I aim to make money out of it, I also want everyone to benefit
+from it. Open sourcing a project like this will help Monica become much bigger
+than what I imagine myself. While I strongly believe that the project has to
+follow the vision I have for it, I need to be humble enough to know that ideas
+come from everywhere, and people have much better ideas than what I can have.
+* You can't do something great alone. While Monica could become a company and
+hire a bunch of super smart people to work on it, you can't beat the manpower of
+an entire community. Open sourcing the product means bugs will be fixed faster,
+features will be developed faster, and more importantly, developers will be able
+to contribute to the project that changes either their own lives, or other
+people's lives.
+* Doing things in a transparent manner, like it's the case when you open source
+something, lead to formidable things. People respect the project more. You can't
+hide nasty piece of code. You can't do things behind the back of your users.
+It's a major driving force that motivates you to keep doing what's right.
+* I believe that once you have created a community of passionate developers
+around your project, you've won - because developers are very powerful
+influencers. Developers will create apps around your product, talk about it on
+forums, and tell about the project to their friends. Cherish the developers -
+users will follow.
 
 ## License
 
