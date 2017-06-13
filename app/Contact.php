@@ -6,6 +6,8 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +27,8 @@ class Contact extends Model
 
     /**
      * Get the user associated with the contact.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -33,6 +37,8 @@ class Contact extends Model
 
     /**
      * Get the activity records associated with the contact.
+     *
+     * @return HasMany
      */
     public function activities()
     {
@@ -41,6 +47,8 @@ class Contact extends Model
 
     /**
      * Get the activity records associated with the contact.
+     *
+     * @return HasMany
      */
     public function activityStatistics()
     {
@@ -49,6 +57,8 @@ class Contact extends Model
 
     /**
      * Get the contact records associated with the contact.
+     *
+     * @return BelongsTo
      */
     public function country()
     {
@@ -57,6 +67,8 @@ class Contact extends Model
 
     /**
      * Get the debt records associated with the contact.
+     *
+     * @return HasMany
      */
     public function debts()
     {
@@ -65,6 +77,8 @@ class Contact extends Model
 
     /**
      * Get the gift records associated with the contact.
+     *
+     * @return HasMany
      */
     public function gifts()
     {
@@ -73,6 +87,8 @@ class Contact extends Model
 
     /**
      * Get the event records associated with the contact.
+     *
+     * @return HasMany
      */
     public function events()
     {
@@ -81,6 +97,8 @@ class Contact extends Model
 
     /**
      * Get the kid records associated with the contact.
+     *
+     * @return HasMany
      */
     public function kids()
     {
@@ -89,6 +107,8 @@ class Contact extends Model
 
     /**
      * Get the note records associated with the contact.
+     *
+     * @return HasMany
      */
     public function notes()
     {
@@ -97,6 +117,8 @@ class Contact extends Model
 
     /**
      * Get the reminder records associated with the contact.
+     *
+     * @return HasMany
      */
     public function reminders()
     {
@@ -115,6 +137,8 @@ class Contact extends Model
 
     /**
      * Get the significant others associated with the contact.
+     *
+     * @return HasMany
      */
     public function significantOthers()
     {
@@ -123,6 +147,8 @@ class Contact extends Model
 
     /**
      * Get the task records associated with the contact.
+     *
+     * @return HasMany
      */
     public function tasks()
     {
@@ -228,7 +254,7 @@ class Contact extends Model
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
         return DateHelper::getShortDate(
-            DateHelper::createDateFromFormat($lastActivity->date_it_happened, $timezone),
+            Carbon::parse($lastActivity->date_it_happened, $timezone),
             'en'
         );
     }
