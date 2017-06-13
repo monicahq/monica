@@ -28,6 +28,8 @@ return [
     'breadcrumb_dashboard' => 'Painel',
     'breadcrumb_list_contacts' => 'Lista de contatos',
     'breadcrumb_journal' => 'Diário',
+    'breadcrumb_settings' => 'Settings',
+    'breadcrumb_settings_export' => 'Export',
 
     'gender_male' => 'Homem',
     'gender_female' => 'Mulher',
