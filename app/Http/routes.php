@@ -95,5 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', ['as' => '.index', 'uses' => 'SettingsController@index']);
         Route::get('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/save', 'SettingsController@save');
+        Route::get('/settings/export', 'SettingsController@export');
+        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
     });
 });

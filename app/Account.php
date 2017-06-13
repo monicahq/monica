@@ -25,7 +25,7 @@ class Account extends Model
     /**
      * Get the debt records associated with the account.
      */
-    public function debt()
+    public function debts()
     {
         return $this->hasMany('App\Debt');
     }
@@ -84,5 +84,29 @@ class Account extends Model
     public function user()
     {
         return $this->hasOne('App\User');
+    }
+
+    /**
+     * Get the activity statistics record associated with the account.
+     */
+    public function activityStatistics()
+    {
+        return $this->hasMany('App\ActivityStatistic');
+    }
+
+    /**
+     * Get the task records associated with the account.
+     */
+    public function entries()
+    {
+        return $this->hasMany('App\Entry');
+    }
+
+    /**
+     * Get the task records associated with the account.
+     */
+    public function significantOthers()
+    {
+        return $this->hasMany('App\SignificantOther');
     }
 }
