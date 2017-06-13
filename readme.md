@@ -78,7 +78,7 @@ social interactions.
 
 Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
-won't guess what you want to do. In fact it's pretty dumb: it will send you
+won't guess what you want to do. In fact, it's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
 
 ## Vision, goals and strategy
@@ -126,7 +126,7 @@ lock-ins. Data is the property of the users and they should be able to do
 whatever they want with it.
 * Create mobile apps.
 * Build great reports so people can have interesting insights.
-* Create a smart recommandation system for gifts. For instance, if my nephew is
+* Create a smart recommendation system for gifts. For instance, if my nephew is
 soon 6 years old in a month, I will be able to receive an email with a list of
 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...
@@ -464,7 +464,7 @@ as when Bootstrap changes version, a lot of changes are introduced.
 
 #### Email testing
 
-Emails are an important of Monica. Emails are still the most significant mean
+Emails are an important part of Monica. Emails are still the most significant mean
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
