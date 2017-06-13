@@ -78,6 +78,13 @@ return [
     'information_no_facebook_defined' => 'Aucun Facebook défini',
     'information_no_twitter_defined' => 'Aucun Twitter défini',
     'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
+    'information_no_work_defined' => 'No work information defined',
+    'information_work_at' => 'at :company',
+    'work_add_cta' => 'Update work information',
+    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_title' => 'Update :name\'s job information',
+    'work_edit_job' => 'Job title (optional)',
+    'work_edit_company' => 'Company (optional)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',

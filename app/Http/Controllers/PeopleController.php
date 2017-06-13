@@ -205,12 +205,6 @@ class PeopleController extends Controller
             $contact->twitter_profile_url = null;
         }
 
-        if ($request->input('linkedin') != '') {
-            $contact->linkedin_profile_url = $request->input('linkedin');
-        } else {
-            $contact->linkedin_profile_url = null;
-        }
-
         if ($request->input('street') != '') {
             $contact->street = $request->input('street');
         } else {
@@ -296,6 +290,67 @@ class PeopleController extends Controller
         $request->session()->flash('success', trans('people.people_delete_success'));
 
         return redirect()->route('people.index');
+    }
+
+    /**
+     * Show the Edit work view.
+     * @param  Request $request
+     * @return View
+     */
+    public function editWork(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $data = [
+            'contact' => $contact,
+        ];
+
+        return view('people.dashboard.work.edit', $data);
+    }
+
+    /**
+     * Save the work information
+     * @param int $id
+     * @return
+     */
+    public function updateWork(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $job = $request->input('job');
+        $company = $request->input('company');
+
+        if ($job != '') {
+            $contact->job = $job;
+        } else {
+            $contact->job = null;
+        }
+
+        if ($company != '') {
+            $contact->company = $company;
+        } else {
+            $contact->company = null;
+        }
+
+        if ($request->input('linkedin') != '') {
+            $contact->linkedin_profile_url = $request->input('linkedin');
+        } else {
+            $contact->linkedin_profile_url = null;
+        }
+
+        $contact->save();
+
+        $request->session()->flash('success', trans('people.work_edit_success'));
+
+        return redirect('/people/' . $contact->id);
     }
 
     /**
@@ -822,7 +877,7 @@ class PeopleController extends Controller
         $task->delete();
 
         // Delete all events
-        $events = $this->events()
+        $events = $contact->events()
             ->where('object_type', 'task')
             ->where('object_id', $task->id)
             ->get()
