@@ -70,10 +70,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/reminders/{reminder}/delete', 'People\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
-        Route::get('/people/{people}/tasks/add', ['as' => '.tasks.add', 'uses' => 'PeopleController@addTask']);
-        Route::post('/people/{people}/tasks/store', 'PeopleController@storeTask');
-        Route::get('/people/{people}/tasks/{taskId}/toggle', 'PeopleController@toggleTask');
-        Route::get('/people/{people}/tasks/{taskId}/delete', 'PeopleController@deleteTask');
+        Route::get('/people/{contact}/tasks/add', 'People\\TasksController@create')->name('.tasks.add');
+        Route::post('/people/{contact}/tasks/store', 'People\\TasksController@store')->name('.tasks.store');
+        Route::patch('/people/{contact}/tasks/{task}/toggle', 'People\\TasksController@toggle')->name('.tasks.toggle');
+        Route::get('/people/{contact}/tasks/{task}/delete', 'People\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
         Route::get('/people/{people}/gifts/add', ['as' => '.gifts.add', 'uses' => 'PeopleController@addGift']);
