@@ -153,8 +153,6 @@ class SettingsController extends Controller
 
 ".PHP_EOL;
 
-        //Storage::disk('public')->put($fullPath, $sql);
-
         $ignoredTables = [
             'activity_type_groups',
             'activity_types',
@@ -222,7 +220,6 @@ class SettingsController extends Controller
                 if ($skipLine == false) {
                     $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
-                    //Storage::disk('public')->append($fullPath, $sql);
                 }
             }
         }
