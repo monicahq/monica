@@ -11,7 +11,7 @@
     <meta name="description" content="Monica is a tool to manage your interactions with your loved ones, friends and family.">
     <link rel="author" href="@djaiss">
     <meta property="og:title" content="Have better relations with your loved ones. Free Online CRM for friends and family." />
-    <link rel="shortcut icon" href="/img/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
 
   </head>
 

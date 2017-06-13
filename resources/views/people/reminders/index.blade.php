@@ -1,10 +1,10 @@
 <div class="col-xs-12 section-title">
-  <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
+  <img src="{{ asset('/img/people/reminders.svg') }}" class="icon-section icon-reminders">
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/reminders/add" class="btn">{{ trans('people.reminders_cta') }}</a>
+      <a href="{{ route('people.reminders.add', ['person' => $contact->id]) }}" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -15,7 +15,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-      <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
+      <a href="{{ route('people.reminders.add', ['person' => $contact->id]) }}">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
 
               <div class="reminder-actions">
                 <ul class="horizontal">
-                  <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
+                  <li><a href="{{ route('people.reminders.delete', ['people' => $contact->id, 'reminderId' => $reminder->id]) }}" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
                 </ul>
               </div>
 

@@ -7,7 +7,7 @@
     </p>
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/food">{{ trans('app.add') }}</a>
+      <a href="{{ route('people.food', ['people' => $contact->id]) }}">{{ trans('app.add') }}</a>
     </p>
 
   @else
@@ -19,7 +19,7 @@
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
       {{ $contact->getFoodPreferencies() }}
-      <a href="/people/{{ $contact->id }}/food" class="action-link">{{ trans('app.edit') }}</a>
+      <a href="{{ route('people.food', ['people' => $contact->id]) }}" class="action-link">{{ trans('app.edit') }}</a>
     </p>
 
   @endif

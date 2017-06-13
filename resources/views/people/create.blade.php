@@ -10,7 +10,7 @@
 
         <h2>{{ trans('people.people_add_title') }}</h2>
 
-        <form action="/people" method="POST">
+        <form action="{{ route('people') }}" method="POST">
           {{ csrf_field() }}
 
           <dl class="form-group {{ $errors->has('first_name') ? ' errored' : '' }}">
@@ -47,7 +47,7 @@
           </fieldset>
 
           <button class="btn btn-primary" type="submit">{{ trans('people.people_add_cta') }}</button>
-          <a href="/people" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+          <a href="{{ route('people.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
         </form>
       </div>
     </div>

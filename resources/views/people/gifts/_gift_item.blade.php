@@ -25,7 +25,7 @@
           {{ trans('people.gifts_added_on', ['date' => $gift->getAddedDate()]) }}
         </div>
         <ul class="gift-list-item-actions">
-          <li><a href="/people/{{ $people->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
+          <li><a href="{{ route('people.gifts.delete', ['people' => $people->id, 'gift' => $gift->id]) }}" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
         </ul>
       </div>
     </li>
@@ -61,7 +61,7 @@
           {{ trans('people.gifts_added_on', ['date' => $gift->getAddedDate()]) }}
         </div>
         <ul class="gift-list-item-actions">
-          <li><a href="/people/{{ $people->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
+          <li><a href="{{ route('people.gifts.delete', ['people' => $people->id, 'gift' => $gift->id]) }}" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('people.gifts_delete_cta') }}</a></li>
         </ul>
       </div>
     </li>

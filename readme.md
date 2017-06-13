@@ -398,7 +398,8 @@ and we believe this kind of business model is inspiring, where everyone wins.
   * a paid plan (called **Chandler**):
     * Advanced features
     * People who contribute to the GitHub repository (with a pull request that
-      gets merged) will also have access to the Paid version for free.
+    adds value, that gets merged (not a typo fix, for instance) will also have
+    access to the Paid version for free.
 * You can also **run it yourself**. This is the **Ross** version. This is
 sometimes also called on-premise. Download the code, run it on Heroku, with
 Docker. The choice is yours.
@@ -409,6 +410,12 @@ Docker. The choice is yours.
 * There will be a Patreon account for those who still want to support the tool.
 Keep in mind that the best way to support it is to actually talk about it around
 you.
+
+There is currently not, and will never be, ads on the platform. I will never
+resell your data on `.com`. I'm like you: I hate big corporations that do not
+have at heart the best thing for their users, even if they say otherwise. The only
+way, therefore, to sustain the development of the product is to actually make
+money in a good-old fashioned way.
 
 #### The API
 
