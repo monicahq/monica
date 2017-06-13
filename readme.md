@@ -410,6 +410,12 @@ Docker. The choice is yours.
 Keep in mind that the best way to support it is to actually talk about it around
 you.
 
+There is currently not, and will never be, ads on the platform. I will never
+resell your data on `.com`. I'm like you: I hate big corporations that do not
+have at heart the best thing for their users, even if they say otherwise. The only
+way, therefore, to sustain the development of the product is to actually make
+money in a good-old fashioned way.
+
 #### The API
 
 The API will be opened to everyone, for both on `.com` and on-premises.
