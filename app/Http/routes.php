@@ -1,5 +1,7 @@
 <?php
 
+Route::get('test/{contact}/{activity}','People\ActivitiesController@edit');
+
 if (App::environment('production')) {
     URL::forceScheme('https');
 }
@@ -54,11 +56,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Activities
-        Route::get('/people/{people}/activities/add', ['as' => '.activities.add', 'uses' => 'PeopleController@addActivity']);
-        Route::post('/people/{people}/activities/store', 'PeopleController@storeActivity');
-        Route::get('/people/{people}/activities/{activity}/edit', ['as' => '.activities.edit', 'uses' => 'PeopleController@editActivity']);
-        Route::post('/people/{people}/activities/{activityId}/save', 'PeopleController@updateActivity');
-        Route::get('/people/{people}/activities/{activityId}/delete', 'PeopleController@deleteActivity');
+        Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');
+        Route::post('/people/{contact}/activities/store', 'People\\ActivitiesController@store')->name('.activities.store');
+        Route::get('/people/{contact}/activities/{activity}/edit', 'People\\ActivitiesController@edit')->name('.activities.edit');
+        Route::put('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@update')->name('.activities.update');
+        Route::get('/people/{contact}/activities/{activity}/delete', 'People\\ActivitiesController@destroy')->name('.activities.delete');
 
         // Reminders
         Route::get('/people/{people}/reminders/add', ['as' => '.reminders.add', 'uses' => 'PeopleController@addReminder']);

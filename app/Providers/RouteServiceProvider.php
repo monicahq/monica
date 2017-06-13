@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Activity;
+use Route;
+use App\Contact;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -19,14 +22,24 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('contact', function ($value) {
+            return Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('activity', function($value, $route) {
+            return  Activity::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
     }
 
     /**
