@@ -8720,6 +8720,38 @@ header .main-cta {
   }
 }
 
+.settings .breadcrumb {
+  margin-bottom: 40px;
+}
+
+.settings .sidebar-menu ul {
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+}
+
+.settings .sidebar-menu li {
+  padding: 10px;
+}
+
+.settings .sidebar-menu li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.settings .sidebar-menu li.selected {
+  background-color: #f7fbfc;
+}
+
+.settings .sidebar-menu li a {
+  width: 100%;
+}
+
+.settings h2 {
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
 .settings .settings-delete {
   font-size: 11px;
   margin-top: 20px;

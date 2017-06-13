@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $number_of_tasks = $account->tasks()->count();
         $number_of_kids = $account->kids()->count();
 
-        $debt = $account->debt->where('status', 'inprogress');
+        $debt = $account->debts->where('status', 'inprogress');
 
         $debt_due = $debt->where('in_debt', 'yes')
             ->reduce(function ($totalDueDebt, Debt $debt) {

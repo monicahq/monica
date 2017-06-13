@@ -24,7 +24,7 @@
       @foreach($contact->getActivities() as $activity)
       <li class="table-row">
         <div class="table-cell activity-date">
-          {{ \App\Helpers\DateHelper::getShortDate($activity->getDateItHappened(), Auth::user()->locale) }}
+          {{ \App\Helpers\DateHelper::getShortDate($activity->getDateItHappened()) }}
         </div>
         <div class="table-cell">
           {{ $activity->getSummary() }}

@@ -26,7 +26,7 @@
       @foreach($contact->getDebts() as $debt)
       <li class="table-row">
         <div class="table-cell activity-date">
-          {{ \App\Helpers\DateHelper::getShortDate($debt->created_at, Auth::user()->locale) }}
+          {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}
         </div>
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')

@@ -23,7 +23,7 @@ class GiftTest extends TestCase
     public function testGetNameReturnsName()
     {
         $gift = new Gift;
-        $gift->name = encrypt('This is a test');
+        $gift->name = 'This is a test';
 
         $this->assertEquals(
             'This is a test',
@@ -41,7 +41,7 @@ class GiftTest extends TestCase
     public function testGetURLReturnsURL()
     {
         $gift = new Gift;
-        $gift->url = encrypt('https://test.com');
+        $gift->url = 'https://test.com';
 
         $this->assertEquals(
             'https://test.com',
@@ -59,7 +59,7 @@ class GiftTest extends TestCase
     public function testGetCommentReturnsComment()
     {
         $gift = new Gift;
-        $gift->comment = encrypt('this is a test');
+        $gift->comment = 'this is a test';
 
         $this->assertEquals(
             'this is a test',
