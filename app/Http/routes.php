@@ -28,6 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/update', 'PeopleController@update');
         Route::get('/people/{people}/delete', ['as' => '.delete', 'uses' => 'PeopleController@delete']);
 
+        // Work information
+        Route::get('/people/{people}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork']);
+        Route::post('/people/{people}/work/update', 'PeopleController@updateWork');
+
         // Notes
         Route::get('/people/{people}/note/add', 'PeopleController@addNote');
         Route::post('/people/{people}/note/save', 'PeopleController@storeNote');

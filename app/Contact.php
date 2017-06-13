@@ -291,6 +291,34 @@ class Contact extends Model
     }
 
     /**
+     * Get the work information as a string.
+     *
+     * @return string or null
+     */
+    public function getJob()
+    {
+        if (is_null($this->job)) {
+            return null;
+        }
+
+        return $this->job;
+    }
+
+    /**
+     * Get the company the person is working at as a string.
+     *
+     * @return string or null
+     */
+    public function getCompany()
+    {
+        if (is_null($this->company)) {
+            return null;
+        }
+
+        return $this->company;
+    }
+
+    /**
      * Returns 'true' if the birthdate is an approximation
      *
      * @return string

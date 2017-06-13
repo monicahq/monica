@@ -1,6 +1,9 @@
 {{-- Section address, email, phone, contact --}}
 @include('people.dashboard.people-information.index')
 
+{{-- Work --}}
+@include('people.dashboard.work.index')
+
 {{-- Significant Other --}}
 @include('people.dashboard.significantother.index')
 
