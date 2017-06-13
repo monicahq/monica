@@ -9,7 +9,7 @@
   </h3>
 </div>
 
-@if ($contact->hasDebt() == 0)
+@if (!$contact->hasDebt())
 
   <div class="col-xs-12">
     <div class="section-blank">

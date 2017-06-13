@@ -15,7 +15,8 @@
         "fzaninotto/faker": "^1.6",
         "doctrine/dbal": "^2.5",
         "laravel/socialite": "^3.0",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "sabre/vobject": "^4.1"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

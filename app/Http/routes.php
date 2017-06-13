@@ -10,9 +10,6 @@ Auth::routes();
 
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 
-Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
-Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
-
 Route::group(['middleware' => 'auth'], function () {
 
     //Route::resource('people', 'PeopleController');
@@ -98,5 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', ['as' => '.index', 'uses' => 'SettingsController@index']);
         Route::get('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/save', 'SettingsController@save');
+        Route::get('/settings/export', 'SettingsController@export');
+        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
     });
 });

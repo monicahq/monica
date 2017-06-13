@@ -13,6 +13,22 @@ class Kid extends Model
     protected $dates = ['birthdate'];
 
     /**
+     * Get the account record associated with the kid.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the kid.
+     */
+    public function parent()
+    {
+        return $this->belongsTo('App\Contact', 'child_of_contact_id');
+    }
+
+    /**
      * Gets the age of the kid in years, or returns null if the birthdate
      * is not set.
      *

@@ -21,6 +21,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * Eager load account with every user.
+     */
+    protected $with = [
+        'account',
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -36,7 +43,7 @@ class User extends Authenticatable
      */
     public function account()
     {
-        return $this->hasOne('App\Account');
+        return $this->belongsTo('App\Account');
     }
 
     /**
