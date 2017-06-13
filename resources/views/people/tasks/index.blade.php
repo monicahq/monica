@@ -29,7 +29,7 @@
       @foreach($contact->getTasks() as $task)
       <li class="table-row">
         <div class="table-cell activity-date">
-          {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt(), Auth::user()->locale) }}
+          {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt()) }}
         </div>
         <div class="table-cell">
           {{ $task->getTitle() }}
