@@ -3,6 +3,10 @@
 First off, thank you for considering contributing to Monica. We need people like
 you to make Monica the best tool it can be.
 
+Before you do anything else, please read the README.md of this project first.
+This is where we highlight the vision and the strategy. Please make sure you
+accept this vision before contributing to this project.
+
 ### 1. Where do I go from here?
 
 If you've noticed a bug or have a question, [make an issue](https://github.com/monicahq/monica/issues/new),
@@ -40,6 +44,9 @@ At this point, you're ready to make your changes! Feel free to ask for help;
 everyone is a beginner at first :smile_cat:
 
 To write good commit messages, please follow [those recommendations](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). There are important to maintain an healthy commit logs.
+
+If you wish to appear as a contributor, update the CONTRIBUTORS file and 
+add your name to it. Include this change in your pull request.
 
 ### 6. Wait for the code to be reviewed
 

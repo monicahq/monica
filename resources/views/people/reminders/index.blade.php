@@ -28,22 +28,22 @@
     <table class="table table-sm table-hover">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Frequency</th>
-          <th>Content</th>
-          <th class="actions">Actions</th>
+          <th>{{ trans('people.reminders_date') }}</th>
+          <th>{{ trans('people.reminders_frequency') }}</th>
+          <th>{{ trans('people.reminders_content') }}</th>
+          <th class="actions">{{ trans('people.reminders_actions') }}</th>
         </tr>
       </thead>
       <tbody>
         @foreach($contact->getReminders() as $reminder)
           <tr>
-            <td class="date">{{ $reminder->getNextExpectedDate() }}</td>
+            <td class="date">{{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}</td>
 
             <td class="date">
               @if ($reminder->frequency_type != 'one_time')
                 {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
               @else
-                One time
+                {{ trans('people.reminders_one_time') }}
               @endif
             </td>
 

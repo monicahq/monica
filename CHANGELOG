@@ -1,3 +1,55 @@
+2017-06-13
+----------
+
+Improvements:
+* Gifts table now display comments if defined, as well as who the gift is for.
+
+2017-06-12
+----------
+
+New features:
+* Add instructions to setup Monica from scratch on Debian Stretch.
+* Add Export to SQL feature, under Settings > Export data.
+* Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
+
+2017-06-11
+----------
+
+New features:
+* Add command line vCard importer
+
+Improvements:
+* Email address of a contact is now a mailto:// field.
+* Phone number of a contact is now a tel:// field.
+* Fix debt description on the dashboard
+* Fix typos
+* Fix Bootstrap tabs on the dashboard
+
+2017-06-10
+----------
+
+New features:
+* Add support for other currencies (CAD $, EUR €, GBP £, RUB ₽) for the gifts and debts section. This is set in the User setting. Default is USD $.
+* Add ability to define main social network accounts to a contact (Facebook, Twitter, LinkedIn)
+
+Improvements:
+* Fix counter showing number of gifts on the dashboard
+* Docker image now runs the cron to send emails
+* Fix Russian translations
+* Fix the wrong route after password change
+
+2017-06-09
+----------
+
+New features:
+* Add Docker support
+* Add Russian language
+* Add Portuguese (Brazil) language
+
+Improvements:
+* Fix emails being sent too often
+* Breaking change: Email name and address of the user who sends reminders are now ENV variables (MAIL_FROM_ADDRESS and MAIL_FROM_NAME).
+
 2017-06-08
 ----------
 
@@ -5,8 +57,10 @@ New features:
 * Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
 
 Improvements:
-* Fix typos
+* Dramatically reduce the number of queries necessary to load the list of contacts on the People's tab.
+* Phone number are now treated like a string and not integers on the front-end side.
 * Breaking change: Add a new env variable to define which email address should be used when sending notifications about new user signups. You need to add this new env variable (APP_EMAIL_NEW_USERS_NOTIFICATION) to your `.env` file.
+* Fix typos and small bugs
 
 2017-06-07
 ----------

@@ -1,5 +1,16 @@
 @extends('layouts.skeleton')
 
+{{-- Temp Fix for Bootstrap Tabs: Issue #26 --}}
+@push('scripts')
+  <script type="text/javascript">
+      $( ".nav-item" ).click(function() {
+          $(this).children().addClass('active');
+          $(this).siblings().children().removeClass('active');
+      });
+  </script>
+@endpush
+
+
 @section('content')
   <div class="dashboard">
 
@@ -50,11 +61,11 @@
                   <span class="stat-description">{{ trans('dashboard.statistics_tasks') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">${{ $debt_owed }}</span>
+                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_owed }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_deb_owed') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">${{ $debt_due }}</span>
+                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_due }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_debt_due') }}</span>
                 </li>
               </ul>
@@ -88,7 +99,7 @@
                       <li>
                         <span class="reminder-in-days">
                           {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
-                          ({{ App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate(), Auth::user()->locale) }})
+                          ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
                         {{ $reminder->getTitle() }}
@@ -146,7 +157,7 @@
                         ${{ $debt->amount }}
 
                         @if (! is_null($debt->reason))
-                        <span class="debt-description">{{ trans('dashboard.for') }}</span>
+                        <span class="debt-description">{{ trans('dashboard.debts_for') }}</span>
                         {{ $debt->reason }}
                         @endif
                       </li>
@@ -238,7 +249,7 @@
 
                       {{-- DATE --}}
                       <div class="event-date">
-                        {{ $event['date'] }}
+                        {{ \App\Helpers\DateHelper::getShortDateWithTime($event['date']) }}
                       </div>
                     </li>
                   @endforeach

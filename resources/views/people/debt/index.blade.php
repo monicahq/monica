@@ -9,11 +9,11 @@
   </h3>
 </div>
 
-@if ($contact->hasDebt() == 0)
+@if (!$contact->hasDebt())
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.debts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
       <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
@@ -25,8 +25,8 @@
     <ul class="table">
       @foreach($contact->getDebts() as $debt)
       <li class="table-row">
-        <div class="table-cell activity-date">
-          {{ \App\Helpers\DateHelper::getShortDate($debt->created_at, Auth::user()->locale) }}
+        <div class="table-cell date">
+          {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}
         </div>
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')
@@ -40,7 +40,7 @@
             {{ $debt->reason }}
           @endif
         </div>
-        <div class="table-cell activity-actions">
+        <div class="table-cell list-actions">
           <a href="/people/{{ $contact->id }}/debt/{{ $debt->id }}/delete" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>

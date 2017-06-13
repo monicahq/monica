@@ -29,21 +29,20 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDate($date, $locale)
+    public static function getShortDate($date, $locale = null)
     {
         $date = new Date($date);
+        $locale = self::getLocale($locale);
 
         switch ($locale) {
             case 'en':
-                Date::setLocale('en');
                 $format = 'M d, Y';
                 break;
+            case 'pt-br':
             case 'fr':
-                Date::setLocale('fr');
                 $format = 'd M Y';
                 break;
             default:
-                Date::setLocale('en');
                 $format = 'M d, Y';
                 break;
         }
@@ -58,25 +57,31 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithTime($date, $locale)
+    public static function getShortDateWithTime($date, $locale = null)
     {
         $date = new Date($date);
+        $locale = self::getLocale($locale);
 
         switch ($locale) {
             case 'en':
-                Date::setLocale('en');
                 $format = 'M d, Y H:i';
                 break;
+            case 'pt-br':
             case 'fr':
-                Date::setLocale('fr');
                 $format = 'd M Y H:i';
                 break;
             default:
-                Date::setLocale('en');
                 $format = 'M d, Y H:i';
         }
 
         return $date->format($format);
+    }
+
+    public static function getLocale($locale = null) {
+        $locale = $locale ?: Auth::user()->locale;
+        Date::setLocale($locale);
+
+        return $locale;
     }
 
     /**
