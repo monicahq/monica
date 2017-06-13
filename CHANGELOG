@@ -2,6 +2,7 @@
 ----------
 
 New features:
+* Add instructions to setup Monica from scratch on Debian Stretch.
 * Add Export to SQL feature, under Settings > Export data.
 * Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
 
