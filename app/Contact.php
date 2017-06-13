@@ -982,7 +982,6 @@ class Contact extends Model
                 $activityStatistic->account_id = $this->account_id;
                 $activityStatistic->year = $year;
                 $activityStatistic->count = $activities->count();
-                ;
                 $activityStatistic->save();
             });
     }
