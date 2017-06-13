@@ -3,8 +3,6 @@
 namespace App;
 
 use App\Helpers\DateHelper;
-use App\Events\Gift\GiftCreated;
-use App\Events\Gift\GiftDeleted;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +10,6 @@ class Gift extends Model
 {
     protected $dates = [
         'date_offered',
-    ];
-
-    protected $events = [
-        'created' => GiftCreated::class,
-        'deleted' => GiftDeleted::class,
     ];
 
     /**
@@ -51,7 +44,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->name);
+        return $this->name;
     }
 
     public function getUrl()
@@ -60,7 +53,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->url);
+        return $this->url;
     }
 
     public function getComment()
@@ -69,7 +62,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->comment);
+        return $this->comment;
     }
 
     public function getValue()

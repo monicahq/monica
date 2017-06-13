@@ -28,6 +28,8 @@ return [
     'breadcrumb_dashboard' => 'Обзор',
     'breadcrumb_list_contacts' => 'Список контактов',
     'breadcrumb_journal' => 'Журнал',
+    'breadcrumb_settings' => 'Settings',
+    'breadcrumb_settings_export' => 'Export',
 
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',
