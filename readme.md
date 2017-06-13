@@ -24,6 +24,7 @@
    * [Update your server](#update-your-server)
    * [Deploy on Heroku](#deploy-on-heroku)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
+   * [Importing SQL from the exporter feature](#importing-sql-from-the-exporter-feature)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
    * [Setup the testing environment](#setup-the-testing-environment)
@@ -363,6 +364,27 @@ be associated the new contacts to, and `{path}` being the path to a .vcf file.
 Example: `php artisan import:vcard john@doe.com ~/Downloads/contacts.vcf`
 
 The `.vcf` can contain as many contacts as you want.
+
+### Importing SQL from the exporter feature
+
+Monica allows you to export your data in SQL, under the Settings panel. When you
+export your data in SQL, you'll get a file called `monica.sql`.
+
+To import it into your own instance, you need to make sure that the database of
+your instance is completely empty (no tables, no data).
+
+Then, follow the steps:
+
+* `php artisan migrate`
+* `php artisan db:seed --class ActivityTypesTableSeeder`
+* `php artisan db:seed --class CountriesSeederTable`
+* Then import `monica.sql` into your database. Tools like phpmyadmin or Sequel
+Pro might help you with that.
+* Finally, sign in with the same credentials as the ones used on
+https://monicahq.com and you are good to go.
+
+There is one caveat with the SQL exporter: you can't get the photos you've
+uploaded for now.
 
 ## Contribute as a developer
 

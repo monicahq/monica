@@ -1,4 +1,38 @@
 .settings {
+  .breadcrumb {
+    margin-bottom: 40px;
+  }
+
+  .sidebar-menu {
+    ul {
+      border: 1px solid $border-color;
+      border-radius: 3px;
+    }
+
+    li {
+      padding: 10px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-color;
+      }
+
+      &.selected {
+        background-color: #f7fbfc;
+      }
+
+      a {
+        width: 100%;
+      }
+    }
+  }
+
+  h2 {
+    border-bottom: 1px solid $border-color;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
   .settings-delete {
     font-size: 11px;
     margin-top: 20px;
