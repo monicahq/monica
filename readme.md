@@ -16,13 +16,7 @@
    * [Strategy](#strategy)
    * [Why Open Source?](#why-open-source)
 * [Get started](#get-started)
-   * [Running with Docker](#running-with-docker)
-      * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
-      * [Use docker-compose to build and run your own image](#use-docker-compose-to-build-and-run-your-own-image)
-      * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
-   * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
-   * [Deploy on Heroku](#deploy-on-heroku)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
    * [Importing SQL from the exporter feature](#importing-sql-from-the-exporter-feature)
 * [Contribute as a developer](#contribute-as-a-developer)
@@ -175,154 +169,32 @@ users will follow.
 
 ## Get started
 
-There are currently three ways of getting started with Monica.
-1. You can use our hosted-version (this is the simplest way to use the product).
-1. You can run it with Docker
-1. You can deploy to Heroku
+There are multiple ways of getting started with Monica.
+
+1. You can use our hosted-version (this is the simplest way to use the product)
+on [https://monicahq.com](https://monicahq.com).
+1. You can run it with Docker ([instructions](docs/installation/docker.md)).
+1. You can install it on your server
+([generic instructions](docs/installation/generic.md)).
+1. You can install it from scratch on Debian Stretch
+([instructions](docs/installation/docker.md)).
+1. You can deploy to Heroku ([instructions](docs/installation/heroku.md)).
 
 You have the liberty to clone the repository and set it up yourself on any
 hosting provider, for free. I'm just asking that you don't try to make money out
 of it yourself.
-
-### Account on MonicaHQ.com
-
-We provide a hosted version of this application on https://monicahq.com.
-
-### Running with Docker
-
-You can use [Docker](https://www.docker.com) and
-[docker-compose](https://docs.docker.com/compose/) to pull or build
-and run a Monica image, complete with a self-contained MySQL database.
-This has the nice properties that you don't have to install lots of
-software directly onto your system, and you can be up and running
-quickly with a known working environment.
-
-Before you start, you need to get and edit a `.env` file. If you've already
-cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
-
-`$ cp .env.example .env`
-
-to create it. If not, you can fetch it from GitHub like:
-
-`$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env`
-
-Then open `.env` in an editor and update it for your own needs:
-
-- Set `APP_KEY` to a random 32-character string. For example, if you
-  have the `pwgen` utility installed, you could copy and paste the
-  output of `pwgen -s 32 1`.
-- Edit the `MAIL_*` settings to point to your own mailserver.
-
-Now select one of these methods to be up and running quickly:
-
-#### Use docker-compose to run a pre-built image
-
-This is the easiest and fastest way to try MonicaHQ! Use this process
-if you want to download the newest image from Docker Hub and run it
-with a pre-packaged MySQL database.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-```shell
-$ docker-compose pull
-$ docker-compose up
-```
-
-#### Use docker-compose to build and run your own image
-
-Use this process if you want to modify Monica source code and build
-your image to run.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-Then run:
-
-```shell
-$ docker-compose build
-$ docker-compose up
-```
-
-#### Use Docker directly to run with your own database
-
-Use this process if you're a developer and want complete control over
-your Monica container.
-
-Edit `.env` again to set the `DB_*` variables to match your
-database. Then run:
-
-```shell
-$ docker build -t monicahq/monicahq .
-$ docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
-# ...or...
-$ docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
-```
-
-Note that uploaded files, like avatars, will disappear when you
-restart the container. Map a volume to
-`/var/www/monica/storage/app/public` if you want that data to persist
-between runs. See `docker-compose.yml` for examples.
-
-### Setup the project on your server
-
-If you don't want to use Docker, the best way to setup the project is to use the
-same configuration that [Homestead](https://laravel.com/docs/5.3/homestead)
-uses. Basically, Monica depends on the following:
-
-* PHP 7.0+
-* MySQL, SQLite or Postgre
-* Git
-* Composer
-* Optional: Redis or Beanstalk
-
-The preferred OS distribution is Ubuntu 16.04, simply because all the
-development is made on it and we know it works. However, any OS that lets you
-install the above packages should work.
-
-Once the softwares above are installed, clone the repository and proceed as
-follow:
-
-1. `composer install` in the folder the repository has been cloned.
-1. `cp .env.example .env` to configure Monica.
-1. Update `.env` with your specific needs.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Create a database called `monica`.
-1. `php artisan migrate` to run all migrations.
-1. `php artisan storage:link` to enable avatar uploads for the contacts.
-1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-1. In order for the reminders to be sent (reminders are created inside the
-  application and associated to contacts), you need to setup a cron that runs
-  every minute with the following command `php artisan schedule:run`.
-
-**Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
-
-Monica can work with a queue mechanism to handle different events, so we don't
-block the main thread while processing stuff that can be run asynchronously,
-like sending emails. By default, Monica does not use a queue mechanism but can
-be setup to do so.
-
-There are three choices for the queue mechanism:
-* Database (this will use the database used by the application to act as a queue)
-* Redis
-* Beanstalk
-* Amazon SQS
-
-The simplest queue is the database driver. To set it up, simply change in your
-`.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
-
-To configure the other queues, refer to the
-[official Laravel documentation](https://laravel.com/docs/5.4/queues#driver-prerequisites)
-on the topic.
 
 ### Update your server
 
 There is no concept of releases at the moment. If you run the project locally,
 or if you have installed Monica on your own server, you need to follow these
 steps below to update it, **every single time**, or you will run into problems.
+
+1. Always make a backup of your data before upgrading.
+1. Check that your backup is valid.
+1. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG)
+to check for breaking changes.
+1. Run the following commands:
 
 ```
 git pull origin master
@@ -331,24 +203,6 @@ php artisan migrate
 ```
 
 That should be it.
-
-### Deploy on Heroku
-
-Monica can be deployed on Heroku using the button below:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will
-utilise a [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by
-default. Additional environment variables, such as details of the mail server,
-can be added after setup through the Heroku interface.
-
-Monica doesn't require a lot of power - it means it will run on the free plan
-provided by Heroku.
-
-There is one issue with it though at the moment: you won't be able to upload
-photos to your contacts, as Heroku doesn't support storage. We'll need to fix
-this in the future.
 
 ### Importing vCards (CLI only)
 
