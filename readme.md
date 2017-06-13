@@ -398,7 +398,8 @@ and we believe this kind of business model is inspiring, where everyone wins.
   * a paid plan (called **Chandler**):
     * Advanced features
     * People who contribute to the GitHub repository (with a pull request that
-      gets merged) will also have access to the Paid version for free.
+    adds value, that gets merged (not a typo fix, for instance) will also have
+    access to the Paid version for free.
 * You can also **run it yourself**. This is the **Ross** version. This is
 sometimes also called on-premise. Download the code, run it on Heroku, with
 Docker. The choice is yours.
