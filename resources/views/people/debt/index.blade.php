@@ -25,7 +25,7 @@
     <ul class="table">
       @foreach($contact->getDebts() as $debt)
       <li class="table-row">
-        <div class="table-cell activity-date">
+        <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}
         </div>
         <div class="table-cell debt-nature">
@@ -40,7 +40,7 @@
             {{ $debt->reason }}
           @endif
         </div>
-        <div class="table-cell activity-actions">
+        <div class="table-cell list-actions">
           <a href="/people/{{ $contact->id }}/debt/{{ $debt->id }}/delete" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
