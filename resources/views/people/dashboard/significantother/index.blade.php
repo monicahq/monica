@@ -7,7 +7,7 @@
   @if (is_null($contact->getCurrentSignificantOther()))
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/significantother/add">{{ trans('people.significant_other_cta') }}</a>
+      <a href="{{ route('people.dashboard.significantother.add', ['people' => $contact->id]) }}">{{ trans('people.significant_other_cta') }}</a>
     </p>
 
   @else
@@ -20,8 +20,8 @@
       ({{ $contact->getCurrentSignificantOther()->getAge() }})
       @endif
 
-      <a href="/people/{{ $contact->id }}/significantother/{{ $contact->getCurrentSignificantOther()->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-      <a href="/people/{{ $contact->id }}/significantother/{{ $contact->getCurrentSignificantOther()->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
+      <a href="{{ route('people.dashboard.significantother.edit', ['people' => $contact->id, 'significantother' => $contact->getCurrentSignificantOther()->id]) }}" class="action-link">{{ trans('app.edit') }}</a>
+      <a href="{{ route('people.dashboard.significantother.delete', ['people' => $contact->id, 'significantother' => $contact->getCurrentSignificantOther()->id]) }}" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
     </p>
 
   @endif

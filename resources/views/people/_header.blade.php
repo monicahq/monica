@@ -39,8 +39,7 @@
               @endif
             </li>
           </ul>
-
-          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+          <a href="{{ route('people.edit', ['people' => $contact->id]) }}" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
         </div>
       </div>
     </div>

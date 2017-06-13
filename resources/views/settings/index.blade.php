@@ -11,7 +11,7 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings') }}
@@ -31,7 +31,7 @@
             {{ trans('settings.sidebar_settings') }}
           </li>
           <li>
-            <a href="/settings/export">{{ trans('settings.sidebar_settings_export') }}</a>
+            <a href="{{ route('settings.export') }}">{{ trans('settings.sidebar_settings_export') }}</a>
           </li>
         </ul>
       </div>
@@ -46,7 +46,7 @@
           </div>
         @endif
 
-        <form action="/settings/save" method="POST">
+        <form action="{{ route('settings.save') }}" method="POST">
           {{ csrf_field() }}
           <div class="form-group">
             <p>{{ trans('settings.name', ['firstname' => Auth::user()->first_name, 'lastname' => Auth::user()->last_name]) }}</p>
@@ -211,7 +211,6 @@
               <option value='Asia/Magadan' {{ (Auth::user()->timezone == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) Solomon Is.</option>
               <option value='Pacific/Auckland' {{ (Auth::user()->timezone == 'Pacific/Auckland')?'selected':'' }}>(UTC+12:00) Wellington</option>
               <option value='Pacific/Tongatapu' {{ (Auth::user()->timezone == 'Pacific/Tongatapu')?'selected':'' }}>(UTC+13:00) Nuku'alofa</option>
-
             </select>
           </div>
           <div class="form-group">
@@ -232,7 +231,7 @@
         </form>
 
         <div class="settings-delete">
-          <a href="/settings/delete" onclick="return confirm('{{ trans('settings.delete_notice') }}')">{{ trans('settings.delete_cta') }}</a>
+          <a href="{{ route('settings.delete') }}" onclick="return confirm('{{ trans('settings.delete_notice') }}')">{{ trans('settings.delete_cta') }}</a>
         </div>
 
       </div>

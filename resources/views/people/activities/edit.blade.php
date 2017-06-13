@@ -10,10 +10,10 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
+                <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
                 {{ $contact->getCompleteName() }}
@@ -32,7 +32,8 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/people/{{ $contact->id }}/activities/{{ $activity->id }}/save">
+            <form method="POST" action="{{ route('people.activities.save', ['people' => $contact->id, 'activity' => $activity->id]) }}" >
+
               {{ csrf_field() }}
 
               <h2>{{ trans('people.activities_add_title', ['name' => $contact->getFirstName()]) }}</h2>
@@ -80,7 +81,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.activities_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', ['person' => $contact->id]) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

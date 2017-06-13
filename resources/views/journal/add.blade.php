@@ -10,10 +10,10 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
+                <a href="{{ route('journal.index') }}">{{ trans('app.breadcrumb_journal') }}</a>
               </li>
               <li>
                 {{ trans('journal.journal_add') }}
@@ -29,7 +29,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/journal/create">
+            <form method="POST" action="{{ route('journal.store') }}">
               {{ csrf_field() }}
 
               @include('partials.errors')
@@ -49,7 +49,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('journal.journal_add_cta') }}</button>
-                <a href="/journal" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('journal.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

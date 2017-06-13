@@ -1,10 +1,10 @@
 <div class="col-xs-12 section-title">
-  <img src="/img/people/debt/bill.svg" class="icon-section icon-money">
+  <img src="{{ asset('/img/people/debt/bill.svg') }}" class="icon-section icon-money">
   <h3>
     {{ trans('people.debt_title') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
+      <a href="{{ route('people.debt.add', ['people' => $contact->id]) }}" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.debts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
-      <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
+      <a href="{{ route('people.debt.add', ['people' => $contact->id]) }}">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
 
@@ -41,7 +41,7 @@
           @endif
         </div>
         <div class="table-cell list-actions">
-          <a href="/people/{{ $contact->id }}/debt/{{ $debt->id }}/delete" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
+          <a href="{{ route('people.debt.delete', ['people' => $contact->id, 'debtId' => $debt->id]) }}" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>

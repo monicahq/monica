@@ -11,7 +11,7 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_list_contacts') }}
@@ -33,10 +33,10 @@
               <div class="col-xs-12">
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
-                  <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
+                  <a href="{{ route('people.create') }}" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
                 </div>
                 <div class="illustration-blank">
-                  <img src="/img/people/blank.svg">
+                  <img src="{{ asset('/img/people/blank.svg') }}">
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@
                 @foreach($contacts as $contact)
 
                 <li class="people-list-item">
-                  <a href="/people/{{ $contact->id }}">
+                  <a href="{{ route('people.show', ['people' => $contact->id]) }}">
                     <span class="people-list-item-name">
                       {{ $contact->getCompleteName() }}
                     </span>
@@ -72,7 +72,7 @@
             </div>
 
             <div class="col-xs-12 col-sm-3 sidebar">
-              <a href="/people/add" class="btn btn-primary sidebar-cta">
+              <a href="{{ route('people.create') }}" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
               <ul>
@@ -83,7 +83,7 @@
                   </li>
                 @else
                   <li>
-                    <a href="/people?sort=lastnameAZ">{{ trans('people.people_list_lastnameAZ') }}</a>
+                    <a href="{{ route('people.index') }}?sort=lastnameAZ">{{ trans('people.people_list_lastnameAZ') }}</a>
                   </li>
                 @endif
 
@@ -93,7 +93,7 @@
                   </li>
                 @else
                   <li>
-                    <a href="/people?sort=lastnameZA">{{ trans('people.people_list_lastnameZA') }}</a>
+                    <a href="{{ route('people.index') }}?sort=lastnameZA">{{ trans('people.people_list_lastnameZA') }}</a>
                   </li>
                 @endif
 
@@ -103,7 +103,7 @@
                   </li>
                 @else
                   <li>
-                    <a href="/people?sort=firstnameAZ">{{ trans('people.people_list_firstnameAZ') }}</a>
+                    <a href="{{ route('people.index') }}?sort=firstnameAZ">{{ trans('people.people_list_firstnameAZ') }}</a>
                   </li>
                 @endif
 
@@ -113,7 +113,7 @@
                   </li>
                 @else
                   <li>
-                    <a href="/people?sort=firstnameZA">{{ trans('people.people_list_firstnameZA') }}</a>
+                    <a href="{{ route('people.index') }}?sort=firstnameZA">{{ trans('people.people_list_firstnameZA') }}</a>
                   </li>
                 @endif
               </ul>

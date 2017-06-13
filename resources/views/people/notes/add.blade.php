@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/people/{{ $contact->id }}/note/save">
+            <form method="POST" action="{{ route('people.notes.store', ['people' => $contact->id]) }}">
               {{ csrf_field() }}
 
               @include('partials.errors')
@@ -46,7 +46,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.notes_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', ['people' => $contact->id]) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

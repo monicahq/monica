@@ -6,7 +6,7 @@
 
   @if ($contact->getNumberOfKids() == 0)
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/kid/add">{{ trans('people.kids_blank_cta') }}</a>
+      <a href="{{ route('people.dashboard.kid.add', ['people' => $contact->id]) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
   @else
     <ul class="people-list">
@@ -18,14 +18,16 @@
         ({{ $kid->getAge() }})
         @endif
 
-        <a href="/people/{{ $contact->id }}/kid/{{ $kid->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-        <a href="/people/{{ $contact->id }}/kid/{{ $kid->id }}/delete" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
+
+
+        <a href="{{ route('people.dashboard.kid.edit', ['people' => $contact->id, 'kid' => $kid->id]) }}" class="action-link">{{ trans('app.edit') }}</a>
+        <a href="{{ route('people.dashboard.kid.delete', ['people' => $contact->id, 'kid' => $kid->id]) }}" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
       </li>
       @endforeach
     </ul>
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/kid/add">{{ trans('people.kids_blank_cta') }}</a>
+      <a href="{{ route('people.dashboard.kid.add', ['people' => $contact->id]) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
 
   @endif

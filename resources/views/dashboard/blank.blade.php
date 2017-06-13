@@ -12,10 +12,10 @@
             <div class="col-xs-12">
               <h3>{{ trans('dashboard.blank_title') }}</h3>
               <div class="cta-blank">
-                <a href="/people/add" class="btn btn-primary">{{ trans('dashboard.blank_cta') }}</a>
+                <a href="{{ route('people.create') }}" class="btn btn-primary">{{ trans('dashboard.blank_cta') }}</a>
               </div>
               <div class="illustration-blank">
-                <img src="/img/people/blank.svg">
+                <img src="{{ asset('/img/people/blank.svg') }}">
               </div>
             </div>
           </div>
