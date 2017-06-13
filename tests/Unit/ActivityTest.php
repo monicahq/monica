@@ -4,11 +4,8 @@ namespace Tests\Unit;
 
 use App\Activity;
 use Carbon\Carbon;
-use Tests\TestCase;
-use App\ActivityType;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {
