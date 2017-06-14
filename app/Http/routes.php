@@ -84,6 +84,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Debt
         Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
+        Route::get('/people/{people}/debt/{debtId}/edit', ['as' => '.debt.edit', 'uses' => 'PeopleController@editDebt']);
+        Route::post('/people/{people}/debt/{debtId}/update', ['as' => '.debt.update', 'uses' => 'PeopleController@updateDebt']);
         Route::post('/people/{people}/debt/store', 'PeopleController@storeDebt');
         Route::get('/people/{people}/debt/{debtId}/delete', 'PeopleController@deleteDebt');
     });

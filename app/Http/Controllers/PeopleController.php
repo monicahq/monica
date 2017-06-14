@@ -1504,6 +1504,22 @@ class PeopleController extends Controller
         return view('people.debt.add', $data);
     }
 
+    public function editDebt(Request $request, $contactId, $debtId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $debt = Debt::findOrFail($debtId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($debt->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        return view('people.debt.edit', compact('debt', 'contact'));
+    }
+
     /**
      * Actually store the debt.
      * @param  Request $request
@@ -1536,6 +1552,38 @@ class PeopleController extends Controller
         $contact->logEvent('debt', $debt->id, 'create');
 
         $request->session()->flash('success', trans('people.debt_add_success'));
+
+        return redirect('/people/' . $contact->id);
+    }
+
+    /**
+     * Update stored debt.
+     * @param  Request $request
+     * @param  int $contactId
+     * @param  int $debtId
+     */
+    public function updateDebt(Request $request, $contactId, $debtId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $debt = Debt::findOrFail($debtId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($debt->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        $debt->in_debt = $request->input('in-debt');
+        $debt->amount = $request->input('amount');
+        $debt->reason = $request->input('reason');
+
+        $debt->save();
+
+        $contact->logEvent('debt', $debt->id, 'update');
+
+        $request->session()->flash('success', trans('people.debt_edit_success'));
 
         return redirect('/people/' . $contact->id);
     }
