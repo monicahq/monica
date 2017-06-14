@@ -1574,14 +1574,14 @@ class PeopleController extends Controller
         if ($debt->contact_id !== $contact->id) {
             return redirect()->route('people.index');
         }
-        
+
         $debt->in_debt = $request->input('in-debt');
         $debt->amount = $request->input('amount');
         $debt->reason = $request->input('reason');
 
         $debt->save();
 
-        $contact->logEvent('debt', $debt->id, 'edit');
+        $contact->logEvent('debt', $debt->id, 'update');
 
         $request->session()->flash('success', trans('people.debt_edit_success'));
 
