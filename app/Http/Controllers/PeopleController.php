@@ -918,6 +918,57 @@ class PeopleController extends Controller
     }
 
     /**
+     * @param int $contactId
+     * @param int $noteId
+     * @return \Illuminate\View\View
+     */
+    public function editNote($contactId, $noteId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $note = Note::findOrFail($noteId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($note->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        return view('people.notes.edit', compact('contact', 'note'));
+    }
+
+    /**
+     * Update a note
+     * @param Request $request
+     * @param int $contactId
+     * @param int $noteId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateNote(Request $request, $contactId, $noteId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $note = Note::findOrFail($noteId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($note->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        $note->body = $request->input('body');
+        $note->save();
+
+        $contact->logEvent('note', $note->id, 'update');
+
+        $request->session()->flash('success', trans('people.notes_edit_success'));
+
+        return redirect('/people/' . $contact->id);
+    }
+
+    /**
      * Delete the note.
      *
      * @param  Request $request
