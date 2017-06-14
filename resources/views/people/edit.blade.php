@@ -135,12 +135,6 @@
                 <input class="form-control" name="twitter" value="{{ $contact->getTwitter() }}" placeholder="https://twitter.com/john.doe">
               </div>
 
-              {{-- LinkedIn --}}
-              <div class="form-group">
-                <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
-                <input class="form-control" name="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
-              </div>
-
               {{-- Birthdate --}}
               <fieldset class="form-group dates">
 

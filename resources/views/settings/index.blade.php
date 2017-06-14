@@ -112,7 +112,6 @@
               <option value='Europe/Amsterdam' {{ (Auth::user()->timezone == 'Europe/Amsterdam')?'selected':'' }}>(UTC+01:00) Amsterdam</option>
               <option value='Europe/Belgrade' {{ (Auth::user()->timezone == 'Europe/Belgrade')?'selected':'' }}>(UTC+01:00) Belgrade</option>
               <option value='Europe/Berlin' {{ (Auth::user()->timezone == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Berlin</option>
-              <option value='Europe/Bern' {{ (Auth::user()->timezone == 'Europe/Bern')?'selected':'' }}>(UTC+01:00) Bern</option>
               <option value='Europe/Bratislava' {{ (Auth::user()->timezone == 'Europe/Bratislava')?'selected':'' }}>(UTC+01:00) Bratislava</option>
               <option value='Europe/Brussels' {{ (Auth::user()->timezone == 'Europe/Brussels')?'selected':'' }}>(UTC+01:00) Brussels</option>
               <option value='Europe/Budapest' {{ (Auth::user()->timezone == 'Europe/Budapest')?'selected':'' }}>(UTC+01:00) Budapest</option>
