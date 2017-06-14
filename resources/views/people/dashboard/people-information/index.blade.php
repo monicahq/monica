@@ -70,16 +70,6 @@
         <a href="{{ $contact->getTwitter() }}">Twitter</a>
         @endif
       </li>
-
-      {{-- LinkedIn --}}
-      <li>
-        <i class="fa fa-linkedin-square"></i>
-        @if (is_null($contact->getLinkedin()))
-        {{ trans('people.information_no_linkedin_defined') }}
-        @else
-        <a href="{{ $contact->getLinkedin() }}">LinkedIn</a>
-        @endif
-      </li>
     </ul>
   </div>
 

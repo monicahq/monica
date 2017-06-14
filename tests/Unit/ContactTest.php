@@ -537,6 +537,42 @@ class ContactTest extends TestCase
         );
     }
 
+    public function test_getJob_returns_null()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getJob());
+    }
+
+    public function test_get_job_returns_job_if_defined()
+    {
+        $contact = new Contact;
+        $contact->job = 'actor';
+
+        $this->assertEquals(
+            'actor',
+            $contact->getJob()
+        );
+    }
+
+    public function test_getCompany_returns_null()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getCompany());
+    }
+
+    public function test_get_company_returns_company_if_defined()
+    {
+        $contact = new Contact;
+        $contact->company = 'Hollywood';
+
+        $this->assertEquals(
+            'Hollywood',
+            $contact->getCompany()
+        );
+    }
+
     public function testGetPhoneReturnsNullIfPhoneIsUndefined()
     {
         $contact = new Contact;

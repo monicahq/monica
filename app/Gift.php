@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Kid;
+use App\SignificantOther;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -77,5 +79,22 @@ class Gift extends Model
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    public function getWhoIsItFor()
+    {
+        if (is_null($this->about_object_type)) {
+            return null;
+        }
+
+        if ($this->about_object_type == 'kid') {
+            $kid = Kid::findOrFail($this->about_object_id);
+            return $kid->getFirstName();
+        }
+
+        if ($this->about_object_type == 'significantOther') {
+            $so = SignificantOther::findOrFail($this->about_object_id);
+            return $so->getName();
+        }
     }
 }
