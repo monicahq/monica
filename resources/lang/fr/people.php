@@ -58,6 +58,9 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
+    'information_edit_facebook' => 'Profil Facebook (optionel)',
+    'information_edit_twitter' => 'Profil Twitter (optionel)',
+    'information_edit_linkedin' => 'Profil LinkedIn (optionel)',
     'information_edit_street' => 'Rue (optionnel)',
     'information_edit_province' => 'Province (optionnel)',
     'information_edit_postalcode' => 'Code postal (optionnel)',
@@ -72,13 +75,23 @@ return [
     'information_no_address_defined' => 'Aucune adresse définie',
     'information_no_email_defined' => 'Aucun courriel défini',
     'information_no_phone_defined' => 'Aucun numéro de téléphone défini',
+    'information_no_facebook_defined' => 'Aucun Facebook défini',
+    'information_no_twitter_defined' => 'Aucun Twitter défini',
+    'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
+    'information_no_work_defined' => 'No work information defined',
+    'information_work_at' => 'at :company',
+    'work_add_cta' => 'Update work information',
+    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_title' => 'Update :name\'s job information',
+    'work_edit_job' => 'Job title (optional)',
+    'work_edit_company' => 'Company (optional)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu\'un dans la famille :family a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Mettre à jour',
+    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
     'food_preferencies_title' => 'Préférences alimentaires',
     'food_preferencies_cta' => 'Ajouter',
 
@@ -260,8 +273,9 @@ return [
     'debt_add_title' => 'Gestion des dettes',
     'debt_add_you_owe' => 'Vous devez :name',
     'debt_add_they_owe' => ':name vous doit',
-    'debt_add_amount' => 'la somme de (en dollars)',
+    'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
+    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit'
 
 ];

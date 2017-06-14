@@ -22,7 +22,7 @@ class EntryTest extends TestCase
     public function testGetPostReturnsPost()
     {
         $entry = new Entry;
-        $entry->post = encrypt('This is a test');
+        $entry->post = 'This is a test';
 
         $this->assertEquals(
             'This is a test',
@@ -40,7 +40,7 @@ class EntryTest extends TestCase
     public function testGetTitleReturnsTitle()
     {
         $entry = new Entry;
-        $entry->title = encrypt('This is a test');
+        $entry->title = 'This is a test';
 
         $this->assertEquals(
             'This is a test',

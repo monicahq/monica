@@ -2,9 +2,10 @@
 
 namespace App;
 
+use App\Kid;
+use App\SignificantOther;
 use App\Helpers\DateHelper;
-use App\Events\Gift\GiftCreated;
-use App\Events\Gift\GiftDeleted;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Gift extends Model
@@ -13,10 +14,31 @@ class Gift extends Model
         'date_offered',
     ];
 
-    protected $events = [
-        'created' => GiftCreated::class,
-        'deleted' => GiftDeleted::class,
-    ];
+    /**
+     * Get the account record associated with the gift.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the contact record associated with the gift.
+     */
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
+    }
+
+    public function scopeOffered(Builder $query)
+    {
+        return $query->where('has_been_offered', 'true');
+    }
+
+    public function scopeIsIdea(Builder $query)
+    {
+        return $query->where('is_an_idea', 'true');
+    }
 
     public function getName()
     {
@@ -24,7 +46,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->name);
+        return $this->name;
     }
 
     public function getUrl()
@@ -33,7 +55,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->url);
+        return $this->url;
     }
 
     public function getComment()
@@ -42,7 +64,7 @@ class Gift extends Model
             return null;
         }
 
-        return decrypt($this->comment);
+        return $this->comment;
     }
 
     public function getValue()
@@ -57,5 +79,22 @@ class Gift extends Model
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    public function getWhoIsItFor()
+    {
+        if (is_null($this->about_object_type)) {
+            return null;
+        }
+
+        if ($this->about_object_type == 'kid') {
+            $kid = Kid::findOrFail($this->about_object_id);
+            return $kid->getFirstName();
+        }
+
+        if ($this->about_object_type == 'significantOther') {
+            $so = SignificantOther::findOrFail($this->about_object_id);
+            return $so->getName();
+        }
     }
 }

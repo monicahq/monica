@@ -53,10 +53,10 @@ class JournalController extends Controller
 
         $entry = new Entry;
         $entry->account_id = Auth::user()->account_id;
-        $entry->post = encrypt($request->input('entry'));
+        $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {
-          $entry->title = encrypt($request->input('title'));
+          $entry->title = $request->input('title');
         }
 
         $entry->save();
