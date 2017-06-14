@@ -205,6 +205,12 @@ class PeopleController extends Controller
             $contact->twitter_profile_url = null;
         }
 
+        if ($request->input('linkedin') != '') {
+            $contact->linkedin_profile_url = $request->input('linkedin');
+        } else {
+            $contact->linkedin_profile_url = null;
+        }
+
         if ($request->input('street') != '') {
             $contact->street = $request->input('street');
         } else {
