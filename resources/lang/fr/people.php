@@ -276,6 +276,8 @@ return [
     'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
+    'debt_edit_update_cta' => 'Update debt',
+    'debt_edit_success' => 'The debt has been updated successfully',
     'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit'
 
 ];
