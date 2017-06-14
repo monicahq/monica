@@ -1,6 +1,9 @@
 2017-06-14
 ----------
 
+New features:
+* Add support for South African ZAR currency.
+
 Improvements:
 * Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
 
