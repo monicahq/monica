@@ -407,9 +407,9 @@ Docker. The choice is yours.
   offered on the paid plan on `.com`.
   * This version will be completely free with no strings attached and you will
   be in complete control.
-* There will be a Patreon account for those who still want to support the tool.
-Keep in mind that the best way to support it is to actually talk about it around
-you.
+* There is a [Patreon account](https://www.patreon.com/monicahq) for those who
+still want to support the tool. Keep in mind that the best way to support it is
+to actually talk about it around you.
 
 There is currently not, and will never be, ads on the platform. I will never
 resell your data on `.com`. I'm like you: I hate big corporations that do not
@@ -454,6 +454,11 @@ around your project, you've won - because developers are very powerful
 influencers. Developers will create apps around your product, talk about it on
 forums, and tell about the project to their friends. Cherish the developers -
 users will follow.
+
+### Patreon
+
+You can support the development of this tool
+[on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
 
 ## License
 
