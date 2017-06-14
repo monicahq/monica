@@ -78,6 +78,6 @@ class JournalController extends Controller
         $entry->delete();
         $request->session()->flash('success', trans('journal.entry_delete_success'));
 
-        return redirect('/journal');
+        return redirect()->route('journal.index');
     }
 }
