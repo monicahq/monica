@@ -1,3 +1,9 @@
+2017-06-14
+----------
+
+Improvements:
+* Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
+
 2017-06-13
 ----------
 
