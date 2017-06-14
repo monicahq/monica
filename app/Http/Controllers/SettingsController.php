@@ -47,19 +47,13 @@ class SettingsController extends Controller
               ->withErrors($validator);
         }
 
-        $email = $request->input('email');
-        $timezone = $request->input('timezone');
-        $layout = $request->input('layout');
-        $locale = $request->input('locale');
-        $currency = $request->input('currency_id');
-
         $user = Auth::user();
-        $user->email = $email;
-        $user->timezone = $timezone;
-        $user->fluid_container = $layout;
-        $user->metric = $layout;
-        $user->locale = $locale;
-        $user->currency_id = $currency;
+        $user->email = $request->email;
+        $user->timezone = $request->timezone;
+        $user->fluid_container = $request->layout;
+        $user->metric = $request->layout;
+        $user->locale = $request->locale;
+        $user->currency_id = $request->currency_id;
         $user->save();
 
         return redirect('settings')->with('status', trans('settings.settings_success'));
