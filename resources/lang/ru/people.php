@@ -226,9 +226,12 @@ return [
 
     // notes
     'notes_add_success' => 'Заметка была добавлена',
+    'notes_edit_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'Заметка была удалена',
     'notes_add_title' => 'Добавить заметку о :name',
     'notes_add_cta' => 'Добавить заметку',
+    'notes_edit_title' => 'Edit note about :name',
+    'notes_edit_cta' => 'Save note',
     'notes_written_on' => 'Дата создания: :date',
     'notes_add_one_more' => 'Добавить заметку',
     'notes_title' => 'Заметки',

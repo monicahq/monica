@@ -34,7 +34,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Notes
         Route::get('/people/{people}/note/add', 'PeopleController@addNote');
+        Route::get('/people/{people}/note/{noteId}/edit', ['as' => '.note.edit', 'uses' => 'PeopleController@editNote']);
+        Route::post('/people/{people}/note/{noteId}/update', ['as' => '.note.update', 'uses' => 'PeopleController@updateNote']);
         Route::post('/people/{people}/note/save', 'PeopleController@storeNote');
+        Route::post('/people/{people}/notes/store', 'PeopleController@storeNote');
+        Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Food preferencies
         Route::get('/people/{people}/food', ['as' => '.food', 'uses' => 'PeopleController@editFoodPreferencies']);
@@ -54,8 +58,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/significantother/{significantother}/save', 'PeopleController@updateSignificantOther');
         Route::get('/people/{people}/significantother/{significantother}/delete', 'PeopleController@deleteSignificantOther');
 
-        Route::post('/people/{people}/notes/store', 'PeopleController@storeNote');
-        Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Activities
         Route::get('/people/{people}/activities/add', ['as' => '.activities.add', 'uses' => 'PeopleController@addActivity']);

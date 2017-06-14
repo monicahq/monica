@@ -226,9 +226,12 @@ return [
 
     // notes
     'notes_add_success' => 'The note has been added successfully',
+    'notes_edit_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_title' => 'Add a note about :name',
     'notes_add_cta' => 'Add note',
+    'notes_edit_title' => 'Edit note about :name',
+    'notes_edit_cta' => 'Save note',
     'notes_written_on' => 'Written on :date',
     'notes_add_one_more' => 'Add another note',
     'notes_title' => 'Notes',
