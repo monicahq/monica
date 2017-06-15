@@ -174,8 +174,9 @@ you can pull the repository and start setup Monica.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create a database called `monica`.
-1. `php artisan migrate` to run all migrations.
+1. Create a database called `monica`
+1. `php artisan key:generate` to generate a random APP_KEY
+1. `php artisan migrate` to run all migrations
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
 activity types.
