@@ -25,7 +25,7 @@ class User extends Authenticatable
      * Eager load account with every user.
      */
     protected $with = [
-        'account', 'currency'
+        'account'
     ];
 
     /**
