@@ -52,7 +52,7 @@
           </div>
           <div class="row">
 
-            <div class="col-sm-9">
+            <div class="col-md-9">
 
               @foreach ($entries as $entry)
                 <div class="row entry-row">
@@ -77,7 +77,7 @@
               @endforeach
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-md-3">
               <a class="btn btn-primary btn-add-people" href="/journal/add">{{ trans('journal.journal_add') }}</a>
             </div>
 

@@ -25,7 +25,7 @@
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
 
-      <div class="col-xs-12 col-sm-3 sidebar-menu">
+      <div class="col-xs-12 col-md-3 sidebar-menu">
         <ul>
           <li class="selected">
             {{ trans('settings.sidebar_settings') }}
@@ -36,7 +36,7 @@
         </ul>
       </div>
 
-      <div class="col-xs-12 col-sm-9">
+      <div class="col-xs-12 col-md-9">
 
         @include('partials.errors')
 

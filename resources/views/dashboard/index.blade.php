@@ -27,7 +27,7 @@
 
         <div class="row">
 
-          <div class="col-xs-12 col-sm-9">
+          <div class="col-xs-12 col-md-9">
 
             <div class="dashboard-box dashboard-stat">
               <h2>{{ trans('dashboard.statistics_title') }}</h2>
@@ -260,7 +260,7 @@
           </div>
 
           {{-- Sidebar --}}
-          <div class="col-xs-12 col-sm-3 sidebar">
+          <div class="col-xs-12 col-md-3 sidebar">
 
             <!-- Add activity  -->
             <div class="sidebar-cta hidden-xs-down">
