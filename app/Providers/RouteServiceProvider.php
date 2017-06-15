@@ -85,7 +85,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('kid', function($value, $route) {
             return  Kid::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('child_of_contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
                 ->firstOrFail();
         });
