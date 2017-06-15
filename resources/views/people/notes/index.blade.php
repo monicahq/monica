@@ -27,6 +27,8 @@
           {{ $note->getBody() }}
           <span class="note-date">
             {{ $note->getCreatedAt(Auth::user()->locale) }}
+            <a href="{{ route('people.note.edit', ['people' => $contact->id, 'noteId' => $note->id]) }}">{{ trans('app.edit') }}</a>
+            |
             <a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
           </span>
         </li>

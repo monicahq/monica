@@ -41,6 +41,9 @@
           @endif
         </div>
         <div class="table-cell list-actions">
+          <a href="{{ route('people.debt.edit', ['people' => $contact->id, 'debtId' => $debt->id]) }}">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </a>
           <a href="/people/{{ $contact->id }}/debt/{{ $debt->id }}/delete" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>

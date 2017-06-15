@@ -95,6 +95,7 @@ APP_KEY=SomeRandomString
 APP_URL=http://localhost
 APP_LOG=daily
 APP_EMAIL_NEW_USERS_NOTIFICATION=EmailThatWillSendNotificationsForNewUser
+APP_DEFAULT_TIMEZONE=America/New_York
 APP_DISABLE_SIGNUP=false
 
 DB_CONNECTION=mysql
