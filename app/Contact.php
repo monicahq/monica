@@ -655,7 +655,7 @@ class Contact extends Model
      *
      * @param  string $objectType Contact, Activity, Kid,...
      * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'edit', 'delete'
+     * @param  string $natureOfOperation 'add', 'update', 'delete'
      * @return int                          Id of the created event
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)

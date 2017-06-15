@@ -1,3 +1,14 @@
+2017-06-14
+----------
+
+New features:
+* Add ability to edit a note.
+* Add ability to edit a debt.
+* Add support for South African ZAR currency.
+
+Improvements:
+* Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
+
 2017-06-13
 ----------
 
