@@ -2,6 +2,7 @@
 
 ARTISAN="php /var/www/monica/artisan"
 
+${ARTISAN} key:generate
 ${ARTISAN} migrate --force
 ${ARTISAN} storage:link
 ${ARTISAN} db:seed --class ActivityTypesTableSeeder

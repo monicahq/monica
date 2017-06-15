@@ -78,6 +78,13 @@ return [
     'information_no_facebook_defined' => 'No Facebook defined',
     'information_no_twitter_defined' => 'No Twitter defined',
     'information_no_linkedin_defined' => 'No LinkedIn defined',
+    'information_no_work_defined' => 'No work information defined',
+    'information_work_at' => 'at :company',
+    'work_add_cta' => 'Update work information',
+    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_title' => 'Update :name\'s job information',
+    'work_edit_job' => 'Job title (optional)',
+    'work_edit_company' => 'Company (optional)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferences have been saved',
@@ -219,9 +226,12 @@ return [
 
     // notes
     'notes_add_success' => 'The note has been added successfully',
+    'notes_edit_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_title' => 'Add a note about :name',
     'notes_add_cta' => 'Add note',
+    'notes_edit_title' => 'Edit note about :name',
+    'notes_edit_cta' => 'Save note',
     'notes_written_on' => 'Written on :date',
     'notes_add_one_more' => 'Add another note',
     'notes_title' => 'Notes',
@@ -269,5 +279,7 @@ return [
     'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
+    'debt_edit_update_cta' => 'Update debt',
+    'debt_edit_success' => 'The debt has been updated successfully',
     'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
 ];

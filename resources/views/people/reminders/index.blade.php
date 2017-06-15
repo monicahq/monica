@@ -37,7 +37,7 @@
       <tbody>
         @foreach($contact->getReminders() as $reminder)
           <tr>
-            <td class="date">{{ $reminder->getNextExpectedDate() }}</td>
+            <td class="date">{{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}</td>
 
             <td class="date">
               @if ($reminder->frequency_type != 'one_time')

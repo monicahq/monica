@@ -5,6 +5,7 @@ namespace App;
 use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +58,7 @@ class Contact extends Model
     /**
      * Get the debt records associated with the contact.
      */
-    public function debt()
+    public function debts()
     {
         return $this->hasMany('App\Debt');
     }
@@ -126,6 +127,29 @@ class Contact extends Model
     public function tasks()
     {
         return $this->hasMany('App\Task');
+    }
+
+    /**
+     * Sort the contacts according a given criteria
+     * @param Builder $builder
+     * @param string $criteria
+     * @return Builder
+     */
+    public function scopeSortedBy(Builder $builder, $criteria)
+    {
+        switch ($criteria) {
+            case 'firstnameAZ':
+                return $builder->orderBy('first_name', 'asc');
+            case 'firstnameZA':
+                return $builder->orderBy('first_name', 'desc');
+            case 'lastnameAZ':
+                return $builder->orderBy('last_name', 'asc');
+            case 'lastnameZA':
+                return $builder->orderBy('last_name', 'desc');
+            default:
+                return $builder->orderBy('first_name', 'asc');
+        }
+
     }
 
     /**
@@ -264,6 +288,34 @@ class Contact extends Model
         }
 
         return $this->phone_number;
+    }
+
+    /**
+     * Get the work information as a string.
+     *
+     * @return string or null
+     */
+    public function getJob()
+    {
+        if (is_null($this->job)) {
+            return null;
+        }
+
+        return $this->job;
+    }
+
+    /**
+     * Get the company the person is working at as a string.
+     *
+     * @return string or null
+     */
+    public function getCompany()
+    {
+        if (is_null($this->company)) {
+            return null;
+        }
+
+        return $this->company;
     }
 
     /**
@@ -603,7 +655,7 @@ class Contact extends Model
      *
      * @param  string $objectType Contact, Activity, Kid,...
      * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'edit', 'delete'
+     * @param  string $natureOfOperation 'add', 'update', 'delete'
      * @return int                          Id of the created event
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
@@ -1064,11 +1116,11 @@ class Contact extends Model
 
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
-     * @return int amount
+     * @return boolean
      */
     public function hasDebt()
     {
-        return $this->debts !== null;
+        return $this->debts()->count() !== 0;
     }
 
     /**

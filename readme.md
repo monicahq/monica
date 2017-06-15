@@ -10,20 +10,10 @@
    * [Purpose](#purpose)
    * [Who is it for?](#who-is-it-for)
    * [What Monica isn't](#what-monica-isnt)
-* [Vision, goals and strategy](#vision-goals-and-strategy)
-   * [Vision](#vision)
-   * [Goals](#goals)
-   * [Strategy](#strategy)
-   * [Why Open Source?](#why-open-source)
 * [Get started](#get-started)
-   * [Running with Docker](#running-with-docker)
-      * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
-      * [Use docker-compose to build and run your own image](#use-docker-compose-to-build-and-run-your-own-image)
-      * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
-   * [Setup the project on your server](#setup-the-project-on-your-server)
    * [Update your server](#update-your-server)
-   * [Deploy on Heroku](#deploy-on-heroku)
    * [Importing vCards (CLI only)](#importing-vcards-cli-only)
+   * [Importing SQL from the exporter feature](#importing-sql-from-the-exporter-feature)
 * [Contribute as a developer](#contribute-as-a-developer)
    * [Setup Monica](#setup-monica)
    * [Setup the testing environment](#setup-the-testing-environment)
@@ -37,13 +27,21 @@
    * [Statistics](#statistics)
 * [Contributing](#contributing)
    * [How the community can help](#how-the-community-can-help)
+* [Vision, goals and strategy](#vision-goals-and-strategy)
+   * [Vision](#vision)
+   * [Goals](#goals)
+   * [Strategy](#strategy)
+   * [Monetization](#monetization)
+      * [The API](#the-api)
+   * [Why Open Source?](#why-open-source)
 * [License](#license)
 
 ## Introduction
 
-Monica is an open-source web application to manage your personal relationships.
-Think of it as a CRM for your friends or family. This is what it currently
-looks like:
+Monica is an open-source web application to organize the interactions with your
+loved ones. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management)
+(a popular tool used in companies) for your friends or family. This is what it
+currently looks like:
 
 ![screenshot of the application](https://app.monicahq.com/img/screenshot.png)
 
@@ -78,250 +76,37 @@ social interactions.
 
 Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
-won't guess what you want to do. In fact it's pretty dumb: it will send you
+won't guess what you want to do. It's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
-
-## Vision, goals and strategy
-
-We want to use technology in a way that does not harm human relationships, like
-big social networks can do.
-
-### Vision
-
-Monica's vision is to **help people have more meaningful relationships**.
-
-### Goals
-
-We want to provide a platform that is:
-
-* **really easy to use**: we value simplicity over anything else.
-* **open-source**: we believe everyone should be able to contribute to this
-tool, and see for themselves that nothing nasty is done behind the scenes that
-would go against the best interests of the users. We also want to leverage the
-community to build attractive features and do things that would not be possible
-otherwise.
-* **easy to contribute to**: we want to keep the codebase as simple as possible.
-This has two big advantages: anyone can contribute, and it's easily maintainable
-on the long run.
-* **available everywhere**: Monica should be able to run on any desktop OS
-or mobile phone easily. This will be made possible by making sure the tool is
-easily installable by anyone who wants to either contribute or host the platform
-themselves.
-* **robust API**: the platform will have a robust API so it can communicate both
-ways to other systems.
-
-### Strategy
-
-To reach this ambitious vision, we'll use technology in a way that does not harm
-human relationships, like big social networks can do.
-
-We think Monica has to become a platform more than an application, so people can
-build on it.
-
-Here what we should do in order to realize our vision:
-* Build an API in order to create an ecosystem. The ecosystem is what will make
-Monica a successful platform.
-* Build importers and exporters of data. We don't want to have any vendor
-lock-ins. Data is the property of the users and they should be able to do
-whatever they want with it.
-* Create mobile apps.
-* Build great reports so people can have interesting insights.
-* Create a smart recommandation system for gifts. For instance, if my nephew is
-soon 6 years old in a month, I will be able to receive an email with a list of
-5 potential gifts I can offer to a 6 year old boy.
-* Add more ways of being reminded: Telegram, SMS,...
-* Create Chrome extensions to load Monica's data in a sidebar when viewing a
-contact on Facebook, letting us take additional notes as we see them on Facebook.
-* Add modules that can be activated on demand. One would be for instance, for
-the people who wants to use Monica for dating purposes (yes, we've received this
-kind of feedback already).
-* Add functional and unit tests so the main features are tested. Stability is
-key.
-
-### Why Open Source?
-
-Why is Monica open source? Is it risky? Will someone steal my code and do a
-for-profit business that will kill my own business? Why reveal my strategy to
-the world? This is the kind of questions we've received by email already.
-
-The answer to these questions is simple: yes, you can fork the project and do a
-competing project, make money out of it (even if the license is not super
-friendly to achieve that) and I'll never know. But it's ok, I don't mind.
-
-I wanted to open source this project for several reasons:
-
-* I believe, perhaps naively, that this project can really change people's
-lives. While I aim to make money out of it, I also want everyone to benefit
-from it. Open sourcing a project like this will help Monica become much bigger
-than what I imagine myself. While I strongly believe that the project has to
-follow the vision I have for it, I need to be humble enough to know that ideas
-come from everywhere, and people have much better ideas than what I can have.
-* You can't do something great alone. While Monica could become a company and
-hire a bunch of super smart people to work on it, you can't beat the manpower of
-an entire community. Open sourcing the product means bugs will be fixed faster,
-features will be developed faster, and more importantly, developers will be able
-to contribute to the project that changes either their own lives, or other
-people's lives.
-* Doing things in a transparent manner, like it's the case when you open source
-something, lead to formidable things. People respect the project more. You can't
-hide nasty piece of code. You can't do things behind the back of your users.
-It's a major driving force that motivates you to keep doing what's right.
-* I believe that once you have created a community of passionate developers
-around your project, you've won - because developers are very powerful
-influencers. Developers will create apps around your product, talk about it on
-forums, and tell about the project to their friends. Cherish the developers -
-users will follow.
 
 ## Get started
 
-There are currently three ways of getting started with Monica.
-1. You can use our hosted-version (this is the simplest way to use the product).
-1. You can run it with Docker
-1. You can deploy to Heroku
+There are multiple ways of getting started with Monica.
+
+1. You can use our hosted-version (this is the simplest way to use the product)
+on [https://monicahq.com](https://monicahq.com).
+1. You can run it with Docker ([instructions](docs/installation/docker.md)).
+1. You can install it on your server
+([generic instructions](docs/installation/generic.md)).
+1. You can install it from scratch on Debian Stretch
+([instructions](docs/installation/debian.md)).
+1. You can deploy to Heroku ([instructions](docs/installation/heroku.md)).
 
 You have the liberty to clone the repository and set it up yourself on any
 hosting provider, for free. I'm just asking that you don't try to make money out
 of it yourself.
-
-### Account on MonicaHQ.com
-
-We provide a hosted version of this application on https://monicahq.com.
-
-### Running with Docker
-
-You can use [Docker](https://www.docker.com) and
-[docker-compose](https://docs.docker.com/compose/) to pull or build
-and run a Monica image, complete with a self-contained MySQL database.
-This has the nice properties that you don't have to install lots of
-software directly onto your system, and you can be up and running
-quickly with a known working environment.
-
-Before you start, you need to get and edit a `.env` file. If you've already
-cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
-
-`$ cp .env.example .env`
-
-to create it. If not, you can fetch it from GitHub like:
-
-`$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env`
-
-Then open `.env` in an editor and update it for your own needs:
-
-- Set `APP_KEY` to a random 32-character string. For example, if you
-  have the `pwgen` utility installed, you could copy and paste the
-  output of `pwgen -s 32 1`.
-- Edit the `MAIL_*` settings to point to your own mailserver.
-
-Now select one of these methods to be up and running quickly:
-
-#### Use docker-compose to run a pre-built image
-
-This is the easiest and fastest way to try MonicaHQ! Use this process
-if you want to download the newest image from Docker Hub and run it
-with a pre-packaged MySQL database.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-```shell
-$ docker-compose pull
-$ docker-compose up
-```
-
-#### Use docker-compose to build and run your own image
-
-Use this process if you want to modify Monica source code and build
-your image to run.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-Then run:
-
-```shell
-$ docker-compose build
-$ docker-compose up
-```
-
-#### Use Docker directly to run with your own database
-
-Use this process if you're a developer and want complete control over
-your Monica container.
-
-Edit `.env` again to set the `DB_*` variables to match your
-database. Then run:
-
-```shell
-$ docker build -t monicahq/monicahq .
-$ docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
-# ...or...
-$ docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
-```
-
-Note that uploaded files, like avatars, will disappear when you
-restart the container. Map a volume to
-`/var/www/monica/storage/app/public` if you want that data to persist
-between runs. See `docker-compose.yml` for examples.
-
-### Setup the project on your server
-
-If you don't want to use Docker, the best way to setup the project is to use the
-same configuration that [Homestead](https://laravel.com/docs/5.3/homestead)
-uses. Basically, Monica depends on the following:
-
-* PHP 7.0+
-* MySQL, SQLite or Postgre
-* Git
-* Composer
-* Optional: Redis or Beanstalk
-
-The preferred OS distribution is Ubuntu 16.04, simply because all the
-development is made on it and we know it works. However, any OS that lets you
-install the above packages should work.
-
-Once the softwares above are installed, clone the repository and proceed as
-follow:
-
-1. `composer install` in the folder the repository has been cloned.
-1. `cp .env.example .env` to configure Monica.
-1. Update `.env` with your specific needs.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Create a database called `monica`.
-1. `php artisan migrate` to run all migrations.
-1. `php artisan storage:link` to enable avatar uploads for the contacts.
-1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-1. In order for the reminders to be sent (reminders are created inside the
-  application and associated to contacts), you need to setup a cron that runs
-  every minute with the following command `php artisan schedule:run`.
-
-**Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
-
-Monica can work with a queue mechanism to handle different events, so we don't
-block the main thread while processing stuff that can be run asynchronously,
-like sending emails. By default, Monica does not use a queue mechanism but can
-be setup to do so.
-
-There are three choices for the queue mechanism:
-* Database (this will use the database used by the application to act as a queue)
-* Redis
-* Beanstalk
-* Amazon SQS
-
-The simplest queue is the database driver. To set it up, simply change in your
-`.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
-
-To configure the other queues, refer to the
-[official Laravel documentation](https://laravel.com/docs/5.4/queues#driver-prerequisites)
-on the topic.
 
 ### Update your server
 
 There is no concept of releases at the moment. If you run the project locally,
 or if you have installed Monica on your own server, you need to follow these
 steps below to update it, **every single time**, or you will run into problems.
+
+1. Always make a backup of your data before upgrading.
+1. Check that your backup is valid.
+1. Read the [release notes](https://github.com/monicahq/monica/blob/master/CHANGELOG)
+to check for breaking changes.
+1. Run the following commands:
 
 ```
 git pull origin master
@@ -330,24 +115,6 @@ php artisan migrate
 ```
 
 That should be it.
-
-### Deploy on Heroku
-
-Monica can be deployed on Heroku using the button below:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-Please ensure to enter a custom `APP_KEY` when asked. Your Monica instance will
-utilise a [ClearDB Ignite plan](https://elements.heroku.com/addons/cleardb) by
-default. Additional environment variables, such as details of the mail server,
-can be added after setup through the Heroku interface.
-
-Monica doesn't require a lot of power - it means it will run on the free plan
-provided by Heroku.
-
-There is one issue with it though at the moment: you won't be able to upload
-photos to your contacts, as Heroku doesn't support storage. We'll need to fix
-this in the future.
 
 ### Importing vCards (CLI only)
 
@@ -363,6 +130,27 @@ be associated the new contacts to, and `{path}` being the path to a .vcf file.
 Example: `php artisan import:vcard john@doe.com ~/Downloads/contacts.vcf`
 
 The `.vcf` can contain as many contacts as you want.
+
+### Importing SQL from the exporter feature
+
+Monica allows you to export your data in SQL, under the Settings panel. When you
+export your data in SQL, you'll get a file called `monica.sql`.
+
+To import it into your own instance, you need to make sure that the database of
+your instance is completely empty (no tables, no data).
+
+Then, follow the steps:
+
+* `php artisan migrate`
+* `php artisan db:seed --class ActivityTypesTableSeeder`
+* `php artisan db:seed --class CountriesSeederTable`
+* Then import `monica.sql` into your database. Tools like phpmyadmin or Sequel
+Pro might help you with that.
+* Finally, sign in with the same credentials as the ones used on
+https://monicahq.com and you are good to go.
+
+There is one caveat with the SQL exporter: you can't get the photos you've
+uploaded for now.
 
 ## Contribute as a developer
 
@@ -388,6 +176,7 @@ you can pull the repository and start setup Monica.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create a database called `monica`.
+1. `php artisan key:generate` to generate a random APP_KEY
 1. `php artisan migrate` to run all migrations.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
@@ -464,7 +253,7 @@ as when Bootstrap changes version, a lot of changes are introduced.
 
 #### Email testing
 
-Emails are an important of Monica. Emails are still the most significant mean
+Emails are an important part of Monica. Emails are still the most significant mean
 of communication and people like receiving them when they are relevant. That
 being said, you will need to test emails to make sure they contain what they
 should contain.
@@ -528,17 +317,157 @@ There are several ways to help this project to move forward:
 * Unlike Fight Club, the best way to help is to actually talk about the project
 as much as you can.
 * You can answer questions in the issue tracker to help other community members.
-* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
- if you are looking to have an immediate impact on the project.
-* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
- These are issues that you can solve relatively easily.
- * If you are an advanced developer, you can try to tackle
- [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
- Beware though - they are harder to do and will require a lot of back and forth
- with the repository administrator in order to make sure we are going to the right
- direction with the product.
-* Finally, and most importantly, we are looking for people willing to write
- tests for the existing features.
+* If you are a developer:
+   * Read our [Contribution Guide](/CONTRIBUTING.md).
+   * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+     if you are looking to have an immediate impact on the project.
+   * Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+     These are issues that you can solve relatively easily.
+   * If you are an advanced developer, you can try to tackle
+     [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
+     Beware though - they are harder to do and will require a lot of back and
+     forth with the repository administrator in order to make sure we are going
+     to the right direction with the product.
+   * Finally, and most importantly, we are looking for people willing to write
+     tests for the existing features.
+
+## Vision, goals and strategy
+
+We want to use technology in a way that does not harm human relationships, like
+big social networks can do.
+
+### Vision
+
+Monica's vision is to **help people have more meaningful relationships**.
+
+### Goals
+
+We want to provide a platform that is:
+
+* **really easy to use**: we value simplicity over anything else.
+* **open-source**: we believe everyone should be able to contribute to this
+tool, and see for themselves that nothing nasty is done behind the scenes that
+would go against the best interests of the users. We also want to leverage the
+community to build attractive features and do things that would not be possible
+otherwise.
+* **easy to contribute to**: we want to keep the codebase as simple as possible.
+This has two big advantages: anyone can contribute, and it's easily maintainable
+on the long run.
+* **available everywhere**: Monica should be able to run on any desktop OS
+or mobile phone easily. This will be made possible by making sure the tool is
+easily installable by anyone who wants to either contribute or host the platform
+themselves.
+* **robust API**: the platform will have a robust API so it can communicate both
+ways to other systems.
+
+### Strategy
+
+To reach this ambitious vision, we'll use technology in a way that does not harm
+human relationships, like big social networks can do.
+
+We think Monica has to become a platform more than an application, so people can
+build on it.
+
+Here what we should do in order to realize our vision:
+* Build an API in order to create an ecosystem. The ecosystem is what will make
+Monica a successful platform.
+* Build importers and exporters of data. We don't want to have any vendor
+lock-ins. Data is the property of the users and they should be able to do
+whatever they want with it.
+* Create mobile apps.
+* Build great reports so people can have interesting insights.
+* Create a smart recommendation system for gifts. For instance, if my nephew is
+soon 6 years old in a month, I will be able to receive an email with a list of
+5 potential gifts I can offer to a 6 year old boy.
+* Add more ways of being reminded: Telegram, SMS,...
+* Create Chrome extensions to load Monica's data in a sidebar when viewing a
+contact on Facebook, letting us take additional notes as we see them on Facebook.
+* Add modules that can be activated on demand. One would be for instance, for
+the people who wants to use Monica for dating purposes (yes, we've received this
+kind of feedback already).
+* Add functional and unit tests so the main features are tested. Stability is
+key.
+
+### Monetization
+
+The big topic. Yes, we plan to make money out of this tool to sustain it on the
+long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab
+and we believe this kind of business model is inspiring, where everyone wins.
+
+* On https://monicahq.com, Monica will be offered in two versions:
+  * a free plan (called **Joe**):
+    * No limits of contacts
+    * Importers/exporters
+    * Email reminders
+  * a paid plan (called **Chandler**):
+    * Advanced features
+    * People who contribute to the GitHub repository (with a pull request that
+    adds value, that gets merged (not a typo fix, for instance) will also have
+    access to the Paid version for free.
+* You can also **run it yourself**. This is the **Ross** version. This is
+sometimes also called on-premise. Download the code, run it on Heroku, with
+Docker. The choice is yours.
+  * The downloadable version will always be the most complete version - the same
+  offered on the paid plan on `.com`.
+  * This version will be completely free with no strings attached and you will
+  be in complete control.
+* There is a [Patreon account](https://www.patreon.com/monicahq) for those who
+still want to support the tool. Keep in mind that the best way to support it is
+to actually talk about it around you.
+
+There is currently not, and will never be, ads on the platform. I will never
+resell your data on `.com`. I'm like you: I hate big corporations that do not
+have at heart the best thing for their users, even if they say otherwise. The only
+way, therefore, to sustain the development of the product is to actually make
+money in a good-old fashioned way.
+
+#### The API
+
+The API will be opened to everyone, for both on `.com` and on-premises.
+
+### Why Open Source?
+
+Why is Monica open source? Is it risky? Will someone steal my code and do a
+for-profit business that will kill my own business? Why reveal my strategy to
+the world? This is the kind of questions we've received by email already.
+
+The answer to these questions is simple: yes, you can fork the project and do a
+competing project, make money out of it (even if the license is not super
+friendly to achieve that) and I'll never know. But it's ok, I don't mind.
+
+I wanted to open source this project for several reasons:
+
+* I believe, perhaps naively, that this project can really change people's
+lives. While I aim to make money out of it, I also want everyone to benefit
+from it. Open sourcing a project like this will help Monica become much bigger
+than what I imagine myself. While I strongly believe that the project has to
+follow the vision I have for it, I need to be humble enough to know that ideas
+come from everywhere, and people have much better ideas than what I can have.
+* You can't do something great alone. While Monica could become a company and
+hire a bunch of super smart people to work on it, you can't beat the manpower of
+an entire community. Open sourcing the product means bugs will be fixed faster,
+features will be developed faster, and more importantly, developers will be able
+to contribute to the project that changes either their own lives, or other
+people's lives.
+* Doing things in a transparent manner, like it's the case when you open source
+something, lead to formidable things. People respect the project more. You can't
+hide nasty piece of code. You can't do things behind the back of your users.
+It's a major driving force that motivates you to keep doing what's right.
+* I believe that once you have created a community of passionate developers
+around your project, you've won - because developers are very powerful
+influencers. Developers will create apps around your product, talk about it on
+forums, and tell about the project to their friends. Cherish the developers -
+users will follow.
+
+### Patreon
+
+You can support the development of this tool
+[on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
+
+## Contact
+
+If you need to talk, you can contact me at regis AT monicahq DOT com. You can
+also reach me [on Twitter](https://twitter.com/djaiss).
 
 ## License
 

@@ -99,7 +99,7 @@
                       <li>
                         <span class="reminder-in-days">
                           {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
-                          ({{ App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate(), Auth::user()->locale) }})
+                          ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
                         {{ $reminder->getTitle() }}
@@ -249,7 +249,7 @@
 
                       {{-- DATE --}}
                       <div class="event-date">
-                        {{ $event['date'] }}
+                        {{ \App\Helpers\DateHelper::getShortDateWithTime($event['date']) }}
                       </div>
                     </li>
                   @endforeach
