@@ -1,6 +1,6 @@
 {{-- You added Jane Doe as Regis's significant other --}}
 
-{{ $event['object']->getName() }}
+{{ $event['object']->first_name }}
 
 {{ trans('dashboard.event_as') }}
 

@@ -128,6 +128,7 @@
               <option value='Europe/Warsaw' {{ (Auth::user()->timezone == 'Europe/Warsaw')?'selected':'' }}>(UTC+01:00) Warsaw</option>
               <option value='Africa/Lagos' {{ (Auth::user()->timezone == 'Africa/Lagos')?'selected':'' }}>(UTC+01:00) West Central Africa</option>
               <option value='Europe/Zagreb' {{ (Auth::user()->timezone == 'Europe/Zagreb')?'selected':'' }}>(UTC+01:00) Zagreb</option>
+              <option value='Europe/Zurich' {{ (Auth::user()->timezone == 'Europe/Zurich')?'selected':'' }}>(UTC+01:00) Zurich</option>
               <option value='Europe/Athens' {{ (Auth::user()->timezone == 'Europe/Athens')?'selected':'' }}>(UTC+02:00) Athens</option>
               <option value='Europe/Bucharest' {{ (Auth::user()->timezone == 'Europe/Bucharest')?'selected':'' }}>(UTC+02:00) Bucharest</option>
               <option value='Africa/Cairo' {{ (Auth::user()->timezone == 'Africa/Cairo')?'selected':'' }}>(UTC+02:00) Cairo</option>
