@@ -6,26 +6,103 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MartinJoiner\OrdinalNumber\OrdinalNumber;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ */
 class Reminder extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['last_triggered', 'next_expected_date'];
 
     /**
      * Get the account record associated with the reminder.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
      * Get the contact record associated with the reminder.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the next_expected_date field according to user's timezone
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getNextExpectedDateAttribute($value)
+    {
+        if ($this->account) {
+            return Carbon::parse($value, $this->account->user->timezone);
+        } elseif (auth()->user()) {
+            return Carbon::parse($value, auth()->user()->timezone);
+        }
+
+        return Carbon::parse($value);
+    }
+
+    /**
+     * Correctly set the frequency type
+     *
+     * @param string $value
+     */
+    public function setFrequencyTypeAttribute($value)
+    {
+        $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
+    }
+
+    /**
+     * Add a new birthday reminder
+     *
+     * @param Contact $contact
+     * @param string $title
+     * @param Carbon|string $date
+     * @param Kid $kid
+     * @return static
+     */
+    public static function addBirthdayReminder($contact, $title, $date, $kid = null)
+    {
+        $date = Carbon::parse($date);
+
+        $reminder = $contact->reminders()
+            ->create([
+                'title' => $title,
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'next_expected_date' => $date,
+                'account_id' => $contact->account_id,
+                'kid_id' => $kid ? $kid->id : null
+            ]);
+
+        $reminder->calculateNextExpectedDate($date, 'year', 1)
+            ->save();
+
+        return $reminder;
     }
 
     /**
@@ -70,7 +147,7 @@ class Reminder extends Model
      * @param  Carbon $startDate
      * @param  string $frequencyTYpe
      * @param  int $frequencyNumber
-     * @return void
+     * @return static
      */
     public function calculateNextExpectedDate($startDate, $frequencyType, $frequencyNumber)
     {
@@ -99,5 +176,7 @@ class Reminder extends Model
             }
             $this->next_expected_date = $nextDate;
         }
+
+        return $this;
     }
 }
