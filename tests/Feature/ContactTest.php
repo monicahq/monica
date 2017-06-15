@@ -34,7 +34,7 @@ class ContactTest extends FeatureTestCase
      */
     public function test_user_can_see_contacts()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $response = $this->get('/people');
 
@@ -45,7 +45,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_contact()
     {
-        [$user] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $params = [
             'gender' => 'male',
@@ -63,7 +63,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_note_to_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $body = $this->faker->paragraph();
 
@@ -81,7 +81,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_activity_to_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $activity = [
             'summary' => $this->faker->sentence('5'),
@@ -105,7 +105,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_reminded_about_an_event_once()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
@@ -132,7 +132,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_task_to_a_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $task = [
             'title' => $this->faker->sentence(),
@@ -155,7 +155,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_gift_idea_to_a_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $gift = [
             'offered' => false,
@@ -185,7 +185,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_in_debt_to_a_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $debt = [
             'in_debt' => 'yes',
@@ -207,7 +207,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_owed_debt_by_a_contact()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $debt = [
             'in_debt' => 'no',
@@ -230,7 +230,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_a_contact_can_have_food_preferences()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $food = ['food' => $this->faker->sentence()];
 
@@ -245,7 +245,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_a_contact_can_be_deleted()
     {
-        [$user, $contact] = $this->fetchUser();
+        list($user, $contact) = $this->fetchUser();
 
         $this->get('/people/' . $contact->id . '/delete');
 
