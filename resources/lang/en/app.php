@@ -24,6 +24,7 @@ return [
     'footer_privacy' => 'Privacy policy',
     'footer_release' => 'Release notes',
     'footer_newsletter' => 'Newsletter',
+    'footer_source_code' => 'Monica on GitHub',
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'List of contacts',
