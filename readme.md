@@ -223,6 +223,8 @@ the test suite.
 Each time the schema of the database changes, you need to run again the
 migrations and the seeders by running the two commands above.
 
+If you want to connect directly to Monica's MySQL instance read [_Connecting to MySQL inside of a Docker container_](./docs/database/connecting.md).
+
 ### Front-end
 
 #### Bower
