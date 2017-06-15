@@ -82,9 +82,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/tasks/{task}/delete', 'People\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
-        Route::get('/people/{people}/gifts/add', ['as' => '.gifts.add', 'uses' => 'PeopleController@addGift']);
-        Route::post('/people/{people}/gifts/store', 'PeopleController@storeGift');
-        Route::get('/people/{people}/gifts/{giftId}/delete', 'PeopleController@deleteGift');
+        Route::get('/people/{contact}/gifts/add', 'People\\GiftsController@create')->name('.gifts.add');
+        Route::post('/people/{contact}/gifts/store', 'People\\GiftsController@store')->name('.gifts.store');
+        Route::get('/people/{contact}/gifts/{gift}/delete', 'People\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
         Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
