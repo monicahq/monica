@@ -188,23 +188,21 @@ class ContactTest extends FeatureTestCase
         [$user, $contact] = $this->fetchUser();
 
         $debt = [
-            'in-debt' => 'yes',
+            'in_debt' => 'yes',
             'amount' => $this->faker->numberBetween(1, 5000),
             'reason' => $this->faker->sentence(),
         ];
 
         $this->post(
-            '/people/' . $contact->id . '/debt/store',
+            route('people.debt.store', $contact),
             $debt
         );
 
-        $debt['account_id'] = $user->account_id;
-        $debt['contact_id'] = $contact->id;
-        $debt['in_debt'] = 'yes';
-
-        unset($debt['in-debt']);
-
-        $this->assertDatabaseHas('debts', $debt);
+        $this->assertDatabaseHas('debts',
+            $debt + [
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+            ]);
     }
 
     public function test_user_can_be_owed_debt_by_a_contact()
@@ -212,23 +210,21 @@ class ContactTest extends FeatureTestCase
         [$user, $contact] = $this->fetchUser();
 
         $debt = [
-            'in-debt' => 'no',
+            'in_debt' => 'no',
             'amount' => $this->faker->numberBetween(1, 5000),
             'reason' => $this->faker->sentence(),
         ];
 
         $this->post(
-            '/people/' . $contact->id . '/debt/store',
+            route('people.debt.store', $contact),
             $debt
         );
 
-        $debt['account_id'] = $user->account_id;
-        $debt['contact_id'] = $contact->id;
-        $debt['in_debt'] = 'no';
-
-        unset($debt['in-debt']);
-
-        $this->assertDatabaseHas('debts', $debt);
+        $this->assertDatabaseHas('debts',
+            $debt + [
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+            ]);
     }
 
 

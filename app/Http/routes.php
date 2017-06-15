@@ -87,11 +87,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/gifts/{gift}/delete', 'People\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
-        Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
-        Route::get('/people/{people}/debt/{debtId}/edit', ['as' => '.debt.edit', 'uses' => 'PeopleController@editDebt']);
-        Route::post('/people/{people}/debt/{debtId}/update', ['as' => '.debt.update', 'uses' => 'PeopleController@updateDebt']);
-        Route::post('/people/{people}/debt/store', 'PeopleController@storeDebt');
-        Route::get('/people/{people}/debt/{debtId}/delete', 'PeopleController@deleteDebt');
+        Route::get('/people/{contact}/debt/add', 'People\\DebtController@create')->name('.debt.add');
+        Route::post('/people/{contact}/debt/store', 'People\\DebtController@store')->name('.debt.store');
+        Route::get('/people/{contact}/debt/{debt}/edit', 'People\\DebtController@edit')->name('.debt.edit');
+        Route::put('/people/{contact}/debt/{debt}', 'People\\DebtController@update')->name('.debt.update');
+        Route::get('/people/{contact}/debt/{debt}/delete', 'People\\DebtController@destroy')->name('.debt.delete');
     });
 
     Route::group(['as' => 'journal'], function () {
