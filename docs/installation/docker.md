@@ -25,6 +25,22 @@ Then open `.env` in an editor and update it for your own needs:
 
 Now select one of these methods to be up and running quickly:
 
+# Note for macOS
+
+You will need to stop Apache if you wish to have Monica available on port 80.
+
+You can do this like so:
+
+```sh
+$ sudo /usr/sbin/apachectl stop
+```
+
+To start Apache up again use this command:
+
+```sh
+$ sudo /usr/sbin/apachectl start
+```
+
 #### Use docker-compose to run a pre-built image
 
 This is the easiest and fastest way to try MonicaHQ! Use this process

@@ -291,6 +291,34 @@ class Contact extends Model
     }
 
     /**
+     * Get the work information as a string.
+     *
+     * @return string or null
+     */
+    public function getJob()
+    {
+        if (is_null($this->job)) {
+            return null;
+        }
+
+        return $this->job;
+    }
+
+    /**
+     * Get the company the person is working at as a string.
+     *
+     * @return string or null
+     */
+    public function getCompany()
+    {
+        if (is_null($this->company)) {
+            return null;
+        }
+
+        return $this->company;
+    }
+
+    /**
      * Returns 'true' if the birthdate is an approximation
      *
      * @return string
@@ -627,7 +655,7 @@ class Contact extends Model
      *
      * @param  string $objectType Contact, Activity, Kid,...
      * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'edit', 'delete'
+     * @param  string $natureOfOperation 'add', 'update', 'delete'
      * @return int                          Id of the created event
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)

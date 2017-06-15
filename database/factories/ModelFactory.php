@@ -11,6 +11,8 @@
 |
 */
 
+use App\Helpers\RandomHelper;
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'first_name' => $faker->firstName,
@@ -18,7 +20,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
-        'timezone' => 'America/New_York',
+        'timezone' => config('app.timezone'),
+        'account_id' => factory('App\Account')->create()->id
+    ];
+});
+
+$factory->define(App\Account::class, function (Faker\Generator $faker) {
+    return [
+        'api_key' => RandomHelper::generateString(30)
     ];
 });
 
