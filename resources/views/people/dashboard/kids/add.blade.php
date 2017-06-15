@@ -87,7 +87,7 @@
 
                       <input type="number" class="form-control" name="age"
                               value="1"
-                              min="1"
+                              min="0"
                               max="99">
 
                       {{ trans('people.kids_add_probably_yo') }}

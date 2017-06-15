@@ -103,7 +103,7 @@
 
                       <input type="number" class="form-control" name="age"
                               value="{{ (is_null($kid->getAge())) ? 1 : $kid->getAge() }}"
-                              min="1"
+                              min="0"
                               max="99">
 
                       {{ trans('people.kids_add_probably_yo') }}
