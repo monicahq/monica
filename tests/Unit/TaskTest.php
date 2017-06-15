@@ -63,18 +63,26 @@ class TaskTest extends TestCase
 
         $task = factory(\App\Task::class)->make([
             'contact_id' => $contact->id,
+            'status' => 'inprogress'
         ]);
 
-        $task->status == 'inprogress';
-
         $this->assertEquals(
-            $task->status == 'complete',
-            $task->toggle()
+            'inprogress',
+            $task->status
         );
 
+        $task->toggle();
+
         $this->assertEquals(
-            $task->status == 'inprogress',
-            $task->toggle()
+            'completed',
+            $task->status
+        );
+
+        $task->toggle();
+
+        $this->assertEquals(
+            'inprogress',
+            $task->status
         );
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,10 +39,23 @@ class User extends Authenticatable
 
     /**
      * Get the account record associated with the user.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Assigns a default value just in case the sort order is empty
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getContactsSortOrderAttribute($value)
+    {
+        return ! empty($value) ? $value : 'firstnameAZ';
     }
 
     /**
@@ -71,10 +85,12 @@ class User extends Authenticatable
 
     /**
      * Gets the currency for this user.
+     *
+     * @return BelongsTo
      */
     public function currency()
     {
-        return $this->belongsTo('App\Currency', 'currency_id');
+        return $this->belongsTo(Currency::class);
     }
     /**
      * Set the contact view preference.

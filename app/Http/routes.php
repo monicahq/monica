@@ -1,5 +1,7 @@
 <?php
 
+Route::get('test/{contact}/{activity}','People\ActivitiesController@edit');
+
 if (App::environment('production')) {
     URL::forceScheme('https');
 }
@@ -33,63 +35,61 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/work/update', 'PeopleController@updateWork');
 
         // Notes
-        Route::get('/people/{people}/note/add', 'PeopleController@addNote');
-        Route::get('/people/{people}/note/{noteId}/edit', ['as' => '.note.edit', 'uses' => 'PeopleController@editNote']);
-        Route::post('/people/{people}/note/{noteId}/update', ['as' => '.note.update', 'uses' => 'PeopleController@updateNote']);
-        Route::post('/people/{people}/note/save', 'PeopleController@storeNote');
-        Route::post('/people/{people}/notes/store', 'PeopleController@storeNote');
-        Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
+        Route::get('/people/{contact}/notes/add', 'People\\NotesController@create')->name('.notes.add');
+        Route::post('/people/{contact}/notes/store', 'People\\NotesController@store')->name('.notes.store');
+        Route::get('/people/{contact}/notes/{note}/edit', 'People\\NotesController@edit')->name('.notes.edit');
+        Route::put('/people/{contact}/notes/{note}', 'People\\NotesController@update')->name('.notes.update');
+        Route::get('/people/{contact}/notes/{note}/delete', 'People\\NotesController@destroy')->name('.notes.delete');
 
         // Food preferencies
         Route::get('/people/{people}/food', ['as' => '.food', 'uses' => 'PeopleController@editFoodPreferencies']);
         Route::post('/people/{people}/food/save', 'PeopleController@updateFoodPreferencies');
 
         // Kid
-        Route::get('/people/{people}/kid/add', ['as' => '.dashboard.kid.add', 'uses' => 'PeopleController@addKid']);
-        Route::post('/people/{people}/kid/store', 'PeopleController@storeKid');
-        Route::get('/people/{people}/kid/{kid}/edit', ['as' => '.dashboard.kid.edit', 'uses' => 'PeopleController@editKid']);
-        Route::post('/people/{people}/kid/{kid}/save', 'PeopleController@updateKid');
-        Route::get('/people/{people}/kid/{kid}/delete', 'PeopleController@deleteKid');
+        Route::get('/people/{contact}/kids/add', 'People\\KidsController@create')->name('.kids.add');
+        Route::post('/people/{contact}/kids/store', 'People\\KidsController@store')->name('.kids.store');
+        Route::get('/people/{contact}/kids/{kid}/edit', 'People\\KidsController@edit')->name('.kids.edit');
+        Route::put('/people/{contact}/kids/{kid}', 'People\\KidsController@update')->name('.kids.update');
+        Route::get('/people/{contact}/kids/{kid}/delete', 'People\\KidsController@destroy')->name('.kids.delete');
 
         // Significant other
-        Route::get('/people/{people}/significantother/add', ['as' => '.dashboard.significantother.add', 'uses' => 'PeopleController@addSignificantOther']);
-        Route::post('/people/{people}/significantother/store', 'PeopleController@storeSignificantOther');
-        Route::get('/people/{people}/significantother/{significantother}/edit', ['as' => '.dashboard.significantother.edit', 'uses' => 'PeopleController@editSignificantOther']);
-        Route::post('/people/{people}/significantother/{significantother}/save', 'PeopleController@updateSignificantOther');
-        Route::get('/people/{people}/significantother/{significantother}/delete', 'PeopleController@deleteSignificantOther');
-
+        Route::get('/people/{contact}/significant-others/add', 'People\\SignificantOthersController@create')->name('.significant_others.add');
+        Route::post('/people/{contact}/significant-others/store', 'People\\SignificantOthersController@store')->name('.significant_others.store');
+        Route::get('/people/{contact}/significant-others/{significant_other}/edit', 'People\\SignificantOthersController@edit')->name('.significant_others.edit');
+        Route::put('/people/{contact}/significant-others/{significant_other}', 'People\\SignificantOthersController@update')->name('.significant_others.update');
+        Route::get('/people/{contact}/significant-others/{significant_other}/delete', 'People\\SignificantOthersController@destroy')->name('.significant_others.delete');
 
         // Activities
-        Route::get('/people/{people}/activities/add', ['as' => '.activities.add', 'uses' => 'PeopleController@addActivity']);
-        Route::post('/people/{people}/activities/store', 'PeopleController@storeActivity');
-        Route::get('/people/{people}/activities/{activity}/edit', ['as' => '.activities.edit', 'uses' => 'PeopleController@editActivity']);
-        Route::post('/people/{people}/activities/{activityId}/save', 'PeopleController@updateActivity');
-        Route::get('/people/{people}/activities/{activityId}/delete', 'PeopleController@deleteActivity');
+        Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');
+        Route::post('/people/{contact}/activities/store', 'People\\ActivitiesController@store')->name('.activities.store');
+        Route::get('/people/{contact}/activities/{activity}/edit', 'People\\ActivitiesController@edit')->name('.activities.edit');
+        Route::put('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@update')->name('.activities.update');
+        Route::get('/people/{contact}/activities/{activity}/delete', 'People\\ActivitiesController@destroy')->name('.activities.delete');
 
         // Reminders
-        Route::get('/people/{people}/reminders/add', ['as' => '.reminders.add', 'uses' => 'PeopleController@addReminder']);
-        Route::post('/people/{people}/reminders/store', 'PeopleController@storeReminder');
-        Route::get('/people/{people}/reminders/{reminderId}/edit', ['as' => '.reminders.edit', 'uses' => 'PeopleController@editReminder']);
-        Route::post('/people/{people}/reminders/{reminderId}/save', 'PeopleController@updateReminder');
-        Route::get('/people/{people}/reminders/{reminderId}/delete', 'PeopleController@deleteReminder');
+        Route::get('/people/{contact}/reminders/add', 'People\\RemindersController@create')->name('.reminders.add');
+        Route::post('/people/{contact}/reminders/store', 'People\\RemindersController@store')->name('.reminders.store');
+        Route::get('/people/{contact}/reminders/{reminder}/edit', 'People\\RemindersController@edit')->name('.reminders.edit');
+        Route::put('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@update')->name('.reminders.update');
+        Route::get('/people/{contact}/reminders/{reminder}/delete', 'People\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
-        Route::get('/people/{people}/tasks/add', ['as' => '.tasks.add', 'uses' => 'PeopleController@addTask']);
-        Route::post('/people/{people}/tasks/store', 'PeopleController@storeTask');
-        Route::get('/people/{people}/tasks/{taskId}/toggle', 'PeopleController@toggleTask');
-        Route::get('/people/{people}/tasks/{taskId}/delete', 'PeopleController@deleteTask');
+        Route::get('/people/{contact}/tasks/add', 'People\\TasksController@create')->name('.tasks.add');
+        Route::post('/people/{contact}/tasks/store', 'People\\TasksController@store')->name('.tasks.store');
+        Route::patch('/people/{contact}/tasks/{task}/toggle', 'People\\TasksController@toggle')->name('.tasks.toggle');
+        Route::get('/people/{contact}/tasks/{task}/delete', 'People\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
-        Route::get('/people/{people}/gifts/add', ['as' => '.gifts.add', 'uses' => 'PeopleController@addGift']);
-        Route::post('/people/{people}/gifts/store', 'PeopleController@storeGift');
-        Route::get('/people/{people}/gifts/{giftId}/delete', 'PeopleController@deleteGift');
+        Route::get('/people/{contact}/gifts/add', 'People\\GiftsController@create')->name('.gifts.add');
+        Route::post('/people/{contact}/gifts/store', 'People\\GiftsController@store')->name('.gifts.store');
+        Route::get('/people/{contact}/gifts/{gift}/delete', 'People\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
-        Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
-        Route::get('/people/{people}/debt/{debtId}/edit', ['as' => '.debt.edit', 'uses' => 'PeopleController@editDebt']);
-        Route::post('/people/{people}/debt/{debtId}/update', ['as' => '.debt.update', 'uses' => 'PeopleController@updateDebt']);
-        Route::post('/people/{people}/debt/store', 'PeopleController@storeDebt');
-        Route::get('/people/{people}/debt/{debtId}/delete', 'PeopleController@deleteDebt');
+        Route::get('/people/{contact}/debt/add', 'People\\DebtController@create')->name('.debt.add');
+        Route::post('/people/{contact}/debt/store', 'People\\DebtController@store')->name('.debt.store');
+        Route::get('/people/{contact}/debt/{debt}/edit', 'People\\DebtController@edit')->name('.debt.edit');
+        Route::put('/people/{contact}/debt/{debt}', 'People\\DebtController@update')->name('.debt.update');
+        Route::get('/people/{contact}/debt/{debt}/delete', 'People\\DebtController@destroy')->name('.debt.delete');
     });
 
     Route::group(['as' => 'journal'], function () {
