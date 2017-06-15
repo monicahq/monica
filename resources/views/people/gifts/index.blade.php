@@ -41,10 +41,10 @@
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if(!is_null($gift->getWhoIsItFor()))
+            @if($gift->hasParticularRecipient())
               <span class="for">
               For:
-                {{ $gift->getWhoIsItFor() }}
+                {{ $gift->recipient_name }}
               </span>
             @endif
           </div>
@@ -82,10 +82,10 @@
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if(!is_null($gift->getWhoIsItFor()))
+            @if($gift->hasParticularRecipient()))
               <span class="for">
               For:
-                {{ $gift->getWhoIsItFor() }}
+                {{ $gift->recipient_name }}
               </span>
             @endif
           </div>

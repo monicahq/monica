@@ -4,35 +4,60 @@ namespace App;
 
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Parsedown;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @property string $parsed_body
+ */
 class Note extends Model
 {
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
      * Get the account record associated with the note.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
      * Get the contact record associated with the note.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Return the markdown parsed body
+     *
+     * @return string
+     */
+    public function getParsedBodyAttribute()
+    {
+        return (new Parsedown())->text($this->body);
     }
 
     /**
      * Get the description of a note.
+     *
      * @return string
      */
     public function getBody()
     {
-        if (is_null($this->body)) {
-            return null;
-        }
-
         return $this->body;
     }
 
@@ -49,6 +74,7 @@ class Note extends Model
 
     /**
      * Gets the content of the activity and formats it for the email.
+     *
      * @return string
      */
     public function getContent()
