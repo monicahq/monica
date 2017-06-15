@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Activity;
 use App\Gift;
 use App\Reminder;
+use App\SignificantOther;
 use App\Task;
 use Route;
 use App\Contact;
@@ -60,6 +61,20 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('gift', function($value, $route) {
             return  Gift::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('debt', function($value, $route) {
+            return  Debt::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('significant_other', function($value, $route) {
+            return  SignificantOther::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
                 ->firstOrFail();

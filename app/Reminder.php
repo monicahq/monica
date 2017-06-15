@@ -57,11 +57,9 @@ class Reminder extends Model
      */
     public function getNextExpectedDateAttribute($value)
     {
-        if($this->account) {
+        if ($this->account) {
             return Carbon::parse($value, $this->account->user->timezone);
-        }
-
-        elseif(auth()->user()) {
+        } elseif (auth()->user()) {
             return Carbon::parse($value, auth()->user()->timezone);
         }
 
@@ -76,6 +74,33 @@ class Reminder extends Model
     public function setFrequencyTypeAttribute($value)
     {
         $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
+    }
+
+    /**
+     * Add a new birthday reminder
+     *
+     * @param Contact $contact
+     * @param string $title
+     * @param Carbon|string $date
+     * @return static
+     */
+    public static function addBirthdayReminder($contact, $title, $date)
+    {
+        $date = Carbon::parse($date);
+
+        $reminder = $contact->reminders()
+            ->create([
+                'title' => $title,
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'next_expected_date' => $date,
+                'account_id' => $contact->account_id,
+            ]);
+
+        $reminder->calculateNextExpectedDate($date, 'year', 1)
+            ->save();
+
+        return $reminder;
     }
 
     /**
@@ -120,7 +145,7 @@ class Reminder extends Model
      * @param  Carbon $startDate
      * @param  string $frequencyTYpe
      * @param  int $frequencyNumber
-     * @return void
+     * @return static
      */
     public function calculateNextExpectedDate($startDate, $frequencyType, $frequencyNumber)
     {
@@ -149,5 +174,7 @@ class Reminder extends Model
             }
             $this->next_expected_date = $nextDate;
         }
+
+        return $this;
     }
 }

@@ -113,7 +113,16 @@ class FakeContentTableSeeder extends Seeder
                     $birthdate_approximate = 'exact';
                 }
 
-                $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+                $contact->significantOthers()->create(
+                    [
+                        'first_name' => $firstname,
+                        'gender' => $gender,
+                        'is_birthdate_approximate' => $birthdate_approximate,
+                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                        'account_id' => $contact->account_id,
+                        'status' => 'active',
+                    ]
+                );
             }
 
             // // create kids
