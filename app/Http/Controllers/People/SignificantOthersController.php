@@ -119,7 +119,7 @@ class SignificantOthersController extends Controller
      */
     public function update(SignificantOthersRequest $request, Contact $contact, SignificantOther $significantOther)
     {
-        $contact->significantOthers()->update(
+        $significantOther->update(
             $request->only([
                 'first_name',
                 'gender',

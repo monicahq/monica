@@ -712,27 +712,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testEditKidReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $kid = factory(\App\Kid::class)->create([
-            'child_of_contact_id' => $contact->id,
-        ]);
-
-        $this->assertInternalType(
-            'int',
-            $contact->editKid(
-                $kid->id,
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
     public function testAddNoteReturnsInteger()
     {
         $contact = factory(\App\Contact::class)->create();

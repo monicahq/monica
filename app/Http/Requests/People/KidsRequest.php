@@ -26,7 +26,6 @@ class KidsRequest extends FormRequest
         return [
             'first_name' => 'required|string',
             'gender' => 'in:male,female,none',
-            'status' => 'in:active,past|nullable',
             'is_birthdate_approximate' => 'required|in:unknown,approximate,exact',
             'birthdate' => 'date|nullable',
             'food_preferences' => '',

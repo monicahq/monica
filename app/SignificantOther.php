@@ -164,12 +164,7 @@ class SignificantOther extends Model
      */
     public function getAge()
     {
-        if (is_null($this->birthdate)) {
-            return null;
-        }
-
-        $age = $this->birthdate->diffInYears(Carbon::now());
-        return $age;
+        return $this->age;
     }
 
     /**

@@ -47,11 +47,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/food/save', 'PeopleController@updateFoodPreferencies');
 
         // Kid
-        Route::get('/people/{people}/kid/add', ['as' => '.dashboard.kid.add', 'uses' => 'PeopleController@addKid']);
-        Route::post('/people/{people}/kid/store', 'PeopleController@storeKid');
-        Route::get('/people/{people}/kid/{kid}/edit', ['as' => '.dashboard.kid.edit', 'uses' => 'PeopleController@editKid']);
-        Route::post('/people/{people}/kid/{kid}/save', 'PeopleController@updateKid');
-        Route::get('/people/{people}/kid/{kid}/delete', 'PeopleController@deleteKid');
+        Route::get('/people/{contact}/kids/add', 'People\\KidsController@create')->name('.kids.add');
+        Route::post('/people/{contact}/kids/store', 'People\\KidsController@store')->name('.kids.store');
+        Route::get('/people/{contact}/kids/{kid}/edit', 'People\\KidsController@edit')->name('.kids.edit');
+        Route::put('/people/{contact}/kids/{kid}', 'People\\KidsController@update')->name('.kids.update');
+        Route::get('/people/{contact}/kids/{kid}/delete', 'People\\KidsController@destroy')->name('.kids.delete');
 
         // Significant other
         Route::get('/people/{contact}/significant-others/add', 'People\\SignificantOthersController@create')->name('.significant_others.add');

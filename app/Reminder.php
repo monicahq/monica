@@ -82,9 +82,10 @@ class Reminder extends Model
      * @param Contact $contact
      * @param string $title
      * @param Carbon|string $date
+     * @param Kid $kid
      * @return static
      */
-    public static function addBirthdayReminder($contact, $title, $date)
+    public static function addBirthdayReminder($contact, $title, $date, $kid = null)
     {
         $date = Carbon::parse($date);
 
@@ -95,6 +96,7 @@ class Reminder extends Model
                 'frequency_number' => 1,
                 'next_expected_date' => $date,
                 'account_id' => $contact->account_id,
+                'kid_id' => $kid ? $kid->id : null
             ]);
 
         $reminder->calculateNextExpectedDate($date, 'year', 1)
