@@ -205,12 +205,6 @@ class PeopleController extends Controller
             $contact->twitter_profile_url = null;
         }
 
-        if ($request->input('linkedin') != '') {
-            $contact->linkedin_profile_url = $request->input('linkedin');
-        } else {
-            $contact->linkedin_profile_url = null;
-        }
-
         if ($request->input('street') != '') {
             $contact->street = $request->input('street');
         } else {
@@ -299,6 +293,67 @@ class PeopleController extends Controller
     }
 
     /**
+     * Show the Edit work view.
+     * @param  Request $request
+     * @return View
+     */
+    public function editWork(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $data = [
+            'contact' => $contact,
+        ];
+
+        return view('people.dashboard.work.edit', $data);
+    }
+
+    /**
+     * Save the work information
+     * @param int $id
+     * @return
+     */
+    public function updateWork(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        $job = $request->input('job');
+        $company = $request->input('company');
+
+        if ($job != '') {
+            $contact->job = $job;
+        } else {
+            $contact->job = null;
+        }
+
+        if ($company != '') {
+            $contact->company = $company;
+        } else {
+            $contact->company = null;
+        }
+
+        if ($request->input('linkedin') != '') {
+            $contact->linkedin_profile_url = $request->input('linkedin');
+        } else {
+            $contact->linkedin_profile_url = null;
+        }
+
+        $contact->save();
+
+        $request->session()->flash('success', trans('people.work_edit_success'));
+
+        return redirect('/people/' . $contact->id);
+    }
+
+    /**
      * Show the Edit food preferencies view.
      * @param  Request $request
      * @param  [type]  $peopleId integer
@@ -363,6 +418,57 @@ class PeopleController extends Controller
         $contact->addNote($body);
 
         $request->session()->flash('success', trans('people.notes_add_success'));
+
+        return redirect('/people/' . $contact->id);
+    }
+
+    /**
+     * @param int $contactId
+     * @param int $noteId
+     * @return \Illuminate\View\View
+     */
+    public function editNote($contactId, $noteId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $note = Note::findOrFail($noteId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($note->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        return view('people.notes.edit', compact('contact', 'note'));
+    }
+
+    /**
+     * Update a note
+     * @param Request $request
+     * @param int $contactId
+     * @param int $noteId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateNote(Request $request, $contactId, $noteId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $note = Note::findOrFail($noteId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($note->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        $note->body = $request->input('body');
+        $note->save();
+
+        $contact->logEvent('note', $note->id, 'update');
+
+        $request->session()->flash('success', trans('people.notes_edit_success'));
 
         return redirect('/people/' . $contact->id);
     }
@@ -954,6 +1060,22 @@ class PeopleController extends Controller
         return view('people.debt.add', $data);
     }
 
+    public function editDebt(Request $request, $contactId, $debtId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $debt = Debt::findOrFail($debtId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($debt->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        return view('people.debt.edit', compact('debt', 'contact'));
+    }
+
     /**
      * Actually store the debt.
      * @param  Request $request
@@ -986,6 +1108,38 @@ class PeopleController extends Controller
         $contact->logEvent('debt', $debt->id, 'create');
 
         $request->session()->flash('success', trans('people.debt_add_success'));
+
+        return redirect('/people/' . $contact->id);
+    }
+
+    /**
+     * Update stored debt.
+     * @param  Request $request
+     * @param  int $contactId
+     * @param  int $debtId
+     */
+    public function updateDebt(Request $request, $contactId, $debtId)
+    {
+        $contact = Contact::findOrFail($contactId);
+        $debt = Debt::findOrFail($debtId);
+
+        if ($contact->account_id !== Auth::user()->account_id) {
+            return redirect()->route('people.index');
+        }
+
+        if ($debt->contact_id !== $contact->id) {
+            return redirect()->route('people.index');
+        }
+
+        $debt->in_debt = $request->input('in-debt');
+        $debt->amount = $request->input('amount');
+        $debt->reason = $request->input('reason');
+
+        $debt->save();
+
+        $contact->logEvent('debt', $debt->id, 'update');
+
+        $request->session()->flash('success', trans('people.debt_edit_success'));
 
         return redirect('/people/' . $contact->id);
     }

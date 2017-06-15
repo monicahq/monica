@@ -8100,20 +8100,24 @@ header .main-cta {
   margin-bottom: 4px;
 }
 
-.people-show .profile .people-information {
+.people-show .profile .people-information,
+.people-show .profile .work {
   color: #999;
   font-size: 12px;
 }
 
-.people-show .profile .people-information li {
+.people-show .profile .people-information li,
+.people-show .profile .work li {
   margin-bottom: 10px;
 }
 
-.people-show .profile .people-information li:last-child {
+.people-show .profile .people-information li:last-child,
+.people-show .profile .work li:last-child {
   margin-bottom: 0;
 }
 
-.people-show .profile .people-information li i {
+.people-show .profile .people-information li i,
+.people-show .profile .work li i {
   text-align: center;
   width: 17px;
 }

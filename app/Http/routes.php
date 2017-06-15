@@ -30,9 +30,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/update', 'PeopleController@update');
         Route::get('/people/{people}/delete', ['as' => '.delete', 'uses' => 'PeopleController@delete']);
 
+        // Work information
+        Route::get('/people/{people}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork']);
+        Route::post('/people/{people}/work/update', 'PeopleController@updateWork');
+
         // Notes
         Route::get('/people/{people}/note/add', 'PeopleController@addNote');
+        Route::get('/people/{people}/note/{noteId}/edit', ['as' => '.note.edit', 'uses' => 'PeopleController@editNote']);
+        Route::post('/people/{people}/note/{noteId}/update', ['as' => '.note.update', 'uses' => 'PeopleController@updateNote']);
         Route::post('/people/{people}/note/save', 'PeopleController@storeNote');
+        Route::post('/people/{people}/notes/store', 'PeopleController@storeNote');
+        Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Food preferencies
         Route::get('/people/{people}/food', ['as' => '.food', 'uses' => 'PeopleController@editFoodPreferencies']);
@@ -52,8 +60,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{people}/significantother/{significantother}/save', 'PeopleController@updateSignificantOther');
         Route::get('/people/{people}/significantother/{significantother}/delete', 'PeopleController@deleteSignificantOther');
 
-        Route::post('/people/{people}/notes/store', 'PeopleController@storeNote');
-        Route::get('/people/{people}/notes/{note}/delete', 'PeopleController@deleteNote');
 
         // Activities
         Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');
@@ -82,6 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Debt
         Route::get('/people/{people}/debt/add', ['as' => '.debt.add', 'uses' => 'PeopleController@addDebt']);
+        Route::get('/people/{people}/debt/{debtId}/edit', ['as' => '.debt.edit', 'uses' => 'PeopleController@editDebt']);
+        Route::post('/people/{people}/debt/{debtId}/update', ['as' => '.debt.update', 'uses' => 'PeopleController@updateDebt']);
         Route::post('/people/{people}/debt/store', 'PeopleController@storeDebt');
         Route::get('/people/{people}/debt/{debtId}/delete', 'PeopleController@deleteDebt');
     });
