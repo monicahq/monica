@@ -41,7 +41,7 @@
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if($gift->hasParticularRecipient()))
+            @if($gift->hasParticularRecipient())
               <span class="for">
               For:
                 {{ $gift->recipient_name }}
