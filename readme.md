@@ -122,12 +122,14 @@ That should be it.
 
 You can import your contacts in vCard format in your account with one simple
 CLI command:
-`php artisan import:vcard {email user} {path}`
+`php artisan import:vcard {email user} {filename}.vcf`
 
 where `{email user}` is the email of the user in your Monica instance who will
-be associated the new contacts to, and `{path}` being the path to a .vcf file.
+be associated the new contacts to, and `{filename}` being the name of your .vcf file.
+The .vcf file has to be in the root of your Monica installation (in the same directory
+where the artisan file is).
 
-Example: `php artisan import:vcard john@doe.com ~/Downloads/contacts.vcf`
+Example: `php artisan import:vcard john@doe.com contacts.vcf`
 
 The `.vcf` can contain as many contacts as you want.
 
