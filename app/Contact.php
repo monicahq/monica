@@ -179,11 +179,11 @@ class Contact extends Model
     }
 
     /**
-     * Get the complete name of the contact.
+     * Get user's full name
      *
      * @return string
      */
-    public function getCompleteName()
+    public function getNameAttribute()
     {
         $completeName = $this->first_name;
 
@@ -196,6 +196,28 @@ class Contact extends Model
         }
 
         return $completeName;
+    }
+
+    /**
+     * Get user's full name
+     *
+     * @return string
+     */
+    public function getInitialsAttribute()
+    {
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
+
+        return implode('', $initials[0]);
+    }
+
+    /**
+     * Get the complete name of the contact.
+     *
+     * @return string
+     */
+    public function getCompleteName()
+    {
+        return $this->name;
     }
 
     /**
@@ -235,9 +257,7 @@ class Contact extends Model
      */
     public function getInitials()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
-
-        return implode('', $initials[0]);
+        return $this->initials;
     }
 
     /**

@@ -3,52 +3,34 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Kid;
-use App\Debt;
-use App\Gift;
 use App\Note;
-use App\Task;
-use App\Event;
 use Validator;
 use App\Contact;
-use App\Country;
-use App\Activity;
-use App\Reminder;
 use Carbon\Carbon;
-use App\ActivityType;
-use App\Http\Requests;
-use App\SignificantOther;
-use App\ActivityTypeGroup;
-use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
-use App\Helpers\RandomHelper;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Input;
 
 class PeopleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sort = Input::get('sort');
-        $user = Auth::user();
+        $user = $request->user();
+        $sort = $request->get('sort') ?? $user->contacts_sort_order;
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
         }
-
+        
         $contacts = $user->account->contacts()->withCount('kids')->sortedBy($sort)->get();
 
-        $data = [
-            'contacts' => $contacts,
-        ];
-
-        return view('people.index', $data);
+        return view('people.index')
+            ->withContacts($contacts);
     }
 
     /**
