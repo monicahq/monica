@@ -67,7 +67,8 @@ class ContactTest extends FeatureTestCase
 
         $body = $this->faker->paragraph();
 
-        $this->post('/people/' . $contact->id . '/note/save', [
+        $this->post(
+            route('people.notes.store', $contact), [
             'body' => $body,
         ]);
 
