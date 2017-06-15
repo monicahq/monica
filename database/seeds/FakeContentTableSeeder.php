@@ -145,7 +145,6 @@ class FakeContentTableSeeder extends Seeder
                             'is_birthdate_approximate' => $birthdate_approximate,
                             'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
                             'account_id' => $contact->account_id,
-                            'status' => 'active',
                         ]
                     );
                 }
