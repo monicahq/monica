@@ -38,9 +38,10 @@
 
 ## Introduction
 
-Monica is an open-source web application to manage your personal relationships.
-Think of it as a CRM for your friends or family. This is what it currently
-looks like:
+Monica is an open-source web application to organize the interactions with your
+loved ones. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management)
+(a popular tool used in companies) for your friends or family. This is what it
+currently looks like:
 
 ![screenshot of the application](https://app.monicahq.com/img/screenshot.png)
 
@@ -75,7 +76,7 @@ social interactions.
 
 Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
-won't guess what you want to do. In fact, it's pretty dumb: it will send you
+won't guess what you want to do. It's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
 
 ## Get started
@@ -174,9 +175,9 @@ you can pull the repository and start setup Monica.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install` to install bower and gulp.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create a database called `monica`
+1. Create a database called `monica`.
 1. `php artisan key:generate` to generate a random APP_KEY
-1. `php artisan migrate` to run all migrations
+1. `php artisan migrate` to run all migrations.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
 activity types.
@@ -316,17 +317,19 @@ There are several ways to help this project to move forward:
 * Unlike Fight Club, the best way to help is to actually talk about the project
 as much as you can.
 * You can answer questions in the issue tracker to help other community members.
-* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
- if you are looking to have an immediate impact on the project.
-* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
- These are issues that you can solve relatively easily.
- * If you are an advanced developer, you can try to tackle
- [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
- Beware though - they are harder to do and will require a lot of back and forth
- with the repository administrator in order to make sure we are going to the right
- direction with the product.
-* Finally, and most importantly, we are looking for people willing to write
- tests for the existing features.
+* If you are a developer:
+   * Read our [Contribution Guide](/CONTRIBUTING.md).
+   * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+     if you are looking to have an immediate impact on the project.
+   * Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+     These are issues that you can solve relatively easily.
+   * If you are an advanced developer, you can try to tackle
+     [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
+     Beware though - they are harder to do and will require a lot of back and
+     forth with the repository administrator in order to make sure we are going
+     to the right direction with the product.
+   * Finally, and most importantly, we are looking for people willing to write
+     tests for the existing features.
 
 ## Vision, goals and strategy
 
@@ -460,6 +463,11 @@ users will follow.
 
 You can support the development of this tool
 [on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
+
+## Contact
+
+If you need to talk, you can contact me at regis AT monicahq DOT com. You can
+also reach me [on Twitter](https://twitter.com/djaiss).
 
 ## License
 
