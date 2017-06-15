@@ -42,7 +42,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'admin@admin.com',
             'password' => bcrypt('admin'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
 
@@ -53,7 +53,7 @@ class FakeContentTableSeeder extends Seeder
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
-            $timezone = 'America/New_York';
+            $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
             // create contact entry
@@ -153,7 +153,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'State',
             'email' => 'blank@blank.com',
             'password' => bcrypt('blank'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
     }
