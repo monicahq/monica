@@ -6,6 +6,8 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +27,8 @@ class Contact extends Model
 
     /**
      * Get the user associated with the contact.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
@@ -33,6 +37,8 @@ class Contact extends Model
 
     /**
      * Get the activity records associated with the contact.
+     *
+     * @return HasMany
      */
     public function activities()
     {
@@ -41,6 +47,8 @@ class Contact extends Model
 
     /**
      * Get the activity records associated with the contact.
+     *
+     * @return HasMany
      */
     public function activityStatistics()
     {
@@ -49,6 +57,8 @@ class Contact extends Model
 
     /**
      * Get the contact records associated with the contact.
+     *
+     * @return BelongsTo
      */
     public function country()
     {
@@ -57,6 +67,8 @@ class Contact extends Model
 
     /**
      * Get the debt records associated with the contact.
+     *
+     * @return HasMany
      */
     public function debts()
     {
@@ -65,6 +77,8 @@ class Contact extends Model
 
     /**
      * Get the gift records associated with the contact.
+     *
+     * @return HasMany
      */
     public function gifts()
     {
@@ -73,6 +87,8 @@ class Contact extends Model
 
     /**
      * Get the event records associated with the contact.
+     *
+     * @return HasMany
      */
     public function events()
     {
@@ -81,6 +97,8 @@ class Contact extends Model
 
     /**
      * Get the kid records associated with the contact.
+     *
+     * @return HasMany
      */
     public function kids()
     {
@@ -89,6 +107,8 @@ class Contact extends Model
 
     /**
      * Get the note records associated with the contact.
+     *
+     * @return HasMany
      */
     public function notes()
     {
@@ -97,6 +117,8 @@ class Contact extends Model
 
     /**
      * Get the reminder records associated with the contact.
+     *
+     * @return HasMany
      */
     public function reminders()
     {
@@ -115,6 +137,8 @@ class Contact extends Model
 
     /**
      * Get the significant others associated with the contact.
+     *
+     * @return HasMany
      */
     public function significantOthers()
     {
@@ -123,6 +147,8 @@ class Contact extends Model
 
     /**
      * Get the task records associated with the contact.
+     *
+     * @return HasMany
      */
     public function tasks()
     {
@@ -153,11 +179,11 @@ class Contact extends Model
     }
 
     /**
-     * Get the complete name of the contact.
+     * Get user's full name
      *
      * @return string
      */
-    public function getCompleteName()
+    public function getNameAttribute()
     {
         $completeName = $this->first_name;
 
@@ -170,6 +196,28 @@ class Contact extends Model
         }
 
         return $completeName;
+    }
+
+    /**
+     * Get user's full name
+     *
+     * @return string
+     */
+    public function getInitialsAttribute()
+    {
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
+
+        return implode('', $initials[0]);
+    }
+
+    /**
+     * Get the complete name of the contact.
+     *
+     * @return string
+     */
+    public function getCompleteName()
+    {
+        return $this->name;
     }
 
     /**
@@ -209,9 +257,7 @@ class Contact extends Model
      */
     public function getInitials()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
-
-        return implode('', $initials[0]);
+        return $this->initials;
     }
 
     /**
@@ -228,7 +274,7 @@ class Contact extends Model
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
         return DateHelper::getShortDate(
-            DateHelper::createDateFromFormat($lastActivity->date_it_happened, $timezone),
+            Carbon::parse($lastActivity->date_it_happened, $timezone),
             'en'
         );
     }
@@ -671,109 +717,6 @@ class Contact extends Model
     }
 
     /**
-     * Add a significant other.
-     *
-     * @param string $firstname
-     * @param string $gender
-     * @param bool $birthdate_approximate
-     * @param string $birthdate
-     * @param int $age
-     * @param string $timezone
-     * @return int
-     */
-    public function addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
-    {
-        $significantOther = $this->significantOthers()->create([]);
-
-        $significantOther->account_id = $this->account_id;
-        $significantOther->first_name = ucfirst($firstname);
-        $significantOther->gender = $gender;
-        $significantOther->is_birthdate_approximate = $birthdate_approximate;
-        $significantOther->status = 'active';
-
-        if ($birthdate_approximate == 'approximate') {
-            $year = Carbon::now()->subYears($age)->year;
-            $birthdate = Carbon::createFromDate($year, 1, 1);
-            $significantOther->birthdate = $birthdate;
-        } elseif ($birthdate_approximate == 'unknown') {
-            $significantOther->birthdate = null;
-        } else {
-            $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
-            $significantOther->birthdate = $birthdate;
-        }
-
-        $significantOther->save();
-
-        // Event
-        $this->logEvent('significantother', $significantOther->id, 'create');
-
-        return $significantOther->id;
-    }
-
-    /**
-     * Update the information about the Significant other.
-     *
-     * @param  SignificantOther|int $significantOther
-     * @param  string $firstname
-     * @param  string $gender
-     * @param  string $birthdate_approximate
-     * @param  string $birthdate
-     * @param  int $age
-     * @param  string $timezone
-     * @return int
-     */
-    public function editSignificantOther($significantOther, $firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
-    {
-        if (!$significantOther instanceof SignificantOther) {
-            $significantOther = SignificantOther::findOrFail($significantOther);
-        }
-
-        $significantOther->first_name = ucfirst($firstname);
-        $significantOther->gender = $gender;
-        $significantOther->is_birthdate_approximate = $birthdate_approximate;
-        $significantOther->status = 'active';
-
-        if ($birthdate_approximate == 'approximate') {
-            $year = Carbon::now()->subYears($age)->year;
-            $birthdate = Carbon::createFromDate($year, 1, 1);
-            $significantOther->birthdate = $birthdate;
-        } elseif ($birthdate_approximate == 'unknown') {
-            $significantOther->birthdate = null;
-        } else {
-            $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
-            $significantOther->birthdate = $birthdate;
-        }
-
-        $significantOther->save();
-
-        // Event
-        $this->logEvent('significantother', $significantOther->id, 'update');
-
-        return $significantOther->id;
-    }
-
-    /**
-     * Delete the significant other.
-     *
-     * @param SignificantOther|int $significantOther
-     */
-    public function deleteSignificantOther($significantOther)
-    {
-        if (!$significantOther instanceof SignificantOther) {
-            $significantOther = SignificantOther::findOrFail($significantOther);
-        }
-
-        $significantOther->delete();
-
-        $this->events()
-            ->where('object_type', 'significantother')
-            ->where('object_id', $significantOther->id)
-            ->get()
-            ->each
-            ->delete();
-    }
-
-    /**
      * Update the name of the contact.
      *
      * @param  string $firstName
@@ -814,118 +757,6 @@ class Contact extends Model
             $this->food_preferencies = null;
         } else {
             $this->food_preferencies = $foodPreferencies;
-        }
-
-        $this->save();
-    }
-
-    /**
-     * Add a kid.
-     *
-     * @param string $name
-     * @param string $gender
-     * @param bool $birthdate_approximate
-     * @param string $birthdate
-     * @param int $age
-     * @return int the Kid ID
-     */
-    public function addKid($name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
-    {
-        $kid = $this->kids()->create([]);
-        $kid->account_id = $this->account_id;
-        $kid->first_name = ucfirst($name);
-        $kid->gender = $gender;
-        $kid->is_birthdate_approximate = $birthdate_approximate;
-
-        if ($birthdate_approximate == 'approximate') {
-            $year = Carbon::now()->subYears($age)->year;
-            $birthdate = Carbon::createFromDate($year, 1, 1);
-            $kid->birthdate = $birthdate;
-        } elseif ($birthdate_approximate == 'unknown') {
-            $kid->birthdate = null;
-        } else {
-            $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
-            $kid->birthdate = $birthdate;
-        }
-
-        $kid->save();
-
-        $this->has_kids = 'true';
-        $this->number_of_kids = $this->number_of_kids + 1;
-        $this->save();
-
-        $this->logEvent('kid', $kid->id, 'create');
-
-        return $kid->id;
-    }
-
-    /**
-     * Edit a kid.
-     *
-     * @param Kid|int $kid
-     * @param string $name
-     * @param string $gender
-     * @param bool $birthdate_approximate
-     * @param string $birthdate
-     * @param int $age
-     * @param $timezone
-     * @return int the Kid ID
-     */
-    public function editKid($kid, $name, $gender, $birthdate_approximate, $birthdate, $age, $timezone)
-    {
-        if (!$kid instanceof Kid) {
-            $kid = Kid::findOrFail($kid);
-        }
-
-        $kid->first_name = ucfirst($name);
-        $kid->gender = $gender;
-        $kid->is_birthdate_approximate = $birthdate_approximate;
-
-        if ($birthdate_approximate == 'approximate') {
-            $year = Carbon::now()->subYears($age)->year;
-            $birthdate = Carbon::createFromDate($year, 1, 1);
-            $kid->birthdate = $birthdate;
-        } elseif ($birthdate_approximate == 'unknown') {
-            $kid->birthdate = null;
-        } else {
-            $birthdate = Carbon::createFromFormat('Y-m-d', $birthdate);
-            $kid->birthdate = $birthdate;
-        }
-
-        $kid->save();
-
-        $this->logEvent('kid', $kid->id, 'update');
-
-        return $kid->id;
-    }
-
-    /**
-     * Delete the kid.
-     *
-     * @param Kid|int $kid
-     */
-    public function deleteKid($kid)
-    {
-        if (!$kid instanceof Kid) {
-            $kid = Kid::findOrFail($kid);
-        }
-
-        $kid->delete();
-
-        // Delete all events
-        $this->events()
-            ->where('object_type', 'kid')
-            ->where('object_id', $kid->id)
-            ->get()
-            ->each
-            ->delete();
-
-        // Decrease number of kids
-        $this->number_of_kids = $this->number_of_kids - 1;
-
-        if ($this->number_of_kids < 1) {
-            $this->number_of_kids = 0;
-            $this->has_kids = 'false';
         }
 
         $this->save();

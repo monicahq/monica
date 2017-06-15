@@ -20,10 +20,11 @@ return [
     'main_nav_trash' => 'Poubelle',
 
     'footer_remarks' => 'Une remarque ?',
-    'footer_send_email' => 'Envoyer moi un courriel',
+    'footer_send_email' => 'Envoyez moi un courriel',
     'footer_privacy' => 'Politique de confidentialité (en)',
     'footer_release' => 'Notes de version (en)',
     'footer_newsletter' => 'Infolettre (en)',
+    'footer_source_code' => 'Monica on GitHub',
 
     'breadcrumb_dashboard' => 'Tableau de bord',
     'breadcrumb_list_contacts' => 'Liste de contacts',

@@ -42,7 +42,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'admin@admin.com',
             'password' => bcrypt('admin'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
 
@@ -53,7 +53,7 @@ class FakeContentTableSeeder extends Seeder
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
-            $timezone = 'America/New_York';
+            $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
             // create contact entry
@@ -113,7 +113,16 @@ class FakeContentTableSeeder extends Seeder
                     $birthdate_approximate = 'exact';
                 }
 
-                $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+                $contact->significantOthers()->create(
+                    [
+                        'first_name' => $firstname,
+                        'gender' => $gender,
+                        'is_birthdate_approximate' => $birthdate_approximate,
+                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                        'account_id' => $contact->account_id,
+                        'status' => 'active',
+                    ]
+                );
             }
 
             // // create kids
@@ -124,11 +133,21 @@ class FakeContentTableSeeder extends Seeder
                     $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
                     $age = rand(2, 14);
                     if (rand(1, 2) == 1) {
-                        $birthdate_approximate = 'false';
+                        $birthdate_approximate = 'unknown';
                     } else {
-                        $birthdate_approximate = 'true';
+                        $birthdate_approximate = 'exact';
                     }
-                    $kidId = $contact->addKid($name, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+
+                    $contact->kids()->create(
+                        [
+                            'first_name' => $name,
+                            'gender' => $gender,
+                            'is_birthdate_approximate' => $birthdate_approximate,
+                            'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                            'account_id' => $contact->account_id,
+                            'status' => 'active',
+                        ]
+                    );
                 }
             }
 
@@ -153,7 +172,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'State',
             'email' => 'blank@blank.com',
             'password' => bcrypt('blank'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
     }

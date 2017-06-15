@@ -2,11 +2,13 @@
 ----------
 
 New features:
+* Timezone can now be defined in a new ENV variable so every new user of the instance will have this timezone. Set to America/New_York by default.
 * Add ability to edit a note.
 * Add ability to edit a debt.
 * Add support for South African ZAR currency.
 
 Improvements:
+* Fix Deploy to Heroku button.
 * Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
 
 2017-06-13
