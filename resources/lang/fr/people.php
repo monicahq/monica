@@ -25,6 +25,7 @@ return [
     'people_delete_message' => 'Si vous devez supprimer ce contact,',
     'people_delete_click_here' => 'cliquez ici',
     'people_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
 
     // show
     'section_personal_information' => 'Informations personnelles',
