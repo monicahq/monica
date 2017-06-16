@@ -4,37 +4,90 @@ namespace App;
 
 use App\ActivityType;
 use App\Helpers\DateHelper;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @property ActivityType $type
+ */
 class Activity extends Model
 {
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'activities';
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['date_it_happened'];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['type'];
+
+    /**
      * Get the account record associated with the gift.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
      * Get the contact record associated with the gift.
+     *
+     * @return BelongsTo
      */
     public function contact()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->belongsTo(Contact::class);
     }
 
     /**
      * Get the activity type record associated with the activity.
+     *
+     * @return BelongsTo
      */
     public function type()
     {
-        return $this->belongsTo('App\ActivityType');
+        return $this->belongsTo(ActivityType::class, 'activity_type_id');
+    }
+
+    /**
+     * Get the date_it_happened field according to user's timezone
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getDateItHappenedAttribute($value)
+    {
+        if ($this->account) {
+            return Carbon::parse($value, $this->account->user->timezone);
+        } elseif (auth()->user()) {
+            return Carbon::parse($value, auth()->user()->timezone);
+        }
+
+        return Carbon::parse($value);
     }
 
     /**
@@ -44,10 +97,6 @@ class Activity extends Model
      */
     public function getSummary()
     {
-        if (is_null($this->summary)) {
-            return null;
-        }
-
         return $this->summary;
     }
 
@@ -58,10 +107,6 @@ class Activity extends Model
      */
     public function getDescription()
     {
-        if (is_null($this->description)) {
-            return null;
-        }
-
         return $this->description;
     }
 
@@ -82,11 +127,6 @@ class Activity extends Model
      */
     public function getTitle()
     {
-        if (is_null($this->activity_type_id)) {
-            return null;
-        }
-
-        $activityType = ActivityType::find($this->activity_type_id);
-        return $activityType->key;
+        return $this->type ? $this->type->key : null;
     }
 }

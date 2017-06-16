@@ -25,6 +25,7 @@ return [
     'people_delete_message' => 'Если вам нужно удалить этот контакт,',
     'people_delete_click_here' => 'нажмите сюда',
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
 
     // show
     'section_personal_information' => 'Личные данные',

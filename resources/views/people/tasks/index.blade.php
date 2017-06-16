@@ -10,7 +10,7 @@
 </div>
 
 
-@if ($contact->getTasksInProgress()->count() == 0 and $contact->getCompletedTasks()->count() == 0)
+@if ($contact->getTasksInProgress()->count() === 0 and $contact->getCompletedTasks()->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
@@ -29,10 +29,10 @@
       @foreach($contact->getTasks() as $task)
       <li class="table-row">
         <div class="table-cell date">
-          {{ \App\Helpers\DateHelper::getShortDate($task->getCreatedAt()) }}
+          {{ \App\Helpers\DateHelper::getShortDate($task->created_at) }}
         </div>
         <div class="table-cell">
-          {{ $task->getTitle() }}
+          {{ $task->title }}
         </div>
         <div class="table-cell list-actions">
           <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">

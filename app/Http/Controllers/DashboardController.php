@@ -23,22 +23,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $account = Auth::user()->account;
+        $account = Auth::user()->account()
+            ->withCount(
+                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks', 'kids'
+            )->with('debts.contact')
+            ->first();
 
-        $lastUpdatedContacts = $account->contacts()->limit(10)->get();
+        $lastUpdatedContacts = $account->contacts()->latest('updated_at')->limit(10)->get();
 
         // Latest statistics
         if ($account->contacts()->count() === 0) {
             return view('dashboard.blank');
         }
-
-        $number_of_contacts = $account->contacts()->count();
-        $number_of_reminders = $account->reminders()->count();
-        $number_of_notes = $account->notes()->count();
-        $number_of_activities = $account->activities()->count();
-        $number_of_gifts = $account->gifts()->count();
-        $number_of_tasks = $account->tasks()->count();
-        $number_of_kids = $account->kids()->count();
 
         $debt = $account->debts->where('status', 'inprogress');
 
@@ -67,12 +63,12 @@ class DashboardController extends Controller
 
                 return [
                     'id' => $event->id,
-                    'date' => DateHelper::createDateFromFormat($event->created_at, Auth::user()->timezone),
+                    'date' => DateHelper::createDateFromFormat($event->created_at, $account->user->timezone),
                     'object' => $object ?? null,
                     'object_type' => $event->object_type,
                     'object_id' => $event->object_id,
                     'contact_id' => $event->contact->id,
-                    'contact_complete_name' => $event->contact->getCompleteName(),
+                    'contact_complete_name' => $event->contact->name,
                     'nature_of_operation' => $event->nature_of_operation,
                 ];
             });
@@ -81,27 +77,29 @@ class DashboardController extends Controller
         $upcomingReminders = $account->reminders()
             ->where('next_expected_date', '>', Carbon::now())
             ->orderBy('next_expected_date', 'asc')
+            ->with('contact')
             ->limit(10)
             ->get();
 
         // Active tasks
-        $tasks = $account->tasks->where('status', 'inprogress');
+        $tasks = $account->tasks()->with('contact')->where('status', 'inprogress')->get();
 
         $data = [
             'events' => $events,
             'lastUpdatedContacts' => $lastUpdatedContacts,
             'upcomingReminders' => $upcomingReminders,
-            'number_of_contacts' => $number_of_contacts,
-            'number_of_reminders' => $number_of_reminders,
-            'number_of_notes' => $number_of_notes,
-            'number_of_activities' => $number_of_activities,
-            'number_of_gifts' => $number_of_gifts,
-            'number_of_tasks' => $number_of_tasks,
-            'number_of_kids' => $number_of_kids,
+            'number_of_contacts' => $account->contacts_count,
+            'number_of_reminders' => $account->reminders_count,
+            'number_of_notes' => $account->notes_count,
+            'number_of_activities' => $account->activities_count,
+            'number_of_gifts' => $account->gifts_count,
+            'number_of_tasks' => $account->tasks_count,
+            'number_of_kids' => $account->kids_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
             'tasks' => $tasks,
             'debts' => $debt,
+            'user' => $account->user
         ];
 
         return view('dashboard.index', $data);

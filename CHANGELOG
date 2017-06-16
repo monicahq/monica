@@ -1,3 +1,13 @@
+2017-06-15
+----------
+
+New features:
+* Add reminder automatically when you set the birthdate of a contact.
+
+Improvements:
+* Add timezone for Switzerland.
+* Major refactoring of how contacts are managed in the codebase.
+
 2017-06-14
 ----------
 
