@@ -236,6 +236,13 @@ class PeopleController extends Controller
         $contact->save();
 
         if ($birthdateApproximate == 'exact') {
+
+            // check if a reminder was previously set for this birthdate
+            // if so, we delete the old reminder, and create a new one
+            if (! is_null($contact->birthday_reminder_id)) {
+                $contact->reminders->find($contact->birthday_reminder_id)->delete();
+            }
+
             $reminder = Reminder::addBirthdayReminder(
                 $contact,
                 trans(
@@ -244,6 +251,22 @@ class PeopleController extends Controller
                 ),
                 $request->get('specificDate')
             );
+
+            $contact->update([
+                'birthday_reminder_id' => $reminder->id,
+            ]);
+        } else {
+
+            // the birthdate is approximate or unknown. in both cases, we need
+            // to remove the previous reminder about the birthday if there was
+            // an existing one
+            if (! is_null($contact->birthday_reminder_id)) {
+                $contact->reminders->find($contact->birthday_reminder_id)->delete();
+
+                $contact->update([
+                    'birthday_reminder_id' => null,
+                ]);
+            }
         }
 
         $contact->logEvent('contact', $contact->id, 'update');

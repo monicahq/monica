@@ -53,11 +53,14 @@
 
             <td class="actions">
 
+              {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
+              @if ($reminder->is_birthday == 'false')
               <div class="reminder-actions">
                 <ul class="horizontal">
                   <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
                 </ul>
               </div>
+              @endif
 
             </td>
 

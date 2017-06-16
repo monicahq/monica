@@ -48,7 +48,7 @@
         <div class="{{ Auth::user()->getFluidLayout() }}">
           <div class="row">
 
-            <div class="col-xs-12 col-sm-9" id="search-list">
+            <div class="col-xs-12 col-md-9" id="search-list">
 
               <input class="search form-control" placeholder="{{ trans('people.people_list_search') }}" />
 
@@ -57,12 +57,30 @@
 
                 <li class="people-list-item">
                   <a href="/people/{{ $contact->id }}">
+                    @if ($contact->has_avatar == 'true')
+                      <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                    @else
+                      @if ( $gravatarUrl = $contact->getGravatar(174) )
+                        <img src="{{ $gravatarUrl }}" width="43">
+                      @else
+                        @if (count($contact->getInitials()) == 1)
+                        <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                          {{ $contact->getInitials() }}
+                        </div>
+                        @else
+                        <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                          {{ $contact->getInitials() }}
+                        </div>
+                        @endif
+                      @endif
+                    @endif
                     <span class="people-list-item-name">
                       {{ $contact->getCompleteName() }}
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans_choice('people.people_list_number_kids', $contact->kids_count, ['count' => $contact->kids_count]) }} • {{ trans('people.people_list_last_updated') }} {{ $contact->getLastUpdated() }}
+                      {{ trans_choice('people.people_list_number_kids', $contact->kids_count, ['count' => $contact->kids_count]) }} <br />
+                      <span>{{ trans('people.people_list_last_updated') }} {{ $contact->getLastUpdated() }}</span>
                     </span>
                   </a>
                 </li>
@@ -71,7 +89,7 @@
               </ul>
             </div>
 
-            <div class="col-xs-12 col-sm-3 sidebar">
+            <div class="col-xs-12 col-md-3 sidebar">
               <a href="/people/add" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
