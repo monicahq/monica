@@ -18,15 +18,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_layout'
     ];
 
     /**
      * Eager load account with every user.
      */
-    protected $with = [
-        'account'
-    ];
+    protected $with = ['account'];
 
     /**
      * The attributes that should be hidden for arrays.
