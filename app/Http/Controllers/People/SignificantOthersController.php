@@ -69,7 +69,9 @@ class SignificantOthersController extends Controller
                     'people.significant_other_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
                 ),
-                $request->get('birthdate')
+                $request->get('birthdate'),
+                null,
+                $significantOther
             );
 
             $significantOther->update([
@@ -154,7 +156,9 @@ class SignificantOthersController extends Controller
                     'people.significant_other_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
                 ),
-                $request->get('birthdate')
+                $request->get('birthdate'),
+                null,
+                $significantOther
             );
 
             $significantOther->update([
