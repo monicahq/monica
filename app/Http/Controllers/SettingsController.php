@@ -50,20 +50,23 @@ class SettingsController extends Controller
      */
     public function delete(Request $request)
     {
-        $account = $request->user()->account;
+        $user = $request->user();
+        $account = $user->account;
 
-        $account->reminders->each->forceDelete();
-        $account->kids->each->forceDelete();
-        $account->notes->each->forceDelete();
-        $account->significantOthers->each->forceDelete();
-        $account->tasks->each->forceDelete();
-        $account->activities->each->forceDelete();
-        $account->events->each->forceDelete();
-        $account->contacts->each->forceDelete();
-        $account->forceDelete();
+        if($account) {
+            $account->reminders->each->forceDelete();
+            $account->kids->each->forceDelete();
+            $account->notes->each->forceDelete();
+            $account->significantOthers->each->forceDelete();
+            $account->tasks->each->forceDelete();
+            $account->activities->each->forceDelete();
+            $account->events->each->forceDelete();
+            $account->contacts->each->forceDelete();
+            $account->forceDelete();
+        }
 
-        $request->user()->delete();
         auth()->logout();
+        $user->forceDelete();
 
         return redirect('/');
     }
