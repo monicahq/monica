@@ -82,6 +82,15 @@
         color: #333;
       }
     }
+    .people-list-item-name {
+      display: inline-block;
+      margin-right: -9999px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: calc(100% - 198px);
+      overflow: hidden;
+      vertical-align: middle;
+    }
 
     .people-list-item-information {
       color: #999;
@@ -157,11 +166,20 @@
       }
 
       h2 {
-        display: inline;
+        display: block;
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
         padding-left: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: calc(100% - 245px);
+        margin-right: -9999px;
+      }
+
+      @media (max-width: 480px) {
+        h2 { width: 100% }
       }
 
       .profile-detail-summary {
