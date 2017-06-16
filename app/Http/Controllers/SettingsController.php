@@ -47,20 +47,16 @@ class SettingsController extends Controller
               ->withErrors($validator);
         }
 
-        $email = $request->input('email');
-        $timezone = $request->input('timezone');
-        $layout = $request->input('layout');
-        $locale = $request->input('locale');
-        $currency = $request->input('currency_id');
+        $input = $request->only([
+            'email',
+            'timezone',
+            'layout',
+            'locale',
+            'currency_id'
+        ]);
 
         $user = Auth::user();
-        $user->email = $email;
-        $user->timezone = $timezone;
-        $user->fluid_container = $layout;
-        $user->metric = $layout;
-        $user->locale = $locale;
-        $user->currency_id = $currency;
-        $user->save();
+        $user->update($input);
 
         return redirect('settings')->with('status', trans('settings.settings_success'));
     }
@@ -71,56 +67,31 @@ class SettingsController extends Controller
         $accountID = Auth::user()->account_id;
 
         // delete all reminders
-        $reminders = Reminder::where('account_id', $accountID)->get();
-        foreach ($reminders as $reminder) {
-            $reminder->forceDelete();
-        }
+        Reminder::where('account_id', $accountID)->forceDelete();
 
         // delete contacts
-        $contacts = Contact::where('account_id', $accountID)->get();
-        foreach ($contacts as $contact) {
-            $contact->forceDelete();
-        }
+        Contact::where('account_id', $accountID)->forceDelete();
 
         // delete kids
-        $kids = Kid::where('account_id', $accountID)->get();
-        foreach ($kids as $kid) {
-            $kid->forceDelete();
-        }
+        Kid::where('account_id', $accountID)->forceDelete();
 
         // delete notes
-        $notes = Note::where('account_id', $accountID)->get();
-        foreach ($notes as $note) {
-            $note->forceDelete();
-        }
+        Note::where('account_id', $accountID)->forceDelete();
 
         // delete significant others
-        $significantOthers = SignificantOther::where('account_id', $accountID)->get();
-        foreach ($significantOthers as $significantOther) {
-            $significantOther->forceDelete();
-        }
+        SignificantOther::where('account_id', $accountID)->forceDelete();
 
         // delete tasks
-        $tasks = Task::where('account_id', $accountID)->get();
-        foreach ($tasks as $task) {
-            $task->forceDelete();
-        }
+        Task::where('account_id', $accountID)->forceDelete();
 
         // delete activities
-        $activities = Activity::where('account_id', $accountID)->get();
-        foreach ($activities as $activity) {
-            $activity->forceDelete();
-        }
+        Activity::where('account_id', $accountID)->forceDelete();
 
         // delete events
-        $events = Event::where('account_id', $accountID)->get();
-        foreach ($events as $event) {
-            $event->forceDelete();
-        }
+        Event::where('account_id', $accountID)->forceDelete();
 
         // delete account
-        $account = Account::find($accountID);
-        $account->delete();
+        Account::find($accountID)->delete();
 
         Auth::user()->delete();
 
