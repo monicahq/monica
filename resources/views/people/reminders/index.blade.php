@@ -10,11 +10,11 @@
 </div>
 
 
-@if ($contact->getNumberOfReminders() == 0)
+@if ($contact->reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
@@ -35,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach($contact->getReminders() as $reminder)
+        @foreach($contact->reminders as $reminder)
           <tr>
             <td class="date">{{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}</td>
 
