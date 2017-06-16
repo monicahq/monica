@@ -24,6 +24,7 @@ return [
     'footer_privacy' => 'Política de Privacidade',
     'footer_release' => 'Notas de versão',
     'footer_newsletter' => 'Newsletter',
+    'footer_source_code' => 'Monica on GitHub',
 
     'breadcrumb_dashboard' => 'Painel',
     'breadcrumb_list_contacts' => 'Lista de contatos',

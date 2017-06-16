@@ -35,9 +35,19 @@ $factory->define(App\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,
-        'activity_type_id' => $faker->randomDigit,
+        'activity_type_id' => function () {
+            return factory(App\ActivityType::class)->create()->id;
+        },
         'description' => encrypt($faker->sentence),
         'date_it_happened' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+    ];
+});
+
+$factory->define(App\ActivityType::class, function (Faker\Generator $faker) {
+    return [
+        'key' => $faker->sentence,
+        'location_type' => $faker->word,
+        'icon' => $faker->word,
     ];
 });
 
