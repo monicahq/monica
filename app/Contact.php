@@ -182,7 +182,6 @@ class Contact extends Model
             default:
                 return $builder->orderBy('first_name', 'asc');
         }
-
     }
 
     /**
@@ -848,7 +847,7 @@ class Contact extends Model
                 $activityStatistic = $this->activityStatistics()->create([]);
                 $activityStatistic->account_id = $this->account_id;
                 $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();;
+                $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
             });
     }
@@ -968,5 +967,4 @@ class Contact extends Model
     {
         return $this->debts;
     }
-
 }

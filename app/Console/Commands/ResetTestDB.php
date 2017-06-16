@@ -39,7 +39,7 @@ class ResetTestDB extends Command
     public function handle()
     {
         if (env('APP_ENV') == 'local') {
-            foreach(\DB::select('SHOW TABLES') as $table) {
+            foreach (\DB::select('SHOW TABLES') as $table) {
                 $table_array = get_object_vars($table);
                 \Schema::drop($table_array[key($table_array)]);
             }

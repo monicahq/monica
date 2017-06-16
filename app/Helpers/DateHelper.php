@@ -77,7 +77,8 @@ class DateHelper
         return $date->format($format);
     }
 
-    public static function getLocale($locale = null) {
+    public static function getLocale($locale = null)
+    {
         $locale = $locale ?: Auth::user()->locale;
         Date::setLocale($locale);
 

@@ -54,7 +54,6 @@ class DashboardController extends Controller
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-
                 if ($event->object_type === 'significantother') {
                     $object = $event->contact->significantOthers->where('id', $event->object_id)->first();
                 } elseif ($event->object_type === 'kid') {
