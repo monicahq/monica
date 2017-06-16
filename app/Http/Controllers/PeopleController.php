@@ -6,6 +6,7 @@ use Auth;
 use App\Note;
 use Validator;
 use App\Contact;
+use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class PeopleController extends Controller
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
         }
-        
+
         $contacts = $user->account->contacts()->withCount('kids')->sortedBy($sort)->get();
 
         return view('people.index')
@@ -233,6 +234,40 @@ class PeopleController extends Controller
 
         $contact->is_birthdate_approximate = $birthdateApproximate;
         $contact->save();
+
+        if ($birthdateApproximate == 'exact') {
+
+            // check if a reminder was previously set for this birthdate
+            // if so, we delete the old reminder, and create a new one
+            if (! is_null($contact->birthday_reminder_id)) {
+                $contact->reminders->find($contact->birthday_reminder_id)->delete();
+            }
+
+            $reminder = Reminder::addBirthdayReminder(
+                $contact,
+                trans(
+                    'people.people_add_birthday_reminder',
+                    ['name' => $request->get('firstname')]
+                ),
+                $request->get('specificDate')
+            );
+
+            $contact->update([
+                'birthday_reminder_id' => $reminder->id,
+            ]);
+        } else {
+
+            // the birthdate is approximate or unknown. in both cases, we need
+            // to remove the previous reminder about the birthday if there was
+            // an existing one
+            if (! is_null($contact->birthday_reminder_id)) {
+                $contact->reminders->find($contact->birthday_reminder_id)->delete();
+
+                $contact->update([
+                    'birthday_reminder_id' => null,
+                ]);
+            }
+        }
 
         $contact->logEvent('contact', $contact->id, 'update');
 

@@ -25,6 +25,7 @@ return [
     'people_delete_message' => 'If you need to delete this contact,',
     'people_delete_click_here' => 'click here',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
 
     // show
     'section_personal_information' => 'Personal information',
@@ -119,7 +120,7 @@ return [
     'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
     'reminders_frequency' => 'every',
     'reminders_date' => 'Date',
     'reminders_content' => 'Content',
