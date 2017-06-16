@@ -4,7 +4,7 @@
   }
 
   .main-content {
-    margin-top: 50px;
+    margin-top: 20px;
   }
 
   #search-list {
@@ -50,6 +50,29 @@
       background-color: #f7fbfc;
     }
 
+    .avatar {
+      background-color: #93521e;
+      border-radius: 3px;
+      color: #fff;
+      display: inline-block;
+      font-size: 30px;
+      height: 43px;
+      margin-right: 5px;
+      padding-left: 5px;
+      vertical-align: middle;
+      width: 43px;
+
+      &.one-letter {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+
+    img {
+      border-radius: 3px;
+      margin-right: 5px;
+    }
+
     a {
       color: #333;
       text-decoration: none;
@@ -59,13 +82,26 @@
         color: #333;
       }
     }
+    .people-list-item-name {
+      display: inline-block;
+      margin-right: -9999px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: calc(100% - 198px);
+      overflow: hidden;
+      vertical-align: middle;
+    }
 
     .people-list-item-information {
       color: #999;
       font-style: italic;
       float: right;
+      text-align: right;
       position: relative;
-      top: 3px;
+    }
+    
+    .people-list-item-information span {
+      font-size: 0.8rem;
     }
   }
 }
@@ -130,11 +166,20 @@
       }
 
       h2 {
-        display: inline;
+        display: block;
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
         padding-left: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: calc(100% - 245px);
+        margin-right: -9999px;
+      }
+
+      @media (max-width: 480px) {
+        h2 { width: 100% }
       }
 
       .profile-detail-summary {
