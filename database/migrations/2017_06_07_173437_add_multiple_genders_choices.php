@@ -13,7 +13,8 @@ class AddMultipleGendersChoices extends Migration
      */
     public function up()
     {
-        switch(DB::connection()->getPDO()->getAttribute(PDO::ATTR_DRIVER_NAME))
+        $driverName = DB::connection()->getPDO()->getAttribute(PDO::ATTR_DRIVER_NAME);
+        switch($driverName)
         {
             case 'mysql':
                 DB::statement("ALTER TABLE contacts CHANGE COLUMN gender gender ENUM('male', 'female', 'none')");
@@ -26,7 +27,7 @@ class AddMultipleGendersChoices extends Migration
                 $this->alterEnum('kids', 'gender', ['male', 'female', 'none']);
                 break;
             default:
-                throw new \Exception('Driver not supported.');
+                throw new \Exception("Driver {$driverName} not supported.");
                 break;
         }
     }
