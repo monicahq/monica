@@ -8,12 +8,11 @@
 
           <div class="signup-box">
             <img class="logo" src="/img/small-logo.png" alt="">
-            <h2>Create your Monica account</h2>
-            <h3><a href="/login">Log in</a> if you already have an account.</h3>
+            <h2>You've been invited to join Monica. Welcome!</h2>
 
             @include ('partials.errors')
 
-            <form class="" action="/register" method="post">
+            <form class="" action="/invitations/accept/{{ $key }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
@@ -25,7 +24,7 @@
                 <div class="col-xs-12 col-sm-6">
                   <div class="form-group">
                     <label for="first_name">First name</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="eg. John" value="{{ old('first_name') }}" required>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="eg. John" value="{{ old('first_name') }}"  required>
                   </div>
                 </div>
                 <div class="col-xs-12 col-sm-6">
@@ -46,8 +45,13 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
+              <div class="form-group">
+                <label for="email_security">For security purposes, please indicate the email of the person who've invited you to join this account. This information is provided in the invitation email.</label>
+                <input type="email" class="form-control" id="email_security" name="email_security" required>
+              </div>
+
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">Join Monica</button>
               </div>
 
               <div class="help">
@@ -56,7 +60,6 @@
 
             </form>
           </div>
-
         </div>
       </div>
     </div>

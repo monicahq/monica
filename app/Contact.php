@@ -186,7 +186,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get contact's full name
      *
      * @return string
      */
@@ -206,7 +206,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get user's initials
      *
      * @return string
      */

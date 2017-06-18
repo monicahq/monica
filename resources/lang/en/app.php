@@ -31,6 +31,7 @@ return [
     'breadcrumb_journal' => 'Journal',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_export' => 'Export',
+    'breadcrumb_settings_users' => 'Users',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',

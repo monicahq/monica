@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'Account settings',
     'sidebar_settings_export' => 'Export data',
+    'sidebar_settings_users' => 'Users',
 
     'export_title' => 'Export your account data',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export - please be patient and do not spam the button.',

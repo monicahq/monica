@@ -31,6 +31,7 @@ return [
     'breadcrumb_journal' => 'Журнал',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_export' => 'Export',
+    'breadcrumb_settings_users' => 'Users',
 
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',

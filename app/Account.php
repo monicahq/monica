@@ -10,17 +10,18 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * @property User $user
  * @property Collection|Activity[] $activities
- * @property Collection|Activity[] $activityStatistics
- * @property Collection|Activity[] $contacts
- * @property Collection|Activity[] $debts
- * @property Collection|Activity[] $entries
- * @property Collection|Activity[] $gifts
- * @property Collection|Activity[] $events
- * @property Collection|Activity[] $kids
- * @property Collection|Activity[] $notes
- * @property Collection|Activity[] $reminders
- * @property Collection|Activity[] $significantOthers
- * @property Collection|Activity[] $tasks
+ * @property Collection|ActitivyStatistic[] $activityStatistics
+ * @property Collection|Contact[] $contacts
+ * @property Collection|Invitation[] $invitations
+ * @property Collection|Debt[] $debts
+ * @property Collection|Entry[] $entries
+ * @property Collection|Gift[] $gifts
+ * @property Collection|Event[] $events
+ * @property Collection|Kid[] $kids
+ * @property Collection|Note[] $notes
+ * @property Collection|Reminder[] $reminders
+ * @property Collection|SignificantOther[] $significantOthers
+ * @property Collection|Task[] $tasks
  */
 class Account extends Model
 {
@@ -42,6 +43,16 @@ class Account extends Model
     public function contacts()
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Get the invitations associated with the account.
+     *
+     * @return HasMany
+     */
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
     }
 
     /**
@@ -115,13 +126,13 @@ class Account extends Model
     }
 
     /**
-     * Get the user record associated with the account.
+     * Get the user records associated with the account.
      *
-     * @return HasOne
+     * @return HasMany
      */
-    public function user()
+    public function users()
     {
-        return $this->hasOne(User::class);
+        return $this->hasMany(User::class);
     }
 
     /**

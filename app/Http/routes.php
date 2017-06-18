@@ -1,7 +1,5 @@
 <?php
 
-Route::get('test/{contact}/{activity}','People\ActivitiesController@edit');
-
 if (App::environment('production')) {
     URL::forceScheme('https');
 }
@@ -11,6 +9,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 Auth::routes();
 
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+
+Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
+Route::post('/invitations/accept/{key}', 'SettingsController@storeInvitation');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -103,7 +104,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', ['as' => '.index', 'uses' => 'SettingsController@index']);
         Route::get('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/save', 'SettingsController@save');
-        Route::get('/settings/export', 'SettingsController@export');
+        Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+        Route::get('/settings/users', 'SettingsController@users')->name('.users');
+        Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
+        Route::post('/settings/users/save', 'SettingsController@saveUser')->name('.users.save');
+        Route::get('/settings/users/invitations/{invitation}/delete', 'SettingsController@destroyInvitation');
     });
 });
