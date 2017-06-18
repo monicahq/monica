@@ -52,7 +52,7 @@
                     <input type="number" class="form-control frequency-type" name="frequency_number"
                            value="1"
                            min="1"
-                           max="99"
+                           max="115"
                            :disabled="reminders_frequency == 'once'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'once'">

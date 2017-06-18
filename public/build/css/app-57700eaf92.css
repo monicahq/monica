@@ -7683,7 +7683,7 @@ header .main-cta {
   background: #497193;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) {
   header .mobile-menu {
     background-color: #58748c;
     border: 1px solid #325776;
@@ -7862,7 +7862,7 @@ header .main-cta {
 }
 
 .people-list .main-content {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .people-list #search-list .search {
@@ -7905,6 +7905,30 @@ header .main-cta {
   background-color: #f7fbfc;
 }
 
+.people-list .people-list-item .avatar {
+  background-color: #93521e;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  font-size: 15px;
+  height: 43px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-top: 10px;
+  vertical-align: middle;
+  width: 43px;
+}
+
+.people-list .people-list-item .avatar.one-letter {
+  padding-left: 0;
+  text-align: center;
+}
+
+.people-list .people-list-item img {
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
 .people-list .people-list-item a {
   color: #333;
   text-decoration: none;
@@ -7915,12 +7939,26 @@ header .main-cta {
   color: #333;
 }
 
+.people-list .people-list-item .people-list-item-name {
+  display: inline-block;
+  margin-right: -9999px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: calc(100% - 198px);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
 .people-list .people-list-item .people-list-item-information {
   color: #999;
   font-style: italic;
   float: right;
+  text-align: right;
   position: relative;
-  top: 3px;
+}
+
+.people-list .people-list-item .people-list-item-information span {
+  font-size: 0.8rem;
 }
 
 .blank-people-state {
@@ -7982,11 +8020,22 @@ header .main-cta {
 }
 
 .people-show .pagehead .people-profile-information h2 {
-  display: inline;
+  display: block;
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 0;
   padding-left: 100px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: calc(100% - 245px);
+  margin-right: -9999px;
+}
+
+@media (max-width: 480px) {
+  .people-show .pagehead .people-profile-information h2 {
+    width: 100%;
+  }
 }
 
 .people-show .pagehead .people-profile-information .profile-detail-summary {
@@ -8456,7 +8505,7 @@ header .main-cta {
 }
 
 .journal .main-content {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .journal .entry-row {
@@ -8736,7 +8785,7 @@ header .main-cta {
 }
 
 .settings .breadcrumb {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .settings .sidebar-menu ul {

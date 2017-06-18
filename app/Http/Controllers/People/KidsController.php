@@ -70,7 +70,8 @@ class KidsController extends Controller
                     'people.kids_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
                 ),
-                $request->get('birthdate')
+                $request->get('birthdate'),
+                $kid
             );
 
             $kid->update([
@@ -155,7 +156,8 @@ class KidsController extends Controller
                     'people.kids_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
                 ),
-                $request->get('birthdate')
+                $request->get('birthdate'),
+                $kid
             );
 
             $kid->update([

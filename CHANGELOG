@@ -1,3 +1,9 @@
+2017-06-16
+----------
+
+Improvements:
+* Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
+
 2017-06-15
 ----------
 
