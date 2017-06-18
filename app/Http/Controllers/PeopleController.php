@@ -311,11 +311,7 @@ class PeopleController extends Controller
         $linkedin = $request->input('linkedin');
 
         $contact->job = ! empty($job) ? $job : null;
-
-        // There is no company field in the database.
-        // How did this work until now?
-        // $contact->company = ! empty($company) ? $company : null;
-
+        $contact->company = ! empty($company) ? $company : null;
         $contact->linkedin_profile_url = ! empty($linkedin) ? $linkedin : null;
 
         $contact->save();
