@@ -23,113 +23,83 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $lastUpdatedContacts = Contact::where('account_id', Auth::user()->account_id)
-                                    ->orderBy('updated_at', 'desc')
-                                    ->limit(10)
-                                    ->get();
+        $account = Auth::user()->account()
+            ->withCount(
+                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks', 'kids'
+            )->with('debts.contact')
+            ->first();
+
+        $lastUpdatedContacts = $account->contacts()->latest('updated_at')->limit(10)->get();
 
         // Latest statistics
-        $contacts = Contact::where('account_id', Auth::user()->account_id)
-                                    ->get();
-
-        if (count($contacts) == 0) {
+        if ($account->contacts()->count() === 0) {
             return view('dashboard.blank');
         }
 
-        $number_of_contacts = $contacts->count();
-        $number_of_reminders = 0;
-        $number_of_notes = 0;
-        $number_of_activities = 0;
-        $number_of_gifts = 0;
-        $number_of_tasks = 0;
-        $number_of_kids = 0;
-        $debt_owed = 0;
-        $debt_due = 0;
+        $debt = $account->debts->where('status', 'inprogress');
 
-        foreach ($contacts as $contact) {
-            $number_of_reminders = $number_of_reminders + $contact->number_of_reminders;
-            $number_of_notes = $number_of_notes + $contact->number_of_notes;
-            $number_of_activities = $number_of_activities + $contact->number_of_activities;
-            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_ideas;
-            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_received;
-            $number_of_gifts = $number_of_gifts + $contact->number_of_gifts_offered;
-            $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_in_progress;
-            $number_of_tasks = $number_of_tasks + $contact->number_of_tasks_completed;
-            $number_of_kids = $number_of_kids + $contact->number_of_kids;
-        }
+        $debt_due = $debt->where('in_debt', 'yes')
+            ->reduce(function ($totalDueDebt, Debt $debt) {
+                return $totalDueDebt + $debt->amount;
+            }, 0);
 
-        $debts = Debt::where('account_id', Auth::user()->account_id)
-                        ->where('status', 'inprogress')
-                        ->where('in_debt', 'yes')
-                        ->get();
-
-        foreach ($debts as $debt) {
-            $debt_due = $debt_due + $debt->amount;
-        }
-
-        $debts = Debt::where('account_id', Auth::user()->account_id)
-                    ->where('status', 'inprogress')
-                    ->where('in_debt', 'no')
-                    ->get();
-
-        foreach ($debts as $debt) {
-            $debt_owed = $debt_owed + $debt->amount;
-        }
+        $debt_owed = $debt->where('in_debt', 'no')
+            ->reduce(function ($totalOwedDebt, Debt $debt) {
+                return $totalOwedDebt + $debt->amount;
+            }, 0);
 
         // List of events
-        $events = Event::where('account_id', Auth::user()->account_id)
-                      ->orderBy('created_at', 'desc')
-                      ->limit(30)
-                      ->get();
+        $events = $account->events()->with('contact.significantOthers', 'contact.kids')->limit(30)->get()
+            ->reject(function (Event $event) {
+                return $event->contact === null;
+            })
+            ->map(function (Event $event) use ($account) {
 
-        $eventsArray = collect();
+                if ($event->object_type === 'significantother') {
+                    $object = $event->contact->significantOthers->where('id', $event->object_id)->first();
+                } elseif ($event->object_type === 'kid') {
+                    $object = $event->contact->kids->where('id', $event->object_id)->first();
+                }
 
-        foreach ($events as $event) {
-            $contact = Contact::findOrFail($event->contact_id);
-
-            $eventsArray->push([
-                'id' => $event->id,
-                'date' => DateHelper::createDateFromFormat($event->created_at, Auth::user()->timezone),
-                'object_type' => $event->object_type,
-                'object_id' => $event->object_id,
-                'contact_id' => $contact->id,
-                'contact_complete_name' => $contact->getCompleteName(),
-                'nature_of_operation' => $event->nature_of_operation,
-            ]);
-        }
+                return [
+                    'id' => $event->id,
+                    'date' => DateHelper::createDateFromFormat($event->created_at, $account->user->timezone),
+                    'object' => $object ?? null,
+                    'object_type' => $event->object_type,
+                    'object_id' => $event->object_id,
+                    'contact_id' => $event->contact->id,
+                    'contact_complete_name' => $event->contact->name,
+                    'nature_of_operation' => $event->nature_of_operation,
+                ];
+            });
 
         // List of upcoming reminders
-        $upcomingReminders = Reminder::where('account_id', Auth::user()->account_id)
-                                    ->where('next_expected_date', '>', Carbon::now())
-                                    ->orderBy('next_expected_date', 'asc')
-                                    ->limit(10)
-                                    ->get();
+        $upcomingReminders = $account->reminders()
+            ->where('next_expected_date', '>', Carbon::now())
+            ->orderBy('next_expected_date', 'asc')
+            ->with('contact')
+            ->limit(10)
+            ->get();
 
         // Active tasks
-        $tasks = Task::where('account_id', Auth::user()->account_id)
-                        ->where('status', 'inprogress')
-                        ->get();
-
-        // Debts
-        $debts = Debt::where('account_id', Auth::user()->account_id)
-                        ->where('status', 'inprogress')
-                        ->get();
+        $tasks = $account->tasks()->with('contact')->where('status', 'inprogress')->get();
 
         $data = [
-            'events' => $eventsArray,
+            'events' => $events,
             'lastUpdatedContacts' => $lastUpdatedContacts,
             'upcomingReminders' => $upcomingReminders,
-            'number_of_contacts' => $number_of_contacts,
-            'number_of_reminders' => $number_of_reminders,
-            'number_of_notes' => $number_of_notes,
-            'number_of_activities' => $number_of_activities,
-            'number_of_gifts' => $number_of_gifts,
-            'number_of_tasks' => $number_of_tasks,
-            'number_of_kids' => $number_of_kids,
+            'number_of_contacts' => $account->contacts_count,
+            'number_of_reminders' => $account->reminders_count,
+            'number_of_notes' => $account->notes_count,
+            'number_of_activities' => $account->activities_count,
+            'number_of_gifts' => $account->gifts_count,
+            'number_of_tasks' => $account->tasks_count,
+            'number_of_kids' => $account->kids_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
             'tasks' => $tasks,
-            'debts' => $debts,
+            'debts' => $debt,
+            'user' => $account->user
         ];
 
         return view('dashboard.index', $data);

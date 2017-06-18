@@ -2,10 +2,41 @@
 
 @section('content')
 
-<div class="settings modal">
+<div class="settings">
+
+  {{-- Breadcrumb --}}
+  <div class="breadcrumb">
+    <div class="{{ Auth::user()->getFluidLayout() }}">
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="horizontal">
+            <li>
+              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+            </li>
+            <li>
+              {{ trans('app.breadcrumb_settings') }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+
+      <div class="col-xs-12 col-md-3 sidebar-menu">
+        <ul>
+          <li class="selected">
+            {{ trans('settings.sidebar_settings') }}
+          </li>
+          <li>
+            <a href="/settings/export">{{ trans('settings.sidebar_settings_export') }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-xs-12 col-md-9">
 
         @include('partials.errors')
 
@@ -81,7 +112,6 @@
               <option value='Europe/Amsterdam' {{ (Auth::user()->timezone == 'Europe/Amsterdam')?'selected':'' }}>(UTC+01:00) Amsterdam</option>
               <option value='Europe/Belgrade' {{ (Auth::user()->timezone == 'Europe/Belgrade')?'selected':'' }}>(UTC+01:00) Belgrade</option>
               <option value='Europe/Berlin' {{ (Auth::user()->timezone == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Berlin</option>
-              <option value='Europe/Bern' {{ (Auth::user()->timezone == 'Europe/Bern')?'selected':'' }}>(UTC+01:00) Bern</option>
               <option value='Europe/Bratislava' {{ (Auth::user()->timezone == 'Europe/Bratislava')?'selected':'' }}>(UTC+01:00) Bratislava</option>
               <option value='Europe/Brussels' {{ (Auth::user()->timezone == 'Europe/Brussels')?'selected':'' }}>(UTC+01:00) Brussels</option>
               <option value='Europe/Budapest' {{ (Auth::user()->timezone == 'Europe/Budapest')?'selected':'' }}>(UTC+01:00) Budapest</option>
@@ -98,6 +128,7 @@
               <option value='Europe/Warsaw' {{ (Auth::user()->timezone == 'Europe/Warsaw')?'selected':'' }}>(UTC+01:00) Warsaw</option>
               <option value='Africa/Lagos' {{ (Auth::user()->timezone == 'Africa/Lagos')?'selected':'' }}>(UTC+01:00) West Central Africa</option>
               <option value='Europe/Zagreb' {{ (Auth::user()->timezone == 'Europe/Zagreb')?'selected':'' }}>(UTC+01:00) Zagreb</option>
+              <option value='Europe/Zurich' {{ (Auth::user()->timezone == 'Europe/Zurich')?'selected':'' }}>(UTC+01:00) Zurich</option>
               <option value='Europe/Athens' {{ (Auth::user()->timezone == 'Europe/Athens')?'selected':'' }}>(UTC+02:00) Athens</option>
               <option value='Europe/Bucharest' {{ (Auth::user()->timezone == 'Europe/Bucharest')?'selected':'' }}>(UTC+02:00) Bucharest</option>
               <option value='Africa/Cairo' {{ (Auth::user()->timezone == 'Africa/Cairo')?'selected':'' }}>(UTC+02:00) Cairo</option>
@@ -197,13 +228,6 @@
             @include('partials.components.currency-select',['selectionID'=>Auth::user()->currency_id ])
           </div>
 
-          {{-- <div class="form-group">
-            <label for="layout">Temperature metric</label>
-            <select class="form-control" name="layout" id="layout">
-              <option value='fahrenheit' {{ (Auth::user()->metric == 'fahrenheit')?'selected':'' }}>Fahrenheit (F)</option>
-              <option value='celsius' {{ (Auth::user()->metric == 'celsius')?'selected':'' }}>Celsius (C)</option>
-            </select>
-          </div> --}}
           <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
         </form>
 

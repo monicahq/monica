@@ -24,10 +24,13 @@ return [
     'footer_privacy' => 'Политика конфиденциальности',
     'footer_release' => 'Примечания к выпуску',
     'footer_newsletter' => 'Рассылка',
+    'footer_source_code' => 'Monica on GitHub',
 
     'breadcrumb_dashboard' => 'Обзор',
     'breadcrumb_list_contacts' => 'Список контактов',
     'breadcrumb_journal' => 'Журнал',
+    'breadcrumb_settings' => 'Settings',
+    'breadcrumb_settings_export' => 'Export',
 
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',

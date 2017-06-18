@@ -42,12 +42,12 @@
               {{-- First name --}}
               <div class="form-group">
                 <label for="title">{{ trans('people.tasks_add_title') }}</label>
-                <input type="text" class="form-control" name="title" value="" autofocus required>
+                <input type="text" class="form-control" name="title" value="{{ old('title') ?? $task->description }}" autofocus required>
               </div>
 
               <div class="form-group">
-                <label for="comment">{{ trans('people.tasks_add_optional_comment') }}</label>
-                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                <label for="description">{{ trans('people.tasks_add_optional_comment') }}</label>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ old('description') ?? $task->description }}</textarea>
               </div>
 
               <div class="form-group actions">

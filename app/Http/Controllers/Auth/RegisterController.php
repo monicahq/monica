@@ -87,7 +87,7 @@ class RegisterController extends Controller
         $user->last_name = $data['last_name'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
-        $user->timezone = 'America/New_York';
+        $user->timezone = config('app.timezone');
         $user->save();
 
         // create a new account
@@ -137,7 +137,7 @@ class RegisterController extends Controller
             $userObject->first_name = 'Facebook';
             $userObject->last_name = 'User';
             $userObject->email = $user->getEmail();
-            $userObject->timezone = 'America/New_York';
+            $userObject->timezone = config('app.timezone');
             $userObject->save();
 
             // create a new account

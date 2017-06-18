@@ -261,10 +261,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfReminders()
     {
         $contact = new Contact;
-        $contact->number_of_reminders = 3;
 
         $this->assertEquals(
-            3,
+            0,
             $contact->getNumberOfReminders()
         );
     }
@@ -272,11 +271,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfGifts()
     {
         $contact = new Contact;
-        $contact->number_of_gifts_offered = 3;
-        $contact->number_of_gifts_ideas = 2;
 
         $this->assertEquals(
-            5,
+            0,
             $contact->getNumberOfGifts()
         );
     }
@@ -284,10 +281,9 @@ class ContactTest extends TestCase
     public function testGetNumberOfActivities()
     {
         $contact = new Contact;
-        $contact->number_of_activities = 3;
 
         $this->assertEquals(
-            3,
+            0,
             $contact->getNumberOfActivities()
         );
     }
@@ -541,6 +537,42 @@ class ContactTest extends TestCase
         );
     }
 
+    public function test_getJob_returns_null()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getJob());
+    }
+
+    public function test_get_job_returns_job_if_defined()
+    {
+        $contact = new Contact;
+        $contact->job = 'actor';
+
+        $this->assertEquals(
+            'actor',
+            $contact->getJob()
+        );
+    }
+
+    public function test_getCompany_returns_null()
+    {
+        $contact = new Contact;
+
+        $this->assertNull($contact->getCompany());
+    }
+
+    public function test_get_company_returns_company_if_defined()
+    {
+        $contact = new Contact;
+        $contact->company = 'Hollywood';
+
+        $this->assertEquals(
+            'Hollywood',
+            $contact->getCompany()
+        );
+    }
+
     public function testGetPhoneReturnsNullIfPhoneIsUndefined()
     {
         $contact = new Contact;
@@ -677,94 +709,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'Some value',
             $contact->getFoodPreferencies()
-        );
-    }
-
-    public function testAddSignificantOtherReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addSignificantOther(
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testEditSignificantOtherReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertInternalType(
-            'int',
-            $contact->editSignificantOther(
-                $significantOther->id,
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testDeleteSignificantOther()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $contact->deleteSignificantOther($significantOther->id);
-
-        $this->assertNull($contact->getCurrentSignificantOther());
-    }
-
-    public function testAddKidReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addKid(
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testEditKidReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $kid = factory(\App\Kid::class)->create([
-            'child_of_contact_id' => $contact->id,
-        ]);
-
-        $this->assertInternalType(
-            'int',
-            $contact->editKid(
-                $kid->id,
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
         );
     }
 
@@ -943,8 +887,7 @@ class ContactTest extends TestCase
     {
         $contact = new Contact;
 
-        $this->assertEquals(
-            0,
+        $this->assertFalse(
             $contact->hasDebt()
         );
     }

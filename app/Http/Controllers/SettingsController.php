@@ -2,21 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-use App\Kid;
-use App\Note;
-use App\Task;
-use App\Event;
-use Validator;
-use App\Account;
-use App\Contact;
-use App\Activity;
-use App\Reminder;
-use Carbon\Carbon;
-use App\Http\Requests;
-use App\SignificantOther;
 use Illuminate\Http\Request;
-use App\Helpers\RandomHelper;
+use App\Jobs\ExportAccountAsSQL;
+use App\Http\Requests\SettingsRequest;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
@@ -30,95 +19,79 @@ class SettingsController extends Controller
         return view('settings.index');
     }
 
-    public function save(Request $request)
+    /**
+     * Save user settings.
+     *
+     * @param SettingsRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function save(SettingsRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-          'email' => 'required|email|max:2083',
-        ]);
+        $request->user()->update(
+            $request->only([
+                'email',
+                'timezone',
+                'locale',
+                'currency_id',
+            ]) + [
+                'fluid_container' => $request->get('layout')
+            ]
+        );
 
-        if ($validator->fails()) {
-            return redirect('/settings')
-              ->withInput()
-              ->withErrors($validator);
-        }
-
-        $email = $request->input('email');
-        $timezone = $request->input('timezone');
-        $layout = $request->input('layout');
-        $locale = $request->input('locale');
-        $currency = $request->input('currency_id');
-
-        $user = Auth::user();
-        $user->email = $email;
-        $user->timezone = $timezone;
-        $user->fluid_container = $layout;
-        $user->metric = $layout;
-        $user->locale = $locale;
-        $user->currency_id = $currency;
-        $user->save();
-
-        return redirect('settings')->with('status', trans('settings.settings_success'));
+        return redirect('settings')
+            ->with('status', trans('settings.settings_success'));
     }
 
-    public function delete()
+    /**
+     * Delete user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
     {
-        // get the account id
-        $accountID = Auth::user()->account_id;
+        $user = $request->user();
+        $account = $user->account;
 
-        // delete all reminders
-        $reminders = Reminder::where('account_id', $accountID)->get();
-        foreach ($reminders as $reminder) {
-            $reminder->forceDelete();
+        if($account) {
+            $account->reminders->each->forceDelete();
+            $account->kids->each->forceDelete();
+            $account->notes->each->forceDelete();
+            $account->significantOthers->each->forceDelete();
+            $account->tasks->each->forceDelete();
+            $account->activities->each->forceDelete();
+            $account->events->each->forceDelete();
+            $account->contacts->each->forceDelete();
+            $account->forceDelete();
         }
 
-        // delete contacts
-        $contacts = Contact::where('account_id', $accountID)->get();
-        foreach ($contacts as $contact) {
-            $contact->forceDelete();
-        }
-
-        // delete kids
-        $kids = Kid::where('account_id', $accountID)->get();
-        foreach ($kids as $kid) {
-            $kid->forceDelete();
-        }
-
-        // delete notes
-        $notes = Note::where('account_id', $accountID)->get();
-        foreach ($notes as $note) {
-            $note->forceDelete();
-        }
-
-        // delete significant others
-        $significantOthers = SignificantOther::where('account_id', $accountID)->get();
-        foreach ($significantOthers as $significantOther) {
-            $significantOther->forceDelete();
-        }
-
-        // delete tasks
-        $tasks = Task::where('account_id', $accountID)->get();
-        foreach ($tasks as $task) {
-            $task->forceDelete();
-        }
-
-        // delete activities
-        $activities = Activity::where('account_id', $accountID)->get();
-        foreach ($activities as $activity) {
-            $activity->forceDelete();
-        }
-
-        // delete events
-        $events = Event::where('account_id', $accountID)->get();
-        foreach ($events as $event) {
-            $event->forceDelete();
-        }
-
-        // delete account
-        $account = Account::find($accountID);
-        $account->delete();
-
-        Auth::user()->delete();
+        auth()->logout();
+        $user->forceDelete();
 
         return redirect('/');
+    }
+
+    /**
+     * Display the export view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function export()
+    {
+        return view('settings.export');
+    }
+
+    /**
+     * Exports the data of the account in SQL format
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function exportToSql()
+    {
+        $path = $this->dispatchNow(new ExportAccountAsSQL());
+
+        return response()
+            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix() . $path, 'monica.sql')
+            ->deleteFileAfterSend(true);
     }
 }

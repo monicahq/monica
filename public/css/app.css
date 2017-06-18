@@ -7683,7 +7683,7 @@ header .main-cta {
   background: #497193;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) {
   header .mobile-menu {
     background-color: #58748c;
     border: 1px solid #325776;
@@ -7862,7 +7862,7 @@ header .main-cta {
 }
 
 .people-list .main-content {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .people-list #search-list .search {
@@ -7905,6 +7905,30 @@ header .main-cta {
   background-color: #f7fbfc;
 }
 
+.people-list .people-list-item .avatar {
+  background-color: #93521e;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  font-size: 15px;
+  height: 43px;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-top: 10px;
+  vertical-align: middle;
+  width: 43px;
+}
+
+.people-list .people-list-item .avatar.one-letter {
+  padding-left: 0;
+  text-align: center;
+}
+
+.people-list .people-list-item img {
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
 .people-list .people-list-item a {
   color: #333;
   text-decoration: none;
@@ -7915,12 +7939,26 @@ header .main-cta {
   color: #333;
 }
 
+.people-list .people-list-item .people-list-item-name {
+  display: inline-block;
+  margin-right: -9999px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: calc(100% - 198px);
+  overflow: hidden;
+  vertical-align: middle;
+}
+
 .people-list .people-list-item .people-list-item-information {
   color: #999;
   font-style: italic;
   float: right;
+  text-align: right;
   position: relative;
-  top: 3px;
+}
+
+.people-list .people-list-item .people-list-item-information span {
+  font-size: 0.8rem;
 }
 
 .blank-people-state {
@@ -7982,11 +8020,22 @@ header .main-cta {
 }
 
 .people-show .pagehead .people-profile-information h2 {
-  display: inline;
+  display: block;
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 0;
   padding-left: 100px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: calc(100% - 245px);
+  margin-right: -9999px;
+}
+
+@media (max-width: 480px) {
+  .people-show .pagehead .people-profile-information h2 {
+    width: 100%;
+  }
 }
 
 .people-show .pagehead .people-profile-information .profile-detail-summary {
@@ -8100,20 +8149,24 @@ header .main-cta {
   margin-bottom: 4px;
 }
 
-.people-show .profile .people-information {
+.people-show .profile .people-information,
+.people-show .profile .work {
   color: #999;
   font-size: 12px;
 }
 
-.people-show .profile .people-information li {
+.people-show .profile .people-information li,
+.people-show .profile .work li {
   margin-bottom: 10px;
 }
 
-.people-show .profile .people-information li:last-child {
+.people-show .profile .people-information li:last-child,
+.people-show .profile .work li:last-child {
   margin-bottom: 0;
 }
 
-.people-show .profile .people-information li i {
+.people-show .profile .people-information li i,
+.people-show .profile .work li i {
   text-align: center;
   width: 17px;
 }
@@ -8256,16 +8309,6 @@ header .main-cta {
   padding: 5px 0 0;
 }
 
-.people-show .gifts .gift-list-item-value {
-  background-color: #ecf9ff;
-  border: 1px solid #eee;
-  border-radius: 3px;
-  display: inline;
-  font-size: 12px;
-  margin-left: 10px;
-  padding: 0 6px;
-}
-
 .people-show .gifts .gift-list-item-information {
   display: inline;
   margin-left: 10px;
@@ -8308,32 +8351,48 @@ header .main-cta {
   margin-bottom: 10px;
 }
 
-.people-show .activities .activity-date,
-.people-show .tasks .activity-date,
-.people-show .debts .activity-date {
+.people-show .activities .date,
+.people-show .tasks .date,
+.people-show .debts .date,
+.people-show .gifts .date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
   width: 100px;
 }
 
-.people-show .activities .activity-actions,
-.people-show .tasks .activity-actions,
-.people-show .debts .activity-actions {
+.people-show .activities .value,
+.people-show .tasks .value,
+.people-show .debts .value,
+.people-show .gifts .value {
+  background-color: #ecf9ff;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  display: inline;
+  font-size: 12px;
+  padding: 0 6px;
+}
+
+.people-show .activities .list-actions,
+.people-show .tasks .list-actions,
+.people-show .debts .list-actions,
+.people-show .gifts .list-actions {
   position: relative;
   text-align: center;
   width: 60px;
 }
 
-.people-show .activities .activity-actions a:first-child,
-.people-show .tasks .activity-actions a:first-child,
-.people-show .debts .activity-actions a:first-child {
+.people-show .activities .list-actions a:first-child,
+.people-show .tasks .list-actions a:first-child,
+.people-show .debts .list-actions a:first-child,
+.people-show .gifts .list-actions a:first-child {
   margin-right: 5px;
 }
 
-.people-show .activities .activity-actions a.edit,
-.people-show .tasks .activity-actions a.edit,
-.people-show .debts .activity-actions a.edit {
+.people-show .activities .list-actions a.edit,
+.people-show .tasks .list-actions a.edit,
+.people-show .debts .list-actions a.edit,
+.people-show .gifts .list-actions a.edit {
   position: relative;
   top: 1px;
 }
@@ -8346,6 +8405,11 @@ header .main-cta {
 .people-show .reminders .form-check input[type="number"] {
   display: inline;
   width: 50px;
+}
+
+.people-show .gifts .for {
+  font-style: italic;
+  margin-left: 10px;
 }
 
 .people-show .debts .debts-list .debt-nature {
@@ -8441,7 +8505,7 @@ header .main-cta {
 }
 
 .journal .main-content {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .journal .entry-row {
@@ -8718,6 +8782,38 @@ header .main-cta {
     left: 39%;
     top: -47px;
   }
+}
+
+.settings .breadcrumb {
+  margin-bottom: 20px;
+}
+
+.settings .sidebar-menu ul {
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+}
+
+.settings .sidebar-menu li {
+  padding: 10px;
+}
+
+.settings .sidebar-menu li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.settings .sidebar-menu li.selected {
+  background-color: #f7fbfc;
+}
+
+.settings .sidebar-menu li a {
+  width: 100%;
+}
+
+.settings h2 {
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 20px;
 }
 
 .settings .settings-delete {

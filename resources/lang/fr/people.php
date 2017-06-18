@@ -25,6 +25,7 @@ return [
     'people_delete_message' => 'Si vous devez supprimer ce contact,',
     'people_delete_click_here' => 'cliquez ici',
     'people_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
 
     // show
     'section_personal_information' => 'Informations personnelles',
@@ -78,6 +79,13 @@ return [
     'information_no_facebook_defined' => 'Aucun Facebook défini',
     'information_no_twitter_defined' => 'Aucun Twitter défini',
     'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
+    'information_no_work_defined' => 'Aucune information professionnelle définie',
+    'information_work_at' => 'chez :company',
+    'work_add_cta' => 'Mettre à jour les informations professionnelles',
+    'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
+    'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
+    'work_edit_job' => 'Poste (optionel)',
+    'work_edit_company' => 'Entreprise (optionel)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
@@ -219,9 +227,12 @@ return [
 
     // notes
     'notes_add_success' => 'La note a été ajoutée avec succès.',
+    'notes_edit_success' => 'La note a été modifiée avec succès.',
     'notes_delete_success' => 'La note a été supprimée avec succès.',
     'notes_add_title' => 'Ajouter une note à propos de :name.',
     'notes_add_cta' => 'Ajouter la note',
+    'notes_edit_title' => 'Modifier la note à propos de :name',
+    'notes_edit_cta' => 'Enregistrer la note',
     'notes_written_on' => 'Ecrit le :date',
     'notes_add_one_more' => 'Ajouter une autre note',
     'notes_title' => 'Notes',
@@ -250,8 +261,8 @@ return [
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu\'un de la famille :name en particulier',
     'gifts_add_cta' => 'Ajouter',
     'gifts_gift_idea' => 'Idée de cadeau',
-    'gifts_gift_already_offered' => 'Gifts already offered',
-    'gifts_table_date_added' => 'Date added',
+    'gifts_gift_already_offered' => 'Cadeaux déjà offerts',
+    'gifts_table_date_added' => 'Date ajoutée',
     'gifts_table_description' => 'Description',
     'gifts_table_actions' => 'Actions',
 
@@ -269,5 +280,8 @@ return [
     'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
+    'debt_edit_update_cta' => 'Mettre à jour la dette',
+    'debt_edit_success' => 'La dette a été modifiée avec succès',
+    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit'
 
 ];

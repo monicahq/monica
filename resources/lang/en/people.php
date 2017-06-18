@@ -25,6 +25,7 @@ return [
     'people_delete_message' => 'If you need to delete this contact,',
     'people_delete_click_here' => 'click here',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
 
     // show
     'section_personal_information' => 'Personal information',
@@ -78,6 +79,13 @@ return [
     'information_no_facebook_defined' => 'No Facebook defined',
     'information_no_twitter_defined' => 'No Twitter defined',
     'information_no_linkedin_defined' => 'No LinkedIn defined',
+    'information_no_work_defined' => 'No work information defined',
+    'information_work_at' => 'at :company',
+    'work_add_cta' => 'Update work information',
+    'work_edit_success' => 'Work information have been updated with success',
+    'work_edit_title' => 'Update :name\'s job information',
+    'work_edit_job' => 'Job title (optional)',
+    'work_edit_company' => 'Company (optional)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferences have been saved',
@@ -112,7 +120,7 @@ return [
     'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
-    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen',
+    'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
     'reminders_frequency' => 'every',
     'reminders_date' => 'Date',
     'reminders_content' => 'Content',
@@ -219,9 +227,12 @@ return [
 
     // notes
     'notes_add_success' => 'The note has been added successfully',
+    'notes_edit_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_title' => 'Add a note about :name',
     'notes_add_cta' => 'Add note',
+    'notes_edit_title' => 'Edit note about :name',
+    'notes_edit_cta' => 'Save note',
     'notes_written_on' => 'Written on :date',
     'notes_add_one_more' => 'Add another note',
     'notes_title' => 'Notes',
@@ -269,4 +280,7 @@ return [
     'debt_add_amount' => 'the sum of',
     'debt_add_reason' => 'for the following reason (optional)',
     'debt_add_add_cta' => 'Add debt',
+    'debt_edit_update_cta' => 'Update debt',
+    'debt_edit_success' => 'The debt has been updated successfully',
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
 ];

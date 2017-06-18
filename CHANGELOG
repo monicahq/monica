@@ -1,3 +1,62 @@
+2017-06-16
+----------
+
+Improvements:
+* Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
+
+2017-06-15
+----------
+
+New features:
+* Add reminder automatically when you set the birthdate of a contact.
+
+Improvements:
+* Add timezone for Switzerland.
+* Major refactoring of how contacts are managed in the codebase.
+
+2017-06-14
+----------
+
+New features:
+* Timezone can now be defined in a new ENV variable so every new user of the instance will have this timezone. Set to America/New_York by default.
+* Add ability to edit a note.
+* Add ability to edit a debt.
+* Add support for South African ZAR currency.
+
+Improvements:
+* Fix Deploy to Heroku button.
+* Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
+
+2017-06-13
+----------
+
+New features:
+* You can now add job information and company name for your contacts.
+
+Improvements:
+* Gifts table now display comments if defined, as well as who the gift is for.
+
+2017-06-12
+----------
+
+New features:
+* Add instructions to setup Monica from scratch on Debian Stretch.
+* Add Export to SQL feature, under Settings > Export data.
+* Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
+
+2017-06-11
+----------
+
+New features:
+* Add command line vCard importer
+
+Improvements:
+* Email address of a contact is now a mailto:// field.
+* Phone number of a contact is now a tel:// field.
+* Fix debt description on the dashboard
+* Fix typos
+* Fix Bootstrap tabs on the dashboard
+
 2017-06-10
 ----------
 
@@ -9,6 +68,7 @@ Improvements:
 * Fix counter showing number of gifts on the dashboard
 * Docker image now runs the cron to send emails
 * Fix Russian translations
+* Fix the wrong route after password change
 
 2017-06-09
 ----------
