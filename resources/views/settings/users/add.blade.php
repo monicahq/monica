@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show">
+  <div class="settings">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -28,7 +28,7 @@
     </div>
 
     <!-- Page content -->
-    <div class="main-content gifts modal">
+    <div class="main-content modal">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
@@ -50,17 +50,16 @@
               </fieldset>
 
               {{-- Explicit confirmation --}}
-              <fieldset class="form-group">
-                <div class="form-group">
-                  <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="confirmation" value="1" required>
+
+              <div class="warning-zone">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" name="confirmation" value="1" v-model="accept_invite_user">
                     I confirm that I want to invite this user to my account. This person will access ALL my data and see exactly what I see.
-                  </label>
-                </div>
-              </fieldset>
+                </label>
+              </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">Invite user</button>
+                <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">Invite user</button>
                 <a href="/settings/users" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>

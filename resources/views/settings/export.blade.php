@@ -32,8 +32,8 @@
 
       <div class="col-xs-12 col-sm-9">
 
-        <h2>{{ trans('settings.export_title') }}</h2>
-        <h3>{{ trans('settings.export_title_sql') }}</h3>
+        <h3>{{ trans('settings.export_title') }}</h3>
+        <h4>{{ trans('settings.export_title_sql') }}</h4>
         <p>{{ trans('settings.export_sql_explanation') }}</p>
         <p>{{ trans('settings.export_be_patient') }}</p>
         <p><a href="/settings/exportToSql" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>

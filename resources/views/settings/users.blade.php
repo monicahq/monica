@@ -34,7 +34,7 @@
 
         <p><a href="/settings/users/add">Add a new user</a></p>
 
-        <h2>Users</h2>
+        <h3>Users</h3>
         <ul class="table">
         @foreach ($users as $user)
           <li class="table-row">
@@ -54,7 +54,7 @@
         @endforeach
         </ul>
 
-        <h2>Pending invitations</h2>
+        <h3>Pending invitations</h3>
 
         @if (auth()->user()->account->invitations()->count() != 0)
           <ul class="table">

@@ -26,7 +26,7 @@
     }
   }
 
-  h2 {
+  h3 {
     border-bottom: 1px solid $border-color;
     font-size: 20px;
     font-weight: 400;
@@ -36,5 +36,13 @@
   .settings-delete {
     font-size: 11px;
     margin-top: 20px;
+  }
+
+  .warning-zone {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 10px;
+    border: 1px solid #f1c897;
+    background-color: #ffe8bc;
   }
 }

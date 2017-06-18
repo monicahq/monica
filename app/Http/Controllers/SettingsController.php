@@ -131,7 +131,7 @@ class SettingsController extends Controller
      * @param InvitationRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function saveUser(InvitationRequest $request)
+    public function inviteUser(InvitationRequest $request)
     {
         if(! $request->get('confirmation')) {
             return redirect()->back()->withErrors('Please confirm your choice before proceeding with the invitation.')->withInput();
@@ -141,6 +141,12 @@ class SettingsController extends Controller
 
         if ($users > 0) {
             return redirect()->back()->withErrors('This email is already taken. Please choose another one.')->withInput();
+        }
+
+        $invitations = Invitation::where('email', $request->only(['email']))->count();
+
+        if ($invitations > 0) {
+            return redirect()->back()->withErrors('You already have invited this user. Please choose another email address.')->withInput();
         }
 
         $invitation = auth()->user()->account->invitations()->create(
