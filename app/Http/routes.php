@@ -111,5 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
         Route::post('/settings/users/save', 'SettingsController@inviteUser')->name('.users.save');
         Route::get('/settings/users/invitations/{invitation}/delete', 'SettingsController@destroyInvitation');
+
+        Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController.php@index')->name('.subscriptions.index');
     });
 });

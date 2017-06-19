@@ -4,6 +4,7 @@ return [
     'sidebar_settings' => 'Paramètres du compte',
     'sidebar_settings_export' => 'Exporter les données',
     'sidebar_settings_users' => 'Utilisateurs',
+    'sidebar_settings_subscriptions' => 'Subscription',
 
     'export_title' => 'Exporter les données de votre compte',
     'export_be_patient' => 'Cliquez sur le bouton pour commencer l\'export. Cela peut prendre plusieurs minutes pour préparer l\'export - merci d\'être patient et de ne pas spammer le bouton.',

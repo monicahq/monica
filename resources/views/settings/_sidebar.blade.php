@@ -30,5 +30,17 @@
       <a href="/settings/users">{{ trans('settings.sidebar_settings_users') }}</a>
     </li>
     @endif
+
+    @if (! config('monica.unlock_paid_features'))
+      @if (Route::currentRouteName() == 'settings.subscriptions.index')
+      <li class="selected">
+        {{ trans('settings.sidebar_settings_subscriptions') }}
+      </li>
+      @else
+      <li>
+        <a href="/settings/subscriptions">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
+      </li>
+      @endif
+    @endif
   </ul>
 </div>
