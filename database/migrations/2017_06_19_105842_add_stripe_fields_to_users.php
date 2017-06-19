@@ -13,8 +13,8 @@ class AddStripeFieldsToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
-            $table->string('stripe_id')->after('invited_by_user_id')->nullable();
+        Schema::table('accounts', function ($table) {
+            $table->string('stripe_id')->after('api_key')->nullable();
             $table->string('card_brand')->after('stripe_id')->nullable();
             $table->string('card_last_four')->after('card_brand')->nullable();
             $table->timestamp('trial_ends_at')->after('card_last_four')->nullable();
@@ -22,7 +22,7 @@ class AddStripeFieldsToUsers extends Migration
 
         Schema::create('subscriptions', function ($table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('account_id');
             $table->string('name');
             $table->string('stripe_id');
             $table->string('stripe_plan');

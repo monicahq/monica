@@ -30,6 +30,20 @@ return [
     | Available Settings: true, false
     |
     */
-
     'unlock_paid_features' => env('UNLOCK_PAID_FEATURES', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Paid plan settings
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the name and the cost of the paid plan offered
+    | on https://monicahq.com. These settings make sense only if you do activate
+    | the `unlock_paid_features` above.
+    |
+    |
+    */
+   'paid_plan_friendly_name' => env('PAID_PLAN_FRIENDLY_NAME', null),
+   'paid_plan_id' => env('PAID_PLAN_ID', null),
+   'paid_plan_price' => env('PAID_PLAN_PRICE', null),
 ];
