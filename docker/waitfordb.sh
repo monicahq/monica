@@ -4,7 +4,7 @@ echo "Connecting to ${DB_HOST}:${DB_PORT}"
 
 while true; do
     nc -z ${DB_HOST} ${DB_PORT} && break
-    echo "Unable to connect to database; sleeping"
+    echo "Unable to connect to ${DB_HOST}:${DB_PORT}; sleeping"
     sleep 1
 done
 
