@@ -510,16 +510,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the last updated date.
-     *
-     * @return string Y-m-d
-     */
-    public function getLastUpdated()
-    {
-        return DateHelper::createDateFromFormat($this->updated_at, $this->account->user->timezone)->format('Y/m/d');
-    }
-
-    /**
      * Get the total number of reminders.
      *
      * @return int
