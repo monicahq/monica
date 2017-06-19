@@ -32,6 +32,7 @@ return [
     'breadcrumb_settings' => 'Paramètres',
     'breadcrumb_settings_export' => 'Export',
     'breadcrumb_settings_users' => 'Utilisateurs',
+    'breadcrumb_settings_users_add' => 'Ajouter un utilisateur',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',

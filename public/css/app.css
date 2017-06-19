@@ -8820,6 +8820,10 @@ header .main-cta {
   margin-bottom: 20px;
 }
 
+.settings h3:not(:first-child) {
+  margin-top: 30px;
+}
+
 .settings .settings-delete {
   font-size: 11px;
   margin-top: 20px;
@@ -8828,9 +8832,49 @@ header .main-cta {
 .settings .warning-zone {
   margin-bottom: 30px;
   margin-top: 30px;
-  padding: 10px;
+  padding: 10px 10px 5px 15px;
   border: 1px solid #f1c897;
   background-color: #ffe8bc;
+}
+
+.settings .users-list h3.with-actions {
+  padding-bottom: 13px;
+}
+
+.settings .users-list h3.with-actions a {
+  float: right;
+}
+
+.settings .users-list .table-cell.actions {
+  text-align: right;
+}
+
+.settings .users-blank {
+  text-align: center;
+}
+
+.settings .users-blank img {
+  margin-bottom: 30px;
+}
+
+.settings .users-blank h2 {
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.settings .users-blank h3 {
+  margin-top: 0;
+  border-bottom: 0;
+}
+
+.settings .users-blank p {
+  margin: 0 auto;
+  width: 400px;
+}
+
+.settings .users-blank p.cta {
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
 
 .border-bottom {

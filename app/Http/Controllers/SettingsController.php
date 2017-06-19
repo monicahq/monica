@@ -112,7 +112,11 @@ class SettingsController extends Controller
     {
         $users = auth()->user()->account->users;
 
-        return view('settings.users', compact('users'));
+        if ($users->count() == 1 && auth()->user()->account->invitations()->count() == 0) {
+            return view('settings.users.blank');
+        }
+
+        return view('settings.users.index', compact('users'));
     }
 
     /**
@@ -133,20 +137,21 @@ class SettingsController extends Controller
      */
     public function inviteUser(InvitationRequest $request)
     {
+        // Make sure the confirmation to invite has not been bypassed
         if(! $request->get('confirmation')) {
-            return redirect()->back()->withErrors('Please confirm your choice before proceeding with the invitation.')->withInput();
+            return redirect()->back()->withErrors({{ trans('settings.users_error_please_confirm') }})->withInput();
         }
 
+        // Is the email address already taken?
         $users = User::where('email', $request->only(['email']))->count();
-
         if ($users > 0) {
-            return redirect()->back()->withErrors('This email is already taken. Please choose another one.')->withInput();
+            return redirect()->back()->withErrors({{ trans('settings.users_error_email_already_taken') }})->withInput();
         }
 
+        // Has this user been invited already?
         $invitations = Invitation::where('email', $request->only(['email']))->count();
-
         if ($invitations > 0) {
-            return redirect()->back()->withErrors('You already have invited this user. Please choose another email address.')->withInput();
+            return redirect()->back()->withErrors({{ trans('settings.users_error_already_invited') }})->withInput();
         }
 
         $invitation = auth()->user()->account->invitations()->create(
@@ -177,7 +182,7 @@ class SettingsController extends Controller
         $invitation->delete();
 
         return redirect('/settings/users')
-            ->with('success', "Invitation deleted");
+            ->with('success', {{ trans('settings.users_invitation_deleted_confirmation_message') }});
     }
 
     /**
@@ -210,10 +215,10 @@ class SettingsController extends Controller
         $invitation = Invitation::where('invitation_key', $key)
                                     ->firstOrFail();
 
-        // make sure that the new user provides the email of the person who has
-        // invited him
+        // as a security measure, make sure that the new user provides the email
+        // of the person who has invited him/her.
         if ($request->input('email_security') != $invitation->invitedBy->email) {
-            return redirect()->back()->withErrors('This is not the email of the person who\'ve invited you.')->withInput();
+            return redirect()->back()->withErrors({{ trans('settings.users_error_email_not_similar') }})->withInput();
         }
 
         $user = new User;

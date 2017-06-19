@@ -8,7 +8,7 @@
 
           <div class="signup-box">
             <img class="logo" src="/img/small-logo.png" alt="">
-            <h2>You've been invited to join Monica. Welcome!</h2>
+            <h2>{{ trans('settings.users_accept_title') }}</h2>
 
             @include ('partials.errors')
 

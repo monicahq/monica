@@ -35,16 +35,16 @@
             <form method="POST" action="/settings/users/save">
               {{ csrf_field() }}
 
-              <h2>Invite a new user to your account</h2>
+              <h2>{{ trans('settings.users_add_title') }}</h2>
 
-              <p>This person will have the same rights as you do, including inviting other users and deleting them (including you). Therefore, make sure you trust this person.</p>
+              <p>{{ trans('settings.users_add_description') }}</p>
 
               @include('partials.errors')
 
               {{-- Email --}}
               <fieldset class="form-group">
                 <div class="form-group">
-                  <label for="email">Enter the email of the person you want to invite</label>
+                  <label for="email">{{ trans('settings.users_add_email_field') }}</label>
                   <input type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                 </div>
               </fieldset>
@@ -54,12 +54,12 @@
               <div class="warning-zone">
                 <label class="form-check-label">
                   <input class="form-check-input" type="checkbox" name="confirmation" value="1" v-model="accept_invite_user">
-                    I confirm that I want to invite this user to my account. This person will access ALL my data and see exactly what I see.
+                    {{ trans('settings.users_add_confirmation') }}
                 </label>
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">Invite user</button>
+                <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">{{ trans('settings.users_add_cta') }}</button>
                 <a href="/settings/users" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>

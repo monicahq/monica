@@ -24,11 +24,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | This value determines if the instance can access the paid features that
-    | available on https://monicahq.com for free.
+    | are available on https://monicahq.com, for free.
+    | If set to false, the instance won't have access to the paid features.
     |
     | Available Settings: true, false
     |
     */
 
-    'access_to_paid_features_for_free' => env('APP_ACCESS_TO_PAID_FEATURES_FOR_FREE', true),
+    'access_to_paid_features' => env('APP_ACCESS_TO_PAID_FEATURES', true),
 ];

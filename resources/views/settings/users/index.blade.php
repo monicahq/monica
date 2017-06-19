@@ -30,20 +30,21 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9">
+      <div class="col-xs-12 col-sm-9 users-list">
 
-        <p><a href="/settings/users/add">Add a new user</a></p>
-
-        <h3>Users</h3>
+        <h3 class="with-actions">
+          {{ trans('settings.users_list_title') }}
+          <a href="/settings/users/add" class="btn">{{ trans('settings.users_list_add_user') }}</a>
+        </h3>
         <ul class="table">
         @foreach ($users as $user)
           <li class="table-row">
             <div class="table-cell">
               {{ $user->name }} ({{ $user->email }})
             </div>
-            <div class="table-cell">
+            <div class="table-cell actions">
               @if ($user->id == auth()->user()->id)
-                <span class="actions">That's you</span>
+                {{ trans('settings.users_list_you') }}
               @else
                 <a href="" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -54,9 +55,12 @@
         @endforeach
         </ul>
 
-        <h3>Pending invitations</h3>
 
         @if (auth()->user()->account->invitations()->count() != 0)
+          <h3>{{ trans('settings.users_list_invitations_title') }}</h3>
+
+          <p>{{ trans('settings.users_list_invitations_explanation') }}</p>
+
           <ul class="table">
           @foreach (auth()->user()->account->invitations as $invitation)
               <li class="table-row">
@@ -64,12 +68,12 @@
                   {{ $invitation->email }}
                 </div>
                 <div class="table-cell">
-                  invited by {{ $invitation->invitedBy->name }}
+                  {{ trans('settings.users_list_invitations_invited_by', ['name' => $invitation->invitedBy->name]) }}
                 </div>
                 <div class="table-cell">
-                  sent on {{ $invitation->created_at }}
+                  {{ trans('settings.users_list_invitations_sent_date', ['date' => \App\Helpers\DateHelper::getShortDate($invitation->created_at)]) }}
                 </div>
-                <div class="table-cell">
+                <div class="table-cell actions">
                   <a href="/settings/users/invitations/{{ $invitation->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                   </a>

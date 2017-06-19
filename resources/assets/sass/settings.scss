@@ -31,6 +31,10 @@
     font-size: 20px;
     font-weight: 400;
     margin-bottom: 20px;
+
+    &:not(:first-child) {
+      margin-top: 30px;
+    }
   }
 
   .settings-delete {
@@ -41,8 +45,50 @@
   .warning-zone {
     margin-bottom: 30px;
     margin-top: 30px;
-    padding: 10px;
+    padding: 10px 10px 5px 15px;
     border: 1px solid #f1c897;
     background-color: #ffe8bc;
+  }
+
+  .users-list {
+    h3.with-actions {
+      padding-bottom: 13px;
+
+      a {
+        float: right;
+      }
+    }
+
+    .table-cell.actions {
+      text-align: right;
+    }
+  }
+
+  .users-blank {
+    text-align: center;
+
+    img {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin-top: 0;
+      border-bottom: 0;
+    }
+
+    p {
+      margin: 0 auto;
+      width: 400px;
+
+      &.cta {
+        margin-top: 40px;
+        margin-bottom: 100px;
+      }
+    }
   }
 }
