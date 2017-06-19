@@ -108,6 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
         Route::get('/settings/users', 'SettingsController@users')->name('.users');
         Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
+        Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
         Route::post('/settings/users/save', 'SettingsController@inviteUser')->name('.users.save');
         Route::get('/settings/users/invitations/{invitation}/delete', 'SettingsController@destroyInvitation');
     });

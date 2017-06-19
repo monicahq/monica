@@ -31,5 +31,5 @@ return [
     |
     */
 
-    'access_to_paid_features' => env('APP_ACCESS_TO_PAID_FEATURES', true),
+    'unlock_paid_features' => env('UNLOCK_PAID_FEATURES', true),
 ];

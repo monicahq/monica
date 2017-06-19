@@ -139,19 +139,19 @@ class SettingsController extends Controller
     {
         // Make sure the confirmation to invite has not been bypassed
         if(! $request->get('confirmation')) {
-            return redirect()->back()->withErrors({{ trans('settings.users_error_please_confirm') }})->withInput();
+            return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 
         // Is the email address already taken?
         $users = User::where('email', $request->only(['email']))->count();
         if ($users > 0) {
-            return redirect()->back()->withErrors({{ trans('settings.users_error_email_already_taken') }})->withInput();
+            return redirect()->back()->withErrors(trans('settings.users_error_email_already_taken'))->withInput();
         }
 
         // Has this user been invited already?
         $invitations = Invitation::where('email', $request->only(['email']))->count();
         if ($invitations > 0) {
-            return redirect()->back()->withErrors({{ trans('settings.users_error_already_invited') }})->withInput();
+            return redirect()->back()->withErrors(trans('settings.users_error_already_invited'))->withInput();
         }
 
         $invitation = auth()->user()->account->invitations()->create(
@@ -182,7 +182,7 @@ class SettingsController extends Controller
         $invitation->delete();
 
         return redirect('/settings/users')
-            ->with('success', {{ trans('settings.users_invitation_deleted_confirmation_message') }});
+            ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
     }
 
     /**
@@ -218,7 +218,7 @@ class SettingsController extends Controller
         // as a security measure, make sure that the new user provides the email
         // of the person who has invited him/her.
         if ($request->input('email_security') != $invitation->invitedBy->email) {
-            return redirect()->back()->withErrors({{ trans('settings.users_error_email_not_similar') }})->withInput();
+            return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
         }
 
         $user = new User;
@@ -239,5 +239,31 @@ class SettingsController extends Controller
         if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
             return redirect('dashboard');
         }
+    }
+
+    /**
+     * Delete additional user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAdditionalUser(Request $request, $userID)
+    {
+        $user = User::find($userID);
+
+        if ($user->account_id != auth()->user()->account_id) {
+            return redirect('/');
+        }
+
+        // make sure you don't delete yourself from this screen
+        if ($user->id == auth()->user()->id) {
+            return redirect('/');
+        }
+
+        $user = User::find($userID);
+        $user->delete();
+
+        return redirect('/settings/users')
+                ->with('success', trans('settings.users_list_delete_success'));
     }
 }

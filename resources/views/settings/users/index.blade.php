@@ -46,7 +46,7 @@
               @if ($user->id == auth()->user()->id)
                 {{ trans('settings.users_list_you') }}
               @else
-                <a href="" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+                <a href="/settings/users/{{ $user->id }}/delete" onclick="return confirm('{{ trans('settings.users_list_delete_confirmation') }}')">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </a>
               @endif
@@ -54,7 +54,6 @@
           </li>
         @endforeach
         </ul>
-
 
         @if (auth()->user()->account->invitations()->count() != 0)
           <h3>{{ trans('settings.users_list_invitations_title') }}</h3>
@@ -74,7 +73,7 @@
                   {{ trans('settings.users_list_invitations_sent_date', ['date' => \App\Helpers\DateHelper::getShortDate($invitation->created_at)]) }}
                 </div>
                 <div class="table-cell actions">
-                  <a href="/settings/users/invitations/{{ $invitation->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">
+                  <a href="/settings/users/invitations/{{ $invitation->id }}/delete" onclick="return confirm('{{ trans('settings.users_invitations_delete_confirmation') }}')">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                   </a>
                 </div>

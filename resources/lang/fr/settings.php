@@ -52,4 +52,6 @@ return [
     'users_error_already_invited' => 'You already have invited this user. Please choose another email address.',
     'users_error_email_not_similar' => 'This is not the email of the person who\'ve invited you.',
     'users_invitation_deleted_confirmation_message' => 'The invitation has been successfully deleted',
+    'users_invitations_delete_confirmation' => 'Are you sure you want to delete this invitation?',
+    'users_list_delete_confirmation' => 'Are you sure to delete this user from your account?',
 ];
