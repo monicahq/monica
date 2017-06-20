@@ -99,6 +99,15 @@
   }
 
   .subscriptions {
+    .upgrade-benefits {
+      margin-bottom: 20px;
+
+      li {
+        margin-left: 20px;
+        list-style-type: disc;
+      }
+    }
+
     #label-card-element {
       margin-bottom: 15px;
     }

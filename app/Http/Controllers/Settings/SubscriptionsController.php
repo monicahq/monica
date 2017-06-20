@@ -19,12 +19,6 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        $account = auth()->user()->account;
-
-        if (! $account->isSubscribed() and ! $account->wasSubscribed()) {
-            return view('settings.subscriptions.upgrade');
-        }
-
         return view('settings.subscriptions.account');
     }
 

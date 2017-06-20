@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -205,7 +206,7 @@ class Account extends Model
     /**
      * Check if the account is currently subscribed to a plan
      *
-     * @return boolean $isOrWasSubscribed
+     * @return boolean $isSubscribed
      */
     public function isSubscribed()
     {
@@ -219,19 +220,20 @@ class Account extends Model
     }
 
     /**
-     * Check if the account was ever subscribed to a plan
+     * Check if the account has invoices linked to this account.
+     * This was created because Laravel Cashier doesn't know how to properly
+     * handled the case when a user doesn't have invoices yet. This sucks balls.
      *
-     * @return boolean $wasSubscribed
+     * @return boolean
      */
-    public function wasSubscribed()
+    public function hasInvoices()
     {
-        $wasSubscribed = false;
-
-        if ($this->subscription(config('monica.paid_plan_friendly_name'))->cancelled()) {
-            $wasSubscribed = true;
+        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
+        if ($query > 0) {
+            return true;
         }
 
-        return $wasSubscribed;
+        return false;
     }
 
     /**
