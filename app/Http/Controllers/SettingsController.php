@@ -70,6 +70,7 @@ class SettingsController extends Controller
             $account->activities->each->forceDelete();
             $account->events->each->forceDelete();
             $account->contacts->each->forceDelete();
+            $account->invitations->each->forceDelete();
             $account->forceDelete();
         }
 
@@ -170,6 +171,10 @@ class SettingsController extends Controller
         );
 
         dispatch(new SendInvitationEmail($invitation));
+
+        auth()->user()->account->update([
+            'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
+        ]);
 
         return redirect('settings/users')
             ->with('status', trans('settings.settings_success'));

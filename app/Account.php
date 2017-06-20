@@ -30,6 +30,15 @@ class Account extends Model
     use Billable;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'number_of_invitations_sent'
+    ];
+
+    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany
