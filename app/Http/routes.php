@@ -106,6 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/save', 'SettingsController@save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+        
         Route::get('/settings/users', 'SettingsController@users')->name('.users');
         Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
         Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
@@ -115,5 +116,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('.subscriptions.index');
         Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('.subscriptions.upgrade');
         Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment');
+        Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice');
+        Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
+        Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
+
     });
 });

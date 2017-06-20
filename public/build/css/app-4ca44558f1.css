@@ -8871,6 +8871,59 @@ header .main-cta {
   margin-bottom: 15px;
 }
 
+.settings .subscriptions .downgrade ul {
+  background-color: #f8f8f8;
+  border: 1px solid #dfdfdf;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 25px;
+}
+
+.settings .subscriptions .downgrade li {
+  padding-bottom: 15px;
+}
+
+.settings .subscriptions .downgrade li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.settings .subscriptions .downgrade li:not(:first-child) {
+  margin-top: 10px;
+}
+
+.settings .subscriptions .downgrade li.success .rule-title {
+  text-decoration: line-through;
+}
+
+.settings .subscriptions .downgrade li.success .icon:after {
+  font-family: FontAwesome;
+  font-size: 17px;
+  color: #0eb0b7;
+  content: "\f058";
+  top: 10px;
+  position: relative;
+}
+
+.settings .subscriptions .downgrade li.fail .icon:after {
+  font-family: FontAwesome;
+  font-size: 17px;
+  color: #cd4400;
+  content: "\f057";
+  top: 10px;
+  position: relative;
+}
+
+.settings .subscriptions .downgrade li .rule-title {
+  font-size: 18px;
+  padding-left: 5px;
+}
+
+.settings .subscriptions .downgrade li .rule-to-succeed {
+  font-size: 13px;
+  display: block;
+  padding-left: 27px;
+}
+
 .border-bottom {
   border-bottom: 1px solid #dfdfdf;
 }

@@ -18,12 +18,18 @@ class SubscriptionsController extends Controller
         if (config('monica.unlock_paid_features')) {
             return redirect('settings/');
         }
-dd(auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name')));
-        if (auth()->user()->subscribed(config('monica.paid_plan_friendly_name'))) {
-            return view('settings.subscriptions.account');
+
+        $account = auth()->user()->account;
+
+        if (! $account->subscribed(config('monica.paid_plan_friendly_name'))) {
+            return view('settings.subscriptions.upgrade');
         }
 
-        return view('settings.subscriptions.index');
+        // Weird method to get the next billing date from Laravel Cashier
+        $timestamp = $account -> asStripeCustomer()["subscriptions"] -> data[0]["current_period_end"];
+        $nextBillingdate = \App\Helpers\DateHelper::getShortDate($timestamp);
+
+        return view('settings.subscriptions.account', compact('account', 'nextBillingdate'));
     }
 
     /**
@@ -34,10 +40,34 @@ dd(auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))
     public function upgrade()
     {
         if (config('monica.unlock_paid_features')) {
-            return redirect('settings/');
+            return redirect('/settings');
         }
 
         return view('settings.subscriptions.upgrade');
+    }
+
+    public function downgrade()
+    {
+        if (config('monica.unlock_paid_features')) {
+            return redirect('settings/');
+        }
+
+        if (! auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
+            return redirect('/settings');
+        }
+
+        return view('settings.subscriptions.downgrade-checklist');
+    }
+
+    public function processDowngrade()
+    {
+        if (! auth()->user()->account->canDowngrade()) {
+            return redirect('/settings/users/subscriptions/downgrade');
+        }
+
+        auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancel();
+
+        return view('settings.subscriptions.downgrade-checklist');
     }
 
     public function processPayment(Request $request)
@@ -51,6 +81,14 @@ dd(auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))
         auth()->user()->account->newSubscription(config('monica.paid_plan_friendly_name'), config('monica.paid_plan_id'))
                     ->create($stripeToken);
 
-        return 'ok';
+        return redirect('settings/subscriptions');
+    }
+
+    public function downloadInvoice(Request $request, $invoiceId)
+    {
+        return auth()->user()->account->downloadInvoice($invoiceId, [
+            'vendor'  => 'Monica',
+            'product' => 'Your Chandler monthly subscription',
+        ]);
     }
 }

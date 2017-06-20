@@ -168,4 +168,26 @@ class Account extends Model
     {
         return $this->hasMany(SignificantOther::class);
     }
+
+    /**
+     * Check if the account can be downgraded
+     *
+     * @return this
+     */
+    public function canDowngrade()
+    {
+        $canDowngrade = true;
+        $numberOfUsers = $this->users()->count();
+        $numberPendingInvitations = $this->invitations()->count();
+
+        if ($numberOfUsers > 1) {
+            $canDowngrade = false;
+        }
+
+        if ($numberPendingInvitations > 0) {
+            $canDowngrade = false;
+        }
+
+        return $canDowngrade;
+    }
 }
