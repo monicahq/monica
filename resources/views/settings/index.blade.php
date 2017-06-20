@@ -224,7 +224,7 @@
 
           <!--currency for user-->
           <div class="form-group">
-            <label for="layout">{{ trans('settings.currency') }}</label>
+            <label for="currency_id">{{ trans('settings.currency') }}</label>
             @include('partials.components.currency-select',['selectionID'=>Auth::user()->currency_id ])
           </div>
 
