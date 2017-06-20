@@ -32,23 +32,25 @@
 
       <div class="col-xs-12 col-sm-9 users-list">
 
-        <h3>Your current plan</h3>
+        <h3>{{ trans('settings.subscriptions_account_') }}</h3>
 
         @if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name')))
 
-        <p>You are on the {{ config('monica.paid_plan_friendly_name') }} plan. It costs ${{ config('monica.paid_plan_price') }} every month.</p>
-        <p>Your subscription will auto-renew <strong>{{ $nextBillingdate }}</strong>. You can <a href="/settings/subscriptions/downgrade">cancel subscription</a> anytime.</p>
+        {{-- User is subscribed --}}
+        <p>{{ trans('settings.subscriptions_account_paid_plan', ['name' => config('monica.paid_plan_friendly_name'), 'price' => config('monica.paid_plan_price')]) }}</p>
+        <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => auth()->user()->account->getNextBillingDate(), 'url' => '/settings/subscriptions/downgrade']) !!}</p>
 
         @else
 
-        <p>You are on the free plan.</p>
+        {{-- User was subscribed but not anymore --}}
+        <p> {{ trans('settings.subscriptions_account_free_plan') }} <a href="/settings/subscriptions/upgrade">{{ trans('settings.subscriptions_account_upgrade') }}</a></p>
 
         @endif
 
         <div class="invoices">
-          <h3>Invoices</h3>
+          <h3>{{ trans('settings.subscriptions_account_invoices') }}</h3>
           <ul class="table">
-            @foreach ($account->invoices() as $invoice)
+            @foreach (auth()->user()->account->invoices() as $invoice)
             <li class="table-row">
               <div class="table-cell date">
                 {{ $invoice->date()->toFormattedDateString() }}
@@ -57,7 +59,7 @@
                 {{ $invoice->total() }}
               </div>
               <div class="table-cell">
-                <a href="/settings/subscriptions/invoice/{{ $invoice->id }}">Download</a>
+                <a href="/settings/subscriptions/invoice/{{ $invoice->id }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
               </div>
             </li>
             @endforeach

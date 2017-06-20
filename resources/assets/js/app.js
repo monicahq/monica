@@ -48,10 +48,10 @@ function stripeTokenHandler(token) {
 }
 
 var elements = stripe.elements();
-var card = elements.create('card');
-card.mount('#card-element', {
+var card = elements.create('card', {
     hidePostalCode: true
 });
+card.mount('#card-element');
 
 card.addEventListener('change', function(event) {
   var displayError = document.getElementById('card-errors');

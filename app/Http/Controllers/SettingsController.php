@@ -126,6 +126,10 @@ class SettingsController extends Controller
      */
     public function addUser()
     {
+        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings/subscriptions');
+        }
+
         return view('settings.users.add');
     }
 
@@ -210,7 +214,7 @@ class SettingsController extends Controller
      * @param String $key
      * @return \Illuminate\Http\Response
      */
-    public function storeInvitation(Request $request, $key)
+    public function storeAcceptedInvitation(Request $request, $key)
     {
         $invitation = Invitation::where('invitation_key', $key)
                                     ->firstOrFail();

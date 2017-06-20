@@ -8864,7 +8864,13 @@ header .main-cta {
 
 .settings .users-blank p.cta {
   margin-top: 40px;
-  margin-bottom: 100px;
+  margin-bottom: 10px;
+}
+
+.settings .users-blank .requires-subscription {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #999;
 }
 
 .settings .subscriptions #label-card-element {
@@ -9158,7 +9164,7 @@ input:disabled {
 
 footer {
   margin-bottom: 30px;
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 footer ul {

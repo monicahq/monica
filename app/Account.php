@@ -170,7 +170,7 @@ class Account extends Model
     }
 
     /**
-     * Check if the account can be downgraded
+     * Check if the account can be downgraded, based on a set of rules
      *
      * @return this
      */
@@ -180,14 +180,63 @@ class Account extends Model
         $numberOfUsers = $this->users()->count();
         $numberPendingInvitations = $this->invitations()->count();
 
+        // number of users in the account should be == 1
         if ($numberOfUsers > 1) {
             $canDowngrade = false;
         }
 
+        // there should not be any pending user invitations
         if ($numberPendingInvitations > 0) {
             $canDowngrade = false;
         }
 
         return $canDowngrade;
+    }
+
+    /**
+     * Check if the account is currently subscribed to a plan
+     *
+     * @return boolean $isOrWasSubscribed
+     */
+    public function isSubscribed()
+    {
+        $isSubscribed = false;
+
+        if ($this->subscribed(config('monica.paid_plan_friendly_name'))) {
+            $isSubscribed = true;
+        }
+
+        return $isSubscribed;
+    }
+
+    /**
+     * Check if the account was ever subscribed to a plan
+     *
+     * @return boolean $wasSubscribed
+     */
+    public function wasSubscribed()
+    {
+        $wasSubscribed = false;
+
+        if ($this->subscription(config('monica.paid_plan_friendly_name'))->cancelled()) {
+            $wasSubscribed = true;
+        }
+
+        return $wasSubscribed;
+    }
+
+    /**
+     * Get the next billing date for the account
+     *
+     * @return String $timestamp
+     */
+    public function getNextBillingDate()
+    {
+        // Weird method to get the next billing date from Laravel Cashier
+        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
+        $timestamp = $this->asStripeCustomer()["subscriptions"]
+                            ->data[0]["current_period_end"];
+
+        return \App\Helpers\DateHelper::getShortDate($timestamp);
     }
 }

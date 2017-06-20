@@ -30,22 +30,22 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 downgrade">
 
-          <h2>Downgrade your account to the free plan</h2>
+          <h2>{{ trans('settings.subscriptions_downgrade_title') }}</h2>
 
-          <p>The free plan has limitations. In order to be able to downgrade, you need to pass the checklist below:</p>
+          <p>{{ trans('settings.subscriptions_downgrade_limitations') }}</p>
 
           <ul>
 
             <li class="{{ (auth()->user()->account->users()->count() > 1)?'fail':'success' }}">
               <span class="icon"></span>
-              <span class="rule-title">You must have only 1 user in your account</span>
-              <span class="rule-to-succeed">You currently have <a href="/settings/users">{{ auth()->user()->account->users()->count() }} users</a> in your account.</span>
+              <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_users') }}</span>
+              <span class="rule-to-succeed">{!! trans('settings.subscriptions_downgrade_rule_users_constraint', ['url' => '/settings/users', 'count' => auth()->user()->account->users()->count()]) !!}</span>
             </li>
 
             <li class="{{ (auth()->user()->account->invitations()->count() > 0)?'fail':'success' }}">
               <span class="icon"></span>
-              <span class="rule-title">You must not have pending invitations</span>
-              <span class="rule-to-succeed">You currently have <a href="/settings/users/invitations">{{ auth()->user()->account->invitations()->count() }} pending invitations</a> sent to people.</span>
+              <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_invitations') }}</span>
+              <span class="rule-to-succeed">{!! trans('settings.subscriptions_downgrade_rule_invitations_constraint', ['url' => '/settings/users/invitations', 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
             </li>
 
           </ul>
@@ -54,9 +54,9 @@
             {{ csrf_field() }}
 
             @if (auth()->user()->account->canDowngrade())
-            <p><button href="" class="btn btn-primary">Downgrade</button></p>
+            <p><button href="" class="btn btn-primary">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
             @else
-            <p><button class="btn btn-primary" disabled="disabled">Downgrade</button></p>
+            <p><button class="btn btn-primary" disabled="disabled">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
             @endif
 
           </form>

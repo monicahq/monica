@@ -50,7 +50,6 @@
               </fieldset>
 
               {{-- Explicit confirmation --}}
-
               <div class="warning-zone">
                 <label class="form-check-label">
                   <input class="form-check-input" type="checkbox" name="confirmation" value="1" v-model="accept_invite_user">

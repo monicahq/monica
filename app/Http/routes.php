@@ -11,7 +11,7 @@ Auth::routes();
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
-Route::post('/invitations/accept/{key}', 'SettingsController@storeInvitation');
+Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -106,7 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/save', 'SettingsController@save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
-        
+
         Route::get('/settings/users', 'SettingsController@users')->name('.users');
         Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
         Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);

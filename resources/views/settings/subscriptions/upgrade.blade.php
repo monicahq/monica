@@ -36,13 +36,13 @@
             {{ csrf_field() }}
             <input type="hidden" name="planName" value="{{ config('monica.paid_plan_friendly_name') }}">
 
-            <h2>Upgrade your account</h2>
+            <h2>{{ trans('settings.subscriptions_upgrade_title') }}</h2>
 
-            <p>Please enter your card details below. Monica uses <a href="https://stripe.com">Stripe</a> to process your payments securely. No credit card information are stored on our servers.</p>
+            <p>{!! trans('settings.subscriptions_upgrade_description') !!}</p>
 
             <div class="form-group">
               <label for="card-element" id="label-card-element">
-                Credit or debit card
+                {{ trans('settings.subscriptions_upgrade_credit') }}
               </label>
               <div id="card-element">
               </div>
@@ -52,11 +52,11 @@
             <div id="card-errors" role="alert"></div>
 
             <div class="warning-zone">
-              <p>Your account will be instantly updated. You can upgrade, downgrade, or cancel any time. When you cancel, you will never be charged again. However, you will not be refunded for the current month.</p>
+              <p>{{ trans('settings.subscriptions_upgrade_warning') }}</p>
             </div>
 
             <div class="form-group actions">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-lock"></i> Charge my card ${{ config('monica.paid_plan_price') }} every month</button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-lock"></i>{{ trans('settings.subscriptions_upgrade_cta', ['price' => config('monica.paid_plan_price')]) }}</button>
               <a href="/settings" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
             </div>
 
