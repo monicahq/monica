@@ -31,7 +31,7 @@
     </li>
     @endif
 
-    @if (! config('monica.unlock_paid_features'))
+    @if (config('monica.requires_subscription'))
       @if (Route::currentRouteName() == 'settings.subscriptions.index')
       <li class="selected">
         {{ trans('settings.sidebar_settings_subscriptions') }}

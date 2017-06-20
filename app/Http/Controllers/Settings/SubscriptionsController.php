@@ -15,7 +15,7 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
-        if (config('monica.unlock_paid_features')) {
+        if (! config('monica.requires_subscription')) {
             return redirect('settings/');
         }
 
@@ -39,7 +39,7 @@ class SubscriptionsController extends Controller
      */
     public function upgrade()
     {
-        if (config('monica.unlock_paid_features')) {
+        if (! config('monica.requires_subscription')) {
             return redirect('/settings');
         }
 
@@ -48,7 +48,7 @@ class SubscriptionsController extends Controller
 
     public function downgrade()
     {
-        if (config('monica.unlock_paid_features')) {
+        if (! config('monica.requires_subscription')) {
             return redirect('settings/');
         }
 
@@ -72,7 +72,7 @@ class SubscriptionsController extends Controller
 
     public function processPayment(Request $request)
     {
-        if (config('monica.unlock_paid_features')) {
+        if (! config('monica.requires_subscription')) {
             return redirect('settings/');
         }
 

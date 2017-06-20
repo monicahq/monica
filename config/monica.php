@@ -30,7 +30,7 @@ return [
     | Available Settings: true, false
     |
     */
-    'unlock_paid_features' => env('UNLOCK_PAID_FEATURES', true),
+    'requires_subscription' => env('REQUIRES_SUBSCRIPTION', false),
 
     /*
     |--------------------------------------------------------------------------

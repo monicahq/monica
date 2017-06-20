@@ -28,7 +28,7 @@
       var userList = new List('search-list', options);
     </script>
 
-    @if (!config('monica.unlock_paid_features'))
+    @if (!config('monica.requires_subscription'))
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         var stripe = Stripe('{{ config('services.stripe.key') }}');
