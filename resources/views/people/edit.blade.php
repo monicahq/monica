@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName() }}</a>
+              </li>
+              <li>
+                {{ trans('people.edit_contact_information') }}
               </li>
             </ul>
           </div>

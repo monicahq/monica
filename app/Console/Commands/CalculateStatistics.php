@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use DB;
+use App\Account;
 use App\Statistic;
 use Illuminate\Console\Command;
 
@@ -46,6 +47,16 @@ class CalculateStatistics extends Command
         $statistic->number_of_reminders = DB::table('reminders')->count();
         $statistic->number_of_tasks = DB::table('tasks')->count();
         $statistic->number_of_kids = DB::table('kids')->count();
+        $statistic->number_of_invitations_sent = DB::table('accounts')->sum('number_of_invitations_sent');
+
+        // number_of_accounts_with_more_than_one_user
+        $number_of_accounts_with_more_than_one_user = 0;
+        foreach (Account::all() as $account) {
+            if ($account->users()->count() > 1) {
+                $number_of_accounts_with_more_than_one_user = $number_of_accounts_with_more_than_one_user + 1;
+            }
+        }
+        $statistic->number_of_accounts_with_more_than_one_user = $number_of_accounts_with_more_than_one_user;
         $statistic->save();
     }
 }

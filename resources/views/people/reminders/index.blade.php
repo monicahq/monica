@@ -10,11 +10,11 @@
 </div>
 
 
-@if ($contact->getNumberOfReminders() == 0)
+@if ($contact->reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
@@ -35,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach($contact->getReminders() as $reminder)
+        @foreach($contact->reminders as $reminder)
           <tr>
             <td class="date">{{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}</td>
 
@@ -53,11 +53,14 @@
 
             <td class="actions">
 
+              {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
+              @if ($reminder->is_birthday == 'false')
               <div class="reminder-actions">
                 <ul class="horizontal">
                   <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
                 </ul>
               </div>
+              @endif
 
             </td>
 

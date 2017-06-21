@@ -1,3 +1,16 @@
+2017-06-20
+----------
+
+New features:
+* Add support for mutiple users in one account.
+* Add subscriptions on .com. This has no effect on self hosted versions.
+
+2017-06-16
+----------
+
+Improvements:
+* Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
+
 2017-06-15
 ----------
 

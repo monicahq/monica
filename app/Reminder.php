@@ -57,9 +57,7 @@ class Reminder extends Model
      */
     public function getNextExpectedDateAttribute($value)
     {
-        if ($this->account) {
-            return Carbon::parse($value, $this->account->user->timezone);
-        } elseif (auth()->user()) {
+        if (auth()->user()) {
             return Carbon::parse($value, auth()->user()->timezone);
         }
 
@@ -83,9 +81,10 @@ class Reminder extends Model
      * @param string $title
      * @param Carbon|string $date
      * @param Kid $kid
+     * @param SignificantOther $kid
      * @return static
      */
-    public static function addBirthdayReminder($contact, $title, $date, $kid = null)
+    public static function addBirthdayReminder($contact, $title, $date, $kid = null, $significantOther = null)
     {
         $date = Carbon::parse($date);
 
@@ -96,7 +95,9 @@ class Reminder extends Model
                 'frequency_number' => 1,
                 'next_expected_date' => $date,
                 'account_id' => $contact->account_id,
-                'kid_id' => $kid ? $kid->id : null
+                'is_birthday' => 'true',
+                'about_object' => $kid ? 'kid' : ($significantOther ? 'significantother' : 'contact'),
+                'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id)
             ]);
 
         $reminder->calculateNextExpectedDate($date, 'year', 1)

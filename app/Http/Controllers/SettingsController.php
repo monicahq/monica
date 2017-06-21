@@ -2,26 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Auth;
-use App\Kid;
-use App\Note;
-use App\Task;
-use App\Debt;
-use App\Event;
-use App\Entry;
-use Validator;
-use App\Account;
-use App\Contact;
-use App\Activity;
-use App\Reminder;
+use App\User;
 use Carbon\Carbon;
-use App\Http\Requests;
-use App\SignificantOther;
-use App\ActivityStatistic;
+use App\Invitation;
 use Illuminate\Http\Request;
 use App\Helpers\RandomHelper;
+use App\Jobs\SendNewUserAlert;
+use App\Jobs\ExportAccountAsSQL;
+use App\Jobs\SendInvitationEmail;
+use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\InvitationRequest;
 
 class SettingsController extends Controller
 {
@@ -35,100 +27,63 @@ class SettingsController extends Controller
         return view('settings.index');
     }
 
-    public function save(Request $request)
+    /**
+     * Save user settings.
+     *
+     * @param SettingsRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function save(SettingsRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-          'email' => 'required|email|max:2083',
-        ]);
+        $request->user()->update(
+            $request->only([
+                'email',
+                'timezone',
+                'locale',
+                'currency_id',
+            ]) + [
+                'fluid_container' => $request->get('layout')
+            ]
+        );
 
-        if ($validator->fails()) {
-            return redirect('/settings')
-              ->withInput()
-              ->withErrors($validator);
-        }
-
-        $email = $request->input('email');
-        $timezone = $request->input('timezone');
-        $layout = $request->input('layout');
-        $locale = $request->input('locale');
-        $currency = $request->input('currency_id');
-
-        $user = Auth::user();
-        $user->email = $email;
-        $user->timezone = $timezone;
-        $user->fluid_container = $layout;
-        $user->metric = $layout;
-        $user->locale = $locale;
-        $user->currency_id = $currency;
-        $user->save();
-
-        return redirect('settings')->with('status', trans('settings.settings_success'));
+        return redirect('settings')
+            ->with('status', trans('settings.settings_success'));
     }
 
-    public function delete()
+    /**
+     * Delete user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
     {
-        // get the account id
-        $accountID = Auth::user()->account_id;
+        $user = $request->user();
+        $account = $user->account;
 
-        // delete all reminders
-        $reminders = Reminder::where('account_id', $accountID)->get();
-        foreach ($reminders as $reminder) {
-            $reminder->forceDelete();
+        if($account) {
+            $account->reminders->each->forceDelete();
+            $account->kids->each->forceDelete();
+            $account->notes->each->forceDelete();
+            $account->significantOthers->each->forceDelete();
+            $account->tasks->each->forceDelete();
+            $account->activities->each->forceDelete();
+            $account->events->each->forceDelete();
+            $account->contacts->each->forceDelete();
+            $account->invitations->each->forceDelete();
+            $account->forceDelete();
         }
 
-        // delete contacts
-        $contacts = Contact::where('account_id', $accountID)->get();
-        foreach ($contacts as $contact) {
-            $contact->forceDelete();
-        }
-
-        // delete kids
-        $kids = Kid::where('account_id', $accountID)->get();
-        foreach ($kids as $kid) {
-            $kid->forceDelete();
-        }
-
-        // delete notes
-        $notes = Note::where('account_id', $accountID)->get();
-        foreach ($notes as $note) {
-            $note->forceDelete();
-        }
-
-        // delete significant others
-        $significantOthers = SignificantOther::where('account_id', $accountID)->get();
-        foreach ($significantOthers as $significantOther) {
-            $significantOther->forceDelete();
-        }
-
-        // delete tasks
-        $tasks = Task::where('account_id', $accountID)->get();
-        foreach ($tasks as $task) {
-            $task->forceDelete();
-        }
-
-        // delete activities
-        $activities = Activity::where('account_id', $accountID)->get();
-        foreach ($activities as $activity) {
-            $activity->forceDelete();
-        }
-
-        // delete events
-        $events = Event::where('account_id', $accountID)->get();
-        foreach ($events as $event) {
-            $event->forceDelete();
-        }
-
-        // delete account
-        $account = Account::find($accountID);
-        $account->delete();
-
-        Auth::user()->delete();
+        auth()->logout();
+        $user->forceDelete();
 
         return redirect('/');
     }
 
     /**
-     * Display the Export view
+     * Display the export view
+     *
+     * @return \Illuminate\Http\Response
      */
     public function export()
     {
@@ -137,137 +92,187 @@ class SettingsController extends Controller
 
     /**
      * Exports the data of the account in SQL format
-     * @return Response
+     *
+     * @return \Illuminate\Http\Response
      */
     public function exportToSql()
     {
-        $filename = rand().'.sql';
-        $path = 'sql/';
-        $fullPath = $path.$filename;
+        $path = $this->dispatchNow(new ExportAccountAsSQL());
 
-        $sql = "# ************************************************************
-# ".Auth::user()->first_name." ".Auth::user()->last_name." dump of data
-# {$filename}
-# Export date: ".Carbon::now()."
-# ************************************************************
+        return response()
+            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix() . $path, 'monica.sql')
+            ->deleteFileAfterSend(true);
+    }
 
-".PHP_EOL;
+    /**
+     * Display the users view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function users()
+    {
+        $users = auth()->user()->account->users;
 
-        $ignoredTables = [
-            'activity_type_groups',
-            'activity_types',
-            'cache',
-            'countries',
-            'currencies',
-            'failed_jobs',
-            'jobs',
-            'migrations',
-            'password_resets',
-            'sessions',
-            'statistics',
-            'accounts' // this will have a special treatment below
-        ];
-
-        $user = Auth::user();
-        $account = $user->account;
-
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
-
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if (in_array($tableName, $ignoredTables)) {
-                continue;
-            }
-
-            $tableData = DB::table($tableName)->get();
-
-            // Looping over the rows
-            foreach ($tableData as $data) {
-
-                $newSQLLine = 'INSERT INTO '.$tableName.' (';
-                $tableValues = [];
-                $skipLine = false;
-
-                // Looping over the column names
-                $tableColumnNames = [];
-                foreach ($data as $columnName => $value) {
-                    array_push($tableColumnNames, $columnName);
-                }
-
-                $newSQLLine .= implode(',', $tableColumnNames).') VALUES (';
-
-                // Looping over the values
-                foreach ($data as $columnName => $value) {
-
-                    if ($columnName == 'account_id') {
-                        if ($value !== $account->id) {
-                            $skipLine = true;
-                            break;
-                        }
-                    }
-
-                    if (is_null($value)) {
-                        $value = 'NULL';
-                    } elseif (!is_numeric($value)) {
-                        $value = "'".addslashes($value)."'";
-                    }
-
-                    array_push($tableValues, $value);
-                }
-
-                if ($skipLine == false) {
-                    $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
-                    $sql .= $newSQLLine;
-                }
-            }
+        if ($users->count() == 1 && auth()->user()->account->invitations()->count() == 0) {
+            return view('settings.users.blank');
         }
 
-        // Specific to `accounts` table
-        // TODO: simplify this
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
+        return view('settings.users.index', compact('users'));
+    }
 
-            if ($tableName !== 'accounts') {
-                continue;
-            }
-
-            $tableData = DB::table($tableName)->get();
-
-            foreach ($tableData as $data) {
-
-                $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
-                $tableValues = [];
-                $skipLine = false;
-
-                foreach ($data as $columnName => $value) {
-
-                    if ($columnName == 'id') {
-                        if ($value !== $account->id) {
-                            $skipLine = true;
-                            break;
-                        }
-                    }
-
-                    if (is_null($value)) {
-                        $value = 'NULL';
-                    } elseif (!is_numeric($value)) {
-                        $value = "'".addslashes($value)."'";
-                    }
-
-                    array_push($tableValues, $value);
-                }
-
-                if ($skipLine == false) {
-                    $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
-                    $sql .= $newSQLLine;
-                }
-            }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addUser()
+    {
+        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings/subscriptions');
         }
 
-        Storage::disk('public')->put($fullPath, $sql);
+        return view('settings.users.add');
+    }
 
-        return response()->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$fullPath, 'monica.sql')->deleteFileAfterSend(true);
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param InvitationRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function inviteUser(InvitationRequest $request)
+    {
+        // Make sure the confirmation to invite has not been bypassed
+        if(! $request->get('confirmation')) {
+            return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
+        }
+
+        // Is the email address already taken?
+        $users = User::where('email', $request->only(['email']))->count();
+        if ($users > 0) {
+            return redirect()->back()->withErrors(trans('settings.users_error_email_already_taken'))->withInput();
+        }
+
+        // Has this user been invited already?
+        $invitations = Invitation::where('email', $request->only(['email']))->count();
+        if ($invitations > 0) {
+            return redirect()->back()->withErrors(trans('settings.users_error_already_invited'))->withInput();
+        }
+
+        $invitation = auth()->user()->account->invitations()->create(
+            $request->only([
+                'email',
+            ])
+            + [
+                'invited_by_user_id' => auth()->user()->id,
+                'account_id' => auth()->user()->account_id,
+                'invitation_key' => RandomHelper::generateString(100),
+            ]
+        );
+
+        dispatch(new SendInvitationEmail($invitation));
+
+        auth()->user()->account->update([
+            'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
+        ]);
+
+        return redirect('settings/users')
+            ->with('status', trans('settings.settings_success'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Invitation $invitation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyInvitation(Invitation $invitation)
+    {
+        $invitation->delete();
+
+        return redirect('/settings/users')
+            ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param String $key
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptInvitation($key)
+    {
+        if (Auth::check()) {
+            return redirect('/');
+        }
+
+        $invitation = Invitation::where('invitation_key', $key)
+                                ->firstOrFail();
+
+        return view('settings.users.accept', compact('key'));
+    }
+
+    /**
+     * Store the specified resource.
+     *
+     * @param Request $request
+     * @param String $key
+     * @return \Illuminate\Http\Response
+     */
+    public function storeAcceptedInvitation(Request $request, $key)
+    {
+        $invitation = Invitation::where('invitation_key', $key)
+                                    ->firstOrFail();
+
+        // as a security measure, make sure that the new user provides the email
+        // of the person who has invited him/her.
+        if ($request->input('email_security') != $invitation->invitedBy->email) {
+            return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
+        }
+
+        $user = new User;
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+        $user->timezone = config('app.timezone');
+        $user->created_at = Carbon::now();
+        $user->account_id = $invitation->account_id;
+        $user->save();
+
+        $invitation->delete();
+
+        // send me an alert
+        dispatch(new SendNewUserAlert($user));
+
+        if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
+            return redirect('dashboard');
+        }
+    }
+
+    /**
+     * Delete additional user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAdditionalUser(Request $request, $userID)
+    {
+        $user = User::find($userID);
+
+        if ($user->account_id != auth()->user()->account_id) {
+            return redirect('/');
+        }
+
+        // make sure you don't delete yourself from this screen
+        if ($user->id == auth()->user()->id) {
+            return redirect('/');
+        }
+
+        $user = User::find($userID);
+        $user->delete();
+
+        return redirect('/settings/users')
+                ->with('success', trans('settings.users_list_delete_success'));
     }
 }
