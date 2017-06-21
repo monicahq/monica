@@ -80,7 +80,7 @@
 
                     <span class="people-list-item-information">
                       {{ trans_choice('people.people_list_number_kids', $contact->kids_count, ['count' => $contact->kids_count]) }} <br />
-                      <span>{{ trans('people.people_list_last_updated') }} {{ $contact->getLastUpdated() }}</span>
+                      <span>{{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}</span>
                     </span>
                   </a>
                 </li>
