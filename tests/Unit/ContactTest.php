@@ -712,31 +712,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testAddNoteReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addNote('This is a test')
-        );
-    }
-
-    public function testDeleteNote()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $note = factory(\App\Note::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $contact->deleteNote($note->id);
-
-        $this->assertEquals(
-            0,
-            $contact->getNotes()->count()
-        );
-    }
-
     public function testGetActivitiesReturns0WhenNoActivitiesDefined()
     {
         $contact = new Contact;

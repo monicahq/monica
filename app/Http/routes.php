@@ -21,19 +21,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
 
     Route::group(['as' => 'people'], function () {
-        Route::get('/people/', ['as' => '.index', 'uses' => 'PeopleController@index']);
-        Route::get('/people/add', ['as' => '.create', 'uses' => 'PeopleController@create']);
-        Route::post('/people/', 'PeopleController@store');
+        Route::get('/people/', 'PeopleController@index')->name('.index');
+        Route::get('/people/add', 'PeopleController@create')->name('.create');
+        Route::post('/people/', 'PeopleController@store')->name('.store');
 
         // Dashboard
-        Route::get('/people/{people}', ['as' => '.show', 'uses' => 'PeopleController@show']);
-        Route::get('/people/{people}/edit', ['as' => '.edit', 'uses' => 'PeopleController@edit']);
-        Route::post('/people/{people}/update', 'PeopleController@update');
-        Route::get('/people/{people}/delete', ['as' => '.delete', 'uses' => 'PeopleController@delete']);
+        Route::get('/people/{contact}', 'PeopleController@show')->name('.show');
+        Route::get('/people/{contact}/edit', 'PeopleController@edit')->name('.edit');
+        Route::post('/people/{contact}/update', 'PeopleController@update')->name('.update');
+        Route::get('/people/{contact}/delete', 'PeopleController@delete')->name('.delete');
 
         // Work information
-        Route::get('/people/{people}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork']);
-        Route::post('/people/{people}/work/update', 'PeopleController@updateWork');
+        Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
+        Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');
 
         // Notes
         Route::get('/people/{contact}/notes/add', 'People\\NotesController@create')->name('.notes.add');
@@ -43,8 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/notes/{note}/delete', 'People\\NotesController@destroy')->name('.notes.delete');
 
         // Food preferencies
-        Route::get('/people/{people}/food', ['as' => '.food', 'uses' => 'PeopleController@editFoodPreferencies']);
-        Route::post('/people/{people}/food/save', 'PeopleController@updateFoodPreferencies');
+        Route::get('/people/{contact}/food', 'PeopleController@editFoodPreferencies')->name('.food');
+        Route::post('/people/{contact}/food/save', 'PeopleController@updateFoodPreferencies')->name('.food.update');
 
         // Kid
         Route::get('/people/{contact}/kids/add', 'People\\KidsController@create')->name('.kids.add');
