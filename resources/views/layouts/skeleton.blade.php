@@ -27,9 +27,17 @@
       };
       var userList = new List('search-list', options);
     </script>
+
+    @if (config('monica.requires_subscription'))
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('{{ config('services.stripe.key') }}');
+    </script>
+    @endif
+
     <script src="{{ elixir('js/app.js') }}"></script>
 
-    @if(!empty(env('GOOGLE_ANALYTICS_APP_ID')))
+    @if(env('APP_ENV') != 'local' && !empty(env('GOOGLE_ANALYTICS_APP_ID')))
       <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

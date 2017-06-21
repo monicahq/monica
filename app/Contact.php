@@ -186,7 +186,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get contact's full name
      *
      * @return string
      */
@@ -206,7 +206,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get user's initials
      *
      * @return string
      */
@@ -507,16 +507,6 @@ class Contact extends Model
         $address = urlencode($address);
 
         return "https://www.google.ca/maps/place/{$address}";
-    }
-
-    /**
-     * Get the last updated date.
-     *
-     * @return string Y-m-d
-     */
-    public function getLastUpdated()
-    {
-        return DateHelper::createDateFromFormat($this->updated_at, $this->account->user->timezone)->format('Y/m/d');
     }
 
     /**

@@ -2814,9 +2814,9 @@ input[type="checkbox"].disabled {
   }
 }
 
-/*! Hint.css - v2.5.0 - 2017-04-23
+/*! Hint.css - v2.4.1 - 2016-11-08
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2017 Kushagra Gour */
+* Copyright (c) 2016 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block;
@@ -2830,13 +2830,16 @@ input[type="checkbox"].disabled {
   opacity: 0;
   z-index: 1000000;
   pointer-events: none;
+  -webkit-transition: .3s ease;
   transition: .3s ease;
+  -webkit-transition-delay: 0s;
   transition-delay: 0s;
 }
 
 [class*=hint--]:hover:after, [class*=hint--]:hover:before {
   visibility: visible;
   opacity: 1;
+  -webkit-transition-delay: .1s;
   transition-delay: .1s;
 }
 
@@ -3236,10 +3239,12 @@ input[type="checkbox"].disabled {
 }
 
 .hint--no-animate:after, .hint--no-animate:before {
+  -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
 
 .hint--bounce:after, .hint--bounce:before {
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24), -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
@@ -7562,6 +7567,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   -ms-user-select: none;
   user-select: none;
   background-color: #eee;
+  background-image: -webkit-linear-gradient(#fcfcfc, #eee);
   background-image: linear-gradient(#fcfcfc, #eee);
   border: 1px solid #d5d5d5;
   border-radius: 3px;
@@ -7574,6 +7580,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn:hover {
   background-color: #ddd;
+  background-image: -webkit-linear-gradient(#eee, #ddd);
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc;
   color: #333;
@@ -7582,6 +7589,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary {
   background-color: #60b044;
+  background-image: -webkit-linear-gradient(#8add6d, #60b044);
   background-image: linear-gradient(#8add6d, #60b044);
   border-color: #5ca941;
   color: #fff;
@@ -7590,6 +7598,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary:hover {
   background-color: #569e3d;
+  background-image: -webkit-linear-gradient(#79d858, #569e3d);
   background-image: linear-gradient(#79d858, #569e3d);
   border-color: #4a993e;
   color: #fff;
@@ -7601,6 +7610,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-danger:hover {
   background-color: #b33630;
+  background-image: -webkit-linear-gradient(#dc5f59, #b33630);
   background-image: linear-gradient(#dc5f59, #b33630);
   border-color: #cd504a;
   color: #fff;
@@ -8449,17 +8459,6 @@ header .main-cta {
   .people-show .main-content.modal {
     margin-top: 0;
   }
-  .people-show .main-content.modal .dates .form-inline input[type="number"] {
-    display: inline;
-  }
-  .people-show .main-content.modal .dates .form-inline input[type="date"] {
-    margin-left: 0;
-  }
-  .people-show .main-content.modal .form-group.actions .btn {
-    display: block;
-    margin-bottom: 10px;
-    width: 100%;
-  }
   .people-show .main-content.dashboard .sidebar-box {
     margin-bottom: 15px;
   }
@@ -8695,6 +8694,11 @@ header .main-cta {
   text-align: center;
 }
 
+.marketing.register .signup-box h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .marketing.register .signup-box h3 {
   font-size: 15px;
   margin-bottom: 30px;
@@ -8809,16 +8813,140 @@ header .main-cta {
   width: 100%;
 }
 
-.settings h2 {
+.settings h3 {
   border-bottom: 1px solid #dfdfdf;
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 20px;
 }
 
+.settings h3:not(:first-child) {
+  margin-top: 30px;
+}
+
 .settings .settings-delete {
   font-size: 11px;
   margin-top: 20px;
+}
+
+.settings .warning-zone {
+  margin-bottom: 30px;
+  margin-top: 30px;
+  padding: 10px 10px 5px 15px;
+  border: 1px solid #f1c897;
+  background-color: #ffe8bc;
+}
+
+.settings .users-list h3.with-actions {
+  padding-bottom: 13px;
+}
+
+.settings .users-list h3.with-actions a {
+  float: right;
+}
+
+.settings .users-list .table-cell.actions {
+  text-align: right;
+}
+
+.settings .users-blank {
+  text-align: center;
+}
+
+.settings .users-blank img {
+  margin-bottom: 30px;
+}
+
+.settings .users-blank h2 {
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.settings .users-blank h3 {
+  margin-top: 0;
+  border-bottom: 0;
+}
+
+.settings .users-blank p {
+  margin: 0 auto;
+  width: 400px;
+}
+
+.settings .users-blank p.cta {
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.settings .users-blank .requires-subscription {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #999;
+}
+
+.settings .subscriptions .upgrade-benefits {
+  margin-bottom: 20px;
+}
+
+.settings .subscriptions .upgrade-benefits li {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
+.settings .subscriptions #label-card-element {
+  margin-bottom: 15px;
+}
+
+.settings .subscriptions .downgrade ul {
+  background-color: #f8f8f8;
+  border: 1px solid #dfdfdf;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 25px;
+}
+
+.settings .subscriptions .downgrade li {
+  padding-bottom: 15px;
+}
+
+.settings .subscriptions .downgrade li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.settings .subscriptions .downgrade li:not(:first-child) {
+  margin-top: 10px;
+}
+
+.settings .subscriptions .downgrade li.success .rule-title {
+  text-decoration: line-through;
+}
+
+.settings .subscriptions .downgrade li.success .icon:after {
+  font-family: FontAwesome;
+  font-size: 17px;
+  color: #0eb0b7;
+  content: "\f058";
+  top: 10px;
+  position: relative;
+}
+
+.settings .subscriptions .downgrade li.fail .icon:after {
+  font-family: FontAwesome;
+  font-size: 17px;
+  color: #cd4400;
+  content: "\f057";
+  top: 10px;
+  position: relative;
+}
+
+.settings .subscriptions .downgrade li .rule-title {
+  font-size: 18px;
+  padding-left: 5px;
+}
+
+.settings .subscriptions .downgrade li .rule-to-succeed {
+  font-size: 13px;
+  display: block;
+  padding-left: 27px;
 }
 
 .border-bottom {
@@ -8961,6 +9089,8 @@ input:disabled {
 .btn {
   color: #24292e;
   background-color: #eff3f6;
+  background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
+  background-image: -webkit-linear-gradient(top, #fafbfc 0%, #eff3f6 90%);
   background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
   position: relative;
   display: inline-block;
@@ -8989,6 +9119,8 @@ input:disabled {
 .btn:hover, .btn:visited {
   text-decoration: none;
   background-color: #e6ebf1;
+  background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
+  background-image: -webkit-linear-gradient(top, #f0f3f6 0%, #e6ebf1 90%);
   background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
   background-position: 0 -0.5em;
   background-repeat: repeat-x;
@@ -9002,14 +9134,23 @@ input:disabled {
   box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15);
 }
 
+.btn:disabled {
+  background-image: -webkit-linear-gradient(top, #63b175 0%, #61986e 90%);
+  background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+}
+
 .btn-primary {
   color: #fff;
   background-color: #28a745;
+  background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
+  background-image: -webkit-linear-gradient(top, #34d058 0%, #28a745 90%);
   background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
 }
 
 .btn-primary:hover {
   background-color: #269f42;
+  background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
+  background-image: -webkit-linear-gradient(top, #2fcb53 0%, #269f42 90%);
   background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
   background-position: 0 -0.5em;
   border-color: rgba(27, 31, 35, 0.5);
@@ -9051,7 +9192,7 @@ input:disabled {
 
 footer {
   margin-bottom: 30px;
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 footer ul {

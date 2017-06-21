@@ -1,7 +1,5 @@
 <?php
 
-Route::get('test/{contact}/{activity}','People\ActivitiesController@edit');
-
 if (App::environment('production')) {
     URL::forceScheme('https');
 }
@@ -11,6 +9,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 Auth::routes();
 
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+
+Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
+Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -103,7 +104,21 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings', ['as' => '.index', 'uses' => 'SettingsController@index']);
         Route::get('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/save', 'SettingsController@save');
-        Route::get('/settings/export', 'SettingsController@export');
+        Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+
+        Route::get('/settings/users', 'SettingsController@users')->name('.users');
+        Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
+        Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
+        Route::post('/settings/users/save', 'SettingsController@inviteUser')->name('.users.save');
+        Route::get('/settings/users/invitations/{invitation}/delete', 'SettingsController@destroyInvitation');
+
+        Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('.subscriptions.index');
+        Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('.subscriptions.upgrade');
+        Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment');
+        Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice');
+        Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
+        Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
+
     });
 });
