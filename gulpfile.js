@@ -24,6 +24,8 @@ elixir((mix) => {
     //   'app/people/dashboard.js',
     // ]);
 
+    mix.webpack('resources/assets/js/app.js', 'public/js');
+
     mix.copy('resources/vendor/jquery/dist/jquery.min.js', 'resources/assets/js/vendors/');
     mix.copy('resources/vendor/typeahead.js/dist/typeahead.bundle.min.js', 'resources/assets/js/vendors/');
 

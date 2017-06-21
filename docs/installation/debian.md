@@ -148,9 +148,6 @@ SESSION_DRIVER=file
 QUEUE_DRIVER=sync
 ```
 
-Make sure that you change the APP_KEY variable to something witth length of
-32 characters otherwise the next step will fail.
-
 The next 5 lines are taken more or less 1:1 from the main generic installation
 guide. Mainly because the author was unsure about their purpose.
 
@@ -184,16 +181,6 @@ We need to enable the rewrite module of the Apache webserver:
 sudo a2enmod rewrite
 ```
 
-And since we currently only have the default webroot we need to remove it
-and symlink monica's public folder to `/var/www/html`
-
-```
-sudo rm -r /var/www/html
-```
-```
-sudo ln -s /var/www/monica/public /var/www/html
-```
-
 Now look for this section in the `/etc/apache2/apache2.conf` file.
 
 ```
@@ -207,14 +194,26 @@ Now look for this section in the `/etc/apache2/apache2.conf` file.
 and change it to:
 
 ```
-<Directory /var/www/html>
+<Directory /var/www/monica>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
 </Directory>
 ```
 
-Finally we can restart Apache and are up and running.
+Save the apache2.conf file and open `/etc/apache2/sites-enabled/000-default.conf`
+and look for this line:
+
+```
+DocumentRoot /var/www/html
+```
+and change it to:
+```
+DocumentRoot /var/www/monica/public
+```
+
+After you save the 000-default.conf file you can finally restart
+Apache and are up and running.
 ```
 sudo service apache2 restart
 ```

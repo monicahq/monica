@@ -633,26 +633,6 @@
     .main-content {
       &.modal {
         margin-top: 0;
-
-        .dates {
-          .form-inline {
-            input[type="number"] {
-              display: inline;
-            }
-
-            input[type="date"] {
-              margin-left: 0;
-            }
-          }
-        }
-
-        .form-group.actions {
-          .btn {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-          }
-        }
       }
 
       &.dashboard {

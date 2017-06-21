@@ -25,16 +25,7 @@
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
 
-      <div class="col-xs-12 col-md-3 sidebar-menu">
-        <ul>
-          <li class="selected">
-            {{ trans('settings.sidebar_settings') }}
-          </li>
-          <li>
-            <a href="/settings/export">{{ trans('settings.sidebar_settings_export') }}</a>
-          </li>
-        </ul>
-      </div>
+      @include('settings._sidebar')
 
       <div class="col-xs-12 col-md-9">
 
