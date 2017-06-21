@@ -1,3 +1,10 @@
+2017-06-15
+----------
+
+New features:
+* Add support for mutiple users in one account.
+* Add subscriptions on .com. This has no effect on self hosted versions.
+
 2017-06-16
 ----------
 
