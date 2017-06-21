@@ -1,12 +1,12 @@
 #!/bin/sh
 
-echo "Connecting to ${DB_HOST}"
+echo "Connecting to ${DB_HOST}:${DB_PORT}"
 
 while true; do
-    nc -z ${DB_HOST} 3306 && break
-    echo "Unable to connect to MySQL; sleeping"
+    nc -z ${DB_HOST} ${DB_PORT} && break
+    echo "Unable to connect to ${DB_HOST}:${DB_PORT}; sleeping"
     sleep 1
 done
 
-echo "Waiting for MySQL to settle"
+echo "Waiting for database to settle"
 sleep 3
