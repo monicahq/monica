@@ -24,7 +24,15 @@ class ExportAccountAsSQL
         'password_resets',
         'sessions',
         'statistics',
-        'accounts'
+        'accounts',
+        'subscriptions'
+    ];
+
+    protected $ignoredColumns = [
+        'stripe_id',
+        'card_brand',
+        'card_last_four',
+        'trial_ends_at'
     ];
 
     protected $file = '';
@@ -61,9 +69,6 @@ class ExportAccountAsSQL
 # ************************************************************
 
 " . PHP_EOL;
-
-
-
 
         $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
 
@@ -142,6 +147,10 @@ class ExportAccountAsSQL
                             $skipLine = true;
                             break;
                         }
+                    }
+
+                    if (in_array($columnName, $this->ignoredColumns)) {
+                        break;
                     }
 
                     if (is_null($value)) {

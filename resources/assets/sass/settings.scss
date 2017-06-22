@@ -26,15 +26,149 @@
     }
   }
 
-  h2 {
+  h3 {
     border-bottom: 1px solid $border-color;
     font-size: 20px;
     font-weight: 400;
     margin-bottom: 20px;
+
+    &:not(:first-child) {
+      margin-top: 30px;
+    }
   }
 
   .settings-delete {
     font-size: 11px;
     margin-top: 20px;
+  }
+
+  .warning-zone {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding: 10px 10px 5px 15px;
+    border: 1px solid #f1c897;
+    background-color: #ffe8bc;
+  }
+
+  .users-list {
+    h3.with-actions {
+      padding-bottom: 13px;
+
+      a {
+        float: right;
+      }
+    }
+
+    .table-cell.actions {
+      text-align: right;
+    }
+  }
+
+  .users-blank {
+    text-align: center;
+
+    img {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      margin-top: 0;
+      border-bottom: 0;
+    }
+
+    p {
+      margin: 0 auto;
+      width: 400px;
+
+      &.cta {
+        margin-top: 40px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .requires-subscription {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #999;
+    }
+  }
+
+  .subscriptions {
+    .upgrade-benefits {
+      margin-bottom: 20px;
+
+      li {
+        margin-left: 20px;
+        list-style-type: disc;
+      }
+    }
+
+    #label-card-element {
+      margin-bottom: 15px;
+    }
+
+    .downgrade {
+      ul {
+        background-color: #f8f8f8;
+        border: 1px solid $border-color;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        padding: 25px;
+      }
+
+      li {
+        padding-bottom: 15px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $border-color;
+        }
+
+        &:not(:first-child) {
+          margin-top: 10px;
+        }
+
+        &.success {
+          .rule-title {
+            text-decoration: line-through;
+          }
+
+          .icon:after {
+            font-family: FontAwesome;
+            font-size: 17px;
+            color: #0eb0b7;
+            content: "\f058";
+            top: 10px;
+            position: relative;;
+          }
+        }
+
+        &.fail {
+          .icon:after {
+            font-family: FontAwesome;
+            font-size: 17px;
+            color: #cd4400;
+            content: "\f057";
+            top: 10px;
+            position: relative;;
+          }
+        }
+
+        .rule-title {
+          font-size: 18px;
+          padding-left: 5px;
+        }
+
+        .rule-to-succeed {
+          font-size: 13px;
+          display: block;
+          padding-left: 27px;
+        }
+      }
+    }
   }
 }

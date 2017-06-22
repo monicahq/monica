@@ -85,59 +85,41 @@ class PeopleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function show($contactId)
+    public function show(Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
+        $contact->load(['notes' => function ($query) {
+            $query->orderBy('updated_at', 'desc');
+        }]);
 
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
-        $data = [
-            'contact' => $contact,
-        ];
-
-        return view('people.profile', $data);
+        return view('people.profile')
+            ->withContact($contact);
     }
 
     /**
      * Display the Edit people's view.
      *
-     * @param  int $id
+     * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function edit($contactId)
+    public function edit(Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
 
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
-        $data = [
-            'contact' => $contact,
-        ];
-
-        return view('people.edit', $data);
+        return view('people.edit')
+            ->withContact($contact);
     }
 
     /**
      * Update the identity and address of the People object.
+     *
      * @param  Request $request
-     * @param  int $peopleId
-     * @return Response
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $contactId)
+    public function update(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
-
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:255',
             'gender' => 'required',
@@ -271,27 +253,21 @@ class PeopleController extends Controller
 
         $contact->logEvent('contact', $contact->id, 'update');
 
-        $request->session()->flash('success', trans('people.information_edit_success'));
-
         dispatch(new ResizeAvatars($contact));
 
-        return redirect('/people/' . $contact->id);
+        return redirect('/people/' . $contact->id)
+            ->with('success', trans('people.information_edit_success'));
     }
 
     /**
      * Delete the specified resource.
      *
-     * @param  int $id
+     * @param Request $request
+     * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, $contactId)
+    public function delete(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
-
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
         $contact->activities->each->delete();
         $contact->debts->each->delete();
         $contact->events->each->delete();
@@ -304,116 +280,73 @@ class PeopleController extends Controller
 
         $contact->delete();
 
-        $request->session()->flash('success', trans('people.people_delete_success'));
-
-        return redirect()->route('people.index');
+        return redirect()->route('people.index')
+            ->with('success', trans('people.people_delete_success'));
     }
 
     /**
      * Show the Edit work view.
+     *
      * @param  Request $request
-     * @return View
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
      */
-    public function editWork(Request $request, $contactId)
+    public function editWork(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
-
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
-        $data = [
-            'contact' => $contact,
-        ];
-
-        return view('people.dashboard.work.edit', $data);
+        return view('people.dashboard.work.edit')
+            ->withContact($contact);
     }
 
     /**
      * Save the work information
-     * @param int $id
-     * @return
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
      */
-    public function updateWork(Request $request, $contactId)
+    public function updateWork(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
-
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
         $job = $request->input('job');
         $company = $request->input('company');
+        $linkedin = $request->input('linkedin');
 
-        if ($job != '') {
-            $contact->job = $job;
-        } else {
-            $contact->job = null;
-        }
-
-        if ($company != '') {
-            $contact->company = $company;
-        } else {
-            $contact->company = null;
-        }
-
-        if ($request->input('linkedin') != '') {
-            $contact->linkedin_profile_url = $request->input('linkedin');
-        } else {
-            $contact->linkedin_profile_url = null;
-        }
+        $contact->job = ! empty($job) ? $job : null;
+        $contact->company = ! empty($company) ? $company : null;
+        $contact->linkedin_profile_url = ! empty($linkedin) ? $linkedin : null;
 
         $contact->save();
 
-        $request->session()->flash('success', trans('people.work_edit_success'));
-
-        return redirect('/people/' . $contact->id);
+        return redirect('/people/' . $contact->id)
+            ->with('success', trans('people.work_edit_success'));
     }
 
     /**
      * Show the Edit food preferencies view.
+     *
      * @param  Request $request
-     * @param  [type]  $peopleId integer
-     * @return View
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
      */
-    public function editFoodPreferencies(Request $request, $contactId)
+    public function editFoodPreferencies(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
-
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
-
-        $data = [
-            'contact' => $contact,
-        ];
-
-        return view('people.dashboard.food-preferencies.edit', $data);
+        return view('people.dashboard.food-preferencies.edit')
+            ->withContact($contact);
     }
 
     /**
      * Save the food preferencies.
-     * @param int $id
-     * @return
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
      */
-    public function updateFoodPreferencies(Request $request, $contactId)
+    public function updateFoodPreferencies(Request $request, Contact $contact)
     {
-        $contact = Contact::findOrFail($contactId);
+        $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
-        if ($contact->account_id !== Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
+        $contact->updateFoodPreferencies($food);
 
-        $food = $request->input('food');
-
-        if ($food != '') {
-            $contact->updateFoodPreferencies($food);
-        } else {
-            $contact->updateFoodPreferencies(null);
-        }
-
-        $request->session()->flash('success', trans('people.food_preferencies_add_success'));
-
-        return redirect('/people/' . $contact->id);
+        return redirect('/people/' . $contact->id)
+            ->with('success', trans('people.food_preferencies_add_success'));
     }
 }

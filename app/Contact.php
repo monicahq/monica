@@ -186,7 +186,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get contact's full name
      *
      * @return string
      */
@@ -206,7 +206,7 @@ class Contact extends Model
     }
 
     /**
-     * Get user's full name
+     * Get user's initials
      *
      * @return string
      */
@@ -510,16 +510,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the last updated date.
-     *
-     * @return string Y-m-d
-     */
-    public function getLastUpdated()
-    {
-        return DateHelper::createDateFromFormat($this->updated_at, $this->account->user->timezone)->format('Y/m/d');
-    }
-
-    /**
      * Get the total number of reminders.
      *
      * @return int
@@ -767,58 +757,6 @@ class Contact extends Model
         }
 
         $this->save();
-    }
-
-    /**
-     * Create a note.
-     *
-     * @param string $body
-     * @return mixed
-     */
-    public function addNote($body)
-    {
-        $note = $this->notes()->create([]);
-        $note->account_id = $this->account_id;
-        $note->body = $body;
-        $note->save();
-
-        $this->number_of_notes = $this->number_of_notes + 1;
-        $this->save();
-
-        $this->logEvent('note', $note->id, 'create');
-
-        return $note->id;
-    }
-
-    /**
-     * Delete the note.
-     *
-     * @param Note|int $note
-     */
-    public function deleteNote($note)
-    {
-        if (!$note instanceof Note) {
-            $note = Note::findOrFail($note);
-        }
-
-        $note->delete();
-
-        // Decrease number of notes
-        $this->number_of_notes = $this->number_of_notes - 1;
-
-        if ($this->number_of_notes < 1) {
-            $this->number_of_notes = 0;
-        }
-
-        $this->save();
-
-        // Delete all events
-        $this->events()
-            ->where('object_type', 'note')
-            ->where('object_id', $note->id)
-            ->get()
-            ->each
-            ->delete();
     }
 
     /**

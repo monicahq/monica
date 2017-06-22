@@ -90,9 +90,7 @@ class Kid extends Model
      */
     public function getBirthdateAttribute($value)
     {
-        if ($this->account) {
-            return Carbon::parse($value, $this->account->user->timezone);
-        } elseif (auth()->user()) {
+        if (auth()->user()) {
             return Carbon::parse($value, auth()->user()->timezone);
         }
 
