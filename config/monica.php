@@ -18,6 +18,38 @@ return [
         'ru',
     ],
 
+   /*
+    |--------------------------------------------------------------------------
+    | Disable User registration
+    |--------------------------------------------------------------------------
+    |
+    | Disables registration of new users
+    |
+    */
+    'disable_signup' => env('APP_DISABLE_SIGNUP', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | New User Email Notification
+    |--------------------------------------------------------------------------
+    |
+    | Email to notify when new user registers.
+    |
+    */
+    'email_new_user_notification' => env('APP_EMAIL_NEW_USERS_NOTIFICATION'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | User and error tracking
+    |--------------------------------------------------------------------------
+    |
+    | We provide placeholders for Google Analytics, Intercom and Sentry.
+    |
+    */
+    'google_analytics_app_id' => env('GOOGLE_ANALYTICS_APP_ID'),
+    'intercom_app_id' => env('INTERCOM_APP_ID'),
+    'sentry_app_id' => env('SENTRY_APP_ID'),
+
     /*
     |--------------------------------------------------------------------------
     | Access to paid features
