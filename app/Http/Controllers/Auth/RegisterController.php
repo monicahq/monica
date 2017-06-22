@@ -52,7 +52,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        if (env('APP_DISABLE_SIGNUP') == 'true') {
+        if (config('app.disable_signup') == 'true') {
             abort(403, trans('auth.signup_disabled'));
         }
 
