@@ -41,6 +41,7 @@ class SettingsController extends Controller
                 'timezone',
                 'locale',
                 'currency_id',
+                'name_order'
             ]) + [
                 'fluid_container' => $request->get('layout')
             ]
