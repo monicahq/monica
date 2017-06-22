@@ -153,12 +153,12 @@ class FakeContentTableSeeder extends Seeder
             // // notes
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 13); $j++) {
-                    $note = $contact->notes->create([
+                    $note = $contact->notes()->create([
                         'body' => $faker->realText(rand(40, 500)),
                         'account_id' => $contact->account_id
                     ]);
 
-                    $this->logEvent('note', $note->id, 'create');
+                    $contact->logEvent('note', $note->id, 'create');
                 }
             }
         }
