@@ -102,12 +102,12 @@
               <div class="form-group">
                 <label for="street">{{ trans('people.information_edit_street') }}</label>
                 <input type="text" class="form-control" name="street" value="{{ $contact->getStreet() }}" autofocus>
+                <label for="city">{{ trans('people.information_edit_city') }}</label>
+                <input type="text" class="form-control" name="city" value="{{ $contact->getCity() }}">
                 <label for="province">{{ trans('people.information_edit_province') }}</label>
                 <input type="text" class="form-control" name="province" value="{{ $contact->getProvince() }}">
                 <label for="postalcode">{{ trans('people.information_edit_postalcode') }}</label>
                 <input type="text" class="form-control" name="postalcode" value="{{ $contact->getPostalCode() }}">
-                <label for="city">{{ trans('people.information_edit_city') }}</label>
-                <input type="text" class="form-control" name="city" value="{{ $contact->getCity() }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
 
                 @include('partials.components.country-select',['selectionID'=>$contact->getCountryID()])

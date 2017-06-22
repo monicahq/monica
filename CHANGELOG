@@ -5,6 +5,7 @@ New features:
 * Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
 
 Improvements:
+* Fix the order of the address fields.
 * Env variables are now read from config files rather than directly from the .env file.
 * Some US typos fix.
 
