@@ -186,26 +186,6 @@ class Contact extends Model
     }
 
     /**
-     * Get contact's full name
-     *
-     * @return string
-     */
-    public function getNameAttribute()
-    {
-        $completeName = $this->first_name;
-
-        if (!is_null($this->middle_name)) {
-            $completeName = $completeName . ' ' . $this->middle_name;
-        }
-
-        if (!is_null($this->last_name)) {
-            $completeName = $completeName . ' ' . $this->last_name;
-        }
-
-        return $completeName;
-    }
-
-    /**
      * Get user's initials
      *
      * @return string
@@ -222,9 +202,33 @@ class Contact extends Model
      *
      * @return string
      */
-    public function getCompleteName()
+    public function getCompleteName($nameOrder = 'firstname_first')
     {
-        return $this->name;
+        $completeName = '';
+
+        if ($nameOrder == 'firstname_first') {
+            $completeName = $this->first_name;
+
+            if (!is_null($this->middle_name)) {
+                $completeName = $completeName . ' ' . $this->middle_name;
+            }
+
+            if (!is_null($this->last_name)) {
+                $completeName = $completeName . ' ' . $this->last_name;
+            }
+        } else {
+            if (!is_null($this->last_name)) {
+                $completeName = $this->last_name;
+            }
+
+            if (!is_null($this->middle_name)) {
+                $completeName = $completeName . ' ' . $this->middle_name;
+            }
+
+            $completeName = $completeName . ' ' . $this->first_name;
+        }
+
+        return $completeName;
     }
 
     /**

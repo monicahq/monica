@@ -1,3 +1,13 @@
+2017-06-22
+----------
+
+New features:
+* Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
+
+Improvements:
+* Env variables are now read from config files rather than directly from the .env file.
+* Some US typos fix.
+
 2017-06-20
 ----------
 

@@ -26,7 +26,7 @@
           @endif
 
           <h2>
-            {{ $contact->getCompleteName() }}
+            {{ $contact->getCompleteName(auth()->user()->name_order) }}
           </h2>
 
           <ul class="horizontal profile-detail-summary">

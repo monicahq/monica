@@ -25,7 +25,7 @@ return [
     'tab_lastest_actions' => 'Latest actions',
     'tasks_title' => 'Tasks',
     'tasks_blank' => 'No tasks are planned.',
-    'reminders_in_days' => 'in :number days',
+    'reminders_in_days' => '{1} in 1 day|in :number days',
     'statistics_title' => 'Statistics about your account',
     'statistics_contacts' => 'Contacts',
     'statistics_kids' => 'Kids',
