@@ -98,7 +98,8 @@
                     @foreach ($upcomingReminders as $reminder)
                       <li>
                         <span class="reminder-in-days">
-                          {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
+                          <?php $reminder_day_diff = $reminder->next_expected_date->diffInDays(Carbon\Carbon::now()) + 1 ?>
+                          {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
