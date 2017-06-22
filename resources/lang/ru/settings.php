@@ -13,8 +13,11 @@ return [
     'export_sql_cta' => 'Export to SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
 
+    'name_order' => 'Name order',
+    'name_order_firstname_first' => 'First name first (John Doe)',
+    'name_order_lastname_first' => 'Last name first (Doe John)',
     'currency' => 'Валюта',
-    'name' => 'Ваше имя: :firstname :lastname',
+    'name' => 'Ваше имя: :name',
     'email' => 'Email',
     'email_placeholder' => 'Введите email',
     'email_help' => 'Этот email используется в качетве логина и на него вы будете получать напоминания.',

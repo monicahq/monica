@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_layout'
+        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order'
     ];
 
     /**
@@ -80,16 +80,27 @@ class User extends Authenticatable
     }
 
     /**
-     * Get users's full name
+     * Get users's full name. The name is formatted according to the user's
+     * preference, either "Firstname Lastname", or "Lastname Firstname".
      *
      * @return string
      */
     public function getNameAttribute()
     {
-        $completeName = $this->first_name;
+        $completeName = '';
 
-        if (!is_null($this->last_name)) {
-            $completeName = $completeName . ' ' . $this->last_name;
+        if ($this->name_order == 'firstname_first') {
+            $completeName = $this->first_name;
+
+            if (!is_null($this->last_name)) {
+                $completeName = $completeName . ' ' . $this->last_name;
+            }
+        } else {
+            if (!is_null($this->last_name)) {
+                $completeName = $this->last_name;
+            }
+
+            $completeName = $completeName . ' ' . $this->first_name;
         }
 
         return $completeName;

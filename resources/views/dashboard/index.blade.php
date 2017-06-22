@@ -102,7 +102,7 @@
                           {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
+                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
                         {{ $reminder->getTitle() }}
                       </li>
                     @endforeach
@@ -124,7 +124,7 @@
                   <ul>
                     @foreach ($tasks as $task)
                       <li>
-                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
+                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
                         {{ $task->getTitle() }}
                         {{ $task->getDescription() }}
                       </li>
@@ -147,7 +147,7 @@
                   <ul>
                     @foreach ($debts as $debt)
                       <li>
-                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName() }}</a>:
+                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
 
                         @if ($debt->in_debt == 'yes')
                         <span class="debt-description">{{ trans('dashboard.debts_you_owe') }}</span>
@@ -272,7 +272,7 @@
               <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
               <ul>
                 @foreach ($lastUpdatedContacts as $contact)
-                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName() }}</a></li>
+                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
                 @endforeach
               </ul>
             </div>

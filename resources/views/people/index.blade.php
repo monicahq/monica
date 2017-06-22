@@ -75,7 +75,7 @@
                       @endif
                     @endif
                     <span class="people-list-item-name">
-                      {{ $contact->getCompleteName() }}
+                      {{ $contact->getCompleteName(auth()->user()->name_order) }}
                     </span>
 
                     <span class="people-list-item-information">
