@@ -14,9 +14,9 @@ abstract class TestCase extends BaseTestCase
     /**
      * TestCase constructor.
      */
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        parent::__construct();
+        parent::__construct($name, $data, $dataName);
 
         // Makes a Faker Factory available to all tests.
         $this->faker = Factory::create();

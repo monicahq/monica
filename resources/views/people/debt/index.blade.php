@@ -30,9 +30,14 @@
         </div>
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')
-            {{ trans('people.debt_you_owe', ['amount' => $debt->amount]) }}
+            {{ trans('people.debt_you_owe', [
+                'amount' => MoneyHelper::format($debt->amount)
+            ]) }}
           @else
-            {{ trans('people.debt_they_owe', ['name' => $contact->getFirstName(), 'amount' => $debt->amount]) }}
+            {{ trans('people.debt_they_owe', [
+                'name' => $contact->getFirstName(),
+                'amount' => MoneyHelper::format($debt->amount)
+            ]) }}
           @endif
         </div>
         <div class="table-cell reason">
