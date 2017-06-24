@@ -14,7 +14,7 @@ class AddDisplayCountToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('display_count')->default(50)->after('invited_by_user_id');
+            $table->integer('display_count')->default(config('view.display_count'))->after('invited_by_user_id');
         });
     }
 
