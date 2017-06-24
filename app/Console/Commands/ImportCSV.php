@@ -39,7 +39,7 @@ class ImportCSV extends Command
      */
     public function handle()
     {
-        $file = $this->argument('file');
+        $file = $this->argument('path');
 
         if (is_int($this->argument('user'))) {
             $user = User::find($this->argument('user'));
