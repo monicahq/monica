@@ -49,6 +49,9 @@
           <div class="row">
 
             <div class="col-xs-12 col-md-9" id="search-list">
+              <div class="text-center">
+              {!! $contacts->links() !!}
+              </div>
 
               <input class="search form-control" placeholder="{{ trans('people.people_list_search') }}" />
 
@@ -137,6 +140,9 @@
               </ul>
             </div>
 
+              <div class="col-xs-12 text-center">
+                  {!! $contacts->links() !!}
+              </div>
           </div>
         </div>
 

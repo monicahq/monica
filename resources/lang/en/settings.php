@@ -28,6 +28,7 @@ return [
     'save' => 'Update preferences',
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
     'delete_cta' => 'Delete account',
+	'display_count' => 'Display count',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
     'locale_en' => 'English',

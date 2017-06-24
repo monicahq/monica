@@ -236,6 +236,20 @@
             </select>
           </div>
 
+          {{-- Layout --}}
+          <div class="form-group">
+            <label for="layout">{{ trans('settings.display_count') }}</label>
+            <select class="form-control" name="layout" id="layout">
+              <option value='5' {{ (auth()->user()->display_count == '5')?'selected':'' }}>5</option>
+              <option value='10' {{ (auth()->user()->display_count == '10')?'selected':'' }}>10</option>
+              <option value='15' {{ (auth()->user()->display_count == '15')?'selected':'' }}>15</option>
+              <option value='20' {{ (auth()->user()->display_count == '20')?'selected':'' }}>20</option>
+              <option value='50' {{ (auth()->user()->display_count == '50')?'selected':'' }}>50</option>
+              <option value='100' {{ (auth()->user()->display_count == '100')?'selected':'' }}>100</option>
+              <option value='500' {{ (auth()->user()->display_count == '500')?'selected':'' }}>500</option>
+            </select>
+          </div>
+
           <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
         </form>
 

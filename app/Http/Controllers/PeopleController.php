@@ -28,7 +28,7 @@ class PeopleController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $contacts = $user->account->contacts()->withCount('kids')->sortedBy($sort)->get();
+        $contacts = $user->account->contacts()->sortedBy($sort)->paginate(Auth::user()->display_count);
 
         return view('people.index')
             ->withContacts($contacts);

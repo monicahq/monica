@@ -30,4 +30,8 @@ return [
 
     'compiled' => realpath(storage_path('framework/views')),
 
+	/**
+	 * Default display count for lists of its is empty in the database
+	 */
+	'display_count' => 50,
 ];
