@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order', 'display_count'
+        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order',
     ];
 
     /**
@@ -52,16 +52,6 @@ class User extends Authenticatable
     public function getContactsSortOrderAttribute($value)
     {
         return ! empty($value) ? $value : 'firstnameAZ';
-    }
-
-	/**
-	 * Accessor to make sure the display_count column in the database has a value
-	 *
-	 * @return mixed
-	 */
-    public function getDisplayCountAttribute()
-    {
-	    return array_get($this->attributes, 'display_count', config('view.display_count', 50));
     }
 
     /**
