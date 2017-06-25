@@ -9,7 +9,7 @@
   </h3>
 </div>
 
-@if ($contact->getNotes()->count() == 0)
+@if ($contact->notes->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
@@ -22,7 +22,7 @@
   <div class="col-xs-12">
 
     <ul class="notes-list">
-      @foreach ($contact->getNotes() as $note)
+      @foreach ($contact->notes as $note)
         <li>
           {{ $note->getBody() }}
           <span class="note-date">

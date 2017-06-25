@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
+                {{ trans('people.edit_contact_information') }}
               </li>
             </ul>
           </div>
@@ -99,12 +102,12 @@
               <div class="form-group">
                 <label for="street">{{ trans('people.information_edit_street') }}</label>
                 <input type="text" class="form-control" name="street" id="street" value="{{ $contact->getStreet() }}" autofocus>
+                <label for="city">{{ trans('people.information_edit_city') }}</label>
+                <input type="text" class="form-control" name="city" id="city" value="{{ $contact->getCity() }}">
                 <label for="province">{{ trans('people.information_edit_province') }}</label>
                 <input type="text" class="form-control" name="province" id="province" value="{{ $contact->getProvince() }}">
                 <label for="postalcode">{{ trans('people.information_edit_postalcode') }}</label>
                 <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ $contact->getPostalCode() }}">
-                <label for="city">{{ trans('people.information_edit_city') }}</label>
-                <input type="text" class="form-control" name="city" id="city" value="{{ $contact->getCity() }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
 
                 @include('partials.components.country-select',['selectionID'=>$contact->getCountryID()])

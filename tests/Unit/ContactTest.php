@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\User;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -32,7 +33,7 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetsNamesMethods()
+    public function test_get_name_returns_name()
     {
         $contact = new Contact;
         $contact->first_name = 'Peter';
@@ -87,6 +88,24 @@ class ContactTest extends TestCase
         $this->assertEquals(
             null,
             $contact->getLastName()
+        );
+    }
+
+    public function test_get_name_returns_name_in_the_right_order()
+    {
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+
+        $this->assertEquals(
+            'Gregory H Peter',
+            $contact->getCompleteName('lastname_first')
+        );
+
+        $this->assertEquals(
+            'Peter H Gregory',
+            $contact->getCompleteName('firstname_first')
         );
     }
 
@@ -709,31 +728,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'Some value',
             $contact->getFoodPreferencies()
-        );
-    }
-
-    public function testAddNoteReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addNote('This is a test')
-        );
-    }
-
-    public function testDeleteNote()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $note = factory(\App\Note::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $contact->deleteNote($note->id);
-
-        $this->assertEquals(
-            0,
-            $contact->getNotes()->count()
         );
     }
 

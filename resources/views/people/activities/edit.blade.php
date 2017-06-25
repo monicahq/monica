@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>

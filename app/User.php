@@ -2,15 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_layout'
+        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order'
     ];
 
     /**
@@ -34,8 +32,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    protected $dates = ['deleted_at'];
 
     /**
      * Get the account record associated with the user.
@@ -84,6 +80,33 @@ class User extends Authenticatable
     }
 
     /**
+     * Get users's full name. The name is formatted according to the user's
+     * preference, either "Firstname Lastname", or "Lastname Firstname".
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        $completeName = '';
+
+        if ($this->name_order == 'firstname_first') {
+            $completeName = $this->first_name;
+
+            if (!is_null($this->last_name)) {
+                $completeName = $completeName . ' ' . $this->last_name;
+            }
+        } else {
+            if (!is_null($this->last_name)) {
+                $completeName = $this->last_name;
+            }
+
+            $completeName = $completeName . ' ' . $this->first_name;
+        }
+
+        return $completeName;
+    }
+
+    /**
      * Gets the currency for this user.
      *
      * @return BelongsTo
@@ -92,6 +115,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Currency::class);
     }
+
     /**
      * Set the contact view preference.
      *

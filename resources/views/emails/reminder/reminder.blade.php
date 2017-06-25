@@ -6,7 +6,7 @@
 
 {{ trans('mail.for') }}
 
-{{ $contact->getCompleteName() }}
+{{ $contact->getCompleteName($user->name_order) }}
 
 {{-- COMMENTS --}}
 @if (! is_null($reminder->getDescription()))
@@ -17,4 +17,4 @@ COMMENT:
 -------
 
 {{ trans('mail.footer_contact_info') }}
-{{ env('APP_URL') }}/people/{{ $contact->id }}
+{{ config('app.url') }}/people/{{ $contact->id }}

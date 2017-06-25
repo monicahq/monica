@@ -98,10 +98,11 @@
                     @foreach ($upcomingReminders as $reminder)
                       <li>
                         <span class="reminder-in-days">
-                          {{ trans('dashboard.reminders_in_days', ['number' => $reminder->next_expected_date->diffInDays(Carbon\Carbon::now())]) }}
+                          <?php $reminder_day_diff = $reminder->next_expected_date->diffInDays(Carbon\Carbon::now()) + 1 ?>
+                          {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName() }}</a>:
+                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
                         {{ $reminder->getTitle() }}
                       </li>
                     @endforeach
@@ -120,20 +121,17 @@
                   <h3>{{ trans('dashboard.tasks_title') }}</h3>
 
                   @if ($tasks->count() != 0)
-                  <ul>
                     @foreach ($tasks as $task)
-                      <li>
-                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName() }}</a>:
+                    <div class="dashboard-item">
+                      <div class="truncate">
+                        <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
                         {{ $task->getTitle() }}
                         {{ $task->getDescription() }}
-                      </li>
+                      </div>
+                    </div>
                     @endforeach
-                  </ul>
-
                   @else
-
                   <p>{{ trans('dashboard.tasks_blank') }}</p>
-
                   @endif
                 </div>
 
@@ -143,10 +141,11 @@
                   <h3>{{ trans('dashboard.section_debts') }}</h3>
 
                   @if ($debts->count() != 0)
-                  <ul>
                     @foreach ($debts as $debt)
-                      <li>
-                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName() }}</a>:
+                    <div class="dashboard-item">
+                      <div class="truncate">
+
+                        <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
 
                         @if ($debt->in_debt == 'yes')
                         <span class="debt-description">{{ trans('dashboard.debts_you_owe') }}</span>
@@ -160,10 +159,9 @@
                         <span class="debt-description">{{ trans('dashboard.debts_for') }}</span>
                         {{ $debt->reason }}
                         @endif
-                      </li>
+                      </div>
+                    </div>
                     @endforeach
-                  </ul>
-
                   @else
 
                   <p>{{ trans('dashboard.debts_blank') }}</p>
@@ -271,7 +269,7 @@
               <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
               <ul>
                 @foreach ($lastUpdatedContacts as $contact)
-                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName() }}</a></li>
+                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
                 @endforeach
               </ul>
             </div>

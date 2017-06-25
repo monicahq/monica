@@ -3,13 +3,13 @@
 namespace Tests\Helper;
 
 use Carbon\Carbon;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DateHelperTest extends TestCase
+class DateHelperTest extends FeatureTestCase
 {
     public function testCreateDateFromFormat()
     {
@@ -84,6 +84,26 @@ class DateHelperTest extends TestCase
         $this->assertEquals(
             'Jan 22, 2017 17:56',
             DateHelper::getShortDateWithTime($date, $locale)
+        );
+    }
+
+    public function test_get_locale_returns_english_by_default()
+    {
+        $this->assertEquals(
+            'en',
+            DateHelper::getLocale()
+        );
+    }
+
+    public function test_get_locale_returns_right_locale_if_user_logged()
+    {
+        $user = $this->signIn();
+        $user->locale = 'fr';
+        $user->save();
+
+        $this->assertEquals(
+            'fr',
+            DateHelper::getLocale()
         );
     }
 }
