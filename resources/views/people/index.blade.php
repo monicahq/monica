@@ -45,7 +45,7 @@
 
       @else
 
-        <div class="{{ Auth::user()->getFluidLayout() }}">
+        <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
             <div class="col-xs-12 col-md-9" id="search-list">
@@ -53,6 +53,36 @@
               <input class="search form-control" placeholder="{{ trans('people.people_list_search') }}" />
 
               <ul class="list">
+
+                {{-- Sorting options --}}
+                <li class="people-list-item sorting">
+                  {{ trans('people.people_list_stats', ['count' => $contacts->count()]) }}
+
+                  <div class="options">
+                    <div class="options-dropdowns">
+                      <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownSort">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameAZ')?'selected':'' }}" href="/people?sort=firstnameAZ">
+                          {{ trans('people.people_list_firstnameAZ') }}
+                        </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameZA')?'selected':'' }}" href="/people?sort=firstnameZA">
+                          {{ trans('people.people_list_firstnameZA') }}
+                        </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameAZ')?'selected':'' }}" href="/people?sort=lastnameAZ">
+                          {{ trans('people.people_list_lastnameAZ') }}
+                        </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="/people?sort=lastnameZA">
+                          {{ trans('people.people_list_lastnameZA') }}
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+                </li>
+
                 @foreach($contacts as $contact)
 
                 <li class="people-list-item">
@@ -93,48 +123,6 @@
               <a href="/people/add" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
-              <ul>
-
-                @if (Auth::user()->contacts_sort_order == 'lastnameAZ')
-                  <li class="selected">
-                    {{ trans('people.people_list_lastnameAZ') }}
-                  </li>
-                @else
-                  <li>
-                    <a href="/people?sort=lastnameAZ">{{ trans('people.people_list_lastnameAZ') }}</a>
-                  </li>
-                @endif
-
-                @if (Auth::user()->contacts_sort_order == 'lastnameZA')
-                  <li class="selected">
-                    {{ trans('people.people_list_lastnameZA') }}
-                  </li>
-                @else
-                  <li>
-                    <a href="/people?sort=lastnameZA">{{ trans('people.people_list_lastnameZA') }}</a>
-                  </li>
-                @endif
-
-                @if (Auth::user()->contacts_sort_order == 'firstnameAZ')
-                  <li class="selected">
-                    {{ trans('people.people_list_firstnameAZ') }}
-                  </li>
-                @else
-                  <li>
-                    <a href="/people?sort=firstnameAZ">{{ trans('people.people_list_firstnameAZ') }}</a>
-                  </li>
-                @endif
-
-                @if (Auth::user()->contacts_sort_order == 'firstnameZA')
-                  <li class="selected">
-                    {{ trans('people.people_list_firstnameZA') }}
-                  </li>
-                @else
-                  <li>
-                    <a href="/people?sort=firstnameZA">{{ trans('people.people_list_firstnameZA') }}</a>
-                  </li>
-                @endif
-              </ul>
             </div>
 
           </div>
