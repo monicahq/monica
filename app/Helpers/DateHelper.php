@@ -77,8 +77,20 @@ class DateHelper
         return $date->format($format);
     }
 
-    public static function getLocale($locale = null) {
-        $locale = $locale ?: Auth::user()->locale;
+    /**
+     * Returns the locale of the instance, if defined. English by default.
+     *
+     * @param string
+     * @return string
+     */
+    public static function getLocale($locale = null)
+    {
+        if (Auth::check()) {
+            $locale = $locale ?: Auth::user()->locale;
+        } else {
+            $locale = $locale ?: 'en';
+        }
+
         Date::setLocale($locale);
 
         return $locale;

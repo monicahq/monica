@@ -50,6 +50,48 @@
       background-color: #f7fbfc;
     }
 
+    &.sorting {
+      background-color: #f6f8fa;
+      position: relative;
+      padding: 10px;
+
+      .options {
+        display: inline;
+        position: absolute;
+        right: 10px;
+
+        .dropdown-btn {
+          &:after {
+            content: "\f0d7";
+            font-family: FontAwesome;
+            margin-left: 5px;
+          }
+        }
+
+        .dropdown-item {
+          padding: 3px 20px 3px 10px;
+
+          &:before {
+            content: '\f00c';
+            font-family: FontAwesome;
+            margin-right: 5px;
+            color: #fff;
+          }
+
+          &:hover {
+            background-color: #0366d6;
+            color: #fff;
+          }
+
+          &.selected {
+            &:before {
+              color: #999;
+            }
+          }
+        }
+      }
+    }
+
     .avatar {
       background-color: #93521e;
       border-radius: 3px;

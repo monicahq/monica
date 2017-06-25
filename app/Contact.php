@@ -285,8 +285,7 @@ class Contact extends Model
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
         return DateHelper::getShortDate(
-            Carbon::parse($lastActivity->date_it_happened, $timezone),
-            'en'
+            Carbon::parse($lastActivity->date_it_happened, $timezone)
         );
     }
 
