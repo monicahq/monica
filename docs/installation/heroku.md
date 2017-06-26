@@ -20,3 +20,13 @@ provided by Heroku.
 There is one issue with it though at the moment: you won't be able to upload
 photos to your contacts, as Heroku doesn't support storage. We'll need to fix
 this in the future.
+
+## Updating Heroku instance
+
+You can update your Monica instance to the latest version by cloning the repository
+and pushing it to Heroku git.
+
+Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica`,
+and add heroku git repository by `heroku git:remote -a (heroku app name)`. Then,
+push to heroku by `git push heroku master`. Heroku will build and update the
+repository, automatically.
