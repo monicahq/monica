@@ -15,13 +15,13 @@
 
           <dl class="form-group {{ $errors->has('first_name') ? ' errored' : '' }}">
             <dt><label for="first_name">{{ trans('people.people_add_firstname') }}</label></dt>
-            <dd><input type="text" class="form-control" name="first_name" placeholder="" autofocus  value="{{ old('first_name') }}"></dd>
+            <dd><input type="text" id="first_name" class="form-control" name="first_name" autofocus value="{{ old('first_name') }}"></dd>
             @if ($errors->has('first_name'))
             <dd class="error">{{ $errors->first('first_name') }}</dd>
             @endif
 
             <dt><label for="last_name">{{ trans('people.people_add_lastname') }}</label></dt>
-            <dd><input type="text" class="form-control" name="last_name" placeholder="" value="{{ old('last_name') }}"></dd>
+            <dd><input type="text" id="last_name" class="form-control" name="last_name" value="{{ old('last_name') }}"></dd>
             @if ($errors->has('last_name'))
             <dd class="error">{{ $errors->first('last_name') }}</dd>
             @endif
@@ -30,17 +30,17 @@
           <label>{{ trans('people.people_add_gender') }}</label>
 
           <fieldset class="form-group">
-            <label class="form-check-inline">
+            <label class="form-check-inline" for="none">
               <input type="radio" class="form-check-input" name="gender" id="none" value="none" checked>
               {{ trans('app.gender_none') }}
             </label>
 
-            <label class="form-check-inline">
+            <label class="form-check-inline" for="male">
               <input type="radio" class="form-check-input" name="gender" id="male" value="male">
               {{ trans('app.gender_male') }}
             </label>
 
-            <label class="form-check-inline">
+            <label class="form-check-inline" for="female">
               <input type="radio" class="form-check-input" name="gender" id="female" value="female">
               {{ trans('app.gender_female') }}
             </label>
