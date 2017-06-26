@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
