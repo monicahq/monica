@@ -9,23 +9,23 @@
     {{-- First name --}}
     <div class="form-group">
         <label for="first_name">{{ trans('people.significant_other_add_firstname') }}</label>
-        <input type="text" class="form-control" name="first_name" maxlength="254" value="{{ old('first_name') ?? $significant_other->first_name }}" autofocus required>
+        <input type="text" class="form-control" name="first_name" id="first_name" maxlength="254" value="{{ old('first_name') ?? $significant_other->first_name }}" autofocus required>
     </div>
 
     {{-- Gender --}}
     <label>{{ trans('people.people_add_gender') }}</label>
     <fieldset class="form-group">
-        <label class="form-check-inline">
+        <label class="form-check-inline" for="genderNone">
             <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" @if(! in_array(old('gender'), ['male', 'female']) || ! in_array($significant_other->gender, ['male', 'female'])) checked @endif>
             {{ trans('app.gender_none') }}
         </label>
 
-        <label class="form-check-inline">
+        <label class="form-check-inline" for="genderMale">
             <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" @if(old('gender') === 'male' || $significant_other->gender === 'male') checked @endif>
             {{ trans('app.gender_male') }}
         </label>
 
-        <label class="form-check-inline">
+        <label class="form-check-inline" for="genderFemale">
             <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female" @if(old('gender') === 'female' || $significant_other->gender === 'female') checked @endif>
             {{ trans('app.gender_female') }}
         </label>
@@ -34,9 +34,9 @@
     <fieldset class="form-group dates">
 
         {{-- Don't know the birthdate --}}
-        <div class="form-check">
+        <div class="form-check" for="is_birthdate_approximate_unknown">
             <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" value="unknown"
+                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_unknown" value="unknown"
                        @if(! in_array(old('is_birthdate_approximate'), ['approximate', 'exact']) || ! in_array($significant_other->is_birthdate_approximate, ['approximate', 'exact'])) checked @endif
                 >
 
@@ -48,8 +48,8 @@
 
         {{-- Approximate birthdate --}}
         <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" value="approximate"
+            <label class="form-check-label" for="is_birthdate_approximate_approximate">
+                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_approximate" value="approximate"
                        @if(old('is_birthdate_approximate') === 'approximate' || $significant_other->is_birthdate_approximate === 'approximate') checked @endif
                 >
 
@@ -65,8 +65,8 @@
 
         {{-- Exact birthdate --}}
         <div class="form-check">
-            <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" value="exact"
+            <label class="form-check-label" for="is_birthdate_approximate_exact">
+                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_exact" value="exact"
                        @if(old('is_birthdate_approximate') === 'exact' || $significant_other->is_birthdate_approximate === 'exact') checked @endif
                 >
 
