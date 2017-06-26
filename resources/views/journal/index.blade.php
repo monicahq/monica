@@ -71,9 +71,7 @@
                     @if (! is_null($entry->getTitle()))
                     <h2>{{ $entry->getTitle() }}</h2>
                     @endif
-                    <div class="entry-content">
-                      {{ $entry->getPost() }}
-                    <div>
+                    <div class="entry-content">{{ $entry->getPost() }}<div>
                   </div>
                 </div>
               @endforeach
