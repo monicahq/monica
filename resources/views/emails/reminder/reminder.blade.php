@@ -2,7 +2,7 @@
 
 {{ trans('mail.want_reminded_of') }}:
 
-{{ $reminder->getTitle() }}
+{!! $reminder->getTitle() !!}
 
 {{ trans('mail.for') }}
 
@@ -11,7 +11,7 @@
 {{-- COMMENTS --}}
 @if (! is_null($reminder->getDescription()))
 COMMENT:
-{{ $reminder->getDescription() }}
+{!! $reminder->getDescription() !!}
 @endif
 
 -------
