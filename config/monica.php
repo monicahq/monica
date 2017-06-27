@@ -78,4 +78,15 @@ return [
    'paid_plan_friendly_name' => env('PAID_PLAN_FRIENDLY_NAME', null),
    'paid_plan_id' => env('PAID_PLAN_ID', null),
    'paid_plan_price' => env('PAID_PLAN_PRICE', null),
+
+   /*
+    |--------------------------------------------------------------------------
+    | Version of the application that you run
+    |--------------------------------------------------------------------------
+    |
+    | This is used to indicate which version of Monica you are running. You
+    | should not change this setting yourself.
+    |
+    */
+    'app_version' => '0.1.0',
 ];
