@@ -25,6 +25,7 @@ return [
     'footer_release' => 'Notes de version (en)',
     'footer_newsletter' => 'Infolettre (en)',
     'footer_source_code' => 'Monica on GitHub',
+    'footer_version' => 'Version: :version',
 
     'breadcrumb_dashboard' => 'Tableau de bord',
     'breadcrumb_list_contacts' => 'Liste de contacts',

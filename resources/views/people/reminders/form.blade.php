@@ -28,8 +28,8 @@
 
             {{-- One time reminder --}}
             <div class="form-check">
-                <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="frequency_type" value="once"
+                <label class="form-check-label" for="frequency_type_once">
+                    <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="once"
                            v-model="reminders_frequency"
                            v-bind:value="'once'"
                            :checked="'once'"
