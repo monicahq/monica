@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="settings">
+<div class="settings import">
 
   {{-- Breadcrumb --}}
   <div class="breadcrumb">
@@ -32,26 +32,38 @@
 
       <div class="col-xs-12 col-sm-9">
 
-        <h3>{{ trans('settings.import_title') }}</h3>
+        <h3 class="with-actions">
+          {{ trans('settings.import_title') }}
+          <a href="/settings/import/upload" class="btn">{{ trans('settings.import_cta') }}</a>
+        </h3>
 
-        <p>You have {{auth()->user()->account->importjobs->count()}} jobs.</p>
+        <p>{{ trans('settings.import_stat', ['number' => auth()->user()->account->importjobs->count()]) }}</p>
 
         <ul class="table">
           @foreach (auth()->user()->account->importjobs as $importJob)
           <li class="table-row">
             <div class="table-cell">
-              {{ $importJob->created_at }}
-              {{ $importJob->failed }}
-            </div>
-            <div class="table-cell">
-              {{ $importJob->type }}:
-              {{ $importJob->contacts_found }} contacts found ({{ $importJob->contacts_imported }} contacts imported and {{ $importJob->contacts_skipped }} contacts skipped)
+              @if (! is_null($importJob->ended_at))
+                @if ($importJob->contacts_found != $importJob->contacts_imported)
+                  <i class="fa fa-check-circle warning"></i>
+                @else
+                  <i class="fa fa-check-circle success"></i>
+                @endif
+              @else
+                <i class="fa fa-times-circle failure"></i>
+              @endif
+              <span class="date">{{ \App\Helpers\DateHelper::getShortDateWithTime($importJob->created_at) }}</span>
             </div>
             <div class="table-cell">
               @if (! is_null($importJob->ended_at))
-              <a href="/settings/import/{{ $importJob->id }}">View report</a>
+              {{ trans('settings.import_result_stat', ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
+              @endif
+            </div>
+            <div class="table-cell">
+              @if (! is_null($importJob->ended_at))
+              <a href="/settings/import/report/{{ $importJob->id }}">{{ trans('settings.import_view_report') }}</a>
               @else
-              In progress
+              {{ trans('settings.import_failed') }}
               @endif
             </div>
           </li>

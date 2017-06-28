@@ -186,11 +186,11 @@ class Account extends Model
      */
     public function importjobs()
     {
-        return $this->hasMany(ImportJob::class);
+        return $this->hasMany(ImportJob::class)->orderBy('created_at', 'desc');
     }
 
     /**
-     * Get the import jobs reports records associated with the account.
+     * Get the import job reports records associated with the account.
      *
      * @return HasMany
      */

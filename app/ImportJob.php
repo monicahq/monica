@@ -47,4 +47,14 @@ class ImportJob extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the import jobs reports records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function importjobreports()
+    {
+        return $this->hasMany(ImportJobReport::class);
+    }
 }

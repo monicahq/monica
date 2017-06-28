@@ -10,7 +10,7 @@
 
         <h2>{{ trans('people.people_add_title') }}</h2>
 
-        <h3>Do you want to <a href="/people/import">import your contacts</a>?</h3>
+        <p class="import">{!! trans('people.people_add_import') !!}</p>
 
         <form action="/people" method="POST">
           {{ csrf_field() }}

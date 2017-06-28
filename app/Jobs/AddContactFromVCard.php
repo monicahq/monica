@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\User;
 use App\Contact;
+use App\Reminder;
 use App\ImportJob;
 use App\ImportJobReport;
 use App\Country;
@@ -88,6 +89,7 @@ class AddContactFromVCard implements ShouldQueue
                 $contact->is_birthdate_approximate = 'unknown';
 
                 if ($vcard->BDAY && !empty((string) $vcard->BDAY)) {
+                    $contact->is_birthdate_approximate = 'exact';
                     $contact->birthdate = new \DateTime((string) $vcard->BDAY);
                 }
 
@@ -115,6 +117,20 @@ class AddContactFromVCard implements ShouldQueue
 
                 $contact->save();
 
+                // if birthdate is known, we need to create reminders
+                $reminder = Reminder::addBirthdayReminder(
+                    $contact,
+                    trans(
+                        'people.people_add_birthday_reminder',
+                        ['name' => $contact->name]
+                    ),
+                    $contact->birthdate
+                );
+
+                $contact->update([
+                    'birthday_reminder_id' => $reminder->id,
+                ]);
+
                 $this->importedContacts++;
 
                 $this->fileImportJobReport($vcard, self::VCARD_IMPORTED);
@@ -133,6 +149,8 @@ class AddContactFromVCard implements ShouldQueue
             $this->importJob->failed = 1;
             $this->importJob->failed_reason = $e->getMessage();
             $this->importJob->save();
+
+            Storage::disk('public')->delete($this->importJob->filename);
         }
 
         // Delete the vCard file no matter what
@@ -186,12 +204,13 @@ class AddContactFromVCard implements ShouldQueue
         $name = $this->formatValue($vcard->N->getParts()[1]);
         $name .= ' ' . $this->formatValue($vcard->N->getParts()[2]);
         $name .= ' ' . $this->formatValue($vcard->N->getParts()[0]);
+        $name .= ' ' . $this->formatValue($vcard->EMAIL);
 
         $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->importJob->account_id;
         $importJobReport->user_id = $this->importJob->user_id;
         $importJobReport->import_job_id = $this->importJob->id;
-        $importJobReport->contact_information = $name;
+        $importJobReport->contact_information = trim($name);
         $importJobReport->skipped = $status;
         $importJobReport->skip_reason = $reason;
         $importJobReport->save();

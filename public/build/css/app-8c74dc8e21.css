@@ -8638,6 +8638,11 @@ header .main-cta {
   width: 220px;
 }
 
+.create-people .import {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 @media (max-width: 480px) {
   .people-list {
     margin-top: 20px;
@@ -9036,9 +9041,27 @@ header .main-cta {
   margin-top: 30px;
 }
 
+.settings .settings-reset,
 .settings .settings-delete {
-  font-size: 11px;
-  margin-top: 20px;
+  border: 1px solid;
+  padding: 10px;
+  margin-top: 40px;
+}
+
+.settings .settings-reset h2,
+.settings .settings-delete h2 {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.settings .settings-delete {
+  border-color: #d9534f;
+  border-radius: 3px;
+}
+
+.settings .settings-reset {
+  border-color: #f0ad4e;
+  border-radius: 3px;
 }
 
 .settings .warning-zone {
@@ -9046,6 +9069,7 @@ header .main-cta {
   margin-top: 30px;
   padding: 10px 10px 5px 15px;
   border: 1px solid #f1c897;
+  border-radius: 3px;
   background-color: #ffe8bc;
 }
 
@@ -9061,35 +9085,36 @@ header .main-cta {
   text-align: right;
 }
 
-.settings .users-blank {
+.settings .blank-screen {
   text-align: center;
 }
 
-.settings .users-blank img {
+.settings .blank-screen img {
   margin-bottom: 30px;
+  margin-top: 30px;
 }
 
-.settings .users-blank h2 {
+.settings .blank-screen h2 {
   font-weight: normal;
   margin-bottom: 10px;
 }
 
-.settings .users-blank h3 {
+.settings .blank-screen h3 {
   margin-top: 0;
   border-bottom: 0;
 }
 
-.settings .users-blank p {
+.settings .blank-screen p {
   margin: 0 auto;
   width: 400px;
 }
 
-.settings .users-blank p.cta {
+.settings .blank-screen p.cta {
   margin-top: 40px;
   margin-bottom: 10px;
 }
 
-.settings .users-blank .requires-subscription {
+.settings .blank-screen .requires-subscription {
   margin-top: 20px;
   font-size: 13px;
   color: #999;
@@ -9161,6 +9186,68 @@ header .main-cta {
   padding-left: 27px;
 }
 
+.settings .report .report-summary {
+  background-color: #fafafa;
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+  margin-bottom: 30px;
+}
+
+.settings .report .report-summary li {
+  padding: 5px 10px;
+}
+
+.settings .report .report-summary li:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.settings .report .report-summary li span {
+  font-weight: 600;
+}
+
+.settings .report .status {
+  text-align: center;
+  width: 95px;
+}
+
+.settings .report .reason {
+  font-style: italic;
+}
+
+.settings.import .success {
+  color: #5cb85c;
+}
+
+.settings.import .failure {
+  color: #d9534f;
+}
+
+.settings.import .warning {
+  color: #f0ad4e;
+}
+
+.settings.import .date {
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.settings.import h3.with-actions {
+  padding-bottom: 13px;
+}
+
+.settings.import h3.with-actions a {
+  float: right;
+}
+
+.settings.upload .warning-zone {
+  padding: 20px 15px;
+}
+
+.settings.upload .warning-zone ul {
+  margin-left: 20px;
+  list-style-type: disc;
+}
+
 .border-bottom {
   border-bottom: 1px solid #dfdfdf;
 }
@@ -9186,6 +9273,27 @@ header .main-cta {
 
 .box-padding {
   padding: 15px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 5px;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+}
+
+.badge-success {
+  background-color: #5cb85c;
+}
+
+.badge-danger {
+  background-color: #d9534f;
 }
 
 body {

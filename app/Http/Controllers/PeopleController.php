@@ -4,16 +4,13 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Note;
-use App\ImportJob;
 use Validator;
 use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\ResizeAvatars;
-use App\Jobs\AddContactFromVCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\ImportsRequest;
 
 class PeopleController extends Controller
 {
@@ -352,30 +349,5 @@ class PeopleController extends Controller
 
         return redirect('/people/' . $contact->id)
             ->with('success', trans('people.food_preferencies_add_success'));
-    }
-
-    /**
-     * Display the Import people's view.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function import()
-    {
-        return view('people.import');
-    }
-
-    public function storeImport(ImportsRequest $request)
-    {
-        $filename = $request->file('vcard')->store('imports', 'public');
-
-        $importJob = auth()->user()->account->importjobs()->create([
-            'user_id' => auth()->user()->id,
-            'type' => 'vcard',
-            'filename' => $filename
-        ]);
-
-        dispatch(new AddContactFromVCard($importJob));
-
-        return redirect()->route('settings.import');
     }
 }

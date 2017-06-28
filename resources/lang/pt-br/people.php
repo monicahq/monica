@@ -28,6 +28,7 @@ return [
     'people_delete_click_here' => 'clique aqui',
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
     'section_personal_information' => 'Informação pessoal',

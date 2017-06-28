@@ -16,10 +16,10 @@
                   <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
                 </li>
                 <li>
-                <a href="/settings/users">{{ trans('app.breadcrumb_settings_users') }}</a>
+                <a href="/settings/import">{{ trans('app.breadcrumb_settings_import') }}</a>
                 </li>
                 <li>
-                  {{ trans('app.breadcrumb_settings_users_add') }}
+                  {{ trans('app.breadcrumb_settings_import_report') }}
                 </li>
             </ul>
           </div>
@@ -28,40 +28,44 @@
     </div>
 
     <!-- Page content -->
-    <div class="main-content modal">
+    <div class="main-content modal report">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/settings/users/save">
-              {{ csrf_field() }}
+          <div class="col-xs-12">
 
-              <h2>{{ trans('settings.users_add_title') }}</h2>
+            <h2>{{ trans('settings.import_report_title') }}</h2>
 
-              <p>{{ trans('settings.users_add_description') }}</p>
+            <ul class="report-summary">
+              <li>{{ trans('settings.import_report_date') }}: <span>{{ \App\Helpers\DateHelper::getShortDate($importJob->created_at) }}</span></li>
+              <li>{{ trans('settings.import_report_type') }}: <span>{{ $importJob->type }}</span></li>
+              <li>{{ trans('settings.Number of contacts in the file') }}: <span>{{ $importJob->contacts_found }}</span></li>
+              <li>{{ trans('settings.import_report_number_contacts_imported') }}: <span>{{ $importJob->contacts_imported }}</span></li>
+              <li>{{ trans('settings.import_report_number_contacts_skipped') }}: <span>{{ $importJob->contacts_skipped }}</span></li>
+            </ul>
 
-              @include('partials.errors')
+            <ul class="table">
 
-              {{-- Email --}}
-              <fieldset class="form-group">
-                <div class="form-group">
-                  <label for="email">{{ trans('settings.users_add_email_field') }}</label>
-                  <input type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+              @foreach ($importJob->importjobreports as $importJobReport)
+              <li class="table-row">
+                <div class="table-cell status">
+                  @if ($importJobReport->skipped == 0)
+                    <span class="badge badge-success">{{ trans('settings.import_report_status_imported') }}</span>
+                  @else
+                    <span class="badge badge-danger">{{ trans('settings.import_report_status_skipped') }}</span>
+                  @endif
                 </div>
-              </fieldset>
+                <div class="table-cell">
+                  {{ $importJobReport->contact_information }}
+                </div>
+                <div class="table-cell reason">
+                  @if (! is_null($importJobReport->skip_reason))
+                  {{ trans('settings.'.$importJobReport->skip_reason) }}
+                  @endif
+                </div>
+              </li>
+              @endforeach
 
-              {{-- Explicit confirmation --}}
-              <div class="warning-zone">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" name="confirmation" value="1" v-model="accept_invite_user">
-                    {{ trans('settings.users_add_confirmation') }}
-                </label>
-              </div>
-
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">{{ trans('settings.users_add_cta') }}</button>
-                <a href="/settings/users" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-              </div>
-            </form>
+            </ul>
 
           </div>
         </div>
