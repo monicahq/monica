@@ -35,12 +35,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Route::bind('contact', function ($value) {
-            return Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
         Route::bind('activity', function($value, $route) {
             return  Activity::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
