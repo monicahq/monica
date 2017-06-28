@@ -6,6 +6,7 @@ use Auth;
 use App\User;
 use Carbon\Carbon;
 use App\Invitation;
+use App\ImportJob;
 use Illuminate\Http\Request;
 use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
@@ -103,6 +104,32 @@ class SettingsController extends Controller
         return response()
             ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix() . $path, 'monica.sql')
             ->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Display the import view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import()
+    {
+        return view('settings.imports.index');
+    }
+
+    /**
+     * Display the import report view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function report($importJobId)
+    {
+        $importJob = ImportJob::findOrFail($importJobId);
+
+        if ($importJob->account_id != auth()->user()->account->id) {
+            return redirect()->route('settings.index');
+        }
+
+        return view('settings.imports.report');
     }
 
     /**

@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/', 'PeopleController@index')->name('.index');
         Route::get('/people/add', 'PeopleController@create')->name('.create');
         Route::post('/people/', 'PeopleController@store')->name('.store');
+        Route::get('/people/import', 'PeopleController@import')->name('.import');
+        Route::post('/people/storeImport', 'PeopleController@storeImport')->name('.storeImport');
 
         // Dashboard
         Route::get('/people/{contact}', 'PeopleController@show')->name('.show');
@@ -106,6 +108,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/save', 'SettingsController@save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+
+        Route::get('/settings/import', 'SettingsController@import')->name('.import');
+        Route::get('/settings/import/{importjobid}', 'SettingsController@report')->name('.report');
 
         Route::get('/settings/users', 'SettingsController@users')->name('.users');
         Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
