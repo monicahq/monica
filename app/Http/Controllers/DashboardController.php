@@ -68,7 +68,7 @@ class DashboardController extends Controller
                     'object_type' => $event->object_type,
                     'object_id' => $event->object_id,
                     'contact_id' => $event->contact->id,
-                    'contact_complete_name' => $event->contact->name,
+                    'contact_complete_name' => $event->contact->getCompleteName(auth()->user()->name_order),
                     'nature_of_operation' => $event->nature_of_operation,
                 ];
             });
