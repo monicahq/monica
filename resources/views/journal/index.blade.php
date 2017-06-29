@@ -71,12 +71,13 @@
                     @if (! is_null($entry->getTitle()))
                     <h2>{{ $entry->getTitle() }}</h2>
                     @endif
-                    {{ $entry->getPost() }}
+                    <div class="entry-content">{{ $entry->getPost() }}</div>
                   </div>
                 </div>
               @endforeach
             </div>
 
+			
             <div class="col-md-3">
               <a class="btn btn-primary btn-add-people" href="/journal/add">{{ trans('journal.journal_add') }}</a>
             </div>
