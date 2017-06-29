@@ -30,8 +30,8 @@
               </div>
 
               <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="remember" checked> Remember Me
+                <label for="remember">
+                  <input type="checkbox" name="remember" id="remember" checked> Remember Me
                 </label>
               </div>
 

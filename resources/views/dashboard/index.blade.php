@@ -61,11 +61,11 @@
                   <span class="stat-description">{{ trans('dashboard.statistics_tasks') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_owed }}</span>
+                  <span class="stat-number">{{ MoneyHelper::format($debt_owed) }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_deb_owed') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">{{ Auth::user()->currency->symbol }}{{ $debt_due }}</span>
+                  <span class="stat-number">{{ MoneyHelper::format($debt_due) }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_debt_due') }}</span>
                 </li>
               </ul>
@@ -121,20 +121,17 @@
                   <h3>{{ trans('dashboard.tasks_title') }}</h3>
 
                   @if ($tasks->count() != 0)
-                  <ul>
                     @foreach ($tasks as $task)
-                      <li>
+                    <div class="dashboard-item">
+                      <div class="truncate">
                         <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
                         {{ $task->getTitle() }}
                         {{ $task->getDescription() }}
-                      </li>
+                      </div>
+                    </div>
                     @endforeach
-                  </ul>
-
                   @else
-
                   <p>{{ trans('dashboard.tasks_blank') }}</p>
-
                   @endif
                 </div>
 
@@ -144,9 +141,10 @@
                   <h3>{{ trans('dashboard.section_debts') }}</h3>
 
                   @if ($debts->count() != 0)
-                  <ul>
                     @foreach ($debts as $debt)
-                      <li>
+                    <div class="dashboard-item">
+                      <div class="truncate">
+
                         <a href="/people/{{ $debt->contact_id }}">{{ App\Contact::find($debt->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
 
                         @if ($debt->in_debt == 'yes')
@@ -155,16 +153,15 @@
                         <span class="debt-description">{{ trans('dashboard.debts_you_due') }}</span>
                         @endif
 
-                        ${{ $debt->amount }}
+                        {{ MoneyHelper::format($debt->amount) }}
 
                         @if (! is_null($debt->reason))
                         <span class="debt-description">{{ trans('dashboard.debts_for') }}</span>
                         {{ $debt->reason }}
                         @endif
-                      </li>
+                      </div>
+                    </div>
                     @endforeach
-                  </ul>
-
                   @else
 
                   <p>{{ trans('dashboard.debts_blank') }}</p>
@@ -249,8 +246,8 @@
                       </div>
 
                       {{-- DATE --}}
-                      <div class="event-date">
-                        {{ \App\Helpers\DateHelper::getShortDateWithTime($event['date']) }}
+                      <div class="event-date pull-right">
+                        {{ $event['date']->diffForHumans() }}
                       </div>
                     </li>
                   @endforeach

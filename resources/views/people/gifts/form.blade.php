@@ -8,33 +8,33 @@
 
     {{-- Nature of gift --}}
     <fieldset class="form-group">
-        <label class="form-check-inline">
-            <input type="radio" class="form-check-input" name="offered" value="0" @if(old('offered') !== true || $gift->is_an_idea) checked @endif>
+        <label class="form-check-inline" for="offered_0">
+            <input type="radio" class="form-check-input" name="offered" id="offered_0" value="0" @if(old('offered') !== true || $gift->is_an_idea) checked @endif>
             {{ trans('people.gifts_add_gift_idea') }}
         </label>
 
-        <label class="form-check-inline">
-            <input type="radio" class="form-check-input" name="offered" value="1" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
+        <label class="form-check-inline" for="offered_1">
+            <input type="radio" class="form-check-input" name="offered" id="offered_1" value="1" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
             {{ trans('people.gifts_add_gift_already_offered') }}
         </label>
     </fieldset>
 
     {{-- Title --}}
     <div class="form-group">
-        <label for="title">{{ trans('people.gifts_add_gift_title') }}</label>
-        <input type="text" class="form-control" name="name" value="{{ old('name') ?? $gift->name }}" required>
+        <label for="name">{{ trans('people.gifts_add_gift_title') }}</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ old('name') ?? $gift->name }}" required>
     </div>
 
     {{-- URL --}}
     <div class="form-group">
         <label for="url">{{ trans('people.gifts_add_link') }}</label>
-        <input type="text" class="form-control" name="url" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
+        <input type="text" class="form-control" name="url" id="url" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
     </div>
 
     {{-- Value --}}
     <div class="form-group">
-        <label for="value">{{ trans('people.gifts_add_value') }}  ({{ Auth::user()->currency->symbol}})</label>
-        <input type="number" class="form-control" name="value_in_dollars" placeholder="0.00" value="{{ old('value_in_dollars') ?? $gift->value_in_dollars }}">
+        <label for="value_in_dollars">{{ trans('people.gifts_add_value') }}  ({{ Auth::user()->currency->symbol}})</label>
+        <input type="number" class="form-control" name="value_in_dollars" id="value_in_dollars" placeholder="0.00" value="{{ old('value_in_dollars') ?? $gift->value_in_dollars }}">
     </div>
 
     {{-- Comment --}}
@@ -46,8 +46,8 @@
     @if ($contact->significantOther || $contact->kids()->count() !== 0)
         <div class="form-group">
             <div class="form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" name="has_recipient" value="1">
+                <label class="form-check-label" id="has_recipient">
+                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1">
                     {{ trans('people.gifts_add_someone', ['name' => $contact->getFirstName()]) }}
                 </label>
             </div>

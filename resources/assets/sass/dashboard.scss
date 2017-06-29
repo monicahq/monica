@@ -69,17 +69,41 @@
 
   .section-icon {
     width: 19px;
+    position: relative;
+    top: -3px;
   }
 
   h3 {
-    display: inline;
+    display: inline-block;
     font-size: 16px;
     font-weight: 500;
+    padding-left: 5px;
+    margin-bottom: 10px;
   }
 
   .dashboard-section {
+    position: relative;
+
     &:not(:first-child) {
       margin-top: 20px;
+    }
+
+    .dashboard-item {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      padding: 5px 0;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-color;
+      }
+    }
+
+    .truncate {
+      display: table-cell;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

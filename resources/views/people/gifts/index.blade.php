@@ -33,7 +33,9 @@
           </div>
           <div class="table-cell">
             @if (! empty($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
             @if (! empty($gift->getUrl()))
@@ -74,7 +76,9 @@
           </div>
           <div class="table-cell">
             @if (! empty($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
             @if (! empty($gift->getUrl()))
