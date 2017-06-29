@@ -1,5 +1,8 @@
 language: php
 
+sudo: required
+dist: trusty
+
 php:
   - 7.0
   - 7.1
@@ -12,8 +15,14 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - composer install --no-interaction
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - ./vendor/laravel/dusk/bin/chromedriver-linux &
+  - cp .env.testing .env
+  - php artisan serve > /dev/null 2>&1 &
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit
+  - php artisan dusk
