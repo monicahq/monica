@@ -1,3 +1,20 @@
+UNRELEASED CHANGES:
+
+-
+
+RELEASED VERSIONS:
+
+v0.1.0 - 2017-06-26
+-------------------
+
+* First official release. We'll now follow this structure. If you self host, we highly recommend that you check the latest tag instead of pulling from master.
+
+2017-06-24
+----------
+
+Improvements:
+* On the people's tab, filters are now placed above the table.
+
 2017-06-22
 ----------
 

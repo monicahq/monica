@@ -25,6 +25,7 @@ return [
     'footer_release' => 'Примечания к выпуску',
     'footer_newsletter' => 'Рассылка',
     'footer_source_code' => 'Monica on GitHub',
+    'footer_version' => 'Version: :version',
 
     'breadcrumb_dashboard' => 'Обзор',
     'breadcrumb_list_contacts' => 'Список контактов',
