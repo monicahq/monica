@@ -414,6 +414,7 @@ class Contact extends Model
 
     /**
      * Get the street of the contact.
+     *
      * @return string or null
      */
     public function getStreet()
@@ -427,6 +428,7 @@ class Contact extends Model
 
     /**
      * Get the province of the contact.
+     *
      * @return string or null
      */
     public function getProvince()
@@ -440,6 +442,7 @@ class Contact extends Model
 
     /**
      * Get the postal code of the contact.
+     *
      * @return string or null
      */
     public function getPostalCode()
@@ -453,6 +456,7 @@ class Contact extends Model
 
     /**
      * Get the country of the contact.
+     *
      * @return string or null
      */
     public function getCountryName()
@@ -466,6 +470,7 @@ class Contact extends Model
 
     /**
      * Get the city.
+     *
      * @return string
      */
     public function getCity()
@@ -479,6 +484,7 @@ class Contact extends Model
 
     /**
      * Get the countryID of the contact.
+     *
      * @return string or null
      */
     public function getCountryID()
@@ -488,6 +494,7 @@ class Contact extends Model
 
     /**
      * Get the country ISO of the contact.
+     *
      * @return string or null
      */
     public function getCountryISO()
@@ -865,6 +872,7 @@ class Contact extends Model
 
     /**
      * Returns the URL of the avatar with the given size
+     *
      * @param  int $size
      * @return string
      */
@@ -901,6 +909,7 @@ class Contact extends Model
 
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
+     *
      * @return boolean
      */
     public function hasDebt()
@@ -915,5 +924,4 @@ class Contact extends Model
     {
         return $this->debts;
     }
-
 }
