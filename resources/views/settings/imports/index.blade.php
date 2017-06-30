@@ -63,7 +63,7 @@
               @if (! is_null($importJob->ended_at))
               <a href="/settings/import/report/{{ $importJob->id }}">{{ trans('settings.import_view_report') }}</a>
               @else
-              {{ trans('settings.import_failed') }}
+              {{ trans('settings.import_in_progress') }}
               @endif
             </div>
           </li>

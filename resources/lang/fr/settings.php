@@ -96,7 +96,7 @@ return [
     'import_stat' => 'You\'ve imported :number files so far.',
     'import_result_stat' => 'Uploaded vCard with :total_contacts contacts (:total_imported imported, :total_skipped skipped)',
     'import_view_report' => 'View report',
-    'import_failed' => 'Failed',
+    'import_in_progress' => 'The import is in progress. Reload the page in one minute.',
     'import_upload_title' => 'Import your contacts from a vCard file',
     'import_upload_rules_desc' => 'We do however have some rules:',
     'import_upload_rule_format' => 'We support <code>.vcard</code> and <code>.vcf</code> files.',
