@@ -9,6 +9,8 @@ return [
     'people_list_blank_title' => 'Vous n\'avez encore ajouté aucun contact.',
     'people_list_blank_cta' => 'Ajouter quelqu\'un',
     'people_list_search' => 'Rechercher quelqu\'un par son nom',
+    'people_list_stats' => ':count contacts',
+    'people_list_sort' => 'Tri',
     'people_list_firstnameAZ' => 'Tri par prénom A → Z',
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
@@ -26,6 +28,7 @@ return [
     'people_delete_click_here' => 'cliquez ici',
     'people_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
     'section_personal_information' => 'Informations personnelles',
@@ -272,8 +275,8 @@ return [
     'debt_add_success' => 'La dette a été ajoutée avec succès',
     'debt_title' => 'Dettes',
     'debt_add_cta' => 'Ajouter une dette',
-    'debt_you_owe' => 'Vous devez $:amount',
-    'debt_they_owe' => ':name vous doit $:amount',
+    'debt_you_owe' => 'Vous devez :amount',
+    'debt_they_owe' => ':name vous doit :amount',
     'debt_add_title' => 'Gestion des dettes',
     'debt_add_you_owe' => 'Vous devez :name',
     'debt_add_they_owe' => ':name vous doit',

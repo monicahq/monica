@@ -51,6 +51,27 @@ $border-color: #dfdfdf;
   padding: 15px;
 }
 
+.badge {
+  display: inline-block;
+  padding: 4px 5px;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+}
+
+.badge-success {
+  background-color: #5cb85c;
+}
+
+.badge-danger {
+  background-color: #d9534f;
+}
+
 // Generic styles
 body {
   color: #323b43;

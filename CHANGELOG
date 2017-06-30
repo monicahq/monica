@@ -1,3 +1,42 @@
+UNRELEASED CHANGES:
+
+* Add pagination to the list of contacts.
+
+RELEASED VERSIONS:
+
+v0.2.0 - 2017-06-29
+-------------------
+
+New features:
+* Add import from vCard (or .vcf) in the Settings panel.
+* Add ability to reset account. Resetting an account will remove everything - but won't close the account like deletion would.
+
+Improvements:
+* Journal entries now respect new lines.
+* Fix name not appearing in the latest actions tab on the dashboard.
+
+v0.1.0 - 2017-06-26
+-------------------
+
+* First official release. We'll now follow this structure. If you self host, we highly recommend that you check the latest tag instead of pulling from master.
+
+2017-06-24
+----------
+
+Improvements:
+* On the people's tab, filters are now placed above the table.
+
+2017-06-22
+----------
+
+New features:
+* Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
+
+Improvements:
+* Fix the order of the address fields.
+* Env variables are now read from config files rather than directly from the .env file.
+* Some US typos fix.
+
 2017-06-20
 ----------
 

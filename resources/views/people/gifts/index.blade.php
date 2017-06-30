@@ -32,11 +32,13 @@
             {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
           </div>
           <div class="table-cell">
-            @if (! is_null($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @if (! empty($gift->getValue()))
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
-            @if (! is_null($gift->getUrl()))
+            @if (! empty($gift->getUrl()))
               <span class="gift-list-item-url">
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
@@ -49,7 +51,7 @@
             @endif
           </div>
           <div class="table-cell comment">
-            @if (! is_null($gift->getComment()))
+            @if (! empty($gift->getComment()))
               {{ $gift->getComment() }}
             @endif
           </div>
@@ -73,11 +75,13 @@
             {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
           </div>
           <div class="table-cell">
-            @if (! is_null($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @if (! empty($gift->getValue()))
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
-            @if (! is_null($gift->getUrl()))
+            @if (! empty($gift->getUrl()))
               <span class="gift-list-item-url">
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
@@ -90,7 +94,7 @@
             @endif
           </div>
           <div class="table-cell comment">
-            @if (! is_null($gift->getComment()))
+            @if (! empty($gift->getComment()))
               {{ $gift->getComment() }}
             @endif
           </div>

@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -42,7 +42,7 @@
               {{-- First name --}}
               <div class="form-group">
                 <label for="title">{{ trans('people.tasks_add_title') }}</label>
-                <input type="text" class="form-control" name="title" value="{{ old('title') ?? $task->description }}" autofocus required>
+                <input type="text" class="form-control" name="title" id="title" value="{{ old('title') ?? $task->description }}" autofocus required>
               </div>
 
               <div class="form-group">

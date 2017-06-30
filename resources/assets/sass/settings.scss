@@ -37,9 +37,26 @@
     }
   }
 
+  .settings-reset,
   .settings-delete {
-    font-size: 11px;
-    margin-top: 20px;
+    border: 1px solid;
+    padding: 10px;
+    margin-top: 40px;
+
+    h2 {
+      font-weight: normal;
+      font-size: 16px;
+    }
+  }
+
+  .settings-delete {
+    border-color: #d9534f;
+    border-radius: 3px;
+  }
+
+  .settings-reset {
+    border-color: #f0ad4e;
+    border-radius: 3px;
   }
 
   .warning-zone {
@@ -47,6 +64,7 @@
     margin-top: 30px;
     padding: 10px 10px 5px 15px;
     border: 1px solid #f1c897;
+    border-radius: 3px;
     background-color: #ffe8bc;
   }
 
@@ -64,11 +82,12 @@
     }
   }
 
-  .users-blank {
+  .blank-screen {
     text-align: center;
 
     img {
       margin-bottom: 30px;
+      margin-top: 30px;
     }
 
     h2 {
@@ -168,6 +187,74 @@
           display: block;
           padding-left: 27px;
         }
+      }
+    }
+  }
+
+  .report {
+    .report-summary {
+      background-color: #fafafa;
+      border: 1px solid $border-color;
+      border-radius: 3px;
+      margin-bottom: 30px;
+
+      li {
+        padding: 5px 10px;
+
+        &:not(:last-child) {
+          border-bottom: 1px solid $border-color;
+        }
+
+        span {
+          font-weight: 600;
+        }
+      }
+    }
+
+    .status {
+      text-align: center;
+      width: 95px;
+    }
+
+    .reason {
+      font-style: italic;
+    }
+  }
+
+  &.import {
+    .success {
+      color: #5cb85c;
+    }
+
+    .failure {
+      color: #d9534f;
+    }
+
+    .warning {
+      color: #f0ad4e;
+    }
+
+    .date {
+      font-size: 13px;
+      margin-left: 10px;
+    }
+
+    h3.with-actions {
+      padding-bottom: 13px;
+
+      a {
+        float: right;
+      }
+    }
+  }
+
+  &.upload {
+    .warning-zone {
+      padding: 20px 15px;
+
+      ul {
+        margin-left: 20px;
+        list-style-type: disc;
       }
     }
   }

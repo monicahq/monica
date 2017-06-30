@@ -7,6 +7,7 @@ return [
     'cancel' => 'Annuler',
     'delete' => 'Supprimer',
     'edit' => 'Mettre à jour',
+    'upload' => 'Upload',
 
     'header_settings_link' => 'Paramètres',
     'header_logout_link' => 'Déconnexion',
@@ -25,6 +26,7 @@ return [
     'footer_release' => 'Notes de version (en)',
     'footer_newsletter' => 'Infolettre (en)',
     'footer_source_code' => 'Monica on GitHub',
+    'footer_version' => 'Version: :version',
 
     'breadcrumb_dashboard' => 'Tableau de bord',
     'breadcrumb_list_contacts' => 'Liste de contacts',
@@ -34,6 +36,9 @@ return [
     'breadcrumb_settings_users' => 'Utilisateurs',
     'breadcrumb_settings_users_add' => 'Ajouter un utilisateur',
     'breadcrumb_settings_subscriptions' => 'Subscription',
+    'breadcrumb_settings_import' => 'Import',
+    'breadcrumb_settings_import_report' => 'Import report',
+    'breadcrumb_settings_import_upload' => 'Upload',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',

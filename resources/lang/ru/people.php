@@ -9,6 +9,8 @@ return [
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
     'people_list_search' => 'Искать контакты по имени',
+    'people_list_stats' => ':count contacts',
+    'people_list_sort' => 'Sort',
     'people_list_firstnameAZ' => 'Сортировать по имени А → Я',
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
@@ -26,6 +28,7 @@ return [
     'people_delete_click_here' => 'нажмите сюда',
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
     'section_personal_information' => 'Личные данные',
@@ -272,8 +275,8 @@ return [
     'debt_add_success' => 'Долг был добавлен',
     'debt_title' => 'Долги',
     'debt_add_cta' => 'Добавить долг',
-    'debt_you_owe' => 'Вы должны $:amount',
-    'debt_they_owe' => ':name должен вам $:amount',
+    'debt_you_owe' => 'Вы должны :amount',
+    'debt_they_owe' => ':name должен вам :amount',
     'debt_add_title' => 'Управление долгами',
     'debt_add_you_owe' => 'Вы должны :name',
     'debt_add_they_owe' => ':name должен вам',

@@ -10,6 +10,7 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PeopleController extends Controller
 {
@@ -28,7 +29,7 @@ class PeopleController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $contacts = $user->account->contacts()->withCount('kids')->sortedBy($sort)->get();
+        $contacts = $user->account->contacts()->sortedBy($sort)->paginate(25);
 
         return view('people.index')
             ->withContacts($contacts);

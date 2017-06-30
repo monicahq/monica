@@ -1,4 +1,4 @@
-<select name="currency_id" class="form-control" required>
+<select name="currency_id" id="currency_id" class="form-control" required>
   @foreach ( $currencies as $currency )
     @if ($currency->id == $selectionID)
     <option value="{{ $currency->id }}" selected>{{ $currency->name }}</option>

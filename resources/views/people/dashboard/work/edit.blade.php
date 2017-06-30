@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -42,19 +42,19 @@
               {{-- Job --}}
               <div class="form-group">
                 <label for="job">{{ trans('people.work_edit_job') }}</label>
-                <input type="text" class="form-control" name="job" value="{{ $contact->getJob() }}" autofocus>
+                <input type="text" class="form-control" name="job" id="job" value="{{ $contact->getJob() }}" autofocus>
               </div>
 
               {{-- Company --}}
               <div class="form-group">
                 <label for="company">{{ trans('people.work_edit_company') }}</label>
-                <input type="text" class="form-control" name="company" value="{{ $contact->getCompany() }}">
+                <input type="text" class="form-control" name="company" id="company" value="{{ $contact->getCompany() }}">
               </div>
 
               {{-- LinkedIn --}}
               <div class="form-group">
                 <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
-                <input class="form-control" name="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
+                <input class="form-control" name="linkedin" id="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
               </div>
 
               <div class="form-group actions">

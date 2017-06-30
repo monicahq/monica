@@ -7,7 +7,7 @@
     {{-- Summary --}}
     <div class="form-group{{ $errors->has('summary') ? ' has-error' : '' }}">
         <label for="summary">{{ trans('people.activities_summary') }}</label>
-        <input type="text" class="form-control" name="summary" autofocus required maxlength="254" value="{{ old('summary') ?? $activity->summary }}">
+        <input type="text" id="summary" class="form-control" name="summary" autofocus required maxlength="254" value="{{ old('summary') ?? $activity->summary }}">
         @if ($errors->has('summary'))
             <span class="help-block">
                 <strong>{{ $errors->first('summary') }}</strong>

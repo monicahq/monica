@@ -202,10 +202,9 @@ does not contain any data and shall be used to check all the blank states.
 
 ### Setup the testing environment
 
-Monica uses the testing capabilities of Laravel to do unit and functional
-testing. While all code will have to go through to Travis before being merged,
-tests can still be executed locally before pushing them. In fact, we encourage
-you strongly to do it first.
+Monica uses the testing capabilities of Laravel to do unit. While all code will
+have to go through to Travis before being merged, tests can still be executed
+locally before pushing them. In fact, we encourage you strongly to do it first.
 
 To setup the test environment, create a separate testing database locally:
 
@@ -224,6 +223,56 @@ Each time the schema of the database changes, you need to run again the
 migrations and the seeders by running the two commands above.
 
 If you want to connect directly to Monica's MySQL instance read [_Connecting to MySQL inside of a Docker container_](./docs/database/connecting.md).
+
+#### Setup functional testing
+
+We use Laravel Dusk to do functional testing. The most important is the unit
+tests - but functional testing is a very nice to have and we are happy to
+provide support for it. However, setting up the functional testing environment
+is **really painful**. Laravel Dusk should work fine if you use standard PHP,
+not in a VM (like Homestead), but I haven't tested it. If you do, please report
+and update this document.
+
+The following setup instructions are for Homestead, which we recommend to
+contribute to Monica. Instructions come from [this
+article](http://www.jesusamieiro.com/using-laravel-dusk-with-vagrant-homestead/).
+
+* Setup Google Chrome Headless and XVFB in your VM
+
+```bash
+$ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+$ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+$ sudo apt-get update && sudo apt-get install -y google-chrome-stable
+$ sudo apt-get install -y xvfb
+```
+
+* Start Chrome Driver in your VM. This instruction will open a port - let it
+open.
+
+```bash
+$ ./vendor/laravel/dusk/bin/chromedriver-linux --port=8888
+```
+
+* Add your project in `/etc/hosts` in your vagrant machine
+
+```bash
+127.0.0.1 your-project.app
+```
+
+* Open another SSH connection to the Vagrant Homestead machine and execute the
+following to run the xvfb server
+
+```bash
+$ Xvfb :0 -screen 0 1280x960x24 &
+```
+
+* On your first console, press CTLR+C and run the functional tests
+
+```bash
+php artisan dusk
+```
+
+You are done. It's horrible.
 
 ### Front-end
 

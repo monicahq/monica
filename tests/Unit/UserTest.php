@@ -23,4 +23,22 @@ class UserTest extends TestCase
           $user->updateContactViewPreference('lastnameAZ')
         );
     }
+
+    public function test_name_accessor_returns_name_in_the_user_preferred_way()
+    {
+        $user = new User;
+        $user->first_name = 'John';
+        $user->last_name = 'Doe';
+        $user->name_order = 'firstname_first';
+
+        $this->assertEquals(
+          $user->name, 'John Doe'
+        );
+
+        $user->name_order = 'lastname_first';
+
+        $this->assertEquals(
+          $user->name, 'Doe John'
+        );
+    }
 }

@@ -3,6 +3,8 @@
     margin-top: 20px;
   }
 
+  
+
   .entry-row {
     margin-bottom: 30px;
 
@@ -12,6 +14,10 @@
       border-radius: 3px;
       font-size: 12px;
       padding: 10px;
+    }
+
+    .entry-content {
+      white-space: pre-wrap;
     }
   }
 

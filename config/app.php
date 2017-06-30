@@ -1,4 +1,5 @@
 <?php
+use App\Helpers\MoneyHelper;
 
 return [
 
@@ -208,6 +209,7 @@ return [
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'MoneyHelper' => App\Helpers\MoneyHelper::class,
     ],
 
 ];
