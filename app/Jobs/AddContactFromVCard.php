@@ -118,18 +118,20 @@ class AddContactFromVCard implements ShouldQueue
                 $contact->save();
 
                 // if birthdate is known, we need to create reminders
-                $reminder = Reminder::addBirthdayReminder(
-                    $contact,
-                    trans(
-                        'people.people_add_birthday_reminder',
-                        ['name' => $contact->name]
-                    ),
-                    $contact->birthdate
-                );
+                if (! $contact->isBirthdateApproximate()) {
+                    $reminder = Reminder::addBirthdayReminder(
+                        $contact,
+                        trans(
+                            'people.people_add_birthday_reminder',
+                            ['name' => $contact->getCompleteName()]
+                        ),
+                        $contact->birthdate
+                    );
 
-                $contact->update([
-                    'birthday_reminder_id' => $reminder->id,
-                ]);
+                    $contact->update([
+                        'birthday_reminder_id' => $reminder->id,
+                    ]);
+                }
 
                 $this->importedContacts++;
 
