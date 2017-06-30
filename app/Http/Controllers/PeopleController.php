@@ -10,6 +10,7 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PeopleController extends Controller
 {

@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 users-blank">
+      <div class="col-xs-12 col-sm-9 blank-screen">
 
         <img src="/img/settings/users/blank.svg">
 

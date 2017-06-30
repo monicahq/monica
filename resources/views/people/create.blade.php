@@ -10,6 +10,8 @@
 
         <h2>{{ trans('people.people_add_title') }}</h2>
 
+        <p class="import">{!! trans('people.people_add_import') !!}</p>
+
         <form action="/people" method="POST">
           {{ csrf_field() }}
 
