@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
-* Add pagination to the list of contacts.
+* Speed up the display of the contact lists when there is a lot of contacts in the account.
+* Remove the search on the list of contacts, which did nothing actually.
 
 RELEASED VERSIONS:
 
