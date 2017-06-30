@@ -72,6 +72,7 @@ class SettingsController extends Controller
             $account->significantOthers->each->forceDelete();
             $account->tasks->each->forceDelete();
             $account->activities->each->forceDelete();
+            $account->debts->each->forceDelete();
             $account->events->each->forceDelete();
             $account->contacts->each->forceDelete();
             $account->invitations->each->forceDelete();
@@ -104,6 +105,7 @@ class SettingsController extends Controller
             $account->significantOthers->each->forceDelete();
             $account->tasks->each->forceDelete();
             $account->activities->each->forceDelete();
+            $account->debts->each->forceDelete();
             $account->events->each->forceDelete();
             $account->contacts->each->forceDelete();
             $account->invitations->each->forceDelete();
