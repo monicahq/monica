@@ -50,8 +50,6 @@
 
             <div class="col-xs-12 col-md-9" id="search-list">
 
-              <input class="search form-control" placeholder="{{ trans('people.people_list_search') }}" />
-
               <ul class="list">
 
                 {{-- Sorting options --}}
@@ -90,8 +88,8 @@
                     @if ($contact->has_avatar == 'true')
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
                     @else
-                      @if ( $gravatarUrl = $contact->getGravatar(174) )
-                        <img src="{{ $gravatarUrl }}" width="43">
+                      @if (! is_null($contact->gravatar_url))
+                        <img src="{{ $contact->gravatar_url }}" width="43">
                       @else
                         @if (count($contact->getInitials()) == 1)
                         <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
@@ -125,9 +123,6 @@
               </a>
             </div>
 
-              <div class="col-xs-12 text-center">
-                  {!! $contacts->links() !!}
-              </div>
           </div>
         </div>
 

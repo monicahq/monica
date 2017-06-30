@@ -7,7 +7,6 @@ elixir((mix) => {
     mix.webpack('resources/assets/js/app.js', 'public/js');
 
     mix.copy('resources/assets/js/stripe_js.js', 'public/js');
-    mix.copy('resources/assets/js/people_list_search.js', 'public/js');
     mix.copy('resources/vendor/jquery/dist/jquery.min.js', 'resources/assets/js/vendors/');
     mix.copy('resources/vendor/typeahead.js/dist/typeahead.bundle.min.js', 'resources/assets/js/vendors/');
 

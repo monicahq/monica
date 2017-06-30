@@ -8,7 +8,6 @@ return [
     'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
-    'people_list_search' => 'Search contact by name',
     'people_list_sort' => 'Sort',
     'people_list_stats' => ':count contacts',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',

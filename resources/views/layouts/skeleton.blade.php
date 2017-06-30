@@ -20,10 +20,6 @@
 
     @include('partials.footer')
 
-    {{-- PEOPLE LIST SEARCH --}}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-    <script src="/js/people_list_search.js"></script>
-
     {{-- SPECIFIC TO SUBSCRIPTIONS --}}
     @if (config('monica.requires_subscription'))
       @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
