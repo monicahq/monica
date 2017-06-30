@@ -50,7 +50,7 @@
                   <i class="fa fa-check-circle success"></i>
                 @endif
               @else
-                <i class="fa fa-times-circle failure"></i>
+                <i class="fa fa-refresh"></i>
               @endif
               <span class="date">{{ \App\Helpers\DateHelper::getShortDateWithTime($importJob->created_at) }}</span>
             </div>
