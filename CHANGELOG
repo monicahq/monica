@@ -1,8 +1,19 @@
 UNRELEASED CHANGES:
 
-* Add import from vCard
+*
 
 RELEASED VERSIONS:
+
+v0.2.0 - 2017-06-29
+-------------------
+
+New features:
+* Add import from vCard (or .vcf) in the Settings panel.
+* Add ability to reset account. Resetting an account will remove everything - but won't close the account like deletion would.
+
+Improvements:
+* Journal entries now respect new lines.
+* Fix name not appearing in the latest actions tab on the dashboard.
 
 v0.1.0 - 2017-06-26
 -------------------
