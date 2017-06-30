@@ -246,8 +246,8 @@
                       </div>
 
                       {{-- DATE --}}
-                      <div class="event-date">
-                        {{ \App\Helpers\DateHelper::getShortDateWithTime($event['date']) }}
+                      <div class="event-date pull-right">
+                        {{ $event['date']->diffForHumans() }}
                       </div>
                     </li>
                   @endforeach
