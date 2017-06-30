@@ -8,7 +8,6 @@ return [
     'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
-    'people_list_search' => 'Pesquisar pessoa por nome',
     'people_list_stats' => ':count contacts',
     'people_list_sort' => 'Sort',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',

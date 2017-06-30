@@ -878,6 +878,12 @@ class Contact extends Model
         return Storage::disk('public')->url($resized_avatar);
     }
 
+    /**
+     * Get the gravatar, if it exits.
+     *
+     * @param  integer $size
+     * @return string|boolean
+     */
     public function getGravatar($size)
     {
         if (empty($this->email)) {

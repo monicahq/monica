@@ -8,7 +8,6 @@ return [
     'people_list_number_reminders' => '{0} 0 rappel |{1,1} 1 rappel |{2,*} :count rappels',
     'people_list_blank_title' => 'Vous n\'avez encore ajouté aucun contact.',
     'people_list_blank_cta' => 'Ajouter quelqu\'un',
-    'people_list_search' => 'Rechercher quelqu\'un par son nom',
     'people_list_stats' => ':count contacts',
     'people_list_sort' => 'Tri',
     'people_list_firstnameAZ' => 'Tri par prénom A → Z',

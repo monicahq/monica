@@ -8,7 +8,6 @@ return [
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
-    'people_list_search' => 'Искать контакты по имени',
     'people_list_stats' => ':count contacts',
     'people_list_sort' => 'Sort',
     'people_list_firstnameAZ' => 'Сортировать по имени А → Я',
