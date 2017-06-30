@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
 * Speed up the display of the contact lists when there is a lot of contacts in the account.
 * Remove the search on the list of contacts, which did nothing actually.
 
