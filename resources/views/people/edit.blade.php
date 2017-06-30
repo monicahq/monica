@@ -86,6 +86,9 @@
                 <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
               </div>
 
+              {{-- This check is for the cultures that are used to say the last name first --}}
+              @if (auth()->user()->name_order == 'firstname_first')
+
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
@@ -97,6 +100,22 @@
                 <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
                 <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
               </div>
+
+              @else
+
+              {{-- Last name --}}
+              <div class="form-group">
+                <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
+              </div>
+
+              {{-- First name --}}
+              <div class="form-group">
+                <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
+                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->getFirstName() }}" autofocus required>
+              </div>
+
+              @endif
 
               {{-- Address --}}
               <div class="form-group">
