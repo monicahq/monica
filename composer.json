@@ -18,7 +18,8 @@
         "intervention/image": "^2.3",
         "sabre/vobject": "^4.1",
         "erusev/parsedown": "~1.6",
-        "laravel/cashier": "~7.0"
+        "laravel/cashier": "~7.0",
+        "laravel/dusk": "^1.1"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

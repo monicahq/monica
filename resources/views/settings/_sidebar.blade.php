@@ -21,6 +21,16 @@
     </li>
     @endif
 
+    @if (Route::currentRouteName() == 'settings.import')
+    <li class="selected">
+      {{ trans('settings.sidebar_settings_import') }}
+    </li>
+    @else
+    <li>
+      <a href="/settings/import">{{ trans('settings.sidebar_settings_import') }}</a>
+    </li>
+    @endif
+
     @if (Route::currentRouteName() == 'settings.users')
     <li class="selected">
       {{ trans('settings.sidebar_settings_users') }}

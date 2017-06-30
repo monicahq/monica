@@ -57,6 +57,7 @@ class CalculateStatistics extends Command
             }
         }
         $statistic->number_of_accounts_with_more_than_one_user = $number_of_accounts_with_more_than_one_user;
+        $statistic->number_of_import_jobs = DB::table('import_jobs')->count();
         $statistic->save();
     }
 }

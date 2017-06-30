@@ -6,10 +6,13 @@ use Auth;
 use App\User;
 use Carbon\Carbon;
 use App\Invitation;
+use App\ImportJob;
 use Illuminate\Http\Request;
 use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
+use App\Jobs\AddContactFromVCard;
+use App\Http\Requests\ImportsRequest;
 use App\Jobs\SendInvitationEmail;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +75,8 @@ class SettingsController extends Controller
             $account->events->each->forceDelete();
             $account->contacts->each->forceDelete();
             $account->invitations->each->forceDelete();
+            $account->importjobs->each->forceDelete();
+            $account->importjobreports->each->forceDelete();
             $account->forceDelete();
         }
 
@@ -79,6 +84,35 @@ class SettingsController extends Controller
         $user->forceDelete();
 
         return redirect('/');
+    }
+
+    /**
+     * Reset user account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function reset(Request $request)
+    {
+        $user = $request->user();
+        $account = $user->account;
+
+        if($account) {
+            $account->reminders->each->forceDelete();
+            $account->kids->each->forceDelete();
+            $account->notes->each->forceDelete();
+            $account->significantOthers->each->forceDelete();
+            $account->tasks->each->forceDelete();
+            $account->activities->each->forceDelete();
+            $account->events->each->forceDelete();
+            $account->contacts->each->forceDelete();
+            $account->invitations->each->forceDelete();
+            $account->importjobs->each->forceDelete();
+            $account->importjobreports->each->forceDelete();
+        }
+
+        return redirect('/settings')
+                    ->with('status', trans('settings.reset_success'));
     }
 
     /**
@@ -103,6 +137,61 @@ class SettingsController extends Controller
         return response()
             ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix() . $path, 'monica.sql')
             ->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Display the import view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import()
+    {
+        if (auth()->user()->account->importjobs->count() == 0) {
+            return view('settings.imports.blank');
+        }
+
+        return view('settings.imports.index');
+    }
+
+    /**
+     * Display the Import people's view.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upload()
+    {
+        return view('settings.imports.upload');
+    }
+
+    public function storeImport(ImportsRequest $request)
+    {
+        $filename = $request->file('vcard')->store('imports', 'public');
+
+        $importJob = auth()->user()->account->importjobs()->create([
+            'user_id' => auth()->user()->id,
+            'type' => 'vcard',
+            'filename' => $filename
+        ]);
+
+        dispatch(new AddContactFromVCard($importJob));
+
+        return redirect()->route('settings.import');
+    }
+
+    /**
+     * Display the import report view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function report($importJobId)
+    {
+        $importJob = ImportJob::findOrFail($importJobId);
+
+        if ($importJob->account_id != auth()->user()->account->id) {
+            return redirect()->route('settings.index');
+        }
+
+        return view('settings.imports.report', compact('importJob'));
     }
 
     /**
