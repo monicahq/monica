@@ -1,10 +1,6 @@
 language: php
 
-sudo: required
-dist: trusty
-
 php:
-  - 7.0
   - 7.1
 
 services:
@@ -15,10 +11,9 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - composer install --no-interaction
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - ./vendor/laravel/dusk/bin/chromedriver-linux &
-  - php artisan serve > /dev/null 2>&1 &
+  - phantomjs --webdriver=127.0.0.1:9515 & # Start PhantomJS driver
+  - php artisan serve & # Start server
+  - sleep 5 # Give PhantomJS and Artisan time to start
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
