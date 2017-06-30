@@ -25,7 +25,9 @@ class ExportAccountAsSQL
         'sessions',
         'statistics',
         'accounts',
-        'subscriptions'
+        'subscriptions',
+        'import_jobs',
+        'import_job_reports'
     ];
 
     protected $ignoredColumns = [

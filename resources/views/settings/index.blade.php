@@ -239,7 +239,15 @@
           <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
         </form>
 
+        <div class="settings-reset">
+          <h2>{{ trans('settings.reset_title') }}</h2>
+          <p>{{ trans('settings.reset_desc') }}</p>
+          <a href="/settings/reset" onclick="return confirm('{{ trans('settings.reset_notice') }}')">{{ trans('settings.reset_cta') }}</a>
+        </div>
+
         <div class="settings-delete">
+          <h2>{{ trans('settings.delete_title') }}</h2>
+          <p>{{ trans('settings.delete_desc') }}</p>
           <a href="/settings/delete" onclick="return confirm('{{ trans('settings.delete_notice') }}')">{{ trans('settings.delete_cta') }}</a>
         </div>
 

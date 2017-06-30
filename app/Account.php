@@ -180,6 +180,26 @@ class Account extends Model
     }
 
     /**
+     * Get the import jobs records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function importjobs()
+    {
+        return $this->hasMany(ImportJob::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the import job reports records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function importjobreports()
+    {
+        return $this->hasMany(ImportJobReport::class);
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules
      *
      * @return this
