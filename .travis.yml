@@ -11,12 +11,8 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - composer install --no-interaction
-  - phantomjs --webdriver=127.0.0.1:9515 & # Start PhantomJS driver
-  - php artisan serve & # Start server
-  - sleep 5 # Give PhantomJS and Artisan time to start
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit
-  - php artisan dusk
