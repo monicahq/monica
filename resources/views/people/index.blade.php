@@ -125,6 +125,9 @@
               </a>
             </div>
 
+              <div class="col-xs-12 text-center">
+                  {!! $contacts->links() !!}
+              </div>
           </div>
         </div>
 
