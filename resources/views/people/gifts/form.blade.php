@@ -34,7 +34,7 @@
     {{-- Value --}}
     <div class="form-group">
         <label for="value_in_dollars">{{ trans('people.gifts_add_value') }}  ({{ Auth::user()->currency->symbol}})</label>
-        <input type="number" class="form-control" name="value_in_dollars" id="value_in_dollars" placeholder="0.00" value="{{ old('value_in_dollars') ?? $gift->value_in_dollars }}">
+        <input type="number" class="form-control" name="value_in_dollars" id="value_in_dollars" placeholder="0" value="{{ old('value_in_dollars') ?? $gift->value_in_dollars }}">
     </div>
 
     {{-- Comment --}}
