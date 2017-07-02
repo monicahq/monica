@@ -284,6 +284,9 @@ return [
     'debt_add_add_cta' => 'Ajouter la dette',
     'debt_edit_update_cta' => 'Mettre à jour la dette',
     'debt_edit_success' => 'La dette a été modifiée avec succès',
-    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit'
+    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 
 ];

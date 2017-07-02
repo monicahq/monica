@@ -27,5 +27,6 @@ const app = new Vue({
     },
 });
 
+// jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
 } );

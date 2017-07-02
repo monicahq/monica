@@ -35,6 +35,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
         Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');
 
+        // Tags
+        Route::post('/people/{contact}/tags/update', 'People\\TagsController@update')->name('.tags.update');
+
         // Notes
         Route::get('/people/{contact}/notes/add', 'People\\NotesController@create')->name('.notes.add');
         Route::post('/people/{contact}/notes/store', 'People\\NotesController@store')->name('.notes.store');

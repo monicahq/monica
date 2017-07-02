@@ -284,5 +284,8 @@ return [
     'debt_add_add_cta' => 'Add debt',
     'debt_edit_update_cta' => 'Update debt',
     'debt_edit_success' => 'The debt has been updated successfully',
-    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 ];

@@ -241,6 +241,38 @@
           }
         }
       }
+
+      #tagsForm {
+        padding-left: 100px;
+        position: relative;
+
+        #tags_tagsinput {
+          height: 40px!important;
+          min-height: 40px!important;
+          width: 370px!important;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .tagsFormActions {
+          display: inline;
+          position: relative;
+          top: -17px;
+        }
+      }
+
+      .tags {
+        padding: 0;
+        padding-left: 100px;
+        list-style: none;
+        line-height: 20px;
+        margin: 0;
+        overflow: hidden;
+
+        li {
+          float: left;
+        }
+      }
     }
 
     .edit-information {
