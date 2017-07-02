@@ -7,14 +7,6 @@
     margin-top: 20px;
   }
 
-  #search-list {
-    .search {
-      margin-bottom: 20px;
-      padding: 15px;
-      width: 100%;
-    }
-  }
-
   .sidebar {
     .sidebar-cta {
       margin-bottom: 20px;
@@ -40,6 +32,18 @@
   .list {
     border: 1px solid #eee;
     border-radius: 3px;
+  }
+
+  .clear-filter {
+    border: 1px solid #eee;
+    position: relative;
+    padding: 6px;
+    border-radius: 3px;
+
+    a {
+      position: absolute;
+      right: 10px;
+    }
   }
 
   .people-list-item {

@@ -7801,12 +7801,6 @@ header .main-cta {
   margin-top: 20px;
 }
 
-.people-list #search-list .search {
-  margin-bottom: 20px;
-  padding: 15px;
-  width: 100%;
-}
-
 .people-list .sidebar .sidebar-cta {
   margin-bottom: 20px;
   padding: 15px;
@@ -7830,6 +7824,18 @@ header .main-cta {
 .people-list .list {
   border: 1px solid #eee;
   border-radius: 3px;
+}
+
+.people-list .clear-filter {
+  border: 1px solid #eee;
+  position: relative;
+  padding: 6px;
+  border-radius: 3px;
+}
+
+.people-list .clear-filter a {
+  position: absolute;
+  right: 10px;
 }
 
 .people-list .people-list-item {
@@ -9063,6 +9069,15 @@ header .main-cta {
   list-style-type: disc;
 }
 
+.settings .tags-list .tags-list-contact-number {
+  margin-left: 10px;
+  color: #999;
+}
+
+.settings .tags-list .actions {
+  text-align: right;
+}
+
 .border-bottom {
   border-bottom: 1px solid #dfdfdf;
 }
@@ -9121,7 +9136,7 @@ header .main-cta {
   line-height: 22px;
   padding: 0 10px 0 19px;
   position: relative;
-  margin: 0 10px 10px 0;
+  margin: 0 10px 0 0;
   text-decoration: none;
   -webkit-transition: color 0.2s;
 }

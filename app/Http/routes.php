@@ -129,5 +129,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
         Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
 
+        Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
+        Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
+        Route::get('/settings/tags/{user}/delete', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
+
     });
 });

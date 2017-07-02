@@ -52,5 +52,15 @@
       </li>
       @endif
     @endif
+
+    @if (Route::currentRouteName() == 'settings.tags')
+    <li class="selected">
+      {{ trans('settings.sidebar_settings_tags') }}
+    </li>
+    @else
+    <li>
+      <a href="/settings/tags">{{ trans('settings.sidebar_settings_tags') }}</a>
+    </li>
+    @endif
   </ul>
 </div>

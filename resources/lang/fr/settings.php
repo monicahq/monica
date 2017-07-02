@@ -6,6 +6,7 @@ return [
     'sidebar_settings_users' => 'Utilisateurs',
     'sidebar_settings_subscriptions' => 'Subscription',
     'sidebar_settings_import' => 'Import data',
+    'sidebar_settings_tags' => 'Tags',
 
     'export_title' => 'Exporter les données de votre compte',
     'export_be_patient' => 'Cliquez sur le bouton pour commencer l\'export. Cela peut prendre plusieurs minutes pour préparer l\'export - merci d\'être patient et de ne pas spammer le bouton.',
@@ -117,4 +118,10 @@ return [
     'import_report_status_skipped' => 'Skipped',
     'import_vcard_contact_exist' => 'Contact already exists',
     'import_vcard_contact_no_firstname' => 'No firstname (mandatory)',
+
+    'tags_list_title' => 'Tags',
+    'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact.',
+    'tags_list_contact_number' => ':count contacts',
+    'tags_list_delete_success' => 'The tag has been successfully with success',
+    'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
 ];
