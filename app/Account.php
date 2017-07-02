@@ -36,7 +36,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent'
+        'number_of_invitations_sent', 'api_key'
     ];
 
     /**
