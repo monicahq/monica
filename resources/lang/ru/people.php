@@ -229,7 +229,7 @@ return [
 
     // notes
     'notes_add_success' => 'Заметка была добавлена',
-    'notes_edit_success' => 'The note has been saved successfully',
+    'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'Заметка была удалена',
     'notes_add_title' => 'Добавить заметку о :name',
     'notes_add_cta' => 'Добавить заметку',

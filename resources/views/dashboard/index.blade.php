@@ -175,75 +175,7 @@
                   @foreach($events as $event)
                     <li class="event-list-item">
 
-                      {{-- ICON--}}
-                      <div class="event-icon">
-                        @if ($event['nature_of_operation'] == 'create')
-                          <i class="fa fa-plus-square-o"></i>
-                        @endif
-
-                        @if ($event['nature_of_operation'] == 'update')
-                          <i class="fa fa-pencil-square-o"></i>
-                        @endif
-                      </div>
-
-                      {{-- DESCRIPTION --}}
-                      <div class="event-description">
-
-                        {{-- YOU ADDED/YOU UPDATED --}}
-                        @if ($event['nature_of_operation'] == 'create')
-                          {{ trans('dashboard.event_create') }}
-                        @endif
-
-                        @if ($event['nature_of_operation'] == 'update')
-                          {{ trans('dashboard.event_update') }}
-                        @endif
-
-                        {{-- PEOPLE --}}
-                        @if ($event['object_type'] == 'contact')
-                          @include('dashboard.events._people')
-                        @endif
-
-                        {{-- REMINDERS --}}
-                        @if ($event['object_type'] == 'reminder')
-                          @include('dashboard.events._reminders')
-                        @endif
-
-                        {{-- SIGNIFICANT OTHER --}}
-                        @if ($event['object_type'] == 'significantother')
-                          @include('dashboard.events._significantothers')
-                        @endif
-
-                        {{-- KIDS --}}
-                        @if ($event['object_type'] == 'kid')
-                          @include('dashboard.events._kids')
-                        @endif
-
-                        {{-- NOTES --}}
-                        @if ($event['object_type'] == 'note')
-                          @include('dashboard.events._notes')
-                        @endif
-
-                        {{-- ACTIVITIES --}}
-                        @if ($event['object_type'] == 'activity')
-                          @include('dashboard.events._activities')
-                        @endif
-
-                        {{-- TASKS --}}
-                        @if ($event['object_type'] == 'task')
-                          @include('dashboard.events._tasks')
-                        @endif
-
-                        {{-- GIFTS --}}
-                        @if ($event['object_type'] == 'gift')
-                          @include('dashboard.events._gifts')
-                        @endif
-
-                        {{-- DEBTS --}}
-                        @if ($event['object_type'] == 'debt')
-                          @include('dashboard.events._debts')
-                        @endif
-
-                      </div>
+                      @include('dashboard.events._'.$event['object_type'])
 
                       {{-- DATE --}}
                       <div class="event-date pull-right">
