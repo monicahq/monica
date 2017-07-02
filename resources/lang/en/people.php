@@ -229,7 +229,7 @@ return [
 
     // notes
     'notes_add_success' => 'The note has been added successfully',
-    'notes_edit_success' => 'The note has been saved successfully',
+    'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_title' => 'Add a note about :name',
     'notes_add_cta' => 'Add note',
