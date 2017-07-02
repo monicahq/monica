@@ -8441,8 +8441,27 @@ header .main-cta {
     margin-bottom: 20px;
     margin-top: 10px;
   }
+  .people-show .pagehead .people-profile-information h2 {
+    padding-left: 80px;
+  }
   .people-show .pagehead .people-profile-information h2 span {
     display: none;
+  }
+  .people-show .pagehead .people-profile-information #tagsForm {
+    display: block;
+    margin-top: 40px;
+    padding-left: 0px;
+  }
+  .people-show .pagehead .people-profile-information #tagsForm #tags_tagsinput {
+    width: 100% !important;
+  }
+  .people-show .pagehead .people-profile-information #tagsForm .tagsFormActions {
+    display: block;
+    margin-top: 20px;
+  }
+  .people-show .pagehead .people-profile-information .profile-detail-summary {
+    padding-left: 0;
+    margin-top: 10px;
   }
   .people-show .pagehead .people-profile-information .profile-detail-summary li {
     display: block;
@@ -8451,6 +8470,14 @@ header .main-cta {
   .people-show .pagehead .people-profile-information .profile-detail-summary li:not(:last-child)::after {
     content: '';
     margin-left: 0;
+  }
+  .people-show .pagehead .people-profile-information .avatar {
+    height: 67px;
+    width: 67px;
+    padding-top: 11px;
+  }
+  .people-show .pagehead .people-profile-information .tags {
+    padding-left: 80px;
   }
   .people-show .pagehead .edit-information {
     position: relative;

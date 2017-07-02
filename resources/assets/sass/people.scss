@@ -683,12 +683,32 @@
         margin-top: 10px;
 
         h2 {
+          padding-left: 80px;
+
           span {
             display: none;
           }
         }
 
+        #tagsForm {
+          display: block;
+          margin-top: 40px;
+          padding-left: 0px;
+
+          #tags_tagsinput {
+            width: 100% !important;
+          }
+
+          .tagsFormActions {
+            display: block;
+            margin-top: 20px;
+          }
+        }
+
         .profile-detail-summary {
+          padding-left: 0;
+          margin-top: 10px;
+
           li {
             display: block;
             margin-right: 0;
@@ -700,6 +720,16 @@
               }
             }
           }
+        }
+
+        .avatar {
+          height: 67px;
+          width: 67px;
+          padding-top: 11px;
+        }
+
+        .tags {
+          padding-left: 80px;
         }
       }
 
