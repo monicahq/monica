@@ -164,7 +164,12 @@
 
     .event-icon {
       display: inline;
-      margin-right: 10px;
+
+      img {
+        position: absolute;
+        top: 5px;
+        width: 19px;
+      }
     }
 
     .event-date {
@@ -176,7 +181,21 @@
 
     .event-description {
       display: inline;
+      position: relative;
       margin-right: 10px;
+      padding-left: 25px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+
+  .dashboard {
+    .event-list-item {
+      .event-date {
+        display: block;
+        float: none;
+      }
     }
   }
 }

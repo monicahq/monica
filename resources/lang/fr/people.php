@@ -229,7 +229,7 @@ return [
 
     // notes
     'notes_add_success' => 'La note a été ajoutée avec succès.',
-    'notes_edit_success' => 'La note a été modifiée avec succès.',
+    'notes_update_success' => 'La note a été modifiée avec succès.',
     'notes_delete_success' => 'La note a été supprimée avec succès.',
     'notes_add_title' => 'Ajouter une note à propos de :name.',
     'notes_add_cta' => 'Ajouter la note',
