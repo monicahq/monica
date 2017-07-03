@@ -61,7 +61,7 @@
                       <ul>
                         <li>{{ \App\Helpers\DateHelper::getShortDate($entry->created_at) }}</li>
                         <li>
-                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
+                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('journal.delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
                         </li>
                       </ul>
                     </div>
