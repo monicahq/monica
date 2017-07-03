@@ -138,7 +138,7 @@ class ExportAccountAsSQL
             if($data['id'] === $account->id):
                 $values = [
                     $data['id'],
-                    addslashes($data['api_key']),
+                    "'".addslashes($data['api_key'])."'",
                     $data['number_of_invitations_sent'] !== NULL 
                         ? $data['number_of_invitations_sent'] 
                         : 'NULL',  
