@@ -1,10 +1,11 @@
 UNRELEASED CHANGES:
 
-*
+* Add support for tags (requires `bower update` for dev environment)
 
 RELEASED VERSIONS:
 
 v0.2.1 - 2017-07-02
+-------------------
 
 Improvements:
 * Update the design of the latest actions on the dashboard.
