@@ -285,4 +285,7 @@ return [
     'debt_edit_update_cta' => 'Update debt',
     'debt_edit_success' => 'The debt has been updated successfully',
     'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
+    
+    // journal
+    'journal_delete_confirmation' => 'Are you sure you want to delete this gift?',
 ];
