@@ -3,7 +3,7 @@
 return [
     'journal_add' => 'Add a journal entry',
     'journal_entry_delete' => 'Delete',
-    'entry_delete_success' => 'The journal entry has been deleted with success.',
+    'entry_delete_success' => 'The journal entry has been successfully deleted.',
     'journal_add_title' => 'Title (optional)',
     'journal_add_post' => 'Entry',
     'journal_add_cta' => 'Save',
