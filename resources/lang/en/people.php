@@ -229,6 +229,7 @@ return [
 
     // notes
     'notes_add_success' => 'The note has been added successfully',
+    'notes_create_success' => 'The note has been created successfuly',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
     'notes_add_title' => 'Add a note about :name',
@@ -284,5 +285,5 @@ return [
     'debt_add_add_cta' => 'Add debt',
     'debt_edit_update_cta' => 'Update debt',
     'debt_edit_success' => 'The debt has been updated successfully',
-    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you',
 ];
