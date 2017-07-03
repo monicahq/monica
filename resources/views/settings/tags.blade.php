@@ -32,33 +32,49 @@
 
       <div class="col-xs-12 col-sm-9 tags-list">
 
-        <h3 class="with-actions">
-          {{ trans('settings.tags_list_title') }}
-        </h3>
+        @if (auth()->user()->account->tags->count() == 0)
 
-        <p>{{ trans('settings.tags_list_description') }}</p>
+          <div class="col-xs-12 col-sm-9 blank-screen">
 
-        @if (session('success'))
-          <div class="alert alert-success">
-              {{ session('success') }}
-          </div>
+          <img src="/img/settings/tags/tags.png">
+
+          <h2>{{ trans('settings.tags_blank_title') }}</h2>
+
+          <p>{{ trans('settings.tags_blank_description') }}</p>
+
+        </div>
+
+        @else
+
+          <h3 class="with-actions">
+            {{ trans('settings.tags_list_title') }}
+          </h3>
+
+          <p>{{ trans('settings.tags_list_description') }}</p>
+
+          @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+          @endif
+
+          <ul class="table">
+          @foreach (auth()->user()->account->tags as $tag)
+            <li class="table-row" data-tag-id="{{ $tag->id }}">
+              <div class="table-cell">
+                {{ $tag->name }}
+                <span class="tags-list-contact-number">({{ trans('settings.tags_list_contact_number', ['count' => $tag->contacts()->count()]) }})</span>
+              </div>
+              <div class="table-cell actions">
+                <a href="/settings/tags/{{ $tag->id }}/delete" onclick="return confirm('{{ trans('settings.tags_list_delete_confirmation') }}')">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+              </div>
+            </li>
+          @endforeach
+          </ul>
+
         @endif
-
-        <ul class="table">
-        @foreach (auth()->user()->account->tags as $tag)
-          <li class="table-row" data-tag-id="{{ $tag->id }}">
-            <div class="table-cell">
-              {{ $tag->name }}
-              <span class="tags-list-contact-number">({{ trans('settings.tags_list_contact_number', ['count' => $tag->contacts()->count()]) }})</span>
-            </div>
-            <div class="table-cell actions">
-              <a href="/settings/tags/{{ $tag->id }}/delete" onclick="return confirm('{{ trans('settings.tags_list_delete_confirmation') }}')">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </a>
-            </div>
-          </li>
-        @endforeach
-        </ul>
 
       </div>
     </div>
