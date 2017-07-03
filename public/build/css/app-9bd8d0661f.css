@@ -7978,6 +7978,7 @@ header .main-cta {
   background-color: #f9f9fb;
   border-bottom: 1px solid #eee;
   position: relative;
+  padding-bottom: 20px;
 }
 
 .people-show .pagehead .people-profile-information {
@@ -8030,6 +8031,7 @@ header .main-cta {
 
 .people-show .pagehead .people-profile-information .profile-detail-summary {
   padding-left: 100px;
+  margin-top: 10px;
 }
 
 .people-show .pagehead .people-profile-information .profile-detail-summary li:not(:last-child) {
