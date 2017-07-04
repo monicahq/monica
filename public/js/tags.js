@@ -48,8 +48,9 @@ $('#tagsForm').submit(function(e) {
 
       $('.tags-list').empty();
 
-      for (var i = 0; i < tags.length ; i++) {
-        $('.tags-list').append('<li class="pretty-tag"><a href="/user/messages">' + tags[i] + '</a></li>');
+      // add the new tag
+      for (var i = 0; i < data['tags'].length ; i++) {
+        $('.tags-list').append('<li class="pretty-tag"><a href="/people?tags=' + data.tags[i].slug + '">' + data.tags[i].slug + '</a></li>');
       }
 
       $('.tags').toggle();

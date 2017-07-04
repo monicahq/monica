@@ -32,7 +32,8 @@ class TagsController extends Controller
             return response()->json(array('status' => 'no'));
         }
 
-        $arrayTags = array();
+        $tagsToInsert = array();
+        $tagsWithIdAndSlug = array();
         foreach ($tags as $tag) {
             $tag = auth()->user()->account->tags()->firstOrCreate([
                 'name' => $tag
@@ -41,14 +42,18 @@ class TagsController extends Controller
             $tag->name_slug = str_slug($tag->name);
             $tag->save();
 
-            array_push($arrayTags, $tag->id);
+            array_push($tagsToInsert, $tag->id);
+            array_push($tagsWithIdAndSlug, [
+              'id' => $tag->id,
+              'slug' => $tag->name_slug
+            ]);
         }
 
-        $contact->tags()->sync($arrayTags);
+        $contact->tags()->sync($tagsToInsert);
 
         $response = array(
           'status' => 'yes',
-          'tags' => implode(',', $arrayTags),
+          'tags' => $tagsWithIdAndSlug,
         );
 
         return response()->json($response);
