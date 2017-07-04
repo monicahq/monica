@@ -114,7 +114,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans_choice('people.people_list_number_kids', $contact->getNumberOfKids(), ['count' => $contact->getNumberOfKids()]) }} <br />
+                      {{ trans_choice('people.people_list_number_kids', $contact->getNumberOfKids(), ['count' => $contact->getNumberOfKids()]) }}
                       <span>{{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}</span>
                     </span>
                   </a>
@@ -133,7 +133,8 @@
               @foreach (auth()->user()->account->tags as $tag)
                 @if ($tag->contacts()->count() > 0)
                 <li>
-                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span> {{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}
+                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
+                  <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
                 </li>
                 @endif
               @endforeach

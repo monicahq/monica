@@ -26,6 +26,10 @@
         left: 0;
         position: absolute;
       }
+
+      .number-contacts-per-tag {
+        float: right;
+      }
     }
   }
 
@@ -129,15 +133,6 @@
         color: #333;
       }
     }
-    .people-list-item-name {
-      display: inline-block;
-      margin-right: -9999px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: calc(100% - 198px);
-      overflow: hidden;
-      vertical-align: middle;
-    }
 
     .people-list-item-information {
       color: #999;
@@ -145,6 +140,10 @@
       float: right;
       text-align: right;
       position: relative;
+
+      span {
+        display: block;
+      }
     }
 
     .people-list-item-information span {
@@ -232,7 +231,7 @@
 
       .profile-detail-summary {
         padding-left: 100px;
-        margin-top: 10px;
+        margin-top: 3px;
 
         li {
           &:not(:last-child) {
@@ -274,6 +273,7 @@
         line-height: 20px;
         margin: 0;
         overflow: hidden;
+        margin-top: 8px;
 
         li {
           float: left;
@@ -678,6 +678,12 @@
 
       li {
         padding: 6px 0;
+      }
+    }
+
+    .people-list-item {
+      .people-list-item-information {
+        display: none;
       }
     }
   }
