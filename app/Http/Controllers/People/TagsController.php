@@ -29,10 +29,10 @@ class TagsController extends Controller
         // if we receive an empty string, that means all tags have been removed.
         if ($request->input('tags') == '') {
             $contact->tags()->detach();
-            return response()->json(array('status' => 'no'));
+            return response()->json(array('status' => 'no', 'tags' => ''));
         }
 
-        $tagsToInsert = array();
+        $tagsIDs = array();
         $tagsWithIdAndSlug = array();
         foreach ($tags as $tag) {
             $tag = auth()->user()->account->tags()->firstOrCreate([
@@ -42,14 +42,16 @@ class TagsController extends Controller
             $tag->name_slug = str_slug($tag->name);
             $tag->save();
 
-            array_push($tagsToInsert, $tag->id);
+            $tagsIDs[$tag->id] = ['account_id' => auth()->user()->account_id];
+
+            // this is passed back in json to JS
             array_push($tagsWithIdAndSlug, [
               'id' => $tag->id,
               'slug' => $tag->name_slug
             ]);
         }
 
-        $contact->tags()->sync($tagsToInsert);
+        $contact->tags()->sync($tagsIDs);
 
         $response = array(
           'status' => 'yes',

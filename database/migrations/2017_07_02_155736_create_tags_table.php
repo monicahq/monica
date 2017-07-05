@@ -25,6 +25,7 @@ class CreateTagsTable extends Migration
         Schema::create('contact_tag', function (Blueprint $table) {
             $table->integer('contact_id');
             $table->integer('tag_id');
+            $table->integer('account_id');
             $table->timestamps();
         });
     }
