@@ -4,7 +4,19 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v0.3.0 - 2017-07-04
+-------------------
+
+New features:
+* Add supprort for organizing people into tags (equires `bower update` for dev environment).
+* Add ability to filter contacts per tags on the contact list.
+
+Improvements:
+* Fix import translation key on the import reports.
+* Settings' sidebar now has better icons.
+
 v0.2.1 - 2017-07-02
+-------------------
 
 Improvements:
 * Update the design of the latest actions on the dashboard.

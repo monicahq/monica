@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use App\Invitation;
 use App\ImportJob;
+use App\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
@@ -366,5 +367,29 @@ class SettingsController extends Controller
 
         return redirect('/settings/users')
                 ->with('success', trans('settings.users_list_delete_success'));
+    }
+
+    /**
+     * Display the list of tags for this account
+     */
+    public function tags()
+    {
+        return view('settings.tags');
+    }
+
+    public function deleteTag(Request $request, $tagId)
+    {
+        $tag = Tag::findOrFail($tagId);
+
+        if ($tag->account_id != auth()->user()->account_id) {
+            return redirect('/');
+        }
+
+        $tag->contacts()->detach();
+
+        $tag->delete();
+
+        return redirect('/settings/tags')
+                ->with('success', trans('settings.tags_list_delete_success'));
     }
 }

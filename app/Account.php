@@ -200,6 +200,16 @@ class Account extends Model
     }
 
     /**
+     * Get the tags records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function tags()
+    {
+        return $this->hasMany('App\Tag')->orderBy('name', 'asc');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules
      *
      * @return this

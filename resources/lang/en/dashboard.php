@@ -24,6 +24,9 @@ return [
     'event_create_gift' => 'added a gift',
     'event_update_gift' => 'updated a gift',
 
+    'blank_title' => 'You don\'t have any activity yet.',
+    'blank_cta' => 'Add contact',
+
     'tab_last_edited_contacts' => 'Last edited contacts',
     'tab_whats_coming' => 'What\'s coming',
     'tab_lastest_actions' => 'Latest actions',
