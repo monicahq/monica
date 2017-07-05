@@ -8,7 +8,7 @@ v0.3.0 - 2017-07-04
 -------------------
 
 New features:
-* Add supprort for organizing people into tags (equires `bower update` for dev environment).
+* Add supprort for organizing people into tags (requires `bower update` for dev environment).
 * Add ability to filter contacts per tags on the contact list.
 
 Improvements:
