@@ -13,10 +13,10 @@
     "animate.css": "^3.5.2",
     "octicons": "^4.3.0",
     "hint.css": "hint-css#^2.3.2",
-    "trix": "^0.9.9",
     "font-awesome": "fontawesome#^4.7.0",
     "list.js": "^1.5.0",
     "typeahead.js": "^0.11.1",
-    "jQuery": "^3.2.1"
+    "jQuery": "^3.2.1",
+    "jquery.tagsinput": "jquery-tags-input#^1.3.6"
   }
 }
