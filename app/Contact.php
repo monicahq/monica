@@ -5,11 +5,11 @@ namespace App;
 use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
@@ -160,6 +160,16 @@ class Contact extends Model
     public function tasks()
     {
         return $this->hasMany('App\Task');
+    }
+
+    /**
+     * Get the tags records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag')->withPivot('account_id')->withTimestamps();
     }
 
     /**
@@ -914,6 +924,20 @@ class Contact extends Model
     public function getDebts()
     {
         return $this->debts;
+    }
+
+    /**
+     * Get the list of tags as a string to populate the tags form
+     */
+    public function getTagsAsString()
+    {
+        $tags = array();
+
+        foreach ($this->tags as $tag) {
+            array_push($tags, $tag->name);
+        }
+
+        return implode(',', $tags);
     }
 
 }
