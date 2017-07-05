@@ -14,6 +14,9 @@ return [
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
     'people_list_lastnameZA' => 'Sort by last name Z → A',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_clear_filter' => 'Clear filter',
+    'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
 
     // people add
     'people_add_title' => 'Add a new person',
@@ -284,5 +287,8 @@ return [
     'debt_add_add_cta' => 'Add debt',
     'debt_edit_update_cta' => 'Update debt',
     'debt_edit_success' => 'The debt has been updated successfully',
-    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 ];

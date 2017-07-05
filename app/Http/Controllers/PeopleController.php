@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Note;
+use App\Tag;
 use Validator;
 use App\Contact;
 use App\Reminder;
@@ -29,10 +30,25 @@ class PeopleController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $contacts = $user->account->contacts()->sortedBy($sort)->get();
+        $tag = null;
+
+        if ($request->get('tags')) {
+            $tag = Tag::where('name_slug', $request->get('tags'))->first();
+
+            if (is_null($tag)) {
+                return redirect()->route('people.index');
+            }
+
+            $contacts = $user->account->contacts()->whereHas('tags', function ($query) use ($tag) {
+                                            $query->where('id', $tag->id);
+                                        })->sortedBy($sort)->get();
+        } else {
+            $contacts = $user->account->contacts()->sortedBy($sort)->get();
+        }
 
         return view('people.index')
-            ->withContacts($contacts);
+            ->withContacts($contacts)
+            ->withTag($tag);
     }
 
     /**
