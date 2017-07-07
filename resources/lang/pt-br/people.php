@@ -231,7 +231,7 @@ return [
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
 
     // notes
-    'notes_add_success' => 'A nota foi adicionada com sucesso',
+    'notes_create_success' => 'A nota foi adicionada com sucesso',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'A nota foi excluída com sucesso',
     'notes_add_title' => 'Adicione uma nota sobre :name',
