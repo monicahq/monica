@@ -88,5 +88,5 @@ return [
     | should not change this setting yourself.
     |
     */
-    'app_version' => '0.2.0',
+    'app_version' => '0.3.0',
 ];

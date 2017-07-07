@@ -1,10 +1,29 @@
 UNRELEASED CHANGES:
 
-* Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
-* Speed up the display of the contact lists when there is a lot of contacts in the account.
-* Remove the search on the list of contacts, which did nothing actually.
+*
 
 RELEASED VERSIONS:
+
+v0.3.0 - 2017-07-04
+-------------------
+
+New features:
+* Add supprort for organizing people into tags (requires `bower update` for dev environment).
+* Add ability to filter contacts per tags on the contact list.
+
+Improvements:
+* Fix import translation key on the import reports.
+* Settings' sidebar now has better icons.
+
+v0.2.1 - 2017-07-02
+-------------------
+
+Improvements:
+* Update the design of the latest actions on the dashboard.
+* Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
+* Speed up the display of the contact lists when there is a lot of contacts in the account.
+* Remove the search on the list of contacts, which was broken for a while, until a proper solution is found.
+* Bug fixes.
 
 v0.2.0 - 2017-06-29
 -------------------

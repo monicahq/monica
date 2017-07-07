@@ -34,13 +34,13 @@
 
         <img src="/img/settings/imports/import.svg">
 
-        <h2>You haven't imported any contacts yet.</h2>
+        <h2>{{ trans('settings.import_blank_title') }}</h2>
 
-        <h3>Would you like to import contacts now?</h3>
+        <h3>{{ trans('settings.import_blank_question') }}</h3>
 
-        <p>We can import vCard files that you can get from Google Contacts or your Contact manager.</p>
+        <p>{{ trans('settings.import_blank_description') }}</p>
 
-        <p class="cta"><a href="/settings/import/upload" class="btn">Import vCard</a></p>
+        <p class="cta"><a href="/settings/import/upload" class="btn">{{ trans('settings.import_blank_cta') }}</a></p>
 
       </div>
 

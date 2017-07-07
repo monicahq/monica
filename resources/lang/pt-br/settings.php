@@ -6,6 +6,7 @@ return [
     'sidebar_settings_users' => 'Users',
     'sidebar_settings_subscriptions' => 'Subscription',
     'sidebar_settings_import' => 'Import data',
+    'sidebar_settings_tags' => 'Tags management',
 
     'export_title' => 'Export your account data',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export - please be patient and do not spam the button.',
@@ -116,4 +117,16 @@ return [
     'import_report_status_skipped' => 'Skipped',
     'import_vcard_contact_exist' => 'Contact already exists',
     'import_vcard_contact_no_firstname' => 'No firstname (mandatory)',
+    'import_blank_title' => 'You haven\'t imported any contacts yet.',
+    'import_blank_question' => 'Would you like to import contacts now?',
+    'import_blank_description' => 'We can import vCard files that you can get from Google Contacts or your Contact manager.',
+    'import_blank_cta' => 'Import vCard',
+
+    'tags_list_title' => 'Tags',
+    'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact.',
+    'tags_list_contact_number' => ':count contacts',
+    'tags_list_delete_success' => 'The tag has been successfully with success',
+    'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
+    'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
+    'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, go back here to manage all the tags in your account.',
 ];

@@ -48,7 +48,14 @@
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
-            <div class="col-xs-12 col-md-9" id="search-list">
+            <div class="col-xs-12 col-md-9">
+
+              @if (! is_null($tag))
+              <p class="clear-filter">
+                {!! trans('people.people_list_filter_tag', ['name' => $tag->name]) !!}
+                <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+              </p>
+              @endif
 
               <ul class="list">
 
@@ -107,7 +114,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans_choice('people.people_list_number_kids', $contact->kids_count, ['count' => $contact->kids_count]) }} <br />
+                      {{ trans_choice('people.people_list_number_kids', $contact->getNumberOfKids(), ['count' => $contact->getNumberOfKids()]) }}
                       <span>{{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}</span>
                     </span>
                   </a>
@@ -121,6 +128,17 @@
               <a href="/people/add" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
+
+              <ul>
+              @foreach (auth()->user()->account->tags as $tag)
+                @if ($tag->contacts()->count() > 0)
+                <li>
+                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
+                  <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
+                </li>
+                @endif
+              @endforeach
+              </ul>
             </div>
 
           </div>

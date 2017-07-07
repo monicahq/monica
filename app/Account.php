@@ -36,7 +36,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent'
+        'number_of_invitations_sent', 'api_key'
     ];
 
     /**
@@ -197,6 +197,16 @@ class Account extends Model
     public function importjobreports()
     {
         return $this->hasMany(ImportJobReport::class);
+    }
+
+    /**
+     * Get the tags records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function tags()
+    {
+        return $this->hasMany('App\Tag')->orderBy('name', 'asc');
     }
 
     /**

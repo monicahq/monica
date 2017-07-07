@@ -7,14 +7,6 @@
     margin-top: 20px;
   }
 
-  #search-list {
-    .search {
-      margin-bottom: 20px;
-      padding: 15px;
-      width: 100%;
-    }
-  }
-
   .sidebar {
     .sidebar-cta {
       margin-bottom: 20px;
@@ -34,12 +26,28 @@
         left: 0;
         position: absolute;
       }
+
+      .number-contacts-per-tag {
+        float: right;
+      }
     }
   }
 
   .list {
     border: 1px solid #eee;
     border-radius: 3px;
+  }
+
+  .clear-filter {
+    border: 1px solid #eee;
+    position: relative;
+    padding: 6px;
+    border-radius: 3px;
+
+    a {
+      position: absolute;
+      right: 10px;
+    }
   }
 
   .people-list-item {
@@ -125,15 +133,6 @@
         color: #333;
       }
     }
-    .people-list-item-name {
-      display: inline-block;
-      margin-right: -9999px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: calc(100% - 198px);
-      overflow: hidden;
-      vertical-align: middle;
-    }
 
     .people-list-item-information {
       color: #999;
@@ -141,6 +140,10 @@
       float: right;
       text-align: right;
       position: relative;
+
+      span {
+        display: block;
+      }
     }
 
     .people-list-item-information span {
@@ -179,6 +182,7 @@
     background-color: #f9f9fb;
     border-bottom: 1px solid #eee;
     position: relative;
+    padding-bottom: 20px;
 
     .people-profile-information {
       margin-bottom: 10px;
@@ -227,6 +231,7 @@
 
       .profile-detail-summary {
         padding-left: 100px;
+        margin-top: 3px;
 
         li {
           &:not(:last-child) {
@@ -239,6 +244,39 @@
               margin-left: 14px;
             }
           }
+        }
+      }
+
+      #tagsForm {
+        padding-left: 100px;
+        position: relative;
+
+        #tags_tagsinput {
+          height: 40px!important;
+          min-height: 40px!important;
+          width: 370px!important;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .tagsFormActions {
+          display: inline;
+          position: relative;
+          top: -17px;
+        }
+      }
+
+      .tags {
+        padding: 0;
+        padding-left: 100px;
+        list-style: none;
+        line-height: 20px;
+        margin: 0;
+        overflow: hidden;
+        margin-top: 8px;
+
+        li {
+          float: left;
         }
       }
     }
@@ -642,6 +680,12 @@
         padding: 6px 0;
       }
     }
+
+    .people-list-item {
+      .people-list-item-information {
+        display: none;
+      }
+    }
   }
 
   .people-show {
@@ -651,12 +695,32 @@
         margin-top: 10px;
 
         h2 {
+          padding-left: 80px;
+
           span {
             display: none;
           }
         }
 
+        #tagsForm {
+          display: block;
+          margin-top: 40px;
+          padding-left: 0px;
+
+          #tags_tagsinput {
+            width: 100% !important;
+          }
+
+          .tagsFormActions {
+            display: block;
+            margin-top: 20px;
+          }
+        }
+
         .profile-detail-summary {
+          padding-left: 0;
+          margin-top: 10px;
+
           li {
             display: block;
             margin-right: 0;
@@ -668,6 +732,16 @@
               }
             }
           }
+        }
+
+        .avatar {
+          height: 67px;
+          width: 67px;
+          padding-top: 11px;
+        }
+
+        .tags {
+          padding-left: 80px;
         }
       }
 
