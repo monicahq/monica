@@ -60,7 +60,7 @@ class Kid extends Model
 
     /**
      * Assigns a birthday or birth year to the loved one based on
-     * the data  provided.
+     * the data provided.
      *
      * @param string $approximation ['unknown', 'exact', 'approximate']
      * @param \DateTime|string $exactDate

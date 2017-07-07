@@ -36,6 +36,7 @@ class JournalController extends Controller
 
     /**
      * Saves the journal entry
+     *
      * @param  Request $request
      * @return Response
      */
