@@ -231,7 +231,6 @@ return [
     'activities_delete_success' => 'The activity has been deleted successfully',
 
     // notes
-    'notes_add_success' => 'The note has been added successfully',
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
