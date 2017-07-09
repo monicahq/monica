@@ -33,7 +33,9 @@ class PeopleController extends Controller
         $tag = null;
 
         if ($request->get('tags')) {
-            $tag = Tag::where('name_slug', $request->get('tags'))->first();
+            $tag = Tag::where('name_slug', $request->get('tags'))
+                        ->where('account_id', auth()->user()->account_id)
+                        ->first();
 
             if (is_null($tag)) {
                 return redirect()->route('people.index');
