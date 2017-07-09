@@ -199,7 +199,7 @@ return [
     'activity_type_group_sport' => 'Спорт',
     'activity_type_group_food' => 'Еда',
     'activity_type_group_cultural_activities' => 'Культурные',
-    'activity_type_just_hanged_out' => 'просто повеселились',
+    'activity_type_just_hung_out' => 'просто повеселились',
     'activity_type_watched_movie_at_home' => 'смотрели кино дома',
     'activity_type_talked_at_home' => 'разговаривали дома',
     'activity_type_did_sport_activities_together' => 'занимались спортом вместе',
