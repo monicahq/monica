@@ -24,7 +24,7 @@ class ActivityTypesTableSeeder extends Seeder
         ]);
 
         DB::table('activity_types')->insert([
-            'key' => 'just_hanged_out',
+            'key' => 'just_hung_out',
             'location_type' => 'outside',
             'icon' => 'hang_out',
             'activity_type_group_id' => 1,

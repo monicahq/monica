@@ -199,7 +199,7 @@ return [
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Nourriture',
     'activity_type_group_cultural_activities' => 'Activités culturelles',
-    'activity_type_just_hanged_out' => 'traîner ensemble',
+    'activity_type_just_hung_out' => 'traîner ensemble',
     'activity_type_watched_movie_at_home' => 'regarder un film à la maison ensemble',
     'activity_type_talked_at_home' => 'parler ensemble à la maison',
     'activity_type_did_sport_activities_together' => 'fait du sport ensemble',

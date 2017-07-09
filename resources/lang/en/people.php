@@ -199,7 +199,7 @@ return [
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Food',
     'activity_type_group_cultural_activities' => 'Cultural activities',
-    'activity_type_just_hanged_out' => 'just hanged out',
+    'activity_type_just_hung_out' => 'just hung out',
     'activity_type_watched_movie_at_home' => 'watched a movie at home',
     'activity_type_talked_at_home' => 'just talked at home',
     'activity_type_did_sport_activities_together' => 'did sport together',
