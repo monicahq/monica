@@ -1,6 +1,10 @@
 <?php
 
 return [
+    
+    'blank_title' => 'Your dashboard has nothing to show you, maybe you should add someone.',
+    'blank_cta' => 'Add someone',
+    
     'reminders_title' => 'Upcoming reminders',
     'reminders_blank_description' => 'No reminders are planned.',
     'event_title' => 'Latest actions',
