@@ -124,51 +124,28 @@ class ExportAccountAsSQL
                 }
             }
         }
-
+        
         // Specific to `accounts` table
-        // TODO: simplify this
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if ($tableName !== 'accounts') {
-                continue;
+        $accounts = array_filter($tables, function ($e) { 
+                return $e->table_name == 'accounts';
             }
-
-            $tableData = DB::table($tableName)->get();
-
-            foreach ($tableData as $data) {
-
-                $newSQLLine = 'INSERT INTO ' . $tableName . ' VALUES (';
-                $tableValues = [];
-                $skipLine = false;
-
-                foreach ($data as $columnName => $value) {
-
-                    if ($columnName == 'id') {
-                        if ($value !== $account->id) {
-                            $skipLine = true;
-                            break;
-                        }
-                    }
-
-                    if (in_array($columnName, $this->ignoredColumns)) {
-                        break;
-                    }
-
-                    if (is_null($value)) {
-                        $value = 'NULL';
-                    } elseif (!is_numeric($value)) {
-                        $value = "'" . addslashes($value) . "'";
-                    }
-
-                    array_push($tableValues, $value);
-                }
-
-                if ($skipLine == false) {
-                    $newSQLLine .= implode(',', $tableValues) . ');' . PHP_EOL;
-                    $sql .= $newSQLLine;
-                }
-            }
+        )[0];
+        $tableName = $accounts->table_name;
+        $tableData = DB::table($tableName)->get()->toArray();
+        foreach ($tableData as $data) {
+            $newSQLLine = 'INSERT INTO ' . $tableName . ' VALUES (';
+            $data = (array) $data;
+            if($data['id'] === $account->id):
+                $values = [
+                    $data['id'],
+                    "'".addslashes($data['api_key'])."'",
+                    $data['number_of_invitations_sent'] !== NULL 
+                        ? $data['number_of_invitations_sent'] 
+                        : 'NULL',  
+                ];
+                $newSQLLine .= implode(',', $values) . ');' . PHP_EOL;
+                $sql .= $newSQLLine;
+            endif;
         }
 
         Storage::disk('public')->put($downloadPath, $sql);
