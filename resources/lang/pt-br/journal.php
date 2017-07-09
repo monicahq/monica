@@ -9,4 +9,5 @@ return [
     'journal_add_cta' => 'Salvar',
     'journal_blank_cta' => 'Adicione seu primeiro registro no diário',
     'journal_blank_description' => 'O diário permite que você escreva eventos que aconteceram com você, para te lembrar.',
+    'delete_confirmation' => 'Are you sure you want to delete this journal entry?',
 ];
