@@ -5,11 +5,11 @@ namespace App;
 use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
@@ -160,6 +160,16 @@ class Contact extends Model
     public function tasks()
     {
         return $this->hasMany('App\Task');
+    }
+
+    /**
+     * Get the tags records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag')->withPivot('account_id')->withTimestamps();
     }
 
     /**
@@ -414,6 +424,7 @@ class Contact extends Model
 
     /**
      * Get the street of the contact.
+     *
      * @return string or null
      */
     public function getStreet()
@@ -427,6 +438,7 @@ class Contact extends Model
 
     /**
      * Get the province of the contact.
+     *
      * @return string or null
      */
     public function getProvince()
@@ -440,6 +452,7 @@ class Contact extends Model
 
     /**
      * Get the postal code of the contact.
+     *
      * @return string or null
      */
     public function getPostalCode()
@@ -453,6 +466,7 @@ class Contact extends Model
 
     /**
      * Get the country of the contact.
+     *
      * @return string or null
      */
     public function getCountryName()
@@ -466,6 +480,7 @@ class Contact extends Model
 
     /**
      * Get the city.
+     *
      * @return string
      */
     public function getCity()
@@ -479,6 +494,7 @@ class Contact extends Model
 
     /**
      * Get the countryID of the contact.
+     *
      * @return string or null
      */
     public function getCountryID()
@@ -488,6 +504,7 @@ class Contact extends Model
 
     /**
      * Get the country ISO of the contact.
+     *
      * @return string or null
      */
     public function getCountryISO()
@@ -865,6 +882,7 @@ class Contact extends Model
 
     /**
      * Returns the URL of the avatar with the given size
+     *
      * @param  int $size
      * @return string
      */
@@ -901,6 +919,7 @@ class Contact extends Model
 
     /**
      * Check if the contact has debt (by the contact or the user for this contact)
+     *
      * @return boolean
      */
     public function hasDebt()
@@ -916,4 +935,17 @@ class Contact extends Model
         return $this->debts;
     }
 
+    /**
+     * Get the list of tags as a string to populate the tags form
+     */
+    public function getTagsAsString()
+    {
+        $tags = array();
+
+        foreach ($this->tags as $tag) {
+            array_push($tags, $tag->name);
+        }
+
+        return implode(',', $tags);
+    }
 }

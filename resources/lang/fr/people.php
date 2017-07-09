@@ -14,6 +14,9 @@ return [
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_clear_filter' => 'Clear filter',
+    'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
@@ -196,7 +199,7 @@ return [
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Nourriture',
     'activity_type_group_cultural_activities' => 'Activités culturelles',
-    'activity_type_just_hanged_out' => 'traîner ensemble',
+    'activity_type_just_hung_out' => 'traîner ensemble',
     'activity_type_watched_movie_at_home' => 'regarder un film à la maison ensemble',
     'activity_type_talked_at_home' => 'parler ensemble à la maison',
     'activity_type_did_sport_activities_together' => 'fait du sport ensemble',
@@ -228,7 +231,7 @@ return [
     'activities_delete_success' => 'L\'activité a été supprimée avec succès.',
 
     // notes
-    'notes_add_success' => 'La note a été ajoutée avec succès.',
+    'notes_create_success' => 'La note a été ajoutée avec succès.',
     'notes_update_success' => 'La note a été modifiée avec succès.',
     'notes_delete_success' => 'La note a été supprimée avec succès.',
     'notes_add_title' => 'Ajouter une note à propos de :name.',
@@ -284,6 +287,9 @@ return [
     'debt_add_add_cta' => 'Ajouter la dette',
     'debt_edit_update_cta' => 'Mettre à jour la dette',
     'debt_edit_success' => 'La dette a été modifiée avec succès',
-    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit'
+    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 
 ];

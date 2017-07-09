@@ -29,8 +29,25 @@
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
           </h2>
 
+          <ul class="tags">
+            <ul class="tags-list">
+              @foreach ($contact->tags as $tag)
+                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+              @endforeach
+            </ul>
+            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+          </ul>
+
+          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
+            {{ csrf_field() }}
+            <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
+            <div class="tagsFormActions">
+              <button type="submit" class="btn btn-primary">{{ trans('app.update') }}</button>
+              <a href="#" class="btn" id="tagsFormCancel">{{ trans('app.cancel') }}</a>
+            </div>
+          </form>
+
           <ul class="horizontal profile-detail-summary">
-            {{-- Last activity information --}}
             <li>
               @if (is_null($contact->getLastActivityDate(Auth::user()->timezone)))
                 {{ trans('people.last_activity_date_empty') }}

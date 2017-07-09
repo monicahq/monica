@@ -18,10 +18,19 @@
 
       &.selected {
         background-color: #f7fbfc;
+
+        i {
+          color: green;
+        }
       }
 
       a {
         width: 100%;
+      }
+
+      i {
+        margin-right: 5px;
+        color: #999;
       }
     }
   }
@@ -256,6 +265,17 @@
         margin-left: 20px;
         list-style-type: disc;
       }
+    }
+  }
+
+  .tags-list {
+    .tags-list-contact-number {
+      margin-left: 10px;
+      color: #999;
+    }
+
+    .actions {
+      text-align: right;
     }
   }
 }
