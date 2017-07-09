@@ -18,7 +18,7 @@ class KidTest extends TestCase
         $kid = new Kid;
         $kid->birthdate = null;
 
-        $this->assertNull($kid->getAge());
+        $this->assertNull($kid->age);
     }
 
     public function testGetAgeWithBirthdateSet()

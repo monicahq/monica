@@ -42,7 +42,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'Doe',
             'email' => 'admin@admin.com',
             'password' => bcrypt('admin'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
 
@@ -53,7 +53,7 @@ class FakeContentTableSeeder extends Seeder
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
-            $timezone = 'America/New_York';
+            $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
             // create contact entry
@@ -67,8 +67,6 @@ class FakeContentTableSeeder extends Seeder
 
             $contact = Contact::find($contactID);
             $contact->setAvatarColor();
-
-            // add birthdate for this contact
 
             // add email
             if (rand(1, 2) == 1) {
@@ -113,10 +111,19 @@ class FakeContentTableSeeder extends Seeder
                     $birthdate_approximate = 'exact';
                 }
 
-                $significantOtherId = $contact->addSignificantOther($firstname, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+                $contact->significantOthers()->create(
+                    [
+                        'first_name' => $firstname,
+                        'gender' => $gender,
+                        'is_birthdate_approximate' => $birthdate_approximate,
+                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                        'account_id' => $contact->account_id,
+                        'status' => 'active',
+                    ]
+                );
             }
 
-            // // create kids
+            // create kids
             if (rand(1, 2) == 1) {
                 foreach (range(1, rand(2, 6)) as $index) {
                     $gender = (rand(1, 2) == 1) ? 'male' : 'female';
@@ -124,19 +131,94 @@ class FakeContentTableSeeder extends Seeder
                     $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
                     $age = rand(2, 14);
                     if (rand(1, 2) == 1) {
-                        $birthdate_approximate = 'false';
+                        $birthdate_approximate = 'unknown';
                     } else {
-                        $birthdate_approximate = 'true';
+                        $birthdate_approximate = 'exact';
                     }
-                    $kidId = $contact->addKid($name, $gender, $birthdate_approximate, $birthdate, $age, $timezone);
+
+                    $contact->kids()->create(
+                        [
+                            'first_name' => $name,
+                            'gender' => $gender,
+                            'is_birthdate_approximate' => $birthdate_approximate,
+                            'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                            'account_id' => $contact->account_id,
+                        ]
+                    );
                 }
             }
 
-            // // notes
+            // notes
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 13); $j++) {
-                    $body = $faker->realText(rand(40, 500));
-                    $noteId = $contact->addNote($body);
+                    $note = $contact->notes()->create([
+                        'body' => $faker->realText(rand(40, 500)),
+                        'account_id' => $contact->account_id
+                    ]);
+
+                    $contact->logEvent('note', $note->id, 'create');
+                }
+            }
+
+            // activities
+            if (rand(1, 2) == 1) {
+                for ($j = 0; $j < rand(1, 13); $j++) {
+                    $activity = $contact->activities()->create([
+                        'summary' => $faker->realText(rand(40, 100)),
+                        'date_it_happened' => $faker->date($format = 'Y-m-d', $max = 'now'),
+                        'activity_type_id' => rand(1,13),
+                        'description' => $faker->realText(rand(100, 1000)),
+                        'account_id' => $contact->account_id
+                    ]);
+
+                    $contact->logEvent('activity', $activity->id, 'create');
+                }
+            }
+
+            // tasks
+            if (rand(1, 2) == 1) {
+                for ($j = 0; $j < rand(1, 6); $j++) {
+                    $task = $contact->tasks()->create([
+                        'title' => $faker->realText(rand(40, 100)),
+                        'description' => $faker->realText(rand(100, 1000)),
+                        'status' => (rand(1,2) == 1 ? 'inprogress' : 'completed'),
+                        'account_id' => $contact->account_id
+                    ]);
+
+                    $contact->logEvent('task', $task->id, 'create');
+                }
+            }
+
+            // debts
+            if (rand(1, 2) == 1) {
+                for ($j = 0; $j < rand(1, 6); $j++) {
+                    $debt = $contact->debts()->create([
+                        'in_debt' => (rand(1,2) == 1 ? 'yes' : 'no'),
+                        'amount' => rand(321,39391),
+                        'reason' => $faker->realText(rand(100, 1000)),
+                        'status' => 'inprogress',
+                        'account_id' => $contact->account_id
+                    ]);
+
+                    $contact->logEvent('debt', $debt->id, 'create');
+                }
+            }
+
+            // gifts
+            if (rand(1, 2) == 1) {
+                for ($j = 0; $j < rand(1, 31); $j++) {
+                    $gift = $contact->gifts()->create([
+
+                        'name' => $faker->realText(rand(10, 100)),
+                        'comment' => $faker->realText(rand(1000, 5000)),
+                        'url' => $faker->url,
+                        'value_in_dollars' => rand(12,120),
+                        'account_id' => $contact->account_id,
+                        'is_an_idea' => 'true',
+                        'has_been_offered' => 'false'
+                    ]);
+
+                    $contact->logEvent('gift', $gift->id, 'create');
                 }
             }
         }
@@ -153,7 +235,7 @@ class FakeContentTableSeeder extends Seeder
             'last_name' => 'State',
             'email' => 'blank@blank.com',
             'password' => bcrypt('blank'),
-            'timezone' => 'America/New_York',
+            'timezone' => config('app.timezone'),
             'remember_token' => str_random(10),
         ]);
     }

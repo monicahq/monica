@@ -1,0 +1,168 @@
+UNRELEASED CHANGES:
+
+*
+
+RELEASED VERSIONS:
+
+v0.3.0 - 2017-07-04
+-------------------
+
+New features:
+* Add supprort for organizing people into tags (requires `bower update` for dev environment).
+* Add ability to filter contacts per tags on the contact list.
+
+Improvements:
+* Fix import translation key on the import reports.
+* Settings' sidebar now has better icons.
+
+v0.2.1 - 2017-07-02
+-------------------
+
+Improvements:
+* Update the design of the latest actions on the dashboard.
+* Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
+* Speed up the display of the contact lists when there is a lot of contacts in the account.
+* Remove the search on the list of contacts, which was broken for a while, until a proper solution is found.
+* Bug fixes.
+
+v0.2.0 - 2017-06-29
+-------------------
+
+New features:
+* Add import from vCard (or .vcf) in the Settings panel.
+* Add ability to reset account. Resetting an account will remove everything - but won't close the account like deletion would.
+
+Improvements:
+* Journal entries now respect new lines.
+* Fix name not appearing in the latest actions tab on the dashboard.
+
+v0.1.0 - 2017-06-26
+-------------------
+
+* First official release. We'll now follow this structure. If you self host, we highly recommend that you check the latest tag instead of pulling from master.
+
+2017-06-24
+----------
+
+Improvements:
+* On the people's tab, filters are now placed above the table.
+
+2017-06-22
+----------
+
+New features:
+* Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
+
+Improvements:
+* Fix the order of the address fields.
+* Env variables are now read from config files rather than directly from the .env file.
+* Some US typos fix.
+
+2017-06-20
+----------
+
+New features:
+* Add support for mutiple users in one account.
+* Add subscriptions on .com. This has no effect on self hosted versions.
+
+2017-06-16
+----------
+
+Improvements:
+* Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
+
+2017-06-15
+----------
+
+New features:
+* Add reminder automatically when you set the birthdate of a contact.
+
+Improvements:
+* Add timezone for Switzerland.
+* Major refactoring of how contacts are managed in the codebase.
+
+2017-06-14
+----------
+
+New features:
+* Timezone can now be defined in a new ENV variable so every new user of the instance will have this timezone. Set to America/New_York by default.
+* Add ability to edit a note.
+* Add ability to edit a debt.
+* Add support for South African ZAR currency.
+
+Improvements:
+* Fix Deploy to Heroku button.
+* Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
+
+2017-06-13
+----------
+
+New features:
+* You can now add job information and company name for your contacts.
+
+Improvements:
+* Gifts table now display comments if defined, as well as who the gift is for.
+
+2017-06-12
+----------
+
+New features:
+* Add instructions to setup Monica from scratch on Debian Stretch.
+* Add Export to SQL feature, under Settings > Export data.
+* Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
+
+2017-06-11
+----------
+
+New features:
+* Add command line vCard importer
+
+Improvements:
+* Email address of a contact is now a mailto:// field.
+* Phone number of a contact is now a tel:// field.
+* Fix debt description on the dashboard
+* Fix typos
+* Fix Bootstrap tabs on the dashboard
+
+2017-06-10
+----------
+
+New features:
+* Add support for other currencies (CAD $, EUR €, GBP £, RUB ₽) for the gifts and debts section. This is set in the User setting. Default is USD $.
+* Add ability to define main social network accounts to a contact (Facebook, Twitter, LinkedIn)
+
+Improvements:
+* Fix counter showing number of gifts on the dashboard
+* Docker image now runs the cron to send emails
+* Fix Russian translations
+* Fix the wrong route after password change
+
+2017-06-09
+----------
+
+New features:
+* Add Docker support
+* Add Russian language
+* Add Portuguese (Brazil) language
+
+Improvements:
+* Fix emails being sent too often
+* Breaking change: Email name and address of the user who sends reminders are now ENV variables (MAIL_FROM_ADDRESS and MAIL_FROM_NAME).
+
+2017-06-08
+----------
+
+New features:
+* Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
+
+Improvements:
+* Dramatically reduce the number of queries necessary to load the list of contacts on the People's tab.
+* Phone number are now treated like a string and not integers on the front-end side.
+* Breaking change: Add a new env variable to define which email address should be used when sending notifications about new user signups. You need to add this new env variable (APP_EMAIL_NEW_USERS_NOTIFICATION) to your `.env` file.
+* Fix typos and small bugs
+
+2017-06-07
+----------
+
+* Add ability to delete a contact
+* Add a changelog

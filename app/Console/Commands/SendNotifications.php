@@ -10,7 +10,6 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
-use App\Jobs\SetNextReminderDate;
 
 class SendNotifications extends Command
 {
@@ -51,12 +50,10 @@ class SendNotifications extends Command
             $contact = Contact::findOrFail($reminder->contact_id);
             $account = Account::findOrFail($contact->account_id);
             $user = User::where('account_id', $account->id)->first();
-            $date = $reminder->next_expected_date->setTimezone($user->timezone);
+            $date = $reminder->next_expected_date;
 
-            if ($date->isToday()) {
-                Log::info($reminder->id);
+            if ($date->isToday() or $date->isPast()) {
                 dispatch(new SendReminderEmail($reminder, $user));
-                dispatch(new SetNextReminderDate($reminder, $user));
             }
         }
     }

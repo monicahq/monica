@@ -1,4 +1,5 @@
 <?php
+use App\Helpers\MoneyHelper;
 
 return [
 
@@ -52,7 +53,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('APP_DEFAULT_TIMEZONE', 'America/New_York'),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,7 +121,6 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-
     'providers' => [
 
         /*
@@ -159,6 +159,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Laravel\Cashier\CashierServiceProvider::class,
     ],
 
     /*
@@ -208,6 +209,7 @@ return [
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'MoneyHelper' => App\Helpers\MoneyHelper::class,
     ],
 
 ];

@@ -2,7 +2,11 @@
 /resources/vendor
 /node_modules
 /public/storage
+/persist
 Homestead.yaml
 Homestead.json
 .env
 monica.sublime-workspace
+/.idea
+/storage/oauth-private.key
+/storage/oauth-public.key

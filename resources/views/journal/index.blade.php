@@ -52,16 +52,16 @@
           </div>
           <div class="row">
 
-            <div class="col-sm-9">
+            <div class="col-md-9">
 
               @foreach ($entries as $entry)
                 <div class="row entry-row">
                   <div class="col-xs-12 col-sm-2">
                     <div class="entry-information">
                       <ul>
-                        <li>{{ App\Helpers\DateHelper::getShortDate($entry->created_at, Auth::user()->locale) }}</li>
+                        <li>{{ \App\Helpers\DateHelper::getShortDate($entry->created_at) }}</li>
                         <li>
-                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
+                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('journal.delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
                         </li>
                       </ul>
                     </div>
@@ -71,13 +71,14 @@
                     @if (! is_null($entry->getTitle()))
                     <h2>{{ $entry->getTitle() }}</h2>
                     @endif
-                    {{ $entry->getPost() }}
+                    <div class="entry-content">{{ $entry->getPost() }}</div>
                   </div>
                 </div>
               @endforeach
             </div>
 
-            <div class="col-sm-3">
+			
+            <div class="col-md-3">
               <a class="btn btn-primary btn-add-people" href="/journal/add">{{ trans('journal.journal_add') }}</a>
             </div>
 

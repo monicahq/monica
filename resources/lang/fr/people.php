@@ -4,14 +4,19 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 enfant |{1,1} 1 enfant|{2,*} :count enfants',
+    'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 rappel |{1,1} 1 rappel |{2,*} :count rappels',
     'people_list_blank_title' => 'Vous n\'avez encore ajouté aucun contact.',
     'people_list_blank_cta' => 'Ajouter quelqu\'un',
-    'people_list_search' => 'Rechercher quelqu\'un par son nom',
+    'people_list_stats' => ':count contacts',
+    'people_list_sort' => 'Tri',
     'people_list_firstnameAZ' => 'Tri par prénom A → Z',
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_clear_filter' => 'Clear filter',
+    'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
@@ -19,6 +24,13 @@ return [
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
     'people_add_cta' => 'Ajouter cette personne',
+    'people_add_gender' => 'Sexe',
+    'people_delete_success' => 'Le contact a été supprimé',
+    'people_delete_message' => 'Si vous devez supprimer ce contact,',
+    'people_delete_click_here' => 'cliquez ici',
+    'people_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
     'section_personal_information' => 'Informations personnelles',
@@ -29,6 +41,9 @@ return [
 
     //
     'link_to_list' => 'Retour à la liste',
+
+    // Header
+    'edit_contact_information' => 'Mettre à jour les informations',
 
     // age - birthday
     'birthdate_not_set' => 'Non indiqué.',
@@ -45,10 +60,13 @@ return [
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
-    'information_edit_male' => 'Homme',
-    'information_edit_female' => 'Femme',
+    'information_edit_avatar' => 'Photo/avatar of the contact',
+    'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
+    'information_edit_facebook' => 'Profil Facebook (optionel)',
+    'information_edit_twitter' => 'Profil Twitter (optionel)',
+    'information_edit_linkedin' => 'Profil LinkedIn (optionel)',
     'information_edit_street' => 'Rue (optionnel)',
     'information_edit_province' => 'Province (optionnel)',
     'information_edit_postalcode' => 'Code postal (optionnel)',
@@ -63,13 +81,23 @@ return [
     'information_no_address_defined' => 'Aucune adresse définie',
     'information_no_email_defined' => 'Aucun courriel défini',
     'information_no_phone_defined' => 'Aucun numéro de téléphone défini',
+    'information_no_facebook_defined' => 'Aucun Facebook défini',
+    'information_no_twitter_defined' => 'Aucun Twitter défini',
+    'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
+    'information_no_work_defined' => 'Aucune information professionnelle définie',
+    'information_work_at' => 'chez :company',
+    'work_add_cta' => 'Mettre à jour les informations professionnelles',
+    'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
+    'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
+    'work_edit_job' => 'Poste (optionel)',
+    'work_edit_company' => 'Entreprise (optionel)',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu\'un dans la famille :family a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu\'il n\'aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l\'inviterez à dîner.',
     'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Mettre à jour',
+    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
     'food_preferencies_title' => 'Préférences alimentaires',
     'food_preferencies_cta' => 'Ajouter',
 
@@ -101,13 +129,16 @@ return [
     'reminders_next_expected_date' => 'le',
     'reminders_cta' => 'Ajouter un rappel',
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
+    'reminders_frequency' => 'chaque',
+    'reminders_date' => 'Date',
+    'reminders_content' => 'Contenu',
+    'reminders_actions' => 'Actes',
+    'reminders_one_time' => 'Unique',
 
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
-    'significant_other_add_male' => 'Homme',
-    'significant_other_add_female' => 'Femme',
     'significant_other_add_firstname' => 'Nom',
     'significant_other_add_unknown' => 'Je ne connais pas son âge.',
     'significant_other_add_probably' => 'Cette personne a probablement',
@@ -200,10 +231,13 @@ return [
     'activities_delete_success' => 'L\'activité a été supprimée avec succès.',
 
     // notes
-    'notes_add_success' => 'La note a été ajoutée avec succès.',
+    'notes_create_success' => 'La note a été ajoutée avec succès.',
+    'notes_update_success' => 'La note a été modifiée avec succès.',
     'notes_delete_success' => 'La note a été supprimée avec succès.',
     'notes_add_title' => 'Ajouter une note à propos de :name.',
     'notes_add_cta' => 'Ajouter la note',
+    'notes_edit_title' => 'Modifier la note à propos de :name',
+    'notes_edit_cta' => 'Enregistrer la note',
     'notes_written_on' => 'Ecrit le :date',
     'notes_add_one_more' => 'Ajouter une autre note',
     'notes_title' => 'Notes',
@@ -232,6 +266,10 @@ return [
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu\'un de la famille :name en particulier',
     'gifts_add_cta' => 'Ajouter',
     'gifts_gift_idea' => 'Idée de cadeau',
+    'gifts_gift_already_offered' => 'Cadeaux déjà offerts',
+    'gifts_table_date_added' => 'Date ajoutée',
+    'gifts_table_description' => 'Description',
+    'gifts_table_actions' => 'Actions',
 
     // debts
     'debt_delete_confirmation' => 'Etes-vous sûr de vouloir effacer cette dette ?',
@@ -239,13 +277,19 @@ return [
     'debt_add_success' => 'La dette a été ajoutée avec succès',
     'debt_title' => 'Dettes',
     'debt_add_cta' => 'Ajouter une dette',
-    'debt_you_owe' => 'Vous devez $:amount',
-    'debt_they_owe' => ':name vous doit $:amount',
+    'debt_you_owe' => 'Vous devez :amount',
+    'debt_they_owe' => ':name vous doit :amount',
     'debt_add_title' => 'Gestion des dettes',
     'debt_add_you_owe' => 'Vous devez :name',
     'debt_add_they_owe' => ':name vous doit',
-    'debt_add_amount' => 'la somme de (en dollars)',
+    'debt_add_amount' => 'la somme de',
     'debt_add_reason' => 'pour la raison suivante (optionelle)',
     'debt_add_add_cta' => 'Ajouter la dette',
+    'debt_edit_update_cta' => 'Mettre à jour la dette',
+    'debt_edit_success' => 'La dette a été modifiée avec succès',
+    'debts_blank_title' => 'Gérez les dettes que vous devez à :name ou que :name vous doit',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 
 ];

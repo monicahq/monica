@@ -33,7 +33,9 @@
         @if (is_null($contact->getEmail()))
         {{ trans('people.information_no_email_defined') }}
         @else
-        {{ $contact->getEmail() }}
+        <a href="mailto:{{ $contact->getEmail() }}">
+          {{ $contact->getEmail() }}
+        </a>
         @endif
       </li>
 
@@ -43,12 +45,32 @@
         @if (is_null($contact->getPhone()))
         {{ trans('people.information_no_phone_defined') }}
         @else
-        {{ $contact->getPhone() }}
+        <a href="tel:{{ $contact->getPhone() }}">
+          {{ $contact->getPhone() }}
+        </a>
+        @endif
+      </li>
+
+      {{-- Facebook --}}
+      <li>
+        <i class="fa fa-facebook-official"></i>
+        @if (is_null($contact->getFacebook()))
+        {{ trans('people.information_no_facebook_defined') }}
+        @else
+        <a href="{{ $contact->getFacebook() }}">Facebook</a>
+        @endif
+      </li>
+
+      {{-- Twitter --}}
+      <li>
+        <i class="fa fa-twitter-square"></i>
+        @if (is_null($contact->getTwitter()))
+        {{ trans('people.information_no_twitter_defined') }}
+        @else
+        <a href="{{ $contact->getTwitter() }}">Twitter</a>
         @endif
       </li>
     </ul>
-
-    <a href="/people/{{ $contact->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
   </div>
 
 </div>

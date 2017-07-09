@@ -2,19 +2,19 @@
 
 {{ trans('mail.want_reminded_of') }}:
 
-{{ $reminder->getTitle() }}
+{!! $reminder->getTitle() !!}
 
 {{ trans('mail.for') }}
 
-{{ $contact->getCompleteName() }}
+{{ $contact->getCompleteName($user->name_order) }}
 
 {{-- COMMENTS --}}
 @if (! is_null($reminder->getDescription()))
 COMMENT:
-{{ $reminder->getDescription() }}
+{!! $reminder->getDescription() !!}
 @endif
 
 -------
 
 {{ trans('mail.footer_contact_info') }}
-{{ env('APP_URL') }}/people/{{ $contact->id }}
+{{ config('app.url') }}/people/{{ $contact->id }}

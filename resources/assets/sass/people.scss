@@ -4,15 +4,7 @@
   }
 
   .main-content {
-    margin-top: 50px;
-  }
-
-  #search-list {
-    .search {
-      margin-bottom: 20px;
-      padding: 15px;
-      width: 100%;
-    }
+    margin-top: 20px;
   }
 
   .sidebar {
@@ -34,6 +26,10 @@
         left: 0;
         position: absolute;
       }
+
+      .number-contacts-per-tag {
+        float: right;
+      }
     }
   }
 
@@ -42,12 +38,90 @@
     border-radius: 3px;
   }
 
+  .clear-filter {
+    border: 1px solid #eee;
+    position: relative;
+    padding: 6px;
+    border-radius: 3px;
+
+    a {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
   .people-list-item {
     border-bottom: 1px solid #eee;
     padding: 10px;
 
     &:hover {
       background-color: #f7fbfc;
+    }
+
+    &.sorting {
+      background-color: #f6f8fa;
+      position: relative;
+      padding: 10px;
+
+      .options {
+        display: inline;
+        position: absolute;
+        right: 10px;
+
+        .dropdown-btn {
+          &:after {
+            content: "\f0d7";
+            font-family: FontAwesome;
+            margin-left: 5px;
+          }
+        }
+
+        .dropdown-item {
+          padding: 3px 20px 3px 10px;
+
+          &:before {
+            content: '\f00c';
+            font-family: FontAwesome;
+            margin-right: 5px;
+            color: #fff;
+          }
+
+          &:hover {
+            background-color: #0366d6;
+            color: #fff;
+          }
+
+          &.selected {
+            &:before {
+              color: #999;
+            }
+          }
+        }
+      }
+    }
+
+    .avatar {
+      background-color: #93521e;
+      border-radius: 3px;
+      color: #fff;
+      display: inline-block;
+      font-size: 15px;
+      height: 43px;
+      margin-right: 5px;
+      padding-left: 5px;
+      padding-top: 10px;
+      vertical-align: middle;
+      width: 43px;
+
+      &.one-letter {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+
+    img {
+      border-radius: 3px;
+      margin-right: 5px;
     }
 
     a {
@@ -64,8 +138,16 @@
       color: #999;
       font-style: italic;
       float: right;
+      text-align: right;
       position: relative;
-      top: 3px;
+
+      span {
+        display: block;
+      }
+    }
+
+    .people-list-item-information span {
+      font-size: 0.8rem;
     }
   }
 }
@@ -99,20 +181,8 @@
   .pagehead {
     background-color: #f9f9fb;
     border-bottom: 1px solid #eee;
-
-    .back-to-list {
-      margin-bottom: 10px;
-      margin-top: 30px;
-
-      span {
-        font-size: 13px;
-
-        &::after {
-          content: '/';
-          margin-left: 5px;
-        }
-      }
-    }
+    position: relative;
+    padding-bottom: 20px;
 
     .people-profile-information {
       margin-bottom: 10px;
@@ -143,15 +213,25 @@
       }
 
       h2 {
-        display: inline;
+        display: block;
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
         padding-left: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: calc(100% - 245px);
+        margin-right: -9999px;
+      }
+
+      @media (max-width: 480px) {
+        h2 { width: 100% }
       }
 
       .profile-detail-summary {
         padding-left: 100px;
+        margin-top: 3px;
 
         li {
           &:not(:last-child) {
@@ -166,6 +246,45 @@
           }
         }
       }
+
+      #tagsForm {
+        padding-left: 100px;
+        position: relative;
+
+        #tags_tagsinput {
+          height: 40px!important;
+          min-height: 40px!important;
+          width: 370px!important;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .tagsFormActions {
+          display: inline;
+          position: relative;
+          top: -17px;
+        }
+      }
+
+      .tags {
+        padding: 0;
+        padding-left: 100px;
+        list-style: none;
+        line-height: 20px;
+        margin: 0;
+        overflow: hidden;
+        margin-top: 8px;
+
+        li {
+          float: left;
+        }
+      }
+    }
+
+    .edit-information {
+      position: absolute;
+      right: 0;
+      top: 14px;
     }
   }
 
@@ -173,6 +292,12 @@
     background-color: #fff;
     padding-bottom: 20px;
     padding-top: 40px;
+
+    .delete-contact {
+      font-size: 12px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
 
     .section-title {
       position: relative;
@@ -260,7 +385,8 @@
       }
     }
 
-    .people-information {
+    .people-information,
+    .work {
       color: #999;
       font-size: 12px;
 
@@ -423,16 +549,6 @@
       padding: 5px 0 0;
     }
 
-    .gift-list-item-value {
-      background-color: #ecf9ff;
-      border: 1px solid #eee;
-      border-radius: 3px;
-      display: inline;
-      font-size: 12px;
-      margin-left: 10px;
-      padding: 0 6px;
-    }
-
     .gift-list-item-information {
       display: inline;
       margin-left: 10px;
@@ -480,15 +596,25 @@
 
   .activities,
   .tasks,
-  .debts {
-    .activity-date {
+  .debts,
+  .gifts {
+    .date {
       color: #777;
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
     }
 
-    .activity-actions {
+    .value {
+      background-color: #ecf9ff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: inline;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+
+    .list-actions {
       position: relative;
       text-align: center;
       width: 60px;
@@ -518,6 +644,13 @@
     }
   }
 
+  .gifts {
+    .for {
+      font-style: italic;
+      margin-left: 10px;
+    }
+  }
+
   .debts {
     .debts-list {
       .debt-nature {
@@ -527,6 +660,12 @@
   }
 }
 
+.create-people {
+  .import {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+}
 
 // MOBILE
 @media (max-width: 480px) {
@@ -541,6 +680,12 @@
         padding: 6px 0;
       }
     }
+
+    .people-list-item {
+      .people-list-item-information {
+        display: none;
+      }
+    }
   }
 
   .people-show {
@@ -550,12 +695,32 @@
         margin-top: 10px;
 
         h2 {
+          padding-left: 80px;
+
           span {
             display: none;
           }
         }
 
+        #tagsForm {
+          display: block;
+          margin-top: 40px;
+          padding-left: 0px;
+
+          #tags_tagsinput {
+            width: 100% !important;
+          }
+
+          .tagsFormActions {
+            display: block;
+            margin-top: 20px;
+          }
+        }
+
         .profile-detail-summary {
+          padding-left: 0;
+          margin-top: 10px;
+
           li {
             display: block;
             margin-right: 0;
@@ -568,32 +733,28 @@
             }
           }
         }
+
+        .avatar {
+          height: 67px;
+          width: 67px;
+          padding-top: 11px;
+        }
+
+        .tags {
+          padding-left: 80px;
+        }
+      }
+
+      .edit-information {
+        position: relative;
+        width: 100%;
+        margin-bottom: 10px;
       }
     }
 
     .main-content {
       &.modal {
         margin-top: 0;
-
-        .dates {
-          .form-inline {
-            input[type="number"] {
-              display: inline;
-            }
-
-            input[type="date"] {
-              margin-left: 0;
-            }
-          }
-        }
-
-        .form-group.actions {
-          .btn {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-          }
-        }
       }
 
       &.dashboard {

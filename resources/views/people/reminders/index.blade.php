@@ -10,11 +10,11 @@
 </div>
 
 
-@if ($contact->getNumberOfReminders() == 0)
+@if ($contact->reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
@@ -28,22 +28,22 @@
     <table class="table table-sm table-hover">
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Frequency</th>
-          <th>Content</th>
-          <th class="actions">Actions</th>
+          <th>{{ trans('people.reminders_date') }}</th>
+          <th>{{ trans('people.reminders_frequency') }}</th>
+          <th>{{ trans('people.reminders_content') }}</th>
+          <th class="actions">{{ trans('people.reminders_actions') }}</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($contact->getReminders() as $reminder)
+        @foreach($contact->reminders as $reminder)
           <tr>
-            <td class="date">{{ $reminder->getNextExpectedDate() }}</td>
+            <td class="date">{{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}</td>
 
             <td class="date">
               @if ($reminder->frequency_type != 'one_time')
                 {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
               @else
-                One time
+                {{ trans('people.reminders_one_time') }}
               @endif
             </td>
 
@@ -53,11 +53,14 @@
 
             <td class="actions">
 
+              {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
+              @if ($reminder->is_birthday == 'false')
               <div class="reminder-actions">
                 <ul class="horizontal">
                   <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
                 </ul>
               </div>
+              @endif
 
             </td>
 

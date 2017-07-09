@@ -4,16 +4,16 @@
     {{ trans('people.notes_title') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/note/add" class="btn">{{ trans('people.notes_add_one_more') }}</a>
+      <a href="{{ route('people.notes.add', $contact) }}" class="btn">{{ trans('people.notes_add_one_more') }}</a>
     </span>
   </h3>
 </div>
 
-@if ($contact->getNotes()->count() == 0)
+@if ($contact->notes->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
+      <a href="{{ route('people.notes.add', $contact) }}">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
     </div>
   </div>
 
@@ -22,12 +22,14 @@
   <div class="col-xs-12">
 
     <ul class="notes-list">
-      @foreach ($contact->getNotes() as $note)
+      @foreach ($contact->notes as $note)
         <li>
           {{ $note->getBody() }}
           <span class="note-date">
             {{ $note->getCreatedAt(Auth::user()->locale) }}
-            <a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
+            <a href="{{ route('people.notes.edit', [$contact, $note]) }}">{{ trans('app.edit') }}</a>
+            |
+            <a href="{{ route('people.notes.delete', [$contact, $note]) }}" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
           </span>
         </li>
       @endforeach

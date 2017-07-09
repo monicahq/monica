@@ -31,11 +31,12 @@ class SignificantOtherTest extends TestCase
         );
     }
 
-    public function testGetBirthdateReturnsNullIfNoBirthdateIsDefined()
+    public function testGetBirthdateReturnsEmptyCarbonInstanceIfNoBirthdateIsDefined()
     {
         $significantOther = new SignificantOther;
 
-        $this->assertNull($significantOther->getBirthdate());
+        $this->assertInstanceOf(Carbon::class, $significantOther->getBirthdate());
+        $this->assertTrue($significantOther->getBirthdate()->isToday());
     }
 
     public function testGetBirthdateReturnsCarbonObjectIfBirthdateDefined()
@@ -51,7 +52,7 @@ class SignificantOtherTest extends TestCase
         $significantOther->birthdate = null;
 
         $this->assertNull(
-            $significantOther->getAge()
+            $significantOther->age
         );
     }
 
