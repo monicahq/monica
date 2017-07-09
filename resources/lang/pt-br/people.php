@@ -199,7 +199,7 @@ return [
     'activity_type_group_sport' => 'Esporte',
     'activity_type_group_food' => 'Comida',
     'activity_type_group_cultural_activities' => 'Atividades culturais',
-    'activity_type_just_hanged_out' => 'apenas sai',
+    'activity_type_just_hung_out' => 'apenas sai',
     'activity_type_watched_movie_at_home' => 'assisti um filme em casa',
     'activity_type_talked_at_home' => 'apenas fiquei em casa',
     'activity_type_did_sport_activities_together' => 'fizemos algum esporte juntos',
