@@ -231,7 +231,7 @@ return [
     'activities_delete_success' => 'Активность была удалена',
 
     // notes
-    'notes_add_success' => 'Заметка была добавлена',
+    'notes_create_success' => 'Заметка была добавлена',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'Заметка была удалена',
     'notes_add_title' => 'Добавить заметку о :name',
