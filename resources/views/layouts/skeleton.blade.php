@@ -34,9 +34,8 @@
     {{-- THE JS FILE OF THE APP --}}
     <script src="{{ elixir('js/app.js') }}"></script>
 
-    {{-- SPECIFIC TO TAGS --}}
-    <script src="/js/jquery.tagsinput.js"></script>
-    <script src="/js/tags.js"></script>
+    {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
+    <script src="/js/vanilla.js"></script>
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))

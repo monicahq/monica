@@ -217,7 +217,7 @@ class PeopleController extends Controller
             $contact->country_id = null;
         }
 
-        $birthdateApproximate = $request->input('birthdateApproximate');
+        $birthdateApproximate = $request->input('is_birthdate_approximate');
 
         if ($birthdateApproximate == 'approximate') {
             $age = $request->input('age');
