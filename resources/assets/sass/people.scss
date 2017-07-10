@@ -595,6 +595,7 @@
   }
 
   .activities,
+  .reminders,
   .tasks,
   .debts,
   .gifts {
@@ -605,6 +606,7 @@
       width: 100px;
     }
 
+    .frequency-type,
     .value {
       background-color: #ecf9ff;
       border: 1px solid #eee;
@@ -631,6 +633,10 @@
   }
 
   .reminders {
+    .frequency-type {
+      white-space: nowrap;
+    }
+
     input[type="date"] {
       margin-bottom: 20px;
       width: 170px;
