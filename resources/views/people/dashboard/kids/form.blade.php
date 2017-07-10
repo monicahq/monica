@@ -56,7 +56,7 @@
                 <div class="form-inline">
                     {{ trans('people.kids_add_probably') }}
 
-                    <input type="number" class="form-control" name="age" value="{{ old('age') ?? $kid->age ?? 1 }}" min="0" max="99">
+                    <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $kid->age ?? 1 }}" min="0" max="99">
 
                     {{ trans('people.kids_add_probably_yo') }}
                 </div>
@@ -72,7 +72,7 @@
 
                 <div class="form-inline">
                     {{ trans('people.kids_add_exact') }}
-                    <input type="date" name="birthdate" class="form-control"
+                    <input type="date" name="birthdate" class="form-control" id="specificDate"
                            value="{{ old('birthdate') ?? $kid->birthdate->format('Y-m-d') ?? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
                            min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
                            max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
