@@ -21,6 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
+        'name_order' => 'firstname_first',
         'account_id' => factory('App\Account')->create()->id
     ];
 });
@@ -61,6 +62,8 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 $factory->define(App\Contact::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
+        'first_name' => 'John',
+        'last_name' => 'Doe',
         'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
     ];
 });

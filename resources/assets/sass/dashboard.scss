@@ -184,6 +184,17 @@
       position: relative;
       margin-right: 10px;
       padding-left: 25px;
+
+      a {
+        color: #717171;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          color: #717171;
+          background-color: transparent;
+        }
+      }
     }
   }
 }
