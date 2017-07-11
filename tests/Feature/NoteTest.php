@@ -67,7 +67,6 @@ class NoteTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->id.'/notes/store', $params);
-
         $response->assertRedirect('/people/'.$contact->id);
 
         // Assert the note has been added for the correct user.
@@ -77,17 +76,22 @@ class NoteTest extends FeatureTestCase
 
         $this->assertDatabaseHas('notes', $params);
 
+        // Check that the Contact view contains the newly created note
         $response = $this->get('people/'.$contact->id);
-
         $response->assertSee($noteBody);
 
-        // make sure an event has been created for this action
+        // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
         $eventParams['object_type'] = 'note';
         $eventParams['nature_of_operation'] = 'create';
-
         $this->assertDatabaseHas('events', $eventParams);
+
+        // Visit the dashboard and checks that the note event appears on the
+        // dashboard
+        $response = $this->get('/dashboard');
+        $response->assertSee('A note about John Doe has been added');
+        $response->assertSee('<a href="/people/'.$contact->id.'" id="note_create');
     }
 
     public function test_user_can_edit_a_note()
@@ -127,6 +131,12 @@ class NoteTest extends FeatureTestCase
         $eventParams['nature_of_operation'] = 'update';
 
         $this->assertDatabaseHas('events', $eventParams);
+
+        // Visit the dashboard and checks that the note event appears on the
+        // dashboard
+        $response = $this->get('/dashboard');
+        $response->assertSee('A note about John Doe has been updated');
+        $response->assertSee('<a href="/people/'.$contact->id.'" id="note_update_'.$note->id.'">');
     }
 
     public function test_user_can_delete_a_note()
