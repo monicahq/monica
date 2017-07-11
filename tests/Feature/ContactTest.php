@@ -27,11 +27,6 @@ class ContactTest extends FeatureTestCase
         return [$user, $contact];
     }
 
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
     public function test_user_can_see_contacts()
     {
         list($user, $contact) = $this->fetchUser();
@@ -39,7 +34,7 @@ class ContactTest extends FeatureTestCase
         $response = $this->get('/people');
 
         $response->assertSee(
-            $contact->first_name . ' ' . $contact->middle_name . ' ' . $contact->last_name
+            $contact->getCompleteName()
         );
     }
 
