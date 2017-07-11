@@ -6,7 +6,7 @@ use App\Contact;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class NoteTest extends FeatureTestCase
+class ActivityTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -26,7 +26,7 @@ class NoteTest extends FeatureTestCase
         return [$user, $contact];
     }
 
-    public function test_user_sees_empty_state_when_no_notes_are_available()
+    public function test_user_sees_empty_state_when_no_activities_are_available()
     {
         list($user, $contact) = $this->fetchUser();
 
@@ -36,98 +36,105 @@ class NoteTest extends FeatureTestCase
 
         // is the default blank state present?
         $response->assertSee(
-            'Add a note'
+            'Add an activity'
         );
 
         // is the button to add a note present?
-        $response->assertSee('Add another note');
+        $response->assertSee('Add activity');
     }
 
-    public function test_user_sees_add_note_screen()
+    public function test_user_sees_add_activity_screen()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id.'/notes/add');
+        $response = $this->get('/people/'.$contact->id.'/activities/add');
 
         $response->assertStatus(200);
 
         $response->assertSee(
-            'Add a note about John'
+            'What did you do with John?'
         );
     }
 
-    public function test_user_can_add_a_note()
+    public function test_user_can_add_an_activity()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $noteBody = 'This is a note that I would like to see';
+        $activityTitle = 'This is the title';
+        $activityDate = \Carbon\Carbon::now();
 
         $params = [
-            'body' => $noteBody
+            'summary' => $activityTitle,
+            'date_it_happened' => $activityDate
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/notes/store', $params);
+        $response = $this->post('/people/'.$contact->id.'/activities/store', $params);
         $response->assertRedirect('/people/'.$contact->id);
 
         // Assert the note has been added for the correct user.
         $params['account_id'] = $user->account_id;
         $params['contact_id'] = $contact->id;
-        $params['body'] = $noteBody;
+        $params['summary'] = $activityTitle;
+        $params['date_it_happened'] = $activityDate;
 
-        $this->assertDatabaseHas('notes', $params);
+        $this->assertDatabaseHas('activities', $params);
 
         // Check that the Contact view contains the newly created note
         $response = $this->get('people/'.$contact->id);
-        $response->assertSee($noteBody);
+        $response->assertSee($activityTitle);
 
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'note';
+        $eventParams['object_type'] = 'activity';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
 
         // Visit the dashboard and checks that the note event appears on the
         // dashboard
         $response = $this->get('/dashboard');
-        $response->assertSee('A note about John Doe has been added');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="note_create');
+        $response->assertSee('An activity about John Doe has been added');
+        $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_create');
     }
 
-    public function test_user_can_edit_a_note()
+    public function test_user_can_edit_an_activity()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $activity = factory(\App\Activity::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'summary' => 'This is the title',
+            'date_it_happened' => \Carbon\Carbon::now()
         ]);
 
-        // check that we can access the edit note view
-        $response = $this->get('/people/'.$contact->id.'/notes/'.$note->id.'/edit');
+        // check that we can access the edit activity view
+        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/edit');
         $response->assertStatus(200);
 
-        // now edit the note
+        // now edit the activity
         $params = [
-            'body' => 'this is another test'
+            'summary' => 'this is another test',
+            'date_it_happened' => \Carbon\Carbon::now(),
+            'activity_type_id' => null,
+            'description' => null
         ];
 
-        $this->put('/people/'.$contact->id.'/notes/'.$note->id, $params);
+        $this->put('/people/'.$contact->id.'/activities/'.$activity->id, $params);
 
         // see if the change is in the database
         $newParams['account_id'] = $user->account_id;
         $newParams['contact_id'] = $contact->id;
-        $newParams['id'] = $note->id;
-        $newParams['body'] = 'this is another test';
+        $newParams['id'] = $activity->id;
+        $newParams['summary'] = 'this is another test';
 
-        $this->assertDatabaseHas('notes', $newParams);
+        $this->assertDatabaseHas('activities', $newParams);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'note';
-        $eventParams['object_id'] = $note->id;
+        $eventParams['object_type'] = 'activity';
+        $eventParams['object_id'] = $activity->id;
         $eventParams['nature_of_operation'] = 'update';
 
         $this->assertDatabaseHas('events', $eventParams);
@@ -135,38 +142,39 @@ class NoteTest extends FeatureTestCase
         // Visit the dashboard and checks that the note event appears on the
         // dashboard
         $response = $this->get('/dashboard');
-        $response->assertSee('A note about John Doe has been updated');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="note_update_'.$note->id.'">');
+        $response->assertSee('An activity about John Doe has been updated');
+        $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_update_'.$activity->id.'">');
     }
 
-    public function test_user_can_delete_a_note()
+    public function test_user_can_delete_an_activity()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $activity = factory(\App\Activity::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'summary' => 'This is the title',
+            'date_it_happened' => \Carbon\Carbon::now()
         ]);
 
         $response = $this->get('/people/'.$contact->id);
 
         // make sure the link to delete the note is on the page
         $response->assertSee(
-            'people/'.$contact->id.'/notes/'.$note->id.'/delete'
+            'people/'.$contact->id.'/activities/'.$activity->id.'/delete'
         );
 
-        $response = $this->get('/people/'.$contact->id.'/notes/'.$note->id.'/delete');
+        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/delete');
         $response->assertStatus(302);
 
-        $params['id'] = $note->id;
+        $params['id'] = $activity->id;
 
-        $this->assertDatabaseMissing('notes', $params);
+        $this->assertDatabaseMissing('activities', $params);
 
-        // make sure no event is in the database about this object
+        // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $note->id;
+        $eventParams['object_id'] = $activity->id;
 
         $this->assertDatabaseMissing('events', $eventParams);
     }
