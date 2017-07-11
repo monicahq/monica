@@ -60,10 +60,10 @@ class NoteTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $body = 'This is a note that I would like to see';
+        $noteBody = 'This is a note that I would like to see';
 
         $params = [
-            'body' => $body
+            'body' => $noteBody
         ];
 
         $response = $this->post('/people/'.$contact->id.'/notes/store', $params);
@@ -73,13 +73,13 @@ class NoteTest extends FeatureTestCase
         // Assert the note has been added for the correct user.
         $params['account_id'] = $user->account_id;
         $params['contact_id'] = $contact->id;
-        $params['body'] = $body;
+        $params['body'] = $noteBody;
 
         $this->assertDatabaseHas('notes', $params);
 
         $response = $this->get('people/'.$contact->id);
 
-        $response->assertSee($body);
+        $response->assertSee($noteBody);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
