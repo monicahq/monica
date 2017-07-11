@@ -116,12 +116,12 @@ class NoteTest extends FeatureTestCase
         $this->put('/people/'.$contact->id.'/notes/'.$note->id, $params);
 
         // see if the change is in the database
-        $new_params['account_id'] = $user->account_id;
-        $new_params['contact_id'] = $contact->id;
-        $new_params['id'] = $note->id;
-        $new_params['body'] = 'this is another test';
+        $newParams['account_id'] = $user->account_id;
+        $newParams['contact_id'] = $contact->id;
+        $newParams['id'] = $note->id;
+        $newParams['body'] = 'this is another test';
 
-        $this->assertDatabaseHas('notes', $new_params);
+        $this->assertDatabaseHas('notes', $newParams);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
@@ -163,7 +163,7 @@ class NoteTest extends FeatureTestCase
 
         $this->assertDatabaseMissing('notes', $params);
 
-        // make sure an event has been created for this action
+        // make sure no event is in the database about this object
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
         $eventParams['object_id'] = $note->id;

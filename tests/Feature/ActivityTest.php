@@ -101,36 +101,40 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $activity = factory(\App\Activity::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'summary' => 'This is the title',
+            'date_it_happened' => \Carbon\Carbon::now()
         ]);
 
-        // check that we can access the edit note view
-        $response = $this->get('/people/'.$contact->id.'/notes/'.$note->id.'/edit');
+        // check that we can access the edit activity view
+        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/edit');
         $response->assertStatus(200);
 
-        // now edit the note
+        // now edit the activity
         $params = [
-            'body' => 'this is another test'
+            'summary' => 'this is another test',
+            'date_it_happened' => \Carbon\Carbon::now(),
+            'activity_type_id' => null,
+            'description' => null
         ];
 
-        $this->put('/people/'.$contact->id.'/notes/'.$note->id, $params);
+        $this->put('/people/'.$contact->id.'/activities/'.$activity->id, $params);
 
         // see if the change is in the database
-        $new_params['account_id'] = $user->account_id;
-        $new_params['contact_id'] = $contact->id;
-        $new_params['id'] = $note->id;
-        $new_params['body'] = 'this is another test';
+        $newParams['account_id'] = $user->account_id;
+        $newParams['contact_id'] = $contact->id;
+        $newParams['id'] = $activity->id;
+        $newParams['summary'] = 'this is another test';
 
-        $this->assertDatabaseHas('notes', $new_params);
+        $this->assertDatabaseHas('activities', $newParams);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'note';
-        $eventParams['object_id'] = $note->id;
+        $eventParams['object_type'] = 'activity';
+        $eventParams['object_id'] = $activity->id;
         $eventParams['nature_of_operation'] = 'update';
 
         $this->assertDatabaseHas('events', $eventParams);
@@ -138,38 +142,39 @@ class ActivityTest extends FeatureTestCase
         // Visit the dashboard and checks that the note event appears on the
         // dashboard
         $response = $this->get('/dashboard');
-        $response->assertSee('A note about John Doe has been updated');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="note_update_'.$note->id.'">');
+        $response->assertSee('An activity about John Doe has been updated');
+        $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_update_'.$activity->id.'">');
     }
 
-    public function test_user_can_delete_a_note()
+    public function test_user_can_delete_an_activity()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $activity = factory(\App\Activity::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'summary' => 'This is the title',
+            'date_it_happened' => \Carbon\Carbon::now()
         ]);
 
         $response = $this->get('/people/'.$contact->id);
 
         // make sure the link to delete the note is on the page
         $response->assertSee(
-            'people/'.$contact->id.'/notes/'.$note->id.'/delete'
+            'people/'.$contact->id.'/activities/'.$activity->id.'/delete'
         );
 
-        $response = $this->get('/people/'.$contact->id.'/notes/'.$note->id.'/delete');
+        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/delete');
         $response->assertStatus(302);
 
-        $params['id'] = $note->id;
+        $params['id'] = $activity->id;
 
-        $this->assertDatabaseMissing('notes', $params);
+        $this->assertDatabaseMissing('activities', $params);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $note->id;
+        $eventParams['object_id'] = $activity->id;
 
         $this->assertDatabaseMissing('events', $eventParams);
     }
