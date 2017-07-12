@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Remove beginning / ending spaces in names when adding / saving a contact.
 
 RELEASED VERSIONS:
 
