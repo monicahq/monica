@@ -173,6 +173,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the calls records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany('App\Call');
+    }
+
+    /**
      * Sort the contacts according a given criteria
      * @param Builder $builder
      * @param string $criteria

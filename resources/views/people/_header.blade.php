@@ -57,7 +57,14 @@
             </li>
           </ul>
 
-          <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+          <ul class="horizontal quick-actions">
+            <li>
+              <a href="#logCallModal" class="btn edit-information" data-toggle="modal"><i class="fa fa-volume-control-phone"></i> Quick log call</a>
+            </li>
+            <li>
+              <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

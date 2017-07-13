@@ -71,4 +71,7 @@
 
     </div>
   </div>
+
+  @include('people.modal.log_call')
+
 @endsection
