@@ -2913,6 +2913,7 @@ button.close {
 }
 
 .modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .3s ease-out;
   transition: -webkit-transform .3s ease-out;
   transition: transform .3s ease-out;
   transition: transform .3s ease-out, -webkit-transform .3s ease-out;
@@ -3129,9 +3130,9 @@ button.close {
   }
 }
 
-/*! Hint.css - v2.5.0 - 2017-04-23
+/*! Hint.css - v2.4.1 - 2016-11-08
 * http://kushagragour.in/lab/hint/
-* Copyright (c) 2017 Kushagra Gour */
+* Copyright (c) 2016 Kushagra Gour */
 [class*=hint--] {
   position: relative;
   display: inline-block;
@@ -3145,13 +3146,16 @@ button.close {
   opacity: 0;
   z-index: 1000000;
   pointer-events: none;
+  -webkit-transition: .3s ease;
   transition: .3s ease;
+  -webkit-transition-delay: 0s;
   transition-delay: 0s;
 }
 
 [class*=hint--]:hover:after, [class*=hint--]:hover:before {
   visibility: visible;
   opacity: 1;
+  -webkit-transition-delay: .1s;
   transition-delay: .1s;
 }
 
@@ -3551,10 +3555,12 @@ button.close {
 }
 
 .hint--no-animate:after, .hint--no-animate:before {
+  -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
 
 .hint--bounce:after, .hint--bounce:before {
+  -webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24), -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
@@ -7625,6 +7631,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   -ms-user-select: none;
   user-select: none;
   background-color: #eee;
+  background-image: -webkit-linear-gradient(#fcfcfc, #eee);
   background-image: linear-gradient(#fcfcfc, #eee);
   border: 1px solid #d5d5d5;
   border-radius: 3px;
@@ -7637,6 +7644,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn:hover {
   background-color: #ddd;
+  background-image: -webkit-linear-gradient(#eee, #ddd);
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc;
   color: #333;
@@ -7645,6 +7653,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary {
   background-color: #60b044;
+  background-image: -webkit-linear-gradient(#8add6d, #60b044);
   background-image: linear-gradient(#8add6d, #60b044);
   border-color: #5ca941;
   color: #fff;
@@ -7653,6 +7662,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-primary:hover {
   background-color: #569e3d;
+  background-image: -webkit-linear-gradient(#79d858, #569e3d);
   background-image: linear-gradient(#79d858, #569e3d);
   border-color: #4a993e;
   color: #fff;
@@ -7664,6 +7674,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .btn-danger:hover {
   background-color: #b33630;
+  background-image: -webkit-linear-gradient(#dc5f59, #b33630);
   background-image: linear-gradient(#dc5f59, #b33630);
   border-color: #cd504a;
   color: #fff;
@@ -8546,7 +8557,8 @@ header .main-cta {
 .people-show .reminders .date,
 .people-show .tasks .date,
 .people-show .debts .date,
-.people-show .gifts .date {
+.people-show .gifts .date,
+.people-show .calls .date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
@@ -8562,7 +8574,9 @@ header .main-cta {
 .people-show .debts .frequency-type,
 .people-show .debts .value,
 .people-show .gifts .frequency-type,
-.people-show .gifts .value {
+.people-show .gifts .value,
+.people-show .calls .frequency-type,
+.people-show .calls .value {
   background-color: #ecf9ff;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -8575,7 +8589,8 @@ header .main-cta {
 .people-show .reminders .list-actions,
 .people-show .tasks .list-actions,
 .people-show .debts .list-actions,
-.people-show .gifts .list-actions {
+.people-show .gifts .list-actions,
+.people-show .calls .list-actions {
   position: relative;
   text-align: center;
   width: 60px;
@@ -8585,7 +8600,8 @@ header .main-cta {
 .people-show .reminders .list-actions a:first-child,
 .people-show .tasks .list-actions a:first-child,
 .people-show .debts .list-actions a:first-child,
-.people-show .gifts .list-actions a:first-child {
+.people-show .gifts .list-actions a:first-child,
+.people-show .calls .list-actions a:first-child {
   margin-right: 5px;
 }
 
@@ -8593,9 +8609,19 @@ header .main-cta {
 .people-show .reminders .list-actions a.edit,
 .people-show .tasks .list-actions a.edit,
 .people-show .debts .list-actions a.edit,
-.people-show .gifts .list-actions a.edit {
+.people-show .gifts .list-actions a.edit,
+.people-show .calls .list-actions a.edit {
   position: relative;
   top: 1px;
+}
+
+.people-show .activities .empty,
+.people-show .reminders .empty,
+.people-show .tasks .empty,
+.people-show .debts .empty,
+.people-show .gifts .empty,
+.people-show .calls .empty {
+  font-style: italic;
 }
 
 .people-show .reminders .frequency-type {
@@ -9283,6 +9309,36 @@ header .main-cta {
   text-align: right;
 }
 
+.modal h5 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.modal label {
+  padding-left: 0;
+}
+
+.modal .close {
+  position: absolute;
+  right: 19px;
+  top: 14px;
+  font-size: 30px;
+}
+
+.modal.log-call .date-it-happened {
+  margin-top: 20px;
+}
+
+.modal.log-call .exact-date {
+  display: none;
+  margin-top: 20px;
+}
+
+.modal.log-call .exact-date input {
+  display: inline;
+  width: 165px;
+}
+
 .border-bottom {
   border-bottom: 1px solid #dfdfdf;
 }
@@ -9426,43 +9482,43 @@ input:disabled {
   margin: 20px 0;
 }
 
-.modal {
+.central-form {
   margin-top: 40px;
 }
 
-.modal h2 {
+.central-form h2 {
   font-weight: 400;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.modal .form-check-inline {
+.central-form .form-check-inline {
   margin-right: 10px;
 }
 
-.modal .form-group > label:not(:first-child) {
+.central-form .form-group > label:not(:first-child) {
   margin-top: 10px;
 }
 
-.modal input[type="radio"] {
+.central-form input[type="radio"] {
   margin-right: 5px;
 }
 
-.modal .dates .form-inline {
+.central-form .dates .form-inline {
   display: inline;
 }
 
-.modal .dates .form-inline input[type="number"] {
+.central-form .dates .form-inline input[type="number"] {
   margin: 0 10px;
   width: 52px;
 }
 
-.modal .dates .form-inline input[type="date"] {
+.central-form .dates .form-inline input[type="date"] {
   margin-left: 20px;
   margin-top: 10px;
 }
 
-.modal .form-group:not(:last-child) {
+.central-form .form-group:not(:last-child) {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
 }
@@ -9489,6 +9545,8 @@ input:disabled {
 .btn {
   color: #24292e;
   background-color: #eff3f6;
+  background-image: -webkit-linear-gradient(270deg, #fafbfc 0%, #eff3f6 90%);
+  background-image: -webkit-linear-gradient(top, #fafbfc 0%, #eff3f6 90%);
   background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
   position: relative;
   display: inline-block;
@@ -9517,6 +9575,8 @@ input:disabled {
 .btn:hover, .btn:visited {
   text-decoration: none;
   background-color: #e6ebf1;
+  background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
+  background-image: -webkit-linear-gradient(top, #f0f3f6 0%, #e6ebf1 90%);
   background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
   background-position: 0 -0.5em;
   background-repeat: repeat-x;
@@ -9531,17 +9591,27 @@ input:disabled {
 }
 
 .btn:disabled {
+  background-image: -webkit-linear-gradient(top, #63b175 0%, #61986e 90%);
   background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+}
+
+.btn:focus {
+  outline: none;
+  text-decoration: none;
 }
 
 .btn-primary {
   color: #fff;
   background-color: #28a745;
+  background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
+  background-image: -webkit-linear-gradient(top, #34d058 0%, #28a745 90%);
   background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
 }
 
 .btn-primary:hover {
   background-color: #269f42;
+  background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
+  background-image: -webkit-linear-gradient(top, #2fcb53 0%, #269f42 90%);
   background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
   background-position: 0 -0.5em;
   border-color: rgba(27, 31, 35, 0.5);

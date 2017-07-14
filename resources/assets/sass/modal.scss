@@ -1,0 +1,33 @@
+.modal {
+  h5 {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  label {
+    padding-left: 0;
+  }
+
+  .close {
+    position: absolute;
+    right: 19px;
+    top: 14px;
+    font-size: 30px;
+  }
+
+  &.log-call {
+    .date-it-happened {
+      margin-top: 20px;
+    }
+
+    .exact-date {
+      display: none;
+      margin-top: 20px;
+
+      input {
+        display: inline;
+        width: 165px;
+      }
+    }
+  }
+}

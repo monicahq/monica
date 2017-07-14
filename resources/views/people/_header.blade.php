@@ -49,6 +49,13 @@
 
           <ul class="horizontal profile-detail-summary">
             <li>
+              @if (is_null($contact->getLastCalled(Auth::user()->timezone)))
+                {{ trans('people.last_called_empty') }}
+              @else
+                {{ trans('people.last_called', ['date' => $contact->getLastCalled(Auth::user()->timezone)]) }}
+              @endif
+            </li>
+            <li>
               @if (is_null($contact->getLastActivityDate(Auth::user()->timezone)))
                 {{ trans('people.last_activity_date_empty') }}
               @else
@@ -58,9 +65,6 @@
           </ul>
 
           <ul class="horizontal quick-actions">
-            <li>
-              <a href="#logCallModal" class="btn edit-information" data-toggle="modal"><i class="fa fa-volume-control-phone"></i> Quick log call</a>
-            </li>
             <li>
               <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
             </li>

@@ -272,7 +272,7 @@ class ContactTest extends TestCase
 
         $timezone = 'America/New_York';
         $this->assertStringEndsWith(
-            'ago',
+            'Oct 29, 2013',
             $contact->getLastCalled($timezone)
         );
     }

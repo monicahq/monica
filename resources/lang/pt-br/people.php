@@ -44,6 +44,20 @@ return [
 
     // Header
     'edit_contact_information' => 'Editar informação do contato',
+    'call_button' => 'Log a call',
+
+    // Calls
+    'modal_call_title' => 'Log a call',
+    'modal_call_comment' => 'What did you talk about? (optional)',
+    'modal_call_date' => 'The phone call happened earlier today.',
+    'modal_call_change' => 'Change',
+    'modal_call_exact_date' => 'The phone call happened on',
+    'calls_add_success' => 'The phone call has been saved.',
+    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
+    'call_delete_success' => 'The call has been deleted successfully',
+    'call_title' => 'Phone calls',
+    'call_empty_comment' => 'No details',
+    'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
 
     // age - birthday
     'birthdate_not_set' => 'A data de nascimento não está definida',
