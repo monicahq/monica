@@ -1,6 +1,9 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to keep track of phone calls.
+* Fix Google Contact instructions link on the Import screen.
+* Input field are now automatically selected when a radio button is checked.
+* Many small bug fixes.
 
 RELEASED VERSIONS:
 

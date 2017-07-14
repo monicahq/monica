@@ -46,10 +46,10 @@ $font-size-root: 14px;
 // @import "bootstrap/media";
 // @import "bootstrap/list-group";
 // @import "bootstrap/responsive-embed";
-// @import "bootstrap/close";
+@import "../../vendor/bootstrap/scss/close";
 
 // Components w/ JavaScript
-// @import "bootstrap/modal";
+@import "../../vendor/bootstrap/scss/modal";
 // @import "bootstrap/tooltip";
 // @import "bootstrap/popover";
 // @import "bootstrap/carousel";

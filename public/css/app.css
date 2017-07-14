@@ -2870,6 +2870,174 @@ input[type="checkbox"].disabled {
   color: #843534;
 }
 
+.close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: .2;
+}
+
+.close:focus, .close:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: .5;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  -webkit-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+}
+
+.modal.in .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+}
+
+.modal-backdrop.fade {
+  opacity: 0;
+}
+
+.modal-backdrop.in {
+  opacity: 0.5;
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-header::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.modal-header .close {
+  margin-top: -2px;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-body {
+  position: relative;
+  padding: 15px;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-footer::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.modal-footer .btn + .btn {
+  margin-bottom: 0;
+  margin-left: 5px;
+}
+
+.modal-footer .btn-group .btn + .btn {
+  margin-left: -1px;
+}
+
+.modal-footer .btn-block + .btn-block {
+  margin-left: 0;
+}
+
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+@media (min-width: 544px) {
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+  .modal-sm {
+    width: 300px;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-lg {
+    width: 900px;
+  }
+}
+
 .hidden-xs-up {
   display: none !important;
 }
@@ -8087,7 +8255,7 @@ header .main-cta {
   float: left;
 }
 
-.people-show .pagehead .edit-information {
+.people-show .pagehead .quick-actions {
   position: absolute;
   right: 0;
   top: 14px;
@@ -8389,7 +8557,8 @@ header .main-cta {
 .people-show .reminders .date,
 .people-show .tasks .date,
 .people-show .debts .date,
-.people-show .gifts .date {
+.people-show .gifts .date,
+.people-show .calls .date {
   color: #777;
   font-size: 12px;
   margin-right: 10px;
@@ -8405,7 +8574,9 @@ header .main-cta {
 .people-show .debts .frequency-type,
 .people-show .debts .value,
 .people-show .gifts .frequency-type,
-.people-show .gifts .value {
+.people-show .gifts .value,
+.people-show .calls .frequency-type,
+.people-show .calls .value {
   background-color: #ecf9ff;
   border: 1px solid #eee;
   border-radius: 3px;
@@ -8418,7 +8589,8 @@ header .main-cta {
 .people-show .reminders .list-actions,
 .people-show .tasks .list-actions,
 .people-show .debts .list-actions,
-.people-show .gifts .list-actions {
+.people-show .gifts .list-actions,
+.people-show .calls .list-actions {
   position: relative;
   text-align: center;
   width: 60px;
@@ -8428,7 +8600,8 @@ header .main-cta {
 .people-show .reminders .list-actions a:first-child,
 .people-show .tasks .list-actions a:first-child,
 .people-show .debts .list-actions a:first-child,
-.people-show .gifts .list-actions a:first-child {
+.people-show .gifts .list-actions a:first-child,
+.people-show .calls .list-actions a:first-child {
   margin-right: 5px;
 }
 
@@ -8436,9 +8609,19 @@ header .main-cta {
 .people-show .reminders .list-actions a.edit,
 .people-show .tasks .list-actions a.edit,
 .people-show .debts .list-actions a.edit,
-.people-show .gifts .list-actions a.edit {
+.people-show .gifts .list-actions a.edit,
+.people-show .calls .list-actions a.edit {
   position: relative;
   top: 1px;
+}
+
+.people-show .activities .empty,
+.people-show .reminders .empty,
+.people-show .tasks .empty,
+.people-show .debts .empty,
+.people-show .gifts .empty,
+.people-show .calls .empty {
+  font-style: italic;
 }
 
 .people-show .reminders .frequency-type {
@@ -9126,6 +9309,36 @@ header .main-cta {
   text-align: right;
 }
 
+.modal h5 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.modal label {
+  padding-left: 0;
+}
+
+.modal .close {
+  position: absolute;
+  right: 19px;
+  top: 14px;
+  font-size: 30px;
+}
+
+.modal.log-call .date-it-happened {
+  margin-top: 20px;
+}
+
+.modal.log-call .exact-date {
+  display: none;
+  margin-top: 20px;
+}
+
+.modal.log-call .exact-date input {
+  display: inline;
+  width: 165px;
+}
+
 .border-bottom {
   border-bottom: 1px solid #dfdfdf;
 }
@@ -9269,43 +9482,43 @@ input:disabled {
   margin: 20px 0;
 }
 
-.modal {
+.central-form {
   margin-top: 40px;
 }
 
-.modal h2 {
+.central-form h2 {
   font-weight: 400;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.modal .form-check-inline {
+.central-form .form-check-inline {
   margin-right: 10px;
 }
 
-.modal .form-group > label:not(:first-child) {
+.central-form .form-group > label:not(:first-child) {
   margin-top: 10px;
 }
 
-.modal input[type="radio"] {
+.central-form input[type="radio"] {
   margin-right: 5px;
 }
 
-.modal .dates .form-inline {
+.central-form .dates .form-inline {
   display: inline;
 }
 
-.modal .dates .form-inline input[type="number"] {
+.central-form .dates .form-inline input[type="number"] {
   margin: 0 10px;
   width: 52px;
 }
 
-.modal .dates .form-inline input[type="date"] {
+.central-form .dates .form-inline input[type="date"] {
   margin-left: 20px;
   margin-top: 10px;
 }
 
-.modal .form-group:not(:last-child) {
+.central-form .form-group:not(:last-child) {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
 }
@@ -9380,6 +9593,11 @@ input:disabled {
 .btn:disabled {
   background-image: -webkit-linear-gradient(top, #63b175 0%, #61986e 90%);
   background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+}
+
+.btn:focus {
+  outline: none;
+  text-decoration: none;
 }
 
 .btn-primary {

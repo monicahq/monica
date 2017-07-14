@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\Call;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -272,7 +273,7 @@ class ContactTest extends TestCase
 
         $timezone = 'America/New_York';
         $this->assertStringEndsWith(
-            'ago',
+            'Oct 29, 2013',
             $contact->getLastCalled($timezone)
         );
     }
@@ -883,6 +884,31 @@ class ContactTest extends TestCase
 
         $this->assertFalse(
             $contact->hasDebt()
+        );
+    }
+
+    public function test_update_last_called_info_method()
+    {
+        $date = '2017-01-22 17:56:03';
+        $contact = new Contact;
+        $call = new Call;
+        $call->called_at = $date;
+
+        $contact->updateLastCalledInfo($call);
+
+        $this->assertEquals(
+            $date,
+            $contact->last_talked_to
+        );
+
+        $otherContact = new Contact;
+        $otherContact->last_talked_to = '1990-01-01 01:01:01';
+
+        $otherContact->updateLastCalledInfo($call);
+
+        $this->assertEquals(
+            $date,
+            $otherContact->last_talked_to
         );
     }
 }

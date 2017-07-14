@@ -28,7 +28,7 @@
     </div>
 
     <!-- Page content -->
-    <div class="main-content modal report">
+    <div class="main-content central-form report">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12">

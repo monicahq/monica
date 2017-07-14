@@ -281,7 +281,7 @@
       }
     }
 
-    .edit-information {
+    .quick-actions {
       position: absolute;
       right: 0;
       top: 14px;
@@ -598,7 +598,8 @@
   .reminders,
   .tasks,
   .debts,
-  .gifts {
+  .gifts,
+  .calls {
     .date {
       color: #777;
       font-size: 12px;
@@ -629,6 +630,10 @@
         position: relative;
         top: 1px;
       }
+    }
+
+    .empty {
+      font-style: italic;
     }
   }
 

@@ -94,6 +94,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/debt/{debt}/edit', 'People\\DebtController@edit')->name('.debt.edit');
         Route::put('/people/{contact}/debt/{debt}', 'People\\DebtController@update')->name('.debt.update');
         Route::get('/people/{contact}/debt/{debt}/delete', 'People\\DebtController@destroy')->name('.debt.delete');
+
+        // Phone calls
+        Route::post('/people/{contact}/call/store', 'People\\CallsController@store')->name('.call.store');
+        Route::get('/people/{contact}/call/{call}/delete', 'People\\CallsController@destroy')->name('.call.delete');
     });
 
     Route::group(['as' => 'journal'], function () {

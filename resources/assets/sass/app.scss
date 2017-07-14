@@ -22,6 +22,7 @@ $border-color: #dfdfdf;
 @import "journal";
 @import "marketing";
 @import "settings";
+@import "modal";
 
 // Utilities
 .border-bottom {
@@ -170,7 +171,7 @@ input:disabled {
   margin: 20px 0;
 }
 
-.modal {
+.central-form {
   margin-top: 40px;
 
   h2 {
@@ -281,6 +282,11 @@ input:disabled {
 
   &:disabled {
     background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
   }
 }
 

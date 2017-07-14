@@ -41,6 +41,10 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
+            <div class="row section calls">
+              @include('people.calls.index')
+            </div>
+
             <div class="row section notes">
               @include('people.notes.index')
             </div>
@@ -71,4 +75,7 @@
 
     </div>
   </div>
+
+  @include('people.modal.log_call')
+
 @endsection

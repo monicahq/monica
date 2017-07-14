@@ -3,6 +3,7 @@
 namespace App;
 
 use Auth;
+use App\Call;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ class Contact extends Model
 {
     protected $dates = [
         'birthdate',
+        'last_talked_to'
     ];
 
     /**
@@ -173,6 +175,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the calls records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany('App\Call')->orderBy('called_at', 'desc');
+    }
+
+    /**
      * Sort the contacts according a given criteria
      * @param Builder $builder
      * @param string $criteria
@@ -310,7 +322,9 @@ class Contact extends Model
             return null;
         }
 
-        return DateHelper::createDateFromFormat($this->last_talked_to, $timezone)->diffForHumans();
+        return DateHelper::getShortDate(
+            Carbon::parse($this->last_talked_to, $timezone)
+        );
     }
 
     /**
@@ -947,5 +961,23 @@ class Contact extends Model
         }
 
         return implode(',', $tags);
+    }
+
+    /**
+     * Update the last called info on the contact, if the call has been made
+     * in the most recent date.
+     *
+     * @param  Call   $call
+     * @return void
+     */
+    public function updateLastCalledInfo(Call $call)
+    {
+        if (is_null($this->last_talked_to)) {
+            $this->last_talked_to = $call->called_at;
+        } else {
+            $this->last_talked_to = $this->last_talked_to->max($call->called_at);
+        }
+
+        $this->save();
     }
 }
