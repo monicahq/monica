@@ -23,6 +23,7 @@ return [
     'event_update_debt' => 'updated a debt',
     'event_create_gift' => 'added a gift',
     'event_update_gift' => 'updated a gift',
+    'event_create_call' => 'A call about :name has been added',
 
     'blank_title' => 'You don\'t have any activity yet.',
     'blank_cta' => 'Add contact',

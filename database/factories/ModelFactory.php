@@ -74,6 +74,12 @@ $factory->define(App\Gift::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Call::class, function (Faker\Generator $faker) {
+    return [
+        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+    ];
+});
+
 $factory->define(App\Task::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
