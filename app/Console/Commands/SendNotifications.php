@@ -50,8 +50,8 @@ class SendNotifications extends Command
             $contact = Contact::findOrFail($reminder->contact_id);
             $account = Account::findOrFail($contact->account_id);
             $user = User::where('account_id', $account->id)->first();
-            $date = $reminder->next_expected_date;
-
+            $date = $reminder->next_expected_date->setTimezone(auth()->user()->timezone);
+dd($date->isToday());
             if ($date->isToday() or $date->isPast()) {
                 dispatch(new SendReminderEmail($reminder, $user));
             }
