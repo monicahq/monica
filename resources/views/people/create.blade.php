@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="create-people modal">
+<div class="create-people central-form">
 
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
