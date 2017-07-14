@@ -1,17 +1,25 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v0.4.0 - 2017-07-13
+-------------------
+
+New features:
 * Add ability to keep track of phone calls.
+
+Improvements:
 * Fix Google Contact instructions link on the Import screen.
 * Input field are now automatically selected when a radio button is checked.
 * Many small bug fixes.
-
-RELEASED VERSIONS:
 
 v0.3.0 - 2017-07-04
 -------------------
 
 New features:
-* Add supprort for organizing people into tags (requires `bower update` for dev environment).
+* Add support for organizing people into tags (requires `bower update` for dev environment).
 * Add ability to filter contacts per tags on the contact list.
 
 Improvements:
