@@ -46,9 +46,9 @@ class RemindersController extends Controller
         $reminder = $contact->reminders()->create(
             $request->only([
                 'title',
-                'next_expected_date',
                 'description',
                 'frequency_type',
+                'next_expected_date',
                 'frequency_number'
             ])
             + ['account_id' => $contact->account_id]
