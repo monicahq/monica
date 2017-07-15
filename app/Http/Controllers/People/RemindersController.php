@@ -43,19 +43,15 @@ class RemindersController extends Controller
      */
     public function store(RemindersRequest $request, Contact $contact)
     {
-        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), 'Europe/London');
-
         $reminder = $contact->reminders()->create(
             $request->only([
                 'title',
                 'description',
                 'frequency_type',
+                'next_expected_date',
                 'frequency_number'
             ])
-            + [
-                'account_id' => $contact->account_id,
-                'next_expected_date' => $date
-            ]
+            + ['account_id' => $contact->account_id]
         );
 
         $contact->logEvent('reminder', $reminder->id, 'create');
