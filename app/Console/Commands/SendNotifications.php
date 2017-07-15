@@ -50,13 +50,9 @@ class SendNotifications extends Command
             $contact = Contact::findOrFail($reminder->contact_id);
             $account = Account::findOrFail($contact->account_id);
             $user = User::where('account_id', $account->id)->first();
-            $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
+            $date = $reminder->next_expected_date;
 
-            // The reminder needs to be sent the same day it's supposed to be
-            // sent, no matter the timezone.
-            $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-
-            if ($reminderDate == $userCurrentDate) {
+            if ($date->isToday() or $date->isPast()) {
                 dispatch(new SendReminderEmail($reminder, $user));
             }
         }
