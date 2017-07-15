@@ -53,7 +53,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_DEFAULT_TIMEZONE', 'America/New_York'),
+    'timezone' => env('APP_DEFAULT_TIMEZONE', 'US/Eastern'),
 
     /*
     |--------------------------------------------------------------------------
