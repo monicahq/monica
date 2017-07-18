@@ -92,6 +92,10 @@ function Search() {
 
     function searchInContacts() {
         const needle = getInputValue();
+        if(needle === '') {
+            return;
+        }
+
         $.post({
             url: "/people/search",
             data: {
