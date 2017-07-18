@@ -16,7 +16,8 @@ elixir((mix) => {
     mix.scripts([
         'resources/assets/js/vendors/jquery.tagsinput.js',
         'resources/assets/js/tags.js',
-        'resources/assets/js/contacts.js'
+        'resources/assets/js/search.js',
+        'resources/assets/js/contacts.js',
         ], 'public/js/vanilla.js');
 
     mix.sass('app.scss')

@@ -17,6 +17,8 @@ return [
     'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
+    'people_search' => 'Search your contacts...',
+    'people_search_no_results' => 'No relevant contacts found :(',
 
     // people add
     'people_add_title' => 'Добавить человека',

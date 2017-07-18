@@ -41,6 +41,10 @@ $border-color: #dfdfdf;
   border-left: 1px solid $border-color;
 }
 
+.padding-left-none {
+  padding-left: 0;
+}
+
 .boxed {
   background: #fff;
   border: 1px solid $border-color;

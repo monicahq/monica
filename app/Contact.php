@@ -12,12 +12,43 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Searchable;
+
 
 class Contact extends Model
 {
+    use Searchable;
+
     protected $dates = [
         'birthdate',
         'last_talked_to'
+    ];
+
+    // The list of columns we want the Searchable trait to use.
+    protected $searchable_columns = [
+        'first_name',
+        'middle_name',
+        'last_name',
+        'email',
+        'street',
+        'city',
+        'postal_code',
+        'province',
+        'food_preferencies',
+        'job',
+        'company'
+    ];
+
+    // The list of columns we want the Searchable trait to select.
+    protected $return_from_search = [
+        'id',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'has_avatar',
+        'avatar_file_name',
+        'gravatar_url',
+        'default_avatar_color'
     ];
 
     /**

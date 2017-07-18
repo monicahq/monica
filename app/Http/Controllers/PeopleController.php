@@ -382,4 +382,19 @@ class PeopleController extends Controller
         return redirect('/people/' . $contact->id)
             ->with('success', trans('people.food_preferencies_add_success'));
     }
+
+
+    public function search(Request $request) {
+        $needle = $request->needle;
+        if($needle == null) {
+            return null;
+        }
+
+        $test = Contact::search($needle);
+        if(sizeof($test) !== 0) {
+            return $test;
+        } else {
+            return ['noResults' => trans('people.people_search_no_results')];
+        }
+    }
 }
