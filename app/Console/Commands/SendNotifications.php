@@ -10,6 +10,7 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
+use App\Jobs\SetNextReminderDate;
 
 class SendNotifications extends Command
 {
@@ -47,14 +48,29 @@ class SendNotifications extends Command
         $reminders = Reminder::orderBy('next_expected_date', 'asc')->get();
 
         foreach ($reminders as $reminder) {
-            $contact = Contact::findOrFail($reminder->contact_id);
-            $account = Account::findOrFail($contact->account_id);
-            $user = User::where('account_id', $account->id)->first();
-            $date = $reminder->next_expected_date;
+            $setNextReminderDate = false;
+            $account = $reminder->contact->account;
+            $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
 
-            if ($date->isToday() or $date->isPast()) {
-                dispatch(new SendReminderEmail($reminder, $user));
-            }
+            dispatch(new SetNextReminderDate($reminder));
+
+            // // check if reminder's date == today's date for each user of the
+            // // account, according to their timezone
+            // foreach ($account->users as $user) {
+            //     $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
+
+            //     if ($reminderDate === $userCurrentDate) {
+            //         dispatch(new SendReminderEmail($reminder, $user));
+            //         $setNextReminderDate = true;
+            //     }
+            // }
+
+            // // todo: vu comme c fait, ca marche pas avec plusiuers users qui ont des timezone differents
+            // //
+
+            // if ($setNextReminderDate == true) {
+            //     dispatch(new SetNextReminderDate($this->reminder));
+            // }
         }
     }
 }
