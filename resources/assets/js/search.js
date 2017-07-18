@@ -134,7 +134,7 @@ function Search() {
             // We also include the "input clear" because otherwise the results disappear slightly later, which looks odd.
             window.setTimeout(function () {
                 search.input.val('');
-                // $('.header-search-result').remove();
+                $('.header-search-result').remove();
             }, 50);
         });
     }
