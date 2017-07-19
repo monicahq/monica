@@ -1,6 +1,6 @@
 function Search() {
     const search = {
-        container: $('.header-search'),
+        form: $('.header-search > form'),
         input: $('.header-search-input'),
         resultsContainer: $('.header-search-results'),
         timeoutId: undefined
@@ -15,7 +15,8 @@ function Search() {
         });
 
         bindEvents();
-    }
+    };
+
     search.init();
 
     /* -----------------------------------------------------------------------------------
@@ -124,8 +125,9 @@ function Search() {
             search.timeoutId = window.setTimeout(searchInContacts, 200);
         });
 
-        search.input.on('submit', function (e) {
+        search.form.submit(function (e) {
             e.preventDefault();
+
             if (search.timeoutId !== null) {
                 window.clearTimeout(search.timeoutId);
             }
