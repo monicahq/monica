@@ -43,6 +43,7 @@ return [
     'locale_fr' => 'Francouzština',
     'locale_pt-br' => 'Portugalština',
     'locale_ru' => 'Ruština',
+    'locale_cz' => 'Ceština',
 
     'users_list_title' => 'Uživatelé s přístupem k tomuto účtu',
     'users_list_add_user' => 'Pozvat nového uživatele',

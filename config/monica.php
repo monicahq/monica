@@ -16,6 +16,7 @@ return [
         'fr',
         'pt-br',
         'ru',
+        'cz'
     ],
 
    /*
