@@ -43,6 +43,7 @@ return [
     'locale_fr' => 'French',
     'locale_pt-br' => 'Portuguese',
     'locale_ru' => 'Russian',
+    'locale_cz' => 'Czech',
 
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',
