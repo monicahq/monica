@@ -11,7 +11,7 @@
                     <div class="card-title">Reset Password</div>
 
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ '/password/reset' }}">
                             {{ csrf_field() }}
 
                             <input type="hidden" name="token" value="{{ $token }}">

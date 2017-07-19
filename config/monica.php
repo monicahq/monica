@@ -16,6 +16,7 @@ return [
         'fr',
         'pt-br',
         'ru',
+        'cz'
     ],
 
    /*
@@ -88,5 +89,5 @@ return [
     | should not change this setting yourself.
     |
     */
-    'app_version' => '0.4.1',
+    'app_version' => '0.4.2',
 ];
