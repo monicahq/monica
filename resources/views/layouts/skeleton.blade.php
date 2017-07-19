@@ -36,7 +36,8 @@
     <script src="{{ elixir('js/app.js') }}"></script>
 
     {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
-    <script src="/js/vanilla.js"></script>
+    <script src="{{ elixir('js/vanilla.js') }}"></script>
+    {{-- <script src="/js/vanilla.js"></script> --}}
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))
