@@ -8,13 +8,13 @@
               <img src="/img/small-logo.png" width="40"/>
             </a>
           </div>
-          {{-- <div class="col-sm-9 header-search">
+          <div class="col-sm-9 header-search">
             <form role="search" method="POST" action="people/search">
               {{ csrf_field() }}
               <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control header-search-input">
             </form>
             <ul class="header-search-results"></ul>
-          </div> --}}
+          </div>
         </div>
       </div>
       <div class="col-sm-7 padding-left-none">

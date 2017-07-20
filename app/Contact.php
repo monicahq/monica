@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Searchable;
 
-
 class Contact extends Model
 {
     use Searchable;
