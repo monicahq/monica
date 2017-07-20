@@ -21,19 +21,11 @@
 
     @include('partials.footer')
 
-    {{-- SPECIFIC TO SUBSCRIPTIONS --}}
-    @if (config('monica.requires_subscription'))
-      @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-        <script src="https://js.stripe.com/v3/"></script>
-        <script>
-          var stripe = Stripe('{{ config('services.stripe.key') }}');
-        </script>
-        <script src="/js/stripe_js.js"></script>
-      @endif
-    @endif
-
     {{-- THE JS FILE OF THE APP --}}
-    <script src="{{ elixir('js/app.js') }}"></script>
+    {{-- Load everywhere except on the Upgrade account page --}}
+    @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
+      <script src="{{ elixir('js/app.js') }}"></script>
+    @endif
 
     {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
     <script src="{{ elixir('js/vanilla.js') }}"></script>
