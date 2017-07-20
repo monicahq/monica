@@ -22,10 +22,9 @@
     @include('partials.footer')
 
     {{-- THE JS FILE OF THE APP --}}
-    @if (config('monica.requires_subscription'))
-      @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-        <script src="{{ elixir('js/app.js') }}"></script>
-      @endif
+    {{-- Load everywhere except on the Upgrade account page --}}
+    @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
+      <script src="{{ elixir('js/app.js') }}"></script>
     @endif
 
     {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
