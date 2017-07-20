@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
   </head>
-  <body>
+  <body data-account-id={{ auth()->user()->account_id }}>
 
     @include('partials.header')
 
@@ -20,22 +21,14 @@
 
     @include('partials.footer')
 
-    {{-- SPECIFIC TO SUBSCRIPTIONS --}}
-    @if (config('monica.requires_subscription'))
-      @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-        <script src="https://js.stripe.com/v3/"></script>
-        <script>
-          var stripe = Stripe('{{ config('services.stripe.key') }}');
-        </script>
-        <script src="/js/stripe_js.js"></script>
-      @endif
+    {{-- THE JS FILE OF THE APP --}}
+    {{-- Load everywhere except on the Upgrade account page --}}
+    @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
+      <script src="{{ elixir('js/app.js') }}"></script>
     @endif
 
-    {{-- THE JS FILE OF THE APP --}}
-    <script src="{{ elixir('js/app.js') }}"></script>
-
     {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
-    <script src="/js/vanilla.js"></script>
+    <script src="{{ elixir('js/vanilla.js') }}"></script>
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))
