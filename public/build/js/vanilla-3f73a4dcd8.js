@@ -456,7 +456,8 @@ function Search() {
         form: $('.header-search > form'),
         input: $('.header-search-input'),
         resultsContainer: $('.header-search-results'),
-        timeoutId: undefined
+        timeoutId: undefined,
+        accountId: $('body').attr("data-account-id")
     };
 
     search.init = function () {
@@ -480,7 +481,7 @@ function Search() {
         results.forEach(function (result) {
             // The span is styled to cover the whole <li>, providing a clickable area over the whole result.
             html += `
-                <li class="header-search-result">    
+                <li class="header-search-result">
                 ${result.avatar}
                 <a href="${result.url}">${result.name}<span /></a>
                 </li>
@@ -553,7 +554,8 @@ function Search() {
         $.post({
             url: "/people/search",
             data: {
-                needle: needle
+                needle: needle,
+                accountId: search.accountId
             }
         }).done(function (data) {
             if (data.noResults !== undefined) {

@@ -383,16 +383,29 @@ class PeopleController extends Controller
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
-
+    /**
+     * Search used in the header
+     * @param  Request $request
+     */
     public function search(Request $request) {
         $needle = $request->needle;
+        $accountId = $request->accountId;
+
+        if ($accountId != auth()->user()->account_id) {
+            return null;
+        }
+
         if($needle == null) {
             return null;
         }
 
-        $test = Contact::search($needle);
-        if(sizeof($test) !== 0) {
-            return $test;
+        if($accountId == null) {
+            return null;
+        }
+
+        $results = Contact::search($needle, $accountId);
+        if(sizeof($results) !== 0) {
+            return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }

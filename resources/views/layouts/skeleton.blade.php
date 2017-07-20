@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
   </head>
-  <body>
+  <body data-account-id={{ auth()->user()->account_id }}>
 
     @include('partials.header')
 
@@ -37,7 +37,6 @@
 
     {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
     <script src="{{ elixir('js/vanilla.js') }}"></script>
-    {{-- <script src="/js/vanilla.js"></script> --}}
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))
