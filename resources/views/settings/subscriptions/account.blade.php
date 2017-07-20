@@ -37,14 +37,14 @@
         @if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name')))
 
         {{-- User is subscribed --}}
-        <p>{{ trans('settings.subscriptions_account_paid_plan', ['name' => config('monica.paid_plan_friendly_name'), 'price' => config('monica.paid_plan_price')]) }}</p>
+        <p>{{ trans('settings.subscriptions_account_paid_plan', ['name' => config('monica.paid_plan_friendly_name'), 'price' => ((int)config('monica.paid_plan_price')/100)]) }}</p>
         <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => auth()->user()->account->getNextBillingDate(), 'url' => '/settings/subscriptions/downgrade']) !!}</p>
 
         @else
 
         {{-- User was subscribed but not anymore --}}
         <p>{{ trans('settings.subscriptions_account_free_plan') }}</p>
-        <p>{{ trans('settings.subscriptions_account_free_plan_upgrade', ['name' => config('monica.paid_plan_friendly_name'), 'price' => config('monica.paid_plan_price')]) }}</p>
+        <p>{{ trans('settings.subscriptions_account_free_plan_upgrade', ['name' => config('monica.paid_plan_friendly_name'), 'price' => ((int)config('monica.paid_plan_price')/100)]) }}</p>
         <ul class="upgrade-benefits">
           <li>{{ trans('settings.subscriptions_account_free_plan_benefits_users') }}</li>
           <li>{{ trans('settings.subscriptions_account_free_plan_benefits_support') }}</li>
