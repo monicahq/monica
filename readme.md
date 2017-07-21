@@ -34,7 +34,7 @@ Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_manag
 family. This is what it currently looks like:
 
 <p align="center">
-![screenshot of the application](https://app.monicahq.com/img/main-app.png)
+<img src="https://app.monicahq.com/img/main-app.png" alt="screenshot of the application">
 </p>
 
 ### Purpose
