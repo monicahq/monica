@@ -50,20 +50,23 @@ class SendNotifications extends Command
         foreach ($reminders as $reminder) {
             $account = $reminder->contact->account;
             $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
+            $sendEmailToUser = false;
 
-            $reminder->populateTempData();
-
+            // check if one of the user of the account has a reminder on this day
             foreach ($account->users as $user) {
                 $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
 
                 if ($reminderDate === $userCurrentDate) {
-                    $reminder->markTempDataAsDone();
-                    dispatch(new SendReminderEmail($reminder, $user));
+                    $sendEmailToUser = true;
                 }
             }
 
-            if ($this->reminder->haveEmailsBeenSentForAllUsersInThisAccount() == true) {
-                dispatch(new SetNextReminderDate($this->reminder));
+            if ($sendEmailToUser == true) {
+                foreach ($account->users as $user) {
+                    dispatch(new SendReminderEmail($reminder, $user));
+                }
+
+                dispatch(new SetNextReminderDate($reminder));
             }
         }
     }

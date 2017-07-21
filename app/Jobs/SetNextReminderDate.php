@@ -41,7 +41,7 @@ class SetNextReminderDate implements ShouldQueue
             default:
                 $this->reminder->last_triggered = $this->reminder->next_expected_date;
                 $this->reminder->calculateNextExpectedDate();
-                //$this->reminder->save();
+                $this->reminder->save();
                 break;
         }
     }
