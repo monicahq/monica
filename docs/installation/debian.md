@@ -8,16 +8,19 @@ sudo apt install apache2 mariadb-server php7.0 php7.0-mysql php7.0-xml \
 ```
 
 #### 2. Clone the repository
+
 ```
 sudo git clone https://github.com/monicahq/monica.git /var/www/monica
 ```
 
 #### 3. Change permissions on the new folder
+
 ```
 sudo chown -R www-data:www-data /var/www/monica
 ```
 
 #### 4. Install nodejs (this is needed for npm)
+
 ```
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 ```
@@ -78,7 +81,6 @@ exit
 ```
 
 #### 7. Configure Monica
-
 
 Run `composer install` in the folder the repository has been cloned to.
 Which in our case would be /var/www/monica.
@@ -161,14 +163,16 @@ table.
 
 #### 8. Configure cron job
 
-as recommended by the generic installation instructions we create a
+As recommended by the generic installation instructions we create a
 cronjob which runs `artisan schedule:run` every minute.
+
 For this execute this command:
 ```
 sudo crontab -e
 ```
 
 And then add this line to the bottom of the window that opens.
+
 ```
 * * * * * sudo -u www-data php /var/www/html/artisan schedule:run
 ```
