@@ -7699,11 +7699,12 @@ header .main-cta {
 }
 
 .logo {
-  margin: 10px 0;
+  margin: 10px 15px;
 }
 
 .header-search {
-  margin-top: 15px;
+  padding: 0;
+  margin: auto 0;
 }
 
 .header-search-form {
@@ -7755,6 +7756,86 @@ header .main-cta {
 
 .header-search-input {
   background: #497193;
+  border-color: #497193;
+  color: white;
+}
+
+.header-search-input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.header-search-input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.header-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.header-search-input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.header-search-input:focus {
+  background: white;
+  color: #323232;
+}
+
+.header-search-results {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.header-search-result {
+  position: relative;
+  background: white;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #eee;
+}
+
+.header-search-result a {
+  color: inherit;
+  text-decoration: none;
+  vertical-align: middle;
+  background: transparent;
+}
+
+.header-search-result a span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.header-search-result a:hover {
+  background: inherit;
+  color: inherit;
+}
+
+.header-search-result .avatar {
+  border-radius: 3px;
+  display: inline-block;
+  height: 36px;
+  margin: 10px;
+  width: 36px;
+}
+
+.header-search-result .avatar-initials {
+  text-align: center;
+  padding-top: 6px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.header-search-result:last-child {
+  border-bottom: initial;
+}
+
+.header-search-result:hover {
+  background: #f5f5f5;
 }
 
 @media (max-width: 767px) {
@@ -7779,6 +7860,13 @@ header .main-cta {
   }
   header .mobile-menu li.cta a {
     width: 100%;
+  }
+  .header-search {
+    padding: 0;
+    margin: 20px 0;
+  }
+  .header-search ul {
+    padding-right: 26px;
   }
 }
 
@@ -8292,7 +8380,6 @@ header .main-cta {
   position: absolute;
   top: 14px;
   width: 17px;
-  z-index: 1000;
 }
 
 .people-show .main-content .section-title span {
@@ -9353,6 +9440,10 @@ header .main-cta {
 
 .border-left {
   border-left: 1px solid #dfdfdf;
+}
+
+.padding-left-none {
+  padding-left: 0;
 }
 
 .boxed {

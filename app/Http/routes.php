@@ -98,6 +98,9 @@ Route::group(['middleware' => 'auth'], function () {
         // Phone calls
         Route::post('/people/{contact}/call/store', 'People\\CallsController@store')->name('.call.store');
         Route::get('/people/{contact}/call/{call}/delete', 'People\\CallsController@destroy')->name('.call.delete');
+
+        // Search
+        Route::post('/people/search', 'PeopleController@search')->name('people.search');
     });
 
     Route::group(['as' => 'journal'], function () {
