@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Log;
 use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
@@ -100,8 +101,7 @@ class Reminder extends Model
                 'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id)
             ]);
 
-        $reminder->calculateNextExpectedDate($date, 'year', 1)
-            ->save();
+        $reminder->calculateNextExpectedDate()->save();
 
         return $reminder;
     }
@@ -143,41 +143,23 @@ class Reminder extends Model
     }
 
     /**
-     * Calculate the next expected date for this reminder based on the current
-     * start date.
-     * @param  Carbon $startDate
-     * @param  string $frequencyTYpe
-     * @param  int $frequencyNumber
+     * Calculate the next expected date for this reminder.
+     *
      * @return static
      */
-    public function calculateNextExpectedDate($startDate, $frequencyType, $frequencyNumber)
+    public function calculateNextExpectedDate()
     {
-        if ($startDate->isToday()) {
-            $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-            $this->next_expected_date = $nextDate;
+        $date = $this->next_expected_date;
+
+        while ($date->isPast()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }
 
-        if ($startDate >= $startDate->tomorrow()) {
-            $this->next_expected_date = $startDate;
-        } else {
-
-            // Date is in the past, we need to extract the month and day, and
-            // setup the next occurence at those dates.
-            $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-
-            while ($nextDate->isPast()) {
-                $nextDate = DateHelper::calculateNextOccuringDate($nextDate, $frequencyType, $frequencyNumber);
-            }
-
-            // This is the case where we set the date in the past, but the next
-            // occuring date is still today, so we make sure it skips to the
-            // next occuring date.
-            if ($startDate->isToday()) {
-                $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-            }
-            $this->next_expected_date = $nextDate;
+        if ($date->isToday()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }
 
+        $this->next_expected_date = $date;
         return $this;
     }
 }

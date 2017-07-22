@@ -10,6 +10,7 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
+use App\Jobs\SetNextReminderDate;
 
 class SendNotifications extends Command
 {
@@ -44,16 +45,31 @@ class SendNotifications extends Command
      */
     public function handle()
     {
-        $reminders = Reminder::orderBy('next_expected_date', 'asc')->get();
+        // grab all the reminders that are supposed to be sent in the next two days
+        // we put a limit of two days to limit parsing all the reminders table
+        $reminders = Reminder::where('next_expected_date', '<', Carbon::now()->addDays(2))
+                                ->orderBy('next_expected_date', 'asc')->get();
 
         foreach ($reminders as $reminder) {
-            $contact = Contact::findOrFail($reminder->contact_id);
-            $account = Account::findOrFail($contact->account_id);
-            $user = User::where('account_id', $account->id)->first();
-            $date = $reminder->next_expected_date;
+            $account = $reminder->contact->account;
+            $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
+            $sendEmailToUser = false;
 
-            if ($date->isToday() or $date->isPast()) {
-                dispatch(new SendReminderEmail($reminder, $user));
+            // check if one of the user of the account has the reminder on this day
+            foreach ($account->users as $user) {
+                $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
+
+                if ($reminderDate === $userCurrentDate) {
+                    $sendEmailToUser = true;
+                }
+            }
+
+            if ($sendEmailToUser == true) {
+                foreach ($account->users as $user) {
+                    dispatch(new SendReminderEmail($reminder, $user));
+                }
+
+                dispatch(new SetNextReminderDate($reminder));
             }
         }
     }

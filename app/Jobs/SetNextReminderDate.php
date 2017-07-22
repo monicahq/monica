@@ -2,9 +2,7 @@
 
 namespace App\Jobs;
 
-use App\User;
-use App\Account;
-use App\Contact;
+use Log;
 use App\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -17,17 +15,15 @@ class SetNextReminderDate implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $reminder;
-    protected $user;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Reminder $reminder, User $user)
+    public function __construct(Reminder $reminder)
     {
         $this->reminder = $reminder;
-        $this->user = $user;
     }
 
     /**
@@ -37,25 +33,16 @@ class SetNextReminderDate implements ShouldQueue
      */
     public function handle()
     {
-        $contact = Contact::findOrFail($this->reminder->contact_id);
-        $account = Account::findOrFail($contact->account_id);
-        $user = User::where('account_id', $account->id)->first();
-        $date = $this->reminder->next_expected_date;
+        switch ($this->reminder->frequency_type) {
+            case 'one_time':
+                $this->reminder->delete();
+                break;
 
-        if ($this->reminder->frequency_type == 'one_time') {
-            $contact = Contact::findOrFail($this->reminder->contact_id);
-            $contact->number_of_reminders = $contact->number_of_reminders - 1;
-            $contact->save();
-
-            $this->reminder->delete();
-        } else {
-            $frequencyType = $this->reminder->frequency_type;
-            $frequencyNumber = $this->reminder->frequency_number;
-            $startDate = $date;
-
-            $this->reminder->last_triggered = $this->reminder->next_expected_date;
-            $this->reminder->calculateNextExpectedDate($startDate, $frequencyType, $frequencyNumber);
-            $this->reminder->save();
+            default:
+                $this->reminder->last_triggered = $this->reminder->next_expected_date;
+                $this->reminder->calculateNextExpectedDate();
+                $this->reminder->save();
+                break;
         }
     }
 }
