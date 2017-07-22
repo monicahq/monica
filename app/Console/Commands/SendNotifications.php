@@ -54,6 +54,7 @@ class SendNotifications extends Command
             $account = $reminder->contact->account;
             $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
             $sendEmailToUser = false;
+            $userTimezone = null;
 
             // check if one of the user of the account has the reminder on this day
             foreach ($account->users as $user) {
@@ -61,6 +62,7 @@ class SendNotifications extends Command
 
                 if ($reminderDate === $userCurrentDate) {
                     $sendEmailToUser = true;
+                    $userTimezone = $user->timezone;
                 }
             }
 
@@ -69,7 +71,7 @@ class SendNotifications extends Command
                     dispatch(new SendReminderEmail($reminder, $user));
                 }
 
-                dispatch(new SetNextReminderDate($reminder));
+                dispatch(new SetNextReminderDate($reminder, $userTimezone));
             }
         }
     }

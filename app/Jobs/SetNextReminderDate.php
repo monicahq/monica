@@ -15,15 +15,17 @@ class SetNextReminderDate implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $reminder;
+    protected $timezone;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Reminder $reminder)
+    public function __construct(Reminder $reminder, $timezone)
     {
         $this->reminder = $reminder;
+        $this->timezone = $timezone;
     }
 
     /**
@@ -40,7 +42,7 @@ class SetNextReminderDate implements ShouldQueue
 
             default:
                 $this->reminder->last_triggered = $this->reminder->next_expected_date;
-                $this->reminder->calculateNextExpectedDate();
+                $this->reminder->calculateNextExpectedDate($this->timezone);
                 $this->reminder->save();
                 break;
         }
