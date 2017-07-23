@@ -358,6 +358,33 @@ footer {
     font-size: 12px;
     margin-right: 15px;
   }
+
+  .badge-success {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .show-version {
+    text-align: left;
+
+    h2 {
+      font-size: 16px;
+    }
+
+    .note {
+      margin-bottom: 20px;
+
+      ul {
+        list-style-type: disc;
+      }
+
+      li {
+        display: block;
+        font-size: 15px;
+        text-align: left;
+      }
+    }
+  }
 }
 
 @media (max-width: 480px) {

@@ -15,16 +15,18 @@ class CreateInstanceTable extends Migration
     public function up()
     {
         Schema::create('instances', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('uuid');
             $table->string('current_version');
             $table->string('latest_version')->nullable();
             $table->mediumText('latest_release_notes')->nullable();
+            $table->integer('number_of_versions_since_current_version')->nullable();
             $table->timestamps();
         });
 
         $instance = new Instance;
-        $instance->uuid = uniqid();
         $instance->current_version = config('monica.app_version');
+        $instance->uuid = uniqid();
         $instance->save();
     }
 }

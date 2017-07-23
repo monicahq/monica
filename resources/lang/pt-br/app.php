@@ -8,6 +8,7 @@ return [
     'delete' => 'Deletar',
     'edit' => 'Editar',
     'upload' => 'Upload',
+    'close' => 'Close',
 
     'header_settings_link' => 'Configurações',
     'header_logout_link' => 'Sair',
@@ -27,6 +28,10 @@ return [
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Monica on GitHub',
     'footer_version' => 'Version: :version',
+    'footer_new_version' => 'A new version is available',
+
+    'footer_modal_version_whats_new' => 'What\'s new',
+    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'Painel',
     'breadcrumb_list_contacts' => 'Lista de contatos',
