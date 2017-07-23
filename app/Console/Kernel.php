@@ -33,5 +33,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('monica:sendnotifications')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
+        $schedule->command('monica:ping')->daily();
     }
 }
