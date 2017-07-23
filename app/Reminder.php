@@ -101,7 +101,12 @@ class Reminder extends Model
                 'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id)
             ]);
 
-        $reminder->calculateNextExpectedDate()->save();
+        $account = $reminder->contact->account;
+        foreach ($account->users as $user) {
+            $userTimezone = $user->timezone;
+        }
+
+        $reminder->calculateNextExpectedDate($userTimezone)->save();
 
         return $reminder;
     }
