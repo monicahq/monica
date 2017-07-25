@@ -27,7 +27,8 @@ class ExportAccountAsSQL
         'accounts',
         'subscriptions',
         'import_jobs',
-        'import_job_reports'
+        'import_job_reports',
+        'instances'
     ];
 
     protected $ignoredColumns = [
@@ -124,9 +125,9 @@ class ExportAccountAsSQL
                 }
             }
         }
-        
+
         // Specific to `accounts` table
-        $accounts = array_filter($tables, function ($e) { 
+        $accounts = array_filter($tables, function ($e) {
                 return $e->table_name == 'accounts';
             }
         )[0];
@@ -139,9 +140,9 @@ class ExportAccountAsSQL
                 $values = [
                     $data['id'],
                     "'".addslashes($data['api_key'])."'",
-                    $data['number_of_invitations_sent'] !== NULL 
-                        ? $data['number_of_invitations_sent'] 
-                        : 'NULL',  
+                    $data['number_of_invitations_sent'] !== NULL
+                        ? $data['number_of_invitations_sent']
+                        : 'NULL',
                 ];
                 $newSQLLine .= implode(',', $values) . ');' . PHP_EOL;
                 $sql .= $newSQLLine;

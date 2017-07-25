@@ -80,13 +80,36 @@ return [
    'paid_plan_id' => env('PAID_PLAN_ID', null),
    'paid_plan_price' => env('PAID_PLAN_PRICE', null),
 
-   /*
+    /*
+    |--------------------------------------------------------------------------
+    | Ping that checks if a new version is available
+    |--------------------------------------------------------------------------
+    |
+    | This is used to indicate if you allow the ping to be sent to
+    | version.monicahq.com to check if a new version is available.
+    |
+    */
+    'check_version' => env('CHECK_VERSION', true),
+
+    /*
+    |--------------------------------------------------------------------------
+    | URL of the server for the version check
+    |--------------------------------------------------------------------------
+    |
+    | This is the server that is used to ping if a new version is avaialble.
+    | Do not change this manually.
+    |
+    */
+    'weekly_ping_server_url' => 'https://version.monicahq.com.com/ping',
+
+    /*
     |--------------------------------------------------------------------------
     | Version of the application that you run
     |--------------------------------------------------------------------------
     |
     | This is used to indicate which version of Monica you are running. You
-    | should not change this setting yourself.
+    | should not change this setting yourself. DO NOT CHANGE IT YOURSELF. Or
+    | bad things will happen.
     |
     */
     'app_version' => '0.4.2',
