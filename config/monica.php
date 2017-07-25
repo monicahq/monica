@@ -112,5 +112,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '0.4.2',
+    'app_version' => '0.5.0',
 ];

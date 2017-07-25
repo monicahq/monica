@@ -1,9 +1,15 @@
 UNRELEASED CHANGES:
 
-* Add version checking.
-* Add ability to search various fields in contacts through the top-nav search.
+*
 
 RELEASED VERSIONS:
+
+v0.5.0 - 2017-07-24
+-------------------
+
+* Add version checking.
+* Add ability to search various fields in contacts through the top-nav search.
+* Fix gift view not being shown.
 
 v0.4.2 - 2017-07-18
 -------------------
