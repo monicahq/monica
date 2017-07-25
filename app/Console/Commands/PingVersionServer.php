@@ -59,31 +59,41 @@ class PingVersionServer extends Command
         $data["contacts"] = Contact::all()->count();
 
         // Send the JSON
-        $jsonData =json_encode($data);
-        $json_url = config('monica.weekly_ping_server_url');
-        $ch = curl_init( $json_url);
+        $client = new Client();
 
-        $options = array(
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
-            CURLOPT_POSTFIELDS => $jsonData,
-            CURLOPT_POST => true
-        );
+        // $jsonData =json_encode($data);
+        // $json_url = config('monica.weekly_ping_server_url');
+        // $ch = curl_init( $json_url);
 
-        curl_setopt_array($ch, $options);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        // $options = array(
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
+        //     CURLOPT_POSTFIELDS => $jsonData,
+        //     CURLOPT_POST => true
+        // );
 
-        if ($result == false) {
+        // curl_setopt_array($ch, $options);
+        // $result = curl_exec($ch);
+        // curl_close($ch);
+
+        try {
+            $response = $client->post(config('monica.weekly_ping_server_url'), [
+                'json' => $data
+            ]);
+        } catch (Exception $e) {
+            echo 'Uh oh! ' . $e->getMessage();
+        }
+
+        if ($response == false) {
             return;
         }
 
-        if (is_string($result) == false) {
+        if (is_string($response) == false) {
             return;
         }
 
         // Receive the JSON
-        $json = json_decode($result, true);
+        $json = json_decode($response->getBody(), true);
 
         if ($json['latest_version'] != $instance->current_version) {
             $instance->latest_version = $json['latest_version'];
