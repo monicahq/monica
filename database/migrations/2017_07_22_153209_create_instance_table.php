@@ -26,6 +26,7 @@ class CreateInstanceTable extends Migration
 
         $instance = new Instance;
         $instance->current_version = config('monica.app_version');
+        $instance->latest_version = config('monica.app_version');
         $instance->uuid = uniqid();
         $instance->save();
     }
