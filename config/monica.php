@@ -100,7 +100,7 @@ return [
     | Do not change this manually.
     |
     */
-    'weekly_ping_server_url' => 'https://version.monicahq.com.com/ping',
+    'weekly_ping_server_url' => 'https://version.monicahq.com/ping',
 
     /*
     |--------------------------------------------------------------------------
