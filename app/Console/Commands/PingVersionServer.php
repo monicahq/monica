@@ -42,7 +42,11 @@ class PingVersionServer extends Command
     public function handle()
     {
         if (config('monica.check_version') == false) {
-            return;
+            return false;
+        }
+
+        if (env('APP_ENV') != 'production') {
+            return false;
         }
 
         $instance = Instance::first();
@@ -51,7 +55,7 @@ class PingVersionServer extends Command
         $json = [
             'uuid' => $instance->uuid,
             'version' => $instance->current_version,
-            'contacts' => Contact::all()->count()
+            'contacts' => Contact::count()
         ];
 
         $data["uuid"] = $instance->uuid;
@@ -59,46 +63,39 @@ class PingVersionServer extends Command
         $data["contacts"] = Contact::all()->count();
 
         // Send the JSON
-        $client = new Client();
-
-        // $jsonData =json_encode($data);
-        // $json_url = config('monica.weekly_ping_server_url');
-        // $ch = curl_init( $json_url);
-
-        // $options = array(
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_HTTPHEADER => array('Content-type: application/json') ,
-        //     CURLOPT_POSTFIELDS => $jsonData,
-        //     CURLOPT_POST => true
-        // );
-
-        // curl_setopt_array($ch, $options);
-        // $result = curl_exec($ch);
-        // curl_close($ch);
-
         try {
+            $client = new Client();
             $response = $client->post(config('monica.weekly_ping_server_url'), [
                 'json' => $data
             ]);
-        } catch (Exception $e) {
-            echo 'Uh oh! ' . $e->getMessage();
-        }
-
-        if ($response == false) {
+        } catch (\GuzzleHttp\Exception\ConnectException $e) {
             return;
-        }
-
-        if (is_string($response) == false) {
+        } catch (\GuzzleHttp\Exception\TransferException $e) {
             return;
         }
 
         // Receive the JSON
         $json = json_decode($response->getBody(), true);
 
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            // JSON is invalid
+            // The function json_last_error returns the last error occurred during the JSON encoding and decoding
+            return;
+        }
+
+        // make sure the JSON has all the fields we need
+        if (isset($json['latest_version']) == false or isset($json['new_version']) == false or isset($json['number_of_versions_since_user_version']) == false) {
+            return;
+        }
+
         if ($json['latest_version'] != $instance->current_version) {
             $instance->latest_version = $json['latest_version'];
             $instance->latest_release_notes = $json['notes'];
             $instance->number_of_versions_since_current_version = $json['number_of_versions_since_user_version'];
+            $instance->save();
+        } else {
+            $instance->latest_release_notes = null;
+            $instance->number_of_versions_since_current_version = null;
             $instance->save();
         }
     }

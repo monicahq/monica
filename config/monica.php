@@ -100,7 +100,7 @@ return [
     | Do not change this manually.
     |
     */
-    'weekly_ping_server_url' => 'http://sadfversion.app/ping',
+    'weekly_ping_server_url' => 'https://version.monicahq.com.com/ping',
 
     /*
     |--------------------------------------------------------------------------
@@ -112,5 +112,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '0.1.2',
+    'app_version' => '0.4.2',
 ];
