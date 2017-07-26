@@ -4,7 +4,7 @@
       <div class="col-sm-5">
         <div class="row">
           <div class="logo">
-            <a href="/people">
+            <a href="/dashboard">
               <img src="/img/small-logo.png" width="40" height="43" />
             </a>
           </div>
