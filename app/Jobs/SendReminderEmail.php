@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\User;
 use App\Reminder;
-use Carbon\Carbon;
 use App\Mail\UserReminded;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;

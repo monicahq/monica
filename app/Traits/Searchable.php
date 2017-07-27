@@ -17,7 +17,7 @@ trait Searchable
     public function scopeSearch(Builder $builder, $needle, $accountId)
     {
         if ($this->searchable_columns == null) {
-            return null;
+            return;
         }
 
         // building the query. there is probably a way to make this more elegant.
@@ -26,13 +26,13 @@ trait Searchable
         $queryString = '';
         foreach ($this->searchable_columns as $column) {
             $queryString .= $column.' LIKE \'%'.$needle.'%\'';
-             if ($counter != $count) {
+            if ($counter != $count) {
                 $queryString .= ' or ';
-             }
+            }
             $counter++;
         }
 
-        $builder->whereRaw('account_id = '.$accountId.' and ('. $queryString .')');
+        $builder->whereRaw('account_id = '.$accountId.' and ('.$queryString.')');
         $builder->select($this->return_from_search);
 
         return $builder->get();

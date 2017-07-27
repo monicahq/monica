@@ -42,12 +42,12 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public function signIn($user = null)
     {
-        if( is_null($user) )
-        {
+        if (is_null($user)) {
             $user = factory('App\User')->create();
         }
 
         $this->be($user);
+
         return $user;
     }
 }

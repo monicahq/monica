@@ -1,8 +1,6 @@
 <?php
 
 use App\Task;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveEncryptionTasks extends Migration
@@ -17,11 +15,11 @@ class RemoveEncryptionTasks extends Migration
         $tasks = Task::all();
         foreach ($tasks as $task) {
             echo $task->id.' ';
-            if (!is_null ($task->title)) {
+            if (! is_null($task->title)) {
                 $task->title = decrypt($task->title);
             }
 
-            if (!is_null ($task->description)) {
+            if (! is_null($task->description)) {
                 $task->description = decrypt($task->description);
             }
 

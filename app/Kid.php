@@ -2,10 +2,7 @@
 
 namespace App;
 
-use App\Gift;
-use App\User;
 use Carbon\Carbon;
-use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -83,7 +80,7 @@ class Kid extends Model
     }
 
     /**
-     * Get the date_it_happened field according to user's timezone
+     * Get the date_it_happened field according to user's timezone.
      *
      * @param string $value
      * @return string
@@ -98,7 +95,7 @@ class Kid extends Model
     }
 
     /**
-     * Get age according to the birthdate
+     * Get age according to the birthdate.
      *
      * @return string
      */
@@ -126,7 +123,7 @@ class Kid extends Model
     public function getBirthdate()
     {
         if (is_null($this->birthdate)) {
-            return null;
+            return;
         }
 
         return $this->birthdate;
@@ -139,7 +136,7 @@ class Kid extends Model
     public function getFirstName()
     {
         if (is_null($this->first_name)) {
-            return null;
+            return;
         }
 
         return $this->first_name;

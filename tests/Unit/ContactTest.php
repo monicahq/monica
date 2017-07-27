@@ -2,14 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use App\Call;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\SignificantOther;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase

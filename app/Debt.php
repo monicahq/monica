@@ -38,7 +38,7 @@ class Debt extends Model
     }
 
     /**
-     * Limit results to unpaid/unreceived debt
+     * Limit results to unpaid/unreceived debt.
      *
      * @param Builder $query
      * @return Builder
@@ -49,7 +49,7 @@ class Debt extends Model
     }
 
     /**
-     * Limit results to due debt
+     * Limit results to due debt.
      *
      * @param Builder $query
      * @return Builder
@@ -60,7 +60,7 @@ class Debt extends Model
     }
 
     /**
-     * Limit results to owed debt
+     * Limit results to owed debt.
      *
      * @param Builder $query
      * @return Builder

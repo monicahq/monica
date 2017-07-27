@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\ActivityTypeGroup;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityType extends Model

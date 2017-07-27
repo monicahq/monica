@@ -4,8 +4,6 @@ namespace Tests\BrowserFeature;
 
 use App\User;
 use Tests\DuskTestCase;
-use Laravel\Dusk\Chrome;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UploadVCardTest extends DuskTestCase
 {

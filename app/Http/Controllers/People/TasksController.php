@@ -46,17 +46,17 @@ class TasksController extends Controller
         $task = $contact->tasks()->create(
             $request->only([
                 'title',
-                'description'
+                'description',
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'inprogress'
+                'status' => 'inprogress',
             ]
         );
 
         $contact->logEvent('task', $task->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.tasks_add_success'));
     }
 
@@ -99,14 +99,14 @@ class TasksController extends Controller
                 'title',
                 'status',
                 'description',
-                'completed_at'
+                'completed_at',
             ])
             + ['account_id' => $contact->account_id]
         );
 
         $contact->logEvent('task', $task->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.tasks_update_success'));
     }
 
@@ -122,7 +122,7 @@ class TasksController extends Controller
     {
         $task->toggle();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.tasks_complete_success'));
     }
 
@@ -139,7 +139,7 @@ class TasksController extends Controller
 
         $contact->events()->forObject($task)->get()->each->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.tasks_delete_success'));
     }
 }

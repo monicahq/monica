@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Tag;
 use App\User;
+use App\ImportJob;
 use Carbon\Carbon;
 use App\Invitation;
-use App\ImportJob;
-use App\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
-use App\Http\Requests\ImportsRequest;
 use App\Jobs\SendInvitationEmail;
+use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
@@ -45,9 +45,9 @@ class SettingsController extends Controller
                 'timezone',
                 'locale',
                 'currency_id',
-                'name_order'
+                'name_order',
             ]) + [
-                'fluid_container' => $request->get('layout')
+                'fluid_container' => $request->get('layout'),
             ]
         );
 
@@ -56,7 +56,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Delete user account
+     * Delete user account.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -66,7 +66,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if($account) {
+        if ($account) {
             $account->reminders->each->forceDelete();
             $account->kids->each->forceDelete();
             $account->notes->each->forceDelete();
@@ -89,7 +89,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Reset user account
+     * Reset user account.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -99,7 +99,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if($account) {
+        if ($account) {
             $account->reminders->each->forceDelete();
             $account->kids->each->forceDelete();
             $account->notes->each->forceDelete();
@@ -119,7 +119,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Display the export view
+     * Display the export view.
      *
      * @return \Illuminate\Http\Response
      */
@@ -129,7 +129,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Exports the data of the account in SQL format
+     * Exports the data of the account in SQL format.
      *
      * @return \Illuminate\Http\Response
      */
@@ -138,12 +138,12 @@ class SettingsController extends Controller
         $path = $this->dispatchNow(new ExportAccountAsSQL());
 
         return response()
-            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix() . $path, 'monica.sql')
+            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
     }
 
     /**
-     * Display the import view
+     * Display the import view.
      *
      * @return \Illuminate\Http\Response
      */
@@ -173,7 +173,7 @@ class SettingsController extends Controller
         $importJob = auth()->user()->account->importjobs()->create([
             'user_id' => auth()->user()->id,
             'type' => 'vcard',
-            'filename' => $filename
+            'filename' => $filename,
         ]);
 
         dispatch(new AddContactFromVCard($importJob));
@@ -182,7 +182,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Display the import report view
+     * Display the import report view.
      *
      * @return \Illuminate\Http\Response
      */
@@ -198,7 +198,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Display the users view
+     * Display the users view.
      *
      * @return \Illuminate\Http\Response
      */
@@ -236,7 +236,7 @@ class SettingsController extends Controller
     public function inviteUser(InvitationRequest $request)
     {
         // Make sure the confirmation to invite has not been bypassed
-        if(! $request->get('confirmation')) {
+        if (! $request->get('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 
@@ -290,7 +290,7 @@ class SettingsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param String $key
+     * @param string $key
      * @return \Illuminate\Http\Response
      */
     public function acceptInvitation($key)
@@ -309,7 +309,7 @@ class SettingsController extends Controller
      * Store the specified resource.
      *
      * @param Request $request
-     * @param String $key
+     * @param string $key
      * @return \Illuminate\Http\Response
      */
     public function storeAcceptedInvitation(Request $request, $key)
@@ -344,7 +344,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Delete additional user account
+     * Delete additional user account.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -370,7 +370,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Display the list of tags for this account
+     * Display the list of tags for this account.
      */
     public function tags()
     {
