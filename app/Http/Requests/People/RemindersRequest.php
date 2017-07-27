@@ -28,7 +28,7 @@ class RemindersRequest extends FormRequest
             'next_expected_date' => 'required|date',
             'description' => 'string|nullable',
             'frequency_type' => 'required',
-            'frequency_number' => 'int|nullable'
+            'frequency_number' => 'int|nullable',
         ];
     }
 }

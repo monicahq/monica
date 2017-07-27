@@ -2,17 +2,15 @@
 
 namespace App;
 
-use Auth;
-use App\Call;
 use Carbon\Carbon;
+use App\Traits\Searchable;
 use App\Helpers\DateHelper;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\Searchable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model
 {
@@ -20,7 +18,7 @@ class Contact extends Model
 
     protected $dates = [
         'birthdate',
-        'last_talked_to'
+        'last_talked_to',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -35,7 +33,7 @@ class Contact extends Model
         'province',
         'food_preferencies',
         'job',
-        'company'
+        'company',
     ];
 
     // The list of columns we want the Searchable trait to select.
@@ -47,7 +45,7 @@ class Contact extends Model
         'has_avatar',
         'avatar_file_name',
         'gravatar_url',
-        'default_avatar_color'
+        'default_avatar_color',
     ];
 
     /**
@@ -215,7 +213,7 @@ class Contact extends Model
     }
 
     /**
-     * Sort the contacts according a given criteria
+     * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
      * @return Builder
@@ -234,11 +232,10 @@ class Contact extends Model
             default:
                 return $builder->orderBy('first_name', 'asc');
         }
-
     }
 
     /**
-     * Get user's initials
+     * Get user's initials.
      *
      * @return string
      */
@@ -261,23 +258,23 @@ class Contact extends Model
         if ($nameOrder == 'firstname_first') {
             $completeName = $this->first_name;
 
-            if (!is_null($this->middle_name)) {
-                $completeName = $completeName . ' ' . $this->middle_name;
+            if (! is_null($this->middle_name)) {
+                $completeName = $completeName.' '.$this->middle_name;
             }
 
-            if (!is_null($this->last_name)) {
-                $completeName = $completeName . ' ' . $this->last_name;
+            if (! is_null($this->last_name)) {
+                $completeName = $completeName.' '.$this->last_name;
             }
         } else {
-            if (!is_null($this->last_name)) {
+            if (! is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 
-            if (!is_null($this->middle_name)) {
-                $completeName = $completeName . ' ' . $this->middle_name;
+            if (! is_null($this->middle_name)) {
+                $completeName = $completeName.' '.$this->middle_name;
             }
 
-            $completeName = $completeName . ' ' . $this->first_name;
+            $completeName = $completeName.' '.$this->first_name;
         }
 
         return $completeName;
@@ -331,7 +328,7 @@ class Contact extends Model
     public function getLastActivityDate($timezone)
     {
         if ($this->activities->count() === 0) {
-            return null;
+            return;
         }
 
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
@@ -349,7 +346,7 @@ class Contact extends Model
     public function getLastCalled($timezone)
     {
         if (is_null($this->last_talked_to)) {
-            return null;
+            return;
         }
 
         return DateHelper::getShortDate(
@@ -365,7 +362,7 @@ class Contact extends Model
     public function getBirthdate()
     {
         if (is_null($this->birthdate)) {
-            return null;
+            return;
         }
 
         return $this->birthdate;
@@ -380,7 +377,7 @@ class Contact extends Model
     public function getAge()
     {
         if (is_null($this->birthdate)) {
-            return null;
+            return;
         }
 
         return $this->birthdate->diffInYears(Carbon::now());
@@ -394,7 +391,7 @@ class Contact extends Model
     public function getPhone()
     {
         if (is_null($this->phone_number)) {
-            return null;
+            return;
         }
 
         return $this->phone_number;
@@ -408,7 +405,7 @@ class Contact extends Model
     public function getJob()
     {
         if (is_null($this->job)) {
-            return null;
+            return;
         }
 
         return $this->job;
@@ -422,14 +419,14 @@ class Contact extends Model
     public function getCompany()
     {
         if (is_null($this->company)) {
-            return null;
+            return;
         }
 
         return $this->company;
     }
 
     /**
-     * Returns 'true' if the birthdate is an approximation
+     * Returns 'true' if the birthdate is an approximation.
      *
      * @return string
      */
@@ -456,11 +453,11 @@ class Contact extends Model
         $address = $this->getCity();
 
         if (is_null($address)) {
-            return null;
+            return;
         }
 
-        if (!is_null($this->getProvince())) {
-            $address = $address . ', ' . $this->getProvince();
+        if (! is_null($this->getProvince())) {
+            $address = $address.', '.$this->getProvince();
         }
 
         return $address;
@@ -474,7 +471,7 @@ class Contact extends Model
     public function getStreet()
     {
         if (is_null($this->street)) {
-            return null;
+            return;
         }
 
         return $this->street;
@@ -488,7 +485,7 @@ class Contact extends Model
     public function getProvince()
     {
         if (is_null($this->province)) {
-            return null;
+            return;
         }
 
         return $this->province;
@@ -502,7 +499,7 @@ class Contact extends Model
     public function getPostalCode()
     {
         if (is_null($this->postal_code)) {
-            return null;
+            return;
         }
 
         return $this->postal_code;
@@ -518,8 +515,6 @@ class Contact extends Model
         if ($this->country) {
             return $this->country->country;
         }
-
-        return null;
     }
 
     /**
@@ -530,7 +525,7 @@ class Contact extends Model
     public function getCity()
     {
         if (is_null($this->city)) {
-            return null;
+            return;
         }
 
         return $this->city;
@@ -556,8 +551,6 @@ class Contact extends Model
         if ($this->country) {
             return $this->country->iso;
         }
-
-        return null;
     }
 
     /**
@@ -621,7 +614,7 @@ class Contact extends Model
     public function getEmail()
     {
         if (is_null($this->email)) {
-            return null;
+            return;
         }
 
         return $this->email;
@@ -635,7 +628,7 @@ class Contact extends Model
     public function getTwitter()
     {
         if (is_null($this->twitter_profile_url)) {
-            return null;
+            return;
         }
 
         return $this->twitter_profile_url;
@@ -649,7 +642,7 @@ class Contact extends Model
     public function getFacebook()
     {
         if (is_null($this->facebook_profile_url)) {
-            return null;
+            return;
         }
 
         return $this->facebook_profile_url;
@@ -663,7 +656,7 @@ class Contact extends Model
     public function getLinkedin()
     {
         if (is_null($this->linkedin_profile_url)) {
-            return null;
+            return;
         }
 
         return $this->linkedin_profile_url;
@@ -717,7 +710,7 @@ class Contact extends Model
     public function getFoodPreferencies()
     {
         if (is_null($this->food_preferencies)) {
-            return null;
+            return;
         }
 
         return $this->food_preferencies;
@@ -793,11 +786,11 @@ class Contact extends Model
 
         $this->first_name = $firstName;
 
-        if (!is_null($middleName)) {
+        if (! is_null($middleName)) {
             $this->middle_name = $middleName;
         }
 
-        if (!is_null($lastName)) {
+        if (! is_null($lastName)) {
             $this->last_name = $lastName;
         }
 
@@ -850,7 +843,7 @@ class Contact extends Model
                 $activityStatistic = $this->activityStatistics()->create([]);
                 $activityStatistic->account_id = $this->account_id;
                 $activityStatistic->year = $year;
-                $activityStatistic->count = $activities->count();;
+                $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
             });
     }
@@ -925,7 +918,7 @@ class Contact extends Model
     }
 
     /**
-     * Returns the URL of the avatar with the given size
+     * Returns the URL of the avatar with the given size.
      *
      * @param  int $size
      * @return string
@@ -935,7 +928,7 @@ class Contact extends Model
         $original_avatar_url = Storage::disk('public')->url($this->avatar_file_name);
         $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
-        $resized_avatar = 'avatars/' . $avatar_filename . '_' . $size . '.' . $avatar_extension;
+        $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
         return Storage::disk('public')->url($resized_avatar);
     }
@@ -943,28 +936,28 @@ class Contact extends Model
     /**
      * Get the gravatar, if it exits.
      *
-     * @param  integer $size
-     * @return string|boolean
+     * @param  int $size
+     * @return string|bool
      */
     public function getGravatar($size)
     {
         if (empty($this->email)) {
             return false;
         }
-        $gravatar_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($this->email)));
+        $gravatar_url = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
         // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
-        $gravatarHeaders = get_headers($gravatar_url . "?d=404");
-        if ($gravatarHeaders[0] == "HTTP/1.1 404 Not Found") {
+        $gravatarHeaders = get_headers($gravatar_url.'?d=404');
+        if ($gravatarHeaders[0] == 'HTTP/1.1 404 Not Found') {
             return false;
         }
 
-        return $gravatar_url . "?s=" . $size;
+        return $gravatar_url.'?s='.$size;
     }
 
     /**
-     * Check if the contact has debt (by the contact or the user for this contact)
+     * Check if the contact has debt (by the contact or the user for this contact).
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDebt()
     {
@@ -980,11 +973,11 @@ class Contact extends Model
     }
 
     /**
-     * Get the list of tags as a string to populate the tags form
+     * Get the list of tags as a string to populate the tags form.
      */
     public function getTagsAsString()
     {
-        $tags = array();
+        $tags = [];
 
         foreach ($this->tags as $tag) {
             array_push($tags, $tag->name);

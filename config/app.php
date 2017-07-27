@@ -1,4 +1,5 @@
 <?php
+
 use App\Helpers\MoneyHelper;
 
 return [

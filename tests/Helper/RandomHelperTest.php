@@ -4,9 +4,6 @@ namespace Tests\Helper;
 
 use Tests\TestCase;
 use App\Helpers\RandomHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RandomHelperTest extends TestCase
 {

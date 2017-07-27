@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Log;
 use App\Contact;
 use App\Instance;
-use Illuminate\Console\Command;
 use GuzzleHttp\Client;
+use Illuminate\Console\Command;
 
 class PingVersionServer extends Command
 {
@@ -55,18 +54,18 @@ class PingVersionServer extends Command
         $json = [
             'uuid' => $instance->uuid,
             'version' => $instance->current_version,
-            'contacts' => Contact::count()
+            'contacts' => Contact::count(),
         ];
 
-        $data["uuid"] = $instance->uuid;
-        $data["version"] = $instance->current_version;
-        $data["contacts"] = Contact::all()->count();
+        $data['uuid'] = $instance->uuid;
+        $data['version'] = $instance->current_version;
+        $data['contacts'] = Contact::all()->count();
 
         // Send the JSON
         try {
             $client = new Client();
             $response = $client->post(config('monica.weekly_ping_server_url'), [
-                'json' => $data
+                'json' => $data,
             ]);
         } catch (\GuzzleHttp\Exception\ConnectException $e) {
             return;

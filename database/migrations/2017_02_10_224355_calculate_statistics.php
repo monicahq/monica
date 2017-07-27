@@ -7,9 +7,6 @@ use App\Task;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CalculateStatistics extends Migration

@@ -5,8 +5,8 @@ namespace App\Jobs;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Bus\Dispatchable;
 
 class ExportAccountAsSQL
 {
@@ -28,14 +28,14 @@ class ExportAccountAsSQL
         'subscriptions',
         'import_jobs',
         'import_job_reports',
-        'instances'
+        'instances',
     ];
 
     protected $ignoredColumns = [
         'stripe_id',
         'card_brand',
         'card_last_four',
-        'trial_ends_at'
+        'trial_ends_at',
     ];
 
     protected $file = '';
@@ -50,7 +50,7 @@ class ExportAccountAsSQL
     public function __construct($file = null, $path = null)
     {
         $this->path = $path ?? 'exports/';
-        $this->file = rand() . '.sql';
+        $this->file = rand().'.sql';
     }
 
     /**
@@ -60,18 +60,18 @@ class ExportAccountAsSQL
      */
     public function handle()
     {
-        $downloadPath = $this->path . $this->file;
+        $downloadPath = $this->path.$this->file;
 
         $user = auth()->user();
         $account = $user->account;
 
-        $sql = "# ************************************************************
-# " . $user->first_name . " " . $user->last_name . " dump of data
+        $sql = '# ************************************************************
+# '.$user->first_name.' '.$user->last_name." dump of data
 # {$this->file}
-# Export date: " . Carbon::now() . "
+# Export date: ".Carbon::now().'
 # ************************************************************
 
-" . PHP_EOL;
+'.PHP_EOL;
 
         $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
 
@@ -87,8 +87,7 @@ class ExportAccountAsSQL
 
             // Looping over the rows
             foreach ($tableData as $data) {
-
-                $newSQLLine = 'INSERT INTO ' . $tableName . ' (';
+                $newSQLLine = 'INSERT INTO '.$tableName.' (';
                 $tableValues = [];
                 $skipLine = false;
 
@@ -98,11 +97,10 @@ class ExportAccountAsSQL
                     array_push($tableColumnNames, $columnName);
                 }
 
-                $newSQLLine .= implode(',', $tableColumnNames) . ') VALUES (';
+                $newSQLLine .= implode(',', $tableColumnNames).') VALUES (';
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
-
                     if ($columnName == 'account_id') {
                         if ($value !== $account->id) {
                             $skipLine = true;
@@ -112,15 +110,15 @@ class ExportAccountAsSQL
 
                     if (is_null($value)) {
                         $value = 'NULL';
-                    } elseif (!is_numeric($value)) {
-                        $value = "'" . addslashes($value) . "'";
+                    } elseif (! is_numeric($value)) {
+                        $value = "'".addslashes($value)."'";
                     }
 
                     array_push($tableValues, $value);
                 }
 
                 if ($skipLine == false) {
-                    $newSQLLine .= implode(',', $tableValues) . ');' . PHP_EOL;
+                    $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
                 }
             }
@@ -128,24 +126,24 @@ class ExportAccountAsSQL
 
         // Specific to `accounts` table
         $accounts = array_filter($tables, function ($e) {
-                return $e->table_name == 'accounts';
-            }
+            return $e->table_name == 'accounts';
+        }
         )[0];
         $tableName = $accounts->table_name;
         $tableData = DB::table($tableName)->get()->toArray();
         foreach ($tableData as $data) {
-            $newSQLLine = 'INSERT INTO ' . $tableName . ' VALUES (';
+            $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
             $data = (array) $data;
-            if($data['id'] === $account->id):
+            if ($data['id'] === $account->id):
                 $values = [
                     $data['id'],
                     "'".addslashes($data['api_key'])."'",
-                    $data['number_of_invitations_sent'] !== NULL
+                    $data['number_of_invitations_sent'] !== null
                         ? $data['number_of_invitations_sent']
                         : 'NULL',
                 ];
-                $newSQLLine .= implode(',', $values) . ');' . PHP_EOL;
-                $sql .= $newSQLLine;
+            $newSQLLine .= implode(',', $values).');'.PHP_EOL;
+            $sql .= $newSQLLine;
             endif;
         }
 

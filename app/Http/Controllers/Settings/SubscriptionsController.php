@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -61,7 +60,7 @@ class SubscriptionsController extends Controller
     }
 
     /**
-     * Process the downgrade process
+     * Process the downgrade process.
      *
      * @return \Illuminate\Http\Response
      */
@@ -77,7 +76,7 @@ class SubscriptionsController extends Controller
     }
 
     /**
-     * Process the upgrade payment
+     * Process the upgrade payment.
      *
      * @return \Illuminate\Http\Response
      */
@@ -96,7 +95,7 @@ class SubscriptionsController extends Controller
     }
 
     /**
-     * Download the invoice as PDF
+     * Download the invoice as PDF.
      *
      * @return \Illuminate\Http\Response
      */

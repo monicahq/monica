@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -67,7 +67,7 @@ class Gift extends Model
     }
 
     /**
-     * Limit results to already offered gifts
+     * Limit results to already offered gifts.
      *
      * @param Builder $query
      * @return Builder
@@ -78,7 +78,7 @@ class Gift extends Model
     }
 
     /**
-     * Limit results to gifts at the idea stage
+     * Limit results to gifts at the idea stage.
      *
      * @param Builder $query
      * @return Builder
@@ -90,7 +90,7 @@ class Gift extends Model
 
     /**
      * Check whether the gift is meant for a particular member
-     * of the contact's family
+     * of the contact's family.
      *
      * @return bool
      */
@@ -100,7 +100,7 @@ class Gift extends Model
     }
 
     /**
-     * Set the recipient for the gift
+     * Set the recipient for the gift.
      *
      * @param SignificantOther|Kid|string $recipient
      * @return static
@@ -123,8 +123,6 @@ class Gift extends Model
         if ($this->hasParticularRecipient()) {
             return $this->recipient->first_name;
         }
-
-        return null;
     }
 
     public function getName()

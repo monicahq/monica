@@ -81,7 +81,7 @@ class SignificantOthersController extends Controller
 
         $contact->logEvent('significantother', $significantOther->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
     }
 
@@ -139,9 +139,9 @@ class SignificantOthersController extends Controller
             $request->get('age')
         );
 
-        if($significantOther->reminder) {
+        if ($significantOther->reminder) {
             $significantOther->update([
-                'birthday_reminder_id' => null
+                'birthday_reminder_id' => null,
             ]);
 
             $significantOther->reminder->delete();
@@ -168,7 +168,7 @@ class SignificantOthersController extends Controller
 
         $contact->logEvent('significantother', $significantOther->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_edit_success'));
     }
 
@@ -181,7 +181,7 @@ class SignificantOthersController extends Controller
      */
     public function destroy(Contact $contact, SignificantOther $significantOther)
     {
-        if($significantOther->reminder) {
+        if ($significantOther->reminder) {
             $significantOther->reminder->delete();
         }
 
@@ -189,7 +189,7 @@ class SignificantOthersController extends Controller
 
         $significantOther->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));
     }
 }

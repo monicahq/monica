@@ -17,6 +17,6 @@ return [
     'reset' => 'Heslo bylo resetováno!',
     'sent' => 'Byl odeslán odkaz na reset hesla!',
     'token' => 'Toto není platný odkaz na reset hesla.',
-    'user' => "Nelze nalézt uživatele s touto emailovou adresou.",
+    'user' => 'Nelze nalézt uživatele s touto emailovou adresou.',
 
 ];
