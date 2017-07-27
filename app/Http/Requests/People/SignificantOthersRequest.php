@@ -29,7 +29,7 @@ class SignificantOthersRequest extends FormRequest
             'status' => 'in:active,past|nullable',
             'is_birthdate_approximate' => 'required|in:unknown,approximate,exact',
             'birthdate' => 'date|nullable',
-            'age' => 'int|nullable'
+            'age' => 'int|nullable',
         ];
     }
 }

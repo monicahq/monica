@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Note;
 use App\Tag;
 use Validator;
 use App\Contact;
@@ -42,8 +41,8 @@ class PeopleController extends Controller
             }
 
             $contacts = $user->account->contacts()->whereHas('tags', function ($query) use ($tag) {
-                                            $query->where('id', $tag->id);
-                                        })->sortedBy($sort)->get();
+                $query->where('id', $tag->id);
+            })->sortedBy($sort)->get();
         } else {
             $contacts = $user->account->contacts()->sortedBy($sort)->get();
         }
@@ -87,7 +86,7 @@ class PeopleController extends Controller
         $contact->gender = $request->input('gender');
         $contact->first_name = ucfirst($request->input('first_name'));
 
-        if (!empty($request->input('last_name'))) {
+        if (! empty($request->input('last_name'))) {
             $contact->last_name = ucfirst($request->input('last_name'));
         }
 
@@ -125,7 +124,6 @@ class PeopleController extends Controller
      */
     public function edit(Contact $contact)
     {
-
         return view('people.edit')
             ->withContact($contact);
     }
@@ -288,7 +286,7 @@ class PeopleController extends Controller
             $contact->save();
         }
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -331,7 +329,7 @@ class PeopleController extends Controller
     }
 
     /**
-     * Save the work information
+     * Save the work information.
      *
      * @param Request $request
      * @param Contact $contact
@@ -349,7 +347,7 @@ class PeopleController extends Controller
 
         $contact->save();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -379,32 +377,33 @@ class PeopleController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
     /**
-     * Search used in the header
+     * Search used in the header.
      * @param  Request $request
      */
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $needle = $request->needle;
         $accountId = $request->accountId;
 
         if ($accountId != auth()->user()->account_id) {
-            return null;
+            return;
         }
 
-        if($needle == null) {
-            return null;
+        if ($needle == null) {
+            return;
         }
 
-        if($accountId == null) {
-            return null;
+        if ($accountId == null) {
+            return;
         }
 
         $results = Contact::search($needle, $accountId);
-        if(sizeof($results) !== 0) {
+        if (count($results) !== 0) {
             return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];

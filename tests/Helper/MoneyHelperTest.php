@@ -2,10 +2,10 @@
 
 namespace Tests\Helper;
 
-use App\Currency;
 use App\User;
-use App\Helpers\MoneyHelper;
+use App\Currency;
 use Tests\TestCase;
+use App\Helpers\MoneyHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MoneyHelperTest extends TestCase
@@ -15,7 +15,7 @@ class MoneyHelperTest extends TestCase
     public function testFormatReturnsAmountWithCurrencySymbol()
     {
         $currency = new Currency();
-        $currency->symbol = "€";
+        $currency->symbol = '€';
 
         $this->assertEquals('€500', MoneyHelper::format(500, $currency));
     }
@@ -24,7 +24,7 @@ class MoneyHelperTest extends TestCase
     {
         $currency = Currency::where('iso', 'GBP')->first();
         $user = factory(User::class)->create([
-            'currency_id' => $currency->id
+            'currency_id' => $currency->id,
         ]);
         $this->actingAs($user);
 

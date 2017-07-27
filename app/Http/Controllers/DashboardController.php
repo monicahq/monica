@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Event;
-use App\Task;
 use App\Debt;
-use Validator;
+use App\Event;
 use App\Contact;
-use App\Reminder;
 use Carbon\Carbon;
-use App\Http\Requests;
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -54,7 +49,6 @@ class DashboardController extends Controller
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-
                 if ($event->object_type === 'significantother') {
                     $object = $event->contact->significantOthers->where('id', $event->object_id)->first();
                 } elseif ($event->object_type === 'kid') {
@@ -99,7 +93,7 @@ class DashboardController extends Controller
             'debt_owed' => $debt_owed,
             'tasks' => $tasks,
             'debts' => $debt,
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ];
 
         return view('dashboard.index', $data);

@@ -21,7 +21,7 @@ class VersionCheckTest extends FeatureTestCase
         putenv('CHECK_VERSION=false');
 
         // reload the environment as we've changed the ENV variable
-        $app = require __DIR__ . '/../../bootstrap/app.php';
+        $app = require __DIR__.'/../../bootstrap/app.php';
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
         $resultCommand = $this->artisan('monica:ping');

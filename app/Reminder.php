@@ -2,13 +2,11 @@
 
 namespace App;
 
-use Log;
 use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use MartinJoiner\OrdinalNumber\OrdinalNumber;
 
 /**
  * @property Account $account
@@ -51,7 +49,7 @@ class Reminder extends Model
     }
 
     /**
-     * Get the next_expected_date field according to user's timezone
+     * Get the next_expected_date field according to user's timezone.
      *
      * @param string $value
      * @return string
@@ -66,7 +64,7 @@ class Reminder extends Model
     }
 
     /**
-     * Correctly set the frequency type
+     * Correctly set the frequency type.
      *
      * @param string $value
      */
@@ -76,7 +74,7 @@ class Reminder extends Model
     }
 
     /**
-     * Add a new birthday reminder
+     * Add a new birthday reminder.
      *
      * @param Contact $contact
      * @param string $title
@@ -98,7 +96,7 @@ class Reminder extends Model
                 'account_id' => $contact->account_id,
                 'is_birthday' => 'true',
                 'about_object' => $kid ? 'kid' : ($significantOther ? 'significantother' : 'contact'),
-                'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id)
+                'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id),
             ]);
 
         $account = $reminder->contact->account;
@@ -118,7 +116,7 @@ class Reminder extends Model
     public function getTitle()
     {
         if (is_null($this->title)) {
-            return null;
+            return;
         }
 
         return $this->title;
@@ -131,7 +129,7 @@ class Reminder extends Model
     public function getDescription()
     {
         if (is_null($this->description)) {
-            return null;
+            return;
         }
 
         return $this->description;

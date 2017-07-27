@@ -139,6 +139,5 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
         Route::get('/settings/tags/{user}/delete', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
-
     });
 });

@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use App\Activity;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends TestCase
@@ -43,7 +41,7 @@ class ActivityTest extends TestCase
         $type = factory(\App\ActivityType::class)->create();
 
         $activity = factory(\App\Activity::class)->create([
-            'activity_type_id' => $type->id
+            'activity_type_id' => $type->id,
         ]);
 
         $this->assertEquals($type->key, $activity->getTitle());

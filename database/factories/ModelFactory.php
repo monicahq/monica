@@ -22,13 +22,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_first',
-        'account_id' => factory('App\Account')->create()->id
+        'account_id' => factory('App\Account')->create()->id,
     ];
 });
 
 $factory->define(App\Account::class, function (Faker\Generator $faker) {
     return [
-        'api_key' => RandomHelper::generateString(30)
+        'api_key' => RandomHelper::generateString(30),
     ];
 });
 

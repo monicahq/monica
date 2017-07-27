@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\People;
 
-use App\Contact;
-use App\Http\Requests\People\KidsRequest;
 use App\Kid;
+use App\Contact;
 use App\Reminder;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\People\KidsRequest;
 
 class KidsController extends Controller
 {
@@ -53,7 +52,7 @@ class KidsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'food_preferencies' => $request->get('food_preferences')
+                'food_preferencies' => $request->get('food_preferences'),
             ]
         );
 
@@ -81,7 +80,7 @@ class KidsController extends Controller
 
         $contact->logEvent('kid', $kid->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_add_success'));
     }
 
@@ -129,7 +128,7 @@ class KidsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'food_preferencies' => $request->get('food_preferences')
+                'food_preferencies' => $request->get('food_preferences'),
             ]
         );
 
@@ -167,7 +166,7 @@ class KidsController extends Controller
 
         $contact->logEvent('kid', $kid->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_update_success'));
     }
 
@@ -188,7 +187,7 @@ class KidsController extends Controller
 
         $kid->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_delete_success'));
     }
 }

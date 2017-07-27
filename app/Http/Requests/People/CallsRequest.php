@@ -25,7 +25,7 @@ class CallsRequest extends FormRequest
     {
         return [
             'content' => '',
-            'called_at' => 'date|nullable'
+            'called_at' => 'date|nullable',
         ];
     }
 }

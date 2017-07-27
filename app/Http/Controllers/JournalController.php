@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Entry;
 use Validator;
-use Carbon\Carbon;
-use App\Http\Requests;
 use Illuminate\Http\Request;
 
 class JournalController extends Controller
@@ -35,7 +33,7 @@ class JournalController extends Controller
     }
 
     /**
-     * Saves the journal entry
+     * Saves the journal entry.
      *
      * @param  Request $request
      * @return Response
@@ -57,7 +55,7 @@ class JournalController extends Controller
         $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {
-          $entry->title = $request->input('title');
+            $entry->title = $request->input('title');
         }
 
         $entry->save();

@@ -52,7 +52,7 @@ class NotesController extends Controller
 
         $contact->logEvent('note', $note->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.notes_create_success'));
     }
 
@@ -101,7 +101,7 @@ class NotesController extends Controller
 
         $contact->logEvent('note', $note->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.notes_update_success'));
     }
 
@@ -118,7 +118,7 @@ class NotesController extends Controller
 
         $contact->events()->forObject($note)->get()->each->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.notes_delete_success'));
     }
 }

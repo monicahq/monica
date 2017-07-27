@@ -51,13 +51,13 @@ class DebtController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'inprogress'
+                'status' => 'inprogress',
             ]
         );
 
         $contact->logEvent('debt', $debt->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.debt_add_success'));
     }
 
@@ -105,13 +105,13 @@ class DebtController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'inprogress'
+                'status' => 'inprogress',
             ]
         );
 
         $contact->logEvent('debt', $debt->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.debt_edit_success'));
     }
 
@@ -128,7 +128,7 @@ class DebtController extends Controller
 
         $contact->events()->forObject($debt)->get()->each->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.debt_delete_success'));
     }
 }

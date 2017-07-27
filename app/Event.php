@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -35,7 +34,7 @@ class Event extends Model
     }
 
     /**
-     * Limits the results to a specific object
+     * Limits the results to a specific object.
      *
      * @param Builder $query
      * @param Model $object
@@ -44,7 +43,7 @@ class Event extends Model
      */
     public function scopeForObject(Builder $query, Model $object, string $key = null)
     {
-        if (!$key) {
+        if (! $key) {
             $key = strtolower(class_basename($object));
         }
 

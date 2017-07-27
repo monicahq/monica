@@ -5,9 +5,6 @@ namespace Tests\Helper;
 use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DateHelperTest extends FeatureTestCase
 {
@@ -117,7 +114,6 @@ class DateHelperTest extends FeatureTestCase
             '2017-01-29',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
         );
-
 
         $testDate = DateHelper::createDateFromFormat($date, $timezone);
         $this->assertEquals(

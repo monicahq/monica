@@ -34,7 +34,7 @@ class MoneyHelper
                     break;
             }
 
-            $amount = $currency->symbol . $amount;
+            $amount = $currency->symbol.$amount;
         }
 
         return (string) $amount;

@@ -2,15 +2,13 @@
 
 namespace Tests\Unit;
 
+use App\User;
 use App\Account;
 use App\Contact;
 use App\Country;
-use App\Helpers\RandomHelper;
-use App\User;
 use Mockery as m;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Helpers\RandomHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase
@@ -31,7 +29,6 @@ class ImportVCardsTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
     }
-
 
     public function testItValidatesFile()
     {
@@ -90,7 +87,8 @@ class ImportVCardsTest extends TestCase
         $this->assertEquals(0, $exitCode);
     }
 
-    private function getUser() {
+    private function getUser()
+    {
         $user = new User();
         $user->first_name = 'John';
         $user->last_name = 'Doe';
@@ -106,5 +104,4 @@ class ImportVCardsTest extends TestCase
 
         return $user;
     }
-
 }
