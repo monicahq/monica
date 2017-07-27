@@ -5,8 +5,6 @@ namespace Tests\Unit;
 use App\Kid;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class KidTest extends TestCase

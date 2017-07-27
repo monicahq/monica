@@ -22,7 +22,7 @@ class RefactorUserTable extends Migration
                 'send_sms_alert',
                 'phone_number',
                 'gender',
-                'deleted_at'
+                'deleted_at',
             ]);
 
             $table->integer('invited_by_user_id')->after('contacts_sort_order')->nullable();

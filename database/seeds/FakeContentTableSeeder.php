@@ -1,14 +1,8 @@
 <?php
 
-use App\Kid;
-use App\Event;
 use App\Contact;
-use App\Reminder;
-use Carbon\Carbon;
 use Faker\Factory as Faker;
-use App\Helpers\RandomHelper;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -153,7 +147,7 @@ class FakeContentTableSeeder extends Seeder
                 for ($j = 0; $j < rand(1, 13); $j++) {
                     $note = $contact->notes()->create([
                         'body' => $faker->realText(rand(40, 500)),
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('note', $note->id, 'create');
@@ -166,9 +160,9 @@ class FakeContentTableSeeder extends Seeder
                     $activity = $contact->activities()->create([
                         'summary' => $faker->realText(rand(40, 100)),
                         'date_it_happened' => $faker->date($format = 'Y-m-d', $max = 'now'),
-                        'activity_type_id' => rand(1,13),
+                        'activity_type_id' => rand(1, 13),
                         'description' => $faker->realText(rand(100, 1000)),
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('activity', $activity->id, 'create');
@@ -181,8 +175,8 @@ class FakeContentTableSeeder extends Seeder
                     $task = $contact->tasks()->create([
                         'title' => $faker->realText(rand(40, 100)),
                         'description' => $faker->realText(rand(100, 1000)),
-                        'status' => (rand(1,2) == 1 ? 'inprogress' : 'completed'),
-                        'account_id' => $contact->account_id
+                        'status' => (rand(1, 2) == 1 ? 'inprogress' : 'completed'),
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('task', $task->id, 'create');
@@ -193,11 +187,11 @@ class FakeContentTableSeeder extends Seeder
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 6); $j++) {
                     $debt = $contact->debts()->create([
-                        'in_debt' => (rand(1,2) == 1 ? 'yes' : 'no'),
-                        'amount' => rand(321,39391),
+                        'in_debt' => (rand(1, 2) == 1 ? 'yes' : 'no'),
+                        'amount' => rand(321, 39391),
                         'reason' => $faker->realText(rand(100, 1000)),
                         'status' => 'inprogress',
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('debt', $debt->id, 'create');
@@ -212,10 +206,10 @@ class FakeContentTableSeeder extends Seeder
                         'name' => $faker->realText(rand(10, 100)),
                         'comment' => $faker->realText(rand(1000, 5000)),
                         'url' => $faker->url,
-                        'value_in_dollars' => rand(12,120),
+                        'value_in_dollars' => rand(12, 120),
                         'account_id' => $contact->account_id,
                         'is_an_idea' => 'true',
-                        'has_been_offered' => 'false'
+                        'has_been_offered' => 'false',
                     ]);
 
                     $contact->logEvent('gift', $gift->id, 'create');

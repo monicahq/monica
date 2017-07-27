@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class ActivityTypesTableSeeder extends Seeder
 {

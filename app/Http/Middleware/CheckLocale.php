@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Auth;
-use Carbon\Carbon;
 use Closure;
+use Carbon\Carbon;
 
 class CheckLocale
 {

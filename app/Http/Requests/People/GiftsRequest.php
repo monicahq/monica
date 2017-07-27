@@ -31,7 +31,7 @@ class GiftsRequest extends FormRequest
             'date_offered' => 'date|nullable',
             'value_in_dollars' => 'int|nullable',
             'has_recipient' => 'boolean',
-            'recipient' => 'required_with:has_recipient'
+            'recipient' => 'required_with:has_recipient',
         ];
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App;
 
-use Auth;
-use App\Helpers\DateHelper;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -16,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Task extends Model
 {
-
     /**
      * The attributes that aren't mass assignable.
      *
@@ -52,7 +49,7 @@ class Task extends Model
     }
 
     /**
-     * Limit tasks to completed ones
+     * Limit tasks to completed ones.
      *
      * @param Builder $query
      * @return Builder
@@ -63,7 +60,7 @@ class Task extends Model
     }
 
     /**
-     * Limit tasks to in-progress ones
+     * Limit tasks to in-progress ones.
      *
      * @param Builder $query
      * @return Builder
@@ -74,7 +71,7 @@ class Task extends Model
     }
 
     /**
-     * Toggle task status
+     * Toggle task status.
      *
      * @return static
      */

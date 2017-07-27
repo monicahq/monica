@@ -49,14 +49,14 @@ class RemindersController extends Controller
                 'description',
                 'frequency_type',
                 'next_expected_date',
-                'frequency_number'
+                'frequency_number',
             ])
             + ['account_id' => $contact->account_id]
         );
 
         $contact->logEvent('reminder', $reminder->id, 'create');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.reminders_create_success'));
     }
 
@@ -102,14 +102,14 @@ class RemindersController extends Controller
                 'next_expected_date',
                 'description',
                 'frequency_type',
-                'frequency_number'
+                'frequency_number',
             ])
             + ['account_id' => $contact->account_id]
         );
 
         $contact->logEvent('reminder', $reminder->id, 'update');
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.reminders_update_success'));
     }
 
@@ -126,7 +126,7 @@ class RemindersController extends Controller
 
         $contact->events()->forObject($reminder)->get()->each->delete();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.reminders_delete_success'));
     }
 }

@@ -3,11 +3,9 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class InstanceTest extends TestCase
 {
-
     /**
      * Check if, by default, the disable signups feature is turned off in an
      * instance.
@@ -35,7 +33,7 @@ class InstanceTest extends TestCase
         putenv('APP_DISABLE_SIGNUP=true');
 
         // reload the environment as we've changed the ENV variable
-        $app = require __DIR__ . '/../../bootstrap/app.php';
+        $app = require __DIR__.'/../../bootstrap/app.php';
         $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
         $response = $this->get('/');

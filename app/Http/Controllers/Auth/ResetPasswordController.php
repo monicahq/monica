@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     protected $redirectTo = '/dashboard';
-    
+
     /**
      * Create a new controller instance.
      *

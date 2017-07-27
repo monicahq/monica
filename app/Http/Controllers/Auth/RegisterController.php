@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use Auth;
 use App\User;
-use Socialite;
 use Validator;
 use App\Account;
 use Carbon\Carbon;

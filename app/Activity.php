@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\ActivityType;
-use App\Helpers\DateHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -74,7 +72,7 @@ class Activity extends Model
     }
 
     /**
-     * Get the date_it_happened field according to user's timezone
+     * Get the date_it_happened field according to user's timezone.
      *
      * @param string $value
      * @return string

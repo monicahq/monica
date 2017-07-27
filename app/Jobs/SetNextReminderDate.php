@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Log;
 use App\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;

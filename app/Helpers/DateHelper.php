@@ -97,10 +97,10 @@ class DateHelper
     }
 
     /**
-     * Add a given number of week/month/year to a date
+     * Add a given number of week/month/year to a date.
      * @param Carbon $date      the start date
      * @param string $frequency week/month/year
-     * @param integer $number    the number of week/month/year to increment to
+     * @param int $number    the number of week/month/year to increment to
      */
     public static function addTimeAccordingToFrequencyType(Carbon $date, $frequency, $number)
     {

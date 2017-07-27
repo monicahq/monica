@@ -4,10 +4,9 @@ namespace App;
 
 use DB;
 use Laravel\Cashier\Billable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property User $user
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Account extends Model
 {
-
     use Billable;
 
     /**
@@ -36,7 +34,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent', 'api_key'
+        'number_of_invitations_sent', 'api_key',
     ];
 
     /**
@@ -210,7 +208,7 @@ class Account extends Model
     }
 
     /**
-     * Check if the account can be downgraded, based on a set of rules
+     * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
      */
@@ -234,9 +232,9 @@ class Account extends Model
     }
 
     /**
-     * Check if the account is currently subscribed to a plan
+     * Check if the account is currently subscribed to a plan.
      *
-     * @return boolean $isSubscribed
+     * @return bool $isSubscribed
      */
     public function isSubscribed()
     {
@@ -254,7 +252,7 @@ class Account extends Model
      * This was created because Laravel Cashier doesn't know how to properly
      * handled the case when a user doesn't have invoices yet. This sucks balls.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasInvoices()
     {
@@ -267,16 +265,16 @@ class Account extends Model
     }
 
     /**
-     * Get the next billing date for the account
+     * Get the next billing date for the account.
      *
-     * @return String $timestamp
+     * @return string $timestamp
      */
     public function getNextBillingDate()
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $timestamp = $this->asStripeCustomer()["subscriptions"]
-                            ->data[0]["current_period_end"];
+        $timestamp = $this->asStripeCustomer()['subscriptions']
+                            ->data[0]['current_period_end'];
 
         return \App\Helpers\DateHelper::getShortDate($timestamp);
     }

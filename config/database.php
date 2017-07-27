@@ -131,23 +131,21 @@ $db = [
 
 ];
 
-
 /*
  * If the instance is hosted on Heroku, then the database information
  * needs to be parsed from the environment variable provided by Heroku.
  * This is done below, added to the $db variable and then returned.
  */
-if( env('HEROKU') )
-{
-    $url = parse_url(env("CLEARDB_DATABASE_URL"));
+if (env('HEROKU')) {
+    $url = parse_url(env('CLEARDB_DATABASE_URL'));
 
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
         'host' => $url['host'],
         'port' => $url['port'],
-        'database' => substr($url["path"], 1),
-        'username' => $url["user"],
-        'password' => $url["pass"],
+        'database' => substr($url['path'], 1),
+        'username' => $url['user'],
+        'password' => $url['pass'],
         'charset' => 'utf8',
         'prefix' => '',
         'schema' => 'public',

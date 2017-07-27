@@ -4,17 +4,16 @@ namespace App\Jobs;
 
 use App\User;
 use App\Contact;
+use App\Country;
 use App\Reminder;
 use App\ImportJob;
 use App\ImportJobReport;
-use App\Country;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Sabre\VObject\Component\VCard;
-use Sabre\VObject\Property\ICalendar\DateTime;
 use Sabre\VObject\Reader;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
+use Sabre\VObject\Component\VCard;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -50,7 +49,6 @@ class AddContactFromVCard implements ShouldQueue
     public function handle()
     {
         try {
-
             $numberOfContactsInTheFile = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s', Storage::disk('public')->get($this->importJob->filename), $matches);
 
             $this->importJob->started_at = \Carbon\Carbon::now();
@@ -58,7 +56,6 @@ class AddContactFromVCard implements ShouldQueue
             collect($matches[0])->map(function ($vcard) {
                 return Reader::read($vcard);
             })->each(function (VCard $vcard) {
-
                 if ($this->contactExists($vcard, $this->importJob->account_id)) {
                     $this->skippedContacts++;
                     $this->fileImportJobReport($vcard, self::VCARD_SKIPPED, self::ERROR_CONTACT_EXIST);
@@ -77,7 +74,7 @@ class AddContactFromVCard implements ShouldQueue
                 $contact = new Contact();
                 $contact->account_id = $this->importJob->account_id;
 
-                if($vcard->N && ! empty($vcard->N->getParts()[1])) {
+                if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
                     $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
                     $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
                     $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
@@ -88,7 +85,7 @@ class AddContactFromVCard implements ShouldQueue
                 $contact->gender = 'none';
                 $contact->is_birthdate_approximate = 'unknown';
 
-                if ($vcard->BDAY && !empty((string) $vcard->BDAY)) {
+                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
                     $contact->is_birthdate_approximate = 'exact';
                     $contact->birthdate = new \DateTime((string) $vcard->BDAY);
                 }
@@ -96,7 +93,7 @@ class AddContactFromVCard implements ShouldQueue
                 $contact->email = $this->formatValue($vcard->EMAIL);
                 $contact->phone_number = $this->formatValue($vcard->TEL);
 
-                if($vcard->ADR) {
+                if ($vcard->ADR) {
                     $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
                     $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
                     $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
@@ -145,7 +142,6 @@ class AddContactFromVCard implements ShouldQueue
             $this->importJob->contacts_imported = $this->importedContacts;
             $this->importJob->ended_at = \Carbon\Carbon::now();
             $this->importJob->save();
-
         } catch (Exception $e) {
             $this->importJob->contacts_found = $numberOfContactsInTheFile;
             $this->importJob->failed = 1;
@@ -166,24 +162,24 @@ class AddContactFromVCard implements ShouldQueue
      * @param VCard $vcard
      * @return bool
      */
-    function contactHasName(VCard $vcard): bool
+    public function contactHasName(VCard $vcard): bool
     {
         return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
     }
 
     /**
-     * Formats and returns a string for the contact
+     * Formats and returns a string for the contact.
      *
      * @param null|string $value
      * @return null|string
      */
     private function formatValue($value)
     {
-        return !empty((string) $value) ? (string) $value : null;
+        return ! empty((string) $value) ? (string) $value : null;
     }
 
     /**
-     * Checks whether a contact already exists for a given account
+     * Checks whether a contact already exists for a given account.
      *
      * @param VCard $vcard
      * @param User $user
@@ -195,7 +191,7 @@ class AddContactFromVCard implements ShouldQueue
 
         $contact = Contact::where([
             ['account_id', $account_id],
-            ['email', $email]
+            ['email', $email],
         ])->first();
 
         return $email && $contact;
@@ -204,9 +200,9 @@ class AddContactFromVCard implements ShouldQueue
     private function fileImportJobReport(VCard $vcard, $status, $reason = null)
     {
         $name = $this->formatValue($vcard->N->getParts()[1]);
-        $name .= ' ' . $this->formatValue($vcard->N->getParts()[2]);
-        $name .= ' ' . $this->formatValue($vcard->N->getParts()[0]);
-        $name .= ' ' . $this->formatValue($vcard->EMAIL);
+        $name .= ' '.$this->formatValue($vcard->N->getParts()[2]);
+        $name .= ' '.$this->formatValue($vcard->N->getParts()[0]);
+        $name .= ' '.$this->formatValue($vcard->EMAIL);
 
         $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->importJob->account_id;
