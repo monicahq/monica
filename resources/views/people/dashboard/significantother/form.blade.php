@@ -1,92 +1,123 @@
-<form method="POST" action="{{ $action }}">
-    {{ method_field($method) }}
-    {{ csrf_field() }}
+@push('scripts')
+  <script type="text/javascript">
+      $( ".nav-item" ).click(function() {
+          $(this).children().addClass('active');
+          $(this).siblings().children().removeClass('active');
+      });
+  </script>
+@endpush
 
-    @include('partials.errors')
+  <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
-    <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
+        Add a new person
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+        Link existing contact
+      </a>
+    </li>
+  </ul>
 
-    {{-- First name --}}
-    <div class="form-group">
-        <label for="first_name">{{ trans('people.significant_other_add_firstname') }}</label>
-        <input type="text" class="form-control" name="first_name" id="first_name" maxlength="254" value="{{ old('first_name') ?? $significant_other->first_name }}" autofocus required>
-    </div>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel">
 
-    {{-- Gender --}}
-    <label>{{ trans('people.people_add_gender') }}</label>
-    <fieldset class="form-group">
-        <label class="form-check-inline" for="genderNone">
+      <form method="POST" action="{{ $action }}">
+        {{ method_field($method) }}
+        {{ csrf_field() }}
+
+        @include('partials.errors')
+
+        {{-- First name --}}
+        <div class="form-group">
+          <label for="first_name">{{ trans('people.significant_other_add_firstname') }}</label>
+          <input type="text" class="form-control" name="first_name" id="first_name" maxlength="254" value="{{ old('first_name') ?? $significant_other->first_name }}" autofocus required>
+        </div>
+
+        {{-- Gender --}}
+        <label>{{ trans('people.people_add_gender') }}</label>
+        <fieldset class="form-group">
+          <label class="form-check-inline" for="genderNone">
             <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" @if(! in_array(old('gender'), ['male', 'female']) || ! in_array($significant_other->gender, ['male', 'female'])) checked @endif>
             {{ trans('app.gender_none') }}
-        </label>
+          </label>
 
-        <label class="form-check-inline" for="genderMale">
+          <label class="form-check-inline" for="genderMale">
             <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" @if(old('gender') === 'male' || $significant_other->gender === 'male') checked @endif>
             {{ trans('app.gender_male') }}
-        </label>
+          </label>
 
-        <label class="form-check-inline" for="genderFemale">
+          <label class="form-check-inline" for="genderFemale">
             <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female" @if(old('gender') === 'female' || $significant_other->gender === 'female') checked @endif>
             {{ trans('app.gender_female') }}
-        </label>
-    </fieldset>
+          </label>
+        </fieldset>
 
-    <fieldset class="form-group dates">
+        <fieldset class="form-group dates">
 
-        {{-- Don't know the birthdate --}}
-        <div class="form-check" for="is_birthdate_approximate_unknown">
+          {{-- Don't know the birthdate --}}
+          <div class="form-check" for="is_birthdate_approximate_unknown">
             <label class="form-check-label">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_unknown" value="unknown"
-                       @if(! in_array(old('is_birthdate_approximate'), ['approximate', 'exact']) || ! in_array($significant_other->is_birthdate_approximate, ['approximate', 'exact'])) checked @endif
-                >
+              <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_unknown" value="unknown"
+              @if(! in_array(old('is_birthdate_approximate'), ['approximate', 'exact']) || ! in_array($significant_other->is_birthdate_approximate, ['approximate', 'exact'])) checked @endif
+              >
 
-                <div class="form-inline">
-                    {{ trans('people.significant_other_add_unknown') }}
-                </div>
+              <div class="form-inline">
+                {{ trans('people.significant_other_add_unknown') }}
+              </div>
             </label>
-        </div>
+          </div>
 
-        {{-- Approximate birthdate --}}
-        <div class="form-check">
+          {{-- Approximate birthdate --}}
+          <div class="form-check">
             <label class="form-check-label" for="is_birthdate_approximate_approximate">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_approximate" value="approximate"
-                       @if(old('is_birthdate_approximate') === 'approximate' || $significant_other->is_birthdate_approximate === 'approximate') checked @endif
-                >
+              <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_approximate" value="approximate"
+              @if(old('is_birthdate_approximate') === 'approximate' || $significant_other->is_birthdate_approximate === 'approximate') checked @endif
+              >
 
-                <div class="form-inline">
-                    {{ trans('people.significant_other_add_probably') }}
+              <div class="form-inline">
+                {{ trans('people.significant_other_add_probably') }}
 
-                    <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $significant_other->age ?? 1 }}" min="1" max="99">
+                <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $significant_other->age ?? 1 }}" min="1" max="99">
 
-                    {{ trans('people.significant_other_add_probably_yo') }}
-                </div>
+                {{ trans('people.significant_other_add_probably_yo') }}
+              </div>
             </label>
-        </div>
+          </div>
 
-        {{-- Exact birthdate --}}
-        <div class="form-check">
+          {{-- Exact birthdate --}}
+          <div class="form-check">
             <label class="form-check-label" for="is_birthdate_approximate_exact">
-                <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_exact" value="exact"
-                       @if(old('is_birthdate_approximate') === 'exact' || $significant_other->is_birthdate_approximate === 'exact') checked @endif
-                >
+              <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_exact" value="exact"
+              @if(old('is_birthdate_approximate') === 'exact' || $significant_other->is_birthdate_approximate === 'exact') checked @endif
+              >
 
-                <span class="form-inline">
-                    {{ trans('people.significant_other_add_exact') }}
-                    <input type="date" name="birthdate" class="form-control" id="specificDate"
-                           value="{{ old('birthdate') ?? $significant_other->birthdate->format('Y-m-d') ?? '' }}"
-                           min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                           max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-                </span>
+              <span class="form-inline">
+                {{ trans('people.significant_other_add_exact') }}
+                <input type="date" name="birthdate" class="form-control" id="specificDate"
+                value="{{ old('birthdate') ?? $significant_other->birthdate->format('Y-m-d') ?? '' }}"
+                min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
+                max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
+              </span>
             </label>
+          </div>
+        </fieldset>
+
+        <div class="classname">
+          <p>{{ trans('people.significant_other_add_help') }}</p>
         </div>
-    </fieldset>
 
-    <div class="classname">
-        <p>{{ trans('people.significant_other_add_help') }}</p>
+        <div class="form-group actions">
+          <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
+          <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+        </div>
+      </form>
     </div>
+    <div class="tab-pane" id="profile" role="tabpanel">
 
-    <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
-        <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-    </div> <!-- .form-group -->
-</form>
+    </div>
+  </div>

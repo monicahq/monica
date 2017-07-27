@@ -10,7 +10,6 @@
   </script>
 @endpush
 
-
 @section('content')
   <div class="dashboard">
 

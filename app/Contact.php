@@ -163,23 +163,13 @@ class Contact extends Model
     }
 
     /**
-     * Get the current significant other associated with the contact.
-     *
-     * @return SignificantOther
-     */
-    public function significantOther()
-    {
-        return $this->hasOne('App\SignificantOther')->active();
-    }
-
-    /**
-     * Get the significant others associated with the contact.
+     * Get the relationships records associated with the contact.
      *
      * @return HasMany
      */
-    public function significantOthers()
+    public function relationships()
     {
-        return $this->hasMany('App\SignificantOther');
+        return $this->hasMany('App\Relationship', 'spouse_of_contact_id');
     }
 
     /**
