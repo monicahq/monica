@@ -63,6 +63,16 @@ class Contact extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_significant_other' => 'boolean',
+        'is_kid' => 'boolean',
+    ];
+
+    /**
      * Get the user associated with the contact.
      *
      * @return BelongsTo
@@ -169,7 +179,7 @@ class Contact extends Model
      */
     public function relationships()
     {
-        return $this->hasMany('App\Relationship', 'spouse_of_contact_id');
+        return $this->hasMany('App\Relationship', 'contact_id');
     }
 
     /**

@@ -32,7 +32,7 @@ class SignificantOthersController extends Controller
     {
         return view('people.dashboard.significantother.add')
             ->withContact($contact)
-            ->withSignificantOther(new SignificantOther);
+            ->withPartner(new Contact);
     }
 
     /**
@@ -83,18 +83,6 @@ class SignificantOthersController extends Controller
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param SignificantOther $significantOther
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, SignificantOther $significantOther)
-    {
-        //
     }
 
     /**
