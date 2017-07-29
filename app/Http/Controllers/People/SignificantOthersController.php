@@ -4,7 +4,7 @@ namespace App\Http\Controllers\People;
 
 use App\Contact;
 use App\Reminder;
-use App\SignificantOther;
+use App\Relationship;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\SignificantOthersRequest;
 
@@ -44,7 +44,7 @@ class SignificantOthersController extends Controller
      */
     public function store(SignificantOthersRequest $request, Contact $contact)
     {
-        $significantOther = $contact->significantOthers()->create(
+        $significantOther = Contact::create(
             $request->only([
                 'first_name',
                 'gender',
@@ -52,7 +52,16 @@ class SignificantOthersController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'active',
+                'is_significant_other' => 1,
+            ]
+        );
+
+        $relationship = Relationship::create(
+            [
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'with_contact_id' => $significantOther->id,
+                'is_active' => 1,
             ]
         );
 
@@ -69,14 +78,8 @@ class SignificantOthersController extends Controller
                     'people.significant_other_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
                 ),
-                $request->get('birthdate'),
-                null,
-                $significantOther
+                $request->get('birthdate')
             );
-
-            $significantOther->update([
-                'birthday_reminder_id' => $reminder->id,
-            ]);
         }
 
         $contact->logEvent('significantother', $significantOther->id, 'create');
@@ -167,10 +170,10 @@ class SignificantOthersController extends Controller
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, SignificantOther $significantOther)
+    public function destroy(Contact $contact, Contact $significantOther)
     {
-        if ($significantOther->reminder) {
-            $significantOther->reminder->delete();
+        if ($significantOther->reminders) {
+            $significantOther->reminders()->get()->each->delete();
         }
 
         $contact->events()->forObject($significantOther)->get()->each->delete();

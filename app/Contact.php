@@ -49,6 +49,19 @@ class Contact extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'first_name',
+        'gender',
+        'is_birthdate_approximate',
+        'account_id',
+        'is_significant_other',
+    ];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
@@ -173,16 +186,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the relationships records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function relationships()
-    {
-        return $this->hasMany('App\Relationship', 'contact_id');
-    }
-
-    /**
      * Get the task records associated with the contact.
      *
      * @return HasMany
@@ -210,6 +213,16 @@ class Contact extends Model
     public function calls()
     {
         return $this->hasMany('App\Call')->orderBy('called_at', 'desc');
+    }
+
+    /**
+     * Get the Relationships records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function activeRelationships()
+    {
+        return $this->hasMany('App\Relationship', 'contact_id')->where('is_active', 1);
     }
 
     /**
@@ -663,13 +676,19 @@ class Contact extends Model
     }
 
     /**
-     * Get the current Significant Other, if it exists, or return null otherwise.
+     * Get the current Significant Others, if they exists, or return null otherwise.
      *
-     * @return SignificantOther
+     * @return Contact
      */
-    public function getCurrentSignificantOther()
+    public function getCurrentSignificantOthers()
     {
-        return $this->significantOther;
+        $partners = collect([]);
+        foreach ($this->activeRelationships as $relationship) {
+            $contact = Contact::find($relationship->with_contact_id);
+            $partners->push($contact);
+        }
+
+        return $partners;
     }
 
     /**
@@ -1002,5 +1021,29 @@ class Contact extends Model
         }
 
         $this->save();
+    }
+
+    /**
+     * Assigns a birthday or birth year to the loved one based on
+     * the data provided.
+     *
+     * @param string $approximation ['unknown', 'exact', 'approximate']
+     * @param \DateTime|string $exactDate
+     * @param string|int $age
+     * @return static
+     */
+    public function assignBirthday($approximation, $exactDate, $age = null)
+    {
+        if ($approximation === 'approximate') {
+            $this->birthdate = Carbon::now()->subYears($age)->month(1)->day(1);
+        } elseif ($approximation === 'exact') {
+            $this->birthdate = Carbon::parse($exactDate);
+        } else {
+            $this->birthdate = null;
+        }
+
+        $this->save();
+
+        return $this;
     }
 }

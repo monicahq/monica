@@ -83,7 +83,7 @@ class Reminder extends Model
      * @param SignificantOther $kid
      * @return static
      */
-    public static function addBirthdayReminder($contact, $title, $date, $kid = null, $significantOther = null)
+    public static function addBirthdayReminder($contact, $title, $date)
     {
         $date = Carbon::parse($date);
 
@@ -95,11 +95,10 @@ class Reminder extends Model
                 'next_expected_date' => $date,
                 'account_id' => $contact->account_id,
                 'is_birthday' => 'true',
-                'about_object' => $kid ? 'kid' : ($significantOther ? 'significantother' : 'contact'),
-                'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id),
             ]);
 
         $account = $reminder->contact->account;
+
         foreach ($account->users as $user) {
             $userTimezone = $user->timezone;
         }

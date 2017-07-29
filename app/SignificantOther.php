@@ -78,30 +78,6 @@ class SignificantOther extends Model
     }
 
     /**
-     * Assigns a birthday or birth year to the loved one based on
-     * the data provided.
-     *
-     * @param string $approximation ['unknown', 'exact', 'approximate']
-     * @param \DateTime|string $exactDate
-     * @param string|int $age
-     * @return static
-     */
-    public function assignBirthday($approximation, $exactDate, $age = null)
-    {
-        if ($approximation === 'approximate') {
-            $this->birthdate = Carbon::now()->subYears($age)->month(1)->day(1);
-        } elseif ($approximation === 'exact') {
-            $this->birthdate = Carbon::parse($exactDate);
-        } else {
-            $this->birthdate = null;
-        }
-
-        $this->save();
-
-        return $this;
-    }
-
-    /**
      * Get the date_it_happened field according to user's timezone.
      *
      * @param string $value
