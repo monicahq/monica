@@ -49,7 +49,7 @@ return [
     */
     'google_analytics_app_id' => env('GOOGLE_ANALYTICS_APP_ID'),
     'intercom_app_id' => env('INTERCOM_APP_ID'),
-    'sentry_app_id' => env('SENTRY_APP_ID'),
+    'sentry_support' => env('SENTRY_SUPPORT', false),
 
     /*
     |--------------------------------------------------------------------------
