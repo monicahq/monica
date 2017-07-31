@@ -20,7 +20,8 @@
         "erusev/parsedown": "~1.6",
         "laravel/cashier": "~7.0",
         "roave/security-advisories": "dev-master",
-        "laravel/dusk": "^1.1"
+        "laravel/dusk": "^1.1",
+        "sentry/sentry-laravel": "^0.7.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
