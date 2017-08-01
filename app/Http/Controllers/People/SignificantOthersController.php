@@ -176,6 +176,8 @@ class SignificantOthersController extends Controller
             $significantOther->reminders()->get()->each->delete();
         }
 
+        $contact->relationship->forObject($significantOther)->delete();
+
         $contact->events()->forObject($significantOther)->get()->each->delete();
 
         $significantOther->delete();

@@ -18,7 +18,7 @@ class Relationship extends Model
         'account_id',
         'contact_id',
         'with_contact_id',
-        'is_active'
+        'is_active',
     ];
 
     public function contact()

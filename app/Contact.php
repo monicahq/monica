@@ -684,7 +684,7 @@ class Contact extends Model
     {
         $partners = collect([]);
         foreach ($this->activeRelationships as $relationship) {
-            $contact = Contact::find($relationship->with_contact_id);
+            $contact = self::find($relationship->with_contact_id);
             $partners->push($contact);
         }
 
