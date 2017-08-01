@@ -59,9 +59,12 @@ Route::group(['middleware' => 'auth'], function () {
         // Significant other
         Route::get('/people/{contact}/significant-others/add', 'People\\SignificantOthersController@create')->name('.significant_others.add');
         Route::post('/people/{contact}/significant-others/store', 'People\\SignificantOthersController@store')->name('.significant_others.store');
+        Route::post('/people/{contact}/significant-others/storeExistingContact', 'People\\SignificantOthersController@storeExistingContact')->name('.significant_others.storeexisting');
         Route::get('/people/{contact}/significant-others/{significant_other}/edit', 'People\\SignificantOthersController@edit')->name('.significant_others.edit');
         Route::put('/people/{contact}/significant-others/{significant_other}', 'People\\SignificantOthersController@update')->name('.significant_others.update');
+        Route::post('/people/{contact}/significant-others/updateExistingContact', 'People\\SignificantOthersController@updateExistingContact')->name('.significant_others.updateexisting');
         Route::get('/people/{contact}/significant-others/{significant_other}/delete', 'People\\SignificantOthersController@destroy')->name('.significant_others.delete');
+        Route::get('/people/{contact}/significant-others/{significant_other}/unlink', 'People\\SignificantOthersController@unlink')->name('.significant_others.unlink');
 
         // Activities
         Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');

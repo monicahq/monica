@@ -30,7 +30,7 @@ return [
     'save' => 'Update preferences',
     'delete_title' => 'Delete your account',
     'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permamently.',
-    'reset_desc' => 'Do you wish to reset your account? This will remove all your contacts, and the data associated with them. Your account won\'t be deleted.',
+    'reset_desc' => 'Do you wish to reset your account? This will remove all your contacts, and the data associated with them. Your account will not be deleted.',
     'reset_title' => 'Reset your account',
     'reset_cta' => 'Reset account',
     'reset_notice' => 'Are you sure to reset your account? There is no turning back.',

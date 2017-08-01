@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
+                {{ trans('app.breadcrumb_add_significant_other') }}
               </li>
             </ul>
           </div>
@@ -35,6 +38,7 @@
             @include('people.dashboard.significantother.form', [
               'method' => 'POST',
               'action' => route('people.significant_others.store', $contact),
+              'actionExisting' => route('people.significant_others.storeexisting', $contact),
               'buttonText' => trans('people.significant_other_add_cta')
             ])
           </div>

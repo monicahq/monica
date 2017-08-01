@@ -14,16 +14,31 @@
 
     {{-- Information about the significant other --}}
     @foreach ($contact->getCurrentSignificantOthers() as $significantOther)
-    <p class="sidebar-box-paragraph">
-      <span class="name">{{ $significantOther->getCompleteName() }}</span>
+      <p class="sidebar-box-paragraph">
 
-      @if (! is_null($significantOther->getAge()))
-        ({{ $significantOther->getAge() }})
-      @endif
+        @if ($significantOther->is_significant_other)
 
-      <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-      <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
-    </p>
+        <span class="name">{{ $significantOther->getCompleteName() }}</span>
+
+        @if (! is_null($significantOther->getAge()))
+          ({{ $significantOther->getAge() }})
+        @endif
+
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
+
+        @else
+
+        <a href="/people/{{ $significantOther->id }}"><span class="name">{{ $significantOther->getCompleteName() }}</span></a>
+
+        @if (! is_null($significantOther->getAge()))
+          ({{ $significantOther->getAge() }})
+        @endif
+
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
+
+        @endif
+      </p>
     @endforeach
 
     <p class="sidebar-box-paragraph">

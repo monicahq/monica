@@ -160,6 +160,7 @@ return [
     'significant_other_add_cta' => 'Add significant other',
     'significant_other_edit_cta' => 'Edit significant other',
     'significant_other_delete_confirmation' => 'Are you sure you want to delete this significant other? Deletion is permanent',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'The significant other has been added successfully',
     'significant_other_edit_success' => 'The significant other has been updated successfully',
     'significant_other_delete_success' => 'The significant other has been deleted successfully',

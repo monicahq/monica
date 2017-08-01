@@ -144,6 +144,7 @@ return [
     'significant_other_add_cta' => 'Přidat drahou polovičku',
     'significant_other_edit_cta' => 'Upravit drahou polovičku',
     'significant_other_delete_confirmation' => 'Opravdu chcete smazat tuto drahou polovičku? Smazání je trvalé.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'Drahá polovička byla úspěšně přidána',
     'significant_other_edit_success' => 'Drahá polovička byla úspěšně aktualizována',
     'significant_other_delete_success' => 'Drahá polovička byla úspěšně smazána',

@@ -43,7 +43,8 @@ class FakeContentTableSeeder extends Seeder
         $faker = Faker::create();
 
         // create a random number of contacts
-        $numberOfContacts = rand(3, 100);
+        //$numberOfContacts = rand(3, 100);
+        $numberOfContacts = 0;
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
@@ -87,35 +88,6 @@ class FakeContentTableSeeder extends Seeder
             }
 
             $contact->save();
-
-            // create significant other data
-            if (rand(1, 3) == 1) {
-                $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-                $firstname = $faker->firstName($gender);
-                if (rand(1, 2) == 1) {
-                    $lastname = null;
-                } else {
-                    $lastname = $faker->lastName($gender);
-                }
-                $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
-                $age = rand(18, 78);
-                if (rand(1, 2) == 1) {
-                    $birthdate_approximate = 'unknown';
-                } else {
-                    $birthdate_approximate = 'exact';
-                }
-
-                $contact->significantOthers()->create(
-                    [
-                        'first_name' => $firstname,
-                        'gender' => $gender,
-                        'is_birthdate_approximate' => $birthdate_approximate,
-                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
-                        'account_id' => $contact->account_id,
-                        'status' => 'active',
-                    ]
-                );
-            }
 
             // create kids
             if (rand(1, 2) == 1) {

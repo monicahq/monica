@@ -1046,4 +1046,33 @@ class Contact extends Model
 
         return $this;
     }
+
+    /**
+     * Get the list of all possible partners for this contact, based on a set
+     * of criteria.
+     *
+     * @return Collection
+     */
+    public function getPossiblePartners()
+    {
+        $partners = Contact::where('account_id', $this->account_id)
+                            ->where('is_significant_other', 0)
+                            ->where('is_kid', 0)
+                            ->where('id', '!=', $this->id)
+                            ->get();
+
+        $counter = 0;
+        foreach ($partners as $partner) {
+            $relationship = Relationship::where('contact_id', $this->id)
+                                    ->where('with_contact_id', $partner->id)
+                                    ->count();
+
+            if ($relationship != 0) {
+                $partners->forget($counter);
+            }
+            $counter++;
+        }
+
+        return $partners;
+    }
 }

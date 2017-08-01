@@ -25,9 +25,9 @@
     </div>
 
     <!-- Page header -->
-  @include('people._header')
+    @include('people._header')
 
-  <!-- Page content -->
+    <!-- Page content -->
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
@@ -35,6 +35,7 @@
             @include('people.dashboard.significantother.form', [
               'method' => 'PUT',
               'action' => route('people.significant_others.update', [$contact, $significant_other]),
+              'actionExisting' => route('people.significant_others.updateexisting', [$contact, $significant_other]),
               'buttonText' => trans('people.significant_other_edit_cta')
             ])
           </div>

@@ -8739,6 +8739,15 @@ header .main-cta {
   width: 220px;
 }
 
+.people-show.significantother .significant_other_blank_state {
+  text-align: center;
+}
+
+.people-show.significantother .significant_other_blank_state img {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
 .create-people .import {
   text-align: center;
   margin-bottom: 30px;

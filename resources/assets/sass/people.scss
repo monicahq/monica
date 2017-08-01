@@ -668,6 +668,17 @@
       }
     }
   }
+
+  &.significantother {
+    .significant_other_blank_state {
+      text-align: center;
+
+      img {
+        margin-bottom: 20px;
+        margin-top: 10px;
+      }
+    }
+  }
 }
 
 .create-people {

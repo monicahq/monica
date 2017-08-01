@@ -160,6 +160,7 @@ return [
     'significant_other_add_cta' => 'Adicionar pessoa importante',
     'significant_other_edit_cta' => 'Editar pessoa importante',
     'significant_other_delete_confirmation' => 'Tem certeza de que deseja excluir essa pessoa importante? A exclusão é permanente',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'Pessoa importante adicionada com sucesso',
     'significant_other_edit_success' => 'Pessoa importante atualizada com sucesso',
     'significant_other_delete_success' => 'Pessoa importante excluída com sucesso',

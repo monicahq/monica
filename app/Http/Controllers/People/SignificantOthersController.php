@@ -7,6 +7,7 @@ use App\Reminder;
 use App\Relationship;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\SignificantOthersRequest;
+use App\Http\Requests\People\ExistingSignificantOthersRequest;
 
 class SignificantOthersController extends Controller
 {
@@ -32,7 +33,8 @@ class SignificantOthersController extends Controller
     {
         return view('people.dashboard.significantother.add')
             ->withContact($contact)
-            ->withPartner(new Contact);
+            ->withPartner(new Contact)
+            ->withPartners($contact->getPossiblePartners());
     }
 
     /**
@@ -73,7 +75,7 @@ class SignificantOthersController extends Controller
 
         if ($significantOther->is_birthdate_approximate === 'exact') {
             $reminder = Reminder::addBirthdayReminder(
-                $contact,
+                $significantOther,
                 trans(
                     'people.significant_other_add_birthday_reminder',
                     ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
@@ -83,6 +85,41 @@ class SignificantOthersController extends Controller
         }
 
         $contact->logEvent('significantother', $significantOther->id, 'create');
+
+        return redirect('/people/'.$contact->id)
+            ->with('success', trans('people.significant_other_add_success'));
+    }
+
+    /**
+     * Store an existing contact as a significant other. When we add this kind of
+     * relationship, we need to create two Relationship records, to match with
+     * the bidirectional nature of the relationship.
+     *
+     * @param SignificantOthersRequest $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function storeExistingContact(ExistingSignificantOthersRequest $request, Contact $contact)
+    {
+        $relationship = Relationship::create(
+            [
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'with_contact_id' => $request->get('existingPartner'),
+                'is_active' => 1,
+            ]
+        );
+
+        $relationship = Relationship::create(
+            [
+                'account_id' => $contact->account_id,
+                'contact_id' => $request->get('existingPartner'),
+                'with_contact_id' => $contact->id,
+                'is_active' => 1,
+            ]
+        );
+
+        $contact->logEvent('partner', $request->get('existingPartner'), 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -172,15 +209,62 @@ class SignificantOthersController extends Controller
      */
     public function destroy(Contact $contact, Contact $significantOther)
     {
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        if ($significantOther->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
         if ($significantOther->reminders) {
             $significantOther->reminders()->get()->each->delete();
         }
 
-        $contact->relationship->forObject($significantOther)->delete();
+        $relationship = Relationship::where('contact_id', $contact->id)
+                        ->where('with_contact_id', $significantOther->id)
+                        ->first();
+
+        $relationship->delete();
 
         $contact->events()->forObject($significantOther)->get()->each->delete();
 
         $significantOther->delete();
+
+        return redirect('/people/'.$contact->id)
+            ->with('success', trans('people.significant_other_delete_success'));
+    }
+
+    /**
+     * Unlink the relationship between those two people.
+     *
+     * @param  Contact $contact          [description]
+     * @param  Contact $significantOther [description]
+     * @return
+     */
+    public function unlink(Contact $contact, Contact $significantOther)
+    {
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        if ($significantOther->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        $relationship = Relationship::where('contact_id', $contact->id)
+                        ->where('with_contact_id', $significantOther->id)
+                        ->first();
+
+        $relationship->delete();
+
+        $relationship = Relationship::where('contact_id', $significantOther->id)
+                        ->where('with_contact_id', $contact->id)
+                        ->first();
+
+        $relationship->delete();
+
+        $contact->events()->forObject($significantOther)->get()->each->delete();
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

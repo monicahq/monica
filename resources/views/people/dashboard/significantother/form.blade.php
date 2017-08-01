@@ -11,12 +11,12 @@
 
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
+      <a class="nav-link active" data-toggle="tab" href="#new" role="tab">
         Add a new person
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
+      <a class="nav-link" data-toggle="tab" href="#existing" role="tab">
         Link existing contact
       </a>
     </li>
@@ -24,7 +24,7 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div class="tab-pane active" id="home" role="tabpanel">
+    <div class="tab-pane active" id="new" role="tabpanel">
 
       <form method="POST" action="{{ $action }}">
         {{ method_field($method) }}
@@ -117,7 +117,40 @@
         </div>
       </form>
     </div>
-    <div class="tab-pane" id="profile" role="tabpanel">
+    <div class="tab-pane" id="existing" role="tabpanel">
 
+      @if (count($partners) == 0)
+
+        <div class="significant_other_blank_state">
+          <img src="/img/people/no_record_found.svg">
+          <p>You don’t have any contacts who can be Roger’s significant others at the moment.</p>
+        </div>
+
+      @else
+
+        <form method="POST" action="{{ $actionExisting }}">
+          {{ method_field($method) }}
+          {{ csrf_field() }}
+
+          @include('partials.errors')
+
+          <div class="form-group">
+            <label for="existingPartner">Select an existing contact as the significant other for {{ $contact->getFirstName() }}</label>
+            <select class="form-control" name="existingPartner" id="existingPartner">
+              @foreach ($partners as $partner)
+
+                <option value="{{ $partner->id }}">{{ $partner->getCompleteName() }}</option>
+
+              @endforeach
+            </select>
+          </div>
+
+          <div class="form-group actions">
+            <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
+            <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+          </div>
+        </form>
+
+      @endif
     </div>
   </div>
