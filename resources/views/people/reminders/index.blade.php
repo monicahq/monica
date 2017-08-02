@@ -48,7 +48,7 @@
         </div>
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if ($reminder->is_birthday == 'false')
+          @if ($reminder->is_birthday == false)
             <a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>

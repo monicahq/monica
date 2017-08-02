@@ -45,6 +45,7 @@ return [
     'breadcrumb_settings_import_report' => 'Importovat report',
     'breadcrumb_settings_import_upload' => 'Nahrát',
     'breadcrumb_settings_tags' => 'Tagy',
+    'breadcrumb_add_significant_other' => 'Add significant other',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',

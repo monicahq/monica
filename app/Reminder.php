@@ -29,6 +29,15 @@ class Reminder extends Model
     protected $dates = ['last_triggered', 'next_expected_date'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_birthday' => 'boolean',
+    ];
+
+    /**
      * Get the account record associated with the reminder.
      *
      * @return BelongsTo
@@ -94,7 +103,7 @@ class Reminder extends Model
                 'frequency_number' => 1,
                 'next_expected_date' => $date,
                 'account_id' => $contact->account_id,
-                'is_birthday' => 'true',
+                'is_birthday' => true,
             ]);
 
         $account = $reminder->contact->account;

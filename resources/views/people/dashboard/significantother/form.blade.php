@@ -121,7 +121,7 @@
 
       @if (count($partners) == 0)
 
-        <div class="significant_other_blank_state">
+        <div class="significant-other-blank-state">
           <img src="/img/people/no_record_found.svg">
           <p>You don’t have any contacts who can be Roger’s significant others at the moment.</p>
         </div>

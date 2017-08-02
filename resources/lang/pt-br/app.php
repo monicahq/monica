@@ -45,6 +45,7 @@ return [
     'breadcrumb_settings_import_report' => 'Import report',
     'breadcrumb_settings_import_upload' => 'Upload',
     'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_add_significant_other' => 'Add significant other',
 
     'gender_male' => 'Homem',
     'gender_female' => 'Mulher',

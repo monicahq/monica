@@ -70,7 +70,7 @@
 
         .dropdown-btn {
           &:after {
-            content: "\f0d7";
+            content: '\f0d7';
             font-family: FontAwesome;
             margin-left: 5px;
           }
@@ -147,7 +147,7 @@
     }
 
     .people-list-item-information span {
-      font-size: 0.8rem;
+      font-size: .8rem;
     }
   }
 }
@@ -226,7 +226,9 @@
       }
 
       @media (max-width: 480px) {
-        h2 { width: 100% }
+        h2 {
+          width: 100%;
+        }
       }
 
       .profile-detail-summary {
@@ -322,7 +324,7 @@
       span {
         font-size: 14px;
         position: absolute;
-        right: 0px;
+        right: 0;
         top: 5px;
       }
     }
@@ -574,6 +576,11 @@
     .gift-list-item-actions {
       margin-left: 5px;
     }
+
+    .for {
+      font-style: italic;
+      margin-left: 10px;
+    }
   }
 
   .notes {
@@ -641,23 +648,16 @@
       white-space: nowrap;
     }
 
-    input[type="date"] {
+    input[type='date'] {
       margin-bottom: 20px;
       width: 170px;
     }
 
     .form-check {
-      input[type="number"] {
+      input[type='number'] {
         display: inline;
         width: 50px;
       }
-    }
-  }
-
-  .gifts {
-    .for {
-      font-style: italic;
-      margin-left: 10px;
     }
   }
 
@@ -670,7 +670,7 @@
   }
 
   &.significantother {
-    .significant_other_blank_state {
+    .significant-other-blank-state {
       text-align: center;
 
       img {
@@ -683,14 +683,12 @@
 
 .create-people {
   .import {
-    text-align: center;
     margin-bottom: 30px;
+    text-align: center;
   }
 }
 
-// MOBILE
 @media (max-width: 480px) {
-
   .people-list {
     margin-top: 20px;
 
@@ -726,7 +724,7 @@
         #tagsForm {
           display: block;
           margin-top: 40px;
-          padding-left: 0px;
+          padding-left: 0;
 
           #tags_tagsinput {
             width: 100% !important;

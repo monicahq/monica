@@ -248,6 +248,19 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are not only a kid or a
+     * significant other without being a contact.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeReal($query)
+    {
+        return $query->where('is_significant_other', 0)
+                        ->where('is_kid', 0);
+    }
+
+    /**
      * Get user's initials.
      *
      * @return string
@@ -1061,6 +1074,7 @@ class Contact extends Model
                             ->where('id', '!=', $this->id)
                             ->get();
 
+        // Filter out the contacts who already partner with the given contact
         $counter = 0;
         foreach ($partners as $partner) {
             $relationship = Relationship::where('contact_id', $this->id)
