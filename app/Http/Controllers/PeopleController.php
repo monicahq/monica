@@ -8,6 +8,7 @@ use Validator;
 use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
+use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -306,8 +307,18 @@ class PeopleController extends Controller
         $contact->kids->each->delete();
         $contact->notes->each->delete();
         $contact->reminders->each->delete();
-        $contact->significantOthers->each->delete();
         $contact->tasks->each->delete();
+        $contact->tags->each->delete();
+        $contact->calls->each->delete();
+
+        // delete all relationships
+        $relationships = Relationship::where('contact_id', $contact->id)
+                                    ->orWhere('with_contact_id', $contact->id)
+                                    ->get();
+
+        foreach ($relationships as $relationship) {
+            $relationship->delete();
+        }
 
         $contact->delete();
 
