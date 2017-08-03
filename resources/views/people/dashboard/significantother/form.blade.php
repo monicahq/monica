@@ -39,6 +39,11 @@
           <input type="text" class="form-control" name="first_name" id="first_name" maxlength="254" value="{{ old('first_name') ?? $partner->first_name }}" autofocus required>
         </div>
 
+        <div class="form-group">
+          <label for="last_name">Last name (optional)</label>
+          <input type="text" class="form-control" name="last_name" id="last_name" maxlength="254" value="{{ old('last_name') ?? $partner->last_name }}">
+        </div>
+
         {{-- Gender --}}
         <label>{{ trans('people.people_add_gender') }}</label>
         <fieldset class="form-group">
@@ -113,9 +118,10 @@
         </fieldset>
 
         <fieldset class="form-group">
-          <label class="form-check-inline" for="realContact">
+          <label class="form-check-inline real-contact-checkbox" for="realContact">
             <input type="checkbox" class="form-check-input" name="realContact" id="realContact">
-            Create a Contact entry for this person.
+            Also create a Contact entry for this person.
+            <span class="help">This will let you treat this significant other like any other contact.</span>
           </label>
         </fieldset>
 

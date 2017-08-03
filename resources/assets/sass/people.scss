@@ -681,8 +681,23 @@
 
     .central-form {
       .hint-reminder {
-        margin-bottom: 0;
         margin-top: 10px;
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+
+      .real-contact-checkbox {
+        margin-bottom: 0;
+
+        input {
+          margin-right: 5px;
+        }
+
+        .help {
+          color: #999;
+        }
       }
     }
   }

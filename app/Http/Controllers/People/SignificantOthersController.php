@@ -46,45 +46,52 @@ class SignificantOthersController extends Controller
      */
     public function store(SignificantOthersRequest $request, Contact $contact)
     {
-        $significantOther = Contact::create(
-            $request->only([
-                'first_name',
-                'gender',
-                'is_birthdate_approximate',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'is_significant_other' => 1,
-            ]
-        );
+        // this is a real contact, not just a significant other
+        if ($request->get('realContact')) {
+            $partner = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'is_birthdate_approximate',
+                ])
+                + [
+                    'account_id' => $contact->account_id
+                ]
+            );
 
-        $relationship = Relationship::create(
-            [
-                'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'with_contact_id' => $significantOther->id,
-                'is_active' => 1,
-            ]
-        );
+            $contact->setPartner($partner, true);
+        } else {
+            $partner = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'is_birthdate_approximate',
+                ])
+                + [
+                    'account_id' => $contact->account_id,
+                    'is_significant_other' => 1,
+                ]
+            );
 
-        $significantOther->assignBirthday(
+            $contact->setPartner($partner);
+        }
+
+        $partner->assignBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
 
-        if ($significantOther->is_birthdate_approximate === 'exact') {
+        if ($partner->is_birthdate_approximate === 'exact') {
             $reminder = Reminder::addBirthdayReminder(
-                $significantOther,
-                trans(
-                    'people.significant_other_add_birthday_reminder',
-                    ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
-                ),
+                $partner,
                 $request->get('birthdate')
             );
         }
 
-        $contact->logEvent('significantother', $significantOther->id, 'create');
+        $contact->logEvent('significantother', $partner->id, 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -101,23 +108,8 @@ class SignificantOthersController extends Controller
      */
     public function storeExistingContact(ExistingSignificantOthersRequest $request, Contact $contact)
     {
-        $relationship = Relationship::create(
-            [
-                'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'with_contact_id' => $request->get('existingPartner'),
-                'is_active' => 1,
-            ]
-        );
-
-        $relationship = Relationship::create(
-            [
-                'account_id' => $contact->account_id,
-                'contact_id' => $request->get('existingPartner'),
-                'with_contact_id' => $contact->id,
-                'is_active' => 1,
-            ]
-        );
+        $partner = Contact::findOrFail($request->get('existingPartner'));
+        $contact->setPartner($partner, true);
 
         $contact->logEvent('partner', $request->get('existingPartner'), 'create');
 

@@ -151,7 +151,7 @@ return [
     'significant_other_sidebar_title' => 'Significant other',
     'significant_other_cta' => 'Add significant other',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
-    'significant_other_add_firstname' => 'Name',
+    'significant_other_add_firstname' => 'First name',
     'significant_other_add_unknown' => 'I do not know this person\'s age',
     'significant_other_add_probably' => 'This person is probably',
     'significant_other_add_probably_yo' => 'years old',

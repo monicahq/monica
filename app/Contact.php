@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Relationship;
 use App\Traits\Searchable;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
@@ -1088,5 +1089,34 @@ class Contact extends Model
         }
 
         return $partners;
+    }
+
+    /**
+     * Set a relationship between the two contacts. Has the option to set a
+     * bilateral relationship if the partner is a real contact.
+     *
+     * @param Contact $partner
+     */
+    public function setPartner(Contact $partner, $bilateral = false)
+    {
+        $relationship = Relationship::create(
+            [
+                'account_id' => $this->account_id,
+                'contact_id' => $this->id,
+                'with_contact_id' => $partner->id,
+                'is_active' => 1,
+            ]
+        );
+
+        if ($bilateral) {
+            $relationship = Relationship::create(
+                [
+                    'account_id' => $this->account_id,
+                    'contact_id' => $partner->id,
+                    'with_contact_id' => $this->id,
+                    'is_active' => 1,
+                ]
+            );
+        }
     }
 }
