@@ -26,7 +26,7 @@ return [
     'footer_privacy' => 'Politique de confidentialité (en)',
     'footer_release' => 'Notes de version (en)',
     'footer_newsletter' => 'Infolettre (en)',
-    'footer_source_code' => 'Monica on GitHub',
+    'footer_source_code' => 'Contribute',
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'A new version is available',
 

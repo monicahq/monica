@@ -156,7 +156,7 @@ return [
     'significant_other_add_probably' => 'This person is probably',
     'significant_other_add_probably_yo' => 'years old',
     'significant_other_add_exact' => 'I know the exact birthdate of this person, which is',
-    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you - so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate',
+    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you - so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'significant_other_add_cta' => 'Add significant other',
     'significant_other_edit_cta' => 'Edit significant other',
     'significant_other_delete_confirmation' => 'Are you sure you want to delete this significant other? Deletion is permanent',

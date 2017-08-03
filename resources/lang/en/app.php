@@ -26,7 +26,7 @@ return [
     'footer_privacy' => 'Privacy policy',
     'footer_release' => 'Release notes',
     'footer_newsletter' => 'Newsletter',
-    'footer_source_code' => 'Monica on GitHub',
+    'footer_source_code' => 'Contribute',
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'A new version is available',
 
@@ -34,7 +34,7 @@ return [
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'Dashboard',
-    'breadcrumb_list_contacts' => 'List of contacts',
+    'breadcrumb_list_contacts' => 'List of people',
     'breadcrumb_journal' => 'Journal',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_export' => 'Export',

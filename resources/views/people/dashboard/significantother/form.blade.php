@@ -22,8 +22,9 @@
     </li>
   </ul>
 
-  <!-- Tab panes -->
   <div class="tab-content">
+
+    {{-- New contact entry --}}
     <div class="tab-pane active" id="new" role="tabpanel">
 
       <form method="POST" action="{{ $action }}">
@@ -105,11 +106,18 @@
               </span>
             </label>
           </div>
+
+          <div class="hint-reminder">
+            <p>{{ trans('people.significant_other_add_help') }}</p>
+          </div>
         </fieldset>
 
-        <div class="classname">
-          <p>{{ trans('people.significant_other_add_help') }}</p>
-        </div>
+        <fieldset class="form-group">
+          <label class="form-check-inline" for="realContact">
+            <input type="checkbox" class="form-check-input" name="realContact" id="realContact">
+            Create a Contact entry for this person.
+          </label>
+        </fieldset>
 
         <div class="form-group actions">
           <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
@@ -117,6 +125,8 @@
         </div>
       </form>
     </div>
+
+    {{-- Existing contact entry --}}
     <div class="tab-pane" id="existing" role="tabpanel">
 
       @if (count($partners) == 0)
