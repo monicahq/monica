@@ -41,7 +41,7 @@ return [
     'locale_en' => 'Английский',
     'locale_fr' => 'Французкий',
     'locale_ru' => 'Русский',
-    'locale_cz' => 'Czech',
+    'locale_cz' => 'Чешский',
     'locale_it' => 'итальянский',
 
     'users_list_title' => 'Users with access to your account',
