@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Call;
+use App\Debt;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -907,5 +908,48 @@ class ContactTest extends TestCase
             $date,
             $otherContact->last_talked_to
         );
+    }
+
+    public function testIsOwedMoney()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+
+        $this->assertTrue($contact->isOwedMoney());
+    }
+
+    public function testIsNotOwedMoney()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+
+        $this->assertFalse($contact->isOwedMoney());
+    }
+
+    public function testTotalOutstandingDebtAmountIsCorrect()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+
+        $this->assertEquals(200, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+
+        $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300]));
+
+        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300, 'status' => 'complete']));
+
+        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
     }
 }
