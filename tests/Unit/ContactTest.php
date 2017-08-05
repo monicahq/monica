@@ -908,4 +908,53 @@ class ContactTest extends TestCase
             $otherContact->last_talked_to
         );
     }
+
+    /**
+     * @group test
+     */
+    public function test_set_birthday_method()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $birthdate = '1987-03-01 17:56:03';
+        $age = 30;
+
+        $contact = new Contact;
+        $contact->setBirthday('approximate', $birthdate, $age);
+
+        $this->assertEquals(
+            '1987-01-01',
+            $contact->birthdate->toDateString()
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->reminders->count()
+        );
+
+
+        $contact = new Contact;
+        $contact->setBirthday('unknown', $birthdate, $age);
+
+        $this->assertEquals(
+            null,
+            $contact->birthdate
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->reminders->count()
+        );
+
+        $contact = new Contact;
+        $contact->setBirthday('exact', $birthdate, $age);
+        $this->assertEquals(
+            '1987-03-01',
+            $contact->birthdate->toDateString()
+        );
+
+        $this->assertEquals(
+            1,
+            $contact->reminders->count()
+        );
+    }
 }

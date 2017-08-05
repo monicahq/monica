@@ -60,6 +60,8 @@ class SignificantOthersController extends Controller
                 ]
             );
 
+            $contact->logEvent('contact', $partner->id, 'create');
+
             $contact->setPartner($partner, true);
         } else {
             $partner = Contact::create(
@@ -78,20 +80,13 @@ class SignificantOthersController extends Controller
             $contact->setPartner($partner);
         }
 
-        $partner->assignBirthday(
+        $partner->setBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
 
-        if ($partner->is_birthdate_approximate === 'exact') {
-            $reminder = Reminder::addBirthdayReminder(
-                $partner,
-                $request->get('birthdate')
-            );
-        }
-
-        $contact->logEvent('significantother', $partner->id, 'create');
+        $contact->logEvent('partner', $partner->id, 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -124,11 +119,11 @@ class SignificantOthersController extends Controller
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact, SignificantOther $significantOther)
+    public function edit(Contact $contact, Contact $partner)
     {
         return view('people.dashboard.significantother.edit')
             ->withContact($contact)
-            ->withSignificantOther($significantOther);
+            ->withPartner($partner);
     }
 
     /**
@@ -139,11 +134,12 @@ class SignificantOthersController extends Controller
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function update(SignificantOthersRequest $request, Contact $contact, SignificantOther $significantOther)
+    public function update(SignificantOthersRequest $request, Contact $contact, Contact $partner)
     {
-        $significantOther->update(
+        $partner->update(
             $request->only([
                 'first_name',
+                'last_name',
                 'gender',
                 'is_birthdate_approximate',
             ])
@@ -153,40 +149,34 @@ class SignificantOthersController extends Controller
             ]
         );
 
-        $significantOther->assignBirthday(
+        $partner->assignBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
 
-        if ($significantOther->reminder) {
-            $significantOther->update([
+        if ($partner->reminder) {
+            $partner->update([
                 'birthday_reminder_id' => null,
             ]);
 
-            $significantOther->reminder->delete();
+            $partner->reminder->delete();
         }
 
-        $significantOther->refresh();
+        $partner->refresh();
 
-        if ($significantOther->is_birthdate_approximate === 'exact') {
+        if ($partner->is_birthdate_approximate === 'exact') {
             $reminder = Reminder::addBirthdayReminder(
-                $contact,
-                trans(
-                    'people.significant_other_add_birthday_reminder',
-                    ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
-                ),
-                $request->get('birthdate'),
-                null,
-                $significantOther
+                $partner,
+                $request->get('birthdate')
             );
 
-            $significantOther->update([
+            $partner->update([
                 'birthday_reminder_id' => $reminder->id,
             ]);
         }
 
-        $contact->logEvent('significantother', $significantOther->id, 'update');
+        $contact->logEvent('partner', $partner->id, 'update');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_edit_success'));
@@ -199,29 +189,25 @@ class SignificantOthersController extends Controller
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Contact $significantOther)
+    public function destroy(Contact $contact, Contact $partner)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect('/people/');
         }
 
-        if ($significantOther->account_id != auth()->user()->account_id) {
+        if ($partner->account_id != auth()->user()->account_id) {
             return redirect('/people/');
         }
 
-        if ($significantOther->reminders) {
-            $significantOther->reminders()->get()->each->delete();
+        if ($partner->reminders) {
+            $partner->reminders()->get()->each->delete();
         }
 
-        $relationship = Relationship::where('contact_id', $contact->id)
-                        ->where('with_contact_id', $significantOther->id)
-                        ->first();
+        $contact->unsetPartner($partner);
 
-        $relationship->delete();
+        $contact->deleteEventsWithPartner($partner);
 
-        $contact->events()->forObject($significantOther)->get()->each->delete();
-
-        $significantOther->delete();
+        $partner->delete();
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));
@@ -230,33 +216,23 @@ class SignificantOthersController extends Controller
     /**
      * Unlink the relationship between those two people.
      *
-     * @param  Contact $contact          [description]
-     * @param  Contact $significantOther [description]
+     * @param  Contact $contact
+     * @param  Contact $partner
      * @return
      */
-    public function unlink(Contact $contact, Contact $significantOther)
+    public function unlink(Contact $contact, Contact $partner)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect('/people/');
         }
 
-        if ($significantOther->account_id != auth()->user()->account_id) {
+        if ($partner->account_id != auth()->user()->account_id) {
             return redirect('/people/');
         }
 
-        $relationship = Relationship::where('contact_id', $contact->id)
-                        ->where('with_contact_id', $significantOther->id)
-                        ->first();
+        $contact->unsetPartner($partner, true);
 
-        $relationship->delete();
-
-        $relationship = Relationship::where('contact_id', $significantOther->id)
-                        ->where('with_contact_id', $contact->id)
-                        ->first();
-
-        $relationship->delete();
-
-        $contact->events()->forObject($significantOther)->get()->each->delete();
+        $contact->deleteEventsWithPartner($partner);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

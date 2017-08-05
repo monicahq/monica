@@ -27,9 +27,6 @@
       </div>
     </div>
 
-    <!-- Page header -->
-    @include('people._header')
-
     <!-- Page content -->
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
@@ -198,7 +195,7 @@
                         {{ trans('people.information_edit_exact') }}
 
                         <input type="date" id="specificDate" name="specificDate" class="form-control"
-                              value="{{ (is_null($contact->getBirthdate())) ? '' : $contact->getBirthdate()->format('Y-m-d') }}"
+                              value="{{ (is_null($contact->getBirthdate())) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->getBirthdate()->format('Y-m-d') }}"
                               min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
                               max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </div>

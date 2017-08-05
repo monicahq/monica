@@ -56,6 +56,7 @@ class Contact extends Model
      */
     protected $fillable = [
         'first_name',
+        'last_name',
         'gender',
         'is_birthdate_approximate',
         'account_id',
@@ -694,7 +695,7 @@ class Contact extends Model
      *
      * @return Contact
      */
-    public function getCurrentSignificantOthers()
+    public function getCurrentPartners()
     {
         $partners = collect([]);
         foreach ($this->activeRelationships as $relationship) {
@@ -1038,20 +1039,23 @@ class Contact extends Model
     }
 
     /**
-     * Assigns a birthday or birth year to the loved one based on
-     * the data provided.
+     * Assigns a birthday or birth year based on the data provided.
      *
      * @param string $approximation ['unknown', 'exact', 'approximate']
      * @param \DateTime|string $exactDate
      * @param string|int $age
      * @return static
      */
-    public function assignBirthday($approximation, $exactDate, $age = null)
+    public function setBirthday($approximation, $dateOfBirth, $age = null)
     {
+        // delete any existing reminder for a birthdate about this contact
+        $this->clearBirthdateReminder();
+
         if ($approximation === 'approximate') {
             $this->birthdate = Carbon::now()->subYears($age)->month(1)->day(1);
         } elseif ($approximation === 'exact') {
-            $this->birthdate = Carbon::parse($exactDate);
+            $this->birthdate = Carbon::parse($dateOfBirth);
+            $this->setBirthdateReminder();
         } else {
             $this->birthdate = null;
         }
@@ -1059,6 +1063,35 @@ class Contact extends Model
         $this->save();
 
         return $this;
+    }
+
+    /**
+     * Set a reminder for the birthdate of this contact
+     *
+     */
+    public function setBirthdateReminder()
+    {
+        $reminder = Reminder::addBirthdayReminder(
+            $this,
+            $this->birthdate
+        );
+
+        $this->birthday_reminder_id = $reminder->id;
+        $this->save();
+    }
+
+    /**
+     * Clear any existing birthdate reminder about this contact
+     *
+     * @return void
+     */
+    public function clearBirthdateReminder()
+    {
+        if ($this->birthday_reminder_id) {
+            $this->reminders->find($this->birthday_reminder_id)->delete();
+            $this->birthday_reminder_id = null;
+            $this->save();
+        }
     }
 
     /**
@@ -1096,6 +1129,7 @@ class Contact extends Model
      * bilateral relationship if the partner is a real contact.
      *
      * @param Contact $partner
+     * @param  boolean $bilateral
      */
     public function setPartner(Contact $partner, $bilateral = false)
     {
@@ -1118,5 +1152,46 @@ class Contact extends Model
                 ]
             );
         }
+    }
+
+    /**
+     * Unset a relationship between the two contacts.
+     *
+     * @param  Contact $partner
+     * @param  boolean $bilateral
+     */
+    public function unsetPartner(Contact $partner, $bilateral = false)
+    {
+        $relationship = Relationship::where('contact_id', $this->id)
+                        ->where('with_contact_id', $partner->id)
+                        ->first();
+
+        $relationship->delete();
+
+        if ($bilateral) {
+            $relationship = Relationship::where('contact_id', $partner->id)
+                        ->where('with_contact_id', $this->id)
+                        ->first();
+
+            $relationship->delete();
+        }
+    }
+
+    /**
+     * Deletes all the events that mentioned the relationship with this partner
+     *
+     * @var Contact $partner
+     */
+    public function deleteEventsWithPartner(Contact $partner)
+    {
+        $events = Event::where('contact_id', $this->id)
+                        ->where('object_id', $partner->id)
+                        ->where('object_type', 'partner')
+                        ->delete();
+
+        $events = Event::where('contact_id', $partner->id)
+                        ->where('object_id', $this->id)
+                        ->where('object_type', 'partner')
+                        ->delete();
     }
 }

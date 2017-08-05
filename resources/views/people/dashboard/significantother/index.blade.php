@@ -4,7 +4,7 @@
     <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
   </p>
 
-  @if ($contact->getCurrentSignificantOthers()->count() == 0)
+  @if ($contact->getCurrentPartners()->count() == 0)
 
     <p class="sidebar-box-paragraph">
       <a href="/people/{{ $contact->id }}/significant-others/add">{{ trans('people.significant_other_cta') }}</a>
@@ -13,29 +13,29 @@
   @else
 
     {{-- Information about the significant other --}}
-    @foreach ($contact->getCurrentSignificantOthers() as $significantOther)
+    @foreach ($contact->getCurrentPartners() as $partner)
       <p class="sidebar-box-paragraph">
 
-        @if ($significantOther->is_significant_other)
+        @if ($partner->is_significant_other)
 
-        <span class="name">{{ $significantOther->getCompleteName() }}</span>
+        <span class="name">{{ $partner->getCompleteName() }}</span>
 
-        @if (! is_null($significantOther->getAge()))
-          ({{ $significantOther->getAge() }})
+        @if (! is_null($partner->getAge()))
+          ({{ $partner->getAge() }})
         @endif
 
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
 
         @else
 
-        <a href="/people/{{ $significantOther->id }}"><span class="name">{{ $significantOther->getCompleteName() }}</span></a>
+        <a href="/people/{{ $partner->id }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
 
-        @if (! is_null($significantOther->getAge()))
-          ({{ $significantOther->getAge() }})
+        @if (! is_null($partner->getAge()))
+          ({{ $partner->getAge() }})
         @endif
 
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $significantOther->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
+        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
 
         @endif
       </p>
