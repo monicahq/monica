@@ -78,8 +78,6 @@ class SignificantOthersController extends Controller
             );
 
             $contact->setPartner($partner);
-
-            $partner->logEvent('partner', $partner->id, 'create');
         }
 
         $partner->setBirthday(

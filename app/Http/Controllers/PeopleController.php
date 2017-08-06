@@ -109,16 +109,24 @@ class PeopleController extends Controller
      */
     public function show(Contact $contact)
     {
+        // make sure we don't display a significant other if it's not set as a
+        // real contact
+        if ($contact->is_significant_other) {
+            return redirect('/people');
+        }
+
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
 
+        // compiile the list of reminders, including the ones about the SO
+        // who are not "real" contacts
         $reminders = $contact->reminders;
-
-        // make sure we don't display a significant other if it's not set as a
-        // complete contact
-        if ($contact->is_significant_other) {
-            return redirect('/people');
+        $partners = $contact->getPartnersWhoAreNotRealContacts();
+        foreach ($partners as $partner) {
+            foreach ($partner->reminders as $reminder) {
+                $reminders->push($reminder);
+            }
         }
 
         return view('people.profile')

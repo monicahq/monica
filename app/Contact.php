@@ -1124,15 +1124,23 @@ class Contact extends Model
         return $partners;
     }
 
+    /**
+     * Get the list of partners who are not "real" contacts.
+     *
+     * @return Collection
+     */
     public function getPartnersWhoAreNotRealContacts()
     {
         $relationships = Relationship::where('contact_id', $this->id)
-                                    ->where('with_contact_id', '!=' , $partner->id)
                                     ->get();
 
         $partners = collect();
         foreach ($relationships as $relationship) {
-            $partners->push(Contact::findOrFail($relationship->with_contact_id));
+            $partner = Contact::findOrFail($relationship->with_contact_id);
+
+            if ($partner->is_significant_other) {
+                $partners->push($partner);
+            }
         }
 
         return $partners;
