@@ -6,7 +6,6 @@ use App\Call;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\SignificantOther;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase
@@ -634,24 +633,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testgetCurrentSignificantOtherWithNoData()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertNull($contact->getCurrentSignificantOther());
-    }
-
-    public function testgetCurrentSignificantOther()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertInstanceOf(SignificantOther::class, $contact->getCurrentSignificantOther());
-    }
-
     public function testGetNumberOfKidsReturnsAnInteger()
     {
         $contact = new Contact;
@@ -909,9 +890,6 @@ class ContactTest extends TestCase
         );
     }
 
-    /**
-     * @group test
-     */
     public function test_set_birthday_method()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
@@ -945,7 +923,14 @@ class ContactTest extends TestCase
             $contact->reminders->count()
         );
 
-        $contact = new Contact;
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create([
+            'account_id' => $account->id
+        ]);
+        $user = factory(\App\User::class)->create([
+            'account_id' => $account->id
+        ]);
+
         $contact->setBirthday('exact', $birthdate, $age);
         $this->assertEquals(
             '1987-03-01',
@@ -956,5 +941,125 @@ class ContactTest extends TestCase
             1,
             $contact->reminders->count()
         );
+    }
+
+    public function test_set_birthdate_reminder_method()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create([
+            'account_id' => $account->id
+        ]);
+        $user = factory(\App\User::class)->create([
+            'account_id' => $account->id
+        ]);
+
+        $this->assertNull(
+            $contact->birthday_reminder_id
+        );
+
+        $contact->setBirthdateReminder();
+
+        $this->assertNotNull(
+            $contact->birthday_reminder_id
+        );
+    }
+
+    public function test_get_possible_partners_does_not_return_contacts_who_are_already_partner_with_the_contact()
+    {
+        $account = factory(\App\Account::class)->create();
+        $franck = factory(\App\Contact::class)->create([
+            'account_id' => $account->id
+        ]);
+
+        // partner
+        $john = factory(\App\Contact::class)->create([
+            'id' => 2,
+            'account_id' => $account->id,
+            'is_significant_other' => 1,
+        ]);
+
+        $relationship = factory(\App\Relationship::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $franck->id,
+            'with_contact_id' => $john->id,
+        ]);
+
+        // additional contacts
+        $jane = factory(\App\Contact::class)->create([
+            'id' => 3,
+            'account_id' => $account->id
+        ]);
+        $marie = factory(\App\Contact::class)->create([
+            'id' => 4,
+            'account_id' => $account->id
+        ]);
+
+        $this->assertEquals(
+            2,
+            $franck->getPossiblePartners()->count()
+        );
+    }
+
+    public function test_set_partner_sets_a_relationship_between_the_two_contacts()
+    {
+        // unilateral relationship - this is when the SO is not a real Contact object
+        $john = factory(\App\Contact::class)->create([
+            'id' => 1,
+        ]);
+        $roger = factory(\App\Contact::class)->create([
+            'id' => 2,
+        ]);
+
+        $john->setPartner($roger);
+
+        $this->assertDatabaseHas('relationships', [
+            'contact_id' => $john->id,
+            'with_contact_id' => $roger->id,
+        ]);
+
+        $this->assertDatabaseMissing('relationships', [
+            'contact_id' => $roger->id,
+            'with_contact_id' => $john->id,
+        ]);
+
+        $john->unsetPartner($roger);
+
+        $this->assertDatabaseMissing('relationships', [
+            'contact_id' => $john->id,
+            'with_contact_id' => $roger->id,
+        ]);
+
+        // now testing the bilateral relationship
+
+        $marie = factory(\App\Contact::class)->create([
+            'id' => 3,
+        ]);
+        $stephanie = factory(\App\Contact::class)->create([
+            'id' => 4,
+        ]);
+
+        $marie->setPartner($stephanie, true);
+
+        $this->assertDatabaseHas('relationships', [
+            'contact_id' => $marie->id,
+            'with_contact_id' => $stephanie->id,
+        ]);
+
+        $this->assertDatabaseHas('relationships', [
+            'contact_id' => $stephanie->id,
+            'with_contact_id' => $marie->id,
+        ]);
+
+        $marie->unsetPartner($stephanie, true);
+
+        $this->assertDatabaseMissing('relationships', [
+            'contact_id' => $marie->id,
+            'with_contact_id' => $stephanie->id,
+        ]);
+
+        $this->assertDatabaseMissing('relationships', [
+            'contact_id' => $stephanie->id,
+            'with_contact_id' => $marie->id,
+        ]);
     }
 }

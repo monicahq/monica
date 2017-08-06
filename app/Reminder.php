@@ -102,9 +102,7 @@ class Reminder extends Model
                 'is_birthday' => true,
             ]);
 
-        $account = $reminder->contact->account;
-
-        foreach ($account->users as $user) {
+        foreach ($contact->account->users as $user) {
             $userTimezone = $user->timezone;
         }
 
