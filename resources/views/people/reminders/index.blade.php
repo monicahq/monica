@@ -28,9 +28,11 @@
     <ul class="table">
       @foreach($contact->reminders as $reminder)
       <li class="table-row">
+
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}
         </div>
+
         <div class="table-cell frequency-type">
           @if ($reminder->frequency_type != 'one_time')
             {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
@@ -38,14 +40,27 @@
             {{ trans('people.reminders_one_time') }}
           @endif
         </div>
+
         <div class="table-cell title">
-          {{ $reminder->getTitle() }}
+          @if ($reminder->is_birthday)
+            @if ($reminder->contact_id == $contact->id)
+              {{ trans('people.reminders_birthday', ['name' => $contact->first_name]) }}
+            @else
+              @if ($reminder->contact_id)
+                {{ trans('people.reminders_so_birthday', ['contact' => $contact->first_name, 'name' => $reminder->contact->first_name]) }}
+              @endif
+            @endif
+          @else
+            {{ $reminder->getTitle() }}
+          @endif
         </div>
+
         <div class="table-cell comment">
             @if (!is_null($reminder->getDescription()))
               {{ $reminder->getDescription() }}
             @endif
         </div>
+
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
           @if ($reminder->is_birthday == false)

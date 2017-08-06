@@ -1,8 +1,6 @@
 <?php
 
 use App\Contact;
-use App\Relationship;
-use App\SignificantOther;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -28,7 +26,9 @@ class ChangeContactsTable extends Migration
             $table->integer('temp_contact_id');
         });
 
-        foreach (SignificantOther::all() as $significantOther) {
+        $significantOthers = DB::table('significant_others')->get();
+
+        foreach ($significantOthers as $significantOther) {
             $contact = new Contact;
             $contact->account_id = $significantOther->account_id;
             $contact->first_name = $significantOther->first_name;
@@ -40,8 +40,9 @@ class ChangeContactsTable extends Migration
             $contact->updated_at = $significantOther->updated_at;
             $contact->save();
 
-            $significantOther->temp_contact_id = $contact->id;
-            $significantOther->save();
+            DB::table('significant_others')
+                ->where('id', $significantOther->id)
+                ->update(['temp_contact_id' => $contact->id]);
         }
 
         Schema::create('relationships', function (Blueprint $table) {
@@ -55,12 +56,16 @@ class ChangeContactsTable extends Migration
             $table->timestamps();
         });
 
-        foreach (SignificantOther::all() as $significantOther) {
-            $relationship = new Relationship;
-            $relationship->account_id = $significantOther->account_id;
-            $relationship->contact_id = $significantOther->contact_id;
-            $relationship->with_contact_id = $significantOther->temp_contact_id;
-            $relationship->save();
+        $significantOthers = DB::table('significant_others')->get();
+
+        foreach ($significantOthers as $significantOther) {
+            DB::table('relationships')->insert([
+                'account_id' => $significantOther->account_id,
+                'contact_id' => $significantOther->contact_id,
+                'with_contact_id' => $significantOther->temp_contact_id,
+            ]);
         }
+
+        Schema::drop('significant_others');
     }
 }

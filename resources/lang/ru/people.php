@@ -122,8 +122,6 @@ return [
     'reminders_blank_add_activity' => 'Добавить напоминание',
     'reminders_add_title' => 'О чём, связанном с :name, вам напомнить?',
     'reminders_add_description' => 'Напомнить о:',
-    'reminders_add_predefined' => 'Предопределённое напоминание',
-    'reminders_add_custom' => 'Специальное напоминание',
     'reminders_add_next_time' => 'Когда в следующий раз вы хотите получить напоминание?',
     'reminders_add_once' => 'Напомнить один раз',
     'reminders_add_recurrent' => 'Повторять напоминание с периодичностью: ',
@@ -146,6 +144,8 @@ return [
     'reminders_type_week' => 'неделя',
     'reminders_type_month' => 'месяц',
     'reminders_type_year' => 'год',
+    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Вторая половинка',

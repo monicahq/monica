@@ -106,8 +106,6 @@ return [
     'reminders_blank_add_activity' => 'Přidat upozornění',
     'reminders_add_title' => 'Na co chcete být upozorňováni pro osobu :name?',
     'reminders_add_description' => 'Prosím upozornit na...',
-    'reminders_add_predefined' => 'Předdefinované upozornění',
-    'reminders_add_custom' => 'Vlastní upozornění',
     'reminders_add_next_time' => 'Kdy budete chtít být na tuto skutečnost příště upozorněni?',
     'reminders_add_once' => 'Upozornit pouze jedenkrát',
     'reminders_add_recurrent' => 'Upozornit',
@@ -130,6 +128,8 @@ return [
     'reminders_type_week' => 'týdně',
     'reminders_type_month' => 'měsíčně',
     'reminders_type_year' => 'ročně',
+    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Drahá polovička',

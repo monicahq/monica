@@ -122,8 +122,6 @@ return [
     'reminders_blank_add_activity' => 'Adicionar um lembrete',
     'reminders_add_title' => 'Sobre o que você gostaria de lembrar sobre :name?',
     'reminders_add_description' => 'Lembre-me de...',
-    'reminders_add_predefined' => 'Lembrete pré-definido',
-    'reminders_add_custom' => 'Lembrete personalizado',
     'reminders_add_next_time' => 'Quando é a próxima vez que você gostaria de ser lembrado sobre isso?',
     'reminders_add_once' => 'Lembre-me sobre isso apenas uma vez',
     'reminders_add_recurrent' => 'Lembre-me sobre isso a todo momento',
@@ -146,6 +144,8 @@ return [
     'reminders_type_week' => 'semana',
     'reminders_type_month' => 'mês',
     'reminders_type_year' => 'ano',
+    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Pessoas importantes',

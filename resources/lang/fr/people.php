@@ -122,8 +122,6 @@ return [
     'reminders_blank_add_activity' => 'Ajouter un rappel',
     'reminders_add_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
     'reminders_add_description' => 'Merci de me tenir informer de...',
-    'reminders_add_predefined' => 'Rappel pré-défini',
-    'reminders_add_custom' => 'Rappel personnalisé',
     'reminders_add_next_time' => 'Prochaine date de ce rappel',
     'reminders_add_once' => 'Rappelez-moi juste une fois',
     'reminders_add_recurrent' => 'Rappelez-moi tous les',
@@ -146,6 +144,8 @@ return [
     'reminders_cta' => 'Ajouter un rappel',
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
     'reminders_one_time' => 'Unique',
+    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',

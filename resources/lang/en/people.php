@@ -122,8 +122,6 @@ return [
     'reminders_blank_add_activity' => 'Add a reminder',
     'reminders_add_title' => 'What would you like to be reminded of about :name?',
     'reminders_add_description' => 'Please remind me to...',
-    'reminders_add_predefined' => 'Pre-defined reminder',
-    'reminders_add_custom' => 'Custom reminder',
     'reminders_add_next_time' => 'When is the next time you would like to be reminded about this?',
     'reminders_add_once' => 'Remind me about this just once',
     'reminders_add_recurrent' => 'Remind me about this every',
@@ -146,6 +144,8 @@ return [
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'month',
     'reminders_type_year' => 'year',
+    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
