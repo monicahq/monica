@@ -53,7 +53,7 @@ return [
     'users_list_invitations_sent_date' => 'sent on :date',
     'users_blank_title' => 'You are the only one who has access to this account.',
     'users_blank_add_title' => 'Would you like to invite someone else?',
-    'users_blank_description' => 'This person will have the same access than you have, and will be able to add, edit or delete contact information.',
+    'users_blank_description' => 'This person will have the same access that you have, and will be able to add, edit or delete contact information.',
     'users_blank_cta' => 'Invite someone',
     'users_add_title' => 'Invite a new user by email to your account',
     'users_add_description' => 'This person will have the same rights as you do, including inviting other users and deleting them (including you). Therefore, make sure you trust this person.',
