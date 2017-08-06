@@ -29,6 +29,7 @@ class ExportAccountAsSQL
         'import_jobs',
         'import_job_reports',
         'instances',
+        'significant_others',
     ];
 
     protected $ignoredColumns = [

@@ -60,7 +60,7 @@ class SignificantOthersController extends Controller
                 ]
             );
 
-            $contact->logEvent('contact', $partner->id, 'create');
+            $partner->logEvent('contact', $partner->id, 'create');
 
             $contact->setPartner($partner, true);
         } else {
@@ -78,6 +78,8 @@ class SignificantOthersController extends Controller
             );
 
             $contact->setPartner($partner);
+
+            $partner->logEvent('partner', $partner->id, 'create');
         }
 
         $partner->setBirthday(
@@ -85,8 +87,6 @@ class SignificantOthersController extends Controller
             $request->get('birthdate'),
             $request->get('age')
         );
-
-        $contact->logEvent('partner', $partner->id, 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -105,8 +105,6 @@ class SignificantOthersController extends Controller
     {
         $partner = Contact::findOrFail($request->get('existingPartner'));
         $contact->setPartner($partner, true);
-
-        $contact->logEvent('partner', $request->get('existingPartner'), 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -149,34 +147,11 @@ class SignificantOthersController extends Controller
             ]
         );
 
-        $partner->assignBirthday(
+        $partner->setBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
-
-        if ($partner->reminder) {
-            $partner->update([
-                'birthday_reminder_id' => null,
-            ]);
-
-            $partner->reminder->delete();
-        }
-
-        $partner->refresh();
-
-        if ($partner->is_birthdate_approximate === 'exact') {
-            $reminder = Reminder::addBirthdayReminder(
-                $partner,
-                $request->get('birthdate')
-            );
-
-            $partner->update([
-                'birthday_reminder_id' => $reminder->id,
-            ]);
-        }
-
-        $contact->logEvent('partner', $partner->id, 'update');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_edit_success'));

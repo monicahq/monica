@@ -44,14 +44,12 @@ class DashboardController extends Controller
             }, 0);
 
         // List of events
-        $events = $account->events()->with('contact.significantOthers', 'contact.kids')->limit(30)->get()
+        $events = $account->events()->with('contact.kids')->limit(30)->get()
             ->reject(function (Event $event) {
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-                if ($event->object_type === 'significantother') {
-                    $object = $event->contact->significantOthers->where('id', $event->object_id)->first();
-                } elseif ($event->object_type === 'kid') {
+                if ($event->object_type === 'kid') {
                     $object = $event->contact->kids->where('id', $event->object_id)->first();
                 }
 

@@ -1124,6 +1124,20 @@ class Contact extends Model
         return $partners;
     }
 
+    public function getPartnersWhoAreNotRealContacts()
+    {
+        $relationships = Relationship::where('contact_id', $this->id)
+                                    ->where('with_contact_id', '!=' , $partner->id)
+                                    ->get();
+
+        $partners = collect();
+        foreach ($relationships as $relationship) {
+            $partners->push(Contact::findOrFail($relationship->with_contact_id));
+        }
+
+        return $partners;
+    }
+
     /**
      * Set a relationship between the two contacts. Has the option to set a
      * bilateral relationship if the partner is a real contact.

@@ -113,6 +113,14 @@ class PeopleController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
+        $reminders = $contact->reminders;
+
+        // make sure we don't display a significant other if it's not set as a
+        // complete contact
+        if ($contact->is_significant_other) {
+            return redirect('/people');
+        }
+
         return view('people.profile')
             ->withContact($contact);
     }
