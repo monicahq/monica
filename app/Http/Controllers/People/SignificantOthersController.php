@@ -95,7 +95,7 @@ class SignificantOthersController extends Controller
      * relationship, we need to create two Relationship records, to match with
      * the bidirectional nature of the relationship.
      *
-     * @param SignificantOthersRequest $request
+     * @param ExistingSignificantOthersRequest $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
@@ -141,7 +141,6 @@ class SignificantOthersController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'active',
             ]
         );
 

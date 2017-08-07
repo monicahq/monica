@@ -129,6 +129,13 @@ class PeopleController extends Controller
             }
         }
 
+        $kids = $contact->getKidsWhoAreNotRealContacts();
+        foreach ($kids as $kid) {
+            foreach ($kid->reminders as $reminder) {
+                $reminders->push($reminder);
+            }
+        }
+
         return view('people.profile')
             ->withContact($contact);
     }
@@ -278,7 +285,6 @@ class PeopleController extends Controller
         $contact->debts->each->delete();
         $contact->events->each->delete();
         $contact->gifts->each->delete();
-        $contact->kids->each->delete();
         $contact->notes->each->delete();
         $contact->reminders->each->delete();
         $contact->tasks->each->delete();
@@ -292,6 +298,15 @@ class PeopleController extends Controller
 
         foreach ($relationships as $relationship) {
             $relationship->delete();
+        }
+
+        // delete all offsprings
+        $offsprings = Offspring::where('contact_id', $contact->id)
+                                    ->orWhere('is_the_parent_of', $contact->id)
+                                    ->get();
+
+        foreach ($offsprings as $offspring) {
+            $offspring->delete();
         }
 
         $contact->delete();

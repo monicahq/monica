@@ -18,24 +18,24 @@
 
         @if ($partner->is_significant_other)
 
-        <span class="name">{{ $partner->getCompleteName() }}</span>
+          <span class="name">{{ $partner->getCompleteName() }}</span>
 
-        @if (! is_null($partner->getAge()))
-          ({{ $partner->getAge() }})
-        @endif
+          @if (! is_null($partner->getAge()))
+            ({{ $partner->getAge() }})
+          @endif
 
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
+          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
+          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
 
         @else
 
-        <a href="/people/{{ $partner->id }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
+          <a href="/people/{{ $partner->id }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
 
-        @if (! is_null($partner->getAge()))
-          ({{ $partner->getAge() }})
-        @endif
+          @if (! is_null($partner->getAge()))
+            ({{ $partner->getAge() }})
+          @endif
 
-        <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
+          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
 
         @endif
       </p>

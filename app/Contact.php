@@ -61,6 +61,7 @@ class Contact extends Model
         'is_birthdate_approximate',
         'account_id',
         'is_significant_other',
+        'is_kid',
     ];
 
     /**
@@ -225,6 +226,16 @@ class Contact extends Model
     public function activeRelationships()
     {
         return $this->hasMany('App\Relationship', 'contact_id')->where('is_active', 1);
+    }
+
+    /**
+     * Get the Relationships records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function activeKids()
+    {
+        return $this->hasMany('App\Offspring', 'contact_id')->where('is_active', 1);
     }
 
     /**
@@ -693,7 +704,7 @@ class Contact extends Model
     /**
      * Get the current Significant Others, if they exists, or return null otherwise.
      *
-     * @return Contact
+     * @return Collection
      */
     public function getCurrentPartners()
     {
@@ -704,6 +715,22 @@ class Contact extends Model
         }
 
         return $partners;
+    }
+
+    /**
+     * Get the current Kids, if they exists, or return null otherwise.
+     *
+     * @return Collection
+     */
+    public function getCurrentKids()
+    {
+        $kids = collect([]);
+        foreach ($this->activeKids as $offspring) {
+            $contact = self::find($offspring->is_the_parent_of);
+            $kids->push($contact);
+        }
+
+        return $kids;
     }
 
     /**
@@ -1125,6 +1152,35 @@ class Contact extends Model
     }
 
     /**
+     * Get the list of all possible contacts to become kids for this contact.
+     *
+     * @return Collection
+     */
+    public function getPossibleKids()
+    {
+        $kids = Contact::where('account_id', $this->account_id)
+                        ->where('is_significant_other', 0)
+                        ->where('is_kid', 0)
+                        ->where('id', '!=', $this->id)
+                        ->get();
+
+        // Filter out the contacts who already kids of the given contact
+        $counter = 0;
+        foreach ($kids as $kid) {
+            $offspring = Offspring::where('contact_id', $this->id)
+                                    ->where('is_the_parent_of', $kid->id)
+                                    ->count();
+
+            if ($offspring != 0) {
+                $kids->forget($counter);
+            }
+            $counter++;
+        }
+
+        return $kids;
+    }
+
+    /**
      * Get the list of partners who are not "real" contacts.
      *
      * @return Collection
@@ -1144,6 +1200,28 @@ class Contact extends Model
         }
 
         return $partners;
+    }
+
+    /**
+     * Get the list of kids who are not "real" contacts.
+     *
+     * @return Collection
+     */
+    public function getKidsWhoAreNotRealContacts()
+    {
+        $offsprings = Offspring::where('contact_id', $this->id)
+                                    ->get();
+
+        $kids = collect();
+        foreach ($offsprings as $offspring) {
+            $kid = Contact::findOrFail($offspring->is_the_parent_of);
+
+            if ($kid->is_kid) {
+                $kids->push($kid);
+            }
+        }
+
+        return $kids;
     }
 
     /**
@@ -1177,6 +1255,36 @@ class Contact extends Model
     }
 
     /**
+     * Set a relationship between the two contacts. Has the option to set a
+     * bilateral relationship if the kid is a real contact.
+     *
+     * @param Contact $kid
+     * @param  boolean $bilateral
+     */
+    public function setOffspring(Contact $kid, $bilateral = false)
+    {
+        $offspring = Offspring::create(
+            [
+                'account_id' => $this->account_id,
+                'contact_id' => $this->id,
+                'is_the_parent_of' => $kid->id,
+                'is_active' => 1,
+            ]
+        );
+
+        if ($bilateral) {
+            $offspring = Offspring::create(
+                [
+                    'account_id' => $this->account_id,
+                    'contact_id' => $kid->id,
+                    'is_the_parent_of' => $this->id,
+                    'is_active' => 1,
+                ]
+            );
+        }
+    }
+
+    /**
      * Unset a relationship between the two contacts.
      *
      * @param  Contact $partner
@@ -1200,6 +1308,29 @@ class Contact extends Model
     }
 
     /**
+     * Unset a parenting relationship between the two contacts.
+     *
+     * @param  Contact $kid
+     * @param  boolean $bilateral
+     */
+    public function unsetKid(Contact $kid, $bilateral = false)
+    {
+        $offspring = Offspring::where('contact_id', $this->id)
+                        ->where('is_the_parent_of', $kid->id)
+                        ->first();
+
+        $offspring->delete();
+
+        if ($bilateral) {
+            $offspring = Offspring::where('contact_id', $kid->id)
+                        ->where('is_the_parent_of', $this->id)
+                        ->first();
+
+            $offspring->delete();
+        }
+    }
+
+    /**
      * Deletes all the events that mentioned the relationship with this partner
      *
      * @var Contact $partner
@@ -1214,6 +1345,19 @@ class Contact extends Model
         $events = Event::where('contact_id', $partner->id)
                         ->where('object_id', $this->id)
                         ->where('object_type', 'partner')
+                        ->delete();
+    }
+
+    public function deleteEventsWithKid(Contact $kid)
+    {
+        $events = Event::where('contact_id', $this->id)
+                        ->where('object_id', $kid->id)
+                        ->where('object_type', 'kid')
+                        ->delete();
+
+        $events = Event::where('contact_id', $kid->id)
+                        ->where('object_id', $this->id)
+                        ->where('object_type', 'kid')
                         ->delete();
     }
 }

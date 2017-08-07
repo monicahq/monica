@@ -16,6 +16,9 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
+                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
                 {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
@@ -23,9 +26,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Page header -->
-    @include('people._header')
 
     <!-- Page content -->
     <div class="main-content central-form">

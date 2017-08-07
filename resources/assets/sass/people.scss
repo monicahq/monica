@@ -669,7 +669,8 @@
     }
   }
 
-  &.significantother {
+  &.significantother,
+  &.kid {
     .significant-other-blank-state {
       text-align: center;
 

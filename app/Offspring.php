@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Offspring extends Model
 {
+    protected $table = 'offsprings';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,7 +19,7 @@ class Offspring extends Model
     protected $fillable = [
         'account_id',
         'contact_id',
-        'parent_of_contact_id',
+        'is_the_parent_of',
         'is_active',
     ];
 

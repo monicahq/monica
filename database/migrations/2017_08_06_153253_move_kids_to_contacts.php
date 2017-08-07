@@ -41,7 +41,7 @@ class MoveKidsToContacts extends Migration
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('contact_id');
-            $table->integer('parent_of_contact_id');
+            $table->integer('is_the_parent_of');
             $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
@@ -52,7 +52,7 @@ class MoveKidsToContacts extends Migration
             DB::table('offsprings')->insert([
                 'account_id' => $kid->account_id,
                 'contact_id' => $kid->child_of_contact_id,
-                'parent_of_contact_id' => $kid->temp_contact_id,
+                'is_the_parent_of' => $kid->temp_contact_id,
             ]);
         }
 
