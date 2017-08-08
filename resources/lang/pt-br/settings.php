@@ -42,7 +42,8 @@ return [
     'locale_en' => 'Inglês',
     'locale_fr' => 'Francês',
     'locale_pt-br' => 'Português',
-    'locale_cz' => 'Czech',
+    'locale_cz' => 'Checo',
+    'locale_it' => 'Italiano',
 
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',
