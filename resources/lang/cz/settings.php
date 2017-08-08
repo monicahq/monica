@@ -43,7 +43,7 @@ return [
     'locale_fr' => 'Francouzština',
     'locale_pt-br' => 'Portugalština',
     'locale_ru' => 'Ruština',
-    'locale_cz' => 'Ceština',
+    'locale_cz' => 'Čeština',
 
     'users_list_title' => 'Uživatelé s přístupem k tomuto účtu',
     'users_list_add_user' => 'Pozvat nového uživatele',
@@ -130,6 +130,6 @@ return [
     'tags_list_delete_success' => 'Tag byl úspěšně smazán',
     'tags_list_delete_confirmation' => 'Opravdu chcete smazat tento tag? Bude smazán pouze vybraný tag, žádné kontakty.',
     'tags_blank_title' => 'Tagy jsou šikovné řešení kategorizace kontaktů.',
-    'tags_blank_description' => 'Tagy fungují jako adresáře, kontaktům můžete ale přidat vícero tagů. Přejděte na kontakt a otagujte přitele hned pod jeho jménem. Jakmile je kontakt otagován, vraťte se zpět pro správu všech tagů v tomto účtu.',
+    'tags_blank_description' => 'Tagy fungují jako adresáře, kontaktům můžete ale přidat vícero tagů. Přejděte na kontakt a otagujte přítele hned pod jeho jménem. Jakmile je kontakt otagován, vraťte se zpět pro správu všech tagů v tomto účtu.',
 
 ];

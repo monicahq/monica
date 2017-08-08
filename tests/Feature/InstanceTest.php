@@ -14,6 +14,8 @@ class InstanceTest extends TestCase
      */
     public function test_disable_signup_set_to_false_shows_signup_button()
     {
+        putenv('APP_DISABLE_SIGNUP=false');
+
         $response = $this->get('/');
 
         $response->assertSee(
