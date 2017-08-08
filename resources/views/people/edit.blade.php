@@ -121,7 +121,7 @@
                 <label for="city">{{ trans('people.information_edit_city') }}</label>
                 <input type="text" class="form-control" name="city" id="city" value="{{ $contact->city }}">
                 <label for="province">{{ trans('people.information_edit_province') }}</label>
-                <input type="text" class="form-control" name="province" id="province" value="{{ $contact->getProvince() }}">
+                <input type="text" class="form-control" name="province" id="province" value="{{ $contact->province }}">
                 <label for="postalcode">{{ trans('people.information_edit_postalcode') }}</label>
                 <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ $contact->postal_code }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>

@@ -91,8 +91,8 @@ class RouteServiceProvider extends ServiceProvider
             $contact = Contact::findOrFail($route->parameter('contact')->id);
 
             $offspring = Offspring::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('is_the_parent_of', $value)
+                ->where('contact_id', $value)
+                ->where('is_the_child_of', $route->parameter('contact')->id)
                 ->firstOrFail();
 
             return Contact::findOrFail($value);

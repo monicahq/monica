@@ -3,6 +3,8 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Offspring;
+use App\Progenitor;
 use App\Relationship;
 use App\Traits\Searchable;
 use App\Helpers\DateHelper;
@@ -235,7 +237,7 @@ class Contact extends Model
      */
     public function progenitors()
     {
-        return $this->hasMany('App\Progenitor', 'contact_id');
+        return $this->hasMany('App\Progenitor', 'is_the_parent_of');
     }
 
     /**
@@ -811,12 +813,12 @@ class Contact extends Model
     }
 
     /**
-     * Get the list of all possible partners for this contact, based on a set
-     * of criteria.
+     * Get the list of all potential contacts to add as either a significant
+     * other or a kid.
      *
      * @return Collection
      */
-    public function getPotentialPartners()
+    public function getPotentialContacts()
     {
         $partners = Contact::where('account_id', $this->account_id)
                             ->where('is_significant_other', 0)
@@ -831,45 +833,21 @@ class Contact extends Model
                                     ->where('with_contact_id', $partner->id)
                                     ->count();
 
-            if ($relationship != 0) {
+            $offspring = Offspring::where('contact_id', $partner->id)
+                                    ->where('is_the_child_of', $this->id)
+                                    ->count();
+
+            $progenitor = Progenitor::where('contact_id', $this->id)
+                                    ->where('is_the_parent_of', $partner->id)
+                                    ->count();
+
+            if ($relationship != 0 or $offspring != 0 or $progenitor != 0) {
                 $partners->forget($counter);
             }
             $counter++;
         }
 
         return $partners;
-    }
-
-    /**
-     * Get the list of all possible contacts to be designated as kids for this
-     * contact. This excludes the contacts who are already the offsprings of the
-     * given contact.
-     *
-     * @return Collection
-     */
-    public function getPotentialOffsprings()
-    {
-        $kids = Contact::where('account_id', $this->account_id)
-                        ->where('is_significant_other', 0)
-                        ->where('is_kid', 0)
-                        ->where('id', '!=', $this->id)
-                        ->get();
-
-        // Filter out the contacts who already the kids of the given contact
-        $key = 0;
-        foreach ($kids as $kid) {
-            $offspring = Offspring::where('account_id', $this->account_id)
-                                    ->where('contact_id', $kid->id)
-                                    ->where('is_the_child_of', $this->id)
-                                    ->count();
-
-            if ($offspring != 0) {
-                $kids->forget($key);
-            }
-            $key++;
-        }
-
-        return $kids;
     }
 
     /**
@@ -906,7 +884,7 @@ class Contact extends Model
 
         $kids = collect();
         foreach ($offsprings as $offspring) {
-            $kid = Contact::findOrFail($offspring->is_the_parent_of);
+            $kid = Contact::findOrFail($offspring->is_the_child_of);
 
             if ($kid->is_kid) {
                 $kids->push($kid);
@@ -1034,7 +1012,7 @@ class Contact extends Model
 
         $events = Event::where('contact_id', $contact->id)
                         ->where('object_id', $this->id)
-                        ->where('object_type', type)
+                        ->where('object_type', $type)
                         ->delete();
     }
 

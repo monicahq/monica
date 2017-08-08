@@ -114,8 +114,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans_choice('people.people_list_number_kids', $contact->kids->count(), ['count' => $contact->kids->count()]) }}
-                      <span>{{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}</span>
+                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}
                     </span>
                   </a>
                 </li>

@@ -144,8 +144,8 @@ return [
     'reminders_type_week' => 'week',
     'reminders_type_month' => 'month',
     'reminders_type_year' => 'year',
-    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
-    'reminders_birthday' => 'Birthdate of :name',
+    'reminders_so_birthday' => 'Birthday of :name, :contact\'s significant other.',
+    'reminders_birthday' => 'Birthday of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
@@ -165,6 +165,12 @@ return [
     'significant_other_edit_success' => 'The significant other has been updated successfully',
     'significant_other_delete_success' => 'The significant other has been deleted successfully',
     'significant_other_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s significant other',
+    'significant_other_add_person' => 'Add a new person',
+    'significant_other_link_existing_contact' => 'Link existing contact',
+    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
+    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
+    'contact_add_also_create_contact' => 'Create a Contact entry for this person.',
+    'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
     'kids_sidebar_title' => 'Children',

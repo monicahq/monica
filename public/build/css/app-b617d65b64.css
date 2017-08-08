@@ -8203,10 +8203,6 @@ header .main-cta {
 }
 
 .people-list .people-list-item .people-list-item-information span {
-  display: block;
-}
-
-.people-list .people-list-item .people-list-item-information span {
   font-size: .8rem;
 }
 

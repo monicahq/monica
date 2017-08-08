@@ -19,7 +19,7 @@
                 <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                {{ trans('app.breadcrumb_edit_significant_other') }}
               </li>
             </ul>
           </div>
@@ -34,10 +34,9 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
-            @include('people.dashboard.significantother.form', [
+            @include('people.relationship.form', [
               'method' => 'PUT',
-              'action' => route('people.significant_others.update', [$contact, $partner]),
-              'actionExisting' => route('people.significant_others.updateexisting', [$contact, $partner]),
+              'action' => route('people.relationships.update', [$contact, $partner]),
               'buttonText' => trans('people.significant_other_edit_cta')
             ])
           </div>

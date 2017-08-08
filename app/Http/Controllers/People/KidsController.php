@@ -32,8 +32,7 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.add')
             ->withContact($contact)
-            ->withKid(new Contact)
-            ->withKids($contact->getPotentialOffsprings());
+            ->withKid(new Contact);
     }
 
     /**
@@ -176,8 +175,6 @@ class KidsController extends Controller
 
         $contact->unsetKid($kid);
 
-        $contact->deleteEventsWithOffspring($kid);
-
         $kid->delete();
 
         return redirect('/people/'.$contact->id)
@@ -202,8 +199,6 @@ class KidsController extends Controller
         }
 
         $contact->unsetKid($kid, true);
-
-        $contact->deleteEventsWithOffspring($kid);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

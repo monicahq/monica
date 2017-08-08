@@ -165,6 +165,12 @@ return [
     'significant_other_edit_success' => 'Вторая половинка была успешно обновлена',
     'significant_other_delete_success' => 'Вторая половинка была успешно удалена',
     'significant_other_add_birthday_reminder' => 'Поздравьте с днём рождения :name, вторую половинку :contact_firstname',
+    'significant_other_add_person' => 'Add a new person',
+    'significant_other_link_existing_contact' => 'Link existing contact',
+    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
+    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
+    'contact_add_also_create_contact' => 'Create a Contact entry for this person.',
+    'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
     'kids_sidebar_title' => 'Дети',

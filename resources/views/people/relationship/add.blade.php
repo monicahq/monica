@@ -37,12 +37,12 @@
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#new" role="tab">
-                  Add a new person
+                  {{ trans('people.significant_other_add_person') }}
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#existing" role="tab">
-                  Link existing contact
+                  {{ trans('people.significant_other_link_existing_contact') }}
                 </a>
               </li>
             </ul>
@@ -64,11 +64,11 @@
               {{-- Existing contact entry --}}
               <div class="tab-pane" id="existing" role="tabpanel">
 
-                @if (count($partners) == 0)
+                @if (count($contact->getPotentialContacts()) == 0)
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
-                    <p>You don’t have any contacts who can be Roger’s significant others at the moment.</p>
+                    <p>{{ trans('people.significant_other_add_no_existing_contact', ['name' => $contact->getFirstName()]) }}</p>
                   </div>
 
                 @else
@@ -79,9 +79,9 @@
                     @include('partials.errors')
 
                     <div class="form-group">
-                      <label for="existingPartner">Select an existing contact as the significant other for {{ $contact->getFirstName() }}</label>
+                      <label for="existingPartner">{{ trans('people.significant_other_add_existing_contact', ['name' => $contact->getFirstName()]) }}</label>
                       <select class="form-control" name="existingPartner" id="existingPartner">
-                        @foreach ($partners as $partner)
+                        @foreach ($contact->getPotentialContacts() as $partner)
 
                           <option value="{{ $partner->id }}">{{ $partner->getCompleteName() }}</option>
 

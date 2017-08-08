@@ -9,6 +9,7 @@ return [
     'edit' => 'Редактировать',
     'upload' => 'Upload',
     'close' => 'Close',
+    'remove' => 'Remove',
 
     'header_settings_link' => 'Настройки',
     'header_logout_link' => 'Выйти',
@@ -46,6 +47,7 @@ return [
     'breadcrumb_settings_import_upload' => 'Upload',
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Add significant other',
+    'breadcrumb_edit_significant_other' => 'Edit significant other',
 
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',

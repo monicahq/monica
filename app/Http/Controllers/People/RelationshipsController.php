@@ -33,8 +33,7 @@ class RelationshipsController extends Controller
     {
         return view('people.relationship.add')
             ->withContact($contact)
-            ->withPartner(new Contact)
-            ->withPartners($contact->getPotentialPartners());
+            ->withPartner(new Contact);
     }
 
     /**
@@ -177,8 +176,6 @@ class RelationshipsController extends Controller
 
         $contact->unsetRelationshipWith($partner);
 
-        $contact->deleteEventsAboutTheseTwoContacts($partner, 'partner');
-
         $partner->delete();
 
         return redirect('/people/'.$contact->id)
@@ -203,8 +200,6 @@ class RelationshipsController extends Controller
         }
 
         $contact->unsetRelationshipWith($partner, true);
-
-        $contact->deleteEventsAboutTheseTwoContacts($partner, 'partner');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

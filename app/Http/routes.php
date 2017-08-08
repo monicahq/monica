@@ -62,10 +62,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/relationships/add', 'People\\RelationshipsController@create')->name('.relationships.add');
         Route::post('/people/{contact}/relationships/store', 'People\\RelationshipsController@store')->name('.relationships.store');
         Route::post('/people/{contact}/relationships/storeExistingContact', 'People\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
-        Route::get('/people/{contact}/relationships/{significant_other}/edit', 'People\\RelationshipsController@edit')->name('.relationships.edit');
-        Route::put('/people/{contact}/relationships/{significant_other}', 'People\\RelationshipsController@update')->name('.relationships.update');
-        Route::get('/people/{contact}/relationships/{significant_other}/delete', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
-        Route::get('/people/{contact}/relationships/{significant_other}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
+        Route::get('/people/{contact}/relationships/{partner}/edit', 'People\\RelationshipsController@edit')->name('.relationships.edit');
+        Route::put('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@update')->name('.relationships.update');
+        Route::get('/people/{contact}/relationships/{partner}/delete', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
+        Route::get('/people/{contact}/relationships/{partner}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
 
         // Activities
         Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');

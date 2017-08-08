@@ -19,7 +19,7 @@
                 <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                Add a new kid
               </li>
             </ul>
           </div>
@@ -64,7 +64,7 @@
               {{-- Existing contact entry --}}
               <div class="tab-pane" id="existing" role="tabpanel">
 
-                @if (count($kids) == 0)
+                @if (count($contact->getPotentialContacts()) == 0)
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
@@ -81,7 +81,7 @@
                     <div class="form-group">
                       <label for="existingKid">Select an existing contact as the significant other for {{ $contact->getFirstName() }}</label>
                       <select class="form-control" name="existingKid" id="existingKid">
-                        @foreach ($kids as $kid)
+                        @foreach ($contact->getPotentialContacts() as $kid)
 
                           <option value="{{ $kid->id }}">{{ $kid->getCompleteName(auth()->user()->name_order) }}</option>
 

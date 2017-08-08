@@ -10,7 +10,7 @@ class RelationshipTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_possible_partners_does_not_return_contacts_who_are_already_partner_with_the_contact()
+    public function test_get_potential_partners_does_not_return_contacts_who_are_already_partner_with_the_contact()
     {
         $account = factory(\App\Account::class)->create();
         $franck = factory(\App\Contact::class)->create([
@@ -42,7 +42,7 @@ class RelationshipTest extends TestCase
 
         $this->assertEquals(
             2,
-            $franck->getPotentialPartners()->count()
+            $franck->getPotentialContacts()->count()
         );
     }
 

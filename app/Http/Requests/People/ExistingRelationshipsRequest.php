@@ -4,7 +4,7 @@ namespace App\Http\Requests\People;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExistingSignificantOthersRequest extends FormRequest
+class ExistingRelationshipsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

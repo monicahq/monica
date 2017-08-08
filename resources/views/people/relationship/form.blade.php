@@ -20,7 +20,7 @@
     </div>
 
     <div class="form-group">
-      <label for="last_name">Last name (optional)</label>
+      <label for="last_name">{{ trans('people.information_edit_lastname') }}</label>
       <input type="text" class="form-control" name="last_name" id="last_name" maxlength="254" value="{{ old('last_name') ?? $partner->last_name }}">
     </div>
 
@@ -97,12 +97,12 @@
       </div>
     </fieldset>
 
-    @if (\Route::currentRouteName() == 'people.significant_others.add')
+    @if (\Route::currentRouteName() == 'people.relationships.add' or \Route::currentRouteName() == 'people.relationships.edit')
     <fieldset class="form-group">
       <label class="form-check-inline real-contact-checkbox" for="realContact">
         <input type="checkbox" class="form-check-input" name="realContact" id="realContact">
-        Also create a Contact entry for this person.
-        <span class="help">This will let you treat this significant other like any other contact.</span>
+        {{ trans('people.contact_add_also_create_contact') }}
+        <span class="help">{{ trans('people.contact_add_add_description') }}</span>
       </label>
     </fieldset>
     @endif

@@ -24,25 +24,32 @@
             ({{ $partner->getAge() }})
           @endif
 
-          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/delete" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">{{ trans('app.delete') }}</a>
+          <a href="{{ route('people.relationships.edit', [$contact, $partner]) }}" class="action-link {{ $contact->id }}-edit-relationship">
+            {{ trans('app.edit') }}
+          </a>
+
+          <a href="{{ route('people.relationships.delete', [$contact, $partner]) }}" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">
+            {{ trans('app.delete') }}
+          </a>
 
         @else
 
-          <a href="/people/{{ $partner->id }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
+          <a href="{{ route('people.show', $partner) }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
 
           @if (! is_null($partner->getAge()))
             ({{ $partner->getAge() }})
           @endif
 
-          <a href="/people/{{ $contact->id }}/significant-others/{{ $partner->id }}/unlink" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link">Remove</a>
+          <a href="{{ route('people.relationships.unlink', [$contact, $partner]) }}" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link {{ $contact->id }}-unlink-relationship">
+            {{ trans('app.remove') }}
+          </a>
 
         @endif
       </p>
     @endforeach
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/significant-others/add">{{ trans('people.significant_other_cta') }}</a>
+      <a href="{{ route('people.relationships.add', $contact) }}">{{ trans('people.significant_other_cta') }}</a>
     </p>
 
   @endif

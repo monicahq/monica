@@ -301,24 +301,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetProvinceReturnsNullIfNoProvinceIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getProvince());
-    }
-
-    public function testGetProvinceReturnsProvinceWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->province = 'QC';
-
-        $this->assertEquals(
-            'QC',
-            $contact->getProvince()
-        );
-    }
-
     public function testGetCountryReturnsNullIfNoStreetIsDefined()
     {
         $contact = new Contact;
