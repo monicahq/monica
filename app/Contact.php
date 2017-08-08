@@ -211,6 +211,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the entries records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function entries()
+    {
+        return $this->hasMany('App\Entry');
+    }
+
+    /**
      * Get the Relationships records associated with the contact.
      *
      * @return HasMany
@@ -837,8 +847,8 @@ class Contact extends Model
                                     ->where('is_the_child_of', $this->id)
                                     ->count();
 
-            $progenitor = Progenitor::where('contact_id', $this->id)
-                                    ->where('is_the_parent_of', $partner->id)
+            $progenitor = Progenitor::where('contact_id', $partner->id)
+                                    ->where('is_the_parent_of', $this->id)
                                     ->count();
 
             if ($relationship != 0 or $offspring != 0 or $progenitor != 0) {
@@ -922,6 +932,24 @@ class Contact extends Model
                 ]
             );
         }
+    }
+
+    /**
+     * Set a unilateral relationship to a bilateral one between the two contacts
+     *
+     * @param Contact $partner
+     * @param  boolean $bilateral
+     */
+    public function updateRelationshipWith(Contact $partner)
+    {
+        $relationship = Relationship::create(
+            [
+                'account_id' => $this->account_id,
+                'contact_id' => $partner->id,
+                'with_contact_id' => $this->id,
+                'is_active' => 1,
+            ]
+        );
     }
 
     /**

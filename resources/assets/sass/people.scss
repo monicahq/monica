@@ -136,10 +136,12 @@
 
     .people-list-item-information {
       color: #999;
-      font-style: italic;
       float: right;
-      text-align: right;
+      font-size: 12px;
+      font-style: italic;
       position: relative;
+      text-align: right;
+      top: 16px;
     }
   }
 }

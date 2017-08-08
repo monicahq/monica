@@ -7,7 +7,9 @@ use App\Tag;
 use Validator;
 use App\Contact;
 use App\Reminder;
+use App\Offspring;
 use Carbon\Carbon;
+use App\Progenitor;
 use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
@@ -269,14 +271,14 @@ class PeopleController extends Controller
     public function delete(Request $request, Contact $contact)
     {
         $contact->activities->each->delete();
+        $contact->calls->each->delete();
         $contact->debts->each->delete();
         $contact->events->each->delete();
         $contact->gifts->each->delete();
         $contact->notes->each->delete();
         $contact->reminders->each->delete();
-        $contact->tasks->each->delete();
         $contact->tags->each->delete();
-        $contact->calls->each->delete();
+        $contact->tasks->each->delete();
 
         // delete all relationships
         $relationships = Relationship::where('contact_id', $contact->id)
@@ -289,11 +291,20 @@ class PeopleController extends Controller
 
         // delete all offsprings
         $offsprings = Offspring::where('contact_id', $contact->id)
-                                    ->orWhere('is_the_parent_of', $contact->id)
-                                    ->get();
+                                ->orWhere('is_the_child_of', $contact->id)
+                                ->get();
 
         foreach ($offsprings as $offspring) {
             $offspring->delete();
+        }
+
+        // delete all progenitors
+        $progenitors = Progenitor::where('contact_id', $contact->id)
+                                ->orWhere('is_the_parent_of', $contact->id)
+                                ->get();
+
+        foreach ($progenitors as $progenitor) {
+            $progenitor->delete();
         }
 
         $contact->delete();
