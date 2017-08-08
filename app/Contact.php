@@ -1003,4 +1003,35 @@ class Contact extends Model
 
         $this->save();
     }
+
+    /**
+     * Is this contact owed money?
+     * @return bool
+     */
+    public function isOwedMoney()
+    {
+        return $this
+            ->debts()
+            ->where('status', '=', 'inprogress')
+            ->getResults()
+            ->sum(function ($d) {
+                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
+            })
+            > 0;
+    }
+
+    /**
+     * How much is the debt.
+     * @return int
+     */
+    public function totalOutstandingDebtAmount()
+    {
+        return $this
+            ->debts()
+            ->where('status', '=', 'inprogress')
+            ->getResults()
+            ->sum(function ($d) {
+                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
+            });
+    }
 }
