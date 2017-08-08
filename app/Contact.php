@@ -330,16 +330,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the middle name of the contact.
-     *
-     * @return string
-     */
-    public function getMiddleName()
-    {
-        return $this->middle_name;
-    }
-
-    /**
      * Get the last name of the contact.
      *
      * @return string
@@ -484,46 +474,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the total number of reminders.
-     *
-     * @return int
-     */
-    public function getNumberOfReminders()
-    {
-        return $this->reminders->count();
-    }
-
-    /**
-     * Get the total number of kids.
-     *
-     * @return int
-     */
-    public function getNumberOfKids()
-    {
-        return $this->kids->count();
-    }
-
-    /**
-     * Get the total number of activities.
-     *
-     * @return int
-     */
-    public function getNumberOfActivities()
-    {
-        return $this->activities->count();
-    }
-
-    /**
-     * Get the total number of gifts, regardless of ideas or offered.
-     *
-     * @return int
-     */
-    public function getNumberOfGifts()
-    {
-        return $this->gifts->count();
-    }
-
-    /**
      * Get the current Significant Others, if they exists, or return null otherwise.
      *
      * @return Collection
@@ -569,26 +519,6 @@ class Contact extends Model
         }
 
         return $progenitors;
-    }
-
-    /**
-     * Get the notes for this contact. Return an empty collection if no notes.
-     *
-     * @return Note
-     */
-    public function getNotes()
-    {
-        return $this->notes;
-    }
-
-    /**
-     * Get the number of notes for this contact.
-     *
-     * @return int
-     */
-    public function getNumberOfNotes()
-    {
-        return $this->notes->count();
     }
 
     /**

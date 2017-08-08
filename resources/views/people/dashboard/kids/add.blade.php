@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
               </li>
               <li>
                 {{ $contact->getCompleteName(auth()->user()->name_order) }}
@@ -91,7 +91,7 @@
 
                     <div class="form-group actions">
                       <button type="submit" class="btn btn-primary">{{ trans('people.significant_other_add_cta') }}</button>
-                      <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                      <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                     </div>
                   </form>
 

@@ -52,11 +52,6 @@ class ContactTest extends TestCase
             $contact->getLastName()
         );
 
-        $this->assertEquals(
-            'H',
-            $contact->getMiddleName()
-        );
-
         $contact = new Contact;
         $contact->first_name = 'Peter';
         $contact->middle_name = null;
@@ -65,11 +60,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'Peter Gregory',
             $contact->getCompleteName()
-        );
-
-        $this->assertEquals(
-            null,
-            $contact->getMiddleName()
         );
 
         $contact = new Contact;
@@ -260,36 +250,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetNumberOfReminders()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfReminders()
-        );
-    }
-
-    public function testGetNumberOfGifts()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfGifts()
-        );
-    }
-
-    public function testGetNumberOfActivities()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfActivities()
-        );
-    }
-
     public function testGetAvatarColor()
     {
         $contact = new Contact;
@@ -393,72 +353,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'us',
             $contact->getCountryISO()
-        );
-    }
-
-    public function testGetKidsWithNoKid()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getKids()->count()
-        );
-    }
-
-    public function testGetKidsWithKids()
-    {
-        $user = factory(\App\User::class)->create();
-
-        $contact = factory(\App\Contact::class)->create();
-
-        $kids = factory(\App\Kid::class, 3)->create([
-            'child_of_contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getKids()->count()
-        );
-    }
-
-    public function testGetNumberOfKidsReturnsAnInteger()
-    {
-        $contact = new Contact;
-        $contact->number_of_kids = 3;
-
-        $this->assertInternalType('int', $contact->getNumberOfKids());
-    }
-
-    public function testGetNumberOfNotesReturnsAnInteger()
-    {
-        $contact = new Contact;
-        $contact->number_of_notes = 3;
-
-        $this->assertInternalType('int', $contact->getNumberOfNotes());
-    }
-
-    public function testGetNotesReturnsZeroWhenNoNotesAreDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNotes()->count()
-        );
-    }
-
-    public function testGetNotesWithData()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $notes = factory(\App\Note::class, 3)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getNotes()->count()
         );
     }
 

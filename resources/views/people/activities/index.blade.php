@@ -7,7 +7,7 @@
   </h3>
 </div>
 
-@if ($contact->getNumberOfActivities() == 0)
+@if ($contact->activities->count() == 0)
 
   <div class="col-xs-12">
     <div class="section-blank">

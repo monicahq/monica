@@ -200,7 +200,7 @@
               <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
               <ul>
                 @foreach ($lastUpdatedContacts as $contact)
-                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
+                  <li><a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
                 @endforeach
               </ul>
             </div>
