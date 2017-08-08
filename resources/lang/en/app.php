@@ -25,7 +25,7 @@ return [
     'footer_send_email' => 'Send me an email',
     'footer_privacy' => 'Privacy policy',
     'footer_release' => 'Release notes',
-    'footer_newsletter' => 'Newsletter',
+    'footer_newsletter' => 'Email newsletter',
     'footer_source_code' => 'Monica on GitHub',
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'A new version is available',
