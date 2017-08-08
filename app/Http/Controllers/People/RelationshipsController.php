@@ -6,10 +6,10 @@ use App\Contact;
 use App\Reminder;
 use App\Relationship;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\SignificantOthersRequest;
-use App\Http\Requests\People\ExistingSignificantOthersRequest;
+use App\Http\Requests\People\RelationshipsRequest;
+use App\Http\Requests\People\ExistingRelationshipsRequest;
 
-class SignificantOthersController extends Controller
+class RelationshipsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class SignificantOthersController extends Controller
      */
     public function index(Contact $contact)
     {
-        return view('people.dashboard.significantother.index')
+        return view('people.relationship.index')
             ->withContact($contact);
     }
 
@@ -31,20 +31,20 @@ class SignificantOthersController extends Controller
      */
     public function create(Contact $contact)
     {
-        return view('people.dashboard.significantother.add')
+        return view('people.relationship.add')
             ->withContact($contact)
             ->withPartner(new Contact)
-            ->withPartners($contact->getPossiblePartners());
+            ->withPartners($contact->getPotentialPartners());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param SignificantOthersRequest $request
+     * @param RelationshipsRequest $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(SignificantOthersRequest $request, Contact $contact)
+    public function store(RelationshipsRequest $request, Contact $contact)
     {
         // this is a real contact, not just a significant other
         if ($request->get('realContact')) {
@@ -62,7 +62,7 @@ class SignificantOthersController extends Controller
 
             $partner->logEvent('contact', $partner->id, 'create');
 
-            $contact->setPartner($partner, true);
+            $contact->setRelationshipWith($partner, true);
         } else {
             $partner = Contact::create(
                 $request->only([
@@ -77,7 +77,7 @@ class SignificantOthersController extends Controller
                 ]
             );
 
-            $contact->setPartner($partner);
+            $contact->setRelationshipWith($partner);
         }
 
         $partner->setBirthday(
@@ -95,14 +95,14 @@ class SignificantOthersController extends Controller
      * relationship, we need to create two Relationship records, to match with
      * the bidirectional nature of the relationship.
      *
-     * @param ExistingSignificantOthersRequest $request
+     * @param ExistingRelationshipsRequest $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function storeExistingContact(ExistingSignificantOthersRequest $request, Contact $contact)
+    public function storeExistingContact(ExistingRelationshipsRequest $request, Contact $contact)
     {
         $partner = Contact::findOrFail($request->get('existingPartner'));
-        $contact->setPartner($partner, true);
+        $contact->setRelationshipWith($partner, true);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -117,7 +117,7 @@ class SignificantOthersController extends Controller
      */
     public function edit(Contact $contact, Contact $partner)
     {
-        return view('people.dashboard.significantother.edit')
+        return view('people.relationship.edit')
             ->withContact($contact)
             ->withPartner($partner);
     }
@@ -125,12 +125,12 @@ class SignificantOthersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param SignificantOthersRequest $request
+     * @param RelationshipsRequest $request
      * @param Contact $contact
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function update(SignificantOthersRequest $request, Contact $contact, Contact $partner)
+    public function update(RelationshipsRequest $request, Contact $contact, Contact $partner)
     {
         $partner->update(
             $request->only([
@@ -175,9 +175,9 @@ class SignificantOthersController extends Controller
             $partner->reminders()->get()->each->delete();
         }
 
-        $contact->unsetPartner($partner);
+        $contact->unsetRelationshipWith($partner);
 
-        $contact->deleteEventsWithPartner($partner);
+        $contact->deleteEventsAboutTheseTwoContacts($partner, 'partner');
 
         $partner->delete();
 
@@ -202,9 +202,9 @@ class SignificantOthersController extends Controller
             return redirect('/people/');
         }
 
-        $contact->unsetPartner($partner, true);
+        $contact->unsetRelationshipWith($partner, true);
 
-        $contact->deleteEventsWithPartner($partner);
+        $contact->deleteEventsAboutTheseTwoContacts($partner, 'partner');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

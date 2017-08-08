@@ -109,9 +109,10 @@ class PeopleController extends Controller
      */
     public function show(Contact $contact)
     {
+
         // make sure we don't display a significant other if it's not set as a
         // real contact
-        if ($contact->is_significant_other) {
+        if ($contact->is_significant_other or $contact->is_kid) {
             return redirect('/people');
         }
 
@@ -119,25 +120,11 @@ class PeopleController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        // compiile the list of reminders, including the ones about the SO
-        // who are not "real" contacts
-        $reminders = $contact->reminders;
-        $partners = $contact->getPartnersWhoAreNotRealContacts();
-        foreach ($partners as $partner) {
-            foreach ($partner->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
-
-        $kids = $contact->getKidsWhoAreNotRealContacts();
-        foreach ($kids as $kid) {
-            foreach ($kid->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
+        $reminders = $contact->getRemindersAboutRelatives();
 
         return view('people.profile')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withReminders($reminders);
     }
 
     /**

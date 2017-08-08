@@ -33,7 +33,7 @@ class KidsController extends Controller
         return view('people.dashboard.kids.add')
             ->withContact($contact)
             ->withKid(new Contact)
-            ->withKids($contact->getPossibleKids());
+            ->withKids($contact->getPotentialOffsprings());
     }
 
     /**
@@ -61,7 +61,7 @@ class KidsController extends Controller
 
             $kid->logEvent('contact', $kid->id, 'create');
 
-            $contact->setOffspring($kid, true);
+            $kid->isTheOffspringOf($contact, true);
         } else {
             $kid = Contact::create(
                 $request->only([
@@ -76,7 +76,7 @@ class KidsController extends Controller
                 ]
             );
 
-            $contact->setOffspring($kid);
+            $kid->isTheOffspringOf($contact);
         }
 
         $kid->setBirthday(
@@ -101,7 +101,7 @@ class KidsController extends Controller
     public function storeExistingContact(ExistingKidsRequest $request, Contact $contact)
     {
         $kid = Contact::findOrFail($request->get('existingKid'));
-        $contact->setOffspring($kid, true);
+        $kid->isTheOffspringOf($contact, true);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -176,7 +176,7 @@ class KidsController extends Controller
 
         $contact->unsetKid($kid);
 
-        $contact->deleteEventsWithKid($kid);
+        $contact->deleteEventsWithOffspring($kid);
 
         $kid->delete();
 
@@ -203,7 +203,7 @@ class KidsController extends Controller
 
         $contact->unsetKid($kid, true);
 
-        $contact->deleteEventsWithKid($kid);
+        $contact->deleteEventsWithOffspring($kid);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

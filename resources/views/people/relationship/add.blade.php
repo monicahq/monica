@@ -52,10 +52,10 @@
               {{-- New contact entry --}}
               <div class="tab-pane active" id="new" role="tabpanel">
 
-                @include('people.dashboard.significantother.form', [
+                @include('people.relationship.form', [
                   'method' => 'POST',
-                  'action' => route('people.significant_others.store', $contact),
-                  'actionExisting' => route('people.significant_others.storeexisting', $contact),
+                  'action' => route('people.relationships.store', $contact),
+                  'actionExisting' => route('people.relationships.storeexisting', $contact),
                   'buttonText' => trans('people.significant_other_add_cta')
                 ])
 
@@ -73,7 +73,7 @@
 
                 @else
 
-                  <form method="POST" action="{{ route('people.significant_others.storeexisting', $contact) }}">
+                  <form method="POST" action="{{ route('people.relationships.storeexisting', $contact) }}">
                     {{ csrf_field() }}
 
                     @include('partials.errors')

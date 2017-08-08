@@ -7,7 +7,7 @@
   @if ($contact->getCurrentPartners()->count() == 0)
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/significant-others/add">{{ trans('people.significant_other_cta') }}</a>
+      <a href="{{ route('people.relationships.add', $contact) }}">{{ trans('people.significant_other_cta') }}</a>
     </p>
 
   @else

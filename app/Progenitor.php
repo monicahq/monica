@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * A relationship defines relations between contacts.
  */
-class Offspring extends Model
+class Progenitor extends Model
 {
-    protected $table = 'offsprings';
+    protected $table = 'progenitors';
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +19,7 @@ class Offspring extends Model
     protected $fillable = [
         'account_id',
         'contact_id',
-        'is_the_child_of',
+        'is_the_parent_of',
     ];
 
     public function contact()

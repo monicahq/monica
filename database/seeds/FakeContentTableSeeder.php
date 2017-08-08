@@ -18,8 +18,6 @@ class FakeContentTableSeeder extends Seeder
         DB::table('users')->delete();
         DB::table('contacts')->delete();
         DB::table('reminders')->delete();
-        DB::table('significant_others')->delete();
-        DB::table('kids')->delete();
         DB::table('tasks')->delete();
         DB::table('notes')->delete();
         DB::table('activities')->delete();
@@ -56,7 +54,6 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $accountID,
                 'gender' => $gender,
                 'first_name' => $faker->firstName($gender),
-                'middle_name' => (rand(1, 2) == 1) ? $faker->firstName : null,
                 'last_name' => (rand(1, 2) == 1) ? $faker->lastName : null,
             ]);
 

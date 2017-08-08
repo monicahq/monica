@@ -4,13 +4,13 @@
     <strong>{{ trans('people.kids_sidebar_title') }}</strong>
   </p>
 
-  @if($contact->getCurrentKids()->count() === 0)
+  @if($contact->getOffsprings()->count() === 0)
     <p class="sidebar-box-paragraph">
       <a href="{{ route('people.kids.add', $contact) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
   @else
     <ul class="people-list">
-      @foreach($contact->getCurrentKids() as $kid)
+      @foreach($contact->getOffsprings() as $kid)
       <li>
 
         @if ($kid->is_kid)

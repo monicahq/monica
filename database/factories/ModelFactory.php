@@ -102,6 +102,12 @@ $factory->define(App\Relationship::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Offspring::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Kid::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,

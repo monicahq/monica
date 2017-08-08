@@ -47,7 +47,7 @@
                 @endif
 
               <div class="form-group">
-                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->getFoodPreferencies() }}</textarea>
+                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->food_preferencies }}</textarea>
               </div>
 
               <div class="form-group actions">

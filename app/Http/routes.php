@@ -58,14 +58,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/kids/{kid}/delete', 'People\\KidsController@destroy')->name('.kids.delete');
         Route::get('/people/{contact}/kids/{kid}/unlink', 'People\\KidsController@unlink')->name('.kids.unlink');
 
-        // Significant other
-        Route::get('/people/{contact}/significant-others/add', 'People\\SignificantOthersController@create')->name('.significant_others.add');
-        Route::post('/people/{contact}/significant-others/store', 'People\\SignificantOthersController@store')->name('.significant_others.store');
-        Route::post('/people/{contact}/significant-others/storeExistingContact', 'People\\SignificantOthersController@storeExistingContact')->name('.significant_others.storeexisting');
-        Route::get('/people/{contact}/significant-others/{significant_other}/edit', 'People\\SignificantOthersController@edit')->name('.significant_others.edit');
-        Route::put('/people/{contact}/significant-others/{significant_other}', 'People\\SignificantOthersController@update')->name('.significant_others.update');
-        Route::get('/people/{contact}/significant-others/{significant_other}/delete', 'People\\SignificantOthersController@destroy')->name('.significant_others.delete');
-        Route::get('/people/{contact}/significant-others/{significant_other}/unlink', 'People\\SignificantOthersController@unlink')->name('.significant_others.unlink');
+        // Relationships (significant others)
+        Route::get('/people/{contact}/relationships/add', 'People\\RelationshipsController@create')->name('.relationships.add');
+        Route::post('/people/{contact}/relationships/store', 'People\\RelationshipsController@store')->name('.relationships.store');
+        Route::post('/people/{contact}/relationships/storeExistingContact', 'People\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
+        Route::get('/people/{contact}/relationships/{significant_other}/edit', 'People\\RelationshipsController@edit')->name('.relationships.edit');
+        Route::put('/people/{contact}/relationships/{significant_other}', 'People\\RelationshipsController@update')->name('.relationships.update');
+        Route::get('/people/{contact}/relationships/{significant_other}/delete', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
+        Route::get('/people/{contact}/relationships/{significant_other}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
 
         // Activities
         Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');

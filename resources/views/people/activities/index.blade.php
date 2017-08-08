@@ -21,7 +21,7 @@
   <div class="col-xs-12 activities-list">
 
     <ul class="table">
-      @foreach($contact->getActivities() as $activity)
+      @foreach($contact->activities as $activity)
       <li class="table-row">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($activity->getDateItHappened()) }}
