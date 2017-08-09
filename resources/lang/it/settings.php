@@ -45,6 +45,7 @@ return [
     'locale_ru' => 'Russo',
     'locale_cz' => 'Ceco',
     'locale_it' => 'Italiano',
+    'locale_de' => 'Tedesco',
 
     'users_list_title' => 'Utenti con accesso al tuo account',
     'users_list_add_user' => 'Invita un nouvo utente',
