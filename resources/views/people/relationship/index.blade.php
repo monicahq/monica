@@ -34,7 +34,7 @@
 
         @else
 
-          <a href="{{ route('people.show', $partner) }}"><span class="name">{{ $partner->getCompleteName() }}</span></a>
+          <a href="{{ route('people.show', $partner) }}">{{ $partner->getCompleteName() }}</a>
 
           @if (! is_null($partner->getAge()))
             ({{ $partner->getAge() }})

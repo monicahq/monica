@@ -25,7 +25,7 @@ class RelationshipsRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string',
-            'last_name' => 'string',
+            'last_name' => 'string|nullable',
             'gender' => 'in:male,female,none',
             'status' => 'in:active,past|nullable',
             'is_birthdate_approximate' => 'required|in:unknown,approximate,exact',

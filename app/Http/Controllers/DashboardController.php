@@ -20,7 +20,7 @@ class DashboardController extends Controller
     {
         $account = Auth::user()->account()
             ->withCount(
-                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks', 'kids'
+                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks'
             )->with('debts.contact')
             ->first();
 
@@ -44,14 +44,11 @@ class DashboardController extends Controller
             }, 0);
 
         // List of events
-        $events = $account->events()->with('contact.kids')->limit(30)->get()
+        $events = $account->events()->limit(30)->get()
             ->reject(function (Event $event) {
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-                if ($event->object_type === 'kid') {
-                    $object = $event->contact->kids->where('id', $event->object_id)->first();
-                }
 
                 return [
                     'id' => $event->id,
@@ -86,7 +83,6 @@ class DashboardController extends Controller
             'number_of_activities' => $account->activities_count,
             'number_of_gifts' => $account->gifts_count,
             'number_of_tasks' => $account->tasks_count,
-            'number_of_kids' => $account->kids_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
             'tasks' => $tasks,

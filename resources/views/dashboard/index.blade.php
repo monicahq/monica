@@ -36,10 +36,6 @@
                   <span class="stat-description">{{ trans('dashboard.statistics_contacts') }}</span>
                 </li>
                 <li>
-                  <span class="stat-number">{{ $number_of_kids }}</span>
-                  <span class="stat-description">{{ trans('dashboard.statistics_kids') }}</span>
-                </li>
-                <li>
                   <span class="stat-number">{{ $number_of_reminders }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_reminders') }}</span>
                 </li>
