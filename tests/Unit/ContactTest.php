@@ -488,10 +488,10 @@ class ContactTest extends TestCase
 
         $account = factory(\App\Account::class)->create();
         $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $user = factory(\App\User::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $contact->setBirthday('exact', $birthdate, $age);
@@ -510,10 +510,10 @@ class ContactTest extends TestCase
     {
         $account = factory(\App\Account::class)->create();
         $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $user = factory(\App\User::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $this->assertNull(
@@ -534,7 +534,7 @@ class ContactTest extends TestCase
     {
         $account = factory(\App\Account::class)->create();
         $franck = factory(\App\Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         // partner
@@ -553,11 +553,11 @@ class ContactTest extends TestCase
         // additional contacts
         $jane = factory(\App\Contact::class)->create([
             'id' => 3,
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $marie = factory(\App\Contact::class)->create([
             'id' => 4,
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $this->assertEquals(

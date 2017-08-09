@@ -3,9 +3,6 @@
 namespace App;
 
 use Carbon\Carbon;
-use App\Offspring;
-use App\Progenitor;
-use App\Relationship;
 use App\Traits\Searchable;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
@@ -794,7 +791,7 @@ class Contact extends Model
     }
 
     /**
-     * Set a reminder for the birthdate of this contact
+     * Set a reminder for the birthdate of this contact.
      *
      */
     public function setBirthdateReminder()
@@ -809,7 +806,7 @@ class Contact extends Model
     }
 
     /**
-     * Clear any existing birthdate reminder about this contact
+     * Clear any existing birthdate reminder about this contact.
      *
      * @return void
      */
@@ -830,7 +827,7 @@ class Contact extends Model
      */
     public function getPotentialContacts()
     {
-        $partners = Contact::where('account_id', $this->account_id)
+        $partners = self::where('account_id', $this->account_id)
                             ->where('is_significant_other', 0)
                             ->where('is_kid', 0)
                             ->where('id', '!=', $this->id)
@@ -872,7 +869,7 @@ class Contact extends Model
 
         $partners = collect();
         foreach ($relationships as $relationship) {
-            $partner = Contact::findOrFail($relationship->with_contact_id);
+            $partner = self::findOrFail($relationship->with_contact_id);
 
             if ($partner->is_significant_other) {
                 $partners->push($partner);
@@ -894,7 +891,7 @@ class Contact extends Model
 
         $kids = collect();
         foreach ($offsprings as $offspring) {
-            $kid = Contact::findOrFail($offspring->is_the_child_of);
+            $kid = self::findOrFail($offspring->is_the_child_of);
 
             if ($kid->is_kid) {
                 $kids->push($kid);
@@ -909,7 +906,7 @@ class Contact extends Model
      * bilateral relationship if the partner is a real contact.
      *
      * @param Contact $partner
-     * @param  boolean $bilateral
+     * @param  bool $bilateral
      */
     public function setRelationshipWith(Contact $partner, $bilateral = false)
     {
@@ -935,10 +932,10 @@ class Contact extends Model
     }
 
     /**
-     * Set a unilateral relationship to a bilateral one between the two contacts
+     * Set a unilateral relationship to a bilateral one between the two contacts.
      *
      * @param Contact $partner
-     * @param  boolean $bilateral
+     * @param  bool $bilateral
      */
     public function updateRelationshipWith(Contact $partner)
     {
@@ -957,7 +954,7 @@ class Contact extends Model
      * bilateral relationship if the kid is a real contact.
      *
      * @param Contact $parent
-     * @param  boolean $bilateral
+     * @param  bool $bilateral
      */
     public function isTheOffspringOf(Contact $parent, $bilateral = false)
     {
@@ -984,7 +981,7 @@ class Contact extends Model
      * Unset a relationship between the two contacts.
      *
      * @param  Contact $partner
-     * @param  boolean $bilateral
+     * @param  bool $bilateral
      */
     public function unsetRelationshipWith(Contact $partner, $bilateral = false)
     {
@@ -1007,7 +1004,7 @@ class Contact extends Model
      * Unset a parenting relationship between the two contacts.
      *
      * @param  Contact $kid
-     * @param  boolean $bilateral
+     * @param  bool $bilateral
      */
     public function unsetOffspring(Contact $kid, $bilateral = false)
     {
@@ -1027,7 +1024,7 @@ class Contact extends Model
     }
 
     /**
-     * Deletes all the events that mentioned the relationship with this partner
+     * Deletes all the events that mentioned the relationship with this partner.
      *
      * @var Contact $partner
      */

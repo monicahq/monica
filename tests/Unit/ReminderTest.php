@@ -105,10 +105,10 @@ class ReminderTest extends TestCase
 
         $account = factory(\App\Account::class)->create();
         $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $user = factory(\App\User::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $birthdate = '1980-01-01';

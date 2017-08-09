@@ -49,7 +49,6 @@ class DashboardController extends Controller
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-
                 return [
                     'id' => $event->id,
                     'date' => DateHelper::createDateFromFormat($event->created_at, auth()->user()->timezone),

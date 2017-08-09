@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\People;
 
 use App\Contact;
-use App\Reminder;
 use App\Relationship;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\RelationshipsRequest;
@@ -55,7 +54,7 @@ class RelationshipsController extends Controller
                     'is_birthdate_approximate',
                 ])
                 + [
-                    'account_id' => $contact->account_id
+                    'account_id' => $contact->account_id,
                 ]
             );
 
