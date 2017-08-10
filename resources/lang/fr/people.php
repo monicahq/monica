@@ -144,7 +144,6 @@ return [
     'reminders_cta' => 'Ajouter un rappel',
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
     'reminders_one_time' => 'Unique',
-    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
     'reminders_birthday' => 'Birthdate of :name',
 
     // significant other

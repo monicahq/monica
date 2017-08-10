@@ -128,7 +128,6 @@ return [
     'reminders_type_week' => 'týdně',
     'reminders_type_month' => 'měsíčně',
     'reminders_type_year' => 'ročně',
-    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
     'reminders_birthday' => 'Birthdate of :name',
 
     // significant other

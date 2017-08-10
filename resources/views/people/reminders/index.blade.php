@@ -10,7 +10,7 @@
 </div>
 
 
-@if ($contact->reminders->count() === 0)
+@if ($reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
@@ -26,7 +26,7 @@
     <p>{{ trans('people.reminders_description') }}</p>
 
     <ul class="table">
-      @foreach($contact->reminders as $reminder)
+      @foreach($reminders as $reminder)
       <li class="table-row">
 
         <div class="table-cell date">
@@ -42,17 +42,7 @@
         </div>
 
         <div class="table-cell title">
-          @if ($reminder->is_birthday)
-            @if ($reminder->contact_id == $contact->id)
-              {{ trans('people.reminders_birthday', ['name' => $contact->first_name]) }}
-            @else
-              @if ($reminder->contact_id)
-                {{ trans('people.reminders_so_birthday', ['contact' => $contact->first_name, 'name' => $reminder->contact->first_name]) }}
-              @endif
-            @endif
-          @else
-            {{ $reminder->getTitle() }}
-          @endif
+          {{ $reminder->getTitle() }}
         </div>
 
         <div class="table-cell comment">

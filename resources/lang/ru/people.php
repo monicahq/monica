@@ -144,7 +144,6 @@ return [
     'reminders_type_week' => 'неделя',
     'reminders_type_month' => 'месяц',
     'reminders_type_year' => 'год',
-    'reminders_so_birthday' => 'Birthdate of :name, :contact\'s birthday.',
     'reminders_birthday' => 'Birthdate of :name',
 
     // significant other

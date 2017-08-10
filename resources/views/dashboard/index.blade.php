@@ -98,7 +98,11 @@
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
                         <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
-                        {{ $reminder->getTitle() }}
+                        @if ($reminder->is_birthday)
+                          {{ trans('people.reminders_birthday', ['name' => $reminder->contact->first_name]) }}
+                        @else
+                          {{ $reminder->getTitle() }}
+                        @endif
                       </li>
                     @endforeach
                   </ul>

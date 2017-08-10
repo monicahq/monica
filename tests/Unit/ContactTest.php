@@ -472,7 +472,6 @@ class ContactTest extends TestCase
             $contact->reminders->count()
         );
 
-
         $contact = new Contact;
         $contact->setBirthday('unknown', $birthdate, $age);
 

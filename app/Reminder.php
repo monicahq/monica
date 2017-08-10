@@ -117,7 +117,14 @@ class Reminder extends Model
      */
     public function getTitle()
     {
+        if ($this->is_birthday) {
+            // we need to construct the title of the reminder as in the case of a
+            // birthday, the title field is null
+            return trans('people.reminders_birthday', ['name' => $this->contact->first_name]);
+        }
+
         if (is_null($this->title)) {
+
             return;
         }
 

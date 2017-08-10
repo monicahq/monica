@@ -792,7 +792,6 @@ class Contact extends Model
 
     /**
      * Set a reminder for the birthdate of this contact.
-     *
      */
     public function setBirthdateReminder()
     {
@@ -886,12 +885,12 @@ class Contact extends Model
      */
     public function getPartialOffsprings()
     {
-        $offsprings = Offspring::where('contact_id', $this->id)
+        $offsprings = Offspring::where('is_the_child_of', $this->id)
                                     ->get();
 
         $kids = collect();
         foreach ($offsprings as $offspring) {
-            $kid = self::findOrFail($offspring->is_the_child_of);
+            $kid = self::findOrFail($offspring->contact_id);
 
             if ($kid->is_kid) {
                 $kids->push($kid);
@@ -1026,7 +1025,7 @@ class Contact extends Model
     /**
      * Deletes all the events that mentioned the relationship with this partner.
      *
-     * @var Contact $partner
+     * @var Contact
      */
     public function deleteEventsAboutTheseTwoContacts(Contact $contact, $type)
     {

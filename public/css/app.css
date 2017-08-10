@@ -8196,14 +8196,12 @@ header .main-cta {
 
 .people-list .people-list-item .people-list-item-information {
   color: #999;
-  font-style: italic;
   float: right;
-  text-align: right;
+  font-size: 12px;
+  font-style: italic;
   position: relative;
-}
-
-.people-list .people-list-item .people-list-item-information span {
-  font-size: .8rem;
+  text-align: right;
+  top: 16px;
 }
 
 .blank-people-state {
