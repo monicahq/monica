@@ -124,7 +124,6 @@ class Reminder extends Model
         }
 
         if (is_null($this->title)) {
-
             return;
         }
 
@@ -152,6 +151,28 @@ class Reminder extends Model
     public function getNextExpectedDate()
     {
         return $this->next_expected_date->format('Y-m-d');
+    }
+
+    /**
+     * Get the contact object that the reminder is about.
+     * We need this method because in the case of partial contacts, we can't say
+     * that the reminder is from this person, because the contact is just partial
+     * and should not clicked.
+     * @return Contact
+     */
+    public function getContact()
+    {
+        $contact = $this->contact;
+
+        if ($contact->is_kid) {
+            $contact = $contact->getProgenitor();
+        }
+
+        if ($contact->is_significant_other) {
+            $contact = $contact->getPartner();
+        }
+
+        return $contact;
     }
 
     /**

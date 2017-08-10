@@ -1066,4 +1066,32 @@ class Contact extends Model
 
         return $reminders;
     }
+
+    /**
+     * Get the first progenitor of the contact
+     * @return Contact
+     */
+    public function getProgenitor()
+    {
+        $offspring = Offspring::where('contact_id', $this->id)
+                        ->first();
+
+        $progenitor = self::findOrFail($offspring->is_the_child_of);
+
+        return $progenitor;
+    }
+
+    /**
+     * Get the partner of the contact
+     * @return Contact
+     */
+    public function getPartner()
+    {
+        $relationship = Relationship::where('with_contact_id', $this->id)
+                        ->first();
+
+        $relationship = self::findOrFail($relationship->contact_id);
+
+        return $relationship;
+    }
 }

@@ -97,7 +97,7 @@
                           {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
+                        <a href="/people/{{ $reminder->getContact()->id }}">{{ $reminder->getContact()->getCompleteName(auth()->user()->name_order) }}</a>:
                         @if ($reminder->is_birthday)
                           {{ trans('people.reminders_birthday', ['name' => $reminder->contact->first_name]) }}
                         @else
