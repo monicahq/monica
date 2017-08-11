@@ -1,6 +1,5 @@
 <?php
 
-use App\Event;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangeEventsData extends Migration
@@ -12,10 +11,12 @@ class ChangeEventsData extends Migration
      */
     public function up()
     {
-        $events = Event::where('object_type', 'significantother')->get();
+        $events = DB::table('events')
+                            ->where('object_type', 'significantother')
+                            ->get();
 
         foreach ($events as $event) {
-            $event->delete();
+            DB::table('events')->where('id', $event->id)->delete();
         }
     }
 }
