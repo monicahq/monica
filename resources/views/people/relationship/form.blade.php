@@ -68,7 +68,7 @@
           <div class="form-inline">
             {{ trans('people.significant_other_add_probably') }}
 
-            <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $partner->age ?? 1 }}" min="1" max="99">
+            <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $partner->getAge() ?? 1 }}" min="1" max="99">
 
             {{ trans('people.significant_other_add_probably_yo') }}
           </div>

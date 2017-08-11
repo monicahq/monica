@@ -68,7 +68,7 @@
         <div class="form-inline">
           {{ trans('people.kids_add_probably') }}
 
-          <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $kid->age ?? 1 }}" min="0" max="99">
+          <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $kid->getAge() ?? 1 }}" min="0" max="99">
 
           {{ trans('people.kids_add_probably_yo') }}
         </div>

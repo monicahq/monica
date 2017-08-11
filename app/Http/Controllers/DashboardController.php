@@ -53,9 +53,9 @@ class DashboardController extends Controller
                     'id' => $event->id,
                     'date' => DateHelper::createDateFromFormat($event->created_at, auth()->user()->timezone),
                     'object' => $object ?? null,
+                    'contact_id' => $event->contact->id,
                     'object_type' => $event->object_type,
                     'object_id' => $event->object_id,
-                    'contact_id' => $event->contact->id,
                     'contact_complete_name' => $event->contact->getCompleteName(auth()->user()->name_order),
                     'nature_of_operation' => $event->nature_of_operation,
                 ];

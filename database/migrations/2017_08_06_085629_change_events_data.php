@@ -18,5 +18,13 @@ class ChangeEventsData extends Migration
         foreach ($events as $event) {
             DB::table('events')->where('id', $event->id)->delete();
         }
+
+        $events = DB::table('events')
+                            ->where('object_type', 'kid')
+                            ->get();
+
+        foreach ($events as $event) {
+            DB::table('events')->where('id', $event->id)->delete();
+        }
     }
 }
