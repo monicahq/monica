@@ -1068,10 +1068,10 @@ class Contact extends Model
     }
 
     /**
-     * Get the first progenitor of the contact
+     * Get the first progenitor of the contact.
      * @return Contact
      */
-    public function getProgenitor()
+    public function getFirstProgenitor()
     {
         $offspring = Offspring::where('contact_id', $this->id)
                         ->first();
@@ -1082,10 +1082,10 @@ class Contact extends Model
     }
 
     /**
-     * Get the partner of the contact
+     * Get the partner of the contact.
      * @return Contact
      */
-    public function getPartner()
+    public function getFirstPartner()
     {
         $relationship = Relationship::where('with_contact_id', $this->id)
                         ->first();

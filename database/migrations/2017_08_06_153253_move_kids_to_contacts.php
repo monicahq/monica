@@ -58,11 +58,32 @@ class MoveKidsToContacts extends Migration
         foreach ($kids as $kid) {
             DB::table('offsprings')->insert([
                 'account_id' => $kid->account_id,
-                'contact_id' => $kid->child_of_contact_id,
-                'is_the_child_of' => $kid->temp_contact_id,
+                'contact_id' => $kid->temp_contact_id,
+                'is_the_child_of' => $kid->child_of_contact_id,
             ]);
+
+            $reminders = DB::table('reminders')
+                            ->where('about_object_id', $kid->id)
+                            ->where('about_object', 'kid')
+                            ->get();
+
+            foreach ($reminders as $reminder) {
+                $kid = DB::table('kids')->where('id', $reminder->about_object_id)
+                                        ->first();
+
+                DB::table('reminders')
+                    ->where('id', $reminder->id)
+                    ->update(['contact_id' => $kid->temp_contact_id]);
+            }
         }
 
         Schema::drop('kids');
+
+        Schema::table('reminders', function ($table) {
+            $table->dropColumn([
+                'about_object',
+                'about_object_id',
+            ]);
+        });
     }
 }
