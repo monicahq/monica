@@ -159,7 +159,7 @@ class Reminder extends Model
      * that the reminder is from the contact associated with the reminder, because
      * the contact is just partial and should not clicked. Therefore, in the
      * case of a partial contact, the reminder should be about the contact that
-     * the author should be linked with (either a significant other or a parent)
+     * the author should be linked with (either a significant other or a parent).
      *
      * @return Contact
      */
