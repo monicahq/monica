@@ -353,7 +353,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Some value',
-            $contact->getFoodPreferencies()
+            $contact->food_preferencies
         );
     }
 
@@ -561,7 +561,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             2,
-            $franck->getPotentialOffsprings()->count()
+            $franck->getPotentialContacts()->count()
         );
     }
 }
