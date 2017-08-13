@@ -14,7 +14,7 @@
 
     {{-- Information about the significant other --}}
     @foreach ($contact->getCurrentPartners() as $partner)
-      <p class="sidebar-box-paragraph">
+      <div class="sidebar-box-paragraph">
 
         @if ($partner->is_significant_other)
 
@@ -28,9 +28,14 @@
             {{ trans('app.edit') }}
           </a>
 
-          <a href="{{ route('people.relationships.delete', [$contact, $partner]) }}" onclick="return confirm('{{ trans('people.significant_other_delete_confirmation') }}');" class="action-link">
+          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_delete_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
             {{ trans('app.delete') }}
           </a>
+
+          <form method="POST" action="{{ route('people.relationships.delete', [$contact, $partner]) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
 
         @else
 
@@ -40,12 +45,16 @@
             ({{ $partner->getAge() }})
           @endif
 
-          <a href="{{ route('people.relationships.unlink', [$contact, $partner]) }}" onclick="return confirm('{{ trans('people.significant_other_unlink_confirmation') }}');" class="action-link {{ $contact->id }}-unlink-relationship">
+          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link {{ $contact->id }}-unlink-relationship">
             {{ trans('app.remove') }}
           </a>
 
+          <form method="POST" action="{{ route('people.relationships.unlink', [$contact, $partner]) }}" class="entry-delete-form hidden">
+            {{ csrf_field() }}
+          </form>
+
         @endif
-      </p>
+      </div>
     @endforeach
 
     <p class="sidebar-box-paragraph">

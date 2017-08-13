@@ -33,9 +33,14 @@
           <div class="fl w-50 tr">
             <a href="{{ route('people.notes.edit', [$contact, $note]) }}">{{ trans('app.edit') }}</a>
             |
-            <a href="{{ route('people.notes.delete', [$contact, $note]) }}" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
+            <a href="#" onclick="if (confirm('{{ trans('people.notes_delete_confirmation') }}')) { $(this).closest('.ba.w-100').find('.entry-delete-form').submit(); } return false;">{{ trans('app.delete') }}</a>
           </div>
         </div>
+
+        <form method="POST" action="{{ action('People\\NotesController@destroy', compact('contact', 'note')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
       </div>
     @endforeach
 

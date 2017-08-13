@@ -56,10 +56,15 @@
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="#" onclick="if (confirm('{{ trans('people.gifts_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>
+
+          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
         </li>
         @endforeach
       </ul>
@@ -99,10 +104,15 @@
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="#" onclick="if (confirm('{{ trans('people.gifts_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>
+
+          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
         </li>
         @endforeach
       </ul>

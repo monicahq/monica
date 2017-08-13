@@ -22,7 +22,12 @@
           @endif
 
           <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
-          <a href="{{ route('people.kids.delete', [$contact, $kid]) }}" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_delete_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">{{ trans('app.delete') }}</a>
+
+          <form method="POST" action="{{ route('people.kids.delete', [$contact, $kid]) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
 
         @else
 
@@ -32,7 +37,11 @@
             ({{ $kid->getAge() }})
           @endif
 
-          <a href="/people/{{ $contact->id }}/kids/{{ $kid->id }}/unlink" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">Remove</a>
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_delete_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
+
+          <form method="POST" action="{{ action('People\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
+            {{ csrf_field() }}
+          </form>
 
         @endif
 
