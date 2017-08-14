@@ -1094,7 +1094,7 @@ class Contact extends Model
 
         return $relationship;
     }
-    
+
     /**
      * Is this contact owed money?
      * @return bool

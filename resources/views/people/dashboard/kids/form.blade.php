@@ -15,12 +15,12 @@
 
   {{-- First name --}}
   <div class="form-group">
-    <label for="first_name">{{ trans('people.significant_other_add_firstname') }}</label>
+    <label for="first_name">{{ trans('people.kids_add_firstname') }}</label>
     <input type="text" id="first_name" class="form-control" name="first_name" maxlength="254" value="{{ old('first_name') ?? $kid->first_name }}" autofocus required>
   </div>
 
   <div class="form-group">
-    <label for="last_name">Last name (optional)</label>
+    <label for="last_name">{{ trans('people.kids_add_lastname') }}</label>
     <input type="text" class="form-control" name="last_name" id="last_name" maxlength="254" value="{{ old('last_name') ?? $kid->last_name }}">
   </div>
 
@@ -101,8 +101,8 @@
     <fieldset class="form-group">
       <label class="form-check-inline real-contact-checkbox" for="realContact">
         <input type="checkbox" class="form-check-input" name="realContact" id="realContact">
-        Also create a Contact entry for this person.
-        <span class="help">This will let you treat this kid like any other contact.</span>
+        {{ trans('people.kids_add_also_create') }}
+        <span class="help">{{ trans('people.kids_add_also_desc') }}</span>
       </label>
     </fieldset>
     @endif

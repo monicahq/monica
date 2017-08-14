@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show kids">
+  <div class="people-show kid">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -38,12 +38,12 @@
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#new" role="tab">
-                  Add a new person
+                  {{ trans('people.significant_other_add_person') }}
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#existing" role="tab">
-                  Link existing contact
+                  {{ trans('people.significant_other_link_existing_contact') }}
                 </a>
               </li>
             </ul>
@@ -68,7 +68,7 @@
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
-                    <p>You don’t have any contacts who can be Roger’s significant others at the moment.</p>
+                    <p>{{ trans('peopel.kids_add_no_existing_contact') }}</p>
                   </div>
 
                 @else
@@ -79,7 +79,7 @@
                     @include('partials.errors')
 
                     <div class="form-group">
-                      <label for="existingKid">Select an existing contact as the significant other for {{ $contact->getFirstName() }}</label>
+                      <label for="existingKid">{{ trans('people.kids_add_existing_contact', ['name' => $contact->getFirstName()]) }}</label>
                       <select class="form-control" name="existingKid" id="existingKid">
                         @foreach ($contact->getPotentialContacts() as $kid)
 
