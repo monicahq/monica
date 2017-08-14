@@ -1,12 +1,15 @@
 UNRELEASED CHANGES:
 
+RELEASED VERSIONS:
+
+v0.6.0 - 2017-08-14
+-------------------
+
 * Add ability to set significant other and kids as contact.
 * Add Italian translation
 * Add debt total below a contacts debt
 * Add world currencies
 * Add German translation
-
-RELEASED VERSIONS:
 
 v0.5.0 - 2017-07-24
 -------------------
