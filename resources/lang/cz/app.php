@@ -8,8 +8,9 @@ return [
     'delete' => 'Smazat',
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
-    'close' => 'Close',
+    'close' => 'Zavřít',
     'remove' => 'Remove',
+    'close' => 'Zavřít',
 
     'header_settings_link' => 'Nastavení',
     'header_logout_link' => 'Odhlásit',
@@ -29,10 +30,10 @@ return [
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Monica na GitHubu',
     'footer_version' => 'Verze: :version',
-    'footer_new_version' => 'A new version is available',
+    'footer_new_version' => 'Je dostupná nová verze',
 
-    'footer_modal_version_whats_new' => 'What\'s new',
-    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
+    'footer_modal_version_whats_new' => 'Novinky',
+    'footer_modal_version_release_away' => 'Jste jedno vydání pozadu za nejnovější dostupnou verzí. Měli byste aktualizovat svou instanci.|Jste :number vydání pozadu za nejnovější dostupnou verzí. Měli byste aktualizovat svou instanci.',
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Seznam kontaktů',

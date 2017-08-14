@@ -55,6 +55,25 @@
         </div>
       </li>
       @endforeach
+      <li class="table-row">
+        <div class="table-cell"></div>
+        <div class="table-cell">
+          <strong>
+            @if ($contact->isOwedMoney())
+              {{ trans('people.debt_they_owe', [
+                  'name' => $contact->getFirstName(),
+                  'amount' => MoneyHelper::format($contact->totalOutstandingDebtAmount())
+              ]) }}
+            @else
+              {{ trans('people.debt_you_owe', [
+                  'amount' => MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
+              ]) }}
+            @endif
+          </strong>
+        </div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+      </li>
     </ul>
 
   </div>
