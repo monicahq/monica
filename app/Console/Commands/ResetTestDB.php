@@ -12,14 +12,14 @@ class ResetTestDB extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:resetdb';
+    protected $signature = 'monica:reset';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reset the local database';
+    protected $description = 'Reset the dev environment for testing purposes';
 
     /**
      * Create a new command instance.
@@ -46,7 +46,6 @@ class ResetTestDB extends Command
 
             $this->call('migrate');
             $this->call('db:seed');
-
             $this->info('Local database has been reset');
         } else {
             $this->info('Can\'t execute this command in this environment');

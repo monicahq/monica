@@ -47,12 +47,12 @@
                 @endif
 
               <div class="form-group">
-                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->getFoodPreferencies() }}</textarea>
+                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->food_preferencies }}</textarea>
               </div>
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.food_preferencies_edit_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

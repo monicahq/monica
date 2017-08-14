@@ -1,6 +1,6 @@
 <div class="sidebar-box">
 
-  @if (is_null($contact->getFoodPreferencies()))
+  @if (is_null($contact->food_preferencies))
 
     <p class="sidebar-box-title">
       <strong>{{ trans('people.food_preferencies_title') }}</strong>
@@ -18,7 +18,7 @@
 
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
-      {{ $contact->getFoodPreferencies() }}
+      {{ $contact->food_preferencies }}
       <a href="/people/{{ $contact->id }}/food" class="action-link">{{ trans('app.edit') }}</a>
     </p>
 

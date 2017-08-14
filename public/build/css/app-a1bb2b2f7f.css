@@ -8135,7 +8135,7 @@ header .main-cta {
 }
 
 .people-list .people-list-item.sorting .options .dropdown-btn:after {
-  content: "\f0d7";
+  content: '\f0d7';
   font-family: FontAwesome;
   margin-left: 5px;
 }
@@ -8207,7 +8207,7 @@ header .main-cta {
 }
 
 .people-list .people-list-item .people-list-item-information span {
-  font-size: 0.8rem;
+  font-size: .8rem;
 }
 
 .blank-people-state {
@@ -8379,7 +8379,7 @@ header .main-cta {
 .people-show .main-content .section-title span {
   font-size: 14px;
   position: absolute;
-  right: 0px;
+  right: 0;
   top: 5px;
 }
 
@@ -8621,6 +8621,11 @@ header .main-cta {
   margin-left: 5px;
 }
 
+.people-show .gifts .for {
+  font-style: italic;
+  margin-left: 10px;
+}
+
 .people-show .notes .notes-list .note-date {
   color: #777;
   font-size: 12px;
@@ -8709,28 +8714,36 @@ header .main-cta {
   white-space: nowrap;
 }
 
-.people-show .reminders input[type="date"] {
+.people-show .reminders input[type='date'] {
   margin-bottom: 20px;
   width: 170px;
 }
 
-.people-show .reminders .form-check input[type="number"] {
+.people-show .reminders .form-check input[type='number'] {
   display: inline;
   width: 50px;
-}
-
-.people-show .gifts .for {
-  font-style: italic;
-  margin-left: 10px;
 }
 
 .people-show .debts .debts-list .debt-nature {
   width: 220px;
 }
 
-.create-people .import {
+.people-show.significantother .significant-other-blank-state {
   text-align: center;
+}
+
+.people-show.significantother .significant-other-blank-state img {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.people-show.significantother .central-form .hint-reminder {
+  margin-top: 10px;
+}
+
+.create-people .import {
   margin-bottom: 30px;
+  text-align: center;
 }
 
 @media (max-width: 480px) {
@@ -8759,7 +8772,7 @@ header .main-cta {
   .people-show .pagehead .people-profile-information #tagsForm {
     display: block;
     margin-top: 40px;
-    padding-left: 0px;
+    padding-left: 0;
   }
   .people-show .pagehead .people-profile-information #tagsForm #tags_tagsinput {
     width: 100% !important;
@@ -9606,6 +9619,21 @@ input:disabled {
 .central-form .form-group:not(:last-child) {
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
+}
+
+.central-form .nav {
+  margin-top: 40px;
+}
+
+.central-form .nav .nav-link {
+  text-decoration: none;
+}
+
+.central-form .tab-content {
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
 }
 
 .avatar-photo img {

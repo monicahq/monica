@@ -18,10 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Collection|Entry[] $entries
  * @property Collection|Gift[] $gifts
  * @property Collection|Event[] $events
- * @property Collection|Kid[] $kids
  * @property Collection|Note[] $notes
  * @property Collection|Reminder[] $reminders
- * @property Collection|SignificantOther[] $significantOthers
  * @property Collection|Task[] $tasks
  */
 class Account extends Model
@@ -98,16 +96,6 @@ class Account extends Model
     }
 
     /**
-     * Get the kid records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function kids()
-    {
-        return $this->hasMany(Kid::class);
-    }
-
-    /**
      * Get the note records associated with the account.
      *
      * @return HasMany
@@ -168,13 +156,23 @@ class Account extends Model
     }
 
     /**
-     * Get the task records associated with the account.
+     * Get the offspring records associated with the account.
      *
      * @return HasMany
      */
-    public function significantOthers()
+    public function offsprings()
     {
-        return $this->hasMany(SignificantOther::class);
+        return $this->hasMany(Offspring::class);
+    }
+
+    public function progenitors()
+    {
+        return $this->hasMany(Progenitor::class);
+    }
+
+    public function relationships()
+    {
+        return $this->hasMany(relationships::class);
     }
 
     /**

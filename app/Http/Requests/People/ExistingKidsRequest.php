@@ -4,7 +4,7 @@ namespace App\Http\Requests\People;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SignificantOthersRequest extends FormRequest
+class ExistingKidsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,7 @@ class SignificantOthersRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|string',
-            'gender' => 'in:male,female,none',
-            'status' => 'in:active,past|nullable',
-            'is_birthdate_approximate' => 'required|in:unknown,approximate,exact',
-            'birthdate' => 'date|nullable',
-            'age' => 'int|nullable',
+            'existingKid' => 'required',
         ];
     }
 }

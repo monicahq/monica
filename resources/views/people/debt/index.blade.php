@@ -23,7 +23,7 @@
   <div class="col-xs-12 debts-list">
 
     <ul class="table">
-      @foreach($contact->getDebts() as $debt)
+      @foreach($contact->debts as $debt)
       <li class="table-row">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}

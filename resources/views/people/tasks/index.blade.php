@@ -26,7 +26,7 @@
     <p>{{ trans('people.tasks_desc', ['name' => $contact->getFirstName()]) }}</p>
 
     <ul class="table">
-      @foreach($contact->getTasks() as $task)
+      @foreach($contact->tasks as $task)
       <li class="table-row">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($task->created_at) }}

@@ -10,7 +10,6 @@
   </script>
 @endpush
 
-
 @section('content')
   <div class="dashboard">
 
@@ -35,10 +34,6 @@
                 <li>
                   <span class="stat-number">{{ $number_of_contacts }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_contacts') }}</span>
-                </li>
-                <li>
-                  <span class="stat-number">{{ $number_of_kids }}</span>
-                  <span class="stat-description">{{ trans('dashboard.statistics_kids') }}</span>
                 </li>
                 <li>
                   <span class="stat-number">{{ $number_of_reminders }}</span>
@@ -102,8 +97,12 @@
                           {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->contact_id }}">{{ App\Contact::find($reminder->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
-                        {{ $reminder->getTitle() }}
+                        <a href="/people/{{ $reminder->getContact()->id }}">{{ $reminder->getContact()->getCompleteName(auth()->user()->name_order) }}</a>:
+                        @if ($reminder->is_birthday)
+                          {{ trans('people.reminders_birthday', ['name' => $reminder->contact->first_name]) }}
+                        @else
+                          {{ $reminder->getTitle() }}
+                        @endif
                       </li>
                     @endforeach
                   </ul>
@@ -174,7 +173,7 @@
                 <ul class="event-list">
                   @foreach($events as $event)
                     <li class="event-list-item">
-
+                      {{ \Log::info('debug:'.$event['id']) }}
                       @include('dashboard.events._'.$event['object_type'])
 
                       {{-- DATE --}}
@@ -201,7 +200,7 @@
               <h3>{{ trans('dashboard.tab_last_edited_contacts') }}</h3>
               <ul>
                 @foreach ($lastUpdatedContacts as $contact)
-                  <li><a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
+                  <li><a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a></li>
                 @endforeach
               </ul>
             </div>
