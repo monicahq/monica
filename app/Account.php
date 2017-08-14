@@ -156,6 +156,26 @@ class Account extends Model
     }
 
     /**
+     * Get the offspring records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function offsprings()
+    {
+        return $this->hasMany(Offspring::class);
+    }
+
+    public function progenitors()
+    {
+        return $this->hasMany(Progenitor::class);
+    }
+
+    public function relationships()
+    {
+        return $this->hasMany(relationships::class);
+    }
+
+    /**
      * Get the import jobs records associated with the account.
      *
      * @return HasMany
