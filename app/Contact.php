@@ -1127,7 +1127,7 @@ class Contact extends Model
     }
 
     /**
-     * Get all the family members
+     * Get all the family members.
      * @return Collection
      */
     public function getFamilyMembers()
