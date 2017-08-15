@@ -29,6 +29,15 @@ class Reminder extends Model
     protected $dates = ['last_triggered', 'next_expected_date'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_birthday' => 'boolean',
+    ];
+
+    /**
      * Get the account record associated with the reminder.
      *
      * @return BelongsTo
@@ -77,30 +86,23 @@ class Reminder extends Model
      * Add a new birthday reminder.
      *
      * @param Contact $contact
-     * @param string $title
      * @param Carbon|string $date
-     * @param Kid $kid
-     * @param SignificantOther $kid
-     * @return static
+     * @return Reminder
      */
-    public static function addBirthdayReminder($contact, $title, $date, $kid = null, $significantOther = null)
+    public static function addBirthdayReminder(Contact $contact, $birthdate)
     {
-        $date = Carbon::parse($date);
+        $birthdate = Carbon::parse($birthdate);
 
         $reminder = $contact->reminders()
             ->create([
-                'title' => $title,
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
-                'next_expected_date' => $date,
+                'next_expected_date' => $birthdate,
                 'account_id' => $contact->account_id,
-                'is_birthday' => 'true',
-                'about_object' => $kid ? 'kid' : ($significantOther ? 'significantother' : 'contact'),
-                'about_object_id' => $kid ? $kid->id : ($significantOther ? $significantOther->id : $contact->id),
+                'is_birthday' => true,
             ]);
 
-        $account = $reminder->contact->account;
-        foreach ($account->users as $user) {
+        foreach ($contact->account->users as $user) {
             $userTimezone = $user->timezone;
         }
 
@@ -115,6 +117,12 @@ class Reminder extends Model
      */
     public function getTitle()
     {
+        if ($this->is_birthday) {
+            // we need to construct the title of the reminder as in the case of a
+            // birthday, the title field is null
+            return trans('people.reminders_birthday', ['name' => $this->contact->first_name]);
+        }
+
         if (is_null($this->title)) {
             return;
         }
@@ -143,6 +151,31 @@ class Reminder extends Model
     public function getNextExpectedDate()
     {
         return $this->next_expected_date->format('Y-m-d');
+    }
+
+    /**
+     * Get the contact object that the reminder is about.
+     * We need this method because in the case of partial contacts, we can't say
+     * that the reminder is from the contact associated with the reminder, because
+     * the contact is just partial and should not clicked. Therefore, in the
+     * case of a partial contact, the reminder should be about the contact that
+     * the author should be linked with (either a significant other or a parent).
+     *
+     * @return Contact
+     */
+    public function getContact()
+    {
+        $contact = $this->contact;
+
+        if ($contact->is_kid) {
+            $contact = $contact->getFirstProgenitor();
+        }
+
+        if ($contact->is_significant_other) {
+            $contact = $contact->getFirstPartner();
+        }
+
+        return $contact;
     }
 
     /**

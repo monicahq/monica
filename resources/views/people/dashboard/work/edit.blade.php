@@ -42,24 +42,24 @@
               {{-- Job --}}
               <div class="form-group">
                 <label for="job">{{ trans('people.work_edit_job') }}</label>
-                <input type="text" class="form-control" name="job" id="job" value="{{ $contact->getJob() }}" autofocus>
+                <input type="text" class="form-control" name="job" id="job" value="{{ $contact->job }}" autofocus>
               </div>
 
               {{-- Company --}}
               <div class="form-group">
                 <label for="company">{{ trans('people.work_edit_company') }}</label>
-                <input type="text" class="form-control" name="company" id="company" value="{{ $contact->getCompany() }}">
+                <input type="text" class="form-control" name="company" id="company" value="{{ $contact->company }}">
               </div>
 
               {{-- LinkedIn --}}
               <div class="form-group">
                 <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
-                <input class="form-control" name="linkedin" id="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
+                <input class="form-control" name="linkedin" id="linkedin" value="{{ $contact->linkedin_profile_url }}" placeholder="https://linkedin.com/john.doe">
               </div>
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

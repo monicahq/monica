@@ -10,7 +10,7 @@
 </div>
 
 
-@if ($contact->reminders->count() === 0)
+@if ($reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
@@ -26,11 +26,13 @@
     <p>{{ trans('people.reminders_description') }}</p>
 
     <ul class="table">
-      @foreach($contact->reminders as $reminder)
+      @foreach($reminders as $reminder)
       <li class="table-row">
+
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}
         </div>
+
         <div class="table-cell frequency-type">
           @if ($reminder->frequency_type != 'one_time')
             {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
@@ -38,17 +40,20 @@
             {{ trans('people.reminders_one_time') }}
           @endif
         </div>
+
         <div class="table-cell title">
           {{ $reminder->getTitle() }}
         </div>
+
         <div class="table-cell comment">
             @if (!is_null($reminder->getDescription()))
               {{ $reminder->getDescription() }}
             @endif
         </div>
+
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if ($reminder->is_birthday == 'false')
+          @if ($reminder->is_birthday == false)
             <a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>

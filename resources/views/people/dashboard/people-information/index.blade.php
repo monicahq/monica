@@ -10,7 +10,7 @@
       {{-- Birthdate --}}
       <li>
         <i class="fa fa-birthday-cake"></i>
-        @if (is_null($contact->getBirthdate()))
+        @if (is_null($contact->birthdate))
           {{ trans('people.birthdate_not_set') }}
         @else
           {{ $contact->getAge() }}
@@ -30,11 +30,11 @@
       {{-- Email address --}}
       <li>
         <i class="fa fa-envelope-open-o"></i>
-        @if (is_null($contact->getEmail()))
+        @if (is_null($contact->email))
         {{ trans('people.information_no_email_defined') }}
         @else
-        <a href="mailto:{{ $contact->getEmail() }}">
-          {{ $contact->getEmail() }}
+        <a href="mailto:{{ $contact->email }}">
+          {{ $contact->email }}
         </a>
         @endif
       </li>
@@ -42,7 +42,7 @@
       {{-- Phone --}}
       <li>
         <i class="fa fa-volume-control-phone"></i>
-        @if (is_null($contact->getPhone()))
+        @if (is_null($contact->phone))
         {{ trans('people.information_no_phone_defined') }}
         @else
         <a href="tel:{{ $contact->getPhone() }}">
@@ -54,20 +54,20 @@
       {{-- Facebook --}}
       <li>
         <i class="fa fa-facebook-official"></i>
-        @if (is_null($contact->getFacebook()))
+        @if (is_null($contact->facebook_profile_url))
         {{ trans('people.information_no_facebook_defined') }}
         @else
-        <a href="{{ $contact->getFacebook() }}">Facebook</a>
+        <a href="{{ $contact->facebook_profile_url }}">Facebook</a>
         @endif
       </li>
 
       {{-- Twitter --}}
       <li>
         <i class="fa fa-twitter-square"></i>
-        @if (is_null($contact->getTwitter()))
+        @if (is_null($contact->twitter_profile_url))
         {{ trans('people.information_no_twitter_defined') }}
         @else
-        <a href="{{ $contact->getTwitter() }}">Twitter</a>
+        <a href="{{ $contact->twitter_profile_url }}">Twitter</a>
         @endif
       </li>
     </ul>

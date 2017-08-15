@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\People;
 
-use App\Kid;
 use App\Contact;
-use App\Reminder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\KidsRequest;
+use App\Http\Requests\People\ExistingKidsRequest;
 
 class KidsController extends Controller
 {
@@ -32,7 +31,7 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.add')
             ->withContact($contact)
-            ->withKid(new Kid);
+            ->withKid(new Contact);
     }
 
     /**
@@ -44,66 +43,76 @@ class KidsController extends Controller
      */
     public function store(KidsRequest $request, Contact $contact)
     {
-        $kid = $contact->kids()->create(
-            $request->only([
-                'first_name',
-                'gender',
-                'is_birthdate_approximate',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'food_preferencies' => $request->get('food_preferences'),
-            ]
-        );
+        // this is a real contact, not just a significant other
+        if ($request->get('realContact')) {
+            $kid = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'is_birthdate_approximate',
+                ])
+                + [
+                    'account_id' => $contact->account_id,
+                ]
+            );
 
-        $kid->assignBirthday(
+            $kid->logEvent('contact', $kid->id, 'create');
+
+            $kid->isTheOffspringOf($contact, true);
+        } else {
+            $kid = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'is_birthdate_approximate',
+                ])
+                + [
+                    'account_id' => $contact->account_id,
+                    'is_kid' => 1,
+                ]
+            );
+
+            $kid->isTheOffspringOf($contact);
+        }
+
+        $kid->setBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
-
-        if ($kid->is_birthdate_approximate === 'exact') {
-            $reminder = Reminder::addBirthdayReminder(
-                $contact,
-                trans(
-                    'people.kids_add_birthday_reminder',
-                    ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
-                ),
-                $request->get('birthdate'),
-                $kid
-            );
-
-            $kid->update([
-                'birthday_reminder_id' => $reminder->id,
-            ]);
-        }
-
-        $contact->logEvent('kid', $kid->id, 'create');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_add_success'));
     }
 
     /**
-     * Display the specified resource.
+     * Store an existing contact as a kid. When we add this kind of
+     * relationship, we need to create two Offspring records, to match with
+     * the bidirectional nature of the relationship.
      *
+     * @param ExistingKidsRequest $request
      * @param Contact $contact
-     * @param Kid $kid
      * @return \Illuminate\Http\Response
      */
-    public function show(Contact $contact, Kid $kid)
+    public function storeExistingContact(ExistingKidsRequest $request, Contact $contact)
     {
-        //
+        $kid = Contact::findOrFail($request->get('existingKid'));
+        $kid->isTheOffspringOf($contact, true);
+
+        return redirect('/people/'.$contact->id)
+            ->with('success', trans('people.significant_other_add_success'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param Kid $kid
+     * @param Contact $kid
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact, Kid $kid)
+    public function edit(Contact $contact, Contact $kid)
     {
         return view('people.dashboard.kids.edit')
             ->withContact($contact)
@@ -118,53 +127,25 @@ class KidsController extends Controller
      * @param Kid $kid
      * @return \Illuminate\Http\Response
      */
-    public function update(KidsRequest $request, Contact $contact, Kid $kid)
+    public function update(KidsRequest $request, Contact $contact, Contact $kid)
     {
         $kid->update(
             $request->only([
                 'first_name',
+                'last_name',
                 'gender',
                 'is_birthdate_approximate',
             ])
             + [
                 'account_id' => $contact->account_id,
-                'food_preferencies' => $request->get('food_preferences'),
             ]
         );
 
-        $kid->assignBirthday(
+        $kid->setBirthday(
             $request->get('is_birthdate_approximate'),
             $request->get('birthdate'),
             $request->get('age')
         );
-
-        if ($kid->reminder) {
-            $kid->update([
-                'birthday_reminder_id' => null,
-            ]);
-
-            $kid->reminder->delete();
-        }
-
-        $kid->refresh();
-
-        if ($kid->is_birthdate_approximate === 'exact') {
-            $reminder = Reminder::addBirthdayReminder(
-                $contact,
-                trans(
-                    'people.kids_add_birthday_reminder',
-                    ['name' => $request->get('first_name'), 'contact_firstname' => $contact->first_name]
-                ),
-                $request->get('birthdate'),
-                $kid
-            );
-
-            $kid->update([
-                'birthday_reminder_id' => $reminder->id,
-            ]);
-        }
-
-        $contact->logEvent('kid', $kid->id, 'update');
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_update_success'));
@@ -177,17 +158,48 @@ class KidsController extends Controller
      * @param Kid $kid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Kid $kid)
+    public function destroy(Contact $contact, Contact $kid)
     {
-        if ($kid->reminder) {
-            $kid->reminder->delete();
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
         }
 
-        $contact->events()->forObject($kid)->get()->each->delete();
+        if ($kid->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        if ($kid->reminders) {
+            $kid->reminders()->get()->each->delete();
+        }
+
+        $contact->unsetKid($kid);
 
         $kid->delete();
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_delete_success'));
+    }
+
+    /**
+     * Unlink the relationship between those two people.
+     *
+     * @param  Contact $contact
+     * @param  Contact $kid
+     * @return
+     */
+    public function unlink(Contact $contact, Contact $kid)
+    {
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        if ($kid->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        $contact->unsetKid($kid, true);
+
+        return redirect('/people/'.$contact->id)
+            ->with('success', trans('people.significant_other_delete_success'));
     }
 }

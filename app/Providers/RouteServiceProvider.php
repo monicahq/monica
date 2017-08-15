@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Route;
-use App\Kid;
 use App\Debt;
 use App\Gift;
 use App\Note;
@@ -11,7 +10,8 @@ use App\Task;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
-use App\SignificantOther;
+use App\Offspring;
+use App\Relationship;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -77,17 +77,25 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('significant_other', function ($value, $route) {
-            return  SignificantOther::where('account_id', auth()->user()->account_id)
+            $contact = Contact::findOrFail($route->parameter('contact')->id);
+
+            $relationShip = Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
+                ->where('with_contact_id', $value)
                 ->firstOrFail();
+
+            return Contact::findOrFail($value);
         });
 
         Route::bind('kid', function ($value, $route) {
-            return  Kid::where('account_id', auth()->user()->account_id)
-                ->where('child_of_contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
+            $contact = Contact::findOrFail($route->parameter('contact')->id);
+
+            $offspring = Offspring::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $value)
+                ->where('is_the_child_of', $route->parameter('contact')->id)
                 ->firstOrFail();
+
+            return Contact::findOrFail($value);
         });
 
         Route::bind('note', function ($value, $route) {

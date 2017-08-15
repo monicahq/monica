@@ -98,4 +98,31 @@ class ReminderTest extends TestCase
             $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
         );
     }
+
+    public function test_add_birthday_reminder()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $user = factory(\App\User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $birthdate = '1980-01-01';
+
+        $reminder = Reminder::addBirthdayReminder(
+            $contact,
+            $birthdate
+        );
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'next_expected_date' => '2018-01-01 00:00:00',
+            'is_birthday' => 1,
+            'contact_id' => $contact->id,
+        ]);
+    }
 }
