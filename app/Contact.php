@@ -1125,4 +1125,25 @@ class Contact extends Model
                 return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
             });
     }
+
+    /**
+     * Get all the family members.
+     * @return Collection
+     */
+    public function getFamilyMembers()
+    {
+        $offsprings = $this->offsprings;
+        $relationships = $this->activeRelationships;
+
+        $family = collect([]);
+        foreach ($offsprings as $offspring) {
+            $family->push($offspring->contact);
+        }
+
+        foreach ($relationships as $relationship) {
+            $family->push($relationship->with_contact);
+        }
+
+        return $family;
+    }
 }

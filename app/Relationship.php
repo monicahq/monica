@@ -25,4 +25,9 @@ class Relationship extends Model
     {
         return $this->belongsTo(Contact::class);
     }
+
+    public function with_contact()
+    {
+        return $this->belongsTo(Contact::class, 'with_contact_id');
+    }
 }
