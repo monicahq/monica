@@ -68,9 +68,7 @@ class SettingsController extends Controller
 
         if ($account) {
             $account->reminders->each->forceDelete();
-            $account->kids->each->forceDelete();
             $account->notes->each->forceDelete();
-            $account->significantOthers->each->forceDelete();
             $account->tasks->each->forceDelete();
             $account->activities->each->forceDelete();
             $account->debts->each->forceDelete();
@@ -113,6 +111,9 @@ class SettingsController extends Controller
             $account->invitations->each->forceDelete();
             $account->importjobs->each->forceDelete();
             $account->importjobreports->each->forceDelete();
+            $account->offpsrings->each->forceDelete();
+            $account->relationships->each->forceDelete();
+            $account->progenitors->each->forceDelete();
         }
 
         return redirect('/settings')

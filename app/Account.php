@@ -136,6 +136,36 @@ class Account extends Model
     }
 
     /**
+     * Get the offspring records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function offpsrings()
+    {
+        return $this->hasMany(Offspring::class);
+    }
+
+    /**
+     * Get the progenitor records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function progenitors()
+    {
+        return $this->hasMany(Progenitor::class);
+    }
+
+    /**
+     * Get the relationship records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function relationships()
+    {
+        return $this->hasMany(Relationship::class);
+    }
+
+    /**
      * Get the activity statistics record associated with the account.
      *
      * @return HasMany
@@ -153,26 +183,6 @@ class Account extends Model
     public function entries()
     {
         return $this->hasMany(Entry::class);
-    }
-
-    /**
-     * Get the offspring records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function offsprings()
-    {
-        return $this->hasMany(Offspring::class);
-    }
-
-    public function progenitors()
-    {
-        return $this->hasMany(Progenitor::class);
-    }
-
-    public function relationships()
-    {
-        return $this->hasMany(relationships::class);
     }
 
     /**
