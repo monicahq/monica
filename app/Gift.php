@@ -56,14 +56,7 @@ class Gift extends Model
      */
     public function recipient()
     {
-        switch ($this->about_object_type) {
-            case 'kid':
-                return $this->belongsTo(Kid::class, 'about_object_id');
-            case 'significantOther':
-                return $this->belongsTo(SignificantOther::class, 'about_object_id');
-            default:
-                return $this->contact();
-        }
+        return $this->contact();
     }
 
     /**

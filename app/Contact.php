@@ -1007,15 +1007,15 @@ class Contact extends Model
      */
     public function unsetOffspring(Contact $kid, $bilateral = false)
     {
-        $offspring = Offspring::where('contact_id', $this->id)
-                        ->where('is_the_parent_of', $kid->id)
+        $offspring = Offspring::where('contact_id', $kid->id)
+                        ->where('is_the_child_of', $this->id)
                         ->first();
 
         $offspring->delete();
 
         if ($bilateral) {
-            $offspring = Offspring::where('contact_id', $kid->id)
-                        ->where('is_the_parent_of', $this->id)
+            $offspring = Offspring::where('contact_id', $this->id)
+                        ->where('is_the_parent_of', $kid->id)
                         ->first();
 
             $offspring->delete();
