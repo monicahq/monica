@@ -43,7 +43,7 @@
         <textarea class="form-control" id="comment" name="comment" rows="3">{{ old('comment') ?? $gift->comment }}</textarea>
     </div>
 
-    @if ($contact->significantOther || $contact->kids()->count() !== 0)
+    @if ($contact->getFamilyMembers()->count() !== 0)
         <div class="form-group">
             <div class="form-check">
                 <label class="form-check-label" id="has_recipient">
@@ -52,25 +52,12 @@
                 </label>
             </div>
             <select id="recipient" name="recipient" class="form-control">
-
-                {{-- Significant other --}}
-                @if ($contact->significantOther)
-                    <option value="S{{ $contact->significantOther->id }}"
-                            @if((old('recipient') && old('recipient') === $contact->significantOther->id)
-                                || ($gift->about_object_id === $contact->significantOther->id)
-                            )
-                                selected
-                            @endif
-                    >{{ $contact->significantOther->first_name }}</option>
-                @endif
-
-                {{-- Kids --}}
-                @foreach($contact->kids as $kid)
-                    <option value="K{{ $kid->id }}"
-                            @if((old('recipient') && old('recipient') === $kid->id) || ($gift->about_object_id === $kid->id))
-                                selected
-                            @endif
-                    >{{ $kid->first_name }}</option>
+                @foreach($contact->getFamilyMembers() as $familyMember)
+                    <option value="{{ $familyMember->id }}"
+                        @if(old('recipient') && old('recipient') === $familyMember->id)
+                            selected
+                        @endif
+                    >{{ $familyMember->first_name }}</option>
                 @endforeach
             </select>
         </div>
