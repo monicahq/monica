@@ -26,7 +26,7 @@
       <div class="pa2">
         {!! $note->getParsedBodyAttribute() !!}
       </div>
-      <div class="pa2 cf bg-near-white bt b--black-10 br--bottom f7 lh-copy">
+      <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
         <div class="fl w-50">
           {{ $note->getCreatedAt(Auth::user()->locale) }}
         </div>

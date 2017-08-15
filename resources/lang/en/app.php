@@ -11,6 +11,9 @@ return [
     'close' => 'Close',
     'remove' => 'Remove',
 
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
+
     'header_settings_link' => 'Settings',
     'header_logout_link' => 'Logout',
 
@@ -48,6 +51,8 @@ return [
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
+    'breadcrumb_add_note' => 'Add a note',
+    'breadcrumb_edit_note' => 'Edit a note',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',
