@@ -24,7 +24,7 @@
     <ul class="notes-list">
       @foreach ($contact->notes as $note)
         <li>
-          {{ $note->getBody() }}
+          {!! $note->getParsedBodyAttribute() !!}
           <span class="note-date">
             {{ $note->getCreatedAt(Auth::user()->locale) }}
             <a href="{{ route('people.notes.edit', [$contact, $note]) }}">{{ trans('app.edit') }}</a>
