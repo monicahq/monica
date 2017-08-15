@@ -8,7 +8,6 @@ use App\Contact;
 use App\Country;
 use Mockery as m;
 use Tests\TestCase;
-use App\Helpers\RandomHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase
@@ -96,7 +95,7 @@ class ImportVCardsTest extends TestCase
         $user->password = bcrypt('secret');
 
         $account = new Account();
-        $account->api_key = RandomHelper::generateString(30);
+        $account->api_key = str_random(30);
         $account->save();
 
         $user->account_id = $account->id;
