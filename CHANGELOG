@@ -2,6 +2,13 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v0.6.1 - 2017-08-15
+-------------------
+
+* Fix delete account bug
+* Fix kid deletion bug
+* Fix gift creation
+
 v0.6.0 - 2017-08-14
 -------------------
 
