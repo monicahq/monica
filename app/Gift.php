@@ -101,6 +101,7 @@ class Gift extends Model
     public function forRecipient($recipient)
     {
         $this->about_object_id = $recipient;
+
         return $this;
     }
 
