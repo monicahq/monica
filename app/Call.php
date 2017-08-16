@@ -50,7 +50,7 @@ class Call extends Model
     public function getParsedContentAttribute()
     {
         if (is_null($this->content)) {
-            return null;
+            return;
         }
 
         return (new Parsedown())->text($this->content);
