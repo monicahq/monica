@@ -20,29 +20,49 @@
 
 @else
 
-  <div class="col-xs-12 calls-list">
+  <div class="col-xs-12">
 
-    <ul class="table">
-      @foreach($contact->calls as $call)
-      <li class="table-row">
-        <div class="table-cell date">
-          {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
+    @foreach($contact->calls as $call)
+
+      @if (is_null($call->getParsedContentAttribute()))
+
+        <div class="ba br2 b--black-10 br--top w-100 mb4">
+          <div class="pa2">
+            {{ trans('people.call_blank_desc', ['name' => $contact->first_name]) }}
+          </div>
+          <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
+            <div class="fl w-50">
+              {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
+            </div>
+            <div class="fl w-50 tr">
+              <a href="/people/{{ $contact->id }}/call/{{ $call->id }}/delete" onclick="return confirm('{{ trans('people.call_delete_confirmation') }}')">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="table-cell reason">
-          @if (! is_null($call->content))
-            {{ $call->content }}
-          @else
-            <span class="empty">{{ trans('people.call_empty_comment') }}</span>
-          @endif
+
+      @else
+
+        <div class="ba br2 b--black-10 br--top w-100 mb4">
+          <div class="pa2">
+            {!! $call->getParsedContentAttribute() !!}
+          </div>
+          <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
+            <div class="fl w-50">
+              {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
+            </div>
+            <div class="fl w-50 tr">
+              <a href="/people/{{ $contact->id }}/call/{{ $call->id }}/delete" onclick="return confirm('{{ trans('people.call_delete_confirmation') }}')">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="table-cell list-actions">
-          <a href="/people/{{ $contact->id }}/call/{{ $call->id }}/delete" onclick="return confirm('{{ trans('people.call_delete_confirmation') }}')">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
-          </a>
-        </div>
-      </li>
-      @endforeach
-    </ul>
+
+      @endif
+
+    @endforeach
 
   </div>
 

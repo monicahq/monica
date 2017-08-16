@@ -60,6 +60,7 @@ return [
     'call_title' => 'Chiamate',
     'call_empty_comment' => 'Nessuna informazione',
     'call_blank_title' => 'Tieni traccia delle tue chiamate con :name',
+    'call_blank_desc' => 'You called :name',
 
     // age - birthday
     'birthdate_not_set' => 'Data di nascita assente',

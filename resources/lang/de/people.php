@@ -60,6 +60,7 @@ return [
     'call_title' => 'Telefonate',
     'call_empty_comment' => 'Keine Details',
     'call_blank_title' => 'Behalte deine Telefonate mit :name im Auge',
+    'call_blank_desc' => 'You called :name',
 
     // age - birthday
     'birthdate_not_set' => 'Geburstag noch nicht gesetzt',

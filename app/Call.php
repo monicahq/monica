@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Parsedown;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -39,5 +40,19 @@ class Call extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Return the markdown parsed body.
+     *
+     * @return string
+     */
+    public function getParsedContentAttribute()
+    {
+        if (is_null($this->content)) {
+            return;
+        }
+
+        return (new Parsedown())->text($this->content);
     }
 }
