@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DEFAULT_FILESYSTEM','public'),
+    'default' => env('DEFAULT_FILESYSTEM', 'public'),
 
     /*
     |--------------------------------------------------------------------------
