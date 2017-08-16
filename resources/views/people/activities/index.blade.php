@@ -33,10 +33,15 @@
           <a href="/people/{{ $contact->id }}/activities/{{ $activity->id }}/edit" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
-          <a href="/people/{{ $contact->id }}/activities/{{ $activity->id }}/delete" onclick="return confirm('{{ trans('people.activities_delete_confirmation') }}')">
+          <a href="#" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
+
+        <form method="POST" action="{{ action('People\\ActivitiesController@destroy', compact('contact', 'activity')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
       </li>
       @endforeach
     </ul>

@@ -198,6 +198,7 @@ return [
     'kids_update_success' => 'A criança foi atualizada com sucesso',
     'kids_delete_success' => 'A criança foi excluída com sucesso',
     'kids_add_birthday_reminder' => 'Deseje um feliz aniversário para :name, pessoa importante de :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Mantenha na linhas as coisas que você precisa para :name',

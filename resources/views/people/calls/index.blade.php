@@ -35,9 +35,14 @@
               {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
             </div>
             <div class="fl w-50 tr">
-              <a href="/people/{{ $contact->id }}/call/{{ $call->id }}/delete" onclick="return confirm('{{ trans('people.call_delete_confirmation') }}')">
+              <a href="#" onclick="if (confirm('{{ trans('people.call_delete_confirmation') }}')) { $(this).parent().find('.entry-delete-form').submit(); } return false;">              
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
+
+              <form method="POST" action="{{ action('People\\CallsController@destroy', compact('contact', 'call')) }}" class="entry-delete-form hidden">
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
+              </form>
             </div>
           </div>
         </div>
@@ -53,9 +58,14 @@
               {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
             </div>
             <div class="fl w-50 tr">
-              <a href="/people/{{ $contact->id }}/call/{{ $call->id }}/delete" onclick="return confirm('{{ trans('people.call_delete_confirmation') }}')">
+              <a href="#" onclick="if (confirm('{{ trans('people.call_delete_confirmation') }}')) { $(this).parent().find('.entry-delete-form').submit(); } return false;">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
+
+              <form method="POST" action="{{ action('People\\CallsController@destroy', compact('contact', 'call')) }}" class="entry-delete-form hidden">
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
+              </form>
             </div>
           </div>
         </div>

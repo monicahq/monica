@@ -19,7 +19,7 @@ return [
 
     'main_nav_cta' => 'Добавить людей',
     'main_nav_dashboard' => 'Обзор',
-    'main_nav_family' => 'Люди',
+    'main_nav_family' => 'контакты',
     'main_nav_journal' => 'Журнал',
     'main_nav_activities' => 'Активности',
     'main_nav_tasks' => 'Задачи',

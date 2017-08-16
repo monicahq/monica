@@ -19,7 +19,7 @@ return [
 
     'main_nav_cta' => 'Adicionar Pessoa',
     'main_nav_dashboard' => 'Painel',
-    'main_nav_family' => 'Pessoas',
+    'main_nav_family' => 'Contatos',
     'main_nav_journal' => 'Diário',
     'main_nav_activities' => 'Atividades',
     'main_nav_tasks' => 'Tarefas',

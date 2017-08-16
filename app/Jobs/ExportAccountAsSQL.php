@@ -147,7 +147,7 @@ class ExportAccountAsSQL
             endif;
         }
 
-        Storage::disk('public')->put($downloadPath, $sql);
+        Storage::disk(config('filesystems.default'))->put($downloadPath, $sql);
 
         return $downloadPath;
     }

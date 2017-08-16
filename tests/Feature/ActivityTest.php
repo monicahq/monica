@@ -159,12 +159,7 @@ class ActivityTest extends FeatureTestCase
 
         $response = $this->get('/people/'.$contact->id);
 
-        // make sure the link to delete the note is on the page
-        $response->assertSee(
-            'people/'.$contact->id.'/activities/'.$activity->id.'/delete'
-        );
-
-        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/delete');
+        $response = $this->delete('/people/'.$contact->id.'/activities/'.$activity->id);
         $response->assertStatus(302);
 
         $params['id'] = $activity->id;

@@ -238,7 +238,7 @@ class ContactTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $this->get('/people/'.$contact->id.'/delete');
+        $this->delete('/people/'.$contact->id);
 
         $this->assertDatabaseMissing('contacts', [
             'id' => $contact->id,
