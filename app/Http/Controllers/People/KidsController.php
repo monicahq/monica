@@ -172,7 +172,7 @@ class KidsController extends Controller
             $kid->reminders()->get()->each->delete();
         }
 
-        $contact->unsetKid($kid);
+        $contact->unsetOffspring($kid);
 
         $kid->delete();
 
@@ -197,7 +197,7 @@ class KidsController extends Controller
             return redirect('/people/');
         }
 
-        $contact->unsetKid($kid, true);
+        $contact->unsetOffspring($kid, true);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_delete_success'));

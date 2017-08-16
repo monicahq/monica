@@ -56,14 +56,7 @@ class Gift extends Model
      */
     public function recipient()
     {
-        switch ($this->about_object_type) {
-            case 'kid':
-                return $this->belongsTo(Kid::class, 'about_object_id');
-            case 'significantOther':
-                return $this->belongsTo(SignificantOther::class, 'about_object_id');
-            default:
-                return $this->contact();
-        }
+        return $this->contact();
     }
 
     /**
@@ -102,18 +95,12 @@ class Gift extends Model
     /**
      * Set the recipient for the gift.
      *
-     * @param SignificantOther|Kid|string $recipient
+     * @param string $recipient
      * @return static
      */
     public function forRecipient($recipient)
     {
-        if (is_string($recipient)) {
-            $this->about_object_id = substr($recipient, 1);
-            $this->about_object_type = substr($recipient, 0, 1) === 'K' ? 'kid' : 'sginificantOther';
-        } elseif ($recipient instanceof Model) {
-            $this->about_object_id = $recipient->id;
-            $this->about_object_type = camel_case(class_basename($recipient));
-        }
+        $this->about_object_id = $recipient;
 
         return $this;
     }
