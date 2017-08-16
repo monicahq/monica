@@ -10,6 +10,9 @@ return [
     'upload' => 'Hochladen',
     'close' => 'Schließen',
 
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
+
     'header_settings_link' => 'Einstellungen',
     'header_logout_link' => 'Ausloggen',
 

@@ -4,15 +4,17 @@
 
     @include('partials.errors')
 
-    <h2>{{ trans('people.notes_add_title', ['name' => $contact->getFirstName()]) }}</h2>
-
     {{-- Body note --}}
     <div class="form-group">
-        <textarea class="form-control" id="body" name="body" rows="10">{{ old('body') ?? $note->body }}</textarea>
+      <textarea class="form-control" id="body" name="body" rows="10">{{ old('body') ?? $note->body }}</textarea>
     </div>
 
-    <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ $buttonText }}</button>
-        <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-    </div> <!-- .form-group -->
+    <div class="flex items-center justify-center">
+      <div class="inline-flex items-center w-100 mr4">
+        <button type="submit" class="w-100 btn btn-primary">{{ $buttonText }}</button>
+      </div>
+      <div class="inline-flex items-center w-100">
+        <a href="{{ route('people.show', $contact) }}" class="w-100 btn btn-secondary">{{ trans('app.cancel') }}</a>
+      </div>
+    </div>
 </form>

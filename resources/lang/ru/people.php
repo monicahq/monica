@@ -60,6 +60,7 @@ return [
     'call_title' => 'Phone calls',
     'call_empty_comment' => 'No details',
     'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
+    'call_blank_desc' => 'You called :name',
 
     // age - birthday
     'birthdate_not_set' => 'День рождения не указан',
