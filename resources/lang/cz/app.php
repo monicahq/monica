@@ -9,6 +9,10 @@ return [
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
     'close' => 'Zavřít',
+    'remove' => 'Remove',
+
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
 
     'header_settings_link' => 'Nastavení',
     'header_logout_link' => 'Odhlásit',
@@ -45,6 +49,8 @@ return [
     'breadcrumb_settings_import_report' => 'Importovat report',
     'breadcrumb_settings_import_upload' => 'Nahrát',
     'breadcrumb_settings_tags' => 'Tagy',
+    'breadcrumb_add_significant_other' => 'Add significant other',
+    'breadcrumb_edit_significant_other' => 'Edit significant other',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',

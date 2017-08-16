@@ -5,10 +5,13 @@
 @include('people.dashboard.work.index')
 
 {{-- Significant Other --}}
-@include('people.dashboard.significantother.index')
+@include('people.relationship.index')
 
 {{-- Kids --}}
 @include('people.dashboard.kids.index')
+
+{{-- Progenitors --}}
+@include('people.progenitors.index')
 
 {{-- Food preferences --}}
 @include('people.dashboard.food-preferencies.index')

@@ -9,6 +9,10 @@ return [
     'edit' => 'Edit',
     'upload' => 'Upload',
     'close' => 'Close',
+    'remove' => 'Remove',
+
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
 
     'header_settings_link' => 'Settings',
     'header_logout_link' => 'Logout',
@@ -25,8 +29,8 @@ return [
     'footer_send_email' => 'Send me an email',
     'footer_privacy' => 'Privacy policy',
     'footer_release' => 'Release notes',
-    'footer_newsletter' => 'Email newsletter',
-    'footer_source_code' => 'Monica on GitHub',
+    'footer_newsletter' => 'Newsletter',
+    'footer_source_code' => 'Contribute',
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'A new version is available',
 
@@ -34,7 +38,7 @@ return [
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'Dashboard',
-    'breadcrumb_list_contacts' => 'List of contacts',
+    'breadcrumb_list_contacts' => 'List of people',
     'breadcrumb_journal' => 'Journal',
     'breadcrumb_settings' => 'Settings',
     'breadcrumb_settings_export' => 'Export',
@@ -45,6 +49,10 @@ return [
     'breadcrumb_settings_import_report' => 'Import report',
     'breadcrumb_settings_import_upload' => 'Upload',
     'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_add_significant_other' => 'Add significant other',
+    'breadcrumb_edit_significant_other' => 'Edit significant other',
+    'breadcrumb_add_note' => 'Add a note',
+    'breadcrumb_edit_note' => 'Edit a note',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',

@@ -60,6 +60,7 @@ return [
     'call_title' => 'Chiamate',
     'call_empty_comment' => 'Nessuna informazione',
     'call_blank_title' => 'Tieni traccia delle tue chiamate con :name',
+    'call_blank_desc' => 'You called :name',
 
     // age - birthday
     'birthdate_not_set' => 'Data di nascita assente',
@@ -175,6 +176,11 @@ return [
     'kids_add_gender' => 'Sesso',
     'kids_add_firstname' => 'Nome',
     'kids_add_firstname_help' => 'Immaginiamo il cognome sia :name',
+    'kids_add_lastname' => 'Last name (optional)',
+    'kids_add_also_create' => 'Also create a Contact entry for this person.',
+    'kids_add_also_desc' => 'This will let you treat this kid like any other contact.',
+    'kids_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s kid at the moment.',
+    'kids_add_existing_contact' => 'Select an existing contact as the kid for :name',
     'kids_add_probably' => 'Questa persona probabilmente ha ',
     'kids_add_probably_yo' => 'anni',
     'kids_add_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
@@ -186,6 +192,7 @@ return [
     'kids_update_success' => 'Figlio modificato',
     'kids_delete_success' => 'Figlio rimosso',
     'kids_add_birthday_reminder' => 'Fai gli auguri di buon compleanno a :name, figlio di :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Tieni traccia delle cose che devi fare per :name',

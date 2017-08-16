@@ -66,10 +66,15 @@
                 <span class="tags-list-contact-number">({{ trans('settings.tags_list_contact_number', ['count' => $tag->contacts()->count()]) }})</span>
               </div>
               <div class="table-cell actions">
-                <a href="/settings/tags/{{ $tag->id }}/delete" onclick="return confirm('{{ trans('settings.tags_list_delete_confirmation') }}')">
+                <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </a>
               </div>
+
+              <form method="POST" action="{{ action('SettingsController@deleteTag', $tag) }}" class="entry-delete-form hidden">
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
+              </form>
             </li>
           @endforeach
           </ul>

@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
+                {{ trans('app.breadcrumb_edit_significant_other') }}
               </li>
             </ul>
           </div>
@@ -24,18 +27,17 @@
       </div>
     </div>
 
-    <!-- Page header -->
-    @include('people._header')
-
     <!-- Page content -->
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            @include('people.dashboard.significantother.form', [
-              'method' => 'POST',
-              'action' => route('people.significant_others.store', $contact),
-              'buttonText' => trans('people.significant_other_add_cta')
+            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+
+            @include('people.relationship.form', [
+              'method' => 'PUT',
+              'action' => route('people.relationships.update', [$contact, $partner]),
+              'buttonText' => trans('people.significant_other_edit_cta')
             ])
           </div>
         </div>
