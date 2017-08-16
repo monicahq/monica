@@ -2,6 +2,12 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v0.6.3 - 2017-08-16
+-------------------
+
+* Fix kids not being able to be removed
+* Fix some CSRF potential vulnerabilities
+
 v0.6.2 - 2017-08-16
 -------------------
 

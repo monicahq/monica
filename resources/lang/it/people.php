@@ -192,6 +192,7 @@ return [
     'kids_update_success' => 'Figlio modificato',
     'kids_delete_success' => 'Figlio rimosso',
     'kids_add_birthday_reminder' => 'Fai gli auguri di buon compleanno a :name, figlio di :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Tieni traccia delle cose che devi fare per :name',

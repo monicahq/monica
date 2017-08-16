@@ -192,6 +192,7 @@ return [
     'kids_update_success' => 'Das Kind wurde erfolgreich aktualisiert',
     'kids_delete_success' => 'Das Kind wurde erfolgreich gelöscht',
     'kids_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag, :contact_firstname\'s Kind',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Behalte Aufgaben für :name im Auge',

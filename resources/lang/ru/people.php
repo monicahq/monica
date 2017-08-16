@@ -198,6 +198,7 @@ return [
     'kids_update_success' => 'Запись о ребёнке была успешно обновлена!',
     'kids_delete_success' => 'Запись о ребёнке была удалена!',
     'kids_add_birthday_reminder' => 'Поздравьте с днём рождения :name, ребёнка :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Управляйте Задачами связанными с :name',

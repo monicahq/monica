@@ -198,6 +198,7 @@ return [
     'kids_update_success' => 'The child has been updated successfully',
     'kids_delete_success' => 'The child has been deleted successfully',
     'kids_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s child',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Keep tracks of things you need to do for :name',
