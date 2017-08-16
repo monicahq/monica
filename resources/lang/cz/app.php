@@ -19,7 +19,7 @@ return [
 
     'main_nav_cta' => 'Přidat osobu',
     'main_nav_dashboard' => 'Dashboard',
-    'main_nav_family' => 'Osoby',
+    'main_nav_family' => 'Kontakty',
     'main_nav_journal' => 'Deník',
     'main_nav_activities' => 'Aktivity',
     'main_nav_tasks' => 'Úkoly',

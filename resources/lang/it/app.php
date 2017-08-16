@@ -18,7 +18,7 @@ return [
 
     'main_nav_cta' => 'Aggiungi persone',
     'main_nav_dashboard' => 'Home',
-    'main_nav_family' => 'Persone',
+    'main_nav_family' => 'Contatti',
     'main_nav_journal' => 'Diario',
     'main_nav_activities' => 'Attività',
     'main_nav_tasks' => 'Compiti',

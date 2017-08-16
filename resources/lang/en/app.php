@@ -19,7 +19,7 @@ return [
 
     'main_nav_cta' => 'Add people',
     'main_nav_dashboard' => 'Dashboard',
-    'main_nav_family' => 'People',
+    'main_nav_family' => 'Contacts',
     'main_nav_journal' => 'Journal',
     'main_nav_activities' => 'Activities',
     'main_nav_tasks' => 'Tasks',
