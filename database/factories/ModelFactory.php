@@ -127,3 +127,9 @@ $factory->define(App\Country::class, function (Faker\Generator $faker) {
         'country' => 'Mali',
     ];
 });
+
+$factory->define(App\Call::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
