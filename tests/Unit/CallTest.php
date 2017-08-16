@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Call;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -21,7 +20,7 @@ class CallTest extends TestCase
     public function test_call_note_returns_html_if_defined()
     {
         $call = new Call;
-        $call->content = "### test";
+        $call->content = '### test';
 
         $this->assertEquals(
             '<h3>test</h3>',
