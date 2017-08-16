@@ -61,6 +61,7 @@ class Contact extends Model
         'account_id',
         'is_significant_other',
         'is_kid',
+        'phone_number',
     ];
 
     /**

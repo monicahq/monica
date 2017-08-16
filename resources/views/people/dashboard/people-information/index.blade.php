@@ -42,11 +42,11 @@
       {{-- Phone --}}
       <li>
         <i class="fa fa-volume-control-phone"></i>
-        @if (is_null($contact->phone))
+        @if (is_null($contact->phone_number))
         {{ trans('people.information_no_phone_defined') }}
         @else
-        <a href="tel:{{ $contact->getPhone() }}">
-          {{ $contact->getPhone() }}
+        <a href="tel:{{ $contact->phone_number }}">
+          {{ $contact->phone_number }}
         </a>
         @endif
       </li>
