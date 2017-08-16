@@ -37,7 +37,7 @@
             ({{ $kid->getAge() }})
           @endif
 
-          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_delete_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_unlink_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
 
           <form method="POST" action="{{ action('People\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
             {{ csrf_field() }}
