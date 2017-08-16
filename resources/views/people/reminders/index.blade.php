@@ -54,11 +54,16 @@
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
           @if ($reminder->is_birthday == false)
-            <a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">
+            <a href="#" onclick="if (confirm('{{ trans('people.reminders_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           @endif
         </div>
+
+        <form method="POST" action="{{ action('People\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
       </li>
       @endforeach
     </ul>
