@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="form-group actions">
-                      <button type="submit" class="btn btn-primary">{{ trans('people.significant_other_add_cta') }}</button>
+                      <button type="submit" class="btn btn-primary">{{ trans('people.kids_add_cta') }}</button>
                       <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                     </div>
                   </form>

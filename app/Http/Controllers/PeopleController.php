@@ -109,7 +109,6 @@ class PeopleController extends Controller
      */
     public function show(Contact $contact)
     {
-
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_significant_other or $contact->is_kid) {
