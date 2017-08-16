@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}', 'PeopleController@show')->name('.show');
         Route::get('/people/{contact}/edit', 'PeopleController@edit')->name('.edit');
         Route::post('/people/{contact}/update', 'PeopleController@update')->name('.update');
-        Route::get('/people/{contact}/delete', 'PeopleController@delete')->name('.delete');
+        Route::delete('/people/{contact}', 'PeopleController@delete')->name('.delete');
 
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/notes/store', 'People\\NotesController@store')->name('.notes.store');
         Route::get('/people/{contact}/notes/{note}/edit', 'People\\NotesController@edit')->name('.notes.edit');
         Route::put('/people/{contact}/notes/{note}', 'People\\NotesController@update')->name('.notes.update');
-        Route::get('/people/{contact}/notes/{note}/delete', 'People\\NotesController@destroy')->name('.notes.delete');
+        Route::delete('/people/{contact}/notes/{note}', 'People\\NotesController@destroy')->name('.notes.delete');
 
         // Food preferencies
         Route::get('/people/{contact}/food', 'PeopleController@editFoodPreferencies')->name('.food');
@@ -55,8 +55,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/kids/storeExistingContact', 'People\\KidsController@storeExistingContact')->name('.kids.storeexisting');
         Route::get('/people/{contact}/kids/{kid}/edit', 'People\\KidsController@edit')->name('.kids.edit');
         Route::put('/people/{contact}/kids/{kid}', 'People\\KidsController@update')->name('.kids.update');
-        Route::get('/people/{contact}/kids/{kid}/delete', 'People\\KidsController@destroy')->name('.kids.delete');
-        Route::get('/people/{contact}/kids/{kid}/unlink', 'People\\KidsController@unlink')->name('.kids.unlink');
+        Route::delete('/people/{contact}/kids/{kid}', 'People\\KidsController@destroy')->name('.kids.delete');
+        Route::post('/people/{contact}/kids/{kid}/unlink', 'People\\KidsController@unlink')->name('.kids.unlink');
 
         // Relationships (significant others)
         Route::get('/people/{contact}/relationships/add', 'People\\RelationshipsController@create')->name('.relationships.add');
@@ -64,44 +64,44 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/relationships/storeExistingContact', 'People\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
         Route::get('/people/{contact}/relationships/{partner}/edit', 'People\\RelationshipsController@edit')->name('.relationships.edit');
         Route::put('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@update')->name('.relationships.update');
-        Route::get('/people/{contact}/relationships/{partner}/delete', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
-        Route::get('/people/{contact}/relationships/{partner}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
+        Route::delete('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
+        Route::post('/people/{contact}/relationships/{partner}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
 
         // Activities
         Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');
         Route::post('/people/{contact}/activities/store', 'People\\ActivitiesController@store')->name('.activities.store');
         Route::get('/people/{contact}/activities/{activity}/edit', 'People\\ActivitiesController@edit')->name('.activities.edit');
         Route::put('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@update')->name('.activities.update');
-        Route::get('/people/{contact}/activities/{activity}/delete', 'People\\ActivitiesController@destroy')->name('.activities.delete');
+        Route::delete('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@destroy')->name('.activities.delete');
 
         // Reminders
         Route::get('/people/{contact}/reminders/add', 'People\\RemindersController@create')->name('.reminders.add');
         Route::post('/people/{contact}/reminders/store', 'People\\RemindersController@store')->name('.reminders.store');
         Route::get('/people/{contact}/reminders/{reminder}/edit', 'People\\RemindersController@edit')->name('.reminders.edit');
         Route::put('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@update')->name('.reminders.update');
-        Route::get('/people/{contact}/reminders/{reminder}/delete', 'People\\RemindersController@destroy')->name('.reminders.delete');
+        Route::delete('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
         Route::get('/people/{contact}/tasks/add', 'People\\TasksController@create')->name('.tasks.add');
         Route::post('/people/{contact}/tasks/store', 'People\\TasksController@store')->name('.tasks.store');
         Route::patch('/people/{contact}/tasks/{task}/toggle', 'People\\TasksController@toggle')->name('.tasks.toggle');
-        Route::get('/people/{contact}/tasks/{task}/delete', 'People\\TasksController@destroy')->name('.tasks.delete');
+        Route::delete('/people/{contact}/tasks/{task}', 'People\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
         Route::get('/people/{contact}/gifts/add', 'People\\GiftsController@create')->name('.gifts.add');
         Route::post('/people/{contact}/gifts/store', 'People\\GiftsController@store')->name('.gifts.store');
-        Route::get('/people/{contact}/gifts/{gift}/delete', 'People\\GiftsController@destroy')->name('.gifts.delete');
+        Route::delete('/people/{contact}/gifts/{gift}', 'People\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
         Route::get('/people/{contact}/debt/add', 'People\\DebtController@create')->name('.debt.add');
         Route::post('/people/{contact}/debt/store', 'People\\DebtController@store')->name('.debt.store');
         Route::get('/people/{contact}/debt/{debt}/edit', 'People\\DebtController@edit')->name('.debt.edit');
         Route::put('/people/{contact}/debt/{debt}', 'People\\DebtController@update')->name('.debt.update');
-        Route::get('/people/{contact}/debt/{debt}/delete', 'People\\DebtController@destroy')->name('.debt.delete');
+        Route::delete('/people/{contact}/debt/{debt}', 'People\\DebtController@destroy')->name('.debt.delete');
 
         // Phone calls
         Route::post('/people/{contact}/call/store', 'People\\CallsController@store')->name('.call.store');
-        Route::get('/people/{contact}/call/{call}/delete', 'People\\CallsController@destroy')->name('.call.delete');
+        Route::delete('/people/{contact}/call/{call}', 'People\\CallsController@destroy')->name('.call.delete');
 
         // Search
         Route::post('/people/search', 'PeopleController@search')->name('people.search');
@@ -111,13 +111,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);
         Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@add']);
         Route::post('/journal/create', ['as' => '.create', 'uses' => 'JournalController@save']);
-        Route::get('/journal/{entryId}/delete', ['as' => '.delete', 'uses' => 'JournalController@deleteEntry']);
+        Route::delete('/journal/{entryId}', ['as' => '.delete', 'uses' => 'JournalController@deleteEntry']);
     });
 
     Route::group(['as' => 'settings'], function () {
         Route::get('/settings', ['as' => '.index', 'uses' => 'SettingsController@index']);
-        Route::get('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
-        Route::get('/settings/reset', ['as' => '.reset', 'uses' => 'SettingsController@reset']);
+        Route::post('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
+        Route::post('/settings/reset', ['as' => '.reset', 'uses' => 'SettingsController@reset']);
         Route::post('/settings/save', 'SettingsController@save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
@@ -129,9 +129,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/settings/users', 'SettingsController@users')->name('.users');
         Route::get('/settings/users/add', 'SettingsController@addUser')->name('.users.add');
-        Route::get('/settings/users/{user}/delete', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
+        Route::delete('/settings/users/{user}', ['as' => '.users.delete', 'uses' => 'SettingsController@deleteAdditionalUser']);
         Route::post('/settings/users/save', 'SettingsController@inviteUser')->name('.users.save');
-        Route::get('/settings/users/invitations/{invitation}/delete', 'SettingsController@destroyInvitation');
+        Route::delete('/settings/users/invitations/{invitation}', 'SettingsController@destroyInvitation');
 
         Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('.subscriptions.index');
         Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('.subscriptions.upgrade');
@@ -142,6 +142,6 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
-        Route::get('/settings/tags/{user}/delete', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
+        Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
     });
 });

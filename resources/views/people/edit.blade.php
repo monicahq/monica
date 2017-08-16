@@ -41,7 +41,7 @@
 
               <p class="delete-contact">
                 {{ trans('people.people_delete_message') }}
-                <a href="/people/{{ $contact->id }}/delete" onclick="return confirm('{{ trans('people.people_delete_confirmation') }}')">{{ trans('people.people_delete_click_here') }}</a>.
+                <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
               </p>
 
               {{-- Gender --}}
@@ -218,4 +218,9 @@
     </div>
 
   </div>
+
+  <form method="POST" action="{{ action('PeopleController@delete', $contact) }}" id="contact-delete-form" class="hidden">
+    {{ method_field('DELETE') }}
+    {{ csrf_field() }}
+  </form>
 @endsection

@@ -1015,11 +1015,11 @@ class Contact extends Model
         $offspring->delete();
 
         if ($bilateral) {
-            $offspring = Offspring::where('contact_id', $this->id)
+            $progenitor = Progenitor::where('contact_id', $this->id)
                         ->where('is_the_parent_of', $kid->id)
                         ->first();
 
-            $offspring->delete();
+            $progenitor->delete();
         }
     }
 

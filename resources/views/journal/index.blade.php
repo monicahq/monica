@@ -61,7 +61,7 @@
                       <ul>
                         <li>{{ \App\Helpers\DateHelper::getShortDate($entry->created_at) }}</li>
                         <li>
-                          <a href="/journal/{{ $entry->id }}/delete" onclick="return confirm('{{ trans('journal.delete_confirmation') }}')">{{ trans('journal.journal_entry_delete') }}</a>
+                          <a href="#" onclick="if (confirm('{{ trans('journal.delete_confirmation') }}')) { $(this).closest('.entry-row').find('.entry-delete-form').submit(); } return false;">{{ trans('journal.journal_entry_delete') }}</a>
                         </li>
                       </ul>
                     </div>
@@ -73,6 +73,11 @@
                     @endif
                     <div class="entry-content">{{ $entry->getPost() }}</div>
                   </div>
+
+                  <form method="POST" action="{{ action('JournalController@deleteEntry', $entry) }}" class="entry-delete-form hidden">
+                    {{ method_field('DELETE') }}
+                    {{ csrf_field() }}
+                  </form>
                 </div>
               @endforeach
             </div>
