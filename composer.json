@@ -21,7 +21,8 @@
         "laravel/cashier": "~7.0",
         "roave/security-advisories": "dev-master",
         "laravel/dusk": "^1.1",
-        "sentry/sentry-laravel": "^0.7.0"
+        "sentry/sentry-laravel": "^0.7.0",
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",

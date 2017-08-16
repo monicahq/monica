@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add support for storing uploaded files in s3
+
 RELEASED VERSIONS:
 
 v0.6.3 - 2017-08-16

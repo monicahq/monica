@@ -693,12 +693,12 @@ class Contact extends Model
      */
     public function getAvatarURL($size)
     {
-        $original_avatar_url = Storage::disk('public')->url($this->avatar_file_name);
+        $original_avatar_url = Storage::disk($this->avatar_location)->url($this->avatar_file_name);
         $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
-        return Storage::disk('public')->url($resized_avatar);
+        return Storage::disk($this->avatar_location)->url($resized_avatar);
     }
 
     /**
