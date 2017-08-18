@@ -831,6 +831,8 @@ class Contact extends Model
                             ->where('is_significant_other', 0)
                             ->where('is_kid', 0)
                             ->where('id', '!=', $this->id)
+                            ->orderBy('first_name', 'asc')
+                            ->orderBy('last_name', 'asc')
                             ->get();
 
         // Filter out the contacts who already partner with the given contact

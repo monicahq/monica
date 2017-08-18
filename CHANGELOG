@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
-* Add support for storing uploaded files in s3
+* Add support for storing uploaded files on s3
+* Sort contacts by first name, last name when linking significant others and kids
 
 RELEASED VERSIONS:
 
