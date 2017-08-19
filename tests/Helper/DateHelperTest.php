@@ -3,13 +3,10 @@
 namespace Tests\Helper;
 
 use Carbon\Carbon;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DateHelperTest extends TestCase
+class DateHelperTest extends FeatureTestCase
 {
     public function testCreateDateFromFormat()
     {
@@ -84,6 +81,50 @@ class DateHelperTest extends TestCase
         $this->assertEquals(
             'Jan 22, 2017 17:56',
             DateHelper::getShortDateWithTime($date, $locale)
+        );
+    }
+
+    public function test_get_locale_returns_english_by_default()
+    {
+        $this->assertEquals(
+            'en',
+            DateHelper::getLocale()
+        );
+    }
+
+    public function test_get_locale_returns_right_locale_if_user_logged()
+    {
+        $user = $this->signIn();
+        $user->locale = 'fr';
+        $user->save();
+
+        $this->assertEquals(
+            'fr',
+            DateHelper::getLocale()
+        );
+    }
+
+    public function test_add_time_according_to_frequency_type_returns_the_right_value()
+    {
+        $date = '2017-01-22 17:56:03';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $this->assertEquals(
+            '2017-01-29',
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
+        );
+
+        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $this->assertEquals(
+            '2017-02-22',
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
+        );
+
+        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $this->assertEquals(
+            '2018-01-22',
+            DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
         );
     }
 }

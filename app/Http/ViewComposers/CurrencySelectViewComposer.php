@@ -2,15 +2,13 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
 use App\Currency;
+use Illuminate\View\View;
 
 class CurrencySelectViewComposer
 {
-
     public function __construct()
     {
-
     }
 
     /**
@@ -21,7 +19,7 @@ class CurrencySelectViewComposer
      */
     public function compose(View $view)
     {
-      $currencies = Currency::orderBy('name', 'asc')->get();
-      $view->with('currencies', $currencies );
+        $currencies = Currency::orderBy('name', 'asc')->get();
+        $view->with('currencies', $currencies);
     }
 }

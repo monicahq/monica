@@ -4,16 +4,16 @@
     {{ trans('people.notes_title') }}
 
     <span>
-      <a href="/people/{{ $contact->id }}/note/add" class="btn">{{ trans('people.notes_add_one_more') }}</a>
+      <a href="{{ route('people.notes.add', $contact) }}" class="btn">{{ trans('people.notes_add_one_more') }}</a>
     </span>
   </h3>
 </div>
 
-@if ($contact->getNotes()->count() == 0)
+@if ($contact->notes->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <a href="/people/{{ $contact->id }}/note/add">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
+      <a href="{{ route('people.notes.add', $contact) }}">{{ trans('people.notes_blank_link') }}</a> {{ trans('people.notes_blank_name', ['name' => $contact->getFirstName() ]) }}.
     </div>
   </div>
 
@@ -21,19 +21,28 @@
 
   <div class="col-xs-12">
 
-    <ul class="notes-list">
-      @foreach ($contact->getNotes() as $note)
-        <li>
-          {{ $note->getBody() }}
-          <span class="note-date">
+    @foreach ($contact->notes as $note)
+      <div class="ba br2 b--black-10 br--top w-100 mb4">
+        <div class="pa2">
+          {!! $note->getParsedBodyAttribute() !!}
+        </div>
+        <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
+          <div class="fl w-50">
             {{ $note->getCreatedAt(Auth::user()->locale) }}
-            <a href="{{ route('people.note.edit', ['people' => $contact->id, 'noteId' => $note->id]) }}">{{ trans('app.edit') }}</a>
+          </div>
+          <div class="fl w-50 tr">
+            <a href="{{ route('people.notes.edit', [$contact, $note]) }}">{{ trans('app.edit') }}</a>
             |
-            <a href="/people/{{ $contact->id }}/notes/{{ $note->id }}/delete" onclick="return confirm('{{ trans('people.notes_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
-          </span>
-        </li>
-      @endforeach
-    </ul>
+            <a href="#" onclick="if (confirm('{{ trans('people.notes_delete_confirmation') }}')) { $(this).closest('.ba.w-100').find('.entry-delete-form').submit(); } return false;">{{ trans('app.delete') }}</a>
+          </div>
+        </div>
+
+        <form method="POST" action="{{ action('People\\NotesController@destroy', compact('contact', 'note')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
+      </div>
+    @endforeach
 
   </div>
 

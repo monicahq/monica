@@ -1,7 +1,9 @@
 @extends('layouts.skeleton')
-@section('title', $contact->getCompleteName() )
+
+@section('title', $contact->getCompleteName(auth()->user()->name_order) )
+
 @section('content')
-  <div class="people-show">
+  <div class="people-show" data-contact-id="{{ $contact->id }}">
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
@@ -17,7 +19,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -39,6 +41,10 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
+            <div class="row section calls">
+              @include('people.calls.index')
+            </div>
+
             <div class="row section notes">
               @include('people.notes.index')
             </div>
@@ -69,4 +75,7 @@
 
     </div>
   </div>
+
+  @include('people.modal.log_call')
+
 @endsection

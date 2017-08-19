@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\Activity;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends TestCase
 {
@@ -38,9 +38,12 @@ class ActivityTest extends TestCase
 
     public function testGetTitleReturnsAString()
     {
-        $activity = new Activity;
-        $activity->activity_type_id = 1;
+        $type = factory(\App\ActivityType::class)->create();
 
-        $this->assertInternalType('string', $activity->getTitle());
+        $activity = factory(\App\Activity::class)->create([
+            'activity_type_id' => $type->id,
+        ]);
+
+        $this->assertEquals($type->key, $activity->getTitle());
     }
 }

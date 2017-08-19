@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -28,7 +28,7 @@
     @include('people._header')
 
     <!-- Page content -->
-    <div class="main-content modal">
+    <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
@@ -42,24 +42,24 @@
               {{-- Job --}}
               <div class="form-group">
                 <label for="job">{{ trans('people.work_edit_job') }}</label>
-                <input type="text" class="form-control" name="job" value="{{ $contact->getJob() }}" autofocus>
+                <input type="text" class="form-control" name="job" id="job" value="{{ $contact->job }}" autofocus>
               </div>
 
               {{-- Company --}}
               <div class="form-group">
                 <label for="company">{{ trans('people.work_edit_company') }}</label>
-                <input type="text" class="form-control" name="company" value="{{ $contact->getCompany() }}">
+                <input type="text" class="form-control" name="company" id="company" value="{{ $contact->company }}">
               </div>
 
               {{-- LinkedIn --}}
               <div class="form-group">
                 <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
-                <input class="form-control" name="linkedin" value="{{ $contact->getLinkedin() }}" placeholder="https://linkedin.com/john.doe">
+                <input class="form-control" name="linkedin" id="linkedin" value="{{ $contact->linkedin_profile_url }}" placeholder="https://linkedin.com/john.doe">
               </div>
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

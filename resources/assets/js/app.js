@@ -21,10 +21,12 @@ const app = new Vue({
     data: {
       activities_description_show: false,
       reminders_frequency: 'once',
+      accept_invite_user: false,
     },
     methods: {
     },
 });
 
+// jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
 } );

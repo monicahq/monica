@@ -32,32 +32,39 @@
             {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
           </div>
           <div class="table-cell">
-            @if (! is_null($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @if (! empty($gift->getValue()))
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
-            @if (! is_null($gift->getUrl()))
+            @if (! empty($gift->getUrl()))
               <span class="gift-list-item-url">
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if(!is_null($gift->getWhoIsItFor()))
+            @if($gift->hasParticularRecipient())
               <span class="for">
               For:
-                {{ $gift->getWhoIsItFor() }}
+                {{ $gift->recipient_name }}
               </span>
             @endif
           </div>
           <div class="table-cell comment">
-            @if (! is_null($gift->getComment()))
+            @if (! empty($gift->getComment()))
               {{ $gift->getComment() }}
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="#" onclick="if (confirm('{{ trans('people.gifts_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>
+
+          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
         </li>
         @endforeach
       </ul>
@@ -73,32 +80,39 @@
             {{ \App\Helpers\DateHelper::getShortDate($gift->getCreatedAt()) }}
           </div>
           <div class="table-cell">
-            @if (! is_null($gift->getValue()))
-              <span class="value">{{ Auth::user()->currency->symbol }} {{ $gift->getValue() }}</span>
+            @if (! empty($gift->getValue()))
+              <span class="value">
+                  {{ MoneyHelper::format($gift->getValue()) }}
+              </span>
             @endif
             {{ $gift->getName() }}
-            @if (! is_null($gift->getUrl()))
+            @if (! empty($gift->getUrl()))
               <span class="gift-list-item-url">
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if(!is_null($gift->getWhoIsItFor()))
+            @if($gift->hasParticularRecipient()))
               <span class="for">
               For:
-                {{ $gift->getWhoIsItFor() }}
+                {{ $gift->recipient_name }}
               </span>
             @endif
           </div>
           <div class="table-cell comment">
-            @if (! is_null($gift->getComment()))
+            @if (! empty($gift->getComment()))
               {{ $gift->getComment() }}
             @endif
           </div>
           <div class="table-cell list-actions">
-            <a href="/people/{{ $contact->id }}/gifts/{{ $gift->id }}/delete" onclick="return confirm('{{ trans('people.gifts_delete_confirmation') }}')">
+            <a href="#" onclick="if (confirm('{{ trans('people.gifts_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           </div>
+
+          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
         </li>
         @endforeach
       </ul>

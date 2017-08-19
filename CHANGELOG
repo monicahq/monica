@@ -1,3 +1,150 @@
+UNRELEASED CHANGES:
+
+* Add restriction of 50 characters for a first name, and 100 characters for a last name.
+* Add support for storing uploaded files on s3
+* Sort contacts by first name, last name when linking significant others and kids
+* Remove beginning / ending spaces in names when adding / saving a contact.
+
+RELEASED VERSIONS:
+
+v0.6.3 - 2017-08-16
+-------------------
+
+* Fix kids not being able to be removed
+* Fix some CSRF potential vulnerabilities
+
+v0.6.2 - 2017-08-16
+-------------------
+
+* Add support for Markdown for the notes and call logs
+
+v0.6.1 - 2017-08-15
+-------------------
+
+* Fix delete account bug
+* Fix kid deletion bug
+* Fix gift creation
+
+v0.6.0 - 2017-08-14
+-------------------
+
+* Add ability to set significant other and kids as contact.
+* Add Italian translation
+* Add debt total below a contacts debt
+* Add world currencies
+* Add German translation
+
+v0.5.0 - 2017-07-24
+-------------------
+
+* Add version checking.
+* Add ability to search various fields in contacts through the top-nav search.
+* Fix gift view not being shown.
+
+v0.4.2 - 2017-07-18
+-------------------
+
+New features:
+* Add Indian rupee currency.
+* Add Danish krone currency.
+* Add Czech translation.
+
+Improvements:
+* Fix https issue on password reset.
+
+v0.4.1 - 2017-07-13
+-------------------
+
+* Fix reminders not being sent introduced by previous version.
+
+v0.4.0 - 2017-07-13
+-------------------
+
+New features:
+* Add ability to keep track of phone calls.
+
+Improvements:
+* Fix Google Contact instructions link on the Import screen.
+* Input field are now automatically selected when a radio button is checked.
+* Many small bug fixes.
+
+v0.3.0 - 2017-07-04
+-------------------
+
+New features:
+* Add support for organizing people into tags (requires `bower update` for dev environment).
+* Add ability to filter contacts per tags on the contact list.
+
+Improvements:
+* Fix import translation key on the import reports.
+* Settings' sidebar now has better icons.
+
+v0.2.1 - 2017-07-02
+-------------------
+
+Improvements:
+* Update the design of the latest actions on the dashboard.
+* Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
+* Speed up the display of the contact lists when there is a lot of contacts in the account.
+* Remove the search on the list of contacts, which was broken for a while, until a proper solution is found.
+* Bug fixes.
+
+v0.2.0 - 2017-06-29
+-------------------
+
+New features:
+* Add import from vCard (or .vcf) in the Settings panel.
+* Add ability to reset account. Resetting an account will remove everything - but won't close the account like deletion would.
+
+Improvements:
+* Journal entries now respect new lines.
+* Fix name not appearing in the latest actions tab on the dashboard.
+
+v0.1.0 - 2017-06-26
+-------------------
+
+* First official release. We'll now follow this structure. If you self host, we highly recommend that you check the latest tag instead of pulling from master.
+
+2017-06-24
+----------
+
+Improvements:
+* On the people's tab, filters are now placed above the table.
+
+2017-06-22
+----------
+
+New features:
+* Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
+
+Improvements:
+* Fix the order of the address fields.
+* Env variables are now read from config files rather than directly from the .env file.
+* Some US typos fix.
+
+2017-06-20
+----------
+
+New features:
+* Add support for mutiple users in one account.
+* Add subscriptions on .com. This has no effect on self hosted versions.
+
+2017-06-16
+----------
+
+Improvements:
+* Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
+
+2017-06-15
+----------
+
+New features:
+* Add reminder automatically when you set the birthdate of a contact.
+
+Improvements:
+* Add timezone for Switzerland.
+* Major refactoring of how contacts are managed in the codebase.
+
 2017-06-14
 ----------
 

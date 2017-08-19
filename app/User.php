@@ -3,13 +3,12 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -17,15 +16,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order',
     ];
 
     /**
      * Eager load account with every user.
      */
-    protected $with = [
-        'account',
-    ];
+    protected $with = ['account'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -36,14 +33,25 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    protected $dates = ['deleted_at'];
-
     /**
      * Get the account record associated with the user.
+     *
+     * @return BelongsTo
      */
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Assigns a default value just in case the sort order is empty.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getContactsSortOrderAttribute($value)
+    {
+        return ! empty($value) ? $value : 'firstnameAZ';
     }
 
     /**
@@ -72,12 +80,42 @@ class User extends Authenticatable
     }
 
     /**
+     * Get users's full name. The name is formatted according to the user's
+     * preference, either "Firstname Lastname", or "Lastname Firstname".
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        $completeName = '';
+
+        if ($this->name_order == 'firstname_first') {
+            $completeName = $this->first_name;
+
+            if (! is_null($this->last_name)) {
+                $completeName = $completeName.' '.$this->last_name;
+            }
+        } else {
+            if (! is_null($this->last_name)) {
+                $completeName = $this->last_name;
+            }
+
+            $completeName = $completeName.' '.$this->first_name;
+        }
+
+        return $completeName;
+    }
+
+    /**
      * Gets the currency for this user.
+     *
+     * @return BelongsTo
      */
     public function currency()
     {
-        return $this->belongsTo('App\Currency', 'currency_id');
+        return $this->belongsTo(Currency::class);
     }
+
     /**
      * Set the contact view preference.
      *

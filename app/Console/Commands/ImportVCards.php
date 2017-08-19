@@ -2,14 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\User;
 use App\Contact;
 use App\Country;
-use App\User;
-use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Sabre\VObject\Component\VCard;
-use Sabre\VObject\Property\ICalendar\DateTime;
 use Sabre\VObject\Reader;
+use Illuminate\Console\Command;
+use Sabre\VObject\Component\VCard;
+use Illuminate\Filesystem\Filesystem;
 
 class ImportVCards extends Command
 {
@@ -45,16 +44,17 @@ class ImportVCards extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $path = './' . $this->argument('path');
+        $path = './'.$this->argument('path');
 
         $user = User::where('email', $this->argument('user'))->first();
 
-        if (!$user) {
+        if (! $user) {
             $this->error('You need to provide a valid user email!');
+
             return;
         }
 
-        if (!$filesystem->exists($path) || $filesystem->extension($path) !== 'vcf') {
+        if (! $filesystem->exists($path) || $filesystem->extension($path) !== 'vcf') {
             $this->error('The provided vcard file was not found or is not valid!');
 
             return;
@@ -65,7 +65,6 @@ class ImportVCards extends Command
         $this->info("We found {$matchCount} contacts in {$path}.");
 
         if ($this->confirm('Would you like to import them?', true)) {
-
             $this->info("Importing contacts from {$path}");
 
             $this->output->progressStart($matchCount);
@@ -75,7 +74,6 @@ class ImportVCards extends Command
             collect($matches[0])->map(function ($vcard) {
                 return Reader::read($vcard);
             })->each(function (VCard $vcard) use ($user, $skippedContacts) {
-
                 if ($this->contactExists($vcard, $user)) {
                     $this->output->progressAdvance();
                     $skippedContacts++;
@@ -94,7 +92,7 @@ class ImportVCards extends Command
                 $contact = new Contact();
                 $contact->account_id = $user->account_id;
 
-                if($vcard->N && ! empty($vcard->N->getParts()[1])) {
+                if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
                     $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
                     $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
                     $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
@@ -105,14 +103,14 @@ class ImportVCards extends Command
                 $contact->gender = 'none';
                 $contact->is_birthdate_approximate = 'unknown';
 
-                if ($vcard->BDAY && !empty((string) $vcard->BDAY)) {
+                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
                     $contact->birthdate = new \DateTime((string) $vcard->BDAY);
                 }
 
                 $contact->email = $this->formatValue($vcard->EMAIL);
                 $contact->phone_number = $this->formatValue($vcard->TEL);
 
-                if($vcard->ADR) {
+                if ($vcard->ADR) {
                     $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
                     $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
                     $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
@@ -142,22 +140,21 @@ class ImportVCards extends Command
 
             $this->info("Successfully imported {$matchCount} contacts and skipped {$skippedContacts}.");
         }
-
     }
 
     /**
-     * Formats and returns a string for the contact
+     * Formats and returns a string for the contact.
      *
      * @param null|string $value
      * @return null|string
      */
     private function formatValue($value)
     {
-        return !empty((string) $value) ? (string) $value : null;
+        return ! empty((string) $value) ? (string) $value : null;
     }
 
     /**
-     * Checks whether a contact already exists for a given account
+     * Checks whether a contact already exists for a given account.
      *
      * @param VCard $vcard
      * @param User $user
@@ -169,7 +166,7 @@ class ImportVCards extends Command
 
         $contact = Contact::where([
             ['account_id', $user->account_id],
-            ['email', $email]
+            ['email', $email],
         ])->first();
 
         return $email && $contact;
@@ -182,7 +179,7 @@ class ImportVCards extends Command
      * @param VCard $vcard
      * @return bool
      */
-    function contactHasName(VCard $vcard): bool
+    public function contactHasName(VCard $vcard): bool
     {
         return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
     }

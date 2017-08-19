@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         if (env('APP_ENV') == 'local') {
             $this->call(ActivityTypesTableSeeder::class);
             $this->call(CountriesSeederTable::class);
-            $this->call(FakeContentTableSeeder::class);
+            $this->call(FakeUserTableSeeder::class);
         }
 
         if (env('APP_ENV') == 'testing') {

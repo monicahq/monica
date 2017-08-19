@@ -19,7 +19,7 @@ class Entry extends Model
     public function getPost()
     {
         if (is_null($this->post)) {
-            return null;
+            return;
         }
 
         return $this->post;
@@ -28,7 +28,7 @@ class Entry extends Model
     public function getTitle()
     {
         if (is_null($this->title)) {
-            return null;
+            return;
         }
 
         return $this->title;

@@ -8,11 +8,17 @@ return [
     'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
-    'people_list_search' => 'Pesquisar pessoa por nome',
+    'people_list_stats' => ':count contacts',
+    'people_list_sort' => 'Sort',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
     'people_list_lastnameZA' => 'Classificar por sobrenome Z → A',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_clear_filter' => 'Clear filter',
+    'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
+    'people_search' => 'Search your contacts...',
+    'people_search_no_results' => 'No relevant contact found :(',
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
@@ -25,6 +31,8 @@ return [
     'people_delete_message' => 'Se você precisar excluir este contato,',
     'people_delete_click_here' => 'clique aqui',
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
+    'people_add_birthday_reminder' => 'Wish happy birthday to :name',
+    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
     'section_personal_information' => 'Informação pessoal',
@@ -38,6 +46,21 @@ return [
 
     // Header
     'edit_contact_information' => 'Editar informação do contato',
+    'call_button' => 'Log a call',
+
+    // Calls
+    'modal_call_title' => 'Log a call',
+    'modal_call_comment' => 'What did you talk about? (optional)',
+    'modal_call_date' => 'The phone call happened earlier today.',
+    'modal_call_change' => 'Change',
+    'modal_call_exact_date' => 'The phone call happened on',
+    'calls_add_success' => 'The phone call has been saved.',
+    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
+    'call_delete_success' => 'The call has been deleted successfully',
+    'call_title' => 'Phone calls',
+    'call_empty_comment' => 'No details',
+    'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
+    'call_blank_desc' => 'You called :name',
 
     // age - birthday
     'birthdate_not_set' => 'A data de nascimento não está definida',
@@ -100,8 +123,6 @@ return [
     'reminders_blank_add_activity' => 'Adicionar um lembrete',
     'reminders_add_title' => 'Sobre o que você gostaria de lembrar sobre :name?',
     'reminders_add_description' => 'Lembre-me de...',
-    'reminders_add_predefined' => 'Lembrete pré-definido',
-    'reminders_add_custom' => 'Lembrete personalizado',
     'reminders_add_next_time' => 'Quando é a próxima vez que você gostaria de ser lembrado sobre isso?',
     'reminders_add_once' => 'Lembre-me sobre isso apenas uma vez',
     'reminders_add_recurrent' => 'Lembre-me sobre isso a todo momento',
@@ -120,14 +141,11 @@ return [
     'reminders_next_expected_date' => 'em',
     'reminders_cta' => 'Adicionar um lembrete',
     'reminders_description' => 'Nós enviaremos um e-mail para cada uma dos lembretes abaixo. Lembretes são enviados todas as manhãs dos dias em que os eventos acontecerão',
-    'reminders_frequency' => 'cada',
-    'reminders_date' => 'Date',
-    'reminders_content' => 'Content',
-    'reminders_actions' => 'Actions',
     'reminders_one_time' => 'One time',
     'reminders_type_week' => 'semana',
     'reminders_type_month' => 'mês',
     'reminders_type_year' => 'ano',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Pessoas importantes',
@@ -142,10 +160,17 @@ return [
     'significant_other_add_cta' => 'Adicionar pessoa importante',
     'significant_other_edit_cta' => 'Editar pessoa importante',
     'significant_other_delete_confirmation' => 'Tem certeza de que deseja excluir essa pessoa importante? A exclusão é permanente',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'Pessoa importante adicionada com sucesso',
     'significant_other_edit_success' => 'Pessoa importante atualizada com sucesso',
     'significant_other_delete_success' => 'Pessoa importante excluída com sucesso',
     'significant_other_add_birthday_reminder' => 'Deseje um feliz aniversário para :name, pessoa importante de :contact_firstname',
+    'significant_other_add_person' => 'Add a new person',
+    'significant_other_link_existing_contact' => 'Link existing contact',
+    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
+    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
+    'contact_add_also_create_contact' => 'Create a Contact entry for this person.',
+    'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
     'kids_sidebar_title' => 'Crianças',
@@ -157,6 +182,11 @@ return [
     'kids_add_gender' => 'Gênero',
     'kids_add_firstname' => 'Primeiro nome',
     'kids_add_firstname_help' => 'Assumimos que o último nome é :name',
+    'kids_add_lastname' => 'Last name (optional)',
+    'kids_add_also_create' => 'Also create a Contact entry for this person.',
+    'kids_add_also_desc' => 'This will let you treat this kid like any other contact.',
+    'kids_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s kid at the moment.',
+    'kids_add_existing_contact' => 'Select an existing contact as the kid for :name',
     'kids_add_probably' => 'Esta criança provavelmente é',
     'kids_add_probably_yo' => 'anos de idade',
     'kids_add_exact' => 'Conheço a data de nascimento exata dessa criança, que é',
@@ -168,6 +198,7 @@ return [
     'kids_update_success' => 'A criança foi atualizada com sucesso',
     'kids_delete_success' => 'A criança foi excluída com sucesso',
     'kids_add_birthday_reminder' => 'Deseje um feliz aniversário para :name, pessoa importante de :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Mantenha na linhas as coisas que você precisa para :name',
@@ -193,7 +224,7 @@ return [
     'activity_type_group_sport' => 'Esporte',
     'activity_type_group_food' => 'Comida',
     'activity_type_group_cultural_activities' => 'Atividades culturais',
-    'activity_type_just_hanged_out' => 'apenas sai',
+    'activity_type_just_hung_out' => 'apenas sai',
     'activity_type_watched_movie_at_home' => 'assisti um filme em casa',
     'activity_type_talked_at_home' => 'apenas fiquei em casa',
     'activity_type_did_sport_activities_together' => 'fizemos algum esporte juntos',
@@ -225,8 +256,8 @@ return [
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
 
     // notes
-    'notes_add_success' => 'A nota foi adicionada com sucesso',
-    'notes_edit_success' => 'The note has been saved successfully',
+    'notes_create_success' => 'A nota foi adicionada com sucesso',
+    'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'A nota foi excluída com sucesso',
     'notes_add_title' => 'Adicione uma nota sobre :name',
     'notes_add_cta' => 'Adicionar nota',
@@ -271,8 +302,8 @@ return [
     'debt_add_success' => 'A dívida foi adicionada com sucesso',
     'debt_title' => 'Dívidas',
     'debt_add_cta' => 'Adicionar dívida',
-    'debt_you_owe' => 'Você deve $:amount',
-    'debt_they_owe' => ':name te deve $:amount',
+    'debt_you_owe' => 'Você deve :amount',
+    'debt_they_owe' => ':name te deve :amount',
     'debt_add_title' => 'Debt management',
     'debt_add_you_owe' => 'Você deve a :name',
     'debt_add_they_owe' => ':name te deve',
@@ -281,5 +312,8 @@ return [
     'debt_add_add_cta' => 'Adicionar dívida',
     'debt_edit_update_cta' => 'Update debt',
     'debt_edit_success' => 'The debt has been updated successfully',
-    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you'
+    'debts_blank_title' => 'Manage debts you owe to :name or :name owes you',
+
+    // tags
+    'tag_edit' => 'Edit tag',
 ];

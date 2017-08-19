@@ -4,28 +4,53 @@
     <strong>{{ trans('people.kids_sidebar_title') }}</strong>
   </p>
 
-  @if ($contact->getNumberOfKids() == 0)
+  @if($contact->getOffsprings()->count() === 0)
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/kid/add">{{ trans('people.kids_blank_cta') }}</a>
+      <a href="{{ route('people.kids.add', $contact) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
   @else
     <ul class="people-list">
-      @foreach($contact->getKids() as $kid)
+      @foreach($contact->getOffsprings() as $kid)
       <li>
-        <span class="name">{{ $kid->getFirstName() }}</span>
 
-        @if (! is_null($kid->getAge()))
-        ({{ $kid->getAge() }})
+        @if ($kid->is_kid)
+
+          <span class="name">{{ $kid->getCompleteName() }}</span>
+
+          @if (! is_null($kid->getAge()))
+            ({{ $kid->getAge() }})
+          @endif
+
+          <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_delete_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">{{ trans('app.delete') }}</a>
+
+          <form method="POST" action="{{ route('people.kids.delete', [$contact, $kid]) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
+
+        @else
+
+          <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName() }}</span></a>
+
+          @if (! is_null($kid->getAge()))
+            ({{ $kid->getAge() }})
+          @endif
+
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_unlink_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
+
+          <form method="POST" action="{{ action('People\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
+            {{ csrf_field() }}
+          </form>
+
         @endif
 
-        <a href="/people/{{ $contact->id }}/kid/{{ $kid->id }}/edit" class="action-link">{{ trans('app.edit') }}</a>
-        <a href="/people/{{ $contact->id }}/kid/{{ $kid->id }}/delete" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
       </li>
       @endforeach
     </ul>
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->id }}/kid/add">{{ trans('people.kids_blank_cta') }}</a>
+      <a href="{{ route('people.kids.add', $contact) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
 
   @endif

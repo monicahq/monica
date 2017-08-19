@@ -2,12 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Call;
+use App\Debt;
 use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\SignificantOther;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase
@@ -32,7 +31,7 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetsNamesMethods()
+    public function test_get_name_returns_name()
     {
         $contact = new Contact;
         $contact->first_name = 'Peter';
@@ -54,11 +53,6 @@ class ContactTest extends TestCase
             $contact->getLastName()
         );
 
-        $this->assertEquals(
-            'H',
-            $contact->getMiddleName()
-        );
-
         $contact = new Contact;
         $contact->first_name = 'Peter';
         $contact->middle_name = null;
@@ -67,11 +61,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'Peter Gregory',
             $contact->getCompleteName()
-        );
-
-        $this->assertEquals(
-            null,
-            $contact->getMiddleName()
         );
 
         $contact = new Contact;
@@ -87,6 +76,24 @@ class ContactTest extends TestCase
         $this->assertEquals(
             null,
             $contact->getLastName()
+        );
+    }
+
+    public function test_get_name_returns_name_in_the_right_order()
+    {
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+
+        $this->assertEquals(
+            'Gregory H Peter',
+            $contact->getCompleteName('lastname_first')
+        );
+
+        $this->assertEquals(
+            'Peter H Gregory',
+            $contact->getCompleteName('firstname_first')
         );
     }
 
@@ -111,20 +118,6 @@ class ContactTest extends TestCase
             25,
             $contact->getAge()
         );
-    }
-
-    public function testGetBirthdateReturnsNullIfNoBirthdateIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getBirthdate());
-    }
-
-    public function testGetBirthdateReturnsCarbonObjectIfBirthdateDefined()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInstanceOf(Carbon::class, $contact->getBirthdate());
     }
 
     public function testGetInitialsWithAFullName()
@@ -253,38 +246,8 @@ class ContactTest extends TestCase
 
         $timezone = 'America/New_York';
         $this->assertStringEndsWith(
-            'ago',
+            'Oct 29, 2013',
             $contact->getLastCalled($timezone)
-        );
-    }
-
-    public function testGetNumberOfReminders()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfReminders()
-        );
-    }
-
-    public function testGetNumberOfGifts()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfGifts()
-        );
-    }
-
-    public function testGetNumberOfActivities()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNumberOfActivities()
         );
     }
 
@@ -306,26 +269,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             strlen($contact->default_avatar_color) == 7,
             $contact->setAvatarColor()
-        );
-    }
-
-    public function testGetCityWithNoCityDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getCity());
-    }
-
-    public function testGetCityWithCityDefined()
-    {
-        $city = 'Montreal';
-
-        $contact = new Contact;
-        $contact->city = $city;
-
-        $this->assertEquals(
-            $contact->city,
-            $contact->getCity()
         );
     }
 
@@ -359,60 +302,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetProvinceReturnsNullIfNoProvinceIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getProvince());
-    }
-
-    public function testGetProvinceReturnsProvinceWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->province = 'QC';
-
-        $this->assertEquals(
-            'QC',
-            $contact->getProvince()
-        );
-    }
-
-    public function testGetStreetReturnsNullIfNoStreetIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getStreet());
-    }
-
-    public function testGetStreetReturnsStreetWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->street = '12 Street Road';
-
-        $this->assertEquals(
-            '12 Street Road',
-            $contact->getStreet()
-        );
-    }
-
-    public function testGetPostalCodeReturnsNullIfNoStreetIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getPostalCode());
-    }
-
-    public function testGetPostalCodeReturnsStreetWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->postal_code = '90210';
-
-        $this->assertEquals(
-            '90210',
-            $contact->getPostalCode()
-        );
-    }
-
     public function testGetCountryReturnsNullIfNoStreetIsDefined()
     {
         $contact = new Contact;
@@ -429,21 +318,6 @@ class ContactTest extends TestCase
             'United States',
             $contact->getCountryName()
         );
-    }
-
-    public function testGetCountryIDReturnsNullIfNotDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getCountryID());
-    }
-
-    public function testGetCountryIDReturnsIntegerIfDefined()
-    {
-        $contact = new Contact;
-        $contact->country_id = 3;
-
-        $this->assertInternalType('int', $contact->getCountryID());
     }
 
     public function testGetCountryISOReturnsNullIfISONotFound()
@@ -465,234 +339,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetEmailReturnsNullIfEmailIsUndefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getEmail());
-    }
-
-    public function testGetEmailReturnsEmailIfDefined()
-    {
-        $contact = new Contact;
-        $contact->email = 'john@gmail.com';
-
-        $this->assertEquals(
-            'john@gmail.com',
-            $contact->getEmail()
-        );
-    }
-
-    public function testGetFacebookReturnsNullIfUndefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getFacebook());
-    }
-
-    public function testGetFacebookReturnsFacebookIfDefined()
-    {
-        $contact = new Contact;
-        $contact->facebook_profile_url = 'https://facebook.com/johndoe';
-
-        $this->assertEquals(
-            'https://facebook.com/johndoe',
-            $contact->getFacebook()
-        );
-    }
-
-    public function testGetTwitterReturnsNullIfUndefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getTwitter());
-    }
-
-    public function testGetTwitterReturnsTwitterIfDefined()
-    {
-        $contact = new Contact;
-        $contact->twitter_profile_url = 'https://twitter.com/johndoe';
-
-        $this->assertEquals(
-            'https://twitter.com/johndoe',
-            $contact->getTwitter()
-        );
-    }
-
-    public function testGetLinkedinReturnsNullIfUndefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getLinkedin());
-    }
-
-    public function testGetLinkedinReturnsLinkedinIfDefined()
-    {
-        $contact = new Contact;
-        $contact->linkedin_profile_url = 'https://linkedin.com/johndoe';
-
-        $this->assertEquals(
-            'https://linkedin.com/johndoe',
-            $contact->getLinkedin()
-        );
-    }
-
-    public function test_getJob_returns_null()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getJob());
-    }
-
-    public function test_get_job_returns_job_if_defined()
-    {
-        $contact = new Contact;
-        $contact->job = 'actor';
-
-        $this->assertEquals(
-            'actor',
-            $contact->getJob()
-        );
-    }
-
-    public function test_getCompany_returns_null()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getCompany());
-    }
-
-    public function test_get_company_returns_company_if_defined()
-    {
-        $contact = new Contact;
-        $contact->company = 'Hollywood';
-
-        $this->assertEquals(
-            'Hollywood',
-            $contact->getCompany()
-        );
-    }
-
-    public function testGetPhoneReturnsNullIfPhoneIsUndefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getPhone());
-    }
-
-    public function testGetPhoneReturnsPhoneIfDefined()
-    {
-        $contact = new Contact;
-        $contact->phone_number = '123 456 7890';
-
-        $this->assertEquals(
-            '123 456 7890',
-            $contact->getPhone()
-        );
-    }
-
-    public function testGetKidsWithNoKid()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getKids()->count()
-        );
-    }
-
-    public function testGetKidsWithKids()
-    {
-        $user = factory(\App\User::class)->create();
-
-        $contact = factory(\App\Contact::class)->create();
-
-        $kids = factory(\App\Kid::class, 3)->create([
-            'child_of_contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getKids()->count()
-        );
-    }
-
-    public function testgetCurrentSignificantOtherWithNoData()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertNull($contact->getCurrentSignificantOther());
-    }
-
-    public function testgetCurrentSignificantOther()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertInstanceOf(SignificantOther::class, $contact->getCurrentSignificantOther());
-    }
-
-    public function testGetNumberOfKidsReturnsAnInteger()
-    {
-        $contact = new Contact;
-        $contact->number_of_kids = 3;
-
-        $this->assertInternalType('int', $contact->getNumberOfKids());
-    }
-
-    public function testGetNumberOfNotesReturnsAnInteger()
-    {
-        $contact = new Contact;
-        $contact->number_of_notes = 3;
-
-        $this->assertInternalType('int', $contact->getNumberOfNotes());
-    }
-
-    public function testGetNotesReturnsZeroWhenNoNotesAreDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getNotes()->count()
-        );
-    }
-
-    public function testGetNotesWithData()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $notes = factory(\App\Note::class, 3)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getNotes()->count()
-        );
-    }
-
-    public function testGetFoodPreferenciesReturnsNullWhenNotDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getFoodPreferencies());
-    }
-
-    public function testGetFoodPreferenciesReturnsDataWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->food_preferencies = 'Allergic to peanuts';
-
-        $this->assertEquals(
-            'Allergic to peanuts',
-            $contact->getFoodPreferencies()
-        );
-    }
-
     public function testUpdateFoodPreferenciesSetsNullIfEmptyValueGiven()
     {
         $contact = factory(\App\Contact::class)->create();
@@ -708,194 +354,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Some value',
-            $contact->getFoodPreferencies()
-        );
-    }
-
-    public function testAddSignificantOtherReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addSignificantOther(
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testEditSignificantOtherReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertInternalType(
-            'int',
-            $contact->editSignificantOther(
-                $significantOther->id,
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testDeleteSignificantOther()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $significantOther = factory(\App\SignificantOther::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $contact->deleteSignificantOther($significantOther->id);
-
-        $this->assertNull($contact->getCurrentSignificantOther());
-    }
-
-    public function testAddKidReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addKid(
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testEditKidReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $kid = factory(\App\Kid::class)->create([
-            'child_of_contact_id' => $contact->id,
-        ]);
-
-        $this->assertInternalType(
-            'int',
-            $contact->editKid(
-                $kid->id,
-                'John',
-                'male',
-                'approximate',
-                '2017-01-01',
-                1,
-                'America/New_York'
-            )
-        );
-    }
-
-    public function testAddNoteReturnsInteger()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $this->assertInternalType(
-            'int',
-            $contact->addNote('This is a test')
-        );
-    }
-
-    public function testDeleteNote()
-    {
-        $contact = factory(\App\Contact::class)->create();
-        $note = factory(\App\Note::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $contact->deleteNote($note->id);
-
-        $this->assertEquals(
-            0,
-            $contact->getNotes()->count()
-        );
-    }
-
-    public function testGetActivitiesReturns0WhenNoActivitiesDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getActivities()->count()
-        );
-    }
-
-    public function testGetActivitiesWithMultipleActivities()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $activity1 = factory(\App\Activity::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $activity2 = factory(\App\Activity::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $activity3 = factory(\App\Activity::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getActivities()->count()
-        );
-    }
-
-    public function testGetRemindersReturns0WhenNoRemindersDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getReminders()->count()
-        );
-    }
-
-    public function testGetRemindersWithMultipleReminders()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $reminder1 = factory(\App\Reminder::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $reminder2 = factory(\App\Reminder::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $reminder3 = factory(\App\Reminder::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $contact->getReminders()->count()
-        );
-    }
-
-    public function testGetGiftsReturns0WhenNoRemindersDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getGifts()->count()
+            $contact->food_preferencies
         );
     }
 
@@ -926,16 +385,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             0,
             $contact->getTasksInProgress()->count()
-        );
-    }
-
-    public function testGetTasksReturns0WhenNoTasksDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertEquals(
-            0,
-            $contact->getTasks()->count()
         );
     }
 
@@ -978,5 +427,185 @@ class ContactTest extends TestCase
         $this->assertFalse(
             $contact->hasDebt()
         );
+    }
+
+    public function test_update_last_called_info_method()
+    {
+        $date = '2017-01-22 17:56:03';
+        $contact = new Contact;
+        $call = new Call;
+        $call->called_at = $date;
+
+        $contact->updateLastCalledInfo($call);
+
+        $this->assertEquals(
+            $date,
+            $contact->last_talked_to
+        );
+
+        $otherContact = new Contact;
+        $otherContact->last_talked_to = '1990-01-01 01:01:01';
+
+        $otherContact->updateLastCalledInfo($call);
+
+        $this->assertEquals(
+            $date,
+            $otherContact->last_talked_to
+        );
+    }
+
+    public function test_set_birthday_method()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $birthdate = '1987-03-01 17:56:03';
+        $age = 30;
+
+        $contact = new Contact;
+        $contact->setBirthday('approximate', $birthdate, $age);
+
+        $this->assertEquals(
+            '1987-01-01',
+            $contact->birthdate->toDateString()
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->reminders->count()
+        );
+
+        $contact = new Contact;
+        $contact->setBirthday('unknown', $birthdate, $age);
+
+        $this->assertEquals(
+            null,
+            $contact->birthdate
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->reminders->count()
+        );
+
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $user = factory(\App\User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact->setBirthday('exact', $birthdate, $age);
+        $this->assertEquals(
+            '1987-03-01',
+            $contact->birthdate->toDateString()
+        );
+
+        $this->assertEquals(
+            1,
+            $contact->reminders->count()
+        );
+    }
+
+    public function test_set_birthdate_reminder_method()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $user = factory(\App\User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertNull(
+            $contact->birthday_reminder_id
+        );
+
+        $contact->setBirthdateReminder();
+
+        $this->assertNotNull(
+            $contact->birthday_reminder_id
+        );
+    }
+
+    /**
+     * @group test
+     */
+    public function test_get_possible_offsprings_does_not_return_contacts_who_are_already_children_of_the_contact()
+    {
+        $account = factory(\App\Account::class)->create();
+        $franck = factory(\App\Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        // partner
+        $john = factory(\App\Contact::class)->create([
+            'id' => 2,
+            'account_id' => $account->id,
+            'is_kid' => 1,
+        ]);
+
+        $offspring = factory(\App\Offspring::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $franck->id,
+            'is_the_child_of' => $john->id,
+        ]);
+
+        // additional contacts
+        $jane = factory(\App\Contact::class)->create([
+            'id' => 3,
+            'account_id' => $account->id,
+        ]);
+        $marie = factory(\App\Contact::class)->create([
+            'id' => 4,
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertEquals(
+            2,
+            $franck->getPotentialContacts()->count()
+        );
+    }
+
+    public function testIsOwedMoney()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+
+        $this->assertTrue($contact->isOwedMoney());
+    }
+
+    public function testIsNotOwedMoney()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+
+        $this->assertFalse($contact->isOwedMoney());
+    }
+
+    public function testTotalOutstandingDebtAmountIsCorrect()
+    {
+        /** @var Contact $contact */
+        $contact = factory(Contact::class)->create();
+
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+
+        $this->assertEquals(200, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+
+        $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300]));
+
+        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
+
+        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300, 'status' => 'complete']));
+
+        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
     }
 }

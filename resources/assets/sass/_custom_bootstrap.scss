@@ -29,7 +29,7 @@ $font-size-root: 14px;
 
 // Components
 //@import "bootstrap/animation";
-//@import "bootstrap/dropdown";
+@import "../../vendor/bootstrap/scss/_dropdown";
 //@import "bootstrap/button-group";
 //@import "bootstrap/input-group";
 //@import "bootstrap/custom-forms";
@@ -46,11 +46,11 @@ $font-size-root: 14px;
 // @import "bootstrap/media";
 // @import "bootstrap/list-group";
 // @import "bootstrap/responsive-embed";
-// @import "bootstrap/close";
+@import "../../vendor/bootstrap/scss/close";
 
 // Components w/ JavaScript
-// @import "bootstrap/modal";
-// @import "bootstrap/tooltip";
+@import "../../vendor/bootstrap/scss/modal";
+//@import "../../vendor/bootstrap/tooltip";
 // @import "bootstrap/popover";
 // @import "bootstrap/carousel";
 

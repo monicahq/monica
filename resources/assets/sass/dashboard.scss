@@ -69,17 +69,41 @@
 
   .section-icon {
     width: 19px;
+    position: relative;
+    top: -3px;
   }
 
   h3 {
-    display: inline;
+    display: inline-block;
     font-size: 16px;
     font-weight: 500;
+    padding-left: 5px;
+    margin-bottom: 10px;
   }
 
   .dashboard-section {
+    position: relative;
+
     &:not(:first-child) {
       margin-top: 20px;
+    }
+
+    .dashboard-item {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      padding: 5px 0;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-color;
+      }
+    }
+
+    .truncate {
+      display: table-cell;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -140,7 +164,12 @@
 
     .event-icon {
       display: inline;
-      margin-right: 10px;
+
+      img {
+        position: absolute;
+        top: 5px;
+        width: 19px;
+      }
     }
 
     .event-date {
@@ -152,7 +181,32 @@
 
     .event-description {
       display: inline;
+      position: relative;
       margin-right: 10px;
+      padding-left: 25px;
+
+      a {
+        color: #717171;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          color: #717171;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+
+  .dashboard {
+    .event-list-item {
+      .event-date {
+        display: block;
+        float: none;
+      }
     }
   }
 }
