@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add restriction of 50 characters for a first name, and 100 characters for a last name.
 * Add support for storing uploaded files on s3
 * Sort contacts by first name, last name when linking significant others and kids
 * Remove beginning / ending spaces in names when adding / saving a contact.

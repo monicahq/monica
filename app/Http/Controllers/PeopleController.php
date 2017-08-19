@@ -72,7 +72,8 @@ class PeopleController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:255',
+            'first_name' => 'required|max:50',
+            'last_name' => 'required|max:100',
             'gender' => 'required',
         ]);
 
@@ -146,7 +147,8 @@ class PeopleController extends Controller
     public function update(Request $request, Contact $contact)
     {
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required|max:255',
+            'firstname' => 'required|max:50',
+            'lastname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
         ]);
