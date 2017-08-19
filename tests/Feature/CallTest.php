@@ -66,7 +66,7 @@ class CallTest extends FeatureTestCase
 
         $params = [
             'called_at' => '2013-01-01',
-            'content' => null
+            'content' => null,
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
@@ -104,7 +104,7 @@ class CallTest extends FeatureTestCase
 
         $params = [
             'called_at' => '2013-01-01',
-            'content' => 'This is a test call'
+            'content' => 'This is a test call',
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
@@ -144,17 +144,12 @@ class CallTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'content' => 'this is a test',
-            'called_at' => '2013-01-01 00:00:00'
+            'called_at' => '2013-01-01 00:00:00',
         ]);
 
         $response = $this->get('/people/'.$contact->id);
 
-        // make sure the link to delete the call is on the page
-        $response->assertSee(
-            'people/'.$contact->id.'/call/'.$call->id.'/delete'
-        );
-
-        $response = $this->get('/people/'.$contact->id.'/call/'.$call->id.'/delete');
+        $response = $this->delete('/people/'.$contact->id.'/call/'.$call->id);
         $response->assertStatus(302);
 
         $params['id'] = $call->id;

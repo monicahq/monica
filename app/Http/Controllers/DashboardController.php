@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Event;
-use App\Task;
 use App\Debt;
-use Validator;
+use App\Event;
 use App\Contact;
-use App\Reminder;
 use Carbon\Carbon;
-use App\Http\Requests;
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -25,7 +20,7 @@ class DashboardController extends Controller
     {
         $account = Auth::user()->account()
             ->withCount(
-                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks', 'kids'
+                'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks'
             )->with('debts.contact')
             ->first();
 
@@ -49,25 +44,18 @@ class DashboardController extends Controller
             }, 0);
 
         // List of events
-        $events = $account->events()->with('contact.significantOthers', 'contact.kids')->limit(30)->get()
+        $events = $account->events()->limit(30)->get()
             ->reject(function (Event $event) {
                 return $event->contact === null;
             })
             ->map(function (Event $event) use ($account) {
-
-                if ($event->object_type === 'significantother') {
-                    $object = $event->contact->significantOthers->where('id', $event->object_id)->first();
-                } elseif ($event->object_type === 'kid') {
-                    $object = $event->contact->kids->where('id', $event->object_id)->first();
-                }
-
                 return [
                     'id' => $event->id,
                     'date' => DateHelper::createDateFromFormat($event->created_at, auth()->user()->timezone),
                     'object' => $object ?? null,
+                    'contact_id' => $event->contact->id,
                     'object_type' => $event->object_type,
                     'object_id' => $event->object_id,
-                    'contact_id' => $event->contact->id,
                     'contact_complete_name' => $event->contact->getCompleteName(auth()->user()->name_order),
                     'nature_of_operation' => $event->nature_of_operation,
                 ];
@@ -94,12 +82,11 @@ class DashboardController extends Controller
             'number_of_activities' => $account->activities_count,
             'number_of_gifts' => $account->gifts_count,
             'number_of_tasks' => $account->tasks_count,
-            'number_of_kids' => $account->kids_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
             'tasks' => $tasks,
             'debts' => $debt,
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ];
 
         return view('dashboard.index', $data);

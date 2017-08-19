@@ -45,6 +45,20 @@ return [
     // Header
     'edit_contact_information' => 'Upravit informace kontaktu',
 
+    // Calls
+    'modal_call_title' => 'Log a call',
+    'modal_call_comment' => 'What did you talk about? (optional)',
+    'modal_call_date' => 'The phone call happened earlier today.',
+    'modal_call_change' => 'Change',
+    'modal_call_exact_date' => 'The phone call happened on',
+    'calls_add_success' => 'The phone call has been saved.',
+    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
+    'call_delete_success' => 'The call has been deleted successfully',
+    'call_title' => 'Phone calls',
+    'call_empty_comment' => 'No details',
+    'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
+    'call_blank_desc' => 'You called :name',
+
     // age - birthday
     'birthdate_not_set' => 'Datum narození není zadáno',
     'age_approximate_in_years' => 'věk okolo :age',
@@ -106,8 +120,6 @@ return [
     'reminders_blank_add_activity' => 'Přidat upozornění',
     'reminders_add_title' => 'Na co chcete být upozorňováni pro osobu :name?',
     'reminders_add_description' => 'Prosím upozornit na...',
-    'reminders_add_predefined' => 'Předdefinované upozornění',
-    'reminders_add_custom' => 'Vlastní upozornění',
     'reminders_add_next_time' => 'Kdy budete chtít být na tuto skutečnost příště upozorněni?',
     'reminders_add_once' => 'Upozornit pouze jedenkrát',
     'reminders_add_recurrent' => 'Upozornit',
@@ -130,6 +142,7 @@ return [
     'reminders_type_week' => 'týdně',
     'reminders_type_month' => 'měsíčně',
     'reminders_type_year' => 'ročně',
+    'reminders_birthday' => 'Birthdate of :name',
 
     // significant other
     'significant_other_sidebar_title' => 'Drahá polovička',
@@ -144,10 +157,17 @@ return [
     'significant_other_add_cta' => 'Přidat drahou polovičku',
     'significant_other_edit_cta' => 'Upravit drahou polovičku',
     'significant_other_delete_confirmation' => 'Opravdu chcete smazat tuto drahou polovičku? Smazání je trvalé.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'Drahá polovička byla úspěšně přidána',
     'significant_other_edit_success' => 'Drahá polovička byla úspěšně aktualizována',
     'significant_other_delete_success' => 'Drahá polovička byla úspěšně smazána',
     'significant_other_add_birthday_reminder' => 'Popřát k narozeninám :name, drahá polovička od :contact_firstname',
+    'significant_other_add_person' => 'Add a new person',
+    'significant_other_link_existing_contact' => 'Link existing contact',
+    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
+    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
+    'contact_add_also_create_contact' => 'Create a Contact entry for this person.',
+    'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
     'kids_sidebar_title' => 'Děti',
@@ -159,6 +179,11 @@ return [
     'kids_add_gender' => 'Pohlaví',
     'kids_add_firstname' => 'Jméno',
     'kids_add_firstname_help' => 'Předpokládám, že příjmení je :name',
+    'kids_add_lastname' => 'Last name (optional)',
+    'kids_add_also_create' => 'Also create a Contact entry for this person.',
+    'kids_add_also_desc' => 'This will let you treat this kid like any other contact.',
+    'kids_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s kid at the moment.',
+    'kids_add_existing_contact' => 'Select an existing contact as the kid for :name',
     'kids_add_probably' => 'Toto dítě je asi',
     'kids_add_probably_yo' => 'let staré',
     'kids_add_exact' => 'Vím přesné datum narození tohoto dítěte, které je',
@@ -170,6 +195,7 @@ return [
     'kids_update_success' => 'Dítě bylo úspěšně aktualizován',
     'kids_delete_success' => 'Dítě bylo úspěšně smazáno',
     'kids_add_birthday_reminder' => 'Popřát k narozeninám :name, dítě od :contact_firstname',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
     'tasks_desc' => 'Udržovat přehled o detailech pro :name',

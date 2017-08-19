@@ -4,9 +4,8 @@ namespace App\Http\Controllers\People;
 
 use App\Call;
 use App\Contact;
-use Illuminate\Http\Request;
-use App\Http\Requests\People\CallsRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\People\CallsRequest;
 
 class CallsController extends Controller
 {
@@ -21,11 +20,11 @@ class CallsController extends Controller
     {
         $call = $contact->calls()->create(
             $request->only([
-                'called_at'
+                'called_at',
             ])
             + [
                 'content' => ($request->get('content') == '' ? null : $request->get('content')),
-                'account_id' => $contact->account_id
+                'account_id' => $contact->account_id,
             ]
         );
 
@@ -33,7 +32,7 @@ class CallsController extends Controller
 
         $contact->updateLastCalledInfo($call);
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.calls_add_success'));
     }
 
@@ -59,7 +58,7 @@ class CallsController extends Controller
             $contact->save();
         }
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.call_delete_success'));
     }
 }

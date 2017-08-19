@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SearchTest extends TestCase
 {
@@ -21,7 +21,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughFirstNameAndResultContainsContact()
     {
-        $contact = factory('App\Contact')->create([ 'first_name' => 'FirstName' ]);
+        $contact = factory('App\Contact')->create(['first_name' => 'FirstName']);
         $searchResults = $contact->search($contact->first_name, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -49,7 +49,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughEmailAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'email' => 'email@email.com' ]);
+        $contact = factory(\App\Contact::class)->create(['email' => 'email@email.com']);
         $searchResults = $contact->search($contact->email, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -58,7 +58,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughStreetAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'street' => 'Street' ]);
+        $contact = factory(\App\Contact::class)->create(['street' => 'Street']);
         $searchResults = $contact->search($contact->street, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -67,7 +67,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughPostalCodeAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'postal_code' => '33080', ]);
+        $contact = factory(\App\Contact::class)->create(['postal_code' => '33080']);
         $searchResults = $contact->search($contact->postal_code, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -76,7 +76,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughProvinceAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'province' => 'Province' ]);
+        $contact = factory(\App\Contact::class)->create(['province' => 'Province']);
         $searchResults = $contact->search($contact->province, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -85,7 +85,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughFoodPreferencesAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'food_preferencies' => 'Food Preference' ]);
+        $contact = factory(\App\Contact::class)->create(['food_preferencies' => 'Food Preference']);
         $searchResults = $contact->search($contact->food_preferencies, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));
@@ -94,7 +94,7 @@ class SearchTest extends TestCase
     /** @test */
     public function testSearchContactsThroughJobAndResultContainsContact()
     {
-        $contact = factory(\App\Contact::class)->create([ 'job' => 'Job' ]);
+        $contact = factory(\App\Contact::class)->create(['job' => 'Job']);
         $searchResults = $contact->search($contact->job, $contact->account_id);
 
         $this->assertTrue($searchResults->contains($contact));

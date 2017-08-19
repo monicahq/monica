@@ -4,22 +4,47 @@
     <strong>{{ trans('people.kids_sidebar_title') }}</strong>
   </p>
 
-  @if($contact->kids->count() === 0)
+  @if($contact->getOffsprings()->count() === 0)
     <p class="sidebar-box-paragraph">
       <a href="{{ route('people.kids.add', $contact) }}">{{ trans('people.kids_blank_cta') }}</a>
     </p>
   @else
     <ul class="people-list">
-      @foreach($contact->kids as $kid)
+      @foreach($contact->getOffsprings() as $kid)
       <li>
-        <span class="name">{{ $kid->first_name }}</span>
 
-        @if (! is_null($kid->age))
-          ({{ $kid->age }})
+        @if ($kid->is_kid)
+
+          <span class="name">{{ $kid->getCompleteName() }}</span>
+
+          @if (! is_null($kid->getAge()))
+            ({{ $kid->getAge() }})
+          @endif
+
+          <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_delete_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">{{ trans('app.delete') }}</a>
+
+          <form method="POST" action="{{ route('people.kids.delete', [$contact, $kid]) }}" class="entry-delete-form hidden">
+            {{ method_field('DELETE') }}
+            {{ csrf_field() }}
+          </form>
+
+        @else
+
+          <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName() }}</span></a>
+
+          @if (! is_null($kid->getAge()))
+            ({{ $kid->getAge() }})
+          @endif
+
+          <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_unlink_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
+
+          <form method="POST" action="{{ action('People\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
+            {{ csrf_field() }}
+          </form>
+
         @endif
 
-        <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
-        <a href="{{ route('people.kids.delete', [$contact, $kid]) }}" class="action-link" onclick="return confirm('{{ trans('people.kids_delete_confirmation') }}');">{{ trans('app.delete') }}</a>
       </li>
       @endforeach
     </ul>

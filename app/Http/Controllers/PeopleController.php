@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Note;
 use App\Tag;
 use Validator;
 use App\Contact;
-use App\Reminder;
-use Carbon\Carbon;
+use App\Offspring;
+use App\Progenitor;
+use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -41,11 +41,11 @@ class PeopleController extends Controller
                 return redirect()->route('people.index');
             }
 
-            $contacts = $user->account->contacts()->whereHas('tags', function ($query) use ($tag) {
-                                            $query->where('id', $tag->id);
-                                        })->sortedBy($sort)->get();
+            $contacts = $user->account->contacts()->real()->whereHas('tags', function ($query) use ($tag) {
+                $query->where('id', $tag->id);
+            })->sortedBy($sort)->get();
         } else {
-            $contacts = $user->account->contacts()->sortedBy($sort)->get();
+            $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
         return view('people.index')
@@ -87,10 +87,7 @@ class PeopleController extends Controller
         $contact->gender = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
-
-        $lastName = $request->input('last_name', null);
-        $lastName = $lastName ? ucfirst($lastName) : $lastName;
-        $contact->last_name = $lastName;
+        $contact->last_name = $request->input('last_name', null);
 
         $contact->is_birthdate_approximate = 'unknown';
         $contact->save();
@@ -110,12 +107,21 @@ class PeopleController extends Controller
      */
     public function show(Contact $contact)
     {
+        // make sure we don't display a significant other if it's not set as a
+        // real contact
+        if ($contact->is_significant_other or $contact->is_kid) {
+            return redirect('/people');
+        }
+
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
 
+        $reminders = $contact->getRemindersAboutRelatives();
+
         return view('people.profile')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withReminders($reminders);
     }
 
     /**
@@ -126,7 +132,6 @@ class PeopleController extends Controller
      */
     public function edit(Contact $contact)
     {
-
         return view('people.edit')
             ->withContact($contact);
     }
@@ -158,7 +163,8 @@ class PeopleController extends Controller
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = 'true';
-            $contact->avatar_file_name = $request->file('avatar')->store('avatars', 'public');
+            $contact->avatar_location = config('filesystems.default');
+            $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
         }
 
         if ($request->input('email') != '') {
@@ -215,56 +221,14 @@ class PeopleController extends Controller
             $contact->country_id = null;
         }
 
-        $birthdateApproximate = $request->input('is_birthdate_approximate');
-
-        if ($birthdateApproximate == 'approximate') {
-            $age = $request->input('age');
-            $year = Carbon::now()->subYears($age)->year;
-            $birthdate = Carbon::createFromDate($year, 1, 1);
-            $contact->birthdate = $birthdate;
-        } elseif ($birthdateApproximate == 'unknown') {
-            $contact->birthdate = null;
-        } else {
-            $birthdate = Carbon::createFromFormat('Y-m-d', $request->input('specificDate'));
-            $contact->birthdate = $birthdate;
-        }
-
-        $contact->is_birthdate_approximate = $birthdateApproximate;
+        $contact->is_birthdate_approximate = $request->input('is_birthdate_approximate');
         $contact->save();
 
-        if ($birthdateApproximate == 'exact') {
-
-            // check if a reminder was previously set for this birthdate
-            // if so, we delete the old reminder, and create a new one
-            if (! is_null($contact->birthday_reminder_id)) {
-                $contact->reminders->find($contact->birthday_reminder_id)->delete();
-            }
-
-            $reminder = Reminder::addBirthdayReminder(
-                $contact,
-                trans(
-                    'people.people_add_birthday_reminder',
-                    ['name' => $request->get('firstname')]
-                ),
-                $request->get('specificDate')
-            );
-
-            $contact->update([
-                'birthday_reminder_id' => $reminder->id,
-            ]);
-        } else {
-
-            // the birthdate is approximate or unknown. in both cases, we need
-            // to remove the previous reminder about the birthday if there was
-            // an existing one
-            if (! is_null($contact->birthday_reminder_id)) {
-                $contact->reminders->find($contact->birthday_reminder_id)->delete();
-
-                $contact->update([
-                    'birthday_reminder_id' => null,
-                ]);
-            }
-        }
+        $contact->setBirthday(
+            $request->get('is_birthdate_approximate'),
+            $request->get('specificDate'),
+            $request->get('age')
+        );
 
         $contact->logEvent('contact', $contact->id, 'update');
 
@@ -284,7 +248,7 @@ class PeopleController extends Controller
             $contact->save();
         }
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -298,14 +262,41 @@ class PeopleController extends Controller
     public function delete(Request $request, Contact $contact)
     {
         $contact->activities->each->delete();
+        $contact->calls->each->delete();
         $contact->debts->each->delete();
         $contact->events->each->delete();
         $contact->gifts->each->delete();
-        $contact->kids->each->delete();
         $contact->notes->each->delete();
         $contact->reminders->each->delete();
-        $contact->significantOthers->each->delete();
+        $contact->tags->each->delete();
         $contact->tasks->each->delete();
+
+        // delete all relationships
+        $relationships = Relationship::where('contact_id', $contact->id)
+                                    ->orWhere('with_contact_id', $contact->id)
+                                    ->get();
+
+        foreach ($relationships as $relationship) {
+            $relationship->delete();
+        }
+
+        // delete all offsprings
+        $offsprings = Offspring::where('contact_id', $contact->id)
+                                ->orWhere('is_the_child_of', $contact->id)
+                                ->get();
+
+        foreach ($offsprings as $offspring) {
+            $offspring->delete();
+        }
+
+        // delete all progenitors
+        $progenitors = Progenitor::where('contact_id', $contact->id)
+                                ->orWhere('is_the_parent_of', $contact->id)
+                                ->get();
+
+        foreach ($progenitors as $progenitor) {
+            $progenitor->delete();
+        }
 
         $contact->delete();
 
@@ -327,7 +318,7 @@ class PeopleController extends Controller
     }
 
     /**
-     * Save the work information
+     * Save the work information.
      *
      * @param Request $request
      * @param Contact $contact
@@ -345,7 +336,7 @@ class PeopleController extends Controller
 
         $contact->save();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -375,32 +366,33 @@ class PeopleController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
     /**
-     * Search used in the header
+     * Search used in the header.
      * @param  Request $request
      */
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $needle = $request->needle;
         $accountId = $request->accountId;
 
         if ($accountId != auth()->user()->account_id) {
-            return null;
+            return;
         }
 
-        if($needle == null) {
-            return null;
+        if ($needle == null) {
+            return;
         }
 
-        if($accountId == null) {
-            return null;
+        if ($accountId == null) {
+            return;
         }
 
         $results = Contact::search($needle, $accountId);
-        if(sizeof($results) !== 0) {
+        if (count($results) !== 0) {
             return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];

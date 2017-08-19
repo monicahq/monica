@@ -65,7 +65,7 @@ class ActivityTest extends FeatureTestCase
 
         $params = [
             'summary' => $activityTitle,
-            'date_it_happened' => $activityDate
+            'date_it_happened' => $activityDate,
         ];
 
         $response = $this->post('/people/'.$contact->id.'/activities/store', $params);
@@ -105,7 +105,7 @@ class ActivityTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
-            'date_it_happened' => \Carbon\Carbon::now()
+            'date_it_happened' => \Carbon\Carbon::now(),
         ]);
 
         // check that we can access the edit activity view
@@ -117,7 +117,7 @@ class ActivityTest extends FeatureTestCase
             'summary' => 'this is another test',
             'date_it_happened' => \Carbon\Carbon::now(),
             'activity_type_id' => null,
-            'description' => null
+            'description' => null,
         ];
 
         $this->put('/people/'.$contact->id.'/activities/'.$activity->id, $params);
@@ -154,17 +154,12 @@ class ActivityTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
-            'date_it_happened' => \Carbon\Carbon::now()
+            'date_it_happened' => \Carbon\Carbon::now(),
         ]);
 
         $response = $this->get('/people/'.$contact->id);
 
-        // make sure the link to delete the note is on the page
-        $response->assertSee(
-            'people/'.$contact->id.'/activities/'.$activity->id.'/delete'
-        );
-
-        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/delete');
+        $response = $this->delete('/people/'.$contact->id.'/activities/'.$activity->id);
         $response->assertStatus(302);
 
         $params['id'] = $activity->id;

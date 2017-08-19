@@ -9,13 +9,17 @@ return [
     'edit' => 'Editar',
     'upload' => 'Upload',
     'close' => 'Close',
+    'remove' => 'Remove',
+
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
 
     'header_settings_link' => 'Configurações',
     'header_logout_link' => 'Sair',
 
     'main_nav_cta' => 'Adicionar Pessoa',
     'main_nav_dashboard' => 'Painel',
-    'main_nav_family' => 'Pessoas',
+    'main_nav_family' => 'Contatos',
     'main_nav_journal' => 'Diário',
     'main_nav_activities' => 'Atividades',
     'main_nav_tasks' => 'Tarefas',
@@ -26,7 +30,7 @@ return [
     'footer_privacy' => 'Política de Privacidade',
     'footer_release' => 'Notas de versão',
     'footer_newsletter' => 'Newsletter',
-    'footer_source_code' => 'Monica on GitHub',
+    'footer_source_code' => 'Contribute',
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'A new version is available',
 
@@ -45,6 +49,8 @@ return [
     'breadcrumb_settings_import_report' => 'Import report',
     'breadcrumb_settings_import_upload' => 'Upload',
     'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_add_significant_other' => 'Add significant other',
+    'breadcrumb_edit_significant_other' => 'Edit significant other',
 
     'gender_male' => 'Homem',
     'gender_female' => 'Mulher',

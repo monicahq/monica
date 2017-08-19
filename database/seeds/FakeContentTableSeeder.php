@@ -1,14 +1,8 @@
 <?php
 
-use App\Kid;
-use App\Event;
 use App\Contact;
-use App\Reminder;
-use Carbon\Carbon;
 use Faker\Factory as Faker;
-use App\Helpers\RandomHelper;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -24,8 +18,6 @@ class FakeContentTableSeeder extends Seeder
         DB::table('users')->delete();
         DB::table('contacts')->delete();
         DB::table('reminders')->delete();
-        DB::table('significant_others')->delete();
-        DB::table('kids')->delete();
         DB::table('tasks')->delete();
         DB::table('notes')->delete();
         DB::table('activities')->delete();
@@ -49,7 +41,8 @@ class FakeContentTableSeeder extends Seeder
         $faker = Faker::create();
 
         // create a random number of contacts
-        $numberOfContacts = rand(3, 100);
+        //$numberOfContacts = rand(3, 100);
+        $numberOfContacts = 0;
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
@@ -61,7 +54,6 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $accountID,
                 'gender' => $gender,
                 'first_name' => $faker->firstName($gender),
-                'middle_name' => (rand(1, 2) == 1) ? $faker->firstName : null,
                 'last_name' => (rand(1, 2) == 1) ? $faker->lastName : null,
             ]);
 
@@ -94,35 +86,6 @@ class FakeContentTableSeeder extends Seeder
 
             $contact->save();
 
-            // create significant other data
-            if (rand(1, 3) == 1) {
-                $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-                $firstname = $faker->firstName($gender);
-                if (rand(1, 2) == 1) {
-                    $lastname = null;
-                } else {
-                    $lastname = $faker->lastName($gender);
-                }
-                $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
-                $age = rand(18, 78);
-                if (rand(1, 2) == 1) {
-                    $birthdate_approximate = 'unknown';
-                } else {
-                    $birthdate_approximate = 'exact';
-                }
-
-                $contact->significantOthers()->create(
-                    [
-                        'first_name' => $firstname,
-                        'gender' => $gender,
-                        'is_birthdate_approximate' => $birthdate_approximate,
-                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
-                        'account_id' => $contact->account_id,
-                        'status' => 'active',
-                    ]
-                );
-            }
-
             // create kids
             if (rand(1, 2) == 1) {
                 foreach (range(1, rand(2, 6)) as $index) {
@@ -153,7 +116,7 @@ class FakeContentTableSeeder extends Seeder
                 for ($j = 0; $j < rand(1, 13); $j++) {
                     $note = $contact->notes()->create([
                         'body' => $faker->realText(rand(40, 500)),
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('note', $note->id, 'create');
@@ -166,9 +129,9 @@ class FakeContentTableSeeder extends Seeder
                     $activity = $contact->activities()->create([
                         'summary' => $faker->realText(rand(40, 100)),
                         'date_it_happened' => $faker->date($format = 'Y-m-d', $max = 'now'),
-                        'activity_type_id' => rand(1,13),
+                        'activity_type_id' => rand(1, 13),
                         'description' => $faker->realText(rand(100, 1000)),
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('activity', $activity->id, 'create');
@@ -181,8 +144,8 @@ class FakeContentTableSeeder extends Seeder
                     $task = $contact->tasks()->create([
                         'title' => $faker->realText(rand(40, 100)),
                         'description' => $faker->realText(rand(100, 1000)),
-                        'status' => (rand(1,2) == 1 ? 'inprogress' : 'completed'),
-                        'account_id' => $contact->account_id
+                        'status' => (rand(1, 2) == 1 ? 'inprogress' : 'completed'),
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('task', $task->id, 'create');
@@ -193,11 +156,11 @@ class FakeContentTableSeeder extends Seeder
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 6); $j++) {
                     $debt = $contact->debts()->create([
-                        'in_debt' => (rand(1,2) == 1 ? 'yes' : 'no'),
-                        'amount' => rand(321,39391),
+                        'in_debt' => (rand(1, 2) == 1 ? 'yes' : 'no'),
+                        'amount' => rand(321, 39391),
                         'reason' => $faker->realText(rand(100, 1000)),
                         'status' => 'inprogress',
-                        'account_id' => $contact->account_id
+                        'account_id' => $contact->account_id,
                     ]);
 
                     $contact->logEvent('debt', $debt->id, 'create');
@@ -212,10 +175,10 @@ class FakeContentTableSeeder extends Seeder
                         'name' => $faker->realText(rand(10, 100)),
                         'comment' => $faker->realText(rand(1000, 5000)),
                         'url' => $faker->url,
-                        'value_in_dollars' => rand(12,120),
+                        'value_in_dollars' => rand(12, 120),
                         'account_id' => $contact->account_id,
                         'is_an_idea' => 'true',
-                        'has_been_offered' => 'false'
+                        'has_been_offered' => 'false',
                     ]);
 
                     $contact->logEvent('gift', $gift->id, 'create');

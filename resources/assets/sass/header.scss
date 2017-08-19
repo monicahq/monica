@@ -9,6 +9,13 @@ header {
 
 .logo {
   margin: 10px 15px;
+
+  a {
+    &:hover {
+      background-color: transparent;
+      color: #fff;
+    }
+  }
 }
 
 .header-search {

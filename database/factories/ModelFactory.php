@@ -22,13 +22,13 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_first',
-        'account_id' => factory('App\Account')->create()->id
+        'account_id' => factory('App\Account')->create()->id,
     ];
 });
 
 $factory->define(App\Account::class, function (Faker\Generator $faker) {
     return [
-        'api_key' => RandomHelper::generateString(30)
+        'api_key' => RandomHelper::generateString(30),
     ];
 });
 
@@ -61,6 +61,7 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Contact::class, function (Faker\Generator $faker) {
     return [
+        'id' => 1,
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -88,19 +89,22 @@ $factory->define(App\Task::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\SignificantOther::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => 1,
-        'contact_id' => 1,
-        'status' => 'active',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-    ];
-});
-
 $factory->define(App\Note::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'body' => encrypt($faker->text(200)),
+    ];
+});
+
+$factory->define(App\Relationship::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Offspring::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
     ];
 });
 
@@ -121,5 +125,11 @@ $factory->define(App\Country::class, function (Faker\Generator $faker) {
     return [
         'iso' => 'ca',
         'country' => 'Mali',
+    ];
+});
+
+$factory->define(App\Call::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
     ];
 });

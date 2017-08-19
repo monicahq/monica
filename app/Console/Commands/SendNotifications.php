@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Log;
 use App\User;
 use App\Account;
-use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
 use App\Jobs\SendReminderEmail;

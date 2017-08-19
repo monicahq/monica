@@ -8,6 +8,7 @@
 
 * [Introduction](#introduction)
    * [Purpose](#purpose)
+   * [Principles](#principles)
    * [Who is it for?](#who-is-it-for)
    * [What Monica isn't](#what-monica-isnt)
 * [Get started](#get-started)
@@ -44,6 +45,36 @@ friends and family. Like the activities done with them. When you last called
 someone. What you talked about. It will help you remember the name and the age
 of the kids. It can also remind you to call someone you haven't talked to in a
 while.
+
+### Principles
+
+* It should be open-source.
+* It should be transparent.
+* It should be simple to use, simple to contribute to, simple to
+understand, extremely simple to maintain.
+* It is not a social network and shall never be.
+* It should do one thing (organizing interactions) extremely well, and nothing
+more.
+* It should be well documented.
+* It should help have better relationships.
+
+### Features
+
+* Add and manage contacts
+* Add significant others and children
+* Auto reminders for birthdays
+* Reminders are sent by email
+* Management of debts
+* Ability to add notes to a contact
+* Management of activities done with a contact
+* Management of tasks
+* Management of gifts
+* Basic journal
+* Export and import of data
+* Multi users
+* Labels to organize contacts
+* Multi currencies
+* Multi languages
 
 ### Who is it for?
 
@@ -281,4 +312,4 @@ also reach me [on Twitter](https://twitter.com/djaiss).
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the AGPL License
+Licensed under the AGPL License.

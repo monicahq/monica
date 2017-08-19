@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ImportCSV',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\ImportVCards',
-        'App\Console\Commands\PingVersionServer'
+        'App\Console\Commands\PingVersionServer',
     ];
 
     /**

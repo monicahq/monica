@@ -26,7 +26,7 @@
     <p>{{ trans('people.tasks_desc', ['name' => $contact->getFirstName()]) }}</p>
 
     <ul class="table">
-      @foreach($contact->getTasks() as $task)
+      @foreach($contact->tasks as $task)
       <li class="table-row">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($task->created_at) }}
@@ -35,10 +35,15 @@
           {{ $task->title }}
         </div>
         <div class="table-cell list-actions">
-          <a href="/people/{{ $contact->id }}/tasks/{{ $task->id }}/delete" onclick="return confirm('{{ trans('people.tasks_delete_confirmation') }}')">
+          <a href="#" onclick="if (confirm('{{ trans('people.tasks_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
+
+        <form method="POST" action="{{ action('People\\TasksController@destroy', compact('contact', 'task')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
       </li>
       @endforeach
     </ul>

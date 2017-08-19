@@ -63,7 +63,7 @@ class NoteTest extends FeatureTestCase
         $noteBody = 'This is a note that I would like to see';
 
         $params = [
-            'body' => $noteBody
+            'body' => $noteBody,
         ];
 
         $response = $this->post('/people/'.$contact->id.'/notes/store', $params);
@@ -101,7 +101,7 @@ class NoteTest extends FeatureTestCase
         $note = factory(\App\Note::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'body' => 'this is a test',
         ]);
 
         // check that we can access the edit note view
@@ -110,7 +110,7 @@ class NoteTest extends FeatureTestCase
 
         // now edit the note
         $params = [
-            'body' => 'this is another test'
+            'body' => 'this is another test',
         ];
 
         $this->put('/people/'.$contact->id.'/notes/'.$note->id, $params);
@@ -146,17 +146,12 @@ class NoteTest extends FeatureTestCase
         $note = factory(\App\Note::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test'
+            'body' => 'this is a test',
         ]);
 
         $response = $this->get('/people/'.$contact->id);
 
-        // make sure the link to delete the note is on the page
-        $response->assertSee(
-            'people/'.$contact->id.'/notes/'.$note->id.'/delete'
-        );
-
-        $response = $this->get('/people/'.$contact->id.'/notes/'.$note->id.'/delete');
+        $response = $this->delete('/people/'.$contact->id.'/notes/'.$note->id);
         $response->assertStatus(302);
 
         $params['id'] = $note->id;

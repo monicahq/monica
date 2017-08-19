@@ -8,14 +8,18 @@ return [
     'delete' => 'Smazat',
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
-    'close' => 'Close',
+    'close' => 'Zavřít',
+    'remove' => 'Remove',
+
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_link' => 'Read documentation',
 
     'header_settings_link' => 'Nastavení',
     'header_logout_link' => 'Odhlásit',
 
     'main_nav_cta' => 'Přidat osobu',
     'main_nav_dashboard' => 'Dashboard',
-    'main_nav_family' => 'Osoby',
+    'main_nav_family' => 'Kontakty',
     'main_nav_journal' => 'Deník',
     'main_nav_activities' => 'Aktivity',
     'main_nav_tasks' => 'Úkoly',
@@ -28,10 +32,10 @@ return [
     'footer_newsletter' => 'Newsletter',
     'footer_source_code' => 'Monica na GitHubu',
     'footer_version' => 'Verze: :version',
-    'footer_new_version' => 'A new version is available',
+    'footer_new_version' => 'Je dostupná nová verze',
 
-    'footer_modal_version_whats_new' => 'What\'s new',
-    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
+    'footer_modal_version_whats_new' => 'Novinky',
+    'footer_modal_version_release_away' => 'Jste jedno vydání pozadu za nejnovější dostupnou verzí. Měli byste aktualizovat svou instanci.|Jste :number vydání pozadu za nejnovější dostupnou verzí. Měli byste aktualizovat svou instanci.',
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Seznam kontaktů',
@@ -45,6 +49,8 @@ return [
     'breadcrumb_settings_import_report' => 'Importovat report',
     'breadcrumb_settings_import_upload' => 'Nahrát',
     'breadcrumb_settings_tags' => 'Tagy',
+    'breadcrumb_add_significant_other' => 'Add significant other',
+    'breadcrumb_edit_significant_other' => 'Edit significant other',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',

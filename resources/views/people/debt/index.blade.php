@@ -23,7 +23,7 @@
   <div class="col-xs-12 debts-list">
 
     <ul class="table">
-      @foreach($contact->getDebts() as $debt)
+      @foreach($contact->debts as $debt)
       <li class="table-row">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}
@@ -49,12 +49,36 @@
           <a href="{{ route('people.debt.edit', ['people' => $contact->id, 'debtId' => $debt->id]) }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
-          <a href="/people/{{ $contact->id }}/debt/{{ $debt->id }}/delete" onclick="return confirm('{{ trans('people.debt_delete_confirmation') }}')">
+          <a href="#" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
+
+        <form method="POST" action="{{ action('People\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
       </li>
       @endforeach
+      <li class="table-row">
+        <div class="table-cell"></div>
+        <div class="table-cell">
+          <strong>
+            @if ($contact->isOwedMoney())
+              {{ trans('people.debt_they_owe', [
+                  'name' => $contact->getFirstName(),
+                  'amount' => MoneyHelper::format($contact->totalOutstandingDebtAmount())
+              ]) }}
+            @else
+              {{ trans('people.debt_you_owe', [
+                  'amount' => MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
+              ]) }}
+            @endif
+          </strong>
+        </div>
+        <div class="table-cell"></div>
+        <div class="table-cell"></div>
+      </li>
     </ul>
 
   </div>

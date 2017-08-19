@@ -56,7 +56,7 @@ class ActivitiesController extends Controller
         $contact->logEvent('activity', $activity->id, 'create');
         $contact->calculateActivitiesStatistics();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_add_success'));
     }
 
@@ -109,7 +109,7 @@ class ActivitiesController extends Controller
         $contact->logEvent('activity', $activity->id, 'update');
         $contact->calculateActivitiesStatistics();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_update_success'));
     }
 
@@ -128,7 +128,7 @@ class ActivitiesController extends Controller
 
         $contact->calculateActivitiesStatistics();
 
-        return redirect('/people/' . $contact->id)
+        return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_delete_success'));
     }
 }
