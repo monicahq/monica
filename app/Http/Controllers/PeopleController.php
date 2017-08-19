@@ -85,11 +85,9 @@ class PeopleController extends Controller
         $contact = new Contact;
         $contact->account_id = Auth::user()->account_id;
         $contact->gender = $request->input('gender');
-        $contact->first_name = ucfirst($request->input('first_name'));
 
-        if (! empty($request->input('last_name'))) {
-            $contact->last_name = ucfirst($request->input('last_name'));
-        }
+        $contact->first_name = $request->input('first_name');
+        $contact->last_name = $request->input('last_name', null);
 
         $contact->is_birthdate_approximate = 'unknown';
         $contact->save();
@@ -161,12 +159,7 @@ class PeopleController extends Controller
 
         $contact->gender = $request->input('gender');
         $contact->first_name = $request->input('firstname');
-
-        if ($request->input('lastname') != '') {
-            $contact->last_name = $request->input('lastname');
-        } else {
-            $contact->last_name = null;
-        }
+        $contact->last_name = $request->input('lastname');
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = 'true';

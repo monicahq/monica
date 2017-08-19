@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add support for storing uploaded files on s3
 * Sort contacts by first name, last name when linking significant others and kids
+* Remove beginning / ending spaces in names when adding / saving a contact.
 
 RELEASED VERSIONS:
 

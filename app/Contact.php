@@ -566,6 +566,29 @@ class Contact extends Model
     }
 
     /**
+     * Mutator first_name
+     *
+     * @param string|null $value
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucfirst(trim($value));
+    }
+
+    /**
+     * Mutator last_name
+     *
+     * It doesn't run ucfirst on purpose.
+     *
+     * @param string|null $value
+     */
+    public function setLastNameAttribute($value)
+    {
+        $value = $value ? trim($value) : null;
+        $this->attributes['last_name'] = $value;
+    }
+
+    /**
      * Log an event in the Event table about this contact.
      *
      * @param  string $objectType Contact, Activity, Kid,...
