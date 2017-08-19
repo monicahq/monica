@@ -290,7 +290,7 @@ class Contact extends Model
      */
     public function setFirstNameAttribute($value)
     {
-        $this->attributes['first_name'] = ucfirst(trim($value));
+        $this->attributes['first_name'] = trim($value);
     }
 
     /**
