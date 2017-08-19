@@ -284,6 +284,29 @@ class Contact extends Model
     }
 
     /**
+     * Mutator first_name.
+     *
+     * @param string|null $value
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = ucfirst(trim($value));
+    }
+
+    /**
+     * Mutator last_name.
+     *
+     * It doesn't run ucfirst on purpose.
+     *
+     * @param string|null $value
+     */
+    public function setLastNameAttribute($value)
+    {
+        $value = $value ? trim($value) : null;
+        $this->attributes['last_name'] = $value;
+    }
+
+    /**
      * Get user's initials.
      *
      * @return string
@@ -563,29 +586,6 @@ class Contact extends Model
         $this->default_avatar_color = $color ?? $colors[mt_rand(0, count($colors) - 1)];
 
         $this->save();
-    }
-
-    /**
-     * Mutator first_name
-     *
-     * @param string|null $value
-     */
-    public function setFirstNameAttribute($value)
-    {
-        $this->attributes['first_name'] = ucfirst(trim($value));
-    }
-
-    /**
-     * Mutator last_name
-     *
-     * It doesn't run ucfirst on purpose.
-     *
-     * @param string|null $value
-     */
-    public function setLastNameAttribute($value)
-    {
-        $value = $value ? trim($value) : null;
-        $this->attributes['last_name'] = $value;
     }
 
     /**
