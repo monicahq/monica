@@ -126,4 +126,27 @@ class User extends Authenticatable
         $this->contacts_sort_order = $preference;
         $this->save();
     }
+
+    /**
+     * Get social accounts user has linked with account
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function social()
+    {
+        return $this->hasMany(UserSocial::class);
+    }
+
+    /*
+     * returns true is users has already linked
+     *
+     * @param  string $service name of service to check
+     * @return boolean
+     */
+
+    public function hasSocialAccountLinked($service)
+    {
+        return (bool) $this->social()->where('service', $service)->count();
+    }
 }
