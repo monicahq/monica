@@ -8,6 +8,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 
 Auth::routes();
 
+Route::get('/login/{service}/', 'Auth\SocialLoginController@redirect');
+Route::get('/login/{service}/callback', 'Auth\SocialLoginController@callback');
+
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');

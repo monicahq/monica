@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e085b766f9c8dad64d874af56a4e6c9",
+    "content-hash": "f982e777945f584d8b5fa23555776198",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -134,6 +134,49 @@
                 "webprofiler"
             ],
             "time": "2017-07-21T11:56:48+00:00"
+        },
+        {
+            "name": "davidgorges/human-name-parser",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/davidgorges/HumanNameParser.php.git",
+                "reference": "0418268e7c6fdb4f624cb6f977fa4e84278a3a60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/davidgorges/HumanNameParser.php/zipball/0418268e7c6fdb4f624cb6f977fa4e84278a3a60",
+                "reference": "0418268e7c6fdb4f624cb6f977fa4e84278a3a60",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HumanNameParser\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Gorges",
+                    "email": "david.gorges@leaphub.de"
+                },
+                {
+                    "name": "Jason Priem",
+                    "email": "jason@jasonpriem.com"
+                }
+            ],
+            "description": "Parses a human name",
+            "time": "2014-10-08T19:01:21+00:00"
         },
         {
             "name": "doctrine/annotations",
