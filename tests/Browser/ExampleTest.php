@@ -3,8 +3,6 @@
 namespace Tests\Browser;
 
 use Tests\DuskTestCase;
-use Laravel\Dusk\Chrome;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ExampleTest extends DuskTestCase
 {
@@ -17,7 +15,7 @@ class ExampleTest extends DuskTestCase
     {
         $this->browse(function ($browser) {
             $browser->visit('/')
-                    ->assertSee('Laravel');
+                    ->assertSee('Login');
         });
     }
 }

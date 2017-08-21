@@ -13,6 +13,8 @@
           @if(isset($exception) && $exception->getMessage())
             <p>{{ $exception->getMessage() }}</p>
           @endif
+
+          <p><a href="/">{{ trans('auth.back_homepage') }}</a></p>
         </div>
 
       </div>

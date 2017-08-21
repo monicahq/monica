@@ -1,6 +1,6 @@
 <?php
 
-$config = [
+$db = [
 
     /*
     |--------------------------------------------------------------------------
@@ -130,11 +130,32 @@ $config = [
     ],
 
 ];
-
-if (substr($config['connections']['mysql']['host'], 0, 1) == '/') {
-    $config['connections']['mysql']['unix_socket'] = $config['connections']['mysql']['host'];
-    unset($config['connections']['mysql']['host']);
-    unset($config['connections']['mysql']['port']);
+    
+if (substr($db['connections']['mysql']['host'], 0, 1) == '/') {
+    $db['connections']['mysql']['unix_socket'] = $db['connections']['mysql']['host'];
+    unset($db['connections']['mysql']['host']);
+    unset($db['connections']['mysql']['port']);
 }
 
-return $config;
+/*
+ * If the instance is hosted on Heroku, then the database information
+ * needs to be parsed from the environment variable provided by Heroku.
+ * This is done below, added to the $db variable and then returned.
+ */
+if (env('HEROKU')) {
+    $url = parse_url(env('CLEARDB_DATABASE_URL'));
+
+    $db['connections']['heroku'] = [
+        'driver' => 'mysql',
+        'host' => $url['host'],
+        'port' => $url['port'],
+        'database' => substr($url['path'], 1),
+        'username' => $url['user'],
+        'password' => $url['pass'],
+        'charset' => 'utf8',
+        'prefix' => '',
+        'schema' => 'public',
+    ];
+}
+
+return $db;

@@ -8,3 +8,5 @@ Homestead.json
 .env
 monica.sublime-workspace
 /.idea
+/storage/oauth-private.key
+/storage/oauth-public.key

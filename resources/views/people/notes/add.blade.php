@@ -4,7 +4,7 @@
   <div class="people-show kids">
 
     {{-- Breadcrumb --}}
-    <div class="breadcrumb">
+    <div class="breadcrumb mb4">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12">
@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                <a href="/people/{{ $contact->id }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
+                {{ trans('app.breadcrumb_add_note') }}
               </li>
             </ul>
           </div>
@@ -24,34 +27,17 @@
       </div>
     </div>
 
-    <!-- Page header -->
-    @include('people._header')
-
     <!-- Page content -->
-    <div class="main-content modal">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/people/{{ $contact->id }}/note/save">
-              {{ csrf_field() }}
+    <div class="mw6 center mb4 ph3 ph0-ns">
 
-              @include('partials.errors')
+      <h2 class="f3 fw3 measure tc">{{ trans('people.notes_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+      <p>{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ trans('app.markdown_link') }}</a></p>
 
-              <h2>{{ trans('people.notes_add_title', ['name' => $contact->getFirstName()]) }}</h2>
-
-              {{-- Body note --}}
-              <div class="form-group">
-                <textarea class="form-control" id="body" name="body" rows="10"></textarea>
-              </div>
-
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('people.notes_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-              </div> <!-- .form-group -->
-            </form>
-          </div>
-        </div>
-      </div>
+      @include('people.notes.form', [
+        'method' => 'POST',
+        'action' => route('people.notes.store', $contact),
+        'buttonText' => trans('people.notes_add_cta')
+      ])
     </div>
 
   </div>

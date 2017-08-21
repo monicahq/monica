@@ -10,7 +10,7 @@
       {{-- Birthdate --}}
       <li>
         <i class="fa fa-birthday-cake"></i>
-        @if (is_null($contact->getBirthdate()))
+        @if (is_null($contact->birthdate))
           {{ trans('people.birthdate_not_set') }}
         @else
           {{ $contact->getAge() }}
@@ -30,11 +30,11 @@
       {{-- Email address --}}
       <li>
         <i class="fa fa-envelope-open-o"></i>
-        @if (is_null($contact->getEmail()))
+        @if (is_null($contact->email))
         {{ trans('people.information_no_email_defined') }}
         @else
-        <a href="mailto:{{ $contact->getEmail() }}">
-          {{ $contact->getEmail() }}
+        <a href="mailto:{{ $contact->email }}">
+          {{ $contact->email }}
         </a>
         @endif
       </li>
@@ -42,40 +42,32 @@
       {{-- Phone --}}
       <li>
         <i class="fa fa-volume-control-phone"></i>
-        @if (is_null($contact->getPhone()))
+        @if (is_null($contact->phone_number))
         {{ trans('people.information_no_phone_defined') }}
         @else
-        {{ $contact->getPhone() }}
+        <a href="tel:{{ $contact->phone_number }}">
+          {{ $contact->phone_number }}
+        </a>
         @endif
       </li>
 
       {{-- Facebook --}}
       <li>
         <i class="fa fa-facebook-official"></i>
-        @if (is_null($contact->getFacebook()))
+        @if (is_null($contact->facebook_profile_url))
         {{ trans('people.information_no_facebook_defined') }}
         @else
-        <a href="{{ $contact->getFacebook() }}">Facebook</a>
+        <a href="{{ $contact->facebook_profile_url }}">Facebook</a>
         @endif
       </li>
 
       {{-- Twitter --}}
       <li>
         <i class="fa fa-twitter-square"></i>
-        @if (is_null($contact->getTwitter()))
+        @if (is_null($contact->twitter_profile_url))
         {{ trans('people.information_no_twitter_defined') }}
         @else
-        <a href="{{ $contact->getTwitter() }}">Twitter</a>
-        @endif
-      </li>
-
-      {{-- LinkedIn --}}
-      <li>
-        <i class="fa fa-linkedin-square"></i>
-        @if (is_null($contact->getLinkedin()))
-        {{ trans('people.information_no_linkedin_defined') }}
-        @else
-        <a href="{{ $contact->getLinkedin() }}">LinkedIn</a>
+        <a href="{{ $contact->twitter_profile_url }}">Twitter</a>
         @endif
       </li>
     </ul>

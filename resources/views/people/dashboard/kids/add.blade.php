@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show kids">
+  <div class="people-show kid">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -16,7 +16,10 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+              </li>
+              <li>
+                Add a new kid
               </li>
             </ul>
           </div>
@@ -24,102 +27,78 @@
       </div>
     </div>
 
-    <!-- Page header -->
-    @include('people._header')
-
     <!-- Page content -->
-    <div class="main-content modal">
+    <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <form method="POST" action="/people/{{ $contact->id }}/kid/store">
-              {{ csrf_field() }}
 
-              @include('partials.errors')
+            <h2>{{ trans('people.kids_add_title', ['name' => $contact->getLastName()]) }}</h2>
 
-              <h2>{{ trans('people.kids_add_title', ['name' => $contact->getLastName()]) }}</h2>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#new" role="tab">
+                  {{ trans('people.significant_other_add_person') }}
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#existing" role="tab">
+                  {{ trans('people.significant_other_link_existing_contact') }}
+                </a>
+              </li>
+            </ul>
 
-              {{-- First name --}}
-              <div class="form-group">
-                <label for="firstname">{{ trans('people.kids_add_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" autofocus required>
+            <div class="tab-content">
+
+              {{-- New contact entry --}}
+              <div class="tab-pane active" id="new" role="tabpanel">
+
+                @include('people.dashboard.kids.form', [
+                  'method' => 'POST',
+                  'action' => route('people.kids.store', $contact),
+                  'buttonText' => trans('people.kids_add_cta')
+                ])
+
               </div>
 
-              {{-- Gender --}}
-              <label>{{ trans('people.people_add_gender') }}</label>
-              <fieldset class="form-group">
-                <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" checked>
-                  {{ trans('app.gender_none') }}
-                </label>
+              {{-- Existing contact entry --}}
+              <div class="tab-pane" id="existing" role="tabpanel">
 
-                <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male">
-                  {{ trans('people.kids_add_boy') }}
-                </label>
+                @if (count($contact->getPotentialContacts()) == 0)
 
-                <label class="form-check-inline">
-                  <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female">
-                  {{ trans('people.kids_add_girl') }}
-                </label>
-              </fieldset>
+                  <div class="significant-other-blank-state">
+                    <img src="/img/people/no_record_found.svg">
+                    <p>{{ trans('peopel.kids_add_no_existing_contact') }}</p>
+                  </div>
 
-              <fieldset class="form-group dates">
+                @else
 
-                {{-- Don't know the birthdate --}}
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="unknown" checked>
+                  <form method="POST" action="{{ route('people.kids.storeexisting', $contact) }}">
+                    {{ csrf_field() }}
 
-                    <div class="form-inline">
-                      {{ trans('people.significant_other_add_unknown') }}
+                    @include('partials.errors')
+
+                    <div class="form-group">
+                      <label for="existingKid">{{ trans('people.kids_add_existing_contact', ['name' => $contact->getFirstName()]) }}</label>
+                      <select class="form-control" name="existingKid" id="existingKid">
+                        @foreach ($contact->getPotentialContacts() as $kid)
+
+                          <option value="{{ $kid->id }}">{{ $kid->getCompleteName(auth()->user()->name_order) }}</option>
+
+                        @endforeach
+                      </select>
                     </div>
-                  </label>
-                </div>
 
-                {{-- Approximate birthdate --}}
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="birthdateApproximate" value="approximate">
-
-                    <div class="form-inline">
-                      {{ trans('people.kids_add_probably') }}
-
-                      <input type="number" class="form-control" name="age"
-                              value="1"
-                              min="1"
-                              max="99">
-
-                      {{ trans('people.kids_add_probably_yo') }}
+                    <div class="form-group actions">
+                      <button type="submit" class="btn btn-primary">{{ trans('people.kids_add_cta') }}</button>
+                      <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                     </div>
-                  </label>
-                </div>
+                  </form>
 
-                {{-- Exact birthdate --}}
-                <div class="form-check">
-                  <label class="form-check-label">
-                      <input type="radio" class="form-check-input" name="birthdateApproximate" value="exact">
-
-                      <div class="form-inline">
-                        {{ trans('people.kids_add_exact') }}
-                        <input type="date" name="specificDate" class="form-control"
-                              value="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-                      </div>
-                  </label>
-                </div>
-              </fieldset>
-
-              <div class="classname">
-                <p>{{ trans('people.kids_add_help') }}</p>
+                @endif
               </div>
 
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('people.kids_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-              </div> <!-- .form-group -->
-            </form>
+            </div>
           </div>
         </div>
       </div>

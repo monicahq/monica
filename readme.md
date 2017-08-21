@@ -8,42 +8,35 @@
 
 * [Introduction](#introduction)
    * [Purpose](#purpose)
+   * [Principles](#principles)
    * [Who is it for?](#who-is-it-for)
    * [What Monica isn't](#what-monica-isnt)
+* [Get started](#get-started)
+   * [Update your instance](#update-your-instance)
+* [Contribute as a developer](#contribute-as-a-developer)
+   * [How the community can help](#how-the-community-can-help)
 * [Vision, goals and strategy](#vision-goals-and-strategy)
    * [Vision](#vision)
    * [Goals](#goals)
    * [Strategy](#strategy)
+   * [Monetization](#monetization)
+      * [The API](#the-api)
    * [Why Open Source?](#why-open-source)
-* [Get started](#get-started)
-   * [Running with Docker](#running-with-docker)
-      * [Use docker-compose to run a pre-built image](#use-docker-compose-to-run-a-pre-built-image)
-      * [Use docker-compose to build and run your own image](#use-docker-compose-to-build-and-run-your-own-image)
-      * [Use Docker directly to run with your own database](#use-docker-directly-to-run-with-your-own-database)
-   * [Setup the project on your server](#setup-the-project-on-your-server)
-   * [Update your server](#update-your-server)
-* [Contribute as a developer](#contribute-as-a-developer)
-   * [Setup Monica](#setup-monica)
-   * [Setup the testing environment](#setup-the-testing-environment)
-   * [Front-end](#front-end)
-      * [Bower](#bower)
-      * [Watching and compiling assets](#watching-and-compiling-assets)
-      * [Bootstrap 4](#bootstrap-4)
-   * [Backend](#backend)
-      * [Email testing](#email-testing)
-      * [Email reminders](#email-reminders)
-   * [Statistics](#statistics)
-* [Contributing](#contributing)
-   * [How the community can help](#how-the-community-can-help)
+   * [Patreon](#patreon)
+* [Contact](#contact)
 * [License](#license)
 
 ## Introduction
 
-Monica is an open-source web application to manage your personal relationships.
-Think of it as a CRM for your friends or family. This is what it currently
-looks like:
+Monica is an open-source web application to organize the interactions with your
+loved ones. I call it a PRM, or Personal Relationship Management of software.
+Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management)
+(a popular tool used by sales teams in the corporate world) for your friends or
+family. This is what it currently looks like:
 
-![screenshot of the application](https://app.monicahq.com/img/screenshot.png)
+<p align="center">
+<img src="https://app.monicahq.com/img/main-app.png" alt="screenshot of the application">
+</p>
 
 ### Purpose
 
@@ -52,6 +45,36 @@ friends and family. Like the activities done with them. When you last called
 someone. What you talked about. It will help you remember the name and the age
 of the kids. It can also remind you to call someone you haven't talked to in a
 while.
+
+### Principles
+
+* It should be open-source.
+* It should be transparent.
+* It should be simple to use, simple to contribute to, simple to
+understand, extremely simple to maintain.
+* It is not a social network and shall never be.
+* It should do one thing (organizing interactions) extremely well, and nothing
+more.
+* It should be well documented.
+* It should help have better relationships.
+
+### Features
+
+* Add and manage contacts
+* Add significant others and children
+* Auto reminders for birthdays
+* Reminders are sent by email
+* Management of debts
+* Ability to add notes to a contact
+* Management of activities done with a contact
+* Management of tasks
+* Management of gifts
+* Basic journal
+* Export and import of data
+* Multi users
+* Labels to organize contacts
+* Multi currencies
+* Multi languages
 
 ### Who is it for?
 
@@ -76,8 +99,73 @@ social interactions.
 
 Monica is not a social network and never will be. It's not meant to be social.
 In fact, it's for your eyes only. Monica is also not a smart assistant - it
-won't guess what you want to do. In fact it's pretty dumb: it will send you
+won't guess what you want to do. It's pretty dumb: it will send you
 emails only for the things you asked to be reminded of.
+
+## Get started
+
+There are multiple ways of getting started with Monica.
+
+1. You can use our hosted-version (this is the simplest way to use the product)
+on [https://monicahq.com](https://monicahq.com).
+1. You can run it with Docker ([instructions](docs/installation/docker.md)).
+1. You can install it on your server
+([generic instructions](docs/installation/generic.md)).
+1. You can install it from scratch on Debian Stretch
+([instructions](docs/installation/debian.md)).
+1. You can deploy to Heroku ([instructions](docs/installation/heroku.md)).
+
+### Update your instance
+
+Once the software is installed, you'll need to update it from time to time to
+have access to the latest features. [Read this document](docs/installation/update.md)
+to learn how to do it.
+
+## Contribute as a developer
+
+[Installation instructions](/docs/contritube/contribute.md) for the developer version.
+
+We welcome contributions of all kinds from anyone. We do however have rules.
+
+* Monica is written with a great framework, Laravel. We care deeply about
+keeping Monica very simple on purpose. The simpler the code is, the simpler it
+will be to maintain it and debug it when needed. That means we don't want to
+make it a one page application, or add any kind of complexities whatsoever.
+* That means we won't accept pull requests that add too much complexity, or
+written in a way we don't understand. Again, the number 1 priority should be to
+simplify the maintenance on the long run.
+* When adding a feature, do not introduce a new software in the existing stack.
+For instance, at the moment, the current version does not require Redis to be
+used. If we do create a feature that (for some reasons) depends on Redis, we
+will need all existing instances to install Redis on top of all the other things
+people have to setup to install Monica (there are thousands of them). We can't
+afford to do that.
+* It's better to move forward fast by shipping good features, than waiting for
+months and ship a perfect feature.
+* Our product philosophy is simple. Things do not have to be perfect. They just
+need to be shipped. As long as it works and aligns with the vision, you should
+ship as soon as possible. Even if it's ugly, or very small, that does not
+matter.
+
+### How the community can help
+
+There are several ways to help this project to move forward:
+* Unlike Fight Club, the best way to help is to actually talk about the project
+as much as you can.
+* You can answer questions in the issue tracker to help other community members.
+* If you are a developer:
+   * Read our [Contribution Guide](/CONTRIBUTING.md).
+   * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+     if you are looking to have an immediate impact on the project.
+   * Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+     These are issues that you can solve relatively easily.
+   * If you are an advanced developer, you can try to tackle
+     [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
+     Beware though - they are harder to do and will require a lot of back and
+     forth with the repository administrator in order to make sure we are going
+     to the right direction with the product.
+   * Finally, and most importantly, we are looking for people willing to write
+     tests for the existing features.
 
 ## Vision, goals and strategy
 
@@ -122,9 +210,12 @@ Monica a successful platform.
 * Build importers and exporters of data. We don't want to have any vendor
 lock-ins. Data is the property of the users and they should be able to do
 whatever they want with it.
-* Create mobile apps.
-* Build great reports so people can have interesting insights.
-* Create a smart recommandation system for gifts. For instance, if my nephew is
+* Be the central point of contact management, by supporting CardDav protocol.
+* Be the central point of calendar events, by supporting CalDav protocol.
+* Be available on mobile apps, not just a responsive site.
+* Build great reports so people can have interesting insights on how they
+interact with their loved ones.
+* Create a smart recommendation system for gifts. For instance, if my nephew is
 soon 6 years old in a month, I will be able to receive an email with a list of
 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...
@@ -135,6 +226,43 @@ the people who wants to use Monica for dating purposes (yes, we've received this
 kind of feedback already).
 * Add functional and unit tests so the main features are tested. Stability is
 key.
+
+### Monetization
+
+The big topic. Yes, we plan to make money out of this tool to sustain it on the
+long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab
+and we believe this kind of business model is inspiring, where everyone wins.
+
+* On https://monicahq.com, Monica will be offered in two versions:
+  * a free plan (called **Joe**):
+    * No limits of contacts
+    * Importers/exporters
+    * Email reminders
+  * a paid plan (called **Chandler**):
+    * Advanced features
+    * People who contribute to the GitHub repository (with a pull request that
+    adds value, that gets merged (not a typo fix, for instance) will also have
+    access to the Paid version for free.
+* You can also **run it yourself**. This is the **Ross** version. This is
+sometimes also called on-premise. Download the code, run it on Heroku, with
+Docker. The choice is yours.
+  * The downloadable version will always be the most complete version - the same
+  offered on the paid plan on `.com`.
+  * This version will be completely free with no strings attached and you will
+  be in complete control.
+* There is a [Patreon account](https://www.patreon.com/monicahq) for those who
+still want to support the tool. Keep in mind that the best way to support it is
+to actually talk about it around you.
+
+There is currently not, and will never be, ads on the platform. I will never
+resell your data on `.com`. I'm like you: I hate big corporations that do not
+have at heart the best thing for their users, even if they say otherwise. The only
+way, therefore, to sustain the development of the product is to actually make
+money in a good-old fashioned way.
+
+#### The API
+
+The API will be opened to everyone, for both on `.com` and on-premises.
 
 ### Why Open Source?
 
@@ -170,338 +298,18 @@ influencers. Developers will create apps around your product, talk about it on
 forums, and tell about the project to their friends. Cherish the developers -
 users will follow.
 
-## Get started
+### Patreon
 
-We provide a hosted version of this application on https://monicahq.com.
+You can support the development of this tool
+[on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
 
-If you prefer to, you can simply clone the repository and set it up yourself on
-any hosting provider, for free. I'm just asking that you don't try to make
-money out of it yourself.
+## Contact
 
-To update your own instance, follow the instructions below.
-
-### Running with Docker
-
-You can use [Docker](https://www.docker.com) and
-[docker-compose](https://docs.docker.com/compose/) to pull or build
-and run a Monica image, complete with a self-contained MySQL database.
-This has the nice properties that you don't have to install lots of
-software directly onto your system, and you can be up and running
-quickly with a known working environment.
-
-Before you start, you need to get and edit a `.env` file. If you've already
-cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
-
-`$ cp .env.example .env`
-
-to create it. If not, you can fetch it from GitHub like:
-
-`$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env`
-
-Then open `.env` in an editor and update it for your own needs:
-
-- Set `APP_KEY` to a random 32-character string. For example, if you
-  have the `pwgen` utility installed, you could copy and paste the
-  output of `pwgen -s 32 1`.
-- Edit the `MAIL_*` settings to point to your own mailserver.
-
-Now select one of these methods to be up and running quickly:
-
-#### Use docker-compose to run a pre-built image
-
-This is the easiest and fastest way to try MonicaHQ! Use this process
-if you want to download the newest image from Docker Hub and run it
-with a pre-packaged MySQL database.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-```shell
-$ docker-compose pull
-$ docker-compose up
-```
-
-#### Use docker-compose to build and run your own image
-
-Use this process if you want to modify Monica source code and build
-your image to run.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
-
-Then run:
-
-```shell
-$ docker-compose build
-$ docker-compose up
-```
-
-#### Use Docker directly to run with your own database
-
-Use this process if you're a developer and want complete control over
-your Monica container.
-
-Edit `.env` again to set the `DB_*` variables to match your
-database. Then run:
-
-```shell
-$ docker build -t monicahq/monicahq .
-$ docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
-# ...or...
-$ docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
-```
-
-Note that uploaded files, like avatars, will disappear when you
-restart the container. Map a volume to
-`/var/www/monica/storage/app/public` if you want that data to persist
-between runs. See `docker-compose.yml` for examples.
-
-### Setup the project on your server
-
-If you don't want to use Docker, the best way to setup the project is to use the
-same configuration that [Homestead](https://laravel.com/docs/5.3/homestead)
-uses. Basically, Monica depends on the following:
-
-* PHP 7.0+
-* MySQL, SQLite or Postgre
-* Git
-* Composer
-* Optional: Redis or Beanstalk
-
-The preferred OS distribution is Ubuntu 16.04, simply because all the
-development is made on it and we know it works. However, any OS that lets you
-install the above packages should work.
-
-Once the softwares above are installed, clone the repository and proceed as
-follow:
-
-1. `composer install` in the folder the repository has been cloned.
-1. `cp .env.example .env` to configure Monica.
-1. Update `.env` with your specific needs.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Create a database called `monica`.
-1. `php artisan migrate` to run all migrations.
-1. `php artisan storage:link` to enable avatar uploads for the contacts.
-1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-1. In order for the reminders to be sent (reminders are created inside the
-  application and associated to contacts), you need to setup a cron that runs
-  every minute with the following command `php artisan schedule:run`.
-
-**Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
-
-Monica can work with a queue mechanism to handle different events, so we don't
-block the main thread while processing stuff that can be run asynchronously,
-like sending emails. By default, Monica does not use a queue mechanism but can
-be setup to do so.
-
-There are three choices for the queue mechanism:
-* Database (this will use the database used by the application to act as a queue)
-* Redis
-* Beanstalk
-* Amazon SQS
-
-The simplest queue is the database driver. To set it up, simply change in your
-`.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
-
-To configure the other queues, refer to the
-[official Laravel documentation](https://laravel.com/docs/5.4/queues#driver-prerequisites)
-on the topic.
-
-### Update your server
-
-There is no concept of releases at the moment. If you run the project locally,
-or if you have installed Monica on your own server, you need to follow these
-steps below to update it, **every single time**, or you will run into problems.
-
-```
-git pull origin master
-composer update
-php artisan migrate
-```
-
-That should be it.
-
-## Contribute as a developer
-
-You want to help build Monica? That's awesome. We can't thank you enough.
-
-### Setup Monica
-
-The best way to contribute to Monica is to use
-[Homestead](https://laravel.com/docs/5.3/homestead), which is an official,
-pre-packaged Vagrant box that provides you a wonderful development environment
-without requiring you to install PHP, a web server, and any other server
-software on your local machine. The big advantage is that it runs on any
-Windows, Mac, or Linux system.
-
-This is what is used to develop Monica and will provide a common base for
-everyone who wants to contribute to the project. Once Homestead is installed,
-you can pull the repository and start setup Monica.
-
-1. `composer install` in the folder the repository has been cloned.
-1. `cp .env.example .env`
-1. Update `.env` to your specific needs.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. `npm install` to install bower and gulp.
-1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create a database called `monica`.
-1. `php artisan migrate` to run all migrations.
-1. `php artisan storage:link` to access the avatars.
-1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-
-**Optional step**: Seeding the database with fake data
-
-This step is to populate the instance with fake data, so you can test with real
-data instead of lorem ipsum.
-
-1. `php artisan db:seed --class FakeContentTableSeeder` to load all seeds.
-
-Note that this will create two accounts:
-
-* First account is `admin@admin.com` with the password `admin`. This account
-contains a lot of fake data that will let you play with the product.
-* Second account is `blank@blank.com` with the password `blank`. This account
-does not contain any data and shall be used to check all the blank states.
-
-### Setup the testing environment
-
-Monica uses the testing capabilities of Laravel to do unit and functional
-testing. While all code will have to go through to Travis before being merged,
-tests can still be executed locally before pushing them. In fact, we encourage
-you strongly to do it first.
-
-To setup the test environment, create a separate testing database locally:
-
-* Create a database called `monica_test`
-
-Then you need to run the migrations specific to the testing database and runs
-the seeders to populate it:
-
-* `php artisan migrate --database testing`
-* `php artisan db:seed --database testing`
-
-Once this is done, you have to use `phpunit` command every time you want to run
-the test suite.
-
-Each time the schema of the database changes, you need to run again the
-migrations and the seeders by running the two commands above.
-
-### Front-end
-
-#### Bower
-
-We use Bower to manage front-end dependencies. The first time you install the
-project, you need to `bower install` in the root of the project. When you want
-to update the dependencies, run `bower update`.
-
-To install a new package, use `bower install jquery -S`. The `-S` option is to
-update `bower.json` to lock the specific version.
-
-All the assets are stored in `resources/vendor`.
-
-#### Watching and compiling assets
-
-CSS is written in SASS and therefore needs to be compiled before being used by
-the application. To compile those front-end assets, use `gulp`.
-
-To monitor changes and compile assets on the fly, use `gulp watch`.
-
-#### Bootstrap 4
-
-At the current time, we are using Bootstrap 4 Alpha 2. Not everything though -
-we do use only what we need. I would have wanted to use something completely
-custom, but why reinvent the wheel? Anyway, make sure you don't update this
-dependency with Bower. If you do, make sure that everything is thoroughly tested
-as when Bootstrap changes version, a lot of changes are introduced.
-
-### Backend
-
-#### Email testing
-
-Emails are an important of Monica. Emails are still the most significant mean
-of communication and people like receiving them when they are relevant. That
-being said, you will need to test emails to make sure they contain what they
-should contain.
-
-For development purposes, you have two choices to test emails:
-
-1. You can use [Mailtrap](https://mailtrap.io/). This is an amazing service that
-provides a free plan that is plenty enough to test all the emails that are sent.
-1. If you use Homestead to code on your local machine, you can use
-[mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you
-first need to start mailhog (`sudo service mailhog restart`). Then, head up to
-http://localhost:8025 in your browser to load Mailhog's UI.
-
-If you want to use mailhog, you need the following settings in your `.env` file:
-
-```
-MAIL_DRIVER=smtp
-MAIL_HOST=0.0.0.0
-MAIL_PORT=1025
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_ENCRYPTION=
-```
-
-#### Email reminders
-
-Reminders are generated and sent using an Artisan command
-`monica:sendnotifications`. This command is scheduled to be triggered every hour
-in `app/console/Kernel.php`.
-
-### Statistics
-
-Monica calculates every night (ie once per day) a set of metrics to help you
-understand how the instance is being used by users. That will also allow to
-measure growth over time.
-
-Statistics are generated by the Artisan command `monica:calculatestatistics`
-every night at midnight and this cron is defined in `app/console/Kernel.php`.
-
-## Contributing
-
-We welcome contributions of all kinds from anyone. We do however have rules.
-
-* Monica is written with a great framework, Laravel. We care deeply about
-keeping Monica very simple on purpose. The simpler the code is, the simpler it
-will be to maintain it and debug it when needed. That means we don't want to
-make it a one page application, or add any kind of complexities whatsoever.
-* That means we won't accept pull requests that add too much complexity, or
-written in a way we don't understand. Again, the number 1 priority should be to
-simplify the maintenance on the long run.
-* It's better to move forward fast by shipping good features, than waiting for
-months and ship a perfect feature.
-* Our product philosophy is simple. Things do not have to be perfect. They just
-need to be shipped. As long as it works and aligns with the vision, you should
-ship as soon as possible. Even if it's ugly, or very small, that does not
-matter.
-
-### How the community can help
-
-There are several ways to help this project to move forward:
-* Unlike Fight Club, the best way to help is to actually talk about the project
-as much as you can.
-* You can answer questions in the issue tracker to help other community members.
-* Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
- if you are looking to have an immediate impact on the project.
-* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
- These are issues that you can solve relatively easily.
- * If you are an advanced developer, you can try to tackle
- [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22).
- Beware though - they are harder to do and will require a lot of back and forth
- with the repository administrator in order to make sure we are going to the right
- direction with the product.
-* Finally, and most importantly, we are looking for people willing to write
- tests for the existing features.
+If you need to talk, you can contact me at regis AT monicahq DOT com. You can
+also reach me [on Twitter](https://twitter.com/djaiss).
 
 ## License
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the AGPL License
+Licensed under the AGPL License.

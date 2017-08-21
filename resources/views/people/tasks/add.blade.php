@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -28,7 +28,7 @@
     @include('people._header')
 
     <!-- Page content -->
-    <div class="main-content tasks modal">
+    <div class="main-content tasks central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
@@ -42,17 +42,17 @@
               {{-- First name --}}
               <div class="form-group">
                 <label for="title">{{ trans('people.tasks_add_title') }}</label>
-                <input type="text" class="form-control" name="title" value="" autofocus required>
+                <input type="text" class="form-control" name="title" id="title" value="{{ old('title') ?? $task->description }}" autofocus required>
               </div>
 
               <div class="form-group">
-                <label for="comment">{{ trans('people.tasks_add_optional_comment') }}</label>
-                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                <label for="description">{{ trans('people.tasks_add_optional_comment') }}</label>
+                <textarea class="form-control" id="description" name="description" rows="3">{{ old('description') ?? $task->description }}</textarea>
               </div>
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.tasks_add_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

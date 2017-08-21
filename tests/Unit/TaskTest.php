@@ -3,11 +3,8 @@
 namespace Tests\Unit;
 
 use App\Task;
-use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase
@@ -63,18 +60,26 @@ class TaskTest extends TestCase
 
         $task = factory(\App\Task::class)->make([
             'contact_id' => $contact->id,
+            'status' => 'inprogress',
         ]);
 
-        $task->status == 'inprogress';
-
         $this->assertEquals(
-            $task->status == 'complete',
-            $task->toggle()
+            'inprogress',
+            $task->status
         );
 
+        $task->toggle();
+
         $this->assertEquals(
-            $task->status == 'inprogress',
-            $task->toggle()
+            'completed',
+            $task->status
+        );
+
+        $task->toggle();
+
+        $this->assertEquals(
+            'inprogress',
+            $task->status
         );
     }
 }

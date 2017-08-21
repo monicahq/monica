@@ -10,11 +10,11 @@
 </div>
 
 
-@if ($contact->getNumberOfReminders() == 0)
+@if ($reminders->count() === 0)
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="/people/{{ $contact->id }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
@@ -25,52 +25,48 @@
 
     <p>{{ trans('people.reminders_description') }}</p>
 
-    <table class="table table-sm table-hover">
-      <thead>
-        <tr>
-          <th>{{ trans('people.reminders_date') }}</th>
-          <th>{{ trans('people.reminders_frequency') }}</th>
-          <th>{{ trans('people.reminders_content') }}</th>
-          <th class="actions">{{ trans('people.reminders_actions') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($contact->getReminders() as $reminder)
-          <tr>
-            <td class="date">{{ $reminder->getNextExpectedDate() }}</td>
+    <ul class="table">
+      @foreach($reminders as $reminder)
+      <li class="table-row">
 
-            <td class="date">
-              @if ($reminder->frequency_type != 'one_time')
-                {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
-              @else
-                {{ trans('people.reminders_one_time') }}
-              @endif
-            </td>
+        <div class="table-cell date">
+          {{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }}
+        </div>
 
-            <td>
-              {{ $reminder->getTitle() }}
-            </td>
+        <div class="table-cell frequency-type">
+          @if ($reminder->frequency_type != 'one_time')
+            {{ trans_choice('people.reminder_frequency_'.$reminder->frequency_type, $reminder->frequency_number, ['number' => $reminder->frequency_number]) }}
+          @else
+            {{ trans('people.reminders_one_time') }}
+          @endif
+        </div>
 
-            <td class="actions">
+        <div class="table-cell title">
+          {{ $reminder->getTitle() }}
+        </div>
 
-              <div class="reminder-actions">
-                <ul class="horizontal">
-                  <li><a href="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}/delete" onclick="return confirm('{{ trans('people.reminders_delete_confirmation') }}')">{{ trans('people.reminders_delete_cta') }}</a></li>
-                </ul>
-              </div>
-
-            </td>
-
+        <div class="table-cell comment">
             @if (!is_null($reminder->getDescription()))
-            <td class="reminder-comment">
               {{ $reminder->getDescription() }}
-            </td>
             @endif
+        </div>
 
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+        <div class="table-cell list-actions">
+          {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
+          @if ($reminder->is_birthday == false)
+            <a href="#" onclick="if (confirm('{{ trans('people.reminders_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
+              <i class="fa fa-trash-o" aria-hidden="true"></i>
+            </a>
+          @endif
+        </div>
+
+        <form method="POST" action="{{ action('People\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
+          {{ method_field('DELETE') }}
+          {{ csrf_field() }}
+        </form>
+      </li>
+      @endforeach
+    </ul>
   </div>
 
 @endif

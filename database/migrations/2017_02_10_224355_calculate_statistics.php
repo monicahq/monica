@@ -1,15 +1,11 @@
 <?php
 
-use App\Kid;
 use App\Gift;
 use App\Note;
 use App\Task;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CalculateStatistics extends Migration
@@ -23,12 +19,6 @@ class CalculateStatistics extends Migration
     {
         Contact::unsetEventDispatcher();
         foreach (Contact::all() as $contact) {
-            $contact->number_of_kids = Kid::where('child_of_contact_id', $contact->id)->count();
-
-            if ($contact->number_of_kids > 0) {
-                $contact->has_kids = 'true';
-            }
-
             $contact->number_of_reminders = Reminder::where('contact_id', $contact->id)->count();
             $contact->number_of_notes = Note::where('contact_id', $contact->id)->count();
             $contact->number_of_activities = Activity::where('contact_id', $contact->id)->count();
@@ -38,15 +28,5 @@ class CalculateStatistics extends Migration
             $contact->number_of_tasks_completed = Task::where('contact_id', $contact->id)->where('status', 'completed')->count();
             $contact->save();
         }
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        //
     }
 }

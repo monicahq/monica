@@ -8,10 +8,18 @@ class Entry extends Model
 {
     protected $table = 'entries';
 
+    /**
+     * Get the account record associated with the entry.
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Account');
+    }
+
     public function getPost()
     {
         if (is_null($this->post)) {
-            return null;
+            return;
         }
 
         return $this->post;
@@ -20,7 +28,7 @@ class Entry extends Model
     public function getTitle()
     {
         if (is_null($this->title)) {
-            return null;
+            return;
         }
 
         return $this->title;

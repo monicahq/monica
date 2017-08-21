@@ -25,7 +25,7 @@
     </div>
 
     <!-- Page content -->
-    <div class="main-content modal">
+    <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
@@ -38,13 +38,13 @@
 
               {{-- Optional title --}}
               <div class="form-group">
-                <label for="title">{{ trans('journal.journal_add_title') }}</label>
-                <input type="text" class="form-control" name="title" autofocus>
+                <label for="field-title">{{ trans('journal.journal_add_title') }}</label>
+                <input type="text" id="field-title" class="form-control" name="title" autofocus>
               </div>
 
               <div class="form-group">
-                <label for="entry">{{ trans('journal.journal_add_post') }}</label>
-                <textarea class="form-control" name="entry" required></textarea>
+                <label for="field-entry">{{ trans('journal.journal_add_post') }}</label>
+                <textarea class="form-control" id="field-entry" name="entry" required></textarea>
               </div>
 
               <div class="form-group actions">

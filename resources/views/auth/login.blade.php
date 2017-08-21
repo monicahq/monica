@@ -30,15 +30,15 @@
               </div>
 
               <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="remember" checked> Remember Me
+                <label for="remember">
+                  <input type="checkbox" name="remember" id="remember" checked> Remember Me
                 </label>
               </div>
 
               <div class="form-group links">
                 <ul>
                   <li>Forget your password? <a href="/password/reset">Reset your password</a></li>
-                  @if(env('APP_DISABLE_SIGNUP') != 'true')
+                  @if(config('monica.disable_signup') == false)
                     <li>Don't have an account? <a href="/register">Sign up</a></li>
                   @endif
                 </ul>

@@ -1,8 +1,6 @@
 <?php
 
 use App\Entry;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveEncryptionJournal extends Migration
@@ -17,11 +15,11 @@ class RemoveEncryptionJournal extends Migration
         $entries = Entry::all();
         foreach ($entries as $entry) {
             echo $entry->id.' ';
-            if (!is_null ($entry->title)) {
+            if (! is_null($entry->title)) {
                 $entry->title = decrypt($entry->title);
             }
 
-            if (!is_null ($entry->post)) {
+            if (! is_null($entry->post)) {
                 $entry->post = decrypt($entry->post);
             }
 

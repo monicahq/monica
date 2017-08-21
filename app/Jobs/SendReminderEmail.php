@@ -4,14 +4,12 @@ namespace App\Jobs;
 
 use App\User;
 use App\Reminder;
-use Carbon\Carbon;
 use App\Mail\UserReminded;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Jobs\SetNextReminderDate;
 
 class SendReminderEmail implements ShouldQueue
 {
@@ -39,6 +37,5 @@ class SendReminderEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->user->email)->send(new UserReminded($this->reminder, $this->user));
-        dispatch(new SetNextReminderDate($this->reminder, $this->user));
     }
 }

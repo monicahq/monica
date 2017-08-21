@@ -2,15 +2,13 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
 use App\Country;
+use Illuminate\View\View;
 
 class CountrySelectViewComposer
 {
-
     public function __construct()
     {
-
     }
 
     /**
@@ -21,7 +19,7 @@ class CountrySelectViewComposer
      */
     public function compose(View $view)
     {
-      $countries = Country::orderBy('country', 'asc')->get();
-      $view->with('countries', $countries );
+        $countries = Country::orderBy('country', 'asc')->get();
+        $view->with('countries', $countries);
     }
 }
