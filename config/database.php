@@ -130,7 +130,15 @@ $db = [
     ],
 
 ];
-    
+
+/*
+ * If the database host starts with a /, it is likely to be used with a
+ * unix socket. We can safely unset the host and the port since they
+ * likely won't be used in this configuration. This configurion likely
+ * won't be used in production, but rather when running with MAMP, XAMPP,
+ * WAMP, etc.
+ */
+
 if (substr($db['connections']['mysql']['host'], 0, 1) == '/') {
     $db['connections']['mysql']['unix_socket'] = $db['connections']['mysql']['host'];
     unset($db['connections']['mysql']['host']);
