@@ -143,7 +143,7 @@ function Search() {
             window.setTimeout(function () {
                 search.input.val('');
                 $('.header-search-result').remove();
-            }, 50);
+            }, 150);
         });
     }
 }
