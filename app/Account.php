@@ -36,6 +36,15 @@ class Account extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'free_account' => 'boolean',
+    ];
+
+    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany
@@ -246,6 +255,10 @@ class Account extends Model
      */
     public function isSubscribed()
     {
+        if ($this->free_account) {
+            return true;
+        }
+
         $isSubscribed = false;
 
         if ($this->subscribed(config('monica.paid_plan_friendly_name'))) {
@@ -285,5 +298,30 @@ class Account extends Model
                             ->data[0]['current_period_end'];
 
         return \App\Helpers\DateHelper::getShortDate($timestamp);
+    }
+
+    /**
+     * Indicates whether the current account has the right to access the
+     * @return bool
+     */
+    public function canAccess()
+    {
+        if ($this->free_account) {
+            return true;
+        }
+
+        if (! config('monica.requires_subscription')) {
+            return true;
+        }
+
+        if ($this->isSubscribed()) {
+            return true;
+        }
+
+        if ($this->contacts->count() >= config('monica.paid_plan_contact_limit')) {
+            return false;
+        }
+
+        return true;
     }
 }

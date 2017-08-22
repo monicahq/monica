@@ -65,8 +65,11 @@ class SendNotifications extends Command
             }
 
             if ($sendEmailToUser == true) {
-                foreach ($account->users as $user) {
-                    dispatch(new SendReminderEmail($reminder, $user));
+
+                if ($account->canAccess()) {
+                    foreach ($account->users as $user) {
+                        dispatch(new SendReminderEmail($reminder, $user));
+                    }
                 }
 
                 dispatch(new SetNextReminderDate($reminder, $userTimezone));

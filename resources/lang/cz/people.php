@@ -17,6 +17,9 @@ return [
     'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem <span class="pretty-tag">:name</span>',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '{0} 0 kontaktů|{1,1} 1 kontakt|{2,*} :count kontaktů',
+    'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
+    'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
+    'people_list_account_upgrade_cta' => 'Upgrade now',
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
@@ -143,6 +146,7 @@ return [
     'reminders_type_month' => 'měsíčně',
     'reminders_type_year' => 'ročně',
     'reminders_birthday' => 'Birthdate of :name',
+    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Drahá polovička',
