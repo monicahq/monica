@@ -10,7 +10,7 @@
 
         <h2>{{ trans('people.people_add_title') }}</h2>
 
-        @if (auth()->user()->account->isSubscribed() and config('monica.requires_subscription'))
+        @if (auth()->user()->account->canAccess() and auth()->user()->account->isSubscribed())
           <p class="import">{!! trans('people.people_add_import') !!}</p>
         @endif
 
