@@ -60,7 +60,7 @@ class PeopleController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->account->canAccess()) {
+        if (! auth()->user()->account->canAccess()) {
             return redirect()->route('settings.subscriptions.index');
         }
 

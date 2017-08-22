@@ -301,7 +301,8 @@ class Account extends Model
     }
 
     /**
-     * Indicates whether the current account has the right to access the
+     * Indicates whether the current account can access what he needs to access
+     * with his current plan.
      * @return bool
      */
     public function canAccess()
