@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fixes birthday reminder creation bug on vCard import
 * Fix search bar being hard to use
 * Remove automatic uppercase of the first name
 * Add restriction of 50 characters for a first name, and 100 characters for a last name
