@@ -15,8 +15,8 @@ return [
 
     'password' => 'Hesla musí obsahovat alespoň šest znaků a oba zápisy se musí shodovat.',
     'reset' => 'Heslo bylo resetováno!',
-    'sent' => 'Byl odeslán odkaz na reset hesla!',
+    'sent' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
     'token' => 'Toto není platný odkaz na reset hesla.',
-    'user' => 'Byl odeslán odkaz na reset hesla!',
+    'user' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
 
 ];

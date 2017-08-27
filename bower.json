@@ -17,6 +17,7 @@
     "list.js": "^1.5.0",
     "typeahead.js": "^0.11.1",
     "jQuery": "^3.2.1",
-    "jquery.tagsinput": "jquery-tags-input#^1.3.6"
+    "jquery.tagsinput": "jquery-tags-input#^1.3.6",
+    "tachyons": "^4.8.1"
   }
 }
