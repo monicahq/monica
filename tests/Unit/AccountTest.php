@@ -61,7 +61,7 @@ class AccountTest extends TestCase
     public function test_user_is_subscribed_if_user_can_access_to_paid_version_for_free()
     {
         $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => true
+            'has_access_to_paid_version_for_free' => true,
         ]);
 
         $this->assertEquals(
@@ -73,7 +73,7 @@ class AccountTest extends TestCase
     public function test_user_is_subscribed_returns_false_if_not_subcribed()
     {
         $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => false
+            'has_access_to_paid_version_for_free' => false,
         ]);
 
         $this->assertEquals(
@@ -85,7 +85,7 @@ class AccountTest extends TestCase
     public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
     {
         $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => true
+            'has_access_to_paid_version_for_free' => true,
         ]);
 
         $this->assertEquals(
@@ -95,7 +95,7 @@ class AccountTest extends TestCase
 
         // Check that if the ENV variable REQUIRES_SUBSCRIPTION has an effect
         $account = factory(Account::class)->make([
-            'has_access_to_paid_version_for_free' => false
+            'has_access_to_paid_version_for_free' => false,
         ]);
 
         putenv('REQUIRES_SUBSCRIPTION=false');
