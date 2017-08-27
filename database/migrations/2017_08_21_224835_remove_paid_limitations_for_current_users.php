@@ -14,10 +14,10 @@ class RemovePaidLimitationsForCurrentUsers extends Migration
     public function up()
     {
         Schema::table('accounts', function (Blueprint $table) {
-            $table->boolean('free_account')->after('id')->default(false);
+            $table->boolean('has_access_to_paid_version_for_free')->after('id')->default(false);
         });
 
         DB::table('accounts')
-                ->update(['free_account' => true]);
+                ->update(['has_access_to_paid_version_for_free' => true]);
     }
 }

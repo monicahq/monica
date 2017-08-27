@@ -41,7 +41,7 @@ class Account extends Model
      * @var array
      */
     protected $casts = [
-        'free_account' => 'boolean',
+        'has_access_to_paid_version_for_free' => 'boolean',
     ];
 
     /**
@@ -255,7 +255,7 @@ class Account extends Model
      */
     public function isSubscribed()
     {
-        if ($this->free_account) {
+        if ($this->has_access_to_paid_version_for_free) {
             return true;
         }
 
@@ -301,25 +301,22 @@ class Account extends Model
     }
 
     /**
-     * Indicates whether the current account can access what he needs to access
-     * with his current plan.
+     * Indicates whether the current account has limitations with her current
+     * plan.
+     *
      * @return bool
      */
-    public function canAccess()
+    public function hasLimitations()
     {
-        if ($this->free_account) {
-            return true;
+        if ($this->has_access_to_paid_version_for_free) {
+            return false;
         }
 
         if (! config('monica.requires_subscription')) {
-            return true;
+            return false;
         }
 
         if ($this->isSubscribed()) {
-            return true;
-        }
-
-        if ($this->contacts->count() >= config('monica.paid_plan_contact_limit')) {
             return false;
         }
 

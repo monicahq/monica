@@ -81,7 +81,6 @@ return [
    'paid_plan_friendly_name' => env('PAID_PLAN_FRIENDLY_NAME', null),
    'paid_plan_id' => env('PAID_PLAN_ID', null),
    'paid_plan_price' => env('PAID_PLAN_PRICE', null),
-   'paid_plan_contact_limit' => env('PAID_PLAN_CONTACT_LIMIT', null),
 
     /*
     |--------------------------------------------------------------------------

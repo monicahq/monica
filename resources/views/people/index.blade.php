@@ -128,7 +128,7 @@
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
-              {{-- Contact progress bar --}}
+              {{-- Only for subscriptions --}}
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
