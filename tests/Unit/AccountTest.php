@@ -109,6 +109,4 @@ class AccountTest extends TestCase
             $account->hasLimitations()
         );
     }
-
-
 }
