@@ -42,7 +42,7 @@
 
         <p class="cta"><a href="/settings/users/add" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
 
-        @if (config('monica.requires_subscription'))
+        @if (config('monica.requires_subscription') and auth()->user()->account->hasLimitations())
           <p class="requires-subscription">Adding more users requires a subscription.</p>
         @endif
 

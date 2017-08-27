@@ -76,7 +76,6 @@ return [
     'subscriptions_account_upgrade' => 'Upgrade your account',
     'subscriptions_account_free_plan_upgrade' => 'You can upgrade your account to the :name plan, which costs $:price per month. Here are the advantages:',
     'subscriptions_account_free_plan_benefits_users' => 'Unlimited number of users',
-    'subscriptions_account_free_plan_benefits_contacts' => 'Unlimited number of contacts',
     'subscriptions_account_free_plan_benefits_reminders' => 'Reminders by email',
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Import your contacts with vCard',
     'subscriptions_account_free_plan_benefits_support' => 'Support the project on the long run, so we can introduce more great features.',

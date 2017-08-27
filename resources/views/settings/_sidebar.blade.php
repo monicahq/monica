@@ -25,18 +25,16 @@
     </li>
     @endif
 
-    @if (auth()->user()->account->canAccess())
-      @if (Route::currentRouteName() == 'settings.import')
-      <li class="selected">
-        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-        {{ trans('settings.sidebar_settings_import') }}
-      </li>
-      @else
-      <li>
-        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-        <a href="/settings/import">{{ trans('settings.sidebar_settings_import') }}</a>
-      </li>
-      @endif
+    @if (Route::currentRouteName() == 'settings.import')
+    <li class="selected">
+      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+      {{ trans('settings.sidebar_settings_import') }}
+    </li>
+    @else
+    <li>
+      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+      <a href="/settings/import">{{ trans('settings.sidebar_settings_import') }}</a>
+    </li>
     @endif
 
     @if (Route::currentRouteName() == 'settings.users')

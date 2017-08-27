@@ -76,7 +76,6 @@ return [
     'subscriptions_account_free_plan' => 'Využíváte bezplatnou verzi.',
     'subscriptions_account_free_plan_upgrade' => 'Svůj účet můžete povýšit na verzi :name, která měsíčně stojí $:price. Zde jsou výhody:',
     'subscriptions_account_free_plan_benefits_users' => 'Neomezený počet uživatelů',
-    'subscriptions_account_free_plan_benefits_contacts' => 'Unlimited number of contacts',
     'subscriptions_account_free_plan_benefits_reminders' => 'Reminders by email',
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Import your contacts with vCard',
     'subscriptions_account_free_plan_benefits_support' => 'Dlouhodobá podpora projektu, která umožní zavedení dalších skvělých funkcí.',

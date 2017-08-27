@@ -165,6 +165,10 @@ class SettingsController extends Controller
      */
     public function upload()
     {
+        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings/subscriptions');
+        }
+
         return view('settings.imports.upload');
     }
 
