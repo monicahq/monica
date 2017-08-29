@@ -23,7 +23,7 @@
 
   <div class="col-xs-12 reminders-list">
 
-    @if (auth()->user()->account->canAccess())
+    @if (! auth()->user()->account->hasLimitations())
     <p>{{ trans('people.reminders_description') }}</p>
     @else
     <p>{{ trans('people.reminders_free_plan_warning') }}</p>
