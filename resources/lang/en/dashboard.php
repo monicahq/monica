@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'dashboard_blank_title' => 'Welcome to your account!',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_cta' => 'Add your first contact',
+
     'reminders_title' => 'Upcoming reminders',
     'reminders_blank_description' => 'No reminders are planned.',
     'event_title' => 'Latest actions',
@@ -24,9 +28,6 @@ return [
     'event_create_gift' => 'added a gift',
     'event_update_gift' => 'updated a gift',
     'event_create_call' => 'A call about :name has been added',
-
-    'blank_title' => 'You don\'t have any activity yet.',
-    'blank_cta' => 'Add contact',
 
     'tab_last_edited_contacts' => 'Last edited contacts',
     'tab_whats_coming' => 'What\'s coming',

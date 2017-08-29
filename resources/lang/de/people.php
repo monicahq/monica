@@ -19,6 +19,9 @@ return [
     'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
+    'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
+    'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
+    'people_list_account_upgrade_cta' => 'Upgrade now',
 
     // people add
     'people_add_title' => 'Person hinzufügen',
@@ -147,6 +150,7 @@ return [
     'reminders_type_week' => 'Woche',
     'reminders_type_month' => 'Monat',
     'reminders_type_year' => 'Jahr',
+    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Lebensgefährte',

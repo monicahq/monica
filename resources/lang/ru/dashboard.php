@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'dashboard_blank_title' => 'Welcome to your account!',
+    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_cta' => 'Add your first contact',
+
     'reminders_title' => 'Предстоящие напоминания',
     'reminders_blank_description' => 'Пока нет напоминаний.',
     'event_title' => 'Последние действия',
@@ -23,9 +27,6 @@ return [
     'event_update_debt' => 'updated a debt',
     'event_create_gift' => 'added a gift',
     'event_update_gift' => 'updated a gift',
-
-    'blank_title' => 'У вас пока нет активностей.',
-    'blank_cta' => 'Добавить или изменить контакт',
 
     'tab_last_edited_contacts' => 'Последние изменённые контакты',
     'tab_whats_coming' => 'Что предстоит',
