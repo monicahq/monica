@@ -145,3 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
     });
 });
+
+Route::group(['middleware' => ['api']], function () {
+    Route::get('/api/', 'Api\\DefaultController@index');
+});
