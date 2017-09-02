@@ -114,6 +114,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
+        $this->mapApiRoutes($router);
+
         $this->mapWebRoutes($router);
 
         //
@@ -132,7 +134,25 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'namespace' => $this->namespace, 'middleware' => 'web',
         ], function ($router) {
-            require app_path('Http/routes.php');
+            require base_path('routes/web.php');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes(Router $router)
+    {
+        $router->group([
+            'prefix' => 'api',
+            'namespace' => $this->namespace,
+            'middleware' => 'api',
+        ], function ($router) {
+            require base_path('routes/api.php');
         });
     }
 }
