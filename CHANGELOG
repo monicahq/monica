@@ -1,6 +1,8 @@
 UNRELEASED CHANGES:
 
-*
+* Before deploy: php artisan passport:install
+* npm install
+* migrations
 
 RELEASED VERSIONS:
 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DefaultController extends Controller
+class APIDefaultController extends Controller
 {
     /**
      * Display a listing of the resource.
