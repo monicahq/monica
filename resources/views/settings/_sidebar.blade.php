@@ -74,5 +74,17 @@
       <a href="/settings/tags">{{ trans('settings.sidebar_settings_tags') }}</a>
     </li>
     @endif
+
+    @if (Route::currentRouteName() == 'settings.api')
+    <li class="selected">
+      <i class="fa fa-random"></i>
+      {{ trans('settings.sidebar_settings_api') }}
+    </li>
+    @else
+    <li>
+      <i class="fa fa-random"></i>
+      <a href="/settings/api">{{ trans('settings.sidebar_settings_api') }}</a>
+    </li>
+    @endif
   </ul>
 </div>
