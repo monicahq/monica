@@ -6,26 +6,32 @@ use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class APIContactController extends Controller
+class ApiContactController extends ApiController
 {
     /**
-     * Display a listing of the resource.
+     * Get the list of the contacts.
+     * We will only retrieve the contacts that are "real", not the partials
+     * ones.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        dd($request->user());
-        //$contacts = Contact::paginate(3);
-        $contacts = Contact::all();
+        if ($request->has('limit')) {
+            if ($request->get('limit') > 100) {
+                return $this->respond($response);
+            }
 
-        dd(auth()->user()->id);
-        //$user->account->contacts()->real();
+            $this->setLimit($request->get('limit'));
+        }
+
+        //todo: paginate -> utiliser la variable
+        $contacts = auth()->user()->account->contacts()->real()->paginate($this->getLimit());
 
         $response = [
           'data' => $contacts->toArray(),
         ];
 
-        return response()->json($response, 200);
+        return $this->respond($response);
     }
 }
