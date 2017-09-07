@@ -17,13 +17,7 @@ class ApiContactController extends ApiController
      */
     public function index(Request $request)
     {
-        if ($request->has('limit')) {
-            if ($request->get('limit') > 100) {
-                return $this->respond($response);
-            }
-
-            $this->setLimit($request->get('limit'));
-        }
+        $this->checkLimit($request);
 
         //todo: paginate -> utiliser la variable
         $contacts = auth()->user()->account->contacts()->real()->paginate($this->getLimit());
