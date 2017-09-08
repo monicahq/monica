@@ -22,6 +22,23 @@ class ApiController extends Controller
      */
     protected $limit = 10;
 
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+          if ($request->has('limit')) {
+              if ($request->get('limit') > config('api.limit_per_page')) {
+                  return $this->setHTTPStatusCode(400)
+                              ->setErrorCode(30)
+                              ->respondWithError(config('api.error_codes.30'));
+                }
+
+                $this->setLimit($request->get('limit'));
+            }
+
+            return $next($request);
+        });
+    }
+
     /**
      * @return int
      */
@@ -106,25 +123,8 @@ class ApiController extends Controller
         return $this->respond([
             'error' => [
                 'message' => $message,
-                'status_code' => $this->getErrorCode(),
+                'error_code' => $this->getErrorCode(),
             ]
         ]);
-    }
-
-    /**
-    * Checks if a limit is set in the query. If so, check if the limit is not
-    * out of the range accepted by the API. If not, sets the limit.
-    */
-    protected function checkLimit(Request $request)
-    {
-        if ($request->has('limit')) {
-            if ($request->get('limit') > 100) {
-                return $this->setHTTPStatusCode(400)
-                            ->setErrorCode(30)
-                            ->respondWithError(config('api.error_codes.30'));
-            }
-
-            $this->setLimit($request->get('limit'));
-        }
     }
 }
