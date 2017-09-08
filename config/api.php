@@ -10,7 +10,7 @@ return [
      | This is the maximum number of items the API can return per page.
      |
      */
-     'limit_per_page' => env('API_LIMIT_PER_PAGE', 100),
+     'max_limit_per_page' => env('MAX_API_LIMIT_PER_PAGE', 100),
 
     /*
     |--------------------------------------------------------------------------

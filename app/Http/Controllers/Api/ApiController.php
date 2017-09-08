@@ -20,19 +20,19 @@ class ApiController extends Controller
     /**
      * @var integer
      */
-    protected $limit = 10;
+    protected $limitPerPage = 10;
 
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
           if ($request->has('limit')) {
-              if ($request->get('limit') > config('api.limit_per_page')) {
+              if ($request->get('limit') > config('api.max_limit_per_page')) {
                   return $this->setHTTPStatusCode(400)
                               ->setErrorCode(30)
                               ->respondWithError(config('api.error_codes.30'));
                 }
 
-                $this->setLimit($request->get('limit'));
+                $this->setLimitPerPage($request->get('limit'));
             }
 
             return $next($request);
@@ -78,18 +78,18 @@ class ApiController extends Controller
     /**
      * @return int
      */
-    public function getLimit()
+    public function getLimitPerPage()
     {
-        return $this->limit;
+        return $this->limitPerPage;
     }
 
     /**
      * @param int $limit
      * @return $this
      */
-    public function setLimit($limit)
+    public function setLimitPerPage($limit)
     {
-        $this->limit = $limit;
+        $this->limitPerPage = $limit;
         return $this;
     }
 
