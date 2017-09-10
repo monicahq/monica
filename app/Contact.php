@@ -55,13 +55,27 @@ class Contact extends Model
      */
     protected $fillable = [
         'first_name',
+        'middle_name',
         'last_name',
         'gender',
+        'birthdate',
         'is_birthdate_approximate',
         'account_id',
         'is_significant_other',
         'is_kid',
         'phone_number',
+        'email',
+        'job',
+        'company',
+        'street',
+        'city',
+        'province',
+        'postal_code',
+        'country_id',
+        'food_preferencies',
+        'facebook_profile_url',
+        'twitter_profile_url',
+        'linkedin_profile_url'
     ];
 
     /**

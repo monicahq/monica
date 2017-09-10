@@ -5,7 +5,7 @@
     "type": "project",
     "require": {
         "php": ">=7.0",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "5.5.*",
         "barryvdh/laravel-debugbar": "^2.2",
         "jenssegers/date": "^3.2",
         "ext-intl": "*",
@@ -27,9 +27,10 @@
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "symfony/dom-crawler": "2.8.*|3.0.*",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "classmap": [

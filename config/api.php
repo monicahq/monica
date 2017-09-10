@@ -19,5 +19,7 @@ return [
     */
     'error_codes' => [
         '30' => 'The limit parameter is too big.',
+        '31' => 'The resource has not been found.',
+        '32' => 'Invalid data necessary to create the entity.'
     ],
 ];

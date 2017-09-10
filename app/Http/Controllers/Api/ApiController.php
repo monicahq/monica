@@ -111,6 +111,7 @@ class ApiController extends Controller
     public function respondNotFound($message = "Not found!")
     {
         return $this->setHTTPStatusCode(404)
+                    ->setErrorCode(31)
                     ->respondWithError($message);
     }
 

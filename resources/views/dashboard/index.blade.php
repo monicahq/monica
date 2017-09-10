@@ -173,7 +173,6 @@
                 <ul class="event-list">
                   @foreach($events as $event)
                     <li class="event-list-item">
-                      {{ \Log::info('debug:'.$event['id']) }}
                       @include('dashboard.events._'.$event['object_type'])
 
                       {{-- DATE --}}

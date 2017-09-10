@@ -400,6 +400,8 @@ class ContactTest extends TestCase
 
     public function testGetAvatarReturnsPath()
     {
+        config(['filesystems.default' => 'public']);
+
         $contact = new Contact;
         $contact->avatar_file_name = 'h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX.jpg';
 
