@@ -3,6 +3,7 @@ UNRELEASED CHANGES:
 * Before deploy: php artisan passport:install
 * npm install
 * migrations
+* Fix the access to upgrade account view
 
 RELEASED VERSIONS:
 
