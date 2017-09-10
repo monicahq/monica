@@ -128,4 +128,17 @@ class ApiController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Sends a response that the object has been deleted, and also indicates
+     * the id of the object that has been deleted.
+     * @param  integer $id
+     */
+    public function respondObjectDeleted($id)
+    {
+        return $this->respond([
+            'deleted' => true,
+            'id' => $id,
+        ]);
+    }
 }

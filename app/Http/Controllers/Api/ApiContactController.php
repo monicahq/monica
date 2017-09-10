@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Validator;
 use App\Contact;
+use App\Offspring;
+use App\Progenitor;
+use App\Relationship;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
@@ -99,5 +102,62 @@ class ApiContactController extends ApiController
         $contact->logEvent('contact', $contact->id, 'update');
 
         return new ContactResource($contact);
+    }
+
+    /**
+     * Delete a contact
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        $contact->activities->each->delete();
+        $contact->calls->each->delete();
+        $contact->debts->each->delete();
+        $contact->events->each->delete();
+        $contact->gifts->each->delete();
+        $contact->notes->each->delete();
+        $contact->reminders->each->delete();
+        $contact->tags->each->delete();
+        $contact->tasks->each->delete();
+
+        // delete all relationships
+        $relationships = Relationship::where('contact_id', $contact->id)
+                                    ->orWhere('with_contact_id', $contact->id)
+                                    ->get();
+
+        foreach ($relationships as $relationship) {
+            $relationship->delete();
+        }
+
+        // delete all offsprings
+        $offsprings = Offspring::where('contact_id', $contact->id)
+                                ->orWhere('is_the_child_of', $contact->id)
+                                ->get();
+
+        foreach ($offsprings as $offspring) {
+            $offspring->delete();
+        }
+
+        // delete all progenitors
+        $progenitors = Progenitor::where('contact_id', $contact->id)
+                                ->orWhere('is_the_parent_of', $contact->id)
+                                ->get();
+
+        foreach ($progenitors as $progenitor) {
+            $progenitor->delete();
+        }
+
+        $contact->delete();
+
+        return $this->respondObjectDeleted($contact->id);
     }
 }
