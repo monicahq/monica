@@ -99,6 +99,66 @@ class ApiContactController extends ApiController
 
         $contact->setAvatarColor();
 
+        $contact->logEvent('contact', $contact->id, 'create');
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Update the contact
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'nullable|max:50',
+            'middle_name' => 'nullable|max:100',
+            'last_name' => 'nullable|max:100',
+            'gender' => 'nullable',
+            'birthdate' => 'nullable|date',
+            'is_birthdate_approximate' => [
+                'nullable',
+                Rule::in(['exact', 'approximate', 'unknown']),
+            ],
+            'age' => 'nullable|integer',
+            'email' => 'nullable|email|max:255',
+            'phone_number' => 'nullable|max:255',
+            'job' => 'nullable|max:255',
+            'company' => 'nullable|max:255',
+            'street' => 'nullable|max:255',
+            'city' => 'nullable|max:255',
+            'province' => 'nullable|max:255',
+            'postal_code' => 'nullable|max:255',
+            'country_id' => 'nullable|integer|max:255',
+            'food_preferencies' => 'nullable|max:100000',
+            'facebook_profile_url' => 'nullable|max:255',
+            'twitter_profile_url' => 'nullable|max:255',
+            'linkedin_profile_url' => 'nullable|max:255'
+        ]);
+
+        if ($validator->fails()) {
+           return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        $contact->update($request->all());
+
+        $contact->setBirthday(
+            $request->get('is_birthdate_approximate'),
+            $request->get('birthdate'),
+            $request->get('age')
+        );
+
         $contact->logEvent('contact', $contact->id, 'update');
 
         return new ContactResource($contact);
