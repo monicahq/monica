@@ -22,5 +22,6 @@ return [
         '31' => 'The resource has not been found.',
         '32' => 'Error while trying to save the data.',
         '33' => 'Too many parameters.',
+        '34' => 'Too many attempts, please slow down the request.',
     ],
 ];
