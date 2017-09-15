@@ -543,7 +543,7 @@ class ContactTest extends TestCase
         $john = factory(\App\Contact::class)->create([
             'id' => 2,
             'account_id' => $account->id,
-            'is_kid' => 1,
+            'is_partial' => 1,
         ]);
 
         $offspring = factory(\App\Offspring::class)->create([

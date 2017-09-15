@@ -67,7 +67,7 @@ class Gift extends Model
      */
     public function scopeOffered(Builder $query)
     {
-        return $query->where('has_been_offered', true);
+        return $query->where('has_been_offered', 'true');
     }
 
     /**
@@ -78,7 +78,7 @@ class Gift extends Model
      */
     public function scopeIsIdea(Builder $query)
     {
-        return $query->where('is_an_idea', true);
+        return $query->where('is_an_idea', 'true');
     }
 
     /**

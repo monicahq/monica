@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Contact;
 
 use Illuminate\Http\Resources\Json\Resource;
 
@@ -18,38 +18,43 @@ class Contact extends Resource
             'id' => $this->id,
             'object' => 'contact',
             'first_name' => $this->first_name,
-            'middle_name' => $this->middle_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender,
-            'last_talked_to' => $this->last_talked_to,
+            'is_partial' => $this->is_partial,
+            'last_called' => $this->when(! $this->is_partial, (is_null($this->last_called) ? null : (string)$this->last_called)),
+            'last_talked_to' => $this->when(! $this->is_partial, (is_null($this->last_talked_to) ? null : (string)$this->last_talked_to)),
             'information' => [
-                'family' => [
+                'family' => $this->when(! $this->is_partial, [
                     'kids' => [
                         'total' => $this->getOffsprings()->count(),
-                        'kids' => $this->getOffsprings(),
+                        'kids' => $this->getOffspringsForAPI(),
                     ],
-                    'significant_others' => [
+                    'partners' => [
                         'total' => $this->getCurrentPartners()->count(),
-                        'significant_others' => $this->getCurrentPartners(),
+                        'partners' => $this->getCurrentPartnersForAPI(),
                     ],
-                ],
+                    'progenitors' => [
+                        'total' => $this->getProgenitors()->count(),
+                        'progenitors' => $this->getProgenitorsForAPI(),
+                    ],
+                ]),
                 'dates' => [
                     [
                         'name' => 'birthdate',
                         'is_birthdate_approximate' => $this->is_birthdate_approximate,
-                        'birthdate' => $this->birthdate,
+                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format('Y-m-d\TH:i:s\Z')),
                     ],
                 ],
-                'career' => [
+                'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                ],
+                ]),
                 'avatar' => [
                     'gravatar_url' => $this->getGravatar(110),
                 ],
-                'food_preferencies' => $this->food_preferencies,
+                'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
             ],
-            'contact' => [
+            'contact' => $this->when(! $this->is_partial, [
                 'emails' => [
                     [
                         'name' => 'personal',
@@ -78,13 +83,22 @@ class Contact extends Resource
                         'country_name' => $this->getCountryName(),
                     ],
                 ],
-            ],
+            ]),
+            'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
+            'data' => $this->when(! $this->is_partial, [
+                'number_of_calls' => $this->calls->count(),
+                'number_of_notes' => $this->notes->count(),
+                'number_of_activities' => $this->activities->count(),
+                'number_of_reminders' => $this->reminders->count(),
+                'number_of_tasks' => $this->tasks->count(),
+                'number_of_gifts' => $this->gifts->count(),
+                'number_of_debts' => $this->debts->count(),
+            ]),
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at->format('Y-m-d\TH:i:s\Z'),
+            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format('Y-m-d\TH:i:s\Z')),
         ];
-        //return parent::toArray($request);
     }
 }

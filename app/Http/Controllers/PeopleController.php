@@ -110,7 +110,7 @@ class PeopleController extends Controller
     {
         // make sure we don't display a significant other if it's not set as a
         // real contact
-        if ($contact->is_significant_other or $contact->is_kid) {
+        if ($contact->is_partial) {
             return redirect('/people');
         }
 

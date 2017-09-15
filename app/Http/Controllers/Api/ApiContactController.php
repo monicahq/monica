@@ -10,8 +10,9 @@ use App\Relationship;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Contact as ContactResource;
-use \Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Contact\Contact as ContactResource;
 
 class ApiContactController extends ApiController
 {
@@ -87,7 +88,12 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        $contact = Contact::create($request->all());
+        try {
+            $contact = Contact::create($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
         $contact->account_id = auth()->user()->account->id;
         $contact->save();
 
@@ -151,7 +157,11 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        $contact->update($request->all());
+        try {
+            $contact->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
 
         $contact->setBirthday(
             $request->get('is_birthdate_approximate'),

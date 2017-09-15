@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\ApiUsage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,9 +26,11 @@ class ApiController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-          if ($request->has('limit')) {
-              if ($request->get('limit') > config('api.max_limit_per_page')) {
-                  return $this->setHTTPStatusCode(400)
+            $apiUsage = (new ApiUsage)->log($request);
+
+            if ($request->has('limit')) {
+                if ($request->get('limit') > config('api.max_limit_per_page')) {
+                    return $this->setHTTPStatusCode(400)
                               ->setErrorCode(30)
                               ->respondWithError(config('api.error_codes.30'));
                 }
@@ -112,6 +115,18 @@ class ApiController extends Controller
     {
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
+                    ->respondWithError($message);
+    }
+
+    /**
+     * Sends an error when the query didn't have the right parameters for
+     * creating an object
+     * @param string $message
+     */
+    public function respondNotTheRightParameters($message = "Too many parameters")
+    {
+        return $this->setHTTPStatusCode(500)
+                    ->setErrorCode(33)
                     ->respondWithError($message);
     }
 
