@@ -123,7 +123,7 @@ to learn how to do it.
 
 ## Contribute as a developer
 
-[Installation instructions](/docs/contritube/contribute.md) for the developer version.
+[Installation instructions](/docs/contribute/contribute.md) for the developer version.
 
 We welcome contributions of all kinds from anyone. We do however have rules.
 
