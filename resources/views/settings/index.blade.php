@@ -100,7 +100,7 @@
               <option value='Canada/Saskatchewan' {{ (auth()->user()->timezone == 'Canada/Saskatchewan')?'selected':'' }}>(UTC-06:00) Saskatchewan</option>
               <option value='America/Bogota' {{ (auth()->user()->timezone == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Bogota</option>
               <option value='US/Eastern' {{ (auth()->user()->timezone == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Eastern Time (US &amp; Canada)</option>
-              <option value='US/East- {{ (auth()->user()->timezone == 'US/East')?'selected':'' }}Indiana'>(UTC-05:00) Indiana (East)</option>
+              <option value='US/East-Indiana' {{ (auth()->user()->timezone == 'US/East')?'selected':'' }}>(UTC-05:00) Indiana (East)</option>
               <option value='America/Lima' {{ (auth()->user()->timezone == 'America/Lima')?'selected':'' }}>(UTC-05:00) Lima</option>
               <option value='America/Bogota' {{ (auth()->user()->timezone == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Quito</option>
               <option value='Canada/Atlantic' {{ (auth()->user()->timezone == 'Canada/Atlantic')?'selected':'' }}>(UTC-04:00) Atlantic Time (Canada)</option>
