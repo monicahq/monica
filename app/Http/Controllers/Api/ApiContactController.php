@@ -59,7 +59,6 @@ class ApiContactController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
-            'middle_name' => 'nullable|max:100',
             'last_name' => 'nullable|max:100',
             'gender' => 'required',
             'birthdate' => 'nullable|date',
@@ -128,7 +127,6 @@ class ApiContactController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'first_name' => 'nullable|max:50',
-            'middle_name' => 'nullable|max:100',
             'last_name' => 'nullable|max:100',
             'gender' => 'nullable',
             'birthdate' => 'nullable|date',
