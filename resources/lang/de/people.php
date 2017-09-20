@@ -48,7 +48,7 @@ return [
     'link_to_list' => 'Personenliste',
 
     // Header
-    'edit_contact_information' => 'Konraktinformationen bearbeiten',
+    'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'call_button' => 'Telefonat vermerken',
 
     // Calls
