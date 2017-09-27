@@ -22,7 +22,7 @@ class Tag extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at->format('Y-m-d\TH:i:s\Z'),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format('Y-m-d\TH:i:s\Z')),
         ];
     }
