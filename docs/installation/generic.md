@@ -5,7 +5,7 @@ same configuration that [Homestead](https://laravel.com/docs/5.3/homestead)
 uses. Basically, Monica depends on the following:
 
 * PHP 7.0+
-* MySQL, SQLite or Postgre
+* MySQL, SQLite or PostgreSQL
 * Git
 * Composer
 * Optional: Redis or Beanstalk
