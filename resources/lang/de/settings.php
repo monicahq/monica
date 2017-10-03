@@ -77,7 +77,7 @@ return [
     'subscriptions_account_free_plan' => 'Du hast das kostenlose Abonnement.',
     'subscriptions_account_free_plan_upgrade' => 'Du kannst dein Konto auf :name upgraden, was $:price pro Monat kostet. Es beinhaltet folgende Vorteile:',
     'subscriptions_account_free_plan_benefits_users' => 'Beliebige Anzahl von Benutzern',
-    'subscriptions_account_free_plan_benefits_reminders' => 'Reminders by email',
+    'subscriptions_account_free_plan_benefits_reminders' => 'Erinnerungen per email',
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Import your contacts with vCard',
     'subscriptions_account_free_plan_benefits_support' => 'Du unterstützt das Projekt auf lange Sicht, so dass wir mehr großartige Features umsetzen können.',
     'subscriptions_account_upgrade' => 'Konto upgraden',
