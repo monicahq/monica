@@ -30,15 +30,9 @@ sudo apt-get install -y nodejs
 
 #### 5. Install composer
 
-```
-sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-sudo php -r "if (hash_file('SHA384', 'composer-setup.php') === '669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-sudo php composer-setup.php
-sudo php -r "unlink('composer-setup.php');"
-```
+Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/). 
 
-The first set of commands downloaded the binary and this command
-renames it moves it to the bin directory.
+Move it to the bin directory.
 ```
 sudo mv composer.phar /usr/local/bin/composer
 ```
