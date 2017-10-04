@@ -11,15 +11,21 @@ This is what is used to develop Monica and will provide a common base for
 everyone who wants to contribute to the project. Once Homestead is installed,
 you can pull the repository and start setup Monica.
 
+The official Monica installation uses mySQL as the database system. While
+Laravel technically supports Postgre and other database types, we can't
+guarantee that it will work fine with Monica.
+
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env`
 1. Update `.env` to your specific needs.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. `npm install` to install bower and gulp.
+1. `npm install`.
+1. Install Bower `npm install -g bower`.
+1. Install Gulp `npm install --global gulp-cli`.
 1. `bower install` to install front-end dependencies in the `vendor` folder.
-1. Create a database called `monica`.
+1. Create a database called `monica` in your mySQL instance.
 1. `php artisan key:generate` to generate a random APP_KEY
-1. `php artisan migrate` to run all migrations.
+1. `php artisan migrate` to run all migrations and create the database structure.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
 activity types.

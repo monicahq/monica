@@ -7,7 +7,6 @@ use App\User;
 use Validator;
 use App\Account;
 use Carbon\Carbon;
-use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -93,7 +92,7 @@ class RegisterController extends Controller
 
         // create a new account
         $account = new Account;
-        $account->api_key = RandomHelper::generateString(30);
+        $account->api_key = str_random(30);
         $account->created_at = Carbon::now();
         $account->save();
 
