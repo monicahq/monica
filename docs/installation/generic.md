@@ -29,9 +29,9 @@ follow:
 activity types.
 1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
 table.
-1. In order for the reminders to be sent (reminders are created inside the
-  application and associated to contacts), you need to setup a cron that runs
-  every minute with the following command `php artisan schedule:run`.
+1. Finally, Monica requires some background processes to continuously run. The
+list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and
+triggers the following command `php artisan schedule:run`.
 
 **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
 
@@ -40,7 +40,17 @@ block the main thread while processing stuff that can be run asynchronously,
 like sending emails. By default, Monica does not use a queue mechanism but can
 be setup to do so.
 
-There are three choices for the queue mechanism:
+We highly recommend that you do not use a queue mechanism as it complexifies the
+overall system and can make debugging harder when things go wrong.
+
+This is why we suggest to use `QUEUE_DRIVER=sync` in your .env file. This will
+bypass the queues entirely and will process requests as they come. In practice,
+unless you have thousands of users, you don't need to use an asynchronous queue.
+
+That being said, if you still want to make your life more complicated, here is
+what you can do.
+
+There are several choices for the queue mechanism:
 * Database (this will use the database used by the application to act as a queue)
 * Redis
 * Beanstalk
