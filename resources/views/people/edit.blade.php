@@ -139,7 +139,7 @@
               {{-- Phone --}}
               <div class="form-group">
                 <label for="phone">{{ trans('people.information_edit_phone') }}</label>
-                <input class="form-control" name="phone" id="phone" value="{{ $contact->phone }}">
+                <input class="form-control" name="phone" id="phone" value="{{ $contact->phone_number }}">
               </div>
 
               {{-- Facebook --}}
