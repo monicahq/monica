@@ -43,7 +43,7 @@ return [
     'breadcrumb_settings_import_upload' => 'Subir',
     'breadcrumb_settings_tags' => 'Etiquetas',
     'breadcrumb_add_significant_other' => 'Añadir relación',
-    'breadcrumb_edit_significant_other' => 'Edit relación',
+    'breadcrumb_edit_significant_other' => 'Editar relación',
     'breadcrumb_add_note' => 'Añadir una nota',
     'breadcrumb_edit_note' => 'Editar una nota',
     'gender_male' => 'Hombre',
