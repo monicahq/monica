@@ -16,4 +16,5 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::resource('notes', 'Api\\ApiNoteController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+    Route::get('/contacts/{contact}/notes', 'Api\\ApiNoteController@notes');
 });

@@ -146,4 +146,25 @@ class ApiNoteController extends ApiController
 
         return $this->respondObjectDeleted($note->id);
     }
+
+    /**
+     * Get the list of notes for the given contact.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function notes(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        $notes = $contact->notes()
+                ->paginate($this->getLimitPerPage());
+
+        return NoteResource::collection($notes);
+    }
 }
