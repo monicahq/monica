@@ -42,7 +42,7 @@ class Contact extends Resource
                     [
                         'name' => 'birthdate',
                         'is_birthdate_approximate' => $this->is_birthdate_approximate,
-                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format('Y-m-d\TH:i:s\Z')),
+                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format(config('api.timestamp_format'))),
                     ],
                 ],
                 'career' => $this->when(! $this->is_partial, [
@@ -97,8 +97,8 @@ class Contact extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at->format('Y-m-d\TH:i:s\Z'),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format('Y-m-d\TH:i:s\Z')),
+            'created_at' => $this->created_at->format(config('api.timestamp_format')),
+            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
         ];
     }
 }

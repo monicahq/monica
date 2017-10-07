@@ -159,6 +159,16 @@ class PeopleController extends Controller
                 ->withErrors($validator);
         }
 
+        // Make sure the email address is unique in this account
+        if ($request->input('email') != '') {
+            $otherContact = Contact::where('email', $request->input('email'))
+                                    ->count();
+
+            if ($otherContact > 0) {
+                return redirect()->back()->withErrors(trans('people.people_edit_email_error'))->withInput();
+            }
+        }
+
         $contact->gender = $request->input('gender');
         $contact->first_name = $request->input('firstname');
         $contact->last_name = $request->input('lastname');

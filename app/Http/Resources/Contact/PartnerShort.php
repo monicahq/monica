@@ -26,7 +26,7 @@ class PartnerShort extends Resource
                     [
                         'name' => 'birthdate',
                         'is_birthdate_approximate' => $this->is_birthdate_approximate,
-                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format('Y-m-d\TH:i:s\Z')),
+                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format(config('api.timestamp_format'))),
                     ],
                 ],
             ],

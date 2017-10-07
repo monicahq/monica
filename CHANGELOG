@@ -5,6 +5,7 @@ UNRELEASED CHANGES:
 * npm install
 * migrations
 * Fix the access to upgrade account view
+* Add security.txt file
 
 RELEASED VERSIONS:
 

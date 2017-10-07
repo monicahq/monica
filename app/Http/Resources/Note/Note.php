@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Tag;
+namespace App\Http\Resources\Note;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Tag extends Resource
+class Note extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +17,13 @@ class Tag extends Resource
     {
         return [
             'id' => $this->id,
-            'object' => 'tag',
-            'name' => $this->name,
-            'name_slug' => $this->name_slug,
+            'object' => 'note',
+            'body' => $this->body,
             'account' => [
-                'id' => $this->account->id,
+                'id' => $this->account_id,
+            ],
+            'contact' => [
+                'id' => new ContactShortResource($this->contact),
             ],
             'created_at' => $this->created_at->format(config('api.timestamp_format')),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),

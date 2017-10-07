@@ -11,4 +11,9 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::resource('tags', 'Api\\ApiTagController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    // Notes
+    Route::resource('notes', 'Api\\ApiNoteController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
 });

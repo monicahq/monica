@@ -87,6 +87,17 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
+        if ($request->input('email') != '') {
+            $otherContact = Contact::where('email', $request->input('email'))
+                                    ->count();
+
+            if ($otherContact > 0) {
+                return $this->setErrorCode(35)
+                        ->setHTTPStatusCode(500)
+                        ->respondWithError(trans('people.people_edit_email_error'));
+            }
+        }
+
         try {
             $contact = Contact::create($request->all());
         } catch (QueryException $e) {
@@ -114,11 +125,11 @@ class ApiContactController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $contactId)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $id)
+                ->where('id', $contactId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

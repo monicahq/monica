@@ -12,6 +12,17 @@ return [
      */
      'max_limit_per_page' => env('MAX_API_LIMIT_PER_PAGE', 100),
 
+     /*
+     |--------------------------------------------------------------------------
+     | Format of the timestamp
+     |--------------------------------------------------------------------------
+     |
+     | This defines the format of the timestamp that is returned on most API
+     | calls.
+     |
+     */
+     'timestamp_format' => env('API_TIMESTAMP_FORMAT', 'Y-m-d\TH:i:s\Z'),
+
     /*
     |--------------------------------------------------------------------------
     | Error codes for the API
@@ -23,5 +34,6 @@ return [
         '32' => 'Error while trying to save the data.',
         '33' => 'Too many parameters.',
         '34' => 'Too many attempts, please slow down the request.',
+        '35' => 'This email address is already taken.',
     ],
 ];
