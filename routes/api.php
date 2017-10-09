@@ -29,4 +29,5 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
     Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
+    Route::get('/activitytypes', 'Api\\ApiActivityController@activitytypes');
 });

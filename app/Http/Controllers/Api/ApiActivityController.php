@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api;
 use Validator;
 use App\Contact;
 use App\Activity;
+use App\ActivityType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
-use App\Http\Resources\Activity\Activity as ActivityResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Activity\Activity as ActivityResource;
+use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class ApiActivityController extends ApiController
 {
@@ -87,16 +89,16 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Update the note
+     * Update the activity
      * @param  Request $request
-     * @param  Integer $noteId
+     * @param  Integer $activityId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $noteId)
+    public function update(Request $request, $activityId)
     {
         try {
-            $note = Note::where('account_id', auth()->user()->account_id)
-                ->where('id', $noteId)
+            $activity = Activity::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -104,7 +106,10 @@ class ApiActivityController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
+            'summary' => 'required|max:100000',
+            'description' => 'required|max:1000000',
+            'date_it_happened' => 'required|date',
+            'activity_type_id' => 'integer',
             'contact_id' => 'required|integer',
         ]);
 
@@ -122,12 +127,12 @@ class ApiActivityController extends ApiController
         }
 
         try {
-            $note->update($request->all());
+            $activity->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        return new NoteResource($note);
+        return new ActivityResource($activity);
     }
 
     /**
@@ -135,19 +140,19 @@ class ApiActivityController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $noteId)
+    public function destroy(Request $request, $activityId)
     {
         try {
-            $note = Note::where('account_id', auth()->user()->account_id)
-                ->where('id', $noteId)
+            $activity = Note::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        $note->delete();
+        $activity->delete();
 
-        return $this->respondObjectDeleted($note->id);
+        return $this->respondObjectDeleted($activity->id);
     }
 
     /**
@@ -169,5 +174,17 @@ class ApiActivityController extends ApiController
                 ->paginate($this->getLimitPerPage());
 
         return ActivityResource::collection($activities);
+    }
+
+    /**
+     * Get the list of all activity types.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function activitytypes(Request $request)
+    {
+        $activities = ActivityType::all();
+
+        return ActivityTypeResource::collection($activities);
     }
 }
