@@ -28,25 +28,25 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Get the detail of a given note
+     * Get the detail of a given activity
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $activityId)
     {
         try {
-            $note = Note::where('account_id', auth()->user()->account_id)
-                ->where('id', $id)
+            $activity = Activity::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new NoteResource($note);
+        return new ActivityResource($activity);
     }
 
     /**
-     * Store the note
+     * Store the activity
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -54,7 +54,10 @@ class ApiActivityController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
+            'summary' => 'required|max:100000',
+            'description' => 'required|max:1000000',
+            'date_it_happened' => 'required|date',
+            'activity_type_id' => 'integer',
             'contact_id' => 'required|integer',
         ]);
 
@@ -72,15 +75,15 @@ class ApiActivityController extends ApiController
         }
 
         try {
-            $note = Note::create($request->all());
+            $activity = Activity::create($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        $note->account_id = auth()->user()->account->id;
-        $note->save();
+        $activity->account_id = auth()->user()->account->id;
+        $activity->save();
 
-        return new NoteResource($note);
+        return new ActivityResource($activity);
     }
 
     /**
@@ -148,11 +151,11 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Get the list of notes for the given contact.
+     * Get the list of activities for the given contact.
      *
      * @return \Illuminate\Http\Response
      */
-    public function notes(Request $request, $contactId)
+    public function activities(Request $request, $contactId)
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
@@ -162,9 +165,9 @@ class ApiActivityController extends ApiController
             return $this->respondNotFound();
         }
 
-        $notes = $contact->notes()
+        $activities = $contact->activities()
                 ->paginate($this->getLimitPerPage());
 
-        return NoteResource::collection($notes);
+        return ActivityResource::collection($activities);
     }
 }
