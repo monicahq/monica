@@ -18,7 +18,7 @@ class ActivityType extends Resource
             'id' => $this->id,
             'object' => 'activityType',
             'type' => $this->key,
-            'group' => $this->group()->key,
+            'group' => $this->group->key,
             'location_type' => $this->location_type,
             'created_at' => $this->created_at->format(config('api.timestamp_format')),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
