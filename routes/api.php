@@ -23,4 +23,10 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
     Route::get('/contacts/{contact}/calls', 'Api\\ApiCallController@calls');
+
+    // Activities
+    Route::resource('activities', 'Api\\ApiActivityController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
 });
