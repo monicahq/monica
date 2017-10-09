@@ -162,6 +162,7 @@ class PeopleController extends Controller
         // Make sure the email address is unique in this account
         if ($request->input('email') != '') {
             $otherContact = Contact::where('email', $request->input('email'))
+                                    ->where('id', '!=', $contact->id)
                                     ->count();
 
             if ($otherContact > 0) {

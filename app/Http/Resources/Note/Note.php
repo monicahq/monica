@@ -22,9 +22,7 @@ class Note extends Resource
             'account' => [
                 'id' => $this->account_id,
             ],
-            'contact' => [
-                'id' => new ContactShortResource($this->contact),
-            ],
+            'contact' => new ContactShortResource($this->contact),
             'created_at' => $this->created_at->format(config('api.timestamp_format')),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
         ];

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Call;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Call extends Resource
 {
@@ -17,12 +18,12 @@ class Call extends Resource
         return [
             'id' => $this->id,
             'object' => 'call',
-            'contact_id' => $this->contact_id,
-            'called_at' => (string)$this->called_at,
+            'called_at' => $this->created_at->format(config('api.timestamp_format')),
             'content' => $this->content,
             'account' => [
                 'id' => $this->account->id,
             ],
+            'contact' => new ContactShortResource($this->contact),
             'created_at' => $this->created_at->format(config('api.timestamp_format')),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
         ];

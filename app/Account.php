@@ -225,6 +225,16 @@ class Account extends Model
     }
 
     /**
+     * Get the calls records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany(Call::class)->orderBy('called_at', 'desc');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
