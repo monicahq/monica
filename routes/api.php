@@ -30,4 +30,10 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     ]]);
     Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
     Route::get('/activitytypes', 'Api\\ApiActivityController@activitytypes');
+
+    // Reminders
+    Route::resource('reminders', 'Api\\ApiReminderController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::get('/contacts/{contact}/reminders', 'Api\\ApiReminderController@reminders');
 });
