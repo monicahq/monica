@@ -14,7 +14,7 @@ class InstanceTest extends TestCase
      */
     public function test_disable_signup_set_to_false_shows_signup_button()
     {
-        putenv('APP_DISABLE_SIGNUP=false');
+        config(['monica.disable_signup' => false]);
 
         $response = $this->get('/');
 
@@ -32,11 +32,7 @@ class InstanceTest extends TestCase
      */
     public function test_disable_signup_set_to_true_hides_signup_button_and_register_page()
     {
-        putenv('APP_DISABLE_SIGNUP=true');
-
-        // reload the environment as we've changed the ENV variable
-        $app = require __DIR__.'/../../bootstrap/app.php';
-        $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+        config(['monica.disable_signup' => true]);
 
         $response = $this->get('/');
         $response->assertDontSee(
