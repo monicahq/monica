@@ -98,11 +98,7 @@ class AccountTest extends TestCase
             'has_access_to_paid_version_for_free' => false,
         ]);
 
-        putenv('REQUIRES_SUBSCRIPTION=false');
-
-        // reload the environment as we've changed the ENV variable
-        $app = require __DIR__.'/../../bootstrap/app.php';
-        $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
+        config(['monica.requires_subscription' => false]);
 
         $this->assertEquals(
             false,
