@@ -89,7 +89,7 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->about_object_type !== null;
+        return $this->about_object_id !== null;
     }
 
     /**

@@ -18,7 +18,15 @@ class Gift extends Resource
         return [
             'id' => $this->id,
             'object' => 'gift',
-            'body' => $this->body,
+            'about_object_type' => $this->about_object_type,
+            'about_object_id' => $this->about_object_id,
+            'name' => $this->name,
+            'comment' => $this->comment,
+            'url' => $this->url,
+            'value_in_dollars' => $this->value_in_dollars,
+            'is_an_idea' => $this->is_an_idea,
+            'has_been_offered' => $this->has_been_offered,
+            'date_offered' => $this->date_offered,
             'account' => [
                 'id' => $this->account_id,
             ],
