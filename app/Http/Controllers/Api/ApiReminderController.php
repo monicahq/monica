@@ -55,7 +55,7 @@ class ApiReminderController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:100000',
-            'description' => 'required|max:1000000',
+            'description' => 'max:1000000',
             'frequency_type' => [
                 'required',
                 Rule::in(['one_time', 'day', 'month', 'year']),
