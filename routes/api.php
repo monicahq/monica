@@ -42,4 +42,10 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
     Route::get('/contacts/{contact}/tasks', 'Api\\ApiTaskController@tasks');
+
+    // Gifts
+    Route::resource('gifts', 'Api\\ApiGiftController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::get('/contacts/{contact}/gifts', 'Api\\ApiGiftController@gifts');
 });

@@ -67,7 +67,6 @@ class Gift extends Model
     public function recipient()
     {
         return $this->hasOne(Contact::class, 'id', 'about_object_id');
-        //return $this->contact();
     }
 
     /**

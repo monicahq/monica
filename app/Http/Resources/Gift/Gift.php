@@ -18,8 +18,7 @@ class Gift extends Resource
         return [
             'id' => $this->id,
             'object' => 'gift',
-            'about_object_type' => $this->about_object_type,
-            'about_object_id' => $this->about_object_id,
+            'is_for' => new ContactShortResource($this->recipient),
             'name' => $this->name,
             'comment' => $this->comment,
             'url' => $this->url,
