@@ -54,7 +54,14 @@ class ApiGiftController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
+            'is_for' => 'integer|nullable',
+            'name' => 'required|string|max:255',
+            'comment' => 'string|max:1000000|nullable',
+            'url' => 'string|max:1000000|nullable',
+            'value' => 'string|max:255',
+            'is_an_idea' => 'boolean',
+            'has_been_offered' => 'boolean',
+            'date_offered' => 'date|nullable',
             'contact_id' => 'required|integer',
         ]);
 
@@ -69,6 +76,16 @@ class ApiGiftController extends ApiController
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        }
+
+        if (! is_null($request->input('is_for'))) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $request->input('is_for'))
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
         }
 
         try {
@@ -101,7 +118,14 @@ class ApiGiftController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
+            'is_for' => 'integer|nullable',
+            'name' => 'required|string|max:255',
+            'comment' => 'string|max:1000000|nullable',
+            'url' => 'string|max:1000000|nullable',
+            'value' => 'string|max:255',
+            'is_an_idea' => 'boolean',
+            'has_been_offered' => 'boolean',
+            'date_offered' => 'date|nullable',
             'contact_id' => 'required|integer',
         ]);
 
@@ -118,10 +142,25 @@ class ApiGiftController extends ApiController
             return $this->respondNotFound();
         }
 
+        if (! is_null($request->input('is_for'))) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $request->input('is_for'))
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
         try {
             $gift->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        if (is_null($request->input('is_for'))) {
+            $gift->is_for = null;
+            $gift->save();
         }
 
         return new GiftResource($gift);
@@ -135,7 +174,7 @@ class ApiGiftController extends ApiController
     public function destroy(Request $request, $giftId)
     {
         try {
-            $gift = gift::where('account_id', auth()->user()->account_id)
+            $gift = Gift::where('account_id', auth()->user()->account_id)
                 ->where('id', $giftId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {

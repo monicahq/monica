@@ -66,7 +66,7 @@ class Gift extends Model
      */
     public function recipient()
     {
-        return $this->hasOne(Contact::class, 'id', 'about_object_id');
+        return $this->hasOne(Contact::class, 'id', 'is_for');
     }
 
     /**
@@ -99,7 +99,7 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->about_object_id !== null;
+        return $this->is_for !== null;
     }
 
     /**
@@ -110,7 +110,7 @@ class Gift extends Model
      */
     public function forRecipient($recipient)
     {
-        $this->about_object_id = $recipient;
+        $this->is_for = $recipient;
 
         return $this;
     }
@@ -139,7 +139,7 @@ class Gift extends Model
 
     public function getValue()
     {
-        return $this->value_in_dollars;
+        return $this->value;
     }
 
     public function getCreatedAt()

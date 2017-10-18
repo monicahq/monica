@@ -22,7 +22,7 @@ class Gift extends Resource
             'name' => $this->name,
             'comment' => $this->comment,
             'url' => $this->url,
-            'value_in_dollars' => $this->value_in_dollars,
+            'value' => $this->value,
             'is_an_idea' => $this->is_an_idea,
             'has_been_offered' => $this->has_been_offered,
             'date_offered' => $this->date_offered,
