@@ -84,7 +84,7 @@ class ActivityTest extends FeatureTestCase
 
         $this->assertDatabaseHas('activity_contact', [
             'contact_id' => $contact->id,
-            'activity_id' => $latestActivity->id
+            'activity_id' => $latestActivity->id,
         ]);
 
         // Make sure an event has been created for this action
@@ -93,7 +93,6 @@ class ActivityTest extends FeatureTestCase
         $eventParams['object_type'] = 'activity';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
-
 
         // Check that the Contact view contains the newly created note
         $response = $this->get('/people/'.$contact->id);
@@ -181,7 +180,7 @@ class ActivityTest extends FeatureTestCase
 
         $this->assertDatabaseMissing('activity_contact', [
             'activity_id' => $activity->id,
-            'contact_id' => $contact->id
+            'contact_id' => $contact->id,
         ]);
 
         // make sure an event has been created for this action

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MoveActivitiesToPivotTable extends Migration
@@ -21,7 +19,6 @@ class MoveActivitiesToPivotTable extends Migration
                 ['contact_id' => $activity->contact_id, 'activity_id' => $activity->id]
             );
         }
-
     }
 
     /**

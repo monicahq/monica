@@ -100,7 +100,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/search', 'PeopleController@search')->name('people.search');
     });
 
-
     // Activities
     Route::group(['as' => 'activities'], function () {
         Route::get('/activities/add/{contact}', 'ActivitiesController@create')->name('.add');
@@ -109,7 +108,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/activities/{activity}', 'ActivitiesController@update')->name('.update');
         Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
     });
-
 
     Route::group(['as' => 'journal'], function () {
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);

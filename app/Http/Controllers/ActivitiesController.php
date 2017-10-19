@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Activity;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller
@@ -126,7 +125,7 @@ class ActivitiesController extends Controller
 
         foreach ($existing as $contact) {
             // Has an existing attendee been removed?
-            if (!in_array($contact->id, $specifiedContacts)) {
+            if (! in_array($contact->id, $specifiedContacts)) {
                 $contact->activities()->detach($activity);
                 $contact->logEvent('activity', $activity->id, 'deleted');
             } else {
