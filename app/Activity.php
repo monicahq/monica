@@ -56,7 +56,7 @@ class Activity extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contacts()
     {
         return $this->belongsToMany(Contact::class);
     }
