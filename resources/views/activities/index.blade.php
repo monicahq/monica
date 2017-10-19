@@ -30,7 +30,7 @@
           {{ $activity->getSummary() }}
         </div>
         <div class="table-cell list-actions">
-          <a href="{{ route('activities.edit', $activity) }}" class="edit">
+          <a href="{{ route('activities.edit', [$activity, $contact]) }}" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
           <a href="#" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">

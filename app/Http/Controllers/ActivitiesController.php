@@ -59,7 +59,7 @@ class ActivitiesController extends Controller
         // New attendees
         $specifiedContacts = $request->get('contacts');
         foreach ($specifiedContacts as $newContactId) {
-            $contact = Contact::find($newContactId);
+            $contact = Contact::findOrFail($newContactId);
             $contact->activities()->save($activity);
             $contact->logEvent('activity', $activity->id, 'create');
             $contact->calculateActivitiesStatistics();
@@ -88,9 +88,10 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function edit(Activity $activity)
+    public function edit(Activity $activity, Contact $contact)
     {
         return view('activities.edit')
+            ->withContact($contact)
             ->withActivity($activity);
     }
 
@@ -144,7 +145,7 @@ class ActivitiesController extends Controller
 
         // New attendees
         foreach ($specifiedContacts as $newContactId) {
-            $contact = Contact::find($newContactId);
+            $contact = Contact::findOrFail($newContactId);
             $contact->activities()->save($activity);
             $contact->logEvent('activity', $activity->id, 'create');
         }

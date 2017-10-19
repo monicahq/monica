@@ -73,30 +73,6 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
-    public function test_user_can_add_activity_to_contact()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $activity = [
-            'summary' => $this->faker->sentence('5'),
-            'date_it_happened' => $this->faker->date('Y-m-d'),
-            'description' => $this->faker->paragraph(),
-        ];
-
-        $this->post(
-            route('people.activities.store', $contact),
-            $activity
-        );
-
-        $this->assertDatabaseHas(
-            'activities',
-            $activity + [
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-            ]
-        );
-    }
-
     public function test_user_can_be_reminded_about_an_event_once()
     {
         list($user, $contact) = $this->fetchUser();

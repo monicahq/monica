@@ -12,7 +12,7 @@
         <br />
         <ul class="contacts">
             <ul class="contacts-list">
-                @if ($contact)
+                @if ($contact && $method == 'POST')
                     <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endif
