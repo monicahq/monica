@@ -612,7 +612,6 @@ if (multiUserInput.length > 0) {
         function (results, search) {
             let html = '';
             results.forEach(function (result) {
-                // The span is styled to cover the whole <li>, providing a clickable area over the whole result.
                 html += `
                 <li class="header-search-result" data-contact="${result.id}" data-name="${result.name}">
                 ${result.avatar}
@@ -647,6 +646,7 @@ $('.contacts-list').on('click', 'li', function(e) {
     $(this).remove();
     return false;
 });
+
 /*
  * Focus the input field next to the radio button.
  *
