@@ -127,7 +127,7 @@ class ActivitiesController extends Controller
             // Has an existing attendee been removed?
             if (! in_array($contact->id, $specifiedContacts)) {
                 $contact->activities()->detach($activity);
-                $contact->logEvent('activity', $activity->id, 'deleted');
+                $contact->logEvent('activity', $activity->id, 'delete');
             } else {
                 // Otherwise we're updating an activity that someone's
                 // already a part of

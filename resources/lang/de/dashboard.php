@@ -23,6 +23,7 @@ return [
     'event_update_task' => 'Aufgabe aktualisiert',
     'event_create_activity' => 'Aktivität über :name hinzugefügt',
     'event_update_activity' => 'Aktivität über :name aktualisiert',
+    'event_delete_activity' => 'Aktivität über :name entfernt',
     'event_create_debt' => 'Schulden hinzugefügt',
     'event_update_debt' => 'Schulden aktualisiert',
     'event_create_gift' => 'Geschenk hinzugefügt',
