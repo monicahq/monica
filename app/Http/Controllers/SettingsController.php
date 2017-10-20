@@ -9,7 +9,6 @@ use App\ImportJob;
 use Carbon\Carbon;
 use App\Invitation;
 use Illuminate\Http\Request;
-use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
@@ -165,6 +164,10 @@ class SettingsController extends Controller
      */
     public function upload()
     {
+        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings/subscriptions');
+        }
+
         return view('settings.imports.upload');
     }
 
@@ -261,7 +264,7 @@ class SettingsController extends Controller
             + [
                 'invited_by_user_id' => auth()->user()->id,
                 'account_id' => auth()->user()->account_id,
-                'invitation_key' => RandomHelper::generateString(100),
+                'invitation_key' => str_random(100),
             ]
         );
 

@@ -47,6 +47,8 @@
         <p>{{ trans('settings.subscriptions_account_free_plan_upgrade', ['name' => config('monica.paid_plan_friendly_name'), 'price' => ((int)config('monica.paid_plan_price')/100)]) }}</p>
         <ul class="upgrade-benefits">
           <li>{{ trans('settings.subscriptions_account_free_plan_benefits_users') }}</li>
+          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_reminders') }}</li>
+          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_import_data_vcard') }}</li>
           <li>{{ trans('settings.subscriptions_account_free_plan_benefits_support') }}</li>
         </ul>
         <p><a href="/settings/subscriptions/upgrade">{{ trans('settings.subscriptions_account_upgrade') }}</a></p>

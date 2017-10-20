@@ -34,7 +34,7 @@ class SubscriptionsController extends Controller
 
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed()) {
+        if ($account->subscribed(config('monica.paid_plan_friendly_name'))) {
             return redirect('/settings/subscriptions');
         }
 

@@ -118,10 +118,6 @@ class AddContactFromVCard implements ShouldQueue
                 if (! $contact->isBirthdateApproximate()) {
                     $reminder = Reminder::addBirthdayReminder(
                         $contact,
-                        trans(
-                            'people.people_add_birthday_reminder',
-                            ['name' => $contact->getCompleteName()]
-                        ),
                         $contact->birthdate
                     );
 

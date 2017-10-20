@@ -10,11 +10,12 @@
 
         <h2>{{ trans('people.people_add_title') }}</h2>
 
-        <p class="import">{!! trans('people.people_add_import') !!}</p>
+        @if (! auth()->user()->account->hasLimitations())
+          <p class="import">{!! trans('people.people_add_import') !!}</p>
+        @endif
 
         <form action="/people" method="POST">
           {{ csrf_field() }}
-
 
           {{-- This check is for the cultures that are used to say the last name first --}}
           @if (auth()->user()->name_order == 'firstname_first')

@@ -8,7 +8,6 @@ use App\User;
 use Validator;
 use App\Account;
 use Carbon\Carbon;
-use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;

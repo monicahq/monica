@@ -128,6 +128,9 @@
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
+              {{-- Only for subscriptions --}}
+              @include('partials.components.people-upgrade-sidebar')
+
               <ul>
               @foreach (auth()->user()->account->tags as $tag)
                 @if ($tag->contacts()->count() > 0)

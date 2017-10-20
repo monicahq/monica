@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\ImportVCards',
         'App\Console\Commands\PingVersionServer',
+        'App\Console\Commands\FixRemindersNotSent',
     ];
 
     /**
