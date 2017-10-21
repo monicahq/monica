@@ -54,4 +54,9 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
     Route::get('/contacts/{contact}/debts', 'Api\\ApiDebtController@debts');
+
+    // Debts
+    Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
 });
