@@ -23,6 +23,8 @@
       * [The API](#the-api)
    * [Why Open Source?](#why-open-source)
    * [Patreon](#patreon)
+* [Advanced Usage](#advanced-usage)
+   * [Activities](#activities)
 * [Contact](#contact)
 * [License](#license)
 
@@ -302,6 +304,64 @@ users will follow.
 
 You can support the development of this tool
 [on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
+
+## Advanced Usage
+
+Whilst testing new features, we may implement them as `artisan` commands instead
+of creating a UI within the application for them. This section will document the
+available advanced features
+
+### Activities
+
+You can change the activities shown in your Monica instance by creating your own
+set of activity groups and activity types. To do this:
+
+First, empty the existing actitivity list (*this will remove all activities from
+your contacts. BE CAREFUL*):
+
+```bash
+php artisan monica:clear-activities
+```
+
+Next, register a new activity group:
+
+```bash
+php artisan monica:add-activity-group "My New Group"
+```
+
+Finally, add an activity type within that group:
+
+```bash
+php artisan monica:add-activity "Did Something" "location_type" "icon" "My New Group"
+```
+
+There are limited options available for `location_type` and `icon` due to existing design constraints:
+
+`location_type`:
+* `his_place`
+* `my_place`
+* `outside`
+
+`icon`:
+* `ate_his_place`
+* `ate_home`
+* `bar`
+* `concert`
+* `hang_out`
+* `movie_home`
+* `museum`
+* `picknicked`
+* `play`
+* `restaurant`
+* `sport`
+* `talk_home`
+* `theater`
+
+The last thing to do is add translations for your new activities. The way
+to do this is create a `resources/lang/<lang>/people.php` file, and add
+some new keys for your new activities. They will be prefixed with either
+`people.activity_type_group_` or `people.activity_type_`. *These will be deleted
+each time you update Monica*
 
 ## Contact
 
