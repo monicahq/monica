@@ -165,10 +165,17 @@ return [
     'significant_other_add_cta' => 'Lebensgefährte hinzufügen',
     'significant_other_edit_cta' => 'Lebensgefährte bearbeiten',
     'significant_other_delete_confirmation' => 'Möchtest du diesen Lebensgefährten wirklich löschen? Es gibt kein Zurück.',
+    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
     'significant_other_add_success' => 'Lebensgefährte wurde erfolgreich hinzugefügt',
     'significant_other_edit_success' => 'Lebensgefährte wurde erfolgreich aktualisiert',
     'significant_other_delete_success' => 'Lebensgefährte wurde erfolgreich gelöscht',
     'significant_other_add_birthday_reminder' => 'Gratuliere :name zum Geburstag, :contact_firstname\'s Lebensgefährte',
+    'significant_other_add_person' => 'Person hinzufügen',
+    'significant_other_link_existing_contact' => 'Existierenden Kontakt wählen',
+    'significant_other_add_no_existing_contact' => 'Du hast derzeit keine Kontakte, die :name\'s Lebensgefährte werden könnten.',
+    'significant_other_add_existing_contact' => 'Wähle einen existierenden Kontakt als Lebensgefährte für :name',
+    'contact_add_also_create_contact' => 'Erstelle einen neuen Kontakt für diese Person.',
+    'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
     'kids_sidebar_title' => 'Kinder',
