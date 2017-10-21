@@ -32,11 +32,11 @@ class ApiDebtController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $debtId)
     {
         try {
             $debt = Debt::where('account_id', auth()->user()->account_id)
-                ->where('id', $id)
+                ->where('id', $debtId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -54,14 +54,18 @@ class ApiDebtController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'is_for' => 'integer|nullable',
-            'name' => 'required|string|max:255',
-            'comment' => 'string|max:1000000|nullable',
-            'url' => 'string|max:1000000|nullable',
-            'value' => 'string|max:255',
-            'is_an_idea' => 'boolean',
-            'has_been_offered' => 'boolean',
-            'date_offered' => 'date|nullable',
+            'in_debt' => [
+                'required',
+                'string',
+                Rule::in(['yes', 'no']),
+            ],
+            'status' => [
+                'required',
+                'string',
+                Rule::in(['inprogress', 'completed']),
+            ],
+            'amount' => 'required|integer',
+            'reason' => 'string|max:1000000|nullable',
             'contact_id' => 'required|integer',
         ]);
 
@@ -76,16 +80,6 @@ class ApiDebtController extends ApiController
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        if (! is_null($request->input('is_for'))) {
-            try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->input('is_for'))
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
         }
 
         try {
@@ -118,14 +112,18 @@ class ApiDebtController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'is_for' => 'integer|nullable',
-            'name' => 'required|string|max:255',
-            'comment' => 'string|max:1000000|nullable',
-            'url' => 'string|max:1000000|nullable',
-            'value' => 'string|max:255',
-            'is_an_idea' => 'boolean',
-            'has_been_offered' => 'boolean',
-            'date_offered' => 'date|nullable',
+            'in_debt' => [
+                'required',
+                'string',
+                Rule::in(['yes', 'no']),
+            ],
+            'status' => [
+                'required',
+                'string',
+                Rule::in(['inprogress', 'completed']),
+            ],
+            'amount' => 'required|integer',
+            'reason' => 'string|max:1000000|nullable',
             'contact_id' => 'required|integer',
         ]);
 
@@ -142,25 +140,10 @@ class ApiDebtController extends ApiController
             return $this->respondNotFound();
         }
 
-        if (! is_null($request->input('is_for'))) {
-            try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->input('is_for'))
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
         try {
             $debt->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
-        }
-
-        if (is_null($request->input('is_for'))) {
-            $debt->is_for = null;
-            $debt->save();
         }
 
         return new DebtResource($debt);
