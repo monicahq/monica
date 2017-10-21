@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e085b766f9c8dad64d874af56a4e6c9",
+    "content-hash": "0523ba31201b20a05de7676ad91d9b78",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1639,49 +1639,6 @@
             "time": "2016-08-17T00:36:58+00:00"
         },
         {
-            "name": "martinjoiner/ordinal-number",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/martinjoiner/ordinal-number.git",
-                "reference": "ce28b835093c9b0f2c1dd078f86e58ca180be191"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/martinjoiner/ordinal-number/zipball/ce28b835093c9b0f2c1dd078f86e58ca180be191",
-                "reference": "ce28b835093c9b0f2c1dd078f86e58ca180be191",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MartinJoiner\\OrdinalNumber\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Martin Joiner",
-                    "email": "martin@martinjoiner.co.uk",
-                    "homepage": "http://martinjoiner.co.uk",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Converts numbers to a human readable ordinal form eg. 'first', 'second' or even 'Three thousand five hundred sixty first'",
-            "keywords": [
-                "english",
-                "number",
-                "ordinal"
-            ],
-            "time": "2016-02-06T20:51:44+00:00"
-        },
-        {
             "name": "maximebf/debugbar",
             "version": "1.13.1",
             "source": {
@@ -2506,12 +2463,12 @@
             "version": "2.1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-uri.git",
+                "url": "https://github.com/sabre-io/uri.git",
                 "reference": "a42126042c7dcb53e2978dadb6d22574d1359b4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/a42126042c7dcb53e2978dadb6d22574d1359b4c",
+                "url": "https://api.github.com/repos/sabre-io/uri/zipball/a42126042c7dcb53e2978dadb6d22574d1359b4c",
                 "reference": "a42126042c7dcb53e2978dadb6d22574d1359b4c",
                 "shasum": ""
             },
@@ -2557,12 +2514,12 @@
             "version": "4.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-vobject.git",
+                "url": "https://github.com/sabre-io/vobject.git",
                 "reference": "d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
                 "reference": "d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
                 "shasum": ""
             },
@@ -2654,12 +2611,12 @@
             "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-xml.git",
+                "url": "https://github.com/sabre-io/xml.git",
                 "reference": "054292959a1f2b64c10c9c7a03a816ba1872b8a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-xml/zipball/054292959a1f2b64c10c9c7a03a816ba1872b8a3",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/054292959a1f2b64c10c9c7a03a816ba1872b8a3",
                 "reference": "054292959a1f2b64c10c9c7a03a816ba1872b8a3",
                 "shasum": ""
             },
@@ -5275,7 +5232,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0",
+        "php": ">=7.0.0",
         "ext-intl": "*"
     },
     "platform-dev": []
