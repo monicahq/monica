@@ -75,7 +75,7 @@ class ApiJournalController extends ApiController
     /**
      * Update the note.
      * @param  Request $request
-     * @param  Integer $entryId
+     * @param  int $entryId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $entryId)

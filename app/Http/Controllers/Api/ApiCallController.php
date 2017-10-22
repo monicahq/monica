@@ -85,7 +85,7 @@ class ApiCallController extends ApiController
     /**
      * Update the call.
      * @param  Request $request
-     * @param  Integer $callId
+     * @param  int $callId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $callId)

@@ -241,15 +241,9 @@ class ApiContactController extends ApiController
         return $this->respondObjectDeleted($contact->id);
     }
 
-     /**
-     * Get the list of the partners of this contact.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
     /**
-    * Link a partner to an existing contact.
-    */
+     * Link a partner to an existing contact.
+     */
     public function partners(Request $request, $contactId)
     {
         try {
@@ -296,8 +290,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Unlink a partner from an existing contact.
-    */
+     * Unlink a partner from an existing contact.
+     */
     public function unsetPartners(Request $request, $contactId)
     {
         try {
@@ -341,8 +335,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Link a child to an existing contact.
-    */
+     * Link a child to an existing contact.
+     */
     public function kids(Request $request, $contactId)
     {
         try {
@@ -366,7 +360,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -389,8 +383,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Unlink a partner from an existing contact.
-    */
+     * Unlink a partner from an existing contact.
+     */
     public function unsetKids(Request $request, $contactId)
     {
         try {
@@ -407,7 +401,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 

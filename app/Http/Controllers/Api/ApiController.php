@@ -134,9 +134,9 @@ class ApiController extends Controller
     }
 
     /**
-    * Sends a response with error.
-    * @param string message
-    */
+     * Sends a response with error.
+     * @param string message
+     */
     public function respondWithError($message)
     {
         return $this->respond([
