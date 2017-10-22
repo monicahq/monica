@@ -6,8 +6,6 @@ use App\Note;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Note\Note as NoteResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +26,7 @@ class ApiNoteController extends ApiController
     }
 
     /**
-     * Get the detail of a given note
+     * Get the detail of a given note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +44,7 @@ class ApiNoteController extends ApiController
     }
 
     /**
-     * Store the note
+     * Store the note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -59,7 +57,7 @@ class ApiNoteController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -84,9 +82,9 @@ class ApiNoteController extends ApiController
     }
 
     /**
-     * Update the note
+     * Update the note.
      * @param  Request $request
-     * @param  Integer $noteId
+     * @param  int $noteId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $noteId)
@@ -106,7 +104,7 @@ class ApiNoteController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -128,7 +126,7 @@ class ApiNoteController extends ApiController
     }
 
     /**
-     * Delete a note
+     * Delete a note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

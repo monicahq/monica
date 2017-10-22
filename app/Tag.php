@@ -39,7 +39,7 @@ class Tag extends Model
     }
 
     /**
-     * Update the slug
+     * Update the slug.
      */
     public function updateSlug()
     {

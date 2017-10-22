@@ -2,7 +2,6 @@
 
 namespace Tests\Api;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Http\Controllers\Api\ApiController;
 

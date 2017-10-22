@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Entry;
 use Validator;
-use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +25,7 @@ class ApiJournalController extends ApiController
     }
 
     /**
-     * Get the detail of a given journal entry
+     * Get the detail of a given journal entry.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +43,7 @@ class ApiJournalController extends ApiController
     }
 
     /**
-     * Store the call
+     * Store the call.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -59,7 +56,7 @@ class ApiJournalController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -76,7 +73,7 @@ class ApiJournalController extends ApiController
     }
 
     /**
-     * Update the note
+     * Update the note.
      * @param  Request $request
      * @param  Integer $entryId
      * @return \Illuminate\Http\Response
@@ -98,7 +95,7 @@ class ApiJournalController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -112,7 +109,7 @@ class ApiJournalController extends ApiController
     }
 
     /**
-     * Delete a journal entry
+     * Delete a journal entry.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

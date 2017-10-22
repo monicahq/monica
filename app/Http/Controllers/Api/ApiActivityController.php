@@ -7,8 +7,6 @@ use App\Contact;
 use App\Activity;
 use App\ActivityType;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
@@ -30,7 +28,7 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Get the detail of a given activity
+     * Get the detail of a given activity.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -48,7 +46,7 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Store the activity
+     * Store the activity.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -64,7 +62,7 @@ class ApiActivityController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -89,9 +87,9 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Update the activity
+     * Update the activity.
      * @param  Request $request
-     * @param  Integer $activityId
+     * @param  int $activityId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $activityId)
@@ -114,7 +112,7 @@ class ApiActivityController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -136,7 +134,7 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Delete a note
+     * Delete a note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

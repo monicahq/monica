@@ -9,7 +9,7 @@ class ApiUsage extends Model
     protected $table = 'api_usage';
 
     /**
-     * Log a request made through the API
+     * Log a request made through the API.
      * @param  Request $request
      */
     public function log(\Illuminate\Http\Request $request)

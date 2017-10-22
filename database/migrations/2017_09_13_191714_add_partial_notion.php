@@ -19,7 +19,7 @@ class AddPartialNotion extends Migration
 
         $contacts = DB::table('contacts')->get();
         foreach ($contacts as $contact) {
-            if ($contact->is_kid == 1 or $contact->is_significant_other == 1){
+            if ($contact->is_kid == 1 or $contact->is_significant_other == 1) {
                 DB::table('contacts')
                     ->where('id', $contact->id)
                     ->update(['is_partial' => 1]);

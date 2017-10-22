@@ -9,7 +9,6 @@ use App\Progenitor;
 use App\Relationship;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
@@ -32,7 +31,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Get the detail of a given contact
+     * Get the detail of a given contact.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +49,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Store the contact
+     * Store the contact.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -84,7 +83,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -122,7 +121,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Update the contact
+     * Update the contact.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -164,7 +163,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -186,7 +185,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Delete a contact
+     * Delete a contact.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -249,7 +248,7 @@ class ApiContactController extends ApiController
      */
 
     /**
-    * Link a partner to an existing contact
+    * Link a partner to an existing contact.
     */
     public function partners(Request $request, $contactId)
     {
@@ -274,7 +273,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -297,7 +296,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Unlink a partner from an existing contact
+    * Unlink a partner from an existing contact.
     */
     public function unsetPartners(Request $request, $contactId)
     {
@@ -315,7 +314,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -342,7 +341,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Link a child to an existing contact
+    * Link a child to an existing contact.
     */
     public function kids(Request $request, $contactId)
     {
@@ -390,7 +389,7 @@ class ApiContactController extends ApiController
     }
 
     /**
-    * Unlink a partner from an existing contact
+    * Unlink a partner from an existing contact.
     */
     public function unsetKids(Request $request, $contactId)
     {

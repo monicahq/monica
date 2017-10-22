@@ -20,7 +20,7 @@ class ContactShort extends Resource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender,
-            'is_partial' => (boolean)$this->is_partial,
+            'is_partial' => (bool) $this->is_partial,
             'information' => [
                 'dates' => [
                     [

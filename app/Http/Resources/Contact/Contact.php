@@ -21,8 +21,8 @@ class Contact extends Resource
             'last_name' => $this->last_name,
             'gender' => $this->gender,
             'is_partial' => $this->is_partial,
-            'last_called' => $this->when(! $this->is_partial, (is_null($this->last_called) ? null : (string)$this->last_called)),
-            'last_talked_to' => $this->when(! $this->is_partial, (is_null($this->last_talked_to) ? null : (string)$this->last_talked_to)),
+            'last_called' => $this->when(! $this->is_partial, (is_null($this->last_called) ? null : (string) $this->last_called)),
+            'last_talked_to' => $this->when(! $this->is_partial, (is_null($this->last_talked_to) ? null : (string) $this->last_talked_to)),
             'information' => [
                 'family' => $this->when(! $this->is_partial, [
                     'kids' => [

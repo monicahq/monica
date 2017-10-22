@@ -6,8 +6,6 @@ use App\Gift;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Gift\Gift as GiftResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +26,7 @@ class ApiGiftController extends ApiController
     }
 
     /**
-     * Get the detail of a given gift
+     * Get the detail of a given gift.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +44,7 @@ class ApiGiftController extends ApiController
     }
 
     /**
-     * Store the gift
+     * Store the gift.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -66,7 +64,7 @@ class ApiGiftController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -101,9 +99,9 @@ class ApiGiftController extends ApiController
     }
 
     /**
-     * Update the gift
+     * Update the gift.
      * @param  Request $request
-     * @param  Integer $giftId
+     * @param  int $giftId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $giftId)
@@ -130,7 +128,7 @@ class ApiGiftController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -167,7 +165,7 @@ class ApiGiftController extends ApiController
     }
 
     /**
-     * Delete a gift
+     * Delete a gift.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

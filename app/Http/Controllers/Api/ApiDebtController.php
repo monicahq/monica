@@ -7,7 +7,6 @@ use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Debt\Debt as DebtResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +27,7 @@ class ApiDebtController extends ApiController
     }
 
     /**
-     * Get the detail of a given debt
+     * Get the detail of a given debt.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +45,7 @@ class ApiDebtController extends ApiController
     }
 
     /**
-     * Store the debt
+     * Store the debt.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -70,7 +69,7 @@ class ApiDebtController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -95,9 +94,9 @@ class ApiDebtController extends ApiController
     }
 
     /**
-     * Update the debt
+     * Update the debt.
      * @param  Request $request
-     * @param  Integer $debtId
+     * @param  int $debtId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $debtId)
@@ -128,7 +127,7 @@ class ApiDebtController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -150,7 +149,7 @@ class ApiDebtController extends ApiController
     }
 
     /**
-     * Delete a debt
+     * Delete a debt.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

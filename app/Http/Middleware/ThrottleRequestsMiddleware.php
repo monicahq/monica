@@ -106,7 +106,7 @@ class ThrottleRequestsMiddleware
             'X-RateLimit-Remaining' => $remainingAttempts,
         ];
 
-        if (!is_null($retryAfter)) {
+        if (! is_null($retryAfter)) {
             $headers['Retry-After'] = $retryAfter;
             $headers['Content-Type'] = 'application/json';
         }
@@ -126,7 +126,7 @@ class ThrottleRequestsMiddleware
      */
     protected function calculateRemainingAttempts($key, $maxAttempts, $retryAfter = null)
     {
-        if (!is_null($retryAfter)) {
+        if (! is_null($retryAfter)) {
             return 0;
         }
 

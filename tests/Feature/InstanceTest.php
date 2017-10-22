@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Contracts\Console\Kernel;
 
 class InstanceTest extends TestCase
 {

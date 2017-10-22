@@ -19,7 +19,7 @@ class ApiController extends Controller
     protected $errorCode;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $limitPerPage = 10;
 
@@ -57,6 +57,7 @@ class ApiController extends Controller
     public function setHTTPStatusCode($statusCode)
     {
         $this->httpStatusCode = $statusCode;
+
         return $this;
     }
 
@@ -75,6 +76,7 @@ class ApiController extends Controller
     public function setErrorCode($errorCode)
     {
         $this->errorCode = $errorCode;
+
         return $this;
     }
 
@@ -93,12 +95,13 @@ class ApiController extends Controller
     public function setLimitPerPage($limit)
     {
         $this->limitPerPage = $limit;
+
         return $this;
     }
 
     /**
      * Sends a JSON to the consumer.
-     * @param  Array $data
+     * @param  array $data
      * @param  array  $headers [description]
      * @return Response
      */
@@ -108,10 +111,10 @@ class ApiController extends Controller
     }
 
     /**
-     * Sends a response not found (404) to the request
+     * Sends a response not found (404) to the request.
      * @param string $message
      */
-    public function respondNotFound($message = "Not found!")
+    public function respondNotFound($message = 'Not found!')
     {
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
@@ -120,10 +123,10 @@ class ApiController extends Controller
 
     /**
      * Sends an error when the query didn't have the right parameters for
-     * creating an object
+     * creating an object.
      * @param string $message
      */
-    public function respondNotTheRightParameters($message = "Too many parameters")
+    public function respondNotTheRightParameters($message = 'Too many parameters')
     {
         return $this->setHTTPStatusCode(500)
                     ->setErrorCode(33)
@@ -131,7 +134,7 @@ class ApiController extends Controller
     }
 
     /**
-    * Sends a response with error
+    * Sends a response with error.
     * @param string message
     */
     public function respondWithError($message)
@@ -140,14 +143,14 @@ class ApiController extends Controller
             'error' => [
                 'message' => $message,
                 'error_code' => $this->getErrorCode(),
-            ]
+            ],
         ]);
     }
 
     /**
      * Sends a response that the object has been deleted, and also indicates
      * the id of the object that has been deleted.
-     * @param  integer $id
+     * @param  int $id
      */
     public function respondObjectDeleted($id)
     {

@@ -7,7 +7,6 @@ use App\Contact;
 use App\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Reminder\Reminder as ReminderResource;
@@ -28,7 +27,7 @@ class ApiReminderController extends ApiController
     }
 
     /**
-     * Get the detail of a given reminder
+     * Get the detail of a given reminder.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +45,7 @@ class ApiReminderController extends ApiController
     }
 
     /**
-     * Store the reminder
+     * Store the reminder.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -65,7 +64,7 @@ class ApiReminderController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -90,9 +89,9 @@ class ApiReminderController extends ApiController
     }
 
     /**
-     * Update the reminder
+     * Update the reminder.
      * @param  Request $request
-     * @param  Integer $reminderId
+     * @param  int $reminderId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $reminderId)
@@ -118,7 +117,7 @@ class ApiReminderController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -140,7 +139,7 @@ class ApiReminderController extends ApiController
     }
 
     /**
-     * Delete a reminder
+     * Delete a reminder.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

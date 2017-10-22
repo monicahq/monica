@@ -833,7 +833,7 @@ class Contact extends Model
     }
 
     /**
-     * Get the list of tags for this contact
+     * Get the list of tags for this contact.
      */
     public function getTagsForAPI()
     {

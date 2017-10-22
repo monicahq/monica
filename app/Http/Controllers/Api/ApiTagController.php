@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Tag;
 use Validator;
-use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -30,7 +27,7 @@ class ApiTagController extends ApiController
     }
 
     /**
-     * Get the detail of a given tag
+     * Get the detail of a given tag.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -48,7 +45,7 @@ class ApiTagController extends ApiController
     }
 
     /**
-     * Store the tag
+     * Store the tag.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -56,11 +53,11 @@ class ApiTagController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:250'
+            'name' => 'required|max:250',
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -78,7 +75,7 @@ class ApiTagController extends ApiController
     }
 
     /**
-     * Update the tag
+     * Update the tag.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -94,11 +91,11 @@ class ApiTagController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:250'
+            'name' => 'required|max:250',
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -114,7 +111,7 @@ class ApiTagController extends ApiController
     }
 
     /**
-     * Delete a tag
+     * Delete a tag.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

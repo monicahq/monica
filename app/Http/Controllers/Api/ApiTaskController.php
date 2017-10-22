@@ -7,7 +7,6 @@ use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +27,7 @@ class ApiTaskController extends ApiController
     }
 
     /**
-     * Get the detail of a given task
+     * Get the detail of a given task.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +45,7 @@ class ApiTaskController extends ApiController
     }
 
     /**
-     * Store the task
+     * Store the task.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -65,7 +64,7 @@ class ApiTaskController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -90,9 +89,9 @@ class ApiTaskController extends ApiController
     }
 
     /**
-     * Update the note
+     * Update the task.
      * @param  Request $request
-     * @param  Integer $taskId
+     * @param  int $taskId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $taskId)
@@ -118,7 +117,7 @@ class ApiTaskController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -140,7 +139,7 @@ class ApiTaskController extends ApiController
     }
 
     /**
-     * Delete a note
+     * Delete a task.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

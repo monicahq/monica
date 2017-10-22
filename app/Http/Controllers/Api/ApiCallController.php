@@ -6,8 +6,6 @@ use App\Call;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Call\Call as CallResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,7 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ApiCallController extends ApiController
 {
     /**
-     * Get the list of notes.
+     * Get the list of calls.
      *
      * @return \Illuminate\Http\Response
      */
@@ -28,7 +26,7 @@ class ApiCallController extends ApiController
     }
 
     /**
-     * Get the detail of a given call
+     * Get the detail of a given call.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +44,7 @@ class ApiCallController extends ApiController
     }
 
     /**
-     * Store the call
+     * Store the call.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -60,7 +58,7 @@ class ApiCallController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -85,7 +83,7 @@ class ApiCallController extends ApiController
     }
 
     /**
-     * Update the note
+     * Update the call.
      * @param  Request $request
      * @param  Integer $callId
      * @return \Illuminate\Http\Response
@@ -108,7 +106,7 @@ class ApiCallController extends ApiController
         ]);
 
         if ($validator->fails()) {
-           return $this->setErrorCode(32)
+            return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
@@ -130,7 +128,7 @@ class ApiCallController extends ApiController
     }
 
     /**
-     * Delete a note
+     * Delete a note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
