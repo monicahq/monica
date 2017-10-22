@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix the access to upgrade account view
+* Add ability to assign a single activity to multiple people
 
 RELEASED VERSIONS:
 

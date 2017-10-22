@@ -32,9 +32,9 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            @include('people.activities.form', [
-              'method' => 'POST',
-              'action' => route('people.activities.store', $contact)
+            @include('activities.form', [
+              'method' => 'PUT',
+              'action' => route('activities.update', [$activity])
             ])
           </div>
         </div>

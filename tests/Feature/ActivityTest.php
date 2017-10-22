@@ -47,7 +47,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id.'/activities/add');
+        $response = $this->get('/activities/add/'.$contact->id);
 
         $response->assertStatus(200);
 
@@ -68,20 +68,24 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $activityDate,
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/activities/store', $params);
+        $response = $this->post('/activities/store', $params + ['contacts' => [$contact->id]]);
         $response->assertRedirect('/people/'.$contact->id);
 
-        // Assert the note has been added for the correct user.
+        // Assert the activity has been added
         $params['account_id'] = $user->account_id;
-        $params['contact_id'] = $contact->id;
         $params['summary'] = $activityTitle;
         $params['date_it_happened'] = $activityDate;
 
         $this->assertDatabaseHas('activities', $params);
 
-        // Check that the Contact view contains the newly created note
-        $response = $this->get('people/'.$contact->id);
-        $response->assertSee($activityTitle);
+        // Get the activity that we just created
+        // and make sure it's in our pivot table
+        $latestActivity = \App\Activity::all('id')->last();
+
+        $this->assertDatabaseHas('activity_contact', [
+            'contact_id' => $contact->id,
+            'activity_id' => $latestActivity->id,
+        ]);
 
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
@@ -89,6 +93,10 @@ class ActivityTest extends FeatureTestCase
         $eventParams['object_type'] = 'activity';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
+
+        // Check that the Contact view contains the newly created note
+        $response = $this->get('/people/'.$contact->id);
+        $response->assertSee($activityTitle);
 
         // Visit the dashboard and checks that the note event appears on the
         // dashboard
@@ -102,29 +110,32 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activity = factory(\App\Activity::class)->create([
-            'contact_id' => $contact->id,
+            'contact_id' => 0,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => \Carbon\Carbon::now(),
         ]);
 
+        // Attach the created activity to the current user to make this an update
+        $contact->activities()->save($activity);
+
         // check that we can access the edit activity view
-        $response = $this->get('/people/'.$contact->id.'/activities/'.$activity->id.'/edit');
+        $response = $this->get('/activities/'.$activity->id.'/edit/'.$contact->id);
         $response->assertStatus(200);
 
         // now edit the activity
         $params = [
+            'contacts' => [$contact->id],
             'summary' => 'this is another test',
             'date_it_happened' => \Carbon\Carbon::now(),
             'activity_type_id' => null,
             'description' => null,
         ];
 
-        $this->put('/people/'.$contact->id.'/activities/'.$activity->id, $params);
+        $this->put('/activities/'.$activity->id, $params);
 
         // see if the change is in the database
         $newParams['account_id'] = $user->account_id;
-        $newParams['contact_id'] = $contact->id;
         $newParams['id'] = $activity->id;
         $newParams['summary'] = 'this is another test';
 
@@ -151,20 +162,26 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activity = factory(\App\Activity::class)->create([
-            'contact_id' => $contact->id,
+            'contact_id' => 0,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => \Carbon\Carbon::now(),
         ]);
 
-        $response = $this->get('/people/'.$contact->id);
+        // Attach the created activity to the current user to make this an update
+        $contact->activities()->save($activity);
 
-        $response = $this->delete('/people/'.$contact->id.'/activities/'.$activity->id);
+        $response = $this->delete('/activities/'.$activity->id);
         $response->assertStatus(302);
 
         $params['id'] = $activity->id;
 
         $this->assertDatabaseMissing('activities', $params);
+
+        $this->assertDatabaseMissing('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contact->id,
+        ]);
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;

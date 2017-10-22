@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\People;
+namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Activity;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller
@@ -17,7 +16,7 @@ class ActivitiesController extends Controller
      */
     public function index(Contact $contact)
     {
-        return view('people.activities.index')
+        return view('activities.index')
             ->withContact($contact);
     }
 
@@ -29,7 +28,7 @@ class ActivitiesController extends Controller
      */
     public function create(Contact $contact)
     {
-        return view('people.activities.add')
+        return view('activities.add')
             ->withContact($contact)
             ->withActivity(new Activity);
     }
@@ -41,20 +40,29 @@ class ActivitiesController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(ActivitiesRequest $request, Contact $contact)
+    public function store(ActivitiesRequest $request)
     {
-        $activity = $contact->activities()->create(
+        $user = $request->user();
+        $account = $user->account;
+
+        $activity = Activity::create(
             $request->only([
                 'summary',
                 'date_it_happened',
                 'activity_type_id',
                 'description',
             ])
-            + ['account_id' => $contact->account_id]
+            + ['account_id' => $account->id]
         );
 
-        $contact->logEvent('activity', $activity->id, 'create');
-        $contact->calculateActivitiesStatistics();
+        // New attendees
+        $specifiedContacts = $request->get('contacts');
+        foreach ($specifiedContacts as $newContactId) {
+            $contact = Contact::findOrFail($newContactId);
+            $contact->activities()->save($activity);
+            $contact->logEvent('activity', $activity->id, 'create');
+            $contact->calculateActivitiesStatistics();
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_add_success'));
@@ -79,9 +87,9 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contact $contact, Activity $activity)
+    public function edit(Activity $activity, Contact $contact)
     {
-        return view('people.activities.edit')
+        return view('activities.edit')
             ->withContact($contact)
             ->withActivity($activity);
     }
@@ -94,8 +102,11 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function update(ActivitiesRequest $request, Contact $contact, Activity $activity)
+    public function update(ActivitiesRequest $request, Activity $activity)
     {
+        $user = $request->user();
+        $account = $user->account;
+
         $activity->update(
             $request->only([
                 'summary',
@@ -103,12 +114,43 @@ class ActivitiesController extends Controller
                 'activity_type_id',
                 'description',
             ])
-            + ['account_id' => $contact->account_id]
+            + ['account_id' => $account->id]
         );
 
-        $contact->logEvent('activity', $activity->id, 'update');
-        $contact->calculateActivitiesStatistics();
+        // Who did we send through via the form?
+        $specifiedContacts = $request->get('contacts');
 
+        // Find existing attendees
+        $existing = $activity->contacts()->get();
+
+        foreach ($existing as $contact) {
+            // Has an existing attendee been removed?
+            if (! in_array($contact->id, $specifiedContacts)) {
+                $contact->activities()->detach($activity);
+                $contact->logEvent('activity', $activity->id, 'delete');
+            } else {
+                // Otherwise we're updating an activity that someone's
+                // already a part of
+                $contact->logEvent('activity', $activity->id, 'update');
+            }
+
+            // Remove this ID from our list of contacts as we don't
+            // want to add them to the activity again
+            $idx = array_search($contact->id, $specifiedContacts);
+            unset($specifiedContacts[$idx]);
+
+            $contact->calculateActivitiesStatistics();
+        }
+
+        // New attendees
+        foreach ($specifiedContacts as $newContactId) {
+            $contact = Contact::findOrFail($newContactId);
+            $contact->activities()->save($activity);
+            $contact->logEvent('activity', $activity->id, 'create');
+        }
+
+        // Eventually we'll redirect to a dedicated 'view activity page', but for now
+        // just show the last person added
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_update_success'));
     }

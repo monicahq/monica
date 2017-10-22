@@ -252,6 +252,7 @@ return [
     'activities_add_success' => 'Attività aggiunta',
     'activities_update_success' => 'Attività aggiornata',
     'activities_delete_success' => 'Attività rimossa',
+    'activities_who_was_involved' => 'Chi era coinvolto?',
 
     // notes
     'notes_create_success' => 'Nota creata',
