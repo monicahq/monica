@@ -4,6 +4,11 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v0.7.1 - 2017-10-21
+-------------------
+
+* Fix an error in the JS that broke the application
+
 v0.7.0 - 2017-10-21
 -------------------
 
