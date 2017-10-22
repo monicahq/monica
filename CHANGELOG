@@ -1,9 +1,18 @@
 UNRELEASED CHANGES:
 
-* Fix the access to upgrade account view
-* Add ability to assign a single activity to multiple people
+*
 
 RELEASED VERSIONS:
+
+v0.7.0 - 2017-10-21
+-------------------
+
+* Add ability to assign a single activity to multiple people
+* Improve german translations
+* Fix reminders not being sent in case of wrong timezones
+* Fix the access to upgrade account view
+* Replace the custom RandomHelper by str_random
+* Multiple small fixes
 
 v0.6.5 - 2017-08-28
 -------------------
