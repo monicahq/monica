@@ -178,18 +178,18 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
         $activity2 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity2);
 
         $activity3 = factory(\App\Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity3);
 
         $timezone = 'America/New_York';
         $this->assertEquals(
@@ -204,8 +204,8 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
         $timezone = 'America/New_York';
         $this->assertEquals(

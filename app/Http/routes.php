@@ -67,13 +67,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
         Route::post('/people/{contact}/relationships/{partner}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
 
-        // Activities
-        Route::get('/people/{contact}/activities/add', 'People\\ActivitiesController@create')->name('.activities.add');
-        Route::post('/people/{contact}/activities/store', 'People\\ActivitiesController@store')->name('.activities.store');
-        Route::get('/people/{contact}/activities/{activity}/edit', 'People\\ActivitiesController@edit')->name('.activities.edit');
-        Route::put('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@update')->name('.activities.update');
-        Route::delete('/people/{contact}/activities/{activity}', 'People\\ActivitiesController@destroy')->name('.activities.delete');
-
         // Reminders
         Route::get('/people/{contact}/reminders/add', 'People\\RemindersController@create')->name('.reminders.add');
         Route::post('/people/{contact}/reminders/store', 'People\\RemindersController@store')->name('.reminders.store');
@@ -105,6 +98,15 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Search
         Route::post('/people/search', 'PeopleController@search')->name('people.search');
+    });
+
+    // Activities
+    Route::group(['as' => 'activities'], function () {
+        Route::get('/activities/add/{contact}', 'ActivitiesController@create')->name('.add');
+        Route::post('/activities/store', 'ActivitiesController@store')->name('.store');
+        Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
+        Route::put('/activities/{activity}', 'ActivitiesController@update')->name('.update');
+        Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
     });
 
     Route::group(['as' => 'journal'], function () {

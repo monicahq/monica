@@ -50,7 +50,7 @@
             </div>
 
             <div class="row section activities">
-              @include('people.activities.index')
+              @include('activities.index')
             </div>
 
             <div class="row section reminders">
