@@ -259,6 +259,7 @@ return [
     'activities_add_success' => 'Aktivität erfolgreich hinzugefügt',
     'activities_update_success' => 'Aktivität erfolgreich aktualisiert',
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
+    'activities_who_was_involved' => 'Wer war beteiligt?',
 
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',
