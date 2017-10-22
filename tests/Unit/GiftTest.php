@@ -75,7 +75,7 @@ class GiftTest extends TestCase
     public function testGetValueReturnsValue()
     {
         $gift = new Gift;
-        $gift->value_in_dollars = '220.00';
+        $gift->value = '220.00';
 
         $this->assertEquals(
             '220.00',
