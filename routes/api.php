@@ -7,6 +7,14 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    // Set a partner to the contact
+    Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
+    Route::post('/contacts/{contact}/partners/unset', 'Api\\ApiContactController@unsetPartners');
+
+    // Set a kid to the contact
+    Route::post('/contacts/{contact}/kids', 'Api\\ApiContactController@kids');
+    Route::post('/contacts/{contact}/kids/unset', 'Api\\ApiContactController@unsetKids');
+
     // Tags
     Route::resource('tags', 'Api\\ApiTagController', ['except' => [
       'create', 'edit', 'patch',

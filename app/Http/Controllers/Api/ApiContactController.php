@@ -79,7 +79,8 @@ class ApiContactController extends ApiController
             'food_preferencies' => 'nullable|max:100000',
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
-            'linkedin_profile_url' => 'nullable|max:255'
+            'linkedin_profile_url' => 'nullable|max:255',
+            'is_partial' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -158,7 +159,8 @@ class ApiContactController extends ApiController
             'food_preferencies' => 'nullable|max:100000',
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
-            'linkedin_profile_url' => 'nullable|max:255'
+            'linkedin_profile_url' => 'nullable|max:255',
+            'is_partial' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -238,5 +240,197 @@ class ApiContactController extends ApiController
         $contact->delete();
 
         return $this->respondObjectDeleted($contact->id);
+    }
+
+     /**
+     * Get the list of the partners of this contact.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    /**
+    * Link a partner to an existing contact
+    */
+    public function partners(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Make sure the contact is not a partial contact so we can actually
+        // associate him/her a partner
+        if ($contact->is_partial) {
+            return $this->setErrorCode(36)
+                        ->respondWithError('You can\'t set a partner or a child to a partial contact');
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'partner_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+           return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        try {
+            $partner = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('partner_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        if ($partner->is_partial) {
+            $contact->setRelationshipWith($partner);
+        } else {
+            $contact->setRelationshipWith($partner, true);
+            $partner->logEvent('contact', $partner->id, 'create');
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+    * Unlink a partner from an existing contact
+    */
+    public function unsetPartners(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'partner_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+           return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        try {
+            $partner = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('partner_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        if ($partner->is_partial) {
+            if ($partner->reminders) {
+                $partner->reminders()->get()->each->delete();
+            }
+
+            $contact->unsetRelationshipWith($partner);
+            $partner->delete();
+        } else {
+            $contact->unsetRelationshipWith($partner, true);
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+    * Link a child to an existing contact
+    */
+    public function kids(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Make sure the contact is not a partial contact so we can actually
+        // associate him/her a partner
+        if ($contact->is_partial) {
+            return $this->setErrorCode(36)
+                        ->respondWithError('You can\'t set a partner or a child to a partial contact');
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'child_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+           return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        try {
+            $kid = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('child_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        if ($kid->is_partial) {
+            $kid->isTheOffspringOf($contact);
+        } else {
+            $kid->isTheOffspringOf($contact, true);
+            $kid->logEvent('contact', $kid->id, 'create');
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+    * Unlink a partner from an existing contact
+    */
+    public function unsetKids(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'child_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+           return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        try {
+            $kid = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('child_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        if ($kid->is_partial) {
+            if ($kid->reminders) {
+                $kid->reminders()->get()->each->delete();
+            }
+
+            $contact->unsetOffspring($kid);
+            $kid->delete();
+        } else {
+            $contact->unsetOffspring($kid, true);
+        }
+
+        return new ContactResource($contact);
     }
 }
