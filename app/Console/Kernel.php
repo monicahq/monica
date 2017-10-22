@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
+        'App\Console\Commands\AddActivity',
+        'App\Console\Commands\AddActivityGroup',
+        'App\Console\Commands\ActivitiesClear',
         'App\Console\Commands\ResetTestDB',
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\CalculateStatistics',
