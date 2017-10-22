@@ -23,6 +23,7 @@ return [
     'event_update_task' => 'úkol aktualizován',
     'event_create_activity' => 'Byla přidána aktivita k :name',
     'event_update_activity' => 'Byla aktualizována aktivita k :name',
+    'event_delete_activity' => 'Byla odebrána aktivita k :name',
     'event_create_debt' => 'dluh přidán',
     'event_update_debt' => 'dluh aktualizován',
     'event_create_gift' => 'dárek přidán',

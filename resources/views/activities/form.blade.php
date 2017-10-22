@@ -4,6 +4,26 @@
 
     <h2>{{ trans('people.activities_add_title', ['name' => $contact->getFirstName()]) }}</h2>
 
+
+    <div class="form-group user-input">
+        <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
+        <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control user-input-search-input">
+        <ul class="user-input-search-results"></ul>
+        <br />
+        <ul class="contacts">
+            <ul class="contacts-list">
+                @if ($contact && $method == 'POST')
+                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
+                @endif
+                @foreach ($activity->contacts as $contact)
+                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
+                @endforeach
+            </ul>
+        </ul>
+    </div>
+
     {{-- Summary --}}
     <div class="form-group{{ $errors->has('summary') ? ' has-error' : '' }}">
         <label for="summary">{{ trans('people.activities_summary') }}</label>

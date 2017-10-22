@@ -68,7 +68,7 @@
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
-                    <p>{{ trans('people.kids_add_no_existing_contact') }}</p>
+                    <p>{{ trans('people.kids_add_no_existing_contact', ['name' => $contact->getFirstName()]) }}</p>
                   </div>
 
                 @else

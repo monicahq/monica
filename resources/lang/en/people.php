@@ -258,6 +258,7 @@ return [
     'activities_add_success' => 'The activity has been added successfully',
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
+    'activities_who_was_involved' => 'Who was involved?',
 
     // notes
     'notes_create_success' => 'The note has been created successfully',
