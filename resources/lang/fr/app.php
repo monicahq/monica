@@ -51,6 +51,7 @@ return [
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
+    'breadcrumb_api' => 'API',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',

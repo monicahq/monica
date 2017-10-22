@@ -135,4 +135,13 @@ return [
     'tags_blank_title' => 'Tagy jsou šikovné řešení kategorizace kontaktů.',
     'tags_blank_description' => 'Tagy fungují jako adresáře, kontaktům můžete ale přidat vícero tagů. Přejděte na kontakt a otagujte přítele hned pod jeho jménem. Jakmile je kontakt otagován, vraťte se zpět pro správu všech tagů v tomto účtu.',
 
+    'api_title' => 'API access',
+    'api_description' => 'The API can be used to manipulate Monica\'s data from an external application, like a mobile application for instance.',
+    'api_personal_access_tokens' => 'Personal access tokens',
+    'api_pao_description' => 'Make sure you give this token to a source you trust - as they allow you to access all your data.',
+    'api_oauth_clients' => 'Your Oauth clients',
+    'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
+    'api_authorized_clients' => 'List of authorized clients',
+    'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+
 ];

@@ -32,15 +32,20 @@
 
       <div class="col-xs-12 col-md-9">
 
-        <h2>API</h2>
+        <h3 class="with-actions">{{ trans('settings.api_title') }}</h3>
+        <p>{{ trans('settings.api_description') }}</p>
 
-        <p>The API can be used to manipulate Monica's data from an external application.</p>
-
-        <h3>List of </h3>
-
-        <passport-clients></passport-clients>
-        <passport-authorized-clients></passport-authorized-clients>
+        <h3>{{ trans('settings.api_personal_access_tokens') }}</h3>
+        <p>{{ trans('settings.api_pao_description') }}</p>
         <passport-personal-access-tokens></passport-personal-access-tokens>
+
+        <h3>{{ trans('settings.api_oauth_clients') }}</h3>
+        <p>{{ trans('settings.api_oauth_clients_desc') }}</p>
+        <passport-clients></passport-clients>
+
+        <h3>{{ trans('settings.api_authorized_clients') }}</h3>
+        <p>{{ trans('settings.api_authorized_clients_desc') }}</p>
+        <passport-authorized-clients></passport-authorized-clients>
 
       </div>
     </div>
