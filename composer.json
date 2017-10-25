@@ -9,7 +9,6 @@
         "barryvdh/laravel-debugbar": "^2.2",
         "jenssegers/date": "^3.2",
         "ext-intl": "*",
-        "martinjoiner/ordinal-number": "^0.2.0",
         "predis/predis": "^1.1",
         "guzzlehttp/guzzle": "^6.2",
         "fzaninotto/faker": "^1.6",

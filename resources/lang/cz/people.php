@@ -258,6 +258,7 @@ return [
     'activities_add_success' => 'Aktivita byla úspěšně přidána',
     'activities_update_success' => 'Aktivita byla úspěšně aktualizována',
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
+    'activities_who_was_involved' => 'Kdo byl zapojen?',
 
     // notes
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',

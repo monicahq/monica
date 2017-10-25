@@ -646,6 +646,10 @@ $('.contacts-list').on('click', 'li', function(e) {
     $(this).remove();
     return false;
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 /*
  * Focus the input field next to the radio button.
  *

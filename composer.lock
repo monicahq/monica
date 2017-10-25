@@ -6196,7 +6196,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0",
+        "php": ">=7.0.0",
         "ext-intl": "*"
     },
     "platform-dev": []

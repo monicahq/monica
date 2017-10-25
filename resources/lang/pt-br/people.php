@@ -258,6 +258,7 @@ return [
     'activities_add_success' => 'A atividade foi adicionada com sucesso',
     'activities_update_success' => 'A atividade foi atualizada com sucesso',
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
+    'activities_who_was_involved' => 'Quem estava envolvido?',
 
     // notes
     'notes_create_success' => 'A nota foi adicionada com sucesso',

@@ -258,6 +258,7 @@ return [
     'activities_add_success' => 'Активность была добавлена',
     'activities_update_success' => 'Активность была обновлена',
     'activities_delete_success' => 'Активность была удалена',
+    'activities_who_was_involved' => 'Кто был вовлечен?',
 
     // notes
     'notes_create_success' => 'Заметка была добавлена',

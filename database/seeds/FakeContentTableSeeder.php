@@ -41,8 +41,7 @@ class FakeContentTableSeeder extends Seeder
         $faker = Faker::create();
 
         // create a random number of contacts
-        //$numberOfContacts = rand(3, 100);
-        $numberOfContacts = 0;
+        $numberOfContacts = rand(3, 100);
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
@@ -99,13 +98,20 @@ class FakeContentTableSeeder extends Seeder
                         $birthdate_approximate = 'exact';
                     }
 
-                    $contact->kids()->create(
+                    $childID = DB::table('contacts')->insertGetId([
+                        'account_id' => $contact->account_id,
+                        'gender' => $gender,
+                        'first_name' => $name,
+                        'last_name' => (rand(1, 2) == 1) ? $faker->lastName : $contact->last_name,
+                        'is_birthdate_approximate' => $birthdate_approximate,
+                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
+                    ]);
+
+                    $contact->offsprings()->create(
                         [
-                            'first_name' => $name,
-                            'gender' => $gender,
-                            'is_birthdate_approximate' => $birthdate_approximate,
-                            'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
                             'account_id' => $contact->account_id,
+                            'contact_id' => $childID,
+                            'is_the_child_of' => $contact->id,
                         ]
                     );
                 }
