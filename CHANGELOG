@@ -1,13 +1,25 @@
 UNRELEASED CHANGES:
 
-* Before deploy: php artisan passport:install
-* Before deploy: php artisan cache:clear
-* npm install
-* migrations
+* Release of the first version of the API
 * Fix the access to upgrade account view
 * Add security.txt file
 
 RELEASED VERSIONS:
+
+v0.7.1 - 2017-10-21
+-------------------
+
+* Fix an error in the JS that broke the application
+
+v0.7.0 - 2017-10-21
+-------------------
+
+* Add ability to assign a single activity to multiple people
+* Improve german translations
+* Fix reminders not being sent in case of wrong timezones
+* Fix the access to upgrade account view
+* Replace the custom RandomHelper by str_random
+* Multiple small fixes
 
 v0.6.5 - 2017-08-28
 -------------------

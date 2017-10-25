@@ -1,7 +1,4 @@
 <style scoped>
-    .action-link {
-        cursor: pointer;
-    }
 
     .m-b-none {
         margin-bottom: 0;
@@ -17,7 +14,7 @@
                         OAuth Clients
                     </span>
 
-                    <a class="action-link" @click="showCreateClientForm">
+                    <a class="btn" @click="showCreateClientForm">
                         Create New Client
                     </a>
                 </div>

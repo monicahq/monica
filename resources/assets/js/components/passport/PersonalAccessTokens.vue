@@ -1,10 +1,20 @@
 <style scoped>
-    .action-link {
-        cursor: pointer;
-    }
 
     .m-b-none {
         margin-bottom: 0;
+    }
+
+    .access-key {
+        border: 1px solid #cacaca;
+        border-radius: 3px;
+        padding: 10px 10px 0;
+        background-color: #fafafa;
+    }
+
+    pre {
+        font-size: 12px;
+        word-wrap: break-word;
+        white-space: pre-wrap;
     }
 </style>
 
@@ -18,7 +28,7 @@
                             Personal Access Tokens
                         </span>
 
-                        <a class="action-link" @click="showCreateTokenForm">
+                        <a class="btn" @click="showCreateTokenForm">
                             Create New Token
                         </a>
                     </div>
@@ -145,7 +155,9 @@
                             You may now use this token to make API requests.
                         </p>
 
-                        <pre><code>{{ accessToken }}</code></pre>
+                        <div class="access-key">
+                            <pre><code>{{ accessToken }}</code></pre>
+                        </div>
                     </div>
 
                     <!-- Modal Actions -->
