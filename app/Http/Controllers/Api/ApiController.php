@@ -38,8 +38,32 @@ class ApiController extends Controller
                 $this->setLimitPerPage($request->get('limit'));
             }
 
+            // make sure the JSON is well formatted if the given call sends a JSON
+            // TODO: there is probably a much better way to do that
+            if ($request->method() != "GET" and $request->method() != "DEL") {
+
+                if (is_null(json_decode($request->getContent()))) {
+                    return $this->setHTTPStatusCode(400)
+                              ->setErrorCode(37)
+                              ->respondWithError(config('api.error_codes.37'));
+                }
+            }
+
             return $next($request);
         });
+    }
+
+    /**
+     * Default request to the API
+     * @return json
+     */
+    public function success()
+    {
+        return $this->respond([
+            'success' => [
+                'message' => "Welcome to Monica",
+            ],
+        ]);
     }
 
     /**

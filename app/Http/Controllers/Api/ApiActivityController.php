@@ -58,7 +58,7 @@ class ApiActivityController extends ApiController
             'description' => 'required|max:1000000',
             'date_it_happened' => 'required|date',
             'activity_type_id' => 'integer',
-            'contact_id' => 'required|integer',
+            'contacts' => 'required|array',
         ]);
 
         if ($validator->fails()) {
@@ -66,22 +66,41 @@ class ApiActivityController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        // Make sure each contact exists and has the right to be associated with
+        // this account
+        $attendeesID = $request->get('contacts');
+        foreach ($attendeesID as $attendeeID) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $attendeeID)
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
         }
 
         try {
-            $activity = Activity::create($request->all());
+            $activity = Activity::create(
+                $request->only([
+                    'summary',
+                    'date_it_happened',
+                    'activity_type_id',
+                    'description',
+                ])
+                + ['account_id' => auth()->user()->account->id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        $activity->account_id = auth()->user()->account->id;
-        $activity->save();
+        // Now we associate the activity with each one of the attendees
+        $attendeesID = $request->get('contacts');
+        foreach ($attendeesID as $attendeeID) {
+            $contact = Contact::findOrFail($attendeeID);
+            $contact->activities()->save($activity);
+            $contact->logEvent('activity', $activity->id, 'create');
+            $contact->calculateActivitiesStatistics();
+        }
 
         return new ActivityResource($activity);
     }
@@ -108,7 +127,7 @@ class ApiActivityController extends ApiController
             'description' => 'required|max:1000000',
             'date_it_happened' => 'required|date',
             'activity_type_id' => 'integer',
-            'contact_id' => 'required|integer',
+            'contacts' => 'required|array',
         ]);
 
         if ($validator->fails()) {
@@ -116,25 +135,70 @@ class ApiActivityController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        // Make sure each contact exists and has the right to be associated with
+        // this account
+        $attendeesID = $request->get('contacts');
+        foreach ($attendeesID as $attendeeID) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $attendeeID)
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
         }
 
+        // Update the activity itself
         try {
-            $activity->update($request->all());
+            $activity->update(
+                $request->only([
+                    'summary',
+                    'date_it_happened',
+                    'activity_type_id',
+                    'description',
+                ])
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        // Get the attendees
+        $attendees = $request->get('contacts');
+
+        // Find existing contacts
+        $existing = $activity->contacts()->get();
+
+        foreach ($existing as $contact) {
+            // Has an existing attendee been removed?
+            if (! in_array($contact->id, $attendees)) {
+                $contact->activities()->detach($activity);
+                $contact->logEvent('activity', $activity->id, 'delete');
+            } else {
+                // Otherwise we're updating an activity that someone's
+                // already a part of
+                $contact->logEvent('activity', $activity->id, 'update');
+            }
+
+            // Remove this ID from our list of contacts as we don't
+            // want to add them to the activity again
+            $idx = array_search($contact->id, $attendees);
+            unset($attendees[$idx]);
+
+            $contact->calculateActivitiesStatistics();
+        }
+
+        // New attendees
+        foreach ($attendees as $newContactId) {
+            $contact = Contact::findOrFail($newContactId);
+            $contact->activities()->save($activity);
+            $contact->logEvent('activity', $activity->id, 'create');
         }
 
         return new ActivityResource($activity);
     }
 
     /**
-     * Delete a note.
+     * Delete an activity.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */

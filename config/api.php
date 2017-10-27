@@ -36,5 +36,6 @@ return [
         '34' => 'Too many attempts, please slow down the request.',
         '35' => 'This email address is already taken.',
         '36' => 'You can\'t set a partner or a child to a partial contact.',
+        '37' => 'Problems parsing JSON',
     ],
 ];
