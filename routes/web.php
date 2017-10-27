@@ -24,7 +24,6 @@ Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('/logout', 'Auth\LoginController@logout');
 
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
