@@ -75,6 +75,7 @@ more.
 * Labels to organize contacts
 * Multi currencies
 * Multi languages
+* An API that covers most of the data
 
 ### Who is it for?
 
@@ -236,10 +237,10 @@ and we believe this kind of business model is inspiring, where everyone wins.
 * On https://monicahq.com, Monica will be offered in two versions. Note that
 this can change anytime as we are trying different business models to see if
 this project can be sustained in the long run:
-  * a free plan (called **Joe**):
+  * a free plan:
     * No limits of contacts
     * Exporters
-  * a paid plan (called **Chandler**):
+  * a paid plan:
     * Advanced features
     * Email reminders
     * Importers
