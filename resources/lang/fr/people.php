@@ -19,6 +19,9 @@ return [
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Search your contacts...',
     'people_search_no_results' => 'No relevant contacts found :(',
+    'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
+    'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
+    'people_list_account_upgrade_cta' => 'Upgrade now',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
@@ -146,6 +149,7 @@ return [
     'reminders_description' => 'Nous vous enverrons un courriel pour chacun des rappels ci-dessous. Les rappels sont envoyés le matin du jour où l\'évènement se passe.',
     'reminders_one_time' => 'Unique',
     'reminders_birthday' => 'Birthdate of :name',
+    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Conjoint',
@@ -254,6 +258,7 @@ return [
     'activities_add_success' => ':L\'activité a été ajoutée avec succès.',
     'activities_update_success' => 'L\'activité a été mise à jour avec succès.',
     'activities_delete_success' => 'L\'activité a été supprimée avec succès.',
+    'activities_who_was_involved' => 'Qui était impliqué?',
 
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès.',

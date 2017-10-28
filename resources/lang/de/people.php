@@ -19,6 +19,9 @@ return [
     'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
+    'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
+    'people_list_account_upgrade_title' => 'Führe ein Upgrade aus um das vollständige Potential zu entfalten.',
+    'people_list_account_upgrade_cta' => 'Upgrade jetzt',
 
     // people add
     'people_add_title' => 'Person hinzufügen',
@@ -45,7 +48,7 @@ return [
     'link_to_list' => 'Personenliste',
 
     // Header
-    'edit_contact_information' => 'Konraktinformationen bearbeiten',
+    'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'call_button' => 'Telefonat vermerken',
 
     // Calls
@@ -60,7 +63,7 @@ return [
     'call_title' => 'Telefonate',
     'call_empty_comment' => 'Keine Details',
     'call_blank_title' => 'Behalte deine Telefonate mit :name im Auge',
-    'call_blank_desc' => 'You called :name',
+    'call_blank_desc' => 'Du hast :name angerufen',
 
     // age - birthday
     'birthdate_not_set' => 'Geburstag noch nicht gesetzt',
@@ -147,6 +150,7 @@ return [
     'reminders_type_week' => 'Woche',
     'reminders_type_month' => 'Monat',
     'reminders_type_year' => 'Jahr',
+    'reminders_free_plan_warning' => 'Du befindest dich im freiem Angebot. Hier werden keine Emails versendet. Um die Erinnerungs Emails zu erhalten upgrade deinen Account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Lebensgefährte',
@@ -161,10 +165,17 @@ return [
     'significant_other_add_cta' => 'Lebensgefährte hinzufügen',
     'significant_other_edit_cta' => 'Lebensgefährte bearbeiten',
     'significant_other_delete_confirmation' => 'Möchtest du diesen Lebensgefährten wirklich löschen? Es gibt kein Zurück.',
+    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
     'significant_other_add_success' => 'Lebensgefährte wurde erfolgreich hinzugefügt',
     'significant_other_edit_success' => 'Lebensgefährte wurde erfolgreich aktualisiert',
     'significant_other_delete_success' => 'Lebensgefährte wurde erfolgreich gelöscht',
     'significant_other_add_birthday_reminder' => 'Gratuliere :name zum Geburstag, :contact_firstname\'s Lebensgefährte',
+    'significant_other_add_person' => 'Person hinzufügen',
+    'significant_other_link_existing_contact' => 'Existierenden Kontakt wählen',
+    'significant_other_add_no_existing_contact' => 'Du hast derzeit keine Kontakte, die :name\'s Lebensgefährte werden könnten.',
+    'significant_other_add_existing_contact' => 'Wähle einen existierenden Kontakt als Lebensgefährte für :name',
+    'contact_add_also_create_contact' => 'Erstelle einen neuen Kontakt für diese Person.',
+    'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
     'kids_sidebar_title' => 'Kinder',
@@ -176,11 +187,11 @@ return [
     'kids_add_gender' => 'Geschlecht',
     'kids_add_firstname' => 'Vorname',
     'kids_add_firstname_help' => 'Wir vermuten der Nachname ist :name',
-    'kids_add_lastname' => 'Last name (optional)',
-    'kids_add_also_create' => 'Also create a Contact entry for this person.',
-    'kids_add_also_desc' => 'This will let you treat this kid like any other contact.',
-    'kids_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s kid at the moment.',
-    'kids_add_existing_contact' => 'Select an existing contact as the kid for :name',
+    'kids_add_lastname' => 'Nachname (optional)',
+    'kids_add_also_create' => 'Erstelle ebenfalls einen Kontakt eintrag für diese Person.',
+    'kids_add_also_desc' => 'Das lässt dich das Kind wie jede andere Persion behandeln.',
+    'kids_add_no_existing_contact' => 'Du hast keinen Kontakt der ein Kind von :name\'s seien kann.',
+    'kids_add_existing_contact' => 'Wähle einen existierenden Kontakt als Kind von :name aus.',
     'kids_add_probably' => 'Das Kind ist wahrscheinlich',
     'kids_add_probably_yo' => 'Jahre alt',
     'kids_add_exact' => 'Ich kenne den Geburtstag dieses Kindes',
@@ -192,7 +203,7 @@ return [
     'kids_update_success' => 'Das Kind wurde erfolgreich aktualisiert',
     'kids_delete_success' => 'Das Kind wurde erfolgreich gelöscht',
     'kids_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag, :contact_firstname\'s Kind',
-    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
+    'kids_unlink_confirmation' => 'Bist Du dir sicher, dass du diese Verbindung lösen möchtest? Das Kind wird nicht gelöscht nur die Verbindung zwischen beiden Kontakten.',
 
     // tasks
     'tasks_desc' => 'Behalte Aufgaben für :name im Auge',
@@ -248,6 +259,7 @@ return [
     'activities_add_success' => 'Aktivität erfolgreich hinzugefügt',
     'activities_update_success' => 'Aktivität erfolgreich aktualisiert',
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
+    'activities_who_was_involved' => 'Wer war beteiligt?',
 
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',

@@ -73,7 +73,7 @@ class PeopleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
-            'last_name' => 'required|max:100',
+            'last_name' => 'nullable|max:100',
             'gender' => 'required',
         ]);
 

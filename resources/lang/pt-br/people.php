@@ -19,6 +19,9 @@ return [
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Search your contacts...',
     'people_search_no_results' => 'No relevant contact found :(',
+    'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
+    'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
+    'people_list_account_upgrade_cta' => 'Upgrade now',
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
@@ -146,6 +149,7 @@ return [
     'reminders_type_month' => 'mês',
     'reminders_type_year' => 'ano',
     'reminders_birthday' => 'Birthdate of :name',
+    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Pessoas importantes',
@@ -254,6 +258,7 @@ return [
     'activities_add_success' => 'A atividade foi adicionada com sucesso',
     'activities_update_success' => 'A atividade foi atualizada com sucesso',
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
+    'activities_who_was_involved' => 'Quem estava envolvido?',
 
     // notes
     'notes_create_success' => 'A nota foi adicionada com sucesso',

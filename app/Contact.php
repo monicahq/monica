@@ -105,7 +105,7 @@ class Contact extends Model
      */
     public function activities()
     {
-        return $this->hasMany('App\Activity')->orderBy('date_it_happened', 'desc');
+        return $this->belongsToMany('App\Activity')->orderBy('date_it_happened', 'desc');
     }
 
     /**
@@ -290,7 +290,7 @@ class Contact extends Model
      */
     public function setFirstNameAttribute($value)
     {
-        $this->attributes['first_name'] = ucfirst(trim($value));
+        $this->attributes['first_name'] = trim($value);
     }
 
     /**

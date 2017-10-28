@@ -77,6 +77,8 @@ return [
     'subscriptions_account_free_plan' => 'Stai usando il piano gratuito.',
     'subscriptions_account_free_plan_upgrade' => 'Puoi promuovere il tuo piano al livello :name, che costa $:price al mese. I vantaggi sono:',
     'subscriptions_account_free_plan_benefits_users' => 'Numero di utenti illimitato',
+    'subscriptions_account_free_plan_benefits_reminders' => 'Reminders by email',
+    'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Import your contacts with vCard',
     'subscriptions_account_free_plan_benefits_support' => 'Sosterrai il progetto nel lungo termine, permettendoci di introdurre nuove funzionalità.',
     'subscriptions_account_upgrade' => 'Promuovi il tuo account',
     'subscriptions_account_invoices' => 'Ricevute',

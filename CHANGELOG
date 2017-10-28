@@ -1,11 +1,41 @@
 UNRELEASED CHANGES:
 
-* Add restriction of 50 characters for a first name, and 100 characters for a last name.
-* Add support for storing uploaded files on s3
-* Sort contacts by first name, last name when linking significant others and kids
-* Remove beginning / ending spaces in names when adding / saving a contact.
+*
 
 RELEASED VERSIONS:
+
+v0.7.1 - 2017-10-21
+-------------------
+
+* Fix an error in the JS that broke the application
+
+v0.7.0 - 2017-10-21
+-------------------
+
+* Add ability to assign a single activity to multiple people
+* Improve german translations
+* Fix reminders not being sent in case of wrong timezones
+* Fix the access to upgrade account view
+* Replace the custom RandomHelper by str_random
+* Multiple small fixes
+
+v0.6.5 - 2017-08-28
+-------------------
+
+* Add a new welcome screen for new users
+* Fix typo when displaying message of no existing contact to link when adding a child
+* Monicahq.com only: add limitations to free accounts
+
+v0.6.4 - 2017-08-23
+-------------------
+
+* Add restriction of 50 characters for a first name, and 100 characters for a last name
+* Add support for storing uploaded files on s3
+* Sort contacts by first name, last name when linking significant others and kids
+* Remove automatic uppercase of the first name
+* Remove beginning / ending spaces in names when adding / saving a contact
+* Fix birthday reminder creation bug on vCard import
+* Fix search bar being hard to use
 
 v0.6.3 - 2017-08-16
 -------------------
