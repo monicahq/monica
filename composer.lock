@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "255cf9daa82916250c9ff1098810d6ae",
+    "content-hash": "23ddf9eaafe1d1d25485868a3016425f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.36.32",
+            "version": "3.36.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7ba49dbd24366647a41cd4a13eab972b2264b8db"
+                "reference": "adc4e9928730cb65b9b7914084cbf1d8c988419a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7ba49dbd24366647a41cd4a13eab972b2264b8db",
-                "reference": "7ba49dbd24366647a41cd4a13eab972b2264b8db",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/adc4e9928730cb65b9b7914084cbf1d8c988419a",
+                "reference": "adc4e9928730cb65b9b7914084cbf1d8c988419a",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2017-10-23T20:40:28+00:00"
+            "time": "2017-10-26T20:45:00+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1422,16 +1422,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.18",
+            "version": "v5.5.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "1cc21baac11551377734b8c17ead17db4c34fe21"
+                "reference": "c678100e84934ec85c9f8bc26bd0a60222682719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/1cc21baac11551377734b8c17ead17db4c34fe21",
-                "reference": "1cc21baac11551377734b8c17ead17db4c34fe21",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/c678100e84934ec85c9f8bc26bd0a60222682719",
+                "reference": "c678100e84934ec85c9f8bc26bd0a60222682719",
                 "shasum": ""
             },
             "require": {
@@ -1549,7 +1549,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-10-19T12:50:26+00:00"
+            "time": "2017-10-25T19:10:45+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2050,49 +2050,6 @@
                 "server"
             ],
             "time": "2017-08-03T15:09:23+00:00"
-        },
-        {
-            "name": "martinjoiner/ordinal-number",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/martinjoiner/ordinal-number.git",
-                "reference": "ce28b835093c9b0f2c1dd078f86e58ca180be191"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/martinjoiner/ordinal-number/zipball/ce28b835093c9b0f2c1dd078f86e58ca180be191",
-                "reference": "ce28b835093c9b0f2c1dd078f86e58ca180be191",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MartinJoiner\\OrdinalNumber\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Martin Joiner",
-                    "email": "martin@martinjoiner.co.uk",
-                    "homepage": "http://martinjoiner.co.uk",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Converts numbers to a human readable ordinal form eg. 'first', 'second' or even 'Three thousand five hundred sixty first'",
-            "keywords": [
-                "english",
-                "number",
-                "ordinal"
-            ],
-            "time": "2016-02-06T20:51:44+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -2934,12 +2891,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "140175d0d4a71950b045fb87cc7d979340b9f16e"
+                "reference": "9660ad3b85be3e3b90eacb9be3fcf7d12be60a90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/140175d0d4a71950b045fb87cc7d979340b9f16e",
-                "reference": "140175d0d4a71950b045fb87cc7d979340b9f16e",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9660ad3b85be3e3b90eacb9be3fcf7d12be60a90",
+                "reference": "9660ad3b85be3e3b90eacb9be3fcf7d12be60a90",
                 "shasum": ""
             },
             "conflict": {
@@ -2947,7 +2904,7 @@
                 "amphp/artax": ">=2,<2.0.6|<1.0.6",
                 "aws/aws-sdk-php": ">=3,<3.2.1",
                 "bugsnag/bugsnag-laravel": ">=2,<2.0.2",
-                "cakephp/cakephp": ">=3,<3.0.15|>=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=1.3,<1.3.18|>=2.7,<2.7.6|>=3.1,<3.1.4",
+                "cakephp/cakephp": ">=2,<2.4.99|>=2.5,<2.5.99|>=2.6,<2.6.12|>=2.7,<2.7.6|>=3,<3.0.15|>=1.3,<1.3.18|>=3.1,<3.1.4",
                 "cart2quote/module-quotation": ">=4.1.6,<=4.4.5|>=5,<5.4.4",
                 "cartalyst/sentry": "<2.1",
                 "codeigniter/framework": "<=3.0.6",
@@ -2967,7 +2924,7 @@
                 "dompdf/dompdf": ">=0.6,<0.6.2",
                 "drupal/core": ">=8,<8.3.7",
                 "drupal/drupal": ">=8,<8.3.7",
-                "ezsystems/ezpublish-legacy": ">=2017.8,<2017.8.1.1|>=5.4,<5.4.10.1|>=5.3,<5.3.12.2",
+                "ezsystems/ezpublish-legacy": ">=5.4,<5.4.10.1|>=5.3,<5.3.12.2|>=2017.8,<2017.8.1.1",
                 "firebase/php-jwt": "<2",
                 "friendsofsymfony/rest-bundle": ">=1.2,<1.2.2",
                 "friendsofsymfony/user-bundle": ">=1.2,<1.3.5",
@@ -2987,9 +2944,10 @@
                 "oro/crm": ">=1.7,<1.7.4",
                 "oro/platform": ">=1.7,<1.7.4",
                 "phpmailer/phpmailer": ">=5,<5.2.24",
+                "phpxmlrpc/extras": "<6.0.1",
                 "pusher/pusher-php-server": "<2.2.1",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
-                "shopware/shopware": "<4.4|>=5,<5.2.16",
+                "shopware/shopware": "<5.2.25",
                 "silverstripe/cms": ">=3.1,<3.1.11|>=3,<=3.0.11",
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
                 "silverstripe/framework": ">=3,<3.3",
@@ -3006,21 +2964,21 @@
                 "symfony/http-foundation": ">=2,<2.3.27|>=2.4,<2.5.11|>=2.6,<2.6.6",
                 "symfony/http-kernel": ">=2,<2.3.29|>=2.4,<2.5.12|>=2.6,<2.6.8",
                 "symfony/routing": ">=2,<2.0.19",
-                "symfony/security": ">=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.3,<2.3.37|>=2.4,<2.6.13|>=2.7,<2.7.9|>=2,<2.0.25|>=2.1,<2.1.13|>=2.2,<2.2.9",
-                "symfony/security-core": ">=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.8,<2.8.6|>=3,<3.0.6|>=2.4,<2.6.13|>=2.7,<2.7.9",
-                "symfony/security-http": ">=2.4,<2.7.13|>=2.3,<2.3.41|>=2.8,<2.8.6|>=3,<3.0.6",
+                "symfony/security": ">=2.3,<2.3.37|>=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2,<2.0.25|>=2.1,<2.1.13|>=2.2,<2.2.9",
+                "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.8,<2.8.6|>=3,<3.0.6",
+                "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.13|>=2.8,<2.8.6|>=3,<3.0.6",
                 "symfony/serializer": ">=2,<2.0.11",
-                "symfony/symfony": ">=2,<2.3.41|>=2.4,<2.7.13|>=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5|>=2.8,<2.8.6|>=3,<3.0.6",
+                "symfony/symfony": ">=2,<2.3.41|>=2.4,<2.7.13|>=2.8,<2.8.6|>=3,<3.0.6|>=2.7.30,<2.7.32|>=2.8.23,<2.8.25|>=3.2.10,<3.2.12|>=3.3.3,<3.3.5",
                 "symfony/translation": ">=2,<2.0.17",
                 "symfony/validator": ">=2,<2.0.24|>=2.1,<2.1.12|>=2.2,<2.2.5|>=2.3,<2.3.3",
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
                 "twig/twig": "<1.20",
-                "typo3/cms": ">=6.2,<6.2.30|>=8,<8.7.5|>=7,<7.6.22",
-                "typo3/flow": ">=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5|>=1,<1.0.4|>=1.1,<1.1.1|>=2,<2.0.1",
-                "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
+                "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
+                "typo3/flow": ">=1.1,<1.1.1|>=2,<2.0.1|>=2.3,<2.3.16|>=3,<3.0.10|>=3.1,<3.1.7|>=3.2,<3.2.7|>=3.3,<3.3.5|>=1,<1.0.4",
+                "typo3/neos": ">=1.2,<1.2.13|>=2,<2.0.4|>=1.1,<1.1.3",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
                 "yiisoft/yii2": "<2.0.5",
@@ -3064,7 +3022,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2017-09-11T12:05:25+00:00"
+            "time": "2017-10-29T18:43:15+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -3323,16 +3281,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "1.7.1",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "ed62ac351124a136f61b7ece7e0d172f4c56897b"
+                "reference": "b3a03c1eb2877f0c66885641a52216dcbf313a11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/ed62ac351124a136f61b7ece7e0d172f4c56897b",
-                "reference": "ed62ac351124a136f61b7ece7e0d172f4c56897b",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/b3a03c1eb2877f0c66885641a52216dcbf313a11",
+                "reference": "b3a03c1eb2877f0c66885641a52216dcbf313a11",
                 "shasum": ""
             },
             "require": {
@@ -3345,13 +3303,12 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^1.8.0",
                 "monolog/monolog": "*",
-                "phpunit/phpunit": "^4.8 || ^5.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.7"
             },
             "suggest": {
                 "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "immobiliare/sentry-php": "Fork that fixes support for PHP 5.2",
                 "monolog/monolog": "Automatically capture Monolog events as breadcrumbs"
             },
             "bin": [
@@ -3360,7 +3317,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -3384,7 +3341,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-08-02T16:38:25+00:00"
+            "time": "2017-10-29T21:19:48+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
@@ -3442,16 +3399,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v5.3.0",
+            "version": "v5.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d102a355d8c2e1a00d68659e9b51fb6f63aaa957"
+                "reference": "a523748f2db82beacfac7b22e0642e326aa3be64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d102a355d8c2e1a00d68659e9b51fb6f63aaa957",
-                "reference": "d102a355d8c2e1a00d68659e9b51fb6f63aaa957",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/a523748f2db82beacfac7b22e0642e326aa3be64",
+                "reference": "a523748f2db82beacfac7b22e0642e326aa3be64",
                 "shasum": ""
             },
             "require": {
@@ -3493,7 +3450,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2017-10-11T16:41:44+00:00"
+            "time": "2017-10-27T16:27:13+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6196,7 +6153,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.0.0",
+        "php": ">=7.0",
         "ext-intl": "*"
     },
     "platform-dev": []
