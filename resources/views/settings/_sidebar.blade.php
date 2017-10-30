@@ -75,7 +75,7 @@
     </li>
     @endif
 
-    @if (Route::currentRouteName() == 'settings.api')
+    {{-- @if (Route::currentRouteName() == 'settings.api')
     <li class="selected">
       <i class="fa fa-random"></i>
       {{ trans('settings.sidebar_settings_api') }}
@@ -85,6 +85,6 @@
       <i class="fa fa-random"></i>
       <a href="/settings/api">{{ trans('settings.sidebar_settings_api') }}</a>
     </li>
-    @endif
+    @endif --}}
   </ul>
 </div>
