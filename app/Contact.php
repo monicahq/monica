@@ -9,8 +9,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
+use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
+use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 
 class Contact extends Model
 {
@@ -55,13 +59,26 @@ class Contact extends Model
      */
     protected $fillable = [
         'first_name',
+        'middle_name',
         'last_name',
         'gender',
+        'birthdate',
         'is_birthdate_approximate',
         'account_id',
-        'is_significant_other',
-        'is_kid',
+        'is_partial',
         'phone_number',
+        'email',
+        'job',
+        'company',
+        'street',
+        'city',
+        'province',
+        'postal_code',
+        'country_id',
+        'food_preferencies',
+        'facebook_profile_url',
+        'twitter_profile_url',
+        'linkedin_profile_url',
     ];
 
     /**
@@ -84,8 +101,7 @@ class Contact extends Model
      * @var array
      */
     protected $casts = [
-        'is_significant_other' => 'boolean',
-        'is_kid' => 'boolean',
+        'is_partial' => 'boolean',
     ];
 
     /**
@@ -279,8 +295,7 @@ class Contact extends Model
      */
     public function scopeReal($query)
     {
-        return $query->where('is_significant_other', 0)
-                        ->where('is_kid', 0);
+        return $query->where('is_partial', 0);
     }
 
     /**
@@ -523,6 +538,22 @@ class Contact extends Model
     }
 
     /**
+     * Get the current Significant Others as ID, if they exists, or return null otherwise.
+     *
+     * @return Collection
+     */
+    public function getCurrentPartnersForAPI()
+    {
+        $partners = collect([]);
+        foreach ($this->activeRelationships as $relationship) {
+            $contact = self::find($relationship->with_contact_id);
+            $partners->push(new PartnerShortResource($contact));
+        }
+
+        return $partners;
+    }
+
+    /**
      * Get the Kids, if they exists, or return null otherwise.
      *
      * @return Collection
@@ -539,6 +570,22 @@ class Contact extends Model
     }
 
     /**
+     * Get the Kids, if they exists, or return null otherwise.
+     *
+     * @return Collection
+     */
+    public function getOffspringsForAPI()
+    {
+        $kids = collect([]);
+        foreach ($this->offsprings as $offspring) {
+            $contact = self::find($offspring->contact_id);
+            $kids->push(new OffspringShortResource($contact));
+        }
+
+        return $kids;
+    }
+
+    /**
      * Get the current parents, if they exists, or return null otherwise.
      *
      * @return Collection
@@ -549,6 +596,22 @@ class Contact extends Model
         foreach ($this->progenitors as $progenitor) {
             $contact = self::find($progenitor->contact_id);
             $progenitors->push($contact);
+        }
+
+        return $progenitors;
+    }
+
+    /**
+     * Get the current parents, if they exists, or return null otherwise.
+     *
+     * @return Collection
+     */
+    public function getProgenitorsForAPI()
+    {
+        $progenitors = collect([]);
+        foreach ($this->progenitors as $progenitor) {
+            $contact = self::find($progenitor->contact_id);
+            $progenitors->push(new ProgenitorShortResource($contact));
         }
 
         return $progenitors;
@@ -770,6 +833,14 @@ class Contact extends Model
     }
 
     /**
+     * Get the list of tags for this contact.
+     */
+    public function getTagsForAPI()
+    {
+        return TagResource::collection($this->tags);
+    }
+
+    /**
      * Update the last called info on the contact, if the call has been made
      * in the most recent date.
      *
@@ -851,8 +922,7 @@ class Contact extends Model
     public function getPotentialContacts()
     {
         $partners = self::where('account_id', $this->account_id)
-                            ->where('is_significant_other', 0)
-                            ->where('is_kid', 0)
+                            ->where('is_partial', 0)
                             ->where('id', '!=', $this->id)
                             ->orderBy('first_name', 'asc')
                             ->orderBy('last_name', 'asc')
@@ -896,7 +966,7 @@ class Contact extends Model
         foreach ($relationships as $relationship) {
             $partner = self::findOrFail($relationship->with_contact_id);
 
-            if ($partner->is_significant_other) {
+            if ($partner->is_partial) {
                 $partners->push($partner);
             }
         }
@@ -918,7 +988,7 @@ class Contact extends Model
         foreach ($offsprings as $offspring) {
             $kid = self::findOrFail($offspring->contact_id);
 
-            if ($kid->is_kid) {
+            if ($kid->is_partial) {
                 $kids->push($kid);
             }
         }

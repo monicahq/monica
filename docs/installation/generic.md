@@ -29,6 +29,10 @@ follow:
 activity types.
 1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
 table.
+1. If you want to use the API, you need to run `php artisan passport:install`.
+This command will create the encryption keys needed to generate secure access
+tokens.
+1. You also need to clear your cache `php artisan cache:clear`.
 1. Finally, Monica requires some background processes to continuously run. The
 list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and
 triggers the following command `php artisan schedule:run`.

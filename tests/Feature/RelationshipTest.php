@@ -50,7 +50,7 @@ class RelationshipTest extends FeatureTestCase
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Jessica',
             'account_id' => $user->account_id,
-            'is_significant_other' => 1,
+            'is_partial' => 1,
         ]);
 
         $response = $this->get('people/'.$contact->id);
@@ -72,7 +72,7 @@ class RelationshipTest extends FeatureTestCase
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Jessica',
             'account_id' => $user->account_id,
-            'is_significant_other' => 0,
+            'is_partial' => 0,
         ]);
 
         $response = $this->get('people/'.$contact->id);

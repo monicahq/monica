@@ -1,6 +1,8 @@
 UNRELEASED CHANGES:
 
-*
+* Release of the first version of the API
+* Fix the access to upgrade account view
+* Add security.txt file
 
 RELEASED VERSIONS:
 

@@ -71,7 +71,7 @@ class RelationshipsController extends Controller
                 ])
                 + [
                     'account_id' => $contact->account_id,
-                    'is_significant_other' => 1,
+                    'is_partial' => 1,
                 ]
             );
 
@@ -144,7 +144,7 @@ class RelationshipsController extends Controller
 
         if ($request->get('realContact')) {
             $partner->update([
-                'is_significant_other' => 0,
+                'is_partial' => 0,
                 ]
             );
 

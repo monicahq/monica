@@ -13,7 +13,7 @@
       @foreach($contact->getOffsprings() as $kid)
       <li>
 
-        @if ($kid->is_kid)
+        @if ($kid->is_partial)
 
           <span class="name">{{ $kid->getCompleteName() }}</span>
 

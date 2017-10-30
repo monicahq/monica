@@ -154,31 +154,6 @@ class Reminder extends Model
     }
 
     /**
-     * Get the contact object that the reminder is about.
-     * We need this method because in the case of partial contacts, we can't say
-     * that the reminder is from the contact associated with the reminder, because
-     * the contact is just partial and should not clicked. Therefore, in the
-     * case of a partial contact, the reminder should be about the contact that
-     * the author should be linked with (either a significant other or a parent).
-     *
-     * @return Contact
-     */
-    public function getContact()
-    {
-        $contact = $this->contact;
-
-        if ($contact->is_kid) {
-            $contact = $contact->getFirstProgenitor();
-        }
-
-        if ($contact->is_significant_other) {
-            $contact = $contact->getFirstPartner();
-        }
-
-        return $contact;
-    }
-
-    /**
      * Calculate the next expected date for this reminder.
      *
      * @return static

@@ -33,7 +33,6 @@ $factory->define(App\Account::class, function (Faker\Generator $faker) {
 $factory->define(App\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
-        'contact_id' => 1,
         'activity_type_id' => function () {
             return factory(App\ActivityType::class)->create()->id;
         },

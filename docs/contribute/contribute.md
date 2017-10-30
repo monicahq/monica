@@ -27,6 +27,7 @@ guarantee that it will work fine with Monica.
 1. `php artisan key:generate` to generate a random APP_KEY
 1. `php artisan migrate` to run all migrations and create the database structure.
 1. `php artisan storage:link` to access the avatars.
+1. `php artisan passport:install` to create the access tokens required for the API.
 1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
 activity types.
 1. `php artisan db:seed --class CountriesSeederTable` to populate the countries

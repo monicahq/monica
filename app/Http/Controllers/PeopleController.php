@@ -110,7 +110,7 @@ class PeopleController extends Controller
     {
         // make sure we don't display a significant other if it's not set as a
         // real contact
-        if ($contact->is_significant_other or $contact->is_kid) {
+        if ($contact->is_partial) {
             return redirect('/people');
         }
 
@@ -157,6 +157,17 @@ class PeopleController extends Controller
             return back()
                 ->withInput()
                 ->withErrors($validator);
+        }
+
+        // Make sure the email address is unique in this account
+        if ($request->input('email') != '') {
+            $otherContact = Contact::where('email', $request->input('email'))
+                                    ->where('id', '!=', $contact->id)
+                                    ->count();
+
+            if ($otherContact > 0) {
+                return redirect()->back()->withErrors(trans('people.people_edit_email_error'))->withInput();
+            }
         }
 
         $contact->gender = $request->input('gender');
