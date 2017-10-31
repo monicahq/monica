@@ -1,0 +1,50 @@
+@extends('marketing.skeleton')
+
+@section('content')
+  <body class="marketing register">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+
+          <div class="signup-box">
+            <img class="logo" src="/img/small-logo.png" alt="">
+            <h2>Authorization Request</h2>
+            <p><strong>{{ $client->name }}</strong> is requesting permission to access your account.</p>
+
+            @if (count($scopes) > 0)
+              <div class="scopes">
+                <p><strong>This application will be able to:</strong></p>
+                <ul>
+                  @foreach ($scopes as $scope)
+                    <li>{{ $scope->description }}</li>
+                  @endforeach
+                </ul>
+              </div>
+            @endif
+
+            <!-- Authorize Button -->
+            <form method="post" action="/oauth/authorize">
+              {{ csrf_field() }}
+
+              <input type="hidden" name="state" value="{{ $request->state }}">
+              <input type="hidden" name="client_id" value="{{ $client->id }}">
+              <button type="submit" class="btn btn-primary btn-approve">Authorize</button>
+            </form>
+
+            <!-- Cancel Button -->
+            <form method="post" action="/oauth/authorize">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+
+              <input type="hidden" name="state" value="{{ $request->state }}">
+              <input type="hidden" name="client_id" value="{{ $client->id }}">
+              <button class="btn">Cancel</button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+@endsection
+

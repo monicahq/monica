@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 /**
  * @property Account $account
@@ -124,5 +125,20 @@ class Activity extends Model
     public function getTitle()
     {
         return $this->type ? $this->type->key : null;
+    }
+
+    /**
+     * Get all the contacts this activity is associated with.
+     */
+    public function getContactsForAPI()
+    {
+        $attendees = collect([]);
+
+        foreach ($this->contacts as $contact) {
+            $attendee = Contact::find($contact->id);
+            $attendees->push(new ContactShortResource($attendee));
+        }
+
+        return $attendees;
     }
 }

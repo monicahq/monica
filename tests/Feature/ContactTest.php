@@ -130,7 +130,7 @@ class ContactTest extends FeatureTestCase
             'offered' => false,
             'name' => $this->faker->word,
             'url' => $this->faker->url,
-            'value_in_dollars' => $this->faker->numberBetween(1, 2000),
+            'value' => $this->faker->numberBetween(1, 2000),
             'comment' => $this->faker->sentence(),
         ];
 

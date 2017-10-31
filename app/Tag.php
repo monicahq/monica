@@ -14,6 +14,15 @@ class Tag extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
      * Get the account record associated with the debt.
      */
     public function account()
@@ -27,5 +36,14 @@ class Tag extends Model
     public function contacts()
     {
         return $this->belongsToMany('App\Contact')->withPivot('account_id')->withTimestamps();
+    }
+
+    /**
+     * Update the slug.
+     */
+    public function updateSlug()
+    {
+        $this->name_slug = str_slug($this->name);
+        $this->save();
     }
 }

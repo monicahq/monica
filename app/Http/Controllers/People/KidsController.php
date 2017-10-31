@@ -70,7 +70,7 @@ class KidsController extends Controller
                 ])
                 + [
                     'account_id' => $contact->account_id,
-                    'is_kid' => 1,
+                    'is_partial' => 1,
                 ]
             );
 

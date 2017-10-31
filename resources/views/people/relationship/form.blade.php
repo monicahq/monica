@@ -97,7 +97,7 @@
       </div>
     </fieldset>
 
-    @if (\Route::currentRouteName() == 'people.relationships.add' or (\Route::currentRouteName() == 'people.relationships.edit' and $partner->is_significant_other == 1))
+    @if (\Route::currentRouteName() == 'people.relationships.add' or (\Route::currentRouteName() == 'people.relationships.edit' and $partner->is_partial == 1))
     <fieldset class="form-group">
       <label class="form-check-inline real-contact-checkbox" for="realContact">
         <input type="checkbox" class="form-check-input" name="realContact" id="realContact">

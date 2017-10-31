@@ -20,8 +20,8 @@ class CreateCurrenciesData extends Migration
             $table->string('symbol');
         });
 
-      //defaults
-      DB::table('currencies')->insert(['iso' => 'CAD', 'name' => 'Canadian Dollar', 'symbol'=>'$']);
+        //defaults
+        DB::table('currencies')->insert(['iso' => 'CAD', 'name' => 'Canadian Dollar', 'symbol'=>'$']);
         DB::table('currencies')->insert(['iso' => 'USD', 'name' => 'US Dollar', 'symbol'=>'$']);
         DB::table('currencies')->insert(['iso' => 'GBP', 'name' => 'British Pound', 'symbol'=>'£']);
         DB::table('currencies')->insert(['iso' => 'EUR', 'name' => 'Euro', 'symbol'=>'€']);

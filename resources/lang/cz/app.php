@@ -53,6 +53,7 @@ return [
     'breadcrumb_edit_significant_other' => 'Upravit drahou polovičku',
     'breadcrumb_add_note' => 'Přidat poznámku',
     'breadcrumb_edit_note' => 'Upravit poznámku',
+    'breadcrumb_api' => 'API',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',

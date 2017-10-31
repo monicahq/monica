@@ -16,7 +16,7 @@
     @foreach ($contact->getCurrentPartners() as $partner)
       <div class="sidebar-box-paragraph">
 
-        @if ($partner->is_significant_other)
+        @if ($partner->is_partial)
 
           <span class="name">{{ $partner->getCompleteName() }}</span>
 

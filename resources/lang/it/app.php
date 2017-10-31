@@ -48,6 +48,7 @@ return [
     'breadcrumb_settings_import_report' => 'Resoconto dell\'importazione',
     'breadcrumb_settings_import_upload' => 'Carica',
     'breadcrumb_settings_tags' => 'Etichette',
+    'breadcrumb_api' => 'API',
 
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
