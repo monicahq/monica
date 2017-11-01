@@ -7,6 +7,7 @@ return [
     'sidebar_settings_subscriptions' => 'Subscription',
     'sidebar_settings_import' => 'Import data',
     'sidebar_settings_tags' => 'Tags management',
+    'sidebar_settings_api' => 'API',
 
     'export_title' => 'Export your account data',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export - please be patient and do not spam the button.',
@@ -135,5 +136,14 @@ return [
     'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
     'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, go back here to manage all the tags in your account.',
+
+    'api_title' => 'API access',
+    'api_description' => 'The API can be used to manipulate Monica\'s data from an external application, like a mobile application for instance.',
+    'api_personal_access_tokens' => 'Personal access tokens',
+    'api_pao_description' => 'Make sure you give this token to a source you trust - as they allow you to access all your data.',
+    'api_oauth_clients' => 'Your Oauth clients',
+    'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
+    'api_authorized_clients' => 'List of authorized clients',
+    'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
 
 ];

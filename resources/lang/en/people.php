@@ -36,6 +36,7 @@ return [
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_personal_information' => 'Personal information',

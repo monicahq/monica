@@ -1,4 +1,14 @@
 <?php
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
 if (App::environment('production')) {
     URL::forceScheme('https');
@@ -14,8 +24,6 @@ Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
 Route::group(['middleware' => 'auth'], function () {
-
-    //Route::resource('people', 'PeopleController');
     Route::get('/logout', 'Auth\LoginController@logout');
 
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
@@ -145,5 +153,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
         Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
+
+        Route::get('/settings/api', 'SettingsController@api')->name('.api');
     });
 });

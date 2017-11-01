@@ -10,6 +10,11 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
+    <script>
+      window.Laravel = <?php echo json_encode([
+          'csrfToken' => csrf_token(),
+      ]); ?>
+    </script>
   </head>
   <body data-account-id={{ auth()->user()->account_id }}>
 
