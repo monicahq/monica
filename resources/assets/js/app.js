@@ -37,7 +37,7 @@ const app = new Vue({
       activities_description_show: false,
       reminders_frequency: 'once',
       accept_invite_user: false,
-      date_met_the_contact: false,
+      date_met_the_contact: 'known',
     },
     methods: {
     },

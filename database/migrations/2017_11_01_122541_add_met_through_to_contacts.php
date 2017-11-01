@@ -19,7 +19,6 @@ class AddMetThroughToContacts extends Migration
 
         Schema::table('contacts', function (Blueprint $table) {
             $table->integer('first_met_through_contact_id')->after('phone_number')->nullable();
-            $table->boolean('is_first_met_date_approximate')->after('first_met_through_contact_id')->default(0);
         });
     }
 }

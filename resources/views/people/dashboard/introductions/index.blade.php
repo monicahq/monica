@@ -1,4 +1,4 @@
-<div class="sidebar-box kids">
+<div class="sidebar-box introductions">
 
   <p class="sidebar-box-title">
     <strong>{{ trans('people.introductions_sidebar_title') }}</strong>
@@ -10,13 +10,30 @@
     </p>
   @else
     <ul>
-      <li>Met through <a href="">Ljlkjslf</a></li>
-      <li>Met on</li>
-      <li>{{ $contat->first_met_additional_info }}</li>
+      @if ($contact->getIntroducer())
+      <li>
+        <i class="fa fa-sign-language"></i>
+        {!! trans('people.introductions_met_through', ['id' => $contact->first_met_through_contact_id, 'name' => $contact->getIntroducer()->getCompleteName()]) !!}
+      </li>
+      @endif
+
+      @if ($contact->first_met)
+      <li>
+        <i class="fa fa-hourglass-start"></i>
+        {{ trans('people.introductions_met_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->first_met)]) }}
+      </li>
+      @endif
+
+      @if ($contact->first_met_additional_info)
+      <li>
+        <i class="fa fa-id-card-o"></i>
+        {{ $contact->first_met_additional_info }}
+      </li>
+      @endif
     </ul>
 
     <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.kids.add', $contact) }}">{{ trans('people.kids_blank_cta') }}</a>
+      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('app.edit') }}</a>
     </p>
 
   @endif

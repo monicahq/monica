@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show significantother">
+  <div class="people-show introductions">
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -34,7 +34,7 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->getFirstName()]) }}</h2>
 
-              <form method="POST" action="{{ route('people.relationships.store', $contact) }}">
+              <form method="POST" action="{{ route('people.introductions.update', $contact) }}">
                 {{ csrf_field() }}
 
                 @include('partials.errors')
@@ -46,13 +46,15 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="metThroughId">{{ trans('people.introductions_met_through') }}</label>
+                  <label for="metThroughId">{{ trans('people.introductions_edit_met_through') }}</label>
                   <select class="form-control" name="metThroughId" id="metThroughId">
                     <option value="0">{{ trans('people.introductions_no_met_through') }}</option>
                     @foreach (auth()->user()->account->contacts()->real()->get() as $metThroughContact)
 
                       @if ($metThroughContact->id != $contact->id)
-                      <option value="{{ $metThroughContact->id }}">{{ $metThroughContact->getCompleteName() }}</option>
+                      <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}>
+                        {{ $metThroughContact->getCompleteName() }}
+                      </option>
                       @endif
 
                     @endforeach
@@ -65,7 +67,10 @@
                   {{-- You don't know the date you've met --}}
                   <div class="form-check">
                     <label class="form-check-label" for="is_first_met_date_unknown">
-                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_unknown" value="unknown" checked>
+                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_unknown" value="unknown"
+                      v-model="date_met_the_contact" value="unknown"
+                      {{ (is_null($contact->first_met)) ? 'checked' : '' }}
+                      >
 
                       <div class="form-inline">
                         {{ trans('people.introductions_no_first_met_date') }}
@@ -76,12 +81,14 @@
                   {{-- You know the date you've met --}}
                   <div class="form-check">
                     <label class="form-check-label" for="is_first_met_date_known">
-                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_known" value="known" v-model="date_met_the_contact">
+                      <input type="radio" class="form-check-input" name="is_first_met_date_known" id="is_first_met_date_known" value="known" v-model="date_met_the_contact" value="known"
+                      {{ (! is_null($contact->first_met)) ? 'checked' : '' }}
+                      >
 
                       <span class="form-inline">
                         {{ trans('people.introductions_first_met_date_known') }}
-                        <input type="date" name="birthdate" class="form-control" id="specificDate"
-                        value="{{ old('birthdate') ?? (! is_null($contact->first_met) ? $contact->first_met->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
+                        <input type="date" name="first_met" class="form-control" id="specificDate"
+                        value="{{ old('first_met') ?? (! is_null($contact->first_met) ? $contact->first_met->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
                         min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
                         max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
                       </span>
@@ -89,9 +96,9 @@
                   </div>
                 </fieldset>
 
-                <fieldset class="form-group" v-if="!date_met_the_contact">
-                  <label class="form-check-inline real-contact-checkbox" for="realContact">
-                    <input type="checkbox" class="form-check-input" name="realContact" id="realContact">
+                <fieldset class="form-group" v-if="date_met_the_contact == 'known'">
+                  <label class="form-check-inline real-contact-checkbox" for="addReminder">
+                    <input type="checkbox" class="form-check-input" name="addReminder" id="addReminder">
                     {{ trans('people.introductions_add_reminder') }}
                   </label>
                 </fieldset>
