@@ -1242,4 +1242,13 @@ class Contact extends Model
 
         return $family;
     }
+
+    /**
+     * Indicates whether the contact has information about how they first met.
+     * @return boolean
+     */
+    public function hasFirstMetInformation()
+    {
+        return ! is_null($this->first_met_additional_info);
+    }
 }

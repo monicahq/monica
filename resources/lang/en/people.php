@@ -322,4 +322,16 @@ return [
 
     // tags
     'tag_edit' => 'Edit tag',
+
+    // Introductions
+    'introductions_sidebar_title' => 'Introductions',
+    'introductions_blank_cta' => 'Indicate how you\'ve met :name',
+    'introductions_title_edit' => 'How did you meet :name?',
+    'introductions_additional_info' => 'Explain how and where you\'ve met',
+    'introductions_met_through' => 'Has someone introduced you to this person?',
+    'introductions_no_met_through' => 'No one',
+    'introductions_first_met_date' => 'Date you\'ve met',
+    'introductions_no_first_met_date' => 'I don\'t know the date we\'ve met',
+    'introductions_first_met_date_known' => 'This is when we\'ve met',
+    'introductions_add_reminder' => 'Add a reminder to celebrate this encounter',
 ];
