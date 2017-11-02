@@ -1246,7 +1246,7 @@ class Contact extends Model
 
     /**
      * Indicates whether the contact has information about how they first met.
-     * @return boolean
+     * @return bool
      */
     public function hasFirstMetInformation()
     {
@@ -1254,21 +1254,21 @@ class Contact extends Model
     }
 
     /**
-     * Gets the contact who introduced this person to the user
+     * Gets the contact who introduced this person to the user.
      * @return Contact
      */
     public function getIntroducer()
     {
         if (! $this->first_met_through_contact_id) {
-            return null;
+            return;
         }
 
         try {
-            $contact = Contact::where('account_id', $this->account_id)
+            $contact = self::where('account_id', $this->account_id)
                 ->where('id', $this->first_met_through_contact_id)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return null;
+            return;
         }
 
         return $contact;

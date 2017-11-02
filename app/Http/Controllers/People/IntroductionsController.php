@@ -46,7 +46,7 @@ class IntroductionsController extends Controller
             $contact->first_met_through_contact_id = null;
         }
 
-        if ($request->is_first_met_date_known == "known") {
+        if ($request->is_first_met_date_known == 'known') {
             $contact->first_met = $request->get('first_met');
         } else {
             $contact->first_met = null;
