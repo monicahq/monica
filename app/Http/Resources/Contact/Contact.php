@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Contact;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Contact extends Resource
 {
@@ -53,6 +54,11 @@ class Contact extends Resource
                     'gravatar_url' => $this->getGravatar(110),
                 ],
                 'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
+                'how_you_met' => [
+                    'general_information' => $this->first_met_additional_info,
+                    'first_met_date' => (is_null($this->first_met) ? null : $this->first_met->format(config('api.timestamp_format'))),
+                    'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
+                ],
             ],
             'contact' => $this->when(! $this->is_partial, [
                 'emails' => [
@@ -85,7 +91,7 @@ class Contact extends Resource
                 ],
             ]),
             'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
-            'data' => $this->when(! $this->is_partial, [
+            'statistics' => $this->when(! $this->is_partial, [
                 'number_of_calls' => $this->calls->count(),
                 'number_of_notes' => $this->notes->count(),
                 'number_of_activities' => $this->activities->count(),

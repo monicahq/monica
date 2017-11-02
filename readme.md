@@ -66,6 +66,7 @@ more.
 * Reminders are sent by email
 * Management of debts
 * Ability to add notes to a contact
+* Ability to indicate how you've met someone
 * Management of activities done with a contact
 * Management of tasks
 * Management of gifts

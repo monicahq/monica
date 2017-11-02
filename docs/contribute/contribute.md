@@ -20,9 +20,6 @@ guarantee that it will work fine with Monica.
 1. Update `.env` to your specific needs.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install`.
-1. Install Bower `npm install -g bower`.
-1. Install Gulp `npm install --global gulp-cli`.
-1. `bower install` to install front-end dependencies in the `vendor` folder.
 1. Create a database called `monica` in your mySQL instance.
 1. `php artisan key:generate` to generate a random APP_KEY
 1. `php artisan migrate` to run all migrations and create the database structure.
@@ -71,75 +68,27 @@ migrations and the seeders by running the two commands above.
 
 If you want to connect directly to Monica's MySQL instance read [_Connecting to MySQL inside of a Docker container_](./docs/database/connecting.md).
 
-#### Setup functional testing
-
-We use Laravel Dusk to do functional testing. The most important is the unit
-tests - but functional testing is a very nice to have and we are happy to
-provide support for it. However, setting up the functional testing environment
-is **really painful**. Laravel Dusk should work fine if you use standard PHP,
-not in a VM (like Homestead), but I haven't tested it. If you do, please report
-and update this document.
-
-The following setup instructions are for Homestead, which we recommend to
-contribute to Monica. Instructions come from [this
-article](http://www.jesusamieiro.com/using-laravel-dusk-with-vagrant-homestead/).
-
-* Setup Google Chrome Headless and XVFB in your VM
-
-```bash
-$ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-$ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-$ sudo apt-get update && sudo apt-get install -y google-chrome-stable
-$ sudo apt-get install -y xvfb
-```
-
-* Start Chrome Driver in your VM. This instruction will open a port - let it
-open.
-
-```bash
-$ ./vendor/laravel/dusk/bin/chromedriver-linux --port=8888
-```
-
-* Add your project in `/etc/hosts` in your vagrant machine
-
-```bash
-127.0.0.1 your-project.app
-```
-
-* Open another SSH connection to the Vagrant Homestead machine and execute the
-following to run the xvfb server
-
-```bash
-$ Xvfb :0 -screen 0 1280x960x24 &
-```
-
-* On your first console, press CTLR+C and run the functional tests
-
-```bash
-php artisan dusk
-```
-
-You are done. It's horrible.
-
 ### Front-end
 
-#### Bower
+#### Mix
 
-We use Bower to manage front-end dependencies. The first time you install the
-project, you need to `bower install` in the root of the project. When you want
-to update the dependencies, run `bower update`.
+We use [mix](https://laravel.com/docs/5.5/mix) to manage the front-end and its
+dependencies, and also to compile and/watch the assets. Please note that we
+should do our best to not introduce new dependencies if we can prevent it.
 
-To install a new package, use `bower install jquery -S`. The `-S` option is to
-update `bower.json` to lock the specific version.
+Mix should be available if you have installed Monica locally and ran
+`npm install` in the first place.
 
-All the assets are stored in `resources/vendor`.
+If you need to add a new dependency (make sure it's absolutely necessary first),
+update `package.json` to add it. Also, make sure you commit `package-lock.json`
+once `package.json` is updated.
 
 #### Watching and compiling assets
 
 CSS is written in SASS and therefore needs to be compiled before being used by
-the application. To compile those front-end assets, use `gulp`.
+the application. To compile those front-end assets, use `npm run dev`.
 
-To monitor changes and compile assets on the fly, use `gulp watch`.
+To monitor changes and compile assets on the fly, use `npm run watch`.
 
 #### Bootstrap 4
 

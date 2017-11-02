@@ -23,6 +23,7 @@ class Contact extends Model
     protected $dates = [
         'birthdate',
         'last_talked_to',
+        'first_met',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -1241,5 +1242,35 @@ class Contact extends Model
         }
 
         return $family;
+    }
+
+    /**
+     * Indicates whether the contact has information about how they first met.
+     * @return bool
+     */
+    public function hasFirstMetInformation()
+    {
+        return ! is_null($this->first_met_additional_info) or ! is_null($this->first_met) or ! is_null($this->first_met_through_contact_id);
+    }
+
+    /**
+     * Gets the contact who introduced this person to the user.
+     * @return Contact
+     */
+    public function getIntroducer()
+    {
+        if (! $this->first_met_through_contact_id) {
+            return;
+        }
+
+        try {
+            $contact = self::where('account_id', $this->account_id)
+                ->where('id', $this->first_met_through_contact_id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
+
+        return $contact;
     }
 }

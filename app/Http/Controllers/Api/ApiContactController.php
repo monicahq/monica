@@ -79,6 +79,9 @@ class ApiContactController extends ApiController
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
+            'first_met_information' => 'nullable|max:1000000',
+            'first_met_date' => 'nullable|date',
+            'first_met_through_contact_id' => 'nullable|integer',
             'is_partial' => 'required|integer',
         ]);
 
@@ -87,6 +90,7 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
+        // Make sure the email is unique
         if ($request->input('email') != '') {
             $otherContact = Contact::where('email', $request->input('email'))
                                     ->count();
@@ -98,10 +102,33 @@ class ApiContactController extends ApiController
             }
         }
 
+        // Make sure the `first_met_through_contact_id` is a contact id that the
+        // user is authorized to access
+        if ($request->get('first_met_through_contact_id')) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $request->input('first_met_through_contact_id'))
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
+        // Create the contact
         try {
             $contact = Contact::create($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        // Saving first met information (these are not the same field names than
+        // the ones provided in the JSON)
+        if ($request->get('first_met_date')) {
+            $contact->first_met = $request->get('first_met_date');
+        }
+
+        if ($request->get('first_met_information')) {
+            $contact->first_met_additional_info = $request->get('first_met_information');
         }
 
         $contact->account_id = auth()->user()->account->id;
@@ -159,6 +186,9 @@ class ApiContactController extends ApiController
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
+            'first_met_information' => 'nullable|max:1000000',
+            'first_met_date' => 'nullable|date',
+            'first_met_through_contact_id' => 'nullable|integer',
             'is_partial' => 'required|integer',
         ]);
 
@@ -167,11 +197,53 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
+        // Make sure the email is unique
+        if ($request->input('email') != '') {
+            $otherContact = Contact::where('email', $request->input('email'))
+                                    ->where('id', '!=', $contactId)
+                                    ->count();
+
+            if ($otherContact > 0) {
+                return $this->setErrorCode(35)
+                        ->setHTTPStatusCode(500)
+                        ->respondWithError(trans('people.people_edit_email_error'));
+            }
+        }
+
+        // Make sure the `first_met_through_contact_id` is a contact id that the
+        // user is authorized to access
+        if ($request->get('first_met_through_contact_id')) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $request->input('first_met_through_contact_id'))
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
+        // Update the contact
         try {
             $contact->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
+
+        // Saving first met information (these are not the same field names than
+        // the ones provided in the JSON)
+        if ($request->get('first_met_date')) {
+            $contact->first_met = $request->get('first_met_date');
+        } else {
+            $contact->first_met = null;
+        }
+
+        if ($request->get('first_met_information')) {
+            $contact->first_met_additional_info = $request->get('first_met_information');
+        } else {
+            $contact->first_met_additional_info = null;
+        }
+
+        $contact->save();
 
         $contact->setBirthday(
             $request->get('is_birthdate_approximate'),
