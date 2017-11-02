@@ -1,19 +1,17 @@
 @import "_custom_bootstrap";
-@import "../../vendor/hint.css/hint.min";
+@import "~hint.css/hint.min";
 
-@import "../../vendor/tachyons/css/tachyons.min";
+@import "~tachyons/css/tachyons.min";
 
 // Tags for a contact
-@import "../../vendor/jquery.tagsinput/dist/jquery.tagsinput.min";
+@import "~jquery-tags-input/dist/jquery.tagsinput.min";
 
 // For the datatables
 @import "_datatable.min";
 
-$octicons-font-path: "../../fonts/octicons/";
-@import "../../vendor/octicons/build/font/_octicons";
-
-$fa-font-path: "../../fonts/fontawesome";
-@import "../../vendor/font-awesome/scss/font-awesome";
+// Icon fonts
+@import "~octicons/build/font/_octicons";
+@import "~font-awesome/scss/font-awesome";
 
 $border-color: #dfdfdf;
 

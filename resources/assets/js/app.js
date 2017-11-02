@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -14,7 +15,7 @@ require('./bootstrap');
  */
 
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
-
+const Vue = require('vue');
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')
@@ -41,6 +42,9 @@ const app = new Vue({
     methods: {
     },
 });
+require('./tags');
+require('./search');
+require('./contacts');
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
