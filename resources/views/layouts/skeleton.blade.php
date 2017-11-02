@@ -8,7 +8,7 @@
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
-    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
       window.Laravel = <?php echo json_encode([
@@ -29,11 +29,8 @@
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ elixir('js/app.js') }}"></script>
+      <script src="{{ mix('js/app.js') }}"></script>
     @endif
-
-    {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
-    <script src="{{ elixir('js/vanilla.js') }}"></script>
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))
