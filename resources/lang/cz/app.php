@@ -54,6 +54,7 @@ return [
     'breadcrumb_add_note' => 'Přidat poznámku',
     'breadcrumb_edit_note' => 'Upravit poznámku',
     'breadcrumb_api' => 'API',
+    'breadcrumb_edit_introductions' => 'How did you meet',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',
