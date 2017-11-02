@@ -136,6 +136,7 @@ return [
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'every week|every :number weeks',
     'reminder_frequency_month' => 'every month|every :number months',
     'reminder_frequency_year' => 'every year|every :number year',

@@ -55,6 +55,7 @@ class ApiReminderController extends ApiController
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:100000',
             'description' => 'max:1000000',
+            'next_expected_date' => 'required|date',
             'frequency_type' => [
                 'required',
                 Rule::in(['one_time', 'day', 'month', 'year']),
@@ -66,6 +67,12 @@ class ApiReminderController extends ApiController
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
+        }
+
+        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), auth()->user()->timezone);
+        if ($date->isPast()) {
+            return $this->setErrorCode(38)
+                        ->respondWithError('Date should be in the future');
         }
 
         try {
@@ -108,6 +115,7 @@ class ApiReminderController extends ApiController
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:100000',
             'description' => 'required|max:1000000',
+            'next_expected_date' => 'required|date',
             'frequency_type' => [
                 'required',
                 Rule::in(['one_time', 'day', 'month', 'year']),
@@ -119,6 +127,12 @@ class ApiReminderController extends ApiController
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
+        }
+
+        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), auth()->user()->timezone);
+        if ($date->isPast()) {
+            return $this->setErrorCode(38)
+                        ->respondWithError('Date should be in the future');
         }
 
         try {

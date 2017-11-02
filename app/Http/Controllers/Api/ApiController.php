@@ -40,7 +40,7 @@ class ApiController extends Controller
 
             // make sure the JSON is well formatted if the given call sends a JSON
             // TODO: there is probably a much better way to do that
-            if ($request->method() != 'GET' and $request->method() != 'DEL') {
+            if ($request->method() != 'GET' and $request->method() != 'DELETE') {
                 if (is_null(json_decode($request->getContent()))) {
                     return $this->setHTTPStatusCode(400)
                               ->setErrorCode(37)
