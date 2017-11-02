@@ -91,7 +91,7 @@ class Contact extends Resource
                 ],
             ]),
             'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
-            'data' => $this->when(! $this->is_partial, [
+            'statistics' => $this->when(! $this->is_partial, [
                 'number_of_calls' => $this->calls->count(),
                 'number_of_notes' => $this->notes->count(),
                 'number_of_activities' => $this->activities->count(),

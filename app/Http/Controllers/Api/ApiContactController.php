@@ -200,6 +200,7 @@ class ApiContactController extends ApiController
         // Make sure the email is unique
         if ($request->input('email') != '') {
             $otherContact = Contact::where('email', $request->input('email'))
+                                    ->where('id', '!=', $contactId)
                                     ->count();
 
             if ($otherContact > 0) {
@@ -232,10 +233,14 @@ class ApiContactController extends ApiController
         // the ones provided in the JSON)
         if ($request->get('first_met_date')) {
             $contact->first_met = $request->get('first_met_date');
+        } else {
+            $contact->first_met = null;
         }
 
         if ($request->get('first_met_information')) {
             $contact->first_met_additional_info = $request->get('first_met_information');
+        } else {
+            $contact->first_met_additional_info = null;
         }
 
         $contact->save();
