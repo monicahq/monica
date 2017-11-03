@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
     'people_add_cta' => 'Добавить',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Пол',
     'people_delete_success' => 'Контакт был удалён',
     'people_delete_message' => 'Если вам нужно удалить этот контакт,',

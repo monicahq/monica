@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'zweiter Vorname (Optional)',
     'people_add_lastname' => 'Nachname (Optional)',
     'people_add_cta' => 'Person hinzufügen',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Geschlecht',
     'people_delete_success' => 'Der Kontakt wurde gelöscht',
     'people_delete_message' => 'Wenn du den Kontakt entfernen möchtest,',

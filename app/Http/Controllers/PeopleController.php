@@ -97,7 +97,13 @@ class PeopleController extends Controller
 
         $contact->logEvent('contact', $contact->id, 'create');
 
-        return redirect()->route('people.show', ['id' => $contact->id]);
+        // Did the user press "Save" or "Submit and add another person"
+        if (! is_null($request->get('save'))) {
+            return redirect()->route('people.show', ['id' => $contact->id]);
+        } else {
+            return redirect()->route('people.create')
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName()]));
+        }
     }
 
     /**

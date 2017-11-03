@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',
     'people_add_cta' => 'Přidat tuto osobu',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Pohlaví',
     'people_delete_success' => 'Kontakt byl smazán',
     'people_delete_message' => 'Pokud potřebujete smazat tento účet,',
