@@ -39,6 +39,8 @@ const app = new Vue({
       reminders_frequency: 'once',
       accept_invite_user: false,
       date_met_the_contact: 'known',
+      is_deceased: false,
+      date_deceased_known: false
     },
     methods: {
     },

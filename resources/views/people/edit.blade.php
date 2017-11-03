@@ -201,10 +201,28 @@
                       </div>
                   </label>
                 </div>
+                <p class="help">{{ trans('people.information_edit_help') }}</p>
               </fieldset>
 
-              <div class="classname">
-                <p>{{ trans('people.information_edit_help') }}</p>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" v-model="is_deceased">
+                    Mark this person as deceased
+                  </label>
+                </div>
+                <div class="form-check" v-if="is_deceased">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="" v-model="date_deceased_known">
+                    I know the date this person died
+                  </label>
+                </div>
+                <div class="form-check" v-if="date_deceased_known">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="">
+                    Add a reminder for this date
+                  </label>
+                </div>
               </div>
 
               <div class="form-group actions">

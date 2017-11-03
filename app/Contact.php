@@ -24,6 +24,7 @@ class Contact extends Model
         'birthdate',
         'last_talked_to',
         'first_met',
+        'deceased_date',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -103,6 +104,7 @@ class Contact extends Model
      */
     protected $casts = [
         'is_partial' => 'boolean',
+        'is_dead' => 'boolean',
     ];
 
     /**
