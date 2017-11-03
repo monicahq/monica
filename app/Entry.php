@@ -9,6 +9,23 @@ class Entry extends Model
     protected $table = 'entries';
 
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'post',
+    ];
+
+    /**
      * Get the account record associated with the entry.
      */
     public function account()

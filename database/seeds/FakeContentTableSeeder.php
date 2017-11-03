@@ -181,7 +181,7 @@ class FakeContentTableSeeder extends Seeder
                         'name' => $faker->realText(rand(10, 100)),
                         'comment' => $faker->realText(rand(1000, 5000)),
                         'url' => $faker->url,
-                        'value_in_dollars' => rand(12, 120),
+                        'value' => rand(12, 120),
                         'account_id' => $contact->account_id,
                         'is_an_idea' => 'true',
                         'has_been_offered' => 'false',

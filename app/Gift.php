@@ -30,6 +30,16 @@ class Gift extends Model
     protected $dates = ['date_offered'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_an_idea' => 'boolean',
+        'has_been_offered' => 'boolean',
+    ];
+
+    /**
      * Get the account record associated with the gift.
      *
      * @return BelongsTo
@@ -56,7 +66,7 @@ class Gift extends Model
      */
     public function recipient()
     {
-        return $this->contact();
+        return $this->hasOne(Contact::class, 'id', 'is_for');
     }
 
     /**
@@ -67,7 +77,7 @@ class Gift extends Model
      */
     public function scopeOffered(Builder $query)
     {
-        return $query->where('has_been_offered', true);
+        return $query->where('has_been_offered', 1);
     }
 
     /**
@@ -78,7 +88,7 @@ class Gift extends Model
      */
     public function scopeIsIdea(Builder $query)
     {
-        return $query->where('is_an_idea', true);
+        return $query->where('is_an_idea', 1);
     }
 
     /**
@@ -89,7 +99,7 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->about_object_type !== null;
+        return $this->is_for !== null;
     }
 
     /**
@@ -100,7 +110,7 @@ class Gift extends Model
      */
     public function forRecipient($recipient)
     {
-        $this->about_object_id = $recipient;
+        $this->is_for = $recipient;
 
         return $this;
     }
@@ -129,7 +139,7 @@ class Gift extends Model
 
     public function getValue()
     {
-        return $this->value_in_dollars;
+        return $this->value;
     }
 
     public function getCreatedAt()

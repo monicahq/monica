@@ -20,7 +20,7 @@ class RelationshipTest extends TestCase
         $john = factory(\App\Contact::class)->create([
             'id' => 2,
             'account_id' => $account->id,
-            'is_significant_other' => 1,
+            'is_partial' => 1,
         ]);
 
         $relationship = factory(\App\Relationship::class)->create([

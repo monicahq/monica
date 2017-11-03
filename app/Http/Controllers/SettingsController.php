@@ -397,4 +397,9 @@ class SettingsController extends Controller
         return redirect('/settings/tags')
                 ->with('success', trans('settings.tags_list_delete_success'));
     }
+
+    public function api()
+    {
+        return view('settings.api.index');
+    }
 }

@@ -97,7 +97,13 @@ class PeopleController extends Controller
 
         $contact->logEvent('contact', $contact->id, 'create');
 
-        return redirect()->route('people.show', ['id' => $contact->id]);
+        // Did the user press "Save" or "Submit and add another person"
+        if (! is_null($request->get('save'))) {
+            return redirect()->route('people.show', ['id' => $contact->id]);
+        } else {
+            return redirect()->route('people.create')
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName()]));
+        }
     }
 
     /**
@@ -110,7 +116,7 @@ class PeopleController extends Controller
     {
         // make sure we don't display a significant other if it's not set as a
         // real contact
-        if ($contact->is_significant_other or $contact->is_kid) {
+        if ($contact->is_partial) {
             return redirect('/people');
         }
 
@@ -157,6 +163,17 @@ class PeopleController extends Controller
             return back()
                 ->withInput()
                 ->withErrors($validator);
+        }
+
+        // Make sure the email address is unique in this account
+        if ($request->input('email') != '') {
+            $otherContact = Contact::where('email', $request->input('email'))
+                                    ->where('id', '!=', $contact->id)
+                                    ->count();
+
+            if ($otherContact > 0) {
+                return redirect()->back()->withErrors(trans('people.people_edit_email_error'))->withInput();
+            }
         }
 
         $contact->gender = $request->input('gender');

@@ -9,5 +9,5 @@ return [
     'journal_add_cta' => 'Сохранить',
     'journal_blank_cta' => 'Добавить вашу первую запись в журнал',
     'journal_blank_description' => 'В журнал вы можете добавлять записи о событиях в вашей жизни, чтобы сохранить их.',
-    'delete_confirmation' => 'Are you sure you want to delete this journal entry?',
+    'delete_confirmation' => 'Вы уверены что хотите удалить эту запись?',
 ];

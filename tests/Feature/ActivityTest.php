@@ -110,7 +110,6 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activity = factory(\App\Activity::class)->create([
-            'contact_id' => 0,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => \Carbon\Carbon::now(),
@@ -162,7 +161,6 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activity = factory(\App\Activity::class)->create([
-            'contact_id' => 0,
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => \Carbon\Carbon::now(),

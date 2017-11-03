@@ -97,7 +97,11 @@
                           {{ trans_choice('dashboard.reminders_in_days', $reminder_day_diff, ['number' => $reminder_day_diff]) }}
                           ({{ \App\Helpers\DateHelper::getShortDate($reminder->getNextExpectedDate()) }})
                         </span>
-                        <a href="/people/{{ $reminder->getContact()->id }}">{{ $reminder->getContact()->getCompleteName(auth()->user()->name_order) }}</a>:
+                        @if ($reminder->contact->is_partial)
+                        {{ $reminder->contact->getCompleteName(auth()->user()->name_order) }}:
+                        @else
+                        <a href="/people/{{ $reminder->contact->id }}">{{ $reminder->contact->getCompleteName(auth()->user()->name_order) }}</a>:
+                        @endif
                         @if ($reminder->is_birthday)
                           {{ trans('people.reminders_birthday', ['name' => $reminder->contact->first_name]) }}
                         @else
@@ -173,7 +177,6 @@
                 <ul class="event-list">
                   @foreach($events as $event)
                     <li class="event-list-item">
-                      {{ \Log::info('debug:'.$event['id']) }}
                       @include('dashboard.events._'.$event['object_type'])
 
                       {{-- DATE --}}

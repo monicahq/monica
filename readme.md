@@ -66,6 +66,7 @@ more.
 * Reminders are sent by email
 * Management of debts
 * Ability to add notes to a contact
+* Ability to indicate how you've met someone
 * Management of activities done with a contact
 * Management of tasks
 * Management of gifts
@@ -75,6 +76,7 @@ more.
 * Labels to organize contacts
 * Multi currencies
 * Multi languages
+* An API that covers most of the data
 
 ### Who is it for?
 
@@ -233,18 +235,20 @@ The big topic. Yes, we plan to make money out of this tool to sustain it on the
 long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab
 and we believe this kind of business model is inspiring, where everyone wins.
 
-* On https://monicahq.com, Monica will be offered in two versions:
-  * a free plan (called **Joe**):
+* On https://monicahq.com, Monica will be offered in two versions. Note that
+this can change anytime as we are trying different business models to see if
+this project can be sustained in the long run:
+  * a free plan:
     * No limits of contacts
-    * Importers/exporters
-    * Email reminders
-  * a paid plan (called **Chandler**):
+    * Exporters
+  * a paid plan:
     * Advanced features
+    * Email reminders
+    * Importers
     * People who contribute to the GitHub repository (with a pull request that
     adds value, that gets merged (not a typo fix, for instance) will also have
     access to the Paid version for free.
-* You can also **run it yourself**. This is the **Ross** version. This is
-sometimes also called on-premise. Download the code, run it on Heroku, with
+* You can also **run it yourself**. This is sometimes also called on-premise. Download the code, run it on Heroku, with
 Docker. The choice is yours.
   * The downloadable version will always be the most complete version - the same
   offered on the paid plan on `.com`.

@@ -33,9 +33,7 @@
           </div>
           <div class="table-cell">
             @if (! empty($gift->getValue()))
-              <span class="value">
-                  {{ MoneyHelper::format($gift->getValue()) }}
-              </span>
+              <span class="value">{{ MoneyHelper::format($gift->getValue()) }}</span>
             @endif
             {{ $gift->getName() }}
             @if (! empty($gift->getUrl()))
@@ -43,7 +41,7 @@
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if($gift->hasParticularRecipient())
+            @if ($gift->hasParticularRecipient())
               <span class="for">
               For:
                 {{ $gift->recipient_name }}
@@ -81,9 +79,7 @@
           </div>
           <div class="table-cell">
             @if (! empty($gift->getValue()))
-              <span class="value">
-                  {{ MoneyHelper::format($gift->getValue()) }}
-              </span>
+              <span class="value">{{ MoneyHelper::format($gift->getValue()) }}</span>
             @endif
             {{ $gift->getName() }}
             @if (! empty($gift->getUrl()))
@@ -91,7 +87,7 @@
                 <a href="{{ $gift->getUrl() }}">{{ trans('people.gifts_link') }}</a>
               </span>
             @endif
-            @if($gift->hasParticularRecipient()))
+            @if($gift->hasParticularRecipient())
               <span class="for">
               For:
                 {{ $gift->recipient_name }}
