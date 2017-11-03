@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
     'people_add_cta' => 'Adicionar essa pessoa',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gênero',
     'people_delete_success' => 'O contato foi excluído',
     'people_delete_message' => 'Se você precisar excluir este contato,',

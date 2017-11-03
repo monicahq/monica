@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add a button to `Save and add another contact` straight from the Add contact screen
 * Add the ability to indicate how you've met someone
 * Replace former front-end build system by mix (which is the new default with Laravel 5.5)
 * Add a first part of the API

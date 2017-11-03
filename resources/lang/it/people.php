@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'Secondo nome (facoltativo)',
     'people_add_lastname' => 'Cognome (facoltativo)',
     'people_add_cta' => 'Aggiungi questa persona',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Sesso',
     'people_delete_success' => 'Il contatto è stato rimosso',
     'people_delete_message' => 'Se vuoi rimuovere questo contatto,',
