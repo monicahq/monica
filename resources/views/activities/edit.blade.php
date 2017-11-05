@@ -34,7 +34,7 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             @include('activities.form', [
               'method' => 'PUT',
-              'action' => route('activities.update', [$activity])
+              'action' => route('activities.update', [$activity, $contact])
             ])
           </div>
         </div>
