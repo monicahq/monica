@@ -149,8 +149,6 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        // Eventually we'll redirect to a dedicated 'view activity page', but for now
-        // just show the last person added
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_update_success'));
     }
