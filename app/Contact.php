@@ -1004,7 +1004,7 @@ class Contact extends Model
      * @param Contact $partner
      * @param  bool $bilateral
      */
-    public function setRelationshipWith(Contact $partner, $bilateral = false)
+    public function setRelationshipWith(self $partner, $bilateral = false)
     {
         $relationship = Relationship::create(
             [
@@ -1033,7 +1033,7 @@ class Contact extends Model
      * @param Contact $partner
      * @param  bool $bilateral
      */
-    public function updateRelationshipWith(Contact $partner)
+    public function updateRelationshipWith(self $partner)
     {
         $relationship = Relationship::create(
             [
@@ -1052,7 +1052,7 @@ class Contact extends Model
      * @param Contact $parent
      * @param  bool $bilateral
      */
-    public function isTheOffspringOf(Contact $parent, $bilateral = false)
+    public function isTheOffspringOf(self $parent, $bilateral = false)
     {
         $offspring = Offspring::create(
             [
@@ -1079,7 +1079,7 @@ class Contact extends Model
      * @param  Contact $partner
      * @param  bool $bilateral
      */
-    public function unsetRelationshipWith(Contact $partner, $bilateral = false)
+    public function unsetRelationshipWith(self $partner, $bilateral = false)
     {
         $relationship = Relationship::where('contact_id', $this->id)
                         ->where('with_contact_id', $partner->id)
@@ -1102,7 +1102,7 @@ class Contact extends Model
      * @param  Contact $kid
      * @param  bool $bilateral
      */
-    public function unsetOffspring(Contact $kid, $bilateral = false)
+    public function unsetOffspring(self $kid, $bilateral = false)
     {
         $offspring = Offspring::where('contact_id', $kid->id)
                         ->where('is_the_child_of', $this->id)
@@ -1124,7 +1124,7 @@ class Contact extends Model
      *
      * @var Contact
      */
-    public function deleteEventsAboutTheseTwoContacts(Contact $contact, $type)
+    public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
     {
         $events = Event::where('contact_id', $this->id)
                         ->where('object_id', $contact->id)
