@@ -9,7 +9,7 @@
       @foreach($contact->getProgenitors() as $parent)
       <li>
 
-        <a href="/people/{{ $parent->id }}"><span class="name">{{ $parent->getCompleteName() }}</span></a>
+        <a href="/people/{{ $parent->id }}"><span class="name">{{ $parent->getCompleteName(auth()->user()->name_order) }}</span></a>
 
         @if (! is_null($parent->getAge()))
         ({{ $parent->getAge() }})

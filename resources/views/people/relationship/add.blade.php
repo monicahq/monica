@@ -83,7 +83,7 @@
                       <select class="form-control" name="existingPartner" id="existingPartner">
                         @foreach ($contact->getPotentialContacts() as $partner)
 
-                          <option value="{{ $partner->id }}">{{ $partner->getCompleteName() }}</option>
+                          <option value="{{ $partner->id }}">{{ $partner->getCompleteName(auth()->user()->name_order) }}</option>
 
                         @endforeach
                       </select>

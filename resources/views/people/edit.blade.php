@@ -126,7 +126,7 @@
                 <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ $contact->postal_code }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
 
-                @include('partials.components.country-select',['selectionID'=>$contact->country_id])
+                @include('partials.components.country-select', ['selectionID'=>$contact->country_id])
 
               </div>
 
@@ -208,41 +208,23 @@
               <div class="form-group">
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="" v-model="is_deceased">
-                    Mark this person as deceased
+                    <input class="form-check-input" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
+                    {{ ($contact->is_dead == true) ? 'checked' : '' }}>
+                    {{ trans('people.deceased_mark_person_deceased') }}
                   </label>
                 </div>
-                <div class="form-check" v-if="is_deceased">
+                <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="" v-model="date_deceased_known">
-                    I know the date this person died
+                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
+                    {{ trans('people.deceased_know_date') }}
 
-                    <div class="form-row">
-                      <div class="form-group col-md-4">
-                        <label for="inputCity">City</label>
-                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
-                          <option>Janvier</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputState">State</label>
-                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
-                          <option>Janvier</option>
-                        </select>
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="inputZip">Zip</label>
-                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
-                          <option>Janvier</option>
-                        </select>
-                      </div>
-                    </div>
-                  </label>
+                    @include('partials.components.date-select', ['contact' => $contact])
+
                 </div>
-                <div class="form-check" v-if="date_deceased_known">
+                <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="">
-                    Add a reminder for this date
+                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased">
+                    {{ trans('people.deceased_add_reminder') }}
                   </label>
                 </div>
               </div>

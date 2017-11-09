@@ -53,7 +53,7 @@
 
                       @if ($metThroughContact->id != $contact->id)
                       <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}>
-                        {{ $metThroughContact->getCompleteName() }}
+                        {{ $metThroughContact->getCompleteName(auth()->user()->name_order) }}
                       </option>
                       @endif
 
