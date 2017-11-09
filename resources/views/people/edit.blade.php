@@ -204,6 +204,7 @@
                 <p class="help">{{ trans('people.information_edit_help') }}</p>
               </fieldset>
 
+              {{-- Is the contact deceased? --}}
               <div class="form-group">
                 <div class="form-check">
                   <label class="form-check-label">
@@ -215,6 +216,27 @@
                   <label class="form-check-label">
                     <input class="form-check-input" type="checkbox" value="" v-model="date_deceased_known">
                     I know the date this person died
+
+                    <div class="form-row">
+                      <div class="form-group col-md-4">
+                        <label for="inputCity">City</label>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
+                          <option>Janvier</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputState">State</label>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
+                          <option>Janvier</option>
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputZip">Zip</label>
+                        <select class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelectPref">
+                          <option>Janvier</option>
+                        </select>
+                      </div>
+                    </div>
                   </label>
                 </div>
                 <div class="form-check" v-if="date_deceased_known">
