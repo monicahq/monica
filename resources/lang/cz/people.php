@@ -339,4 +339,12 @@ return [
     'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
     'introductions_met_date' => 'Met on :date',
     'introductions_reminder_title' => 'Anniversary of the day you first met',
+
+    // Deceased
+    'deceased_reminder_title' => 'Anniversary of the death of :name',
+    'deceased_mark_person_deceased' => 'Mark this person as deceased',
+    'deceased_know_date' => 'I know the date this person died',
+    'deceased_add_reminder' => 'Add a reminder for this date',
+    'deceased_label' => 'Deceased',
+    'deceased_label_with_date' => 'Deceased on :date',
 ];

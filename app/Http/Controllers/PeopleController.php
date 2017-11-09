@@ -102,7 +102,7 @@ class PeopleController extends Controller
             return redirect()->route('people.show', ['id' => $contact->id]);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName()]));
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
         }
     }
 
@@ -238,6 +238,39 @@ class PeopleController extends Controller
             $contact->country_id = $request->input('country');
         } else {
             $contact->country_id = null;
+        }
+
+        // Is the person deceased?
+        if ($request->input('markPersonDeceased') != '') {
+            $contact->is_dead = true;
+
+            if ($request->input('checkboxDatePersonDeceased') != '') {
+                $day = $request->input('dayDeceased');
+                $month = $request->input('monthDeceased');
+                $year = $request->input('yearDeceased');
+
+                $date = \Carbon\Carbon::createFromDate($year, $month, $day);
+                $contact->deceased_date = $date;
+
+                if ($request->input('addReminderDeceased') != '') {
+                    $reminder = $contact->reminders()->create(
+                        [
+                            'account_id' => $contact->account_id,
+                            'title' => trans('people.deceased_reminder_title', ['name' => $contact->getFirstName()]),
+                            'description' => '',
+                            'frequency_type' => 'year',
+                            'next_expected_date' => $date,
+                            'frequency_number' => 1,
+                        ]
+                    );
+
+                    $reminder->calculateNextExpectedDate(auth()->user()->timezone);
+                    $reminder->save();
+                }
+            }
+        } else {
+            $contact->is_dead = false;
+            $contact->deceased_date = null;
         }
 
         $contact->is_birthdate_approximate = $request->input('is_birthdate_approximate');

@@ -126,7 +126,7 @@
                 <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ $contact->postal_code }}">
                 <label for="country">{{ trans('people.information_edit_country') }}</label>
 
-                @include('partials.components.country-select',['selectionID'=>$contact->country_id])
+                @include('partials.components.country-select', ['selectionID'=>$contact->country_id])
 
               </div>
 
@@ -201,10 +201,32 @@
                       </div>
                   </label>
                 </div>
+                <p class="help">{{ trans('people.information_edit_help') }}</p>
               </fieldset>
 
-              <div class="classname">
-                <p>{{ trans('people.information_edit_help') }}</p>
+              {{-- Is the contact deceased? --}}
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
+                    {{ ($contact->is_dead == true) ? 'checked' : '' }}>
+                    {{ trans('people.deceased_mark_person_deceased') }}
+                  </label>
+                </div>
+                <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
+                  <label class="form-check-label">
+                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
+                    {{ trans('people.deceased_know_date') }}
+
+                    @include('partials.components.date-select', ['contact' => $contact])
+
+                </div>
+                <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">
+                  <label class="form-check-label">
+                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased">
+                    {{ trans('people.deceased_add_reminder') }}
+                  </label>
+                </div>
               </div>
 
               <div class="form-group actions">

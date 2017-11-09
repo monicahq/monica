@@ -24,6 +24,7 @@ class Contact extends Model
         'birthdate',
         'last_talked_to',
         'first_met',
+        'deceased_date',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -80,6 +81,8 @@ class Contact extends Model
         'facebook_profile_url',
         'twitter_profile_url',
         'linkedin_profile_url',
+        'is_dead',
+        'deceased_date',
     ];
 
     /**
@@ -103,6 +106,7 @@ class Contact extends Model
      */
     protected $casts = [
         'is_partial' => 'boolean',
+        'is_dead' => 'boolean',
     ];
 
     /**
@@ -365,7 +369,11 @@ class Contact extends Model
             $completeName = $completeName.' '.$this->first_name;
         }
 
-        return $completeName;
+        if ($this->is_dead) {
+            $completeName .= ' ⚰';
+        }
+
+        return trim($completeName);
     }
 
     /**
