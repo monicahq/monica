@@ -24,9 +24,9 @@ class DateSelectViewComposer
         $months = [];
         $currentDate = Carbon::now();
 
-        for ($month=1 ; $month < 13 ; $month++) {
-          $currentDate->month = $month;
-          array_push($months, $currentDate->formatLocalized('%B'));
+        for ($month=1; $month < 13; $month++) {
+            $currentDate->month = $month;
+            array_push($months, $currentDate->formatLocalized('%B'));
         }
 
         // Years
@@ -34,7 +34,7 @@ class DateSelectViewComposer
         $maxYear = Carbon::now(auth()->user()->timezone)->year;
         $minYear = Carbon::now(auth()->user()->timezone)->subYears(120)->format('Y');
 
-        for ($year=$minYear ; $year <= $maxYear ; $year++) {
+        for ($year=$minYear; $year <= $maxYear; $year++) {
             array_push($years, $year);
         }
 
