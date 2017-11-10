@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v1.0.0 - 2017-11-09
+-------------------
+
 * Add the ability to mark a contact as deceased
 * Add a button to `Save and add another contact` straight from the Add contact screen
 * Add the ability to indicate how you've met someone
@@ -8,8 +15,6 @@ UNRELEASED CHANGES:
 * Fix the access to upgrade account view
 * Add security.txt file
 * Upgrade codebase to Laravel 5.5
-
-RELEASED VERSIONS:
 
 v0.7.1 - 2017-10-21
 -------------------
