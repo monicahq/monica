@@ -83,6 +83,8 @@ class ApiContactController extends ApiController
             'first_met_date' => 'nullable|date',
             'first_met_through_contact_id' => 'nullable|integer',
             'is_partial' => 'required|integer',
+            'is_dead' => 'required|integer',
+            'deceased_date' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
@@ -190,6 +192,8 @@ class ApiContactController extends ApiController
             'first_met_date' => 'nullable|date',
             'first_met_through_contact_id' => 'nullable|integer',
             'is_partial' => 'required|integer',
+            'is_dead' => 'required|integer',
+            'deceased_date' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {

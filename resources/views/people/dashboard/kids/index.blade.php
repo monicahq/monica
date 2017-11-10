@@ -15,7 +15,7 @@
 
         @if ($kid->is_partial)
 
-          <span class="name">{{ $kid->getCompleteName() }}</span>
+          <span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span>
 
           @if (! is_null($kid->getAge()))
             ({{ $kid->getAge() }})
@@ -31,7 +31,7 @@
 
         @else
 
-          <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName() }}</span></a>
+          <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span></a>
 
           @if (! is_null($kid->getAge()))
             ({{ $kid->getAge() }})

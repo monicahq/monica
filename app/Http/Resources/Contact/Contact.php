@@ -21,7 +21,9 @@ class Contact extends Resource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender,
-            'is_partial' => $this->is_partial,
+            'is_partial' => (bool) $this->is_partial,
+            'is_dead' => (bool) $this->is_dead,
+            'deceased_date' => (is_null($this->deceased_date) ? null : $this->deceased_date->format(config('api.timestamp_format'))),
             'last_called' => $this->when(! $this->is_partial, (is_null($this->last_called) ? null : (string) $this->last_called)),
             'last_talked_to' => $this->when(! $this->is_partial, (is_null($this->last_talked_to) ? null : (string) $this->last_talked_to)),
             'information' => [

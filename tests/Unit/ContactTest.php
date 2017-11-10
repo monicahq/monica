@@ -37,6 +37,7 @@ class ContactTest extends TestCase
         $contact->first_name = 'Peter';
         $contact->middle_name = 'H';
         $contact->last_name = 'Gregory';
+        $contact->is_dead = false;
 
         $this->assertEquals(
             'Peter H Gregory',
@@ -76,6 +77,15 @@ class ContactTest extends TestCase
         $this->assertEquals(
             null,
             $contact->getLastName()
+        );
+
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->is_dead = true;
+        $this->assertEquals(
+            'Peter H Gregory ⚰',
+            $contact->getCompleteName()
         );
     }
 

@@ -21,6 +21,8 @@ class ContactShort extends Resource
             'last_name' => $this->last_name,
             'gender' => $this->gender,
             'is_partial' => (bool) $this->is_partial,
+            'is_dead' => (bool) $this->is_dead,
+            'deceased_date' => (is_null($this->deceased_date) ? null : $this->deceased_date->format(config('api.timestamp_format'))),
             'information' => [
                 'dates' => [
                     [
