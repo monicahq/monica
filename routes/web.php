@@ -115,9 +115,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Activities
     Route::group(['as' => 'activities'], function () {
         Route::get('/activities/add/{contact}', 'ActivitiesController@create')->name('.add');
-        Route::post('/activities/store', 'ActivitiesController@store')->name('.store');
+        Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('.store');
         Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
-        Route::put('/activities/{activity}', 'ActivitiesController@update')->name('.update');
+        Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('.update');
         Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
     });
 
