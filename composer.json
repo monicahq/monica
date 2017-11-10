@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0",
+        "php": "^7.1",
         "laravel/framework": "5.5.*",
         "barryvdh/laravel-debugbar": "^2.2",
         "jenssegers/date": "^3.2",
