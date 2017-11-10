@@ -23,6 +23,8 @@ class Contact extends Model
     protected $dates = [
         'birthdate',
         'last_talked_to',
+        'first_met',
+        'deceased_date',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -79,6 +81,8 @@ class Contact extends Model
         'facebook_profile_url',
         'twitter_profile_url',
         'linkedin_profile_url',
+        'is_dead',
+        'deceased_date',
     ];
 
     /**
@@ -102,6 +106,7 @@ class Contact extends Model
      */
     protected $casts = [
         'is_partial' => 'boolean',
+        'is_dead' => 'boolean',
     ];
 
     /**
@@ -364,7 +369,11 @@ class Contact extends Model
             $completeName = $completeName.' '.$this->first_name;
         }
 
-        return $completeName;
+        if ($this->is_dead) {
+            $completeName .= ' ⚰';
+        }
+
+        return trim($completeName);
     }
 
     /**
@@ -1003,7 +1012,7 @@ class Contact extends Model
      * @param Contact $partner
      * @param  bool $bilateral
      */
-    public function setRelationshipWith(Contact $partner, $bilateral = false)
+    public function setRelationshipWith(self $partner, $bilateral = false)
     {
         $relationship = Relationship::create(
             [
@@ -1032,7 +1041,7 @@ class Contact extends Model
      * @param Contact $partner
      * @param  bool $bilateral
      */
-    public function updateRelationshipWith(Contact $partner)
+    public function updateRelationshipWith(self $partner)
     {
         $relationship = Relationship::create(
             [
@@ -1051,7 +1060,7 @@ class Contact extends Model
      * @param Contact $parent
      * @param  bool $bilateral
      */
-    public function isTheOffspringOf(Contact $parent, $bilateral = false)
+    public function isTheOffspringOf(self $parent, $bilateral = false)
     {
         $offspring = Offspring::create(
             [
@@ -1078,7 +1087,7 @@ class Contact extends Model
      * @param  Contact $partner
      * @param  bool $bilateral
      */
-    public function unsetRelationshipWith(Contact $partner, $bilateral = false)
+    public function unsetRelationshipWith(self $partner, $bilateral = false)
     {
         $relationship = Relationship::where('contact_id', $this->id)
                         ->where('with_contact_id', $partner->id)
@@ -1101,7 +1110,7 @@ class Contact extends Model
      * @param  Contact $kid
      * @param  bool $bilateral
      */
-    public function unsetOffspring(Contact $kid, $bilateral = false)
+    public function unsetOffspring(self $kid, $bilateral = false)
     {
         $offspring = Offspring::where('contact_id', $kid->id)
                         ->where('is_the_child_of', $this->id)
@@ -1123,7 +1132,7 @@ class Contact extends Model
      *
      * @var Contact
      */
-    public function deleteEventsAboutTheseTwoContacts(Contact $contact, $type)
+    public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
     {
         $events = Event::where('contact_id', $this->id)
                         ->where('object_id', $contact->id)
@@ -1241,5 +1250,35 @@ class Contact extends Model
         }
 
         return $family;
+    }
+
+    /**
+     * Indicates whether the contact has information about how they first met.
+     * @return bool
+     */
+    public function hasFirstMetInformation()
+    {
+        return ! is_null($this->first_met_additional_info) or ! is_null($this->first_met) or ! is_null($this->first_met_through_contact_id);
+    }
+
+    /**
+     * Gets the contact who introduced this person to the user.
+     * @return Contact
+     */
+    public function getIntroducer()
+    {
+        if (! $this->first_met_through_contact_id) {
+            return;
+        }
+
+        try {
+            $contact = self::where('account_id', $this->account_id)
+                ->where('id', $this->first_met_through_contact_id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
+
+        return $contact;
     }
 }
