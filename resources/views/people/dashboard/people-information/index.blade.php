@@ -1,7 +1,7 @@
 <div class="sidebar-box">
 
   <p class="sidebar-box-title">
-    <strong>{{ trans('people.section_personal_information') }}</strong>
+    <strong>{{ trans('people.section_contact_information') }}</strong>
   </p>
 
   <div class="people-information">
@@ -19,70 +19,29 @@
       </li>
       @endif
 
-      {{-- Birthdate --}}
+      @foreach ($contact->contactFields as $contactField)
       <li>
-        <i class="fa fa-birthday-cake"></i>
-        @if (is_null($contact->birthdate))
-          {{ trans('people.birthdate_not_set') }}
-        @else
-          {{ $contact->getAge() }}
-        @endif
+        <i class="{{ $contactField->contactFieldType->fontawesome_icon }}"></i>
+        <a href="{{ $contactField->contactFieldType->protocol }}{{ $contactField->data }}">{{ $contactField->data }}</a>
       </li>
+      @endforeach
 
-      {{-- City --}}
+      @foreach ($contact->addresses as $address)
       <li>
         <i class="fa fa-globe"></i>
-        @if (is_null($contact->getPartialAddress()))
-        {{ trans('people.information_no_address_defined') }}
-        @else
-        {{ $contact->getPartialAddress() }}
-        @endif
-      </li>
-
-      {{-- Email address --}}
-      <li>
-        <i class="fa fa-envelope-open-o"></i>
-        @if (is_null($contact->email))
-        {{ trans('people.information_no_email_defined') }}
-        @else
-        <a href="mailto:{{ $contact->email }}">
-          {{ $contact->email }}
+        <a href="{{ $address->getGoogleMapAddress() }}" target="_blank">
+          {{ $address->getFullAddress() }}
         </a>
+        @if ($address->name != 'default')
+        <span class="grey">({{ $address->name }})</span>
         @endif
       </li>
-
-      {{-- Phone --}}
-      <li>
-        <i class="fa fa-volume-control-phone"></i>
-        @if (is_null($contact->phone_number))
-        {{ trans('people.information_no_phone_defined') }}
-        @else
-        <a href="tel:{{ $contact->phone_number }}">
-          {{ $contact->phone_number }}
-        </a>
-        @endif
-      </li>
-
-      {{-- Facebook --}}
-      <li>
-        <i class="fa fa-facebook-official"></i>
-        @if (is_null($contact->facebook_profile_url))
-        {{ trans('people.information_no_facebook_defined') }}
-        @else
-        <a href="{{ $contact->facebook_profile_url }}">Facebook</a>
-        @endif
-      </li>
-
-      {{-- Twitter --}}
-      <li>
-        <i class="fa fa-twitter-square"></i>
-        @if (is_null($contact->twitter_profile_url))
-        {{ trans('people.information_no_twitter_defined') }}
-        @else
-        <a href="{{ $contact->twitter_profile_url }}">Twitter</a>
-        @endif
-      </li>
+      @endforeach
     </ul>
+
+    <p class="sidebar-box-paragraph">
+      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('app.edit') }}</a>
+    </p>
   </div>
 
 </div>

@@ -136,3 +136,9 @@ $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
         'account_id' => 1,
     ];
 });
+
+$factory->define(App\Address::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});

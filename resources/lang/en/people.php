@@ -41,7 +41,7 @@ return [
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
-    'section_personal_information' => 'Personal information',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Activities',
     'section_personal_reminders' => 'Reminders',
     'section_personal_tasks' => 'Tasks',
@@ -349,4 +349,7 @@ return [
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
+
+    // Contact information
+    'contact_info_address' => 'Lives in',
 ];

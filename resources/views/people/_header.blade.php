@@ -27,6 +27,9 @@
 
           <h2>
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
+            @if (! is_null($contact->birthdate))
+            <span class="age">{{ $contact->getAge() }}</span>
+            @endif
           </h2>
 
           <ul class="tags">
