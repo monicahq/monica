@@ -26,7 +26,7 @@ git checkout -b 325-add-japanese-translations
 
 ### 3. Get the test suite running
 
-Make sure you follow the [readme's instructions](https://github.com/monicahq/monica#setup-the-testing-environment)
+Make sure you follow the [readme's instructions](https://github.com/monicahq/monica/blob/master/docs/contribute/contribute.md#setup-the-testing-environment)
 on how to setup the test suite.
 
 ### 4. Did you find a bug?
