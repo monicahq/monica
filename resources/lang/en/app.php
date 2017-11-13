@@ -55,6 +55,7 @@ return [
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'How did you meet',
+    'breadcrumb_settings_personalization' => 'Personalization',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',

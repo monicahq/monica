@@ -14,6 +14,8 @@ class ContactFieldType extends Model
      */
     protected $guarded = ['id'];
 
+    protected $table = 'contact_field_types';
+
     /**
      * Get the account record associated with the gift.
      *

@@ -2,6 +2,7 @@
 
 return [
     'sidebar_settings' => 'Account settings',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Export data',
     'sidebar_settings_users' => 'Users',
     'sidebar_settings_subscriptions' => 'Subscription',
@@ -145,5 +146,12 @@ return [
     'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+
+    'personalization_contact_field_type_title' => 'Contact field types',
+    'personalization_contact_field_type_add' => 'Add new field type',
+    'personalization_contact_field_type_description' => 'Here you can configure all the different types of contact field that you can associate to all your contacts. If in the future, a new social network appears, you will be able to add this new type of ways of contacting your contacts right here.',
+    'personalization_contact_field_type_table_name' => 'Name',
+    'personalization_contact_field_type_table_protocol' => 'Protocol',
+    'personalization_contact_field_type_table_actions' => 'Actions',
 
 ];

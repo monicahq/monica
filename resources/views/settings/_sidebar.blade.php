@@ -13,6 +13,18 @@
     </li>
     @endif
 
+    @if (Route::currentRouteName() == 'settings.personalization')
+    <li class="selected">
+      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+      {{ trans('settings.sidebar_personalization') }}
+    </li>
+    @else
+    <li>
+      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+      <a href="/settings/personalization">{{ trans('settings.sidebar_personalization') }}</a>
+    </li>
+    @endif
+
     @if (Route::currentRouteName() == 'settings.export')
     <li class="selected">
       <i class="fa fa-cloud-download" aria-hidden="true"></i>

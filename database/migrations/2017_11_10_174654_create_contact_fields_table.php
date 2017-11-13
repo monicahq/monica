@@ -52,5 +52,36 @@ class CreateContactFieldsTable extends Migration
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
+
+        Schema::create('default_contact_field_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('fontawesome_icon')->nullable();
+            $table->string('protocol')->nullable();
+            $table->boolean('migrated')->default(0);
+            $table->timestamps();
+        });
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Email',
+            'fontawesome_icon' => 'fa fa-envelope-open-o',
+            'protocol' => 'mailto:',
+        ]);
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Phone',
+            'fontawesome_icon' => 'fa fa-volume-control-phone',
+            'protocol' => 'tel:',
+        ]);
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Facebook',
+            'fontawesome_icon' => 'fa fa-facebook-official',
+        ]);
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Twitter',
+            'fontawesome_icon' => 'fa fa-twitter-square',
+        ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Account;
+use App\Instance;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,83 +15,79 @@ class MigrateContactsInformation extends Migration
      */
     public function up()
     {
-        $accounts = DB::table('accounts')->get();
+        $accounts = Account::all();
+
         foreach ($accounts as $account) {
             $contacts = DB::table('contacts')->where('account_id', $account->id)->get();
 
+            $account->populateContactFieldTypeTable();
+
             // EMAIL
-            $id = DB::table('contact_field_types')->insertGetId([
-                'account_id' => $account->id,
-                'name' => 'Email',
-                'fontawesome_icon' => 'fa fa-envelope-open-o',
-                'protocol' => 'mailto:',
-            ]);
+            $emailId = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Email')
+                                                        ->first();
 
             foreach ($contacts as $contact) {
                 if (! is_null($contact->email)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
                         'contact_id' => $contact->id,
-                        'contact_field_type_id' => $id,
+                        'contact_field_type_id' => $emailId->id,
                         'data' => $contact->email,
                     ]);
                 }
             }
 
             // PHONE NUMBER
-            $idPhoneNumber = DB::table('contact_field_types')->insertGetId([
-                'account_id' => $account->id,
-                'name' => 'Phone',
-                'fontawesome_icon' => 'fa fa-volume-control-phone',
-                'protocol' => 'tel:',
-            ]);
+            $idPhoneNumber = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Phone')
+                                                        ->first();
 
             foreach ($contacts as $contact) {
                 if (! is_null($contact->phone_number)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
                         'contact_id' => $contact->id,
-                        'contact_field_type_id' => $idPhoneNumber,
+                        'contact_field_type_id' => $idPhoneNumber->id,
                         'data' => $contact->phone_number,
                     ]);
                 }
             }
 
             // FACEBOOK
-            $idFacebook = DB::table('contact_field_types')->insertGetId([
-                'account_id' => $account->id,
-                'name' => 'Facebook',
-                'fontawesome_icon' => 'fa fa-facebook-official',
-            ]);
+            $idFacebook = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Facebook')
+                                                        ->first();
 
             foreach ($contacts as $contact) {
                 if (! is_null($contact->facebook_profile_url)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
                         'contact_id' => $contact->id,
-                        'contact_field_type_id' => $idFacebook,
+                        'contact_field_type_id' => $idFacebook->id,
                         'data' => $contact->facebook_profile_url,
                     ]);
                 }
             }
 
             // TWITTER
-            $idTwitter = DB::table('contact_field_types')->insertGetId([
-                'account_id' => $account->id,
-                'name' => 'Twitter',
-                'fontawesome_icon' => 'fa fa-twitter-square',
-            ]);
+            $idTwitter = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Twitter')
+                                                        ->first();
 
             foreach ($contacts as $contact) {
                 if (! is_null($contact->twitter_profile_url)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
                         'contact_id' => $contact->id,
-                        'contact_field_type_id' => $idTwitter,
+                        'contact_field_type_id' => $idTwitter->id,
                         'data' => $contact->twitter_profile_url,
                     ]);
                 }
             }
         }
+
+        $instance = Instance::first();
+        $instance->markDefaultContactFieldTypeAsMigrated();
     }
 }

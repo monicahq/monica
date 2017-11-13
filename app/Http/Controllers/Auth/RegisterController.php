@@ -99,6 +99,8 @@ class RegisterController extends Controller
         $user->account_id = $account->id;
         $user->save();
 
+        $account->populateContactFieldTypeTable();
+
         // send me an alert
         dispatch(new SendNewUserAlert($user));
 
