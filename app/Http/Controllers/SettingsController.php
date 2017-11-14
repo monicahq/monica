@@ -402,13 +402,4 @@ class SettingsController extends Controller
     {
         return view('settings.api.index');
     }
-
-    /**
-     * Display the personalization page
-     * @return \Illuminate\Http\Response
-     */
-    public function personalization()
-    {
-        return view('settings.personalization.index');
-    }
 }

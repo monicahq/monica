@@ -37,11 +37,16 @@
       </div>
       <div class="dtc tr">
         <div class="pa2">
-          <a href="#" onclick="if (confirm('{{ trans('settings.users_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
+          <a href="#" onclick="if (confirm('{{ trans('settings.personalization_contact_field_type_delete_confirmation') }}')) { $(this).closest('.dt-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
       </div>
+
+      <form method="POST" action="{{ action('Settings\\PersonalizationController@destroyContactFieldType', compact('contactFieldType')) }}" class="entry-delete-form hidden">
+        {{ method_field('DELETE') }}
+        {{ csrf_field() }}
+      </form>
     </div>
 
   @endforeach

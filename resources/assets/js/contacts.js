@@ -18,6 +18,10 @@ $('.log-call .modal-cta').click(function() {
   $('.log-call form').submit();
 });
 
+$('.personalization .modal-cta').click(function() {
+  $('.personalization form').submit();
+});
+
 // When clicking on the Change date in the Log a call modal, we display the
 // date picker
 $('.log-call .change-date-happened').click(function(e) {

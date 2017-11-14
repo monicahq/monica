@@ -3,40 +3,38 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ trans('people.modal_call_title') }}</h5>
+        <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_title') }}</h5>
         <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="/people/call/store">
+        <form method="POST" action="/settings/personalization/storeContactFieldType">
           {{ csrf_field() }}
 
           <div class="form-group">
             <div class="form-group">
-              <label for="exampleInputEmail1">Name</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+              <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
+              <input type="text" class="form-control" name="name" id="name" required>
             </div>
 
-            <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ trans('app.markdown_link') }}</a></p>
+            <div class="form-group">
+              <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
+              <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:">
+              <small id="emailHelp" class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
+            </div>
 
-            <p class="date-it-happened">
-              {{ trans('people.modal_call_date') }} <a href="#" class="change-date-happened">{{ trans('people.modal_call_change') }}</a>
-            </p>
-
-            <p class="exact-date">
-              {{ trans('people.modal_call_exact_date') }}
-              <input type="date" name="called_at" class="form-control"
-                           value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                           min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                           max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-            </p>
+            <div class="form-group">
+              <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
+              <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o">
+              <small id="emailHelp" class="form-text text-muted">{!! trans('settings.personalization_contact_field_type_modal_icon_help') !!}</small>
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-        <button type="button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
+        <button type="submit" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
       </div>
     </div>
   </div>

@@ -136,7 +136,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
 
-        Route::get('/settings/personalization', 'SettingsController@personalization')->name('.personalization');
+        Route::get('/settings/personalization', 'Settings\\PersonalizationController@index')->name('.personalization');
+        Route::post('/settings/personalization/storeContactFieldType', 'Settings\\PersonalizationController@storeContactFieldType')->name('.personalization.store');
+        Route::delete('/settings/personalization/{contactFieldType}', 'Settings\\PersonalizationController@destroyContactFieldType')->name('.personalization.store');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');

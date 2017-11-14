@@ -247,6 +247,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this

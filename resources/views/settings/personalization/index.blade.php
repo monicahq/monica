@@ -32,7 +32,7 @@
 
       <div class="col-xs-12 col-sm-9 personalization">
 
-        <p>Here you can find different settings to configure your account. These features are more for "power users" who want maximum control over Monica.</p>
+        <p>{{ trans('settings.personalization_title') }}</p>
 
         @include('settings.personalization.contact_field_types._index')
 
