@@ -1,6 +1,8 @@
-<h3 class="with-actions">
+<contact-field-types></contact-field-types>
+
+{{-- <h3 class="with-actions">
   {{ trans('settings.personalization_contact_field_type_title') }}
-  <a href="#addContactFieldType" class="btn" data-toggle="modal">{{ trans('settings.personalization_contact_field_type_add') }}</a>
+  <a href="#addContactFieldType" class="btn fr nt2" data-toggle="modal">{{ trans('settings.personalization_contact_field_type_add') }}</a>
 </h3>
 <p>{{ trans('settings.personalization_contact_field_type_description') }}</p>
 
@@ -54,3 +56,4 @@
   @include('settings.personalization.contact_field_types._modal_add_contact_field_type')
 
 </div>
+ --}}

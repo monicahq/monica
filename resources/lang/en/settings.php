@@ -161,5 +161,6 @@ return [
     'personalization_contact_field_type_modal_icon' => 'Icon (optional)',
     'personalization_contact_field_type_modal_icon_help' => 'You can associate an icon with this contact field type. You need to add a reference to a <a href="http://fontawesome.io/icons/" _target="blank">Font Awesome icon</a> here.',
     'personalization_contact_field_type_delete_confirmation' => 'Are you sure you want to delete this contact field type? If you delete it, we will also delete ALL the data about this type for all your contacts.',
+    'personalization_contact_field_type_delete_success' => 'The contact field type has been deleted with success.',
 
 ];

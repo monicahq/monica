@@ -20,6 +20,14 @@ class PersonalizationController extends Controller
     }
 
     /**
+     * Get all the contact field types
+     */
+    public function getContactFieldTypes()
+    {
+        return auth()->user()->account->contactFieldTypes;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param ContactFieldTypeRequest $request
@@ -44,19 +52,14 @@ class PersonalizationController extends Controller
 
     public function destroyContactFieldType(ContactFieldType $contactFieldType)
     {
-        dd(auth()->user()->account()->contactFields());
         // find all the contact fields that have this contact field types
         $contactFields = auth()->user()->account->contactFields
-                                ->where('contact_field_type_id', $contactFieldType->id)
-                                ->get();
+                                ->where('contact_field_type_id', $contactFieldType->id);
 
         foreach ($contactFields as $contactField) {
             $contactField->delete();
         }
 
         $contactFieldType->delete();
-
-        return redirect('/settings/personalization')
-            ->with('success', trans('people.activities_delete_success'));
     }
 }

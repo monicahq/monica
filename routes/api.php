@@ -68,4 +68,10 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+
+    // Settings
+    Route::resource('journal', 'Api\\Settings\\ApiContactFieldTypeController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
 });

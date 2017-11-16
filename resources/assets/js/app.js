@@ -31,6 +31,18 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+Vue.component(
+    'contact-field-types',
+    require('./components/settings/ContactFieldTypes.vue')
+);
+
+
+// This let us access the `trans` method for localization in Vue templates
+// ({{ trans('app.save') }})
+Vue.prototype.trans = (key) => {
+    return _.get(window.trans, key, key);
+};
+
 const app = new Vue({
     el: '#app',
 
