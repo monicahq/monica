@@ -24,6 +24,7 @@ class ContactFieldTypeRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'integer|nullable',
             'name' => 'required|string',
             'protocol' => 'string|nullable',
             'icon' => 'string|nullable',

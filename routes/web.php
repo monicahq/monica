@@ -137,8 +137,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
 
         Route::get('/settings/personalization', 'Settings\\PersonalizationController@index')->name('.personalization');
-        Route::get('/settings/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
-        Route::post('/settings/personalization/storeContactFieldType', 'Settings\\PersonalizationController@storeContactFieldType');
+        Route::get('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
+        Route::post('/settings/personalization/contactfieldtypes/store', 'Settings\\PersonalizationController@storeContactFieldType');
+        Route::post('/settings/personalization/contactfieldtypes/edit', 'Settings\\PersonalizationController@editContactFieldType');
         Route::delete('/settings/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');

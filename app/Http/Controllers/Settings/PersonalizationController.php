@@ -46,8 +46,42 @@ class PersonalizationController extends Controller
             ]
         );
 
-        return redirect('/settings/personalization')
-            ->with('success', trans('people.calls_add_success'));
+        return $contactFieldType;
+    }
+
+    /**
+     * Edit a newly created resource in storage.
+     *
+     * @param ContactFieldTypeRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    public function editContactFieldType(ContactFieldTypeRequest $request)
+    {
+        $contactFieldType = ContactFieldType::findOrFail($request->get('id'));
+
+        $request->user()->update(
+            $request->only([
+                'email',
+                'timezone',
+                'locale',
+                'currency_id',
+                'name_order',
+            ]) + [
+                'fluid_container' => $request->get('layout'),
+            ]
+        );
+
+        $contactFieldType->update(
+            $request->only([
+                'name',
+                'protocol',
+            ])
+            + [
+                'fontawesome_icon' => $request->get('icon'),
+            ]
+        );
+
+        return $contactFieldType;
     }
 
     public function destroyContactFieldType(ContactFieldType $contactFieldType)
