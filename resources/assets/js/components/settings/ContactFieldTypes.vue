@@ -5,9 +5,21 @@
   <div>
     <h3 class="with-actions">
       {{ trans('settings.personalization_contact_field_type_title') }}
-      <a class="btn fr nt2" @click="showCreateContactFieldTypeForm">{{ trans('settings.personalization_contact_field_type_add') }}</a>
+      <a class="btn fr nt2" @click="add">{{ trans('settings.personalization_contact_field_type_add') }}</a>
     </h3>
     <p>{{ trans('settings.personalization_contact_field_type_description') }}</p>
+
+    <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="submitted">
+      {{ trans('settings.personalization_contact_field_type_add_success') }}
+    </div>
+
+    <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="edited">
+      {{ trans('settings.personalization_contact_field_type_edit_success') }}
+    </div>
+
+    <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="deleted">
+      {{ trans('settings.personalization_contact_field_type_delete_success') }}
+    </div>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
 
@@ -44,8 +56,8 @@
         </div>
         <div class="dtc tr">
           <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="showEditContactFieldTypeForm(contactFieldType)"></i>
-            <i class="fa fa-trash-o pointer" @click="showDeleteContactFieldTypeForm(contactFieldType)"></i>
+            <i class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></i>
+            <i class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)"></i>
           </div>
         </div>
       </div>
@@ -65,7 +77,7 @@
           <div class="modal-body">
             <!-- Form Errors -->
             <div class="alert alert-danger" v-if="createForm.errors.length > 0">
-              <p><strong>Whoops!</strong> Something went wrong!</p>
+              <p>{{ trans('app.error_title') }}</p>
               <br>
               <ul>
                 <li v-for="error in createForm.errors">
@@ -78,18 +90,18 @@
               <div class="form-group">
                 <div class="form-group">
                   <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
-                  <input type="text" class="form-control" name="name" id="name" required v-model="createForm.name">
+                  <input type="text" class="form-control" name="name" id="name" required @keyup.enter="store" v-model="createForm.name">
                 </div>
 
                 <div class="form-group">
                   <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
-                  <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" v-model="createForm.protocol">
+                  <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" @keyup.enter="store" v-model="createForm.protocol">
                   <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
                 </div>
 
                 <div class="form-group">
                   <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
-                  <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" v-model="createForm.icon">
+                  <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" @keyup.enter="store" v-model="createForm.icon">
                   <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_icon_help') }}</small>
                 </div>
               </div>
@@ -97,7 +109,79 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-primary modal-cta" @click.prevent="store">{{ trans('app.save') }}</button>
+            <button type="button" class="btn btn-primary" @click.prevent="store">{{ trans('app.save') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Contact field type -->
+    <div class="modal" id="modal-edit-contact-field-type" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Form Errors -->
+            <div class="alert alert-danger" v-if="editForm.errors.length > 0">
+              <p>{{ trans('app.error_title') }}</p>
+              <br>
+              <ul>
+                <li v-for="error in editForm.errors">
+                  {{ error[1] }}
+                </li>
+              </ul>
+            </div>
+
+            <form class="form-horizontal" role="form" v-on:submit.prevent="update">
+              <div class="form-group">
+                <div class="form-group">
+                  <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
+                  <input type="text" class="form-control" name="name" id="name" required @keyup.enter="update" v-model="editForm.name">
+                </div>
+
+                <div class="form-group">
+                  <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
+                  <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" @keyup.enter="update" v-model="editForm.protocol">
+                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
+                  <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" @keyup.enter="update" v-model="editForm.icon">
+                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_icon_help') }}</small>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
+            <button type="button" class="btn btn-primary" @click.prevent="update">{{ trans('app.edit') }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Contact field type -->
+    <div class="modal" id="modal-delete-contact-field-type" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{ trans('settings.personalization_contact_field_type_modal_delete_description') }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
+            <button type="button" class="btn btn-danger" @click.prevent="trash">{{ trans('app.delete') }}</button>
           </div>
         </div>
       </div>
@@ -114,6 +198,10 @@
         data() {
             return {
                 contactFieldTypes: [],
+
+                submitted: false,
+                edited: false,
+                deleted: false,
 
                 createForm: {
                     name: '',
@@ -154,7 +242,11 @@
                 this.getContactFieldTypes();
 
                 $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
-                    $('#create-client-name').focus();
+                    $('#name').focus();
+                });
+
+                $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
+                    $('#name').focus();
                 });
             },
 
@@ -171,31 +263,8 @@
             /**
              * Show the form for creating new clients.
              */
-            showCreateContactFieldTypeForm() {
+            add() {
                 $('#modal-create-contact-field-type').modal('show');
-            },
-
-            persistClient(method, uri, form, modal) {
-                form.errors = [];
-
-                axios[method](uri, form)
-                    .then(response => {
-                        this.getContactFieldTypes();
-
-                        form.name = '';
-                        form.protocol = '';
-                        form.icon = '';
-                        form.errors = [];
-
-                        $(modal).modal('hide');
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = ['Something went wrong. Please try again.'];
-                        }
-                    });
             },
 
             /**
@@ -204,8 +273,69 @@
             store() {
                 this.persistClient(
                     'post', '/settings/personalization/contactfieldtypes',
-                    this.createForm, '#modal-create-contact-field-type'
+                    this.createForm, '#modal-create-contact-field-type', this.submitted
                 );
+            },
+
+            /**
+             * Get all of the OAuth clients for the user.
+             */
+            edit(contactFieldType) {
+                this.editForm.id = contactFieldType.id;
+                this.editForm.name = contactFieldType.name;
+                this.editForm.protocol = contactFieldType.protocol;
+                this.editForm.icon = contactFieldType.fontawesome_icon;
+
+                $('#modal-edit-contact-field-type').modal('show');
+            },
+
+            update() {
+                this.persistClient(
+                    'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+                    this.editForm, '#modal-edit-contact-field-type', this.edited
+                );
+            },
+
+            /*
+             * Show the Delete Contact field type modal
+             */
+            showDelete(contactFieldType) {
+                this.editForm.id = contactFieldType.id
+
+                $('#modal-delete-contact-field-type').modal('show');
+            },
+
+            trash() {
+                this.persistClient(
+                    'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+                    this.editForm, '#modal-delete-contact-field-type', this.deleted
+                );
+            },
+
+            persistClient(method, uri, form, modal, success) {
+                form.errors = {};
+
+                axios[method](uri, form)
+                    .then(response => {
+                        this.getContactFieldTypes();
+
+                        form.id = '';
+                        form.name = '';
+                        form.protocol = '';
+                        form.icon = '';
+                        form.errors = [];
+
+                        $(modal).modal('hide');
+
+                        success = true;
+                    })
+                    .catch(error => {
+                        if (typeof error.response.data === 'object') {
+                            form.errors = _.flatten(_.toArray(error.response.data));
+                        } else {
+                            form.errors = ['Something went wrong. Please try again.'];
+                        }
+                    });
             },
         }
     }

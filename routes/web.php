@@ -140,7 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
         Route::post('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@storeContactFieldType');
         Route::put('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@editContactFieldType');
-        Route::delete('/settings/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@destroyContactFieldType');
+        Route::delete('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');

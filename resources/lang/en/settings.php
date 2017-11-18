@@ -150,7 +150,7 @@ return [
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for "power users" who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
     'personalization_contact_field_type_add' => 'Add new field type',
-    'personalization_contact_field_type_description' => 'Here you can configure all the different types of contact field that you can associate to all your contacts. If in the future, a new social network appears, you will be able to add this new type of ways of contacting your contacts right here.',
+    'personalization_contact_field_type_description' => 'Here you can configure all the different types of contact fields that you can associate to all your contacts. If in the future, a new social network appears, you will be able to add this new type of ways of contacting your contacts right here.',
     'personalization_contact_field_type_table_name' => 'Name',
     'personalization_contact_field_type_table_protocol' => 'Protocol',
     'personalization_contact_field_type_table_actions' => 'Actions',
@@ -164,5 +164,7 @@ return [
     'personalization_contact_field_type_modal_icon' => 'Icon (optional)',
     'personalization_contact_field_type_modal_icon_help' => 'You can associate an icon with this contact field type. You need to add a reference to a Font Awesome icon.',
     'personalization_contact_field_type_delete_success' => 'The contact field type has been deleted with success.',
+    'personalization_contact_field_type_add_success' => 'The contact field type has been successfully added.',
+    'personalization_contact_field_type_edit_success' => 'The contact field type has been successfully updated.',
 
 ];

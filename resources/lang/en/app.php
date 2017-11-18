@@ -60,4 +60,7 @@ return [
     'gender_male' => 'Man',
     'gender_female' => 'Woman',
     'gender_none' => 'Rather not say',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];
