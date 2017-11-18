@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Settings;
 
+use Validator;
 use App\ContactField;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\ContactFieldTypeRequest;
 
 class PersonalizationController extends Controller
 {
@@ -30,11 +30,22 @@ class PersonalizationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ContactFieldTypeRequest $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return string
      */
-    public function storeContactFieldType(ContactFieldTypeRequest $request)
+    public function storeContactFieldType(Request $request)
     {
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'icon' => 'max:255|nullable',
+            'protocol' => 'max:255|nullable',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+
         $contactFieldType = auth()->user()->account->contactFieldTypes()->create(
             $request->only([
                 'name',
