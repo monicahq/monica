@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/contact', 'PeopleController@getContactInformation')->name('.contactinformation');
         Route::post('/people/{contact}/contact', 'PeopleController@storeContactInformation')->name('.contactinformation');
         Route::get('/people/{contact}/contactfieldtypes', 'PeopleController@getContactFieldTypes')->name('.contactfieldtypes');
-        Route::delete('/people/{contact}/contact', 'PeopleController@destroyContactInformation');
+        Route::delete('/contact/{contactfield}', 'PeopleController@destroyContactInformation');
 
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');

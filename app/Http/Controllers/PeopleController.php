@@ -499,12 +499,11 @@ class PeopleController extends Controller
         return $contactField;
     }
 
-    public function destroyContactInformation(Request $request, Contact $contact)
+    public function destroyContactInformation(Request $request, $contactFieldId)
     {
-        dd($request->all());
         try {
             $contactField = ContactField::where('account_id', auth()->user()->account->id)
-                ->where('id', $request->get('id'))
+                ->where('id', $contactFieldId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respond([

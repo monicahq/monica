@@ -167,7 +167,7 @@
                 this.updateForm.id = contactField.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/contact',
+                    'delete', '/contact/' + contactField.id,
                     this.updateForm
                 );
             },
