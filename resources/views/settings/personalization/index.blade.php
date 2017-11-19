@@ -34,7 +34,7 @@
 
         <p>{{ trans('settings.personalization_title') }}</p>
 
-        @include('settings.personalization.contact_field_types._index')
+        <contact-field-types></contact-field-types>
 
       </div>
     </div>

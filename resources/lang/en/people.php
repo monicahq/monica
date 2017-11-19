@@ -351,5 +351,6 @@ return [
     'deceased_label_with_date' => 'Deceased on :date',
 
     // Contact information
+    'contact_info_title' => 'Contact information',
     'contact_info_address' => 'Lives in',
 ];

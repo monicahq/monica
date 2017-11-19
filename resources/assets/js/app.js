@@ -31,6 +31,13 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+// Contacts
+Vue.component(
+    'contact-information',
+    require('./components/people/ContactInformation.vue')
+);
+
+// Settings
 Vue.component(
     'contact-field-types',
     require('./components/settings/ContactFieldTypes.vue')

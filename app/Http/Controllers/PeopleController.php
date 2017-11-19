@@ -450,4 +450,24 @@ class PeopleController extends Controller
             return ['noResults' => trans('people.people_search_no_results')];
         }
     }
+
+    /**
+     * Get all the contact information for this contact
+     */
+    public function getContactInformation(Contact $contact)
+    {
+        $contactInformationData = collect([]);
+
+        foreach ($contact->contactFields as $contactField) {
+            $data = [
+                'data' => $contactField->data,
+                'name' => $contactField->contactFieldType->name,
+                'fontawesome_icon' => (is_null($contactField->contactFieldType->fontawesome_icon) ? null : $contactField->contactFieldType->fontawesome_icon),
+                'protocol' =>  (is_null($contactField->contactFieldType->protocol) ? null : $contactField->contactFieldType->protocol),
+            ];
+            $contactInformationData->push($data);
+        }
+
+        return $contactInformationData;
+    }
 }

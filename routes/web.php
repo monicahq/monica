@@ -39,6 +39,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/update', 'PeopleController@update')->name('.update');
         Route::delete('/people/{contact}', 'PeopleController@delete')->name('.delete');
 
+        // Contact information
+        Route::get('/people/{contact}/contact', 'PeopleController@getContactInformation')->name('.contactinformation');
+
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
         Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');

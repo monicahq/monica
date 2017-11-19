@@ -39,7 +39,7 @@ class ContactField extends Model
      *
      * @return BelongsTo
      */
-    public function contactFieldTypes()
+    public function contactFieldType()
     {
         return $this->belongsTo(ContactFieldType::class);
     }

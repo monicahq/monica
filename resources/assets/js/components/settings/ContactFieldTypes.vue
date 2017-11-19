@@ -250,9 +250,6 @@
                 });
             },
 
-            /**
-             * Get all of the OAuth clients for the user.
-             */
             getContactFieldTypes() {
                 axios.get('/settings/personalization/contactfieldtypes/')
                         .then(response => {
@@ -260,16 +257,10 @@
                         });
             },
 
-            /**
-             * Show the form for creating new clients.
-             */
             add() {
                 $('#modal-create-contact-field-type').modal('show');
             },
 
-            /**
-             * Create a a new contact field type.
-             */
             store() {
                 this.persistClient(
                     'post', '/settings/personalization/contactfieldtypes',
@@ -277,9 +268,6 @@
                 );
             },
 
-            /**
-             * Get all of the OAuth clients for the user.
-             */
             edit(contactFieldType) {
                 this.editForm.id = contactFieldType.id;
                 this.editForm.name = contactFieldType.name;
@@ -296,9 +284,6 @@
                 );
             },
 
-            /*
-             * Show the Delete Contact field type modal
-             */
             showDelete(contactFieldType) {
                 this.editForm.id = contactFieldType.id
 
