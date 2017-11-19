@@ -37,7 +37,7 @@ class PersonalizationController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'icon' => 'max:255|required',
+            'icon' => 'max:255|nullable',
             'protocol' => 'max:255|nullable',
         ])->validate();
 

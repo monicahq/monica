@@ -8,6 +8,7 @@ use Validator;
 use App\Contact;
 use App\Offspring;
 use App\Progenitor;
+use App\ContactField;
 use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
@@ -460,14 +461,59 @@ class PeopleController extends Controller
 
         foreach ($contact->contactFields as $contactField) {
             $data = [
+                'id' => $contactField->id,
                 'data' => $contactField->data,
                 'name' => $contactField->contactFieldType->name,
                 'fontawesome_icon' => (is_null($contactField->contactFieldType->fontawesome_icon) ? null : $contactField->contactFieldType->fontawesome_icon),
                 'protocol' =>  (is_null($contactField->contactFieldType->protocol) ? null : $contactField->contactFieldType->protocol),
+                'edit' => false,
             ];
             $contactInformationData->push($data);
         }
 
         return $contactInformationData;
+    }
+
+    public function getContactFieldTypes(Contact $contact)
+    {
+        return auth()->user()->account->contactFieldTypes;
+    }
+
+    public function storeContactInformation(Request $request, Contact $contact)
+    {
+        Validator::make($request->all(), [
+            'contact_field_type_id' => 'required',
+            'data' => 'max:255|required',
+        ])->validate();
+
+        $contactField = $contact->contactFields()->create(
+            $request->only([
+                'contact_field_type_id',
+                'data',
+            ])
+            + [
+                'account_id' => auth()->user()->account->id,
+            ]
+        );
+
+        return $contactField;
+    }
+
+    public function destroyContactInformation(Request $request, Contact $contact)
+    {
+        dd($request->all());
+        try {
+            $contactField = ContactField::where('account_id', auth()->user()->account->id)
+                ->where('id', $request->get('id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respond([
+                'errors' => [
+                    'message' => trans('app.error_unauthorized'),
+                ],
+            ]);;
+        }
+
+        $contactField->delete();
     }
 }
