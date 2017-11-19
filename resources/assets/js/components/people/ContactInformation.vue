@@ -137,7 +137,7 @@
             },
 
             getContactInformationData() {
-                axios.get('/people/' + this.contactId + '/contact')
+                axios.get('/people/' + this.contactId + '/contactfield')
                         .then(response => {
                             this.contactInformationData = response.data;
                         });
@@ -163,11 +163,20 @@
               this.updateForm.data = contactField.data;
             },
 
+            update(contactField) {
+                this.updateForm.id = contactField.id;
+
+                this.persistClient(
+                    'put', '/people/' + this.contactId + '/contactfield/' + contactField.id,
+                    this.updateForm
+                );
+            },
+
             trash(contactField) {
                 this.updateForm.id = contactField.id;
 
                 this.persistClient(
-                    'delete', '/contact/' + contactField.id,
+                    'delete', '/people/' + this.contactId + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
             },

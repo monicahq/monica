@@ -499,6 +499,38 @@ class PeopleController extends Controller
         return $contactField;
     }
 
+    public function editContactInformation(Request $request, Contact $contact)
+    {
+        Validator::make($request->all(), [
+            'contact_field_type_id' => 'required',
+            'data' => 'max:255|required',
+        ])->validate();
+
+        try {
+            $contactField = ContactField::where('account_id', auth()->user()->account->id)
+                ->where('id', $contactFieldId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respond([
+                'errors' => [
+                    'message' => trans('app.error_unauthorized'),
+                ],
+            ]);;
+        }
+
+        $contactField = $contact->contactFields()->create(
+            $request->only([
+                'contact_field_type_id',
+                'data',
+            ])
+            + [
+                'account_id' => auth()->user()->account->id,
+            ]
+        );
+
+        return $contactField;
+    }
+
     public function destroyContactInformation(Request $request, $contactFieldId)
     {
         try {
