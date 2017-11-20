@@ -130,30 +130,6 @@
 
               </div>
 
-              {{-- Email address --}}
-              <div class="form-group">
-                <label for="email">{{ trans('people.information_edit_email') }}</label>
-                <input type="email" class="form-control" name="email" id="email" value="{{ $contact->email }}">
-              </div>
-
-              {{-- Phone --}}
-              <div class="form-group">
-                <label for="phone">{{ trans('people.information_edit_phone') }}</label>
-                <input class="form-control" name="phone" id="phone" value="{{ $contact->phone_number }}">
-              </div>
-
-              {{-- Facebook --}}
-              <div class="form-group">
-                <label for="facebook">{{ trans('people.information_edit_facebook') }}</label>
-                <input class="form-control" name="facebook" id="facebook" value="{{ $contact->facebook_profile_url }}" placeholder="https://facebook.com/john.doe">
-              </div>
-
-              {{-- Twitter --}}
-              <div class="form-group">
-                <label for="twitter">{{ trans('people.information_edit_twitter') }}</label>
-                <input class="form-control" name="twitter" id="twitter" value="{{ $contact->twitter_profile_url }}" placeholder="https://twitter.com/john.doe">
-              </div>
-
               {{-- Birthdate --}}
               <fieldset class="form-group dates">
 

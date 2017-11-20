@@ -14,7 +14,7 @@
     </div>
 
     <p class="mb0" v-if="contactInformationData.length == 0 && !addMode">
-      <a class="pointer" @click="addMode = true">{{ trans('app.add') }}</a>
+      <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
     </p>
 
     <ul v-if="contactInformationData.length > 0">
@@ -38,12 +38,12 @@
           <form class="measure center">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                Content
+                {{ trans('people.contact_info_form_content') }}
               </label>
               <input class="pa2 db w-100" type="text" v-model="updateForm.data">
             </div>
             <div class="lh-copy mt3">
-              <a @click.prevent="store" class="btn btn-primary">{{ trans('app.save') }}</a>
+              <a @click.prevent="update(contactInformation)" class="btn btn-primary">{{ trans('app.save') }}</a>
               <a class="btn" @click="toggleEdit(contactInformation)">{{ trans('app.cancel') }}</a>
             </div>
           </form>
@@ -51,7 +51,7 @@
 
       </li>
       <li v-if="editMode && !addMode">
-        <a class="pointer" @click="addMode = true">{{ trans('app.add') }}</a>
+        <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
       </li>
     </ul>
 
@@ -59,7 +59,7 @@
       <form class="measure center">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            Contact type
+            {{ trans('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ trans('people.contact_info_form_personalize') }}</a>
           </label>
           <select class="db w-100 h2" v-model="createForm.contact_field_type_id">
             <option v-for="contactFieldType in contactFieldTypes" v-bind:value="contactFieldType.id">
@@ -69,7 +69,7 @@
         </div>
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            Content
+            {{ trans('people.contact_info_form_content') }}
           </label>
           <input class="pa2 db w-100" type="text" v-model="createForm.data">
         </div>
@@ -104,6 +104,7 @@
 
                 updateForm: {
                     id: '',
+                    contact_field_type_id: '',
                     data: '',
                     edit: false,
                     errors: []
@@ -152,20 +153,27 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/contact',
+                    'post', '/people/' + this.contactId + '/contactfield',
                     this.createForm
                 );
+
+                this.addMode = false;
             },
 
-            toggleEdit(contactField){
+            toggleAdd() {
+              this.addMode = true;
+              this.createForm.data = '';
+              this.createForm.contact_field_type_id = '';
+            },
+
+            toggleEdit(contactField) {
               Vue.set(contactField, 'edit', !contactField.edit);
               this.updateForm.id = contactField.id;
               this.updateForm.data = contactField.data;
+              this.updateForm.contact_field_type_id = contactField.contact_field_type_id;
             },
 
             update(contactField) {
-                this.updateForm.id = contactField.id;
-
                 this.persistClient(
                     'put', '/people/' + this.contactId + '/contactfield/' + contactField.id,
                     this.updateForm

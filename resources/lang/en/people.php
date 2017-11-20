@@ -352,5 +352,8 @@ return [
 
     // Contact information
     'contact_info_title' => 'Contact information',
+    'contact_info_form_content' => 'Content',
+    'contact_info_form_contact_type' => 'Contact type',
+    'contact_info_form_personalize' => 'Personalize',
     'contact_info_address' => 'Lives in',
 ];

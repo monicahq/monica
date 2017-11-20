@@ -187,60 +187,6 @@ class PeopleController extends Controller
             $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
         }
 
-        if ($request->input('email') != '') {
-            $contact->email = $request->input('email');
-        } else {
-            $contact->email = null;
-        }
-
-        if ($request->input('phone') != '') {
-            $contact->phone_number = $request->input('phone');
-        } else {
-            $contact->phone_number = null;
-        }
-
-        if ($request->input('facebook') != '') {
-            $contact->facebook_profile_url = $request->input('facebook');
-        } else {
-            $contact->facebook_profile_url = null;
-        }
-
-        if ($request->input('twitter') != '') {
-            $contact->twitter_profile_url = $request->input('twitter');
-        } else {
-            $contact->twitter_profile_url = null;
-        }
-
-        if ($request->input('street') != '') {
-            $contact->street = $request->input('street');
-        } else {
-            $contact->street = null;
-        }
-
-        if ($request->input('postalcode') != '') {
-            $contact->postal_code = $request->input('postalcode');
-        } else {
-            $contact->postal_code = null;
-        }
-
-        if ($request->input('province') != '') {
-            $contact->province = $request->input('province');
-        } else {
-            $contact->province = null;
-        }
-
-        if ($request->input('city') != '') {
-            $contact->city = $request->input('city');
-        } else {
-            $contact->city = null;
-        }
-
-        if ($request->input('country') != '---') {
-            $contact->country_id = $request->input('country');
-        } else {
-            $contact->country_id = null;
-        }
-
         // Is the person deceased?
         if ($request->input('markPersonDeceased') != '') {
             $contact->is_dead = true;
@@ -323,6 +269,8 @@ class PeopleController extends Controller
         $contact->reminders->each->delete();
         $contact->tags->each->delete();
         $contact->tasks->each->delete();
+        $contact->contactFields->each->delete();
+        $contact->addresses->each->delete();
 
         // delete all relationships
         $relationships = Relationship::where('contact_id', $contact->id)
@@ -450,101 +398,5 @@ class PeopleController extends Controller
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
-    }
-
-    /**
-     * Get all the contact information for this contact
-     */
-    public function getContactInformation(Contact $contact)
-    {
-        $contactInformationData = collect([]);
-
-        foreach ($contact->contactFields as $contactField) {
-            $data = [
-                'id' => $contactField->id,
-                'data' => $contactField->data,
-                'name' => $contactField->contactFieldType->name,
-                'fontawesome_icon' => (is_null($contactField->contactFieldType->fontawesome_icon) ? null : $contactField->contactFieldType->fontawesome_icon),
-                'protocol' =>  (is_null($contactField->contactFieldType->protocol) ? null : $contactField->contactFieldType->protocol),
-                'edit' => false,
-            ];
-            $contactInformationData->push($data);
-        }
-
-        return $contactInformationData;
-    }
-
-    public function getContactFieldTypes(Contact $contact)
-    {
-        return auth()->user()->account->contactFieldTypes;
-    }
-
-    public function storeContactInformation(Request $request, Contact $contact)
-    {
-        Validator::make($request->all(), [
-            'contact_field_type_id' => 'required',
-            'data' => 'max:255|required',
-        ])->validate();
-
-        $contactField = $contact->contactFields()->create(
-            $request->only([
-                'contact_field_type_id',
-                'data',
-            ])
-            + [
-                'account_id' => auth()->user()->account->id,
-            ]
-        );
-
-        return $contactField;
-    }
-
-    public function editContactInformation(Request $request, Contact $contact)
-    {
-        Validator::make($request->all(), [
-            'contact_field_type_id' => 'required',
-            'data' => 'max:255|required',
-        ])->validate();
-
-        try {
-            $contactField = ContactField::where('account_id', auth()->user()->account->id)
-                ->where('id', $contactFieldId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respond([
-                'errors' => [
-                    'message' => trans('app.error_unauthorized'),
-                ],
-            ]);;
-        }
-
-        $contactField = $contact->contactFields()->create(
-            $request->only([
-                'contact_field_type_id',
-                'data',
-            ])
-            + [
-                'account_id' => auth()->user()->account->id,
-            ]
-        );
-
-        return $contactField;
-    }
-
-    public function destroyContactInformation(Request $request, $contactFieldId)
-    {
-        try {
-            $contactField = ContactField::where('account_id', auth()->user()->account->id)
-                ->where('id', $contactFieldId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respond([
-                'errors' => [
-                    'message' => trans('app.error_unauthorized'),
-                ],
-            ]);;
-        }
-
-        $contactField->delete();
     }
 }
