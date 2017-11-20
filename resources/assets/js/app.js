@@ -33,6 +33,11 @@ Vue.component(
 
 // Contacts
 Vue.component(
+    'contact-address',
+    require('./components/people/Addresses.vue')
+);
+
+Vue.component(
     'contact-information',
     require('./components/people/ContactInformation.vue')
 );

@@ -161,16 +161,16 @@
             },
 
             toggleAdd() {
-              this.addMode = true;
-              this.createForm.data = '';
-              this.createForm.contact_field_type_id = '';
+                this.addMode = true;
+                this.createForm.data = '';
+                this.createForm.contact_field_type_id = '';
             },
 
             toggleEdit(contactField) {
-              Vue.set(contactField, 'edit', !contactField.edit);
-              this.updateForm.id = contactField.id;
-              this.updateForm.data = contactField.data;
-              this.updateForm.contact_field_type_id = contactField.contact_field_type_id;
+                Vue.set(contactField, 'edit', !contactField.edit);
+                this.updateForm.id = contactField.id;
+                this.updateForm.data = contactField.data;
+                this.updateForm.contact_field_type_id = contactField.contact_field_type_id;
             },
 
             update(contactField) {

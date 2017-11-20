@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_number_kids' => '{0} 0 kid|{1,1} 1 kid|{2,*} :count kids',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
@@ -356,4 +356,7 @@ return [
     'contact_info_form_contact_type' => 'Contact type',
     'contact_info_form_personalize' => 'Personalize',
     'contact_info_address' => 'Lives in',
+
+    // Addresses
+    'contact_address_title' => 'Addresses',
 ];

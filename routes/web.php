@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/people/{contact}/contactfield/{contact_field}', 'People\\ContactFieldsController@destroyContactField');
         Route::get('/people/{contact}/contactfieldtypes', 'People\\ContactFieldsController@getContactFieldTypes');
 
+        // Addresses
+        Route::get('/people/{contact}/addresses', 'People\\AddressesController@get');
+
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
         Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');

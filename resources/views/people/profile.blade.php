@@ -40,6 +40,9 @@
             {{-- Contact information --}}
             <contact-information v-bind:contact-id="{!! $contact->id !!}"></contact-information>
 
+            {{-- Address --}}
+            <contact-address v-bind:contact-id="{!! $contact->id !!}"></contact-address>
+
             @include('people.dashboard.index')
           </div>
 
