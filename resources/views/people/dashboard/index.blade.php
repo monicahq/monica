@@ -1,6 +1,3 @@
-{{-- Section address, email, phone, contact --}}
-@include('people.dashboard.people-information.index')
-
 {{-- Introductions --}}
 @include('people.dashboard.introductions.index')
 
