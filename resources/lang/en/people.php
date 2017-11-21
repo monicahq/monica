@@ -359,4 +359,15 @@ return [
 
     // Addresses
     'contact_address_title' => 'Addresses',
+    'contact_address_form_name' => 'Label (optional)',
+    'contact_address_form_street' => 'Street (optional)',
+    'contact_address_form_city' => 'City (optional)',
+    'contact_address_form_province' => 'Province (optional)',
+    'contact_address_form_postal_code' => 'Postal code (optional)',
+    'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
 ];

@@ -5,9 +5,10 @@ namespace App\Http\Controllers\People;
 use Auth;
 use App\Address;
 use App\Contact;
+use App\Country;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\ContactFieldsRequest;
+use App\Http\Requests\People\AddressesRequest;
 
 class AddressesController extends Controller
 {
@@ -24,6 +25,12 @@ class AddressesController extends Controller
                 'name' => $address->name,
                 'googleMapAddress' => $address->getGoogleMapAddress(),
                 'address' => $address->getFullAddress(),
+                'country_id' => $address->country_id,
+                'name' => $address->name,
+                'street' => $address->street,
+                'city' => $address->city,
+                'province' => $address->province,
+                'postal_code' => $address->postal_code,
                 'edit' => false,
             ];
             $contactAddresses->push($data);
@@ -33,51 +40,50 @@ class AddressesController extends Controller
     }
 
     /**
-     * Get all the contact field types
-     * @param  Contact $contact
+     * Get all the countries
      */
-    public function getContactFieldTypes(Contact $contact)
+    public function getCountries()
     {
-        return auth()->user()->account->contactFieldTypes;
+        return Country::all();
     }
 
     /**
-     * Store the contact field
+     * Store the address
      */
-    public function storeContactField(ContactFieldsRequest $request, Contact $contact)
+    public function store(AddressesRequest $request, Contact $contact)
     {
-        $contactField = $contact->contactFields()->create(
-            $request->only([
-                'contact_field_type_id',
-                'data',
-            ])
-            + [
-                'account_id' => auth()->user()->account->id,
-            ]
-        );
+        $address = $contact->addresses()->create([
+            'account_id' => auth()->user()->account->id,
+            'country_id' => ($request->get('country_id') == 0 ? null : $request->get('country_id')),
+            'name' => ($request->get('name') == '' ? null : $request->get('name')),
+            'street' => ($request->get('street') == '' ? null : $request->get('street')),
+            'city' => ($request->get('city') == '' ? null : $request->get('city')),
+            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+        ]);
 
-        return $contactField;
+        return $address;
     }
+
     /**
      * Edit the contact field
      */
-    public function editContactField(ContactFieldsRequest $request, Contact $contact, ContactField $contactField)
+    public function edit(AddressesRequest $request, Contact $contact, Address $address)
     {
-        $contactField->update(
-            $request->only([
-                'contact_field_type_id',
-                'data',
-            ])
-            + [
-                'account_id' => auth()->user()->account->id,
-            ]
-        );
+        $address->update([
+            'country_id' => ($request->get('country_id') == 0 ? null : $request->get('country_id')),
+            'name' => ($request->get('name') == '' ? null : $request->get('name')),
+            'street' => ($request->get('street') == '' ? null : $request->get('street')),
+            'city' => ($request->get('city') == '' ? null : $request->get('city')),
+            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+        ]);
 
-        return $contactField;
+        return $address;
     }
 
-    public function destroyContactField(Contact $contact, ContactField $contactField)
+    public function destroy(Contact $contact, Address $address)
     {
-        $contactField->delete();
+        $address->delete();
     }
 }

@@ -47,7 +47,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/contactfieldtypes', 'People\\ContactFieldsController@getContactFieldTypes');
 
         // Addresses
+        Route::get('/people/{contact}/countries', 'People\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'People\\AddressesController@get');
+        Route::post('/people/{contact}/addresses', 'People\\AddressesController@store');
+        Route::put('/people/{contact}/addresses/{address}', 'People\\AddressesController@edit');
+        Route::delete('/people/{contact}/addresses/{address}', 'People\\AddressesController@destroy');
 
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');

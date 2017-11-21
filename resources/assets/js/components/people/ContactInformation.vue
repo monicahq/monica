@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <div class="br2 pa3 mb3" v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
+  <div class="br2 pa3 mb3 f6" v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
     <div class="w-100 dt">
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ trans('people.contact_info_title') }}</h3>
