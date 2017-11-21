@@ -71,6 +71,9 @@ class ImportVCardsTest extends TestCase
         // Allows checking nickname fallback
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Johnny',
+        ]);
+
+        $this->assertDatabaseHas('addresses', [
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',

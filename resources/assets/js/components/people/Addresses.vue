@@ -281,6 +281,10 @@
                     'delete', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
+
+                if (this.contactAddresses.length <= 1) {
+                    this.editMode = false;
+                }
             },
 
             persistClient(method, uri, form) {

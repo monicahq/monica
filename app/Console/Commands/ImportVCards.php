@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\User;
+use App\Address;
 use App\Contact;
 use App\Country;
+use App\ContactField;
 use Sabre\VObject\Reader;
 use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;
@@ -110,26 +112,32 @@ class ImportVCards extends Command
                 $contact->email = $this->formatValue($vcard->EMAIL);
                 $contact->phone_number = $this->formatValue($vcard->TEL);
 
+                $contact->job = $this->formatValue($vcard->ORG);
+
+                $contact->setAvatarColor();
+
+                $contact->save();
+
+                $address = new Address();
+
                 if ($vcard->ADR) {
-                    $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
-                    $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
-                    $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
-                    $contact->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
+                    $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
+                    $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
+                    $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
+                    $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
 
                     $country = Country::where('country', $vcard->ADR->getParts()[6])
                         ->orWhere('iso', strtolower($vcard->ADR->getParts()[6]))
                         ->first();
 
                     if ($country) {
-                        $contact->country_id = $country->id;
+                        $address->country_id = $country->id;
                     }
+
+                    $address->contact_id = $contact->id;
+                    $address->account_id = $contact->account_id;
+                    $address->save();
                 }
-
-                $contact->job = $this->formatValue($vcard->ORG);
-
-                $contact->setAvatarColor();
-
-                $contact->save();
 
                 $contact->logEvent('contact', $contact->id, 'create');
 

@@ -187,6 +187,10 @@
                     'delete', '/people/' + this.contactId + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
+
+                if (this.contactInformationData.length <= 1) {
+                    this.editMode = false;
+                }
             },
 
             persistClient(method, uri, form) {

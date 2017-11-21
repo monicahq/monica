@@ -34,6 +34,8 @@ class ExportAccountAsSQL
         'oauth_clients',
         'oauth_personal_access_clients',
         'oauth_refresh_tokens',
+        'api_usage',
+        'default_contact_field_types',
     ];
 
     protected $ignoredColumns = [
