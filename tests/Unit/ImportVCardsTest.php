@@ -111,6 +111,8 @@ class ImportVCardsTest extends TestCase
         $account->api_key = str_random(30);
         $account->save();
 
+        $account->populateContactFieldTypeTable();
+
         $user->account_id = $account->id;
         $user->save();
 

@@ -136,23 +136,27 @@ class ImportVCards extends Command
                     $address->save();
                 }
 
-                // Saves the email
-                $contactFieldType = ContactFieldType::where('type', 'email')->first();
-                $contactField = new ContactField;
-                $contactField->account_id = $contact->account_id;
-                $contactField->contact_id = $contact->id;
-                $contactField->data = $this->formatValue($vcard->EMAIL);
-                $contactField->contact_field_type_id = $contactFieldType->id;
-                $contactField->save();
+                if (! is_null($this->formatValue($vcard->EMAIL))) {
+                    // Saves the email
+                    $contactFieldType = ContactFieldType::where('type', 'email')->first();
+                    $contactField = new ContactField;
+                    $contactField->account_id = $contact->account_id;
+                    $contactField->contact_id = $contact->id;
+                    $contactField->data = $this->formatValue($vcard->EMAIL);
+                    $contactField->contact_field_type_id = $contactFieldType->id;
+                    $contactField->save();
+                }
 
-                // Saves the phone number
-                $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-                $contactField = new ContactField;
-                $contactField->account_id = $contact->account_id;
-                $contactField->contact_id = $contact->id;
-                $contactField->data = $this->formatValue($vcard->TEL);
-                $contactField->contact_field_type_id = $contactFieldType->id;
-                $contactField->save();
+                if (! is_null($this->formatValue($vcard->TEL))) {
+                    // Saves the phone number
+                    $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+                    $contactField = new ContactField;
+                    $contactField->account_id = $contact->account_id;
+                    $contactField->contact_id = $contact->id;
+                    $contactField->data = $this->formatValue($vcard->TEL);
+                    $contactField->contact_field_type_id = $contactFieldType->id;
+                    $contactField->save();
+                }
 
                 $contact->logEvent('contact', $contact->id, 'create');
 
@@ -187,10 +191,27 @@ class ImportVCards extends Command
     {
         $email = (string) $vcard->EMAIL;
 
-        $contact = Contact::where([
+        $contactFieldType = ContactFieldType::where([
             ['account_id', $user->account_id],
-            ['email', $email],
+            ['type', 'email']
         ])->first();
+
+        $contactField = null;
+
+        if ($contactFieldType) {
+            $contactField = ContactField::where([
+                ['account_id', $user->account_id],
+                ['contact_field_type_id', $contactFieldType->id]
+            ])->first();
+        }
+
+        $contact = null;
+
+        if ($contactField) {
+            $contact = Contact::where([
+                ['id', $contactField->contact_id],
+            ])->first();
+        }
 
         return $email && $contact;
     }
