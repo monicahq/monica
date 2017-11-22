@@ -1,6 +1,8 @@
 <?php
 
+use App\Account;
 use App\Contact;
+use App\Address;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -26,6 +28,9 @@ class FakeContentTableSeeder extends Seeder
         $accountID = DB::table('accounts')->insertGetId([
             'api_key' => str_random(30),
         ]);
+
+        $account = Account::find($accountID);
+        $account->populateContactFieldTypeTable();
 
         // populate user table
         $userId = DB::table('users')->insertGetId([
@@ -58,25 +63,6 @@ class FakeContentTableSeeder extends Seeder
 
             $contact = Contact::find($contactID);
             $contact->setAvatarColor();
-
-            // add email
-            if (rand(1, 2) == 1) {
-                $contact->email = $faker->email;
-            }
-
-            // add phonenumber
-            if (rand(1, 2) == 1) {
-                $contact->phone_number = $faker->phoneNumber;
-            }
-
-            // add address
-            if (rand(1, 2) == 1) {
-                $contact->street = $faker->streetAddress;
-                $contact->postal_code = $faker->postcode;
-                $contact->province = $faker->state;
-                $contact->city = $faker->city;
-                $countryID = '1';
-            }
 
             // add food preferencies
             if (rand(1, 2) == 1) {

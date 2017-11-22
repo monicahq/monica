@@ -7,6 +7,7 @@ use App\Address;
 use App\Contact;
 use App\Country;
 use App\ContactField;
+use App\ContactFieldType;
 use Sabre\VObject\Reader;
 use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;
@@ -109,18 +110,14 @@ class ImportVCards extends Command
                     $contact->birthdate = new \DateTime((string) $vcard->BDAY);
                 }
 
-                $contact->email = $this->formatValue($vcard->EMAIL);
-                $contact->phone_number = $this->formatValue($vcard->TEL);
-
                 $contact->job = $this->formatValue($vcard->ORG);
 
                 $contact->setAvatarColor();
 
                 $contact->save();
 
-                $address = new Address();
-
                 if ($vcard->ADR) {
+                    $address = new Address();
                     $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
                     $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
                     $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
@@ -138,6 +135,24 @@ class ImportVCards extends Command
                     $address->account_id = $contact->account_id;
                     $address->save();
                 }
+
+                // Saves the email
+                $contactFieldType = ContactFieldType::where('type', 'email')->first();
+                $contactField = new ContactField;
+                $contactField->account_id = $contact->account_id;
+                $contactField->contact_id = $contact->id;
+                $contactField->data = $this->formatValue($vcard->EMAIL);
+                $contactField->contact_field_type_id = $contactFieldType->id;
+                $contactField->save();
+
+                // Saves the phone number
+                $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+                $contactField = new ContactField;
+                $contactField->account_id = $contact->account_id;
+                $contactField->contact_id = $contact->id;
+                $contactField->data = $this->formatValue($vcard->TEL);
+                $contactField->contact_field_type_id = $contactFieldType->id;
+                $contactField->save();
 
                 $contact->logEvent('contact', $contact->id, 'create');
 

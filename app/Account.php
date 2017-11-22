@@ -371,6 +371,8 @@ class Account extends Model
                     'name' => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
                     'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                    'delible' => $defaultContactFieldType->delible,
+                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                 ]);
             } else {
                 if ($defaultContactFieldType->migrated == 0) {
@@ -379,6 +381,8 @@ class Account extends Model
                         'name' => $defaultContactFieldType->name,
                         'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
                         'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                        'delible' => $defaultContactFieldType->delible,
+                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                     ]);
                 }
             }

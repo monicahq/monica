@@ -19,6 +19,8 @@ class CreateContactFieldsTable extends Migration
             $table->string('name');
             $table->string('fontawesome_icon')->nullable();
             $table->string('protocol')->nullable();
+            $table->boolean('delible')->default(1);
+            $table->string('type')->nullable();
             $table->timestamps();
 
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
@@ -59,6 +61,8 @@ class CreateContactFieldsTable extends Migration
             $table->string('fontawesome_icon')->nullable();
             $table->string('protocol')->nullable();
             $table->boolean('migrated')->default(0);
+            $table->boolean('delible')->default(1);
+            $table->string('type')->nullable();
             $table->timestamps();
         });
 
@@ -66,12 +70,16 @@ class CreateContactFieldsTable extends Migration
             'name' => 'Email',
             'fontawesome_icon' => 'fa fa-envelope-open-o',
             'protocol' => 'mailto:',
+            'delible' => false,
+            'type' => 'email',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
             'name' => 'Phone',
             'fontawesome_icon' => 'fa fa-volume-control-phone',
             'protocol' => 'tel:',
+            'delible' => false,
+            'type' => 'phone',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
