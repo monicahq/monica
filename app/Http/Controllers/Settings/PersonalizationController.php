@@ -109,6 +109,14 @@ class PersonalizationController extends Controller
             ]);;
         }
 
+        if ($contactFieldType->delible == false) {
+            return $this->respond([
+                'errors' => [
+                    'message' => trans('app.error_unauthorized'),
+                ],
+            ]);;
+        }
+
         // find all the contact fields that have this contact field types
         $contactFields = auth()->user()->account->contactFields
                                 ->where('contact_field_type_id', $contactFieldTypeId);

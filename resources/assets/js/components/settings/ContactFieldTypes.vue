@@ -57,7 +57,7 @@
         <div class="dtc tr">
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></i>
-            <i class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)"></i>
+            <i class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)" v-if="contactFieldType.delible"></i>
           </div>
         </div>
       </div>

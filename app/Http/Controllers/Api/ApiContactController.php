@@ -70,11 +70,6 @@ class ApiContactController extends ApiController
             'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
-            'street' => 'nullable|max:255',
-            'city' => 'nullable|max:255',
-            'province' => 'nullable|max:255',
-            'postal_code' => 'nullable|max:255',
-            'country_id' => 'nullable|integer|max:255',
             'food_preferencies' => 'nullable|max:100000',
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
@@ -179,11 +174,6 @@ class ApiContactController extends ApiController
             'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
-            'street' => 'nullable|max:255',
-            'city' => 'nullable|max:255',
-            'province' => 'nullable|max:255',
-            'postal_code' => 'nullable|max:255',
-            'country_id' => 'nullable|integer|max:255',
             'food_preferencies' => 'nullable|max:100000',
             'facebook_profile_url' => 'nullable|max:255',
             'twitter_profile_url' => 'nullable|max:255',
@@ -284,6 +274,7 @@ class ApiContactController extends ApiController
         $contact->reminders->each->delete();
         $contact->tags->each->delete();
         $contact->tasks->each->delete();
+        $contact->addresses->each->delete();
 
         // delete all relationships
         $relationships = Relationship::where('contact_id', $contact->id)

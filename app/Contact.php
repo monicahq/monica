@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
 use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
@@ -786,6 +787,14 @@ class Contact extends Model
     public function getTagsForAPI()
     {
         return TagResource::collection($this->tags);
+    }
+
+    /**
+     * Get the list of addresses for this contact.
+     */
+    public function getAddressesForAPI()
+    {
+        return AddressShortResource::collection($this->addresses);
     }
 
     /**

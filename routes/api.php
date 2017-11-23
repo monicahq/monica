@@ -3,7 +3,9 @@
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
-    // Contacts
+    /**
+     * CONTACTS
+     */
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
@@ -15,6 +17,12 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     // Set a kid to the contact
     Route::post('/contacts/{contact}/kids', 'Api\\ApiContactController@kids');
     Route::post('/contacts/{contact}/kids/unset', 'Api\\ApiContactController@unsetKids');
+
+    // Addresses
+    Route::resource('addresses', 'Api\\ApiAddressController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::get('/contacts/{contact}/addresses', 'Api\\ApiAddressController@addresses');
 
     // Tags
     Route::resource('tags', 'Api\\ApiTagController', ['except' => [
@@ -70,8 +78,15 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     ]]);
 
 
-    // Settings
+    /**
+     * SETTINGS
+     */
     Route::resource('journal', 'Api\\Settings\\ApiContactFieldTypeController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    /**
+     * MISC
+     */
+    Route::get('/countries', 'Api\\Misc\\ApiCountryController@index');
 });

@@ -201,19 +201,12 @@ class ImportVCards extends Command
         if ($contactFieldType) {
             $contactField = ContactField::where([
                 ['account_id', $user->account_id],
+                ['data', $email],
                 ['contact_field_type_id', $contactFieldType->id]
             ])->first();
         }
 
-        $contact = null;
-
-        if ($contactField) {
-            $contact = Contact::where([
-                ['id', $contactField->contact_id],
-            ])->first();
-        }
-
-        return $email && $contact;
+        return $email && $contactField;
     }
 
     /**
