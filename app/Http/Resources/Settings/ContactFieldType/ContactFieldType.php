@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Settings;
+namespace App\Http\Resources\Settings\ContactFieldType;
 
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
@@ -21,6 +21,8 @@ class ContactFieldType extends Resource
             'name' => $this->name,
             'fontawesome_icon' => $this->fontawesome_icon,
             'protocol' => $this->protocol,
+            'delible' => (bool) $this->delible,
+            'type' => $this->type,
             'account' => [
                 'id' => $this->account->id,
             ],

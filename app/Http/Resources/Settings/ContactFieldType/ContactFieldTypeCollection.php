@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Settings;
+namespace App\Http\Resources\Settings\ContactFieldType;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
