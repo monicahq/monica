@@ -40,8 +40,8 @@ class ApiContactFieldController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'contact_field_type_id' => 'integer|required',
             'data' => 'max:255|required',
+            'contact_field_type_id' => 'integer|required',
             'contact_id' => 'required|integer',
         ]);
 
@@ -98,12 +98,8 @@ class ApiContactFieldController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'name' => 'max:255|required',
-            'street' => 'max:255|nullable',
-            'city' => 'max:255|nullable',
-            'province' => 'max:255|nullable',
-            'postal_code' => 'max:255|nullable',
-            'country_id' => 'integer|nullable',
+            'data' => 'max:255|required',
+            'contact_field_type_id' => 'integer|required',
             'contact_id' => 'required|integer',
         ]);
 
@@ -126,7 +122,7 @@ class ApiContactFieldController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        return new contactFieldResource($contactField);
+        return new ContactFieldResource($contactField);
     }
 
     /**
