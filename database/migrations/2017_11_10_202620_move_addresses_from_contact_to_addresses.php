@@ -13,7 +13,6 @@ class MoveAddressesFromContactToAddresses extends Migration
     {
         $contacts = DB::table('contacts')->get();
         foreach ($contacts as $contact) {
-
             if (! is_null($contact->street) or ! is_null($contact->city) or ! is_null($contact->province) or ! is_null($contact->postal_code) or ! is_null($contact->country_id)) {
                 $id = DB::table('addresses')->insertGetId([
                     'account_id' => $contact->account_id,
@@ -28,4 +27,5 @@ class MoveAddressesFromContactToAddresses extends Migration
             }
         }
     }
+
 }

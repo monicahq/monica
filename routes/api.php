@@ -3,7 +3,7 @@
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
-    /**
+    /*
      * CONTACTS
      */
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
@@ -84,14 +84,14 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     ]]);
 
 
-    /**
+    /*
      * SETTINGS
      */
     Route::resource('contactfieldtypes', 'Api\\Settings\\ApiContactFieldTypeController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
 
-    /**
+    /*
      * MISC
      */
     Route::get('/countries', 'Api\\Misc\\ApiCountryController@index');

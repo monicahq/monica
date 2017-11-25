@@ -59,6 +59,7 @@ class ContactFieldsController extends Controller
 
         return $contactField;
     }
+
     /**
      * Edit the contact field.
      */
