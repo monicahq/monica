@@ -77,16 +77,16 @@ class ApiContactFieldTypeController extends ApiController
     }
 
     /**
-     * Update the contact field type .
+     * Update the contact field type.
      * @param  Request $request
-     * @param  int $contactfieldtypeId
+     * @param  int
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $contactfieldtypeId)
+    public function update(Request $request, $contactFieldTypeId)
     {
         try {
-            $contactfieldtype = contactfieldtype::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactfieldtypeId)
+            $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -94,11 +94,11 @@ class ApiContactFieldTypeController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'summary' => 'required|max:100000',
-            'description' => 'required|max:1000000',
-            'date_it_happened' => 'required|date',
-            'contactfieldtype_type_id' => 'integer',
-            'contacts' => 'required|array',
+            'name' => 'required|max:255',
+            'fontawesome_icon' => 'nullable|max:255',
+            'protocol' => 'nullable|max:255',
+            'delible' => 'integer',
+            'type' => 'nullable|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -106,66 +106,22 @@ class ApiContactFieldTypeController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        // Make sure each contact exists and has the right to be associated with
-        // this account
-        $attendeesID = $request->get('contacts');
-        foreach ($attendeesID as $attendeeID) {
-            try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $attendeeID)
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        // Update the contactfieldtype itself
+       // Update the contactfieldtype itself
         try {
-            $contactfieldtype->update(
+            $contactFieldType->update(
                 $request->only([
-                    'summary',
-                    'date_it_happened',
-                    'contactfieldtype_type_id',
-                    'description',
+                    'name',
+                    'fontawesome_icon',
+                    'protocol',
+                    'delible',
+                    'type',
                 ])
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        // Get the attendees
-        $attendees = $request->get('contacts');
-
-        // Find existing contacts
-        $existing = $contactfieldtype->contacts()->get();
-
-        foreach ($existing as $contact) {
-            // Has an existing attendee been removed?
-            if (! in_array($contact->id, $attendees)) {
-                $contact->activities()->detach($contactfieldtype);
-                $contact->logEvent('contactfieldtype', $contactfieldtype->id, 'delete');
-            } else {
-                // Otherwise we're updating an contactfieldtype that someone's
-                // already a part of
-                $contact->logEvent('contactfieldtype', $contactfieldtype->id, 'update');
-            }
-
-            // Remove this ID from our list of contacts as we don't
-            // want to add them to the contactfieldtype again
-            $idx = array_search($contact->id, $attendees);
-            unset($attendees[$idx]);
-
-            $contact->calculateActivitiesStatistics();
-        }
-
-        // New attendees
-        foreach ($attendees as $newContactId) {
-            $contact = Contact::findOrFail($newContactId);
-            $contact->activities()->save($contactfieldtype);
-            $contact->logEvent('contactfieldtype', $contactfieldtype->id, 'create');
-        }
-
-        return new contactfieldtypeResource($contactfieldtype);
+        return new ContactFieldTypeResource($contactFieldType);
     }
 
     /**
@@ -173,51 +129,25 @@ class ApiContactFieldTypeController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $contactfieldtypeId)
+    public function destroy(Request $request, $contactFieldTypeId)
     {
         try {
-            $contactfieldtype = Note::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactfieldtypeId)
+            $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        $contactfieldtype->delete();
+        $contactFields = auth()->user()->account->contactFields
+                                ->where('contact_field_type_id', $contactFieldTypeId);
 
-        return $this->respondObjectDeleted($contactfieldtype->id);
-    }
-
-    /**
-     * Get the list of activities for the given contact.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function activities(Request $request, $contactId)
-    {
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        foreach ($contactFields as $contactField) {
+            $contactField->delete();
         }
 
-        $activities = $contact->activities()
-                ->paginate($this->getLimitPerPage());
+        $contactFieldType->delete();
 
-        return contactfieldtypeResource::collection($activities);
-    }
-
-    /**
-     * Get the list of all contactfieldtype types.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function contactfieldtypetypes(Request $request)
-    {
-        $activities = contactfieldtypeType::all();
-
-        return contactfieldtypeTypeResource::collection($activities);
+        return $this->respondObjectDeleted($contactFieldType->id);
     }
 }

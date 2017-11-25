@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('contact_field', function ($value, $route) {
+        Route::bind('contactfield', function ($value, $route) {
             return ContactField::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)

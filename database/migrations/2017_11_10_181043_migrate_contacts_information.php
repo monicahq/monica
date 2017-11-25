@@ -34,6 +34,7 @@ class MigrateContactsInformation extends Migration
                         'contact_id' => $contact->id,
                         'contact_field_type_id' => $emailId->id,
                         'data' => $contact->email,
+                        'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
             }
@@ -50,6 +51,7 @@ class MigrateContactsInformation extends Migration
                         'contact_id' => $contact->id,
                         'contact_field_type_id' => $idPhoneNumber->id,
                         'data' => $contact->phone_number,
+                        'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
             }
@@ -66,6 +68,7 @@ class MigrateContactsInformation extends Migration
                         'contact_id' => $contact->id,
                         'contact_field_type_id' => $idFacebook->id,
                         'data' => $contact->facebook_profile_url,
+                        'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
             }
@@ -82,6 +85,7 @@ class MigrateContactsInformation extends Migration
                         'contact_id' => $contact->id,
                         'contact_field_type_id' => $idTwitter->id,
                         'data' => $contact->twitter_profile_url,
+                        'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
             }

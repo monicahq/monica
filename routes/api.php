@@ -24,6 +24,12 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     ]]);
     Route::get('/contacts/{contact}/addresses', 'Api\\ApiAddressController@addresses');
 
+    // Contact Fields
+    Route::resource('contactfields', 'Api\\ApiContactFieldController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
+
     // Tags
     Route::resource('tags', 'Api\\ApiTagController', ['except' => [
       'create', 'edit', 'patch',
