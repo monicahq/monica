@@ -136,4 +136,13 @@ return [
     'tags_blank_title' => 'Le etichette sono un buon modo di organizzare i tuoi contatti.',
     'tags_blank_description' => 'Le etichette funzionano come delle cartelle, ma puoi aggiungere più di un\'etichetta a ogni contatto. Entra nella pagina di un contatto ed etichettalo come amico, giusto sotto al nome. Quando un contatto è stato etichettato, puoi tornare qui per gestire tutte le tue etichette.',
 
+    'api_title' => 'API access',
+    'api_description' => 'The API can be used to manipulate Monica\'s data from an external application, like a mobile application for instance.',
+    'api_personal_access_tokens' => 'Personal access tokens',
+    'api_pao_description' => 'Make sure you give this token to a source you trust - as they allow you to access all your data.',
+    'api_oauth_clients' => 'Your Oauth clients',
+    'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
+    'api_authorized_clients' => 'List of authorized clients',
+    'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+
 ];

@@ -23,6 +23,7 @@ return [
     'event_update_task' => 'updated a task',
     'event_create_activity' => 'An activity about :name has been added',
     'event_update_activity' => 'An activity about :name has been updated',
+    'event_delete_activity' => 'An activity about :name has been removed',
     'event_create_debt' => 'added a debt',
     'event_update_debt' => 'updated a debt',
     'event_create_gift' => 'added a gift',

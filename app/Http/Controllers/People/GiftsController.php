@@ -48,7 +48,7 @@ class GiftsController extends Controller
                 'name',
                 'comment',
                 'url',
-                'value_in_dollars',
+                'value',
             ])
             + [
                 'account_id' => $contact->account_id,
@@ -108,7 +108,7 @@ class GiftsController extends Controller
                 'name',
                 'comment',
                 'url',
-                'value_in_dollars',
+                'value',
             ])
             + [
                 'account_id' => $contact->account_id,

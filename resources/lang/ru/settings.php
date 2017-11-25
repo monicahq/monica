@@ -1,23 +1,23 @@
 <?php
 
 return [
-    'sidebar_settings' => 'Account settings',
-    'sidebar_settings_export' => 'Export data',
-    'sidebar_settings_users' => 'Users',
-    'sidebar_settings_subscriptions' => 'Subscription',
-    'sidebar_settings_import' => 'Import data',
-    'sidebar_settings_tags' => 'Tags management',
+    'sidebar_settings' => 'настройки аккаунта',
+    'sidebar_settings_export' => 'Экспортировать данные',
+    'sidebar_settings_users' => 'Пользователи',
+    'sidebar_settings_subscriptions' => 'Подписка',
+    'sidebar_settings_import' => 'Импортировать данные',
+    'sidebar_settings_tags' => 'Управление тегами',
 
-    'export_title' => 'Export your account data',
+    'export_title' => 'Экспортировать данные вашего аккаунта',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export - please be patient and do not spam the button.',
-    'export_title_sql' => 'Export to SQL',
+    'export_title_sql' => 'Экспортировать в SQL',
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only valuable if you do have your own server.',
-    'export_sql_cta' => 'Export to SQL',
+    'export_sql_cta' => 'Экспортировать в SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
 
-    'name_order' => 'Name order',
-    'name_order_firstname_first' => 'First name first (John Doe)',
-    'name_order_lastname_first' => 'Last name first (Doe John)',
+    'name_order' => 'Сортировка имени',
+    'name_order_firstname_first' => 'Сначала имя (Иван Иванов)',
+    'name_order_lastname_first' => 'Сначала фамилия (Иванов Иван)',
     'currency' => 'Валюта',
     'name' => 'Ваше имя: :name',
     'email' => 'Email',
@@ -133,4 +133,14 @@ return [
     'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
     'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
     'tags_blank_description' => 'Tags work like folders, but you can add more than one tag to a contact. Go to a contact and tag a friend, right below the name. Once a contact is tagged, go back here to manage all the tags in your account.',
+
+    'api_title' => 'API access',
+    'api_description' => 'The API can be used to manipulate Monica\'s data from an external application, like a mobile application for instance.',
+    'api_personal_access_tokens' => 'Personal access tokens',
+    'api_pao_description' => 'Make sure you give this token to a source you trust - as they allow you to access all your data.',
+    'api_oauth_clients' => 'Your Oauth clients',
+    'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
+    'api_authorized_clients' => 'List of authorized clients',
+    'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+
 ];

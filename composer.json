@@ -4,12 +4,11 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
-        "laravel/framework": "5.4.*",
+        "php": "^7.1",
+        "laravel/framework": "5.5.*",
         "barryvdh/laravel-debugbar": "^2.2",
         "jenssegers/date": "^3.2",
         "ext-intl": "*",
-        "martinjoiner/ordinal-number": "^0.2.0",
         "predis/predis": "^1.1",
         "guzzlehttp/guzzle": "^6.2",
         "fzaninotto/faker": "^1.6",
@@ -22,13 +21,15 @@
         "roave/security-advisories": "dev-master",
         "laravel/dusk": "^1.1",
         "sentry/sentry-laravel": "^0.7.0",
-        "league/flysystem-aws-s3-v3": "~1.0"
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "laravel/passport": "^4.0"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "symfony/dom-crawler": "2.8.*|3.0.*",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "classmap": [
@@ -58,6 +59,10 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "@php artisan optimize"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {

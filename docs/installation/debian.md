@@ -30,7 +30,7 @@ sudo apt-get install -y nodejs
 
 #### 5. Install composer
 
-Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/). 
+Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/).
 
 Move it to the bin directory.
 ```
@@ -148,12 +148,14 @@ The next 5 lines are taken more or less 1:1 from the main generic installation
 guide. Mainly because the author was unsure about their purpose.
 
 Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-`php artisan migrate` to run all migrations.
-`php artisan storage:link` to enable avatar uploads for the contacts.
-`php artisan db:seed --class ActivityTypesTableSeeder` to populate the
+* `php artisan migrate` to run all migrations.
+* `php artisan storage:link` to enable avatar uploads for the contacts.
+* `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
 activity types.
-`php artisan db:seed --class CountriesSeederTable` to populate the countries
+* `php artisan db:seed --class CountriesSeederTable` to populate the countries
 table.
+* `php artisan passport:install` to generate the secure asset tokens required
+for the API.
 
 #### 8. Configure cron job
 

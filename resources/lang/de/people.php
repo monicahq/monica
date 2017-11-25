@@ -29,6 +29,8 @@ return [
     'people_add_middlename' => 'zweiter Vorname (Optional)',
     'people_add_lastname' => 'Nachname (Optional)',
     'people_add_cta' => 'Person hinzufügen',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Geschlecht',
     'people_delete_success' => 'Der Kontakt wurde gelöscht',
     'people_delete_message' => 'Wenn du den Kontakt entfernen möchtest,',
@@ -165,10 +167,17 @@ return [
     'significant_other_add_cta' => 'Lebensgefährte hinzufügen',
     'significant_other_edit_cta' => 'Lebensgefährte bearbeiten',
     'significant_other_delete_confirmation' => 'Möchtest du diesen Lebensgefährten wirklich löschen? Es gibt kein Zurück.',
+    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
     'significant_other_add_success' => 'Lebensgefährte wurde erfolgreich hinzugefügt',
     'significant_other_edit_success' => 'Lebensgefährte wurde erfolgreich aktualisiert',
     'significant_other_delete_success' => 'Lebensgefährte wurde erfolgreich gelöscht',
     'significant_other_add_birthday_reminder' => 'Gratuliere :name zum Geburstag, :contact_firstname\'s Lebensgefährte',
+    'significant_other_add_person' => 'Person hinzufügen',
+    'significant_other_link_existing_contact' => 'Existierenden Kontakt wählen',
+    'significant_other_add_no_existing_contact' => 'Du hast derzeit keine Kontakte, die :name\'s Lebensgefährte werden könnten.',
+    'significant_other_add_existing_contact' => 'Wähle einen existierenden Kontakt als Lebensgefährte für :name',
+    'contact_add_also_create_contact' => 'Erstelle einen neuen Kontakt für diese Person.',
+    'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
     'kids_sidebar_title' => 'Kinder',
@@ -252,6 +261,7 @@ return [
     'activities_add_success' => 'Aktivität erfolgreich hinzugefügt',
     'activities_update_success' => 'Aktivität erfolgreich aktualisiert',
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
+    'activities_who_was_involved' => 'Wer war beteiligt?',
 
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',
@@ -314,4 +324,28 @@ return [
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
+
+    // Introductions
+    'introductions_sidebar_title' => 'How you met',
+    'introductions_blank_cta' => 'Indicate how you met :name',
+    'introductions_title_edit' => 'How did you meet :name?',
+    'introductions_additional_info' => 'Explain how and where you met',
+    'introductions_edit_met_through' => 'Has someone introduced you to this person?',
+    'introductions_no_met_through' => 'No one',
+    'introductions_first_met_date' => 'Date you met',
+    'introductions_no_first_met_date' => 'I don\'t know the date we met',
+    'introductions_first_met_date_known' => 'This is the date we met',
+    'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
+    'introductions_update_success' => 'You\'ve successfully updated the information about how you met this person',
+    'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
+    'introductions_met_date' => 'Met on :date',
+    'introductions_reminder_title' => 'Anniversary of the day you first met',
+
+    // Deceased
+    'deceased_reminder_title' => 'Anniversary of the death of :name',
+    'deceased_mark_person_deceased' => 'Mark this person as deceased',
+    'deceased_know_date' => 'I know the date this person died',
+    'deceased_add_reminder' => 'Add a reminder for this date',
+    'deceased_label' => 'Deceased',
+    'deceased_label_with_date' => 'Deceased on :date',
 ];

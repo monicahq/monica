@@ -28,7 +28,9 @@ return [
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
-    'people_add_cta' => 'Add this person',
+    'people_add_cta' => 'Add',
+    'people_save_and_add_another_cta' => 'Submit and add someone else',
+    'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
     'people_delete_success' => 'The contact has been deleted',
     'people_delete_message' => 'If you need to delete this contact,',
@@ -36,6 +38,7 @@ return [
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_personal_information' => 'Personal information',
@@ -135,6 +138,7 @@ return [
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'every week|every :number weeks',
     'reminder_frequency_month' => 'every month|every :number months',
     'reminder_frequency_year' => 'every year|every :number year',
@@ -258,6 +262,7 @@ return [
     'activities_add_success' => 'The activity has been added successfully',
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
+    'activities_who_was_involved' => 'Who was involved?',
 
     // notes
     'notes_create_success' => 'The note has been created successfully',
@@ -320,4 +325,28 @@ return [
 
     // tags
     'tag_edit' => 'Edit tag',
+
+    // Introductions
+    'introductions_sidebar_title' => 'How you met',
+    'introductions_blank_cta' => 'Indicate how you met :name',
+    'introductions_title_edit' => 'How did you meet :name?',
+    'introductions_additional_info' => 'Explain how and where you met',
+    'introductions_edit_met_through' => 'Has someone introduced you to this person?',
+    'introductions_no_met_through' => 'No one',
+    'introductions_first_met_date' => 'Date you met',
+    'introductions_no_first_met_date' => 'I don\'t know the date we met',
+    'introductions_first_met_date_known' => 'This is the date we met',
+    'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
+    'introductions_update_success' => 'You\'ve successfully updated the information about how you met this person',
+    'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
+    'introductions_met_date' => 'Met on :date',
+    'introductions_reminder_title' => 'Anniversary of the day you first met',
+
+    // Deceased
+    'deceased_reminder_title' => 'Anniversary of the death of :name',
+    'deceased_mark_person_deceased' => 'Mark this person as deceased',
+    'deceased_know_date' => 'I know the date this person died',
+    'deceased_add_reminder' => 'Add a reminder for this date',
+    'deceased_label' => 'Deceased',
+    'deceased_label_with_date' => 'Deceased on :date',
 ];

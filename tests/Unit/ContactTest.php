@@ -37,6 +37,7 @@ class ContactTest extends TestCase
         $contact->first_name = 'Peter';
         $contact->middle_name = 'H';
         $contact->last_name = 'Gregory';
+        $contact->is_dead = false;
 
         $this->assertEquals(
             'Peter H Gregory',
@@ -76,6 +77,15 @@ class ContactTest extends TestCase
         $this->assertEquals(
             null,
             $contact->getLastName()
+        );
+
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->is_dead = true;
+        $this->assertEquals(
+            'Peter H Gregory ⚰',
+            $contact->getCompleteName()
         );
     }
 
@@ -178,18 +188,18 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
         $activity2 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity2);
 
         $activity3 = factory(\App\Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity3);
 
         $timezone = 'America/New_York';
         $this->assertEquals(
@@ -204,8 +214,8 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
         $timezone = 'America/New_York';
         $this->assertEquals(
@@ -400,6 +410,8 @@ class ContactTest extends TestCase
 
     public function testGetAvatarReturnsPath()
     {
+        config(['filesystems.default' => 'public']);
+
         $contact = new Contact;
         $contact->avatar_file_name = 'h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX.jpg';
 
@@ -541,7 +553,7 @@ class ContactTest extends TestCase
         $john = factory(\App\Contact::class)->create([
             'id' => 2,
             'account_id' => $account->id,
-            'is_kid' => 1,
+            'is_partial' => 1,
         ]);
 
         $offspring = factory(\App\Offspring::class)->create([

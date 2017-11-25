@@ -29,6 +29,11 @@ class ExportAccountAsSQL
         'import_jobs',
         'import_job_reports',
         'instances',
+        'oauth_access_tokens',
+        'oauth_auth_codes',
+        'oauth_clients',
+        'oauth_personal_access_clients',
+        'oauth_refresh_tokens',
     ];
 
     protected $ignoredColumns = [

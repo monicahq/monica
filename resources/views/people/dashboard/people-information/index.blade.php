@@ -7,6 +7,18 @@
   <div class="people-information">
     <ul>
 
+      {{-- Dead --}}
+      @if ($contact->is_dead)
+      <li>
+        <i class="fa fa-ambulance"></i>
+        @if (! is_null($contact->deceased_date))
+          {{ trans('people.deceased_label_with_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->deceased_date)]) }}
+        @else
+          {{ trans('people.deceased_label') }}
+        @endif
+      </li>
+      @endif
+
       {{-- Birthdate --}}
       <li>
         <i class="fa fa-birthday-cake"></i>

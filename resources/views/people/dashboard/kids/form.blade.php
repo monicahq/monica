@@ -1,12 +1,3 @@
-@push('scripts')
-  <script type="text/javascript">
-      $( ".nav-item" ).click(function() {
-          $(this).children().addClass('active');
-          $(this).siblings().children().removeClass('active');
-      });
-  </script>
-@endpush
-
 <form method="POST" action="{{ $action }}">
   {{ method_field($method) }}
   {{ csrf_field() }}

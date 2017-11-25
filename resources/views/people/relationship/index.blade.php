@@ -16,9 +16,9 @@
     @foreach ($contact->getCurrentPartners() as $partner)
       <div class="sidebar-box-paragraph">
 
-        @if ($partner->is_significant_other)
+        @if ($partner->is_partial)
 
-          <span class="name">{{ $partner->getCompleteName() }}</span>
+          <span class="name">{{ $partner->getCompleteName(auth()->user()->name_order) }}</span>
 
           @if (! is_null($partner->getAge()))
             ({{ $partner->getAge() }})
@@ -39,7 +39,7 @@
 
         @else
 
-          <a href="{{ route('people.show', $partner) }}">{{ $partner->getCompleteName() }}</a>
+          <a href="{{ route('people.show', $partner) }}">{{ $partner->getCompleteName(auth()->user()->name_order) }}</a>
 
           @if (! is_null($partner->getAge()))
             ({{ $partner->getAge() }})

@@ -23,6 +23,7 @@ return [
     'event_update_task' => 'aggiornato un compito',
     'event_create_activity' => 'È stata aggiunta un\'attività con :name',
     'event_update_activity' => 'È stata aggiornata un\'attività con :name',
+    'event_delete_activity' => 'È stata rimossa un\'attività con :name',
     'event_create_debt' => 'aggiunto un debito',
     'event_update_debt' => 'aggiornato un debito',
     'event_create_gift' => 'aggiunto un regalo',

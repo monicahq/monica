@@ -46,7 +46,6 @@ class CalculateStatistics extends Command
         $statistic->number_of_notes = DB::table('notes')->count();
         $statistic->number_of_reminders = DB::table('reminders')->count();
         $statistic->number_of_tasks = DB::table('tasks')->count();
-        $statistic->number_of_kids = DB::table('kids')->count();
         $statistic->number_of_invitations_sent = DB::table('accounts')->sum('number_of_invitations_sent');
 
         // number_of_accounts_with_more_than_one_user
