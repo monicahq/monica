@@ -8,6 +8,12 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-sm-offset-3">
 
+        @if (session('status'))
+          <div class="alert alert-success">
+              {{ session('status') }}
+          </div>
+      @endif
+
         <h2>{{ trans('people.people_add_title') }}</h2>
 
         @if (! auth()->user()->account->hasLimitations())
@@ -22,7 +28,7 @@
 
           <dl class="form-group {{ $errors->has('first_name') ? ' errored' : '' }}">
             <dt><label for="first_name">{{ trans('people.people_add_firstname') }}</label></dt>
-            <dd><input type="text" id="first_name" class="form-control" name="first_name" placeholder="" autofocus  value="{{ old('first_name') }}" autocomplete="off"></dd>
+            <dd><input type="text" id="first_name" class="form-control" name="first_name" placeholder="" autofocus required value="{{ old('first_name') }}" autocomplete="off"></dd>
             @if ($errors->has('first_name'))
             <dd class="error">{{ $errors->first('first_name') }}</dd>
             @endif
@@ -71,7 +77,8 @@
             </label>
           </fieldset>
 
-          <button class="btn btn-primary" type="submit">{{ trans('people.people_add_cta') }}</button>
+          <button class="btn btn-primary" name="save" type="submit">{{ trans('people.people_add_cta') }}</button>
+          <button class="btn btn-secondary" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>
           <a href="/people" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
         </form>
       </div>

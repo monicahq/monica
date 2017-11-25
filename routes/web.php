@@ -43,6 +43,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
         Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');
 
+        // Introductions
+        Route::get('/people/{contact}/introductions/edit', 'People\\IntroductionsController@edit')->name('.introductions.edit');
+        Route::post('/people/{contact}/introductions/update', 'People\\IntroductionsController@update')->name('.introductions.update');
+
         // Tags
         Route::post('/people/{contact}/tags/update', 'People\\TagsController@update')->name('.tags.update');
 
@@ -111,9 +115,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Activities
     Route::group(['as' => 'activities'], function () {
         Route::get('/activities/add/{contact}', 'ActivitiesController@create')->name('.add');
-        Route::post('/activities/store', 'ActivitiesController@store')->name('.store');
+        Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('.store');
         Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
-        Route::put('/activities/{activity}', 'ActivitiesController@update')->name('.update');
+        Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('.update');
         Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
     });
 

@@ -68,7 +68,7 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $activityDate,
         ];
 
-        $response = $this->post('/activities/store', $params + ['contacts' => [$contact->id]]);
+        $response = $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
         $response->assertRedirect('/people/'.$contact->id);
 
         // Assert the activity has been added
@@ -131,7 +131,7 @@ class ActivityTest extends FeatureTestCase
             'description' => null,
         ];
 
-        $this->put('/activities/'.$activity->id, $params);
+        $this->put('/activities/'.$activity->id.'/'.$contact->id, $params);
 
         // see if the change is in the database
         $newParams['account_id'] = $user->account_id;
