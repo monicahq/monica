@@ -83,7 +83,6 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
 
-
     /*
      * SETTINGS
      */

@@ -27,5 +27,4 @@ class MoveAddressesFromContactToAddresses extends Migration
             }
         }
     }
-
 }
