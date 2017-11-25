@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use Validator;
-use App\ContactField;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +10,7 @@ use App\Http\Controllers\Controller;
 class PersonalizationController extends Controller
 {
     /**
-     * Display the personalization page
+     * Display the personalization page.
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -20,7 +19,7 @@ class PersonalizationController extends Controller
     }
 
     /**
-     * Get all the contact field types
+     * Get all the contact field types.
      */
     public function getContactFieldTypes()
     {
@@ -59,7 +58,7 @@ class PersonalizationController extends Controller
      * Edit a newly created resource in storage.
      *
      * @param ContactFieldTypeRequest $request
-     * @param String $contactFieldTypeId
+     * @param string $contactFieldTypeId
      * @return \Illuminate\Http\Response
      */
     public function editContactFieldType(Request $request, $contactFieldTypeId)
@@ -73,7 +72,7 @@ class PersonalizationController extends Controller
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
-            ]);;
+            ]);
         }
 
         Validator::make($request->all(), [
@@ -106,7 +105,7 @@ class PersonalizationController extends Controller
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
-            ]);;
+            ]);
         }
 
         if ($contactFieldType->delible == false) {
@@ -114,7 +113,7 @@ class PersonalizationController extends Controller
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
-            ]);;
+            ]);
         }
 
         // find all the contact fields that have this contact field types

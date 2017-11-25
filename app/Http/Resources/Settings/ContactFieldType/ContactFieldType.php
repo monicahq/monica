@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Settings\ContactFieldType;
 
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class ContactFieldType extends Resource
 {

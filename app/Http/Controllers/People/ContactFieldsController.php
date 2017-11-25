@@ -5,14 +5,13 @@ namespace App\Http\Controllers\People;
 use Auth;
 use App\Contact;
 use App\ContactField;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\ContactFieldsRequest;
 
 class ContactFieldsController extends Controller
 {
     /**
-     * Get all the contact information for this contact
+     * Get all the contact information for this contact.
      */
     public function getContactFields(Contact $contact)
     {
@@ -35,7 +34,7 @@ class ContactFieldsController extends Controller
     }
 
     /**
-     * Get all the contact field types
+     * Get all the contact field types.
      * @param  Contact $contact
      */
     public function getContactFieldTypes(Contact $contact)
@@ -44,7 +43,7 @@ class ContactFieldsController extends Controller
     }
 
     /**
-     * Store the contact field
+     * Store the contact field.
      */
     public function storeContactField(ContactFieldsRequest $request, Contact $contact)
     {
@@ -61,7 +60,7 @@ class ContactFieldsController extends Controller
         return $contactField;
     }
     /**
-     * Edit the contact field
+     * Edit the contact field.
      */
     public function editContactField(ContactFieldsRequest $request, Contact $contact, ContactField $contactField)
     {

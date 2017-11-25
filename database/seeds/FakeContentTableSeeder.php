@@ -2,7 +2,6 @@
 
 use App\Account;
 use App\Contact;
-use App\Address;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 

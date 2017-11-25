@@ -193,7 +193,7 @@ class ImportVCards extends Command
 
         $contactFieldType = ContactFieldType::where([
             ['account_id', $user->account_id],
-            ['type', 'email']
+            ['type', 'email'],
         ])->first();
 
         $contactField = null;
@@ -202,7 +202,7 @@ class ImportVCards extends Command
             $contactField = ContactField::where([
                 ['account_id', $user->account_id],
                 ['data', $email],
-                ['contact_field_type_id', $contactFieldType->id]
+                ['contact_field_type_id', $contactFieldType->id],
             ])->first();
         }
 

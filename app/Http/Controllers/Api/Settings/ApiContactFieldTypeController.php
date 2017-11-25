@@ -106,7 +106,7 @@ class ApiContactFieldTypeController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-       // Update the contactfieldtype itself
+        // Update the contactfieldtype itself
         try {
             $contactFieldType->update(
                 $request->only([

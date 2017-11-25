@@ -6,14 +6,13 @@ use Auth;
 use App\Address;
 use App\Contact;
 use App\Country;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\AddressesRequest;
 
 class AddressesController extends Controller
 {
     /**
-     * Get all the addresses for this contact
+     * Get all the addresses for this contact.
      */
     public function get(Contact $contact)
     {
@@ -40,7 +39,7 @@ class AddressesController extends Controller
     }
 
     /**
-     * Get all the countries
+     * Get all the countries.
      */
     public function getCountries()
     {
@@ -48,7 +47,7 @@ class AddressesController extends Controller
     }
 
     /**
-     * Store the address
+     * Store the address.
      */
     public function store(AddressesRequest $request, Contact $contact)
     {
@@ -66,7 +65,7 @@ class AddressesController extends Controller
     }
 
     /**
-     * Edit the contact field
+     * Edit the contact field.
      */
     public function edit(AddressesRequest $request, Contact $contact, Address $address)
     {

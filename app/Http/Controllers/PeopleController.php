@@ -8,7 +8,6 @@ use Validator;
 use App\Contact;
 use App\Offspring;
 use App\Progenitor;
-use App\ContactField;
 use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;

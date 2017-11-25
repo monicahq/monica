@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Api\Misc;
 
-use Validator;
 use App\Country;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Country\Country as CountryResource;
 

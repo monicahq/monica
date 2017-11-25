@@ -2,8 +2,6 @@
 
 use App\Account;
 use App\Instance;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateContactsInformation extends Migration

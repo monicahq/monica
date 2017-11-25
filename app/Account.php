@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Log;
 use DB;
-use App\ContactFieldType;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;

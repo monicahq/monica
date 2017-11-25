@@ -8,8 +8,8 @@ use App\ContactField;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class ApiContactFieldController extends ApiController
 {

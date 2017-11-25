@@ -7,8 +7,8 @@ use App\Address;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\Address as AddressResource;
 
 class ApiAddressController extends ApiController
 {

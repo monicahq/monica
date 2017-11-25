@@ -214,7 +214,7 @@ class AddContactFromVCard implements ShouldQueue
 
         $contactFieldType = ContactFieldType::where([
             ['account_id', $account_id],
-            ['type', 'email']
+            ['type', 'email'],
         ])->first();
 
         $contactField = null;
@@ -223,7 +223,7 @@ class AddContactFromVCard implements ShouldQueue
             $contactField = ContactField::where([
                 ['account_id', $account_id],
                 ['data', $email],
-                ['contact_field_type_id', $contactFieldType->id]
+                ['contact_field_type_id', $contactFieldType->id],
             ])->first();
         }
 

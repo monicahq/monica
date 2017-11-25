@@ -43,5 +43,4 @@ class ContactField extends Model
     {
         return $this->belongsTo(ContactFieldType::class);
     }
-
 }
