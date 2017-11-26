@@ -4,6 +4,12 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v1.1.0 - 2017-11-26
+-------------------
+
+* Add the ability to add multiple contact fields and addresses per contact.
+* Add a new Personalization tab under Settings.
+
 v1.0.0 - 2017-11-09
 -------------------
 
