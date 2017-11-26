@@ -40,7 +40,7 @@ return [
     'people_add_import' => 'Möchtest du Kontakte <a href="/settings/import">importieren</a>?',
 
     // show
-    'section_personal_information' => 'Persönliche Informationen',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Aktivitäten',
     'section_personal_reminders' => 'Erinnerungen',
     'section_personal_tasks' => 'Aufgaben',

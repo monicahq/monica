@@ -40,7 +40,7 @@ return [
     'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
 
     // show
-    'section_personal_information' => 'Informations personnelles',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Activités',
     'section_personal_reminders' => 'Rappels',
     'section_personal_tasks' => 'Tâches',

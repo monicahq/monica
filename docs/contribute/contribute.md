@@ -90,13 +90,21 @@ the application. To compile those front-end assets, use `npm run dev`.
 
 To monitor changes and compile assets on the fly, use `npm run watch`.
 
-#### Bootstrap 4
+#### CSS
 
-At the current time, we are using Bootstrap 4 Alpha 2. Not everything though -
-we do use only what we need. I would have wanted to use something completely
-custom, but why reinvent the wheel? Anyway, make sure you don't update this
-dependency with Bower. If you do, make sure that everything is thoroughly tested
-as when Bootstrap changes version, a lot of changes are introduced.
+At the current time, we are using a mix of Bootstrap 4 and [Tachyons](https://tachyons.io).
+We aim to use a maximum of [Atomic CSS](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/)
+in place of having bloated, super hard to maintain CSS files. This is why,
+over time, we'll get rid of Bootstrap entirely.
+
+#### JS and Vue
+
+We are also using [Vue.js](https://vuejs.org/) in some places of the
+application, and we'll use it more and more over time. Vue is very simple to
+learn and use, and with [Vue Components](https://vuejs.org/v2/guide/components.html),
+we can easily create isolated, reusable components in the app. If you want to
+add a new feature, you don't need to use Vue.js - you can use plain HTML views
+served by the backend. But with Vue.js, it'll be a nicer experience.
 
 ### Backend
 

@@ -56,25 +56,38 @@ class ImportVCardsTest extends TestCase
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'email' => 'john.doe@example.com',
+        ]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'data' => 'john.doe@example.com',
         ]);
 
         // Allows checking if birthday was correctly set
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Bono',
             'birthdate' => '1960-05-10 00:00:00',
-            'email' => 'bono@example.com',
-            'phone_number' => '+1 202-555-0191',
             'job' => 'U2',
         ]);
 
         // Allows checking nickname fallback
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Johnny',
+        ]);
+
+        // Allows checking addresses are correctly saved
+        $this->assertDatabaseHas('addresses', [
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',
             'country_id' => Country::where('country', 'United Kingdom')->first()->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'data' => 'bono@example.com',
+        ]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'data' => '+1 202-555-0191',
         ]);
 
         // Asserts that only 3 new contacts were created
@@ -97,6 +110,8 @@ class ImportVCardsTest extends TestCase
         $account = new Account();
         $account->api_key = str_random(30);
         $account->save();
+
+        $account->populateContactFieldTypeTable();
 
         $user->account_id = $account->id;
         $user->save();

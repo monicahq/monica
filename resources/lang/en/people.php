@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 kids|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_number_kids' => '{0} 0 kid|{1,1} 1 kid|{2,*} :count kids',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
@@ -41,7 +41,7 @@ return [
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
-    'section_personal_information' => 'Personal information',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Activities',
     'section_personal_reminders' => 'Reminders',
     'section_personal_tasks' => 'Tasks',
@@ -349,4 +349,25 @@ return [
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
+
+    // Contact information
+    'contact_info_title' => 'Contact information',
+    'contact_info_form_content' => 'Content',
+    'contact_info_form_contact_type' => 'Contact type',
+    'contact_info_form_personalize' => 'Personalize',
+    'contact_info_address' => 'Lives in',
+
+    // Addresses
+    'contact_address_title' => 'Addresses',
+    'contact_address_form_name' => 'Label (optional)',
+    'contact_address_form_street' => 'Street (optional)',
+    'contact_address_form_city' => 'City (optional)',
+    'contact_address_form_province' => 'Province (optional)',
+    'contact_address_form_postal_code' => 'Postal code (optional)',
+    'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
+    'contact_address_form_' => '',
 ];

@@ -70,6 +70,8 @@ more.
 * Management of activities done with a contact
 * Management of tasks
 * Management of gifts
+* Management of addresses and all the different ways to contact someone
+* Management of contact field types
 * Basic journal
 * Export and import of data
 * Multi users

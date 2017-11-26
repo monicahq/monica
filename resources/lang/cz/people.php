@@ -40,7 +40,7 @@ return [
     'people_add_import' => 'Chcete <a href="/settings/import">importovat své kontakty</a>?',
 
     // show
-    'section_personal_information' => 'Osobní informace',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Aktivity',
     'section_personal_reminders' => 'Upozornění',
     'section_personal_tasks' => 'Úkoly',

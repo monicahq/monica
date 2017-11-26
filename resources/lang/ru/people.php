@@ -40,7 +40,7 @@ return [
     'people_add_import' => 'Вы хотите <a href="/settings/import">импортировать ваши контакты</a>?',
 
     // show
-    'section_personal_information' => 'Личные данные',
+    'section_contact_information' => 'Contact information',
     'section_personal_activities' => 'Активности',
     'section_personal_reminders' => 'Напоминания',
     'section_personal_tasks' => 'Задачи',

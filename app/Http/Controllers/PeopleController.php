@@ -186,60 +186,6 @@ class PeopleController extends Controller
             $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
         }
 
-        if ($request->input('email') != '') {
-            $contact->email = $request->input('email');
-        } else {
-            $contact->email = null;
-        }
-
-        if ($request->input('phone') != '') {
-            $contact->phone_number = $request->input('phone');
-        } else {
-            $contact->phone_number = null;
-        }
-
-        if ($request->input('facebook') != '') {
-            $contact->facebook_profile_url = $request->input('facebook');
-        } else {
-            $contact->facebook_profile_url = null;
-        }
-
-        if ($request->input('twitter') != '') {
-            $contact->twitter_profile_url = $request->input('twitter');
-        } else {
-            $contact->twitter_profile_url = null;
-        }
-
-        if ($request->input('street') != '') {
-            $contact->street = $request->input('street');
-        } else {
-            $contact->street = null;
-        }
-
-        if ($request->input('postalcode') != '') {
-            $contact->postal_code = $request->input('postalcode');
-        } else {
-            $contact->postal_code = null;
-        }
-
-        if ($request->input('province') != '') {
-            $contact->province = $request->input('province');
-        } else {
-            $contact->province = null;
-        }
-
-        if ($request->input('city') != '') {
-            $contact->city = $request->input('city');
-        } else {
-            $contact->city = null;
-        }
-
-        if ($request->input('country') != '---') {
-            $contact->country_id = $request->input('country');
-        } else {
-            $contact->country_id = null;
-        }
-
         // Is the person deceased?
         if ($request->input('markPersonDeceased') != '') {
             $contact->is_dead = true;
@@ -322,6 +268,8 @@ class PeopleController extends Controller
         $contact->reminders->each->delete();
         $contact->tags->each->delete();
         $contact->tasks->each->delete();
+        $contact->contactFields->each->delete();
+        $contact->addresses->each->delete();
 
         // delete all relationships
         $relationships = Relationship::where('contact_id', $contact->id)
