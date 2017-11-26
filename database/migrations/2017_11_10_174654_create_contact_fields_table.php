@@ -91,5 +91,16 @@ class CreateContactFieldsTable extends Migration
             'name' => 'Twitter',
             'fontawesome_icon' => 'fa fa-twitter-square',
         ]);
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Whatsapp',
+            'fontawesome_icon' => 'fa fa-whatsapp',
+        ]);
+
+        $id = DB::table('default_contact_field_types')->insertGetId([
+            'name' => 'Telegram',
+            'fontawesome_icon' => 'fa fa-telegram',
+            'protocol' => 'telegram:',
+        ]);
     }
 }

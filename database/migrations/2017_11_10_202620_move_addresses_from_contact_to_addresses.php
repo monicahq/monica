@@ -11,7 +11,7 @@ class MoveAddressesFromContactToAddresses extends Migration
      */
     public function up()
     {
-        $contacts = DB::table('contacts')->get();
+        $contacts = DB::table('contacts')->select('account_id', 'id', 'street', 'city', 'province', 'postal_code', 'country_id')->get();
         foreach ($contacts as $contact) {
             if (! is_null($contact->street) or ! is_null($contact->city) or ! is_null($contact->province) or ! is_null($contact->postal_code) or ! is_null($contact->country_id)) {
                 $id = DB::table('addresses')->insertGetId([

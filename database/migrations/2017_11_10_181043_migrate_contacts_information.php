@@ -13,7 +13,7 @@ class MigrateContactsInformation extends Migration
      */
     public function up()
     {
-        $accounts = Account::all();
+        $accounts = Account::select('id')->get();
 
         foreach ($accounts as $account) {
             $contacts = DB::table('contacts')->where('account_id', $account->id)->get();
@@ -22,7 +22,22 @@ class MigrateContactsInformation extends Migration
 
             // EMAIL
             $emailId = DB::table('contact_field_types')->where('account_id', $account->id)
-                                                        ->where('name', 'Email')
+                                                        ->where('type', 'email')
+                                                        ->first();
+
+            // PHONE NUMBER
+            $idPhoneNumber = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('type', 'phone')
+                                                        ->first();
+
+            // FACEBOOK
+            $idFacebook = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Facebook')
+                                                        ->first();
+
+            // TWITTER
+            $idTwitter = DB::table('contact_field_types')->where('account_id', $account->id)
+                                                        ->where('name', 'Twitter')
                                                         ->first();
 
             foreach ($contacts as $contact) {
@@ -35,14 +50,7 @@ class MigrateContactsInformation extends Migration
                         'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
-            }
 
-            // PHONE NUMBER
-            $idPhoneNumber = DB::table('contact_field_types')->where('account_id', $account->id)
-                                                        ->where('name', 'Phone')
-                                                        ->first();
-
-            foreach ($contacts as $contact) {
                 if (! is_null($contact->phone_number)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
@@ -52,14 +60,7 @@ class MigrateContactsInformation extends Migration
                         'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
-            }
 
-            // FACEBOOK
-            $idFacebook = DB::table('contact_field_types')->where('account_id', $account->id)
-                                                        ->where('name', 'Facebook')
-                                                        ->first();
-
-            foreach ($contacts as $contact) {
                 if (! is_null($contact->facebook_profile_url)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
@@ -69,14 +70,7 @@ class MigrateContactsInformation extends Migration
                         'created_at' => \Carbon\Carbon::now(),
                     ]);
                 }
-            }
 
-            // TWITTER
-            $idTwitter = DB::table('contact_field_types')->where('account_id', $account->id)
-                                                        ->where('name', 'Twitter')
-                                                        ->first();
-
-            foreach ($contacts as $contact) {
                 if (! is_null($contact->twitter_profile_url)) {
                     DB::table('contact_fields')->insert([
                         'account_id' => $account->id,
@@ -87,9 +81,12 @@ class MigrateContactsInformation extends Migration
                     ]);
                 }
             }
+
+            \Log::info('ACCOUNT PASSED: '.$account->id);
         }
 
         $instance = Instance::first();
         $instance->markDefaultContactFieldTypeAsMigrated();
+        \Log::info('PASSED');
     }
 }
