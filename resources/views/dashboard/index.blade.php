@@ -1,15 +1,5 @@
 @extends('layouts.skeleton')
 
-{{-- Temp Fix for Bootstrap Tabs: Issue #26 --}}
-@push('scripts')
-  <script type="text/javascript">
-      $( ".nav-item" ).click(function() {
-          $(this).children().addClass('active');
-          $(this).siblings().children().removeClass('active');
-      });
-  </script>
-@endpush
-
 @section('content')
   <div class="dashboard">
 

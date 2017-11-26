@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
 use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
@@ -32,11 +33,6 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'email',
-        'street',
-        'city',
-        'postal_code',
-        'province',
         'food_preferencies',
         'job',
         'company',
@@ -68,18 +64,9 @@ class Contact extends Model
         'is_birthdate_approximate',
         'account_id',
         'is_partial',
-        'phone_number',
-        'email',
         'job',
         'company',
-        'street',
-        'city',
-        'province',
-        'postal_code',
-        'country_id',
         'food_preferencies',
-        'facebook_profile_url',
-        'twitter_profile_url',
         'linkedin_profile_url',
         'is_dead',
         'deceased_date',
@@ -137,16 +124,6 @@ class Contact extends Model
     public function activityStatistics()
     {
         return $this->hasMany('App\ActivityStatistic');
-    }
-
-    /**
-     * Get the contact records associated with the contact.
-     *
-     * @return BelongsTo
-     */
-    public function country()
-    {
-        return $this->belongsTo('App\Country');
     }
 
     /**
@@ -267,6 +244,26 @@ class Contact extends Model
     public function progenitors()
     {
         return $this->hasMany('App\Progenitor', 'is_the_parent_of');
+    }
+
+    /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
+    }
+
+    /**
+     * Get the Address Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany('App\Address');
     }
 
     /**
@@ -471,63 +468,6 @@ class Contact extends Model
         }
 
         return $this->is_birthdate_approximate;
-    }
-
-    /**
-     * Get the address in a format like 'Lives in Scranton, MS'.
-     *
-     * @return string
-     */
-    public function getPartialAddress()
-    {
-        $address = $this->city;
-
-        if (is_null($address)) {
-            return;
-        }
-
-        if (! is_null($this->province)) {
-            $address = $address.', '.$this->province;
-        }
-
-        return $address;
-    }
-
-    /**
-     * Get the country of the contact.
-     *
-     * @return string or null
-     */
-    public function getCountryName()
-    {
-        if ($this->country) {
-            return $this->country->country;
-        }
-    }
-
-    /**
-     * Get the country ISO of the contact.
-     *
-     * @return string or null
-     */
-    public function getCountryISO()
-    {
-        if ($this->country) {
-            return $this->country->iso;
-        }
-    }
-
-    /**
-     * Get an URL for Google Maps for the address.
-     *
-     * @return string
-     */
-    public function getGoogleMapAddress()
-    {
-        $address = $this->getFullAddress();
-        $address = urlencode($address);
-
-        return "https://www.google.ca/maps/place/{$address}";
     }
 
     /**
@@ -847,6 +787,14 @@ class Contact extends Model
     public function getTagsForAPI()
     {
         return TagResource::collection($this->tags);
+    }
+
+    /**
+     * Get the list of addresses for this contact.
+     */
+    public function getAddressesForAPI()
+    {
+        return AddressShortResource::collection($this->addresses);
     }
 
     /**

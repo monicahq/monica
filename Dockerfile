@@ -23,6 +23,7 @@ RUN chown -R monica . && su monica -c "npm install"
 # correctly
 ADD . .
 RUN cp docker/000-default.conf /etc/apache2/conf.d \
+    && cp .env.example .env \
     && chown -R monica:monica . \
     && chgrp -R apache bootstrap/cache storage \
     && chmod -R g+w bootstrap/cache storage

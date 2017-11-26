@@ -39,6 +39,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/update', 'PeopleController@update')->name('.update');
         Route::delete('/people/{contact}', 'PeopleController@delete')->name('.delete');
 
+        // Contact information
+        Route::get('/people/{contact}/contactfield', 'People\\ContactFieldsController@getContactFields');
+        Route::post('/people/{contact}/contactfield', 'People\\ContactFieldsController@storeContactField');
+        Route::put('/people/{contact}/contactfield/{contact_field}', 'People\\ContactFieldsController@editContactField');
+        Route::delete('/people/{contact}/contactfield/{contact_field}', 'People\\ContactFieldsController@destroyContactField');
+        Route::get('/people/{contact}/contactfieldtypes', 'People\\ContactFieldsController@getContactFieldTypes');
+
+        // Addresses
+        Route::get('/people/{contact}/countries', 'People\\AddressesController@getCountries');
+        Route::get('/people/{contact}/addresses', 'People\\AddressesController@get');
+        Route::post('/people/{contact}/addresses', 'People\\AddressesController@store');
+        Route::put('/people/{contact}/addresses/{address}', 'People\\AddressesController@edit');
+        Route::delete('/people/{contact}/addresses/{address}', 'People\\AddressesController@destroy');
+
         // Work information
         Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
         Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');
@@ -135,6 +149,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/save', 'SettingsController@save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+
+        Route::get('/settings/personalization', 'Settings\\PersonalizationController@index')->name('.personalization');
+        Route::get('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
+        Route::post('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@storeContactFieldType');
+        Route::put('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@editContactFieldType');
+        Route::delete('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');

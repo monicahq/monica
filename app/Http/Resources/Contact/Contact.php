@@ -80,18 +80,8 @@ class Contact extends Resource
                     'twitter_profile_url' => $this->twitter_profile_url,
                     'linkedin_profile_url' => $this->linkedin_profile_url,
                 ],
-                'addresses' => [
-                    [
-                        'name' => 'home',
-                        'street' => $this->street,
-                        'city' => $this->city,
-                        'province' => $this->province,
-                        'postal_code' => $this->postal_code,
-                        'country_id' => $this->country_id,
-                        'country_name' => $this->getCountryName(),
-                    ],
-                ],
             ]),
+            'addresses' => $this->when(! $this->is_partial, $this->getAddressesForAPI()),
             'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
             'statistics' => $this->when(! $this->is_partial, [
                 'number_of_calls' => $this->calls->count(),

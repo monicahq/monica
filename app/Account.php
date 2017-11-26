@@ -215,7 +215,7 @@ class Account extends Model
     }
 
     /**
-     * Get the tags records associated with the contact.
+     * Get the tags records associated with the account.
      *
      * @return HasMany
      */
@@ -225,13 +225,33 @@ class Account extends Model
     }
 
     /**
-     * Get the calls records associated with the contact.
+     * Get the calls records associated with the account.
      *
      * @return HasMany
      */
     public function calls()
     {
         return $this->hasMany(Call::class)->orderBy('called_at', 'desc');
+    }
+
+    /**
+     * Get the Contact Field types records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function contactFieldTypes()
+    {
+        return $this->hasMany('App\ContactFieldType');
+    }
+
+    /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
     }
 
     /**
@@ -331,5 +351,38 @@ class Account extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Populates the Contact Field Types table right after an account is
+     * created.
+     */
+    public function populateContactFieldTypeTable($ignoreMigratedTable = false)
+    {
+        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
+
+        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
+            if ($ignoreMigratedTable == false) {
+                $contactFieldType = ContactFieldType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultContactFieldType->name,
+                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                    'delible' => $defaultContactFieldType->delible,
+                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                ]);
+            } else {
+                if ($defaultContactFieldType->migrated == 0) {
+                    $contactFieldType = ContactFieldType::create([
+                        'account_id' => $this->id,
+                        'name' => $defaultContactFieldType->name,
+                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                        'delible' => $defaultContactFieldType->delible,
+                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                    ]);
+                }
+            }
+        }
     }
 }

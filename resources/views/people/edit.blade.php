@@ -114,46 +114,6 @@
 
               @endif
 
-              {{-- Address --}}
-              <div class="form-group">
-                <label for="street">{{ trans('people.information_edit_street') }}</label>
-                <input type="text" class="form-control" name="street" id="street" value="{{ $contact->street }}" autofocus>
-                <label for="city">{{ trans('people.information_edit_city') }}</label>
-                <input type="text" class="form-control" name="city" id="city" value="{{ $contact->city }}">
-                <label for="province">{{ trans('people.information_edit_province') }}</label>
-                <input type="text" class="form-control" name="province" id="province" value="{{ $contact->province }}">
-                <label for="postalcode">{{ trans('people.information_edit_postalcode') }}</label>
-                <input type="text" class="form-control" name="postalcode" id="postalcode" value="{{ $contact->postal_code }}">
-                <label for="country">{{ trans('people.information_edit_country') }}</label>
-
-                @include('partials.components.country-select', ['selectionID'=>$contact->country_id])
-
-              </div>
-
-              {{-- Email address --}}
-              <div class="form-group">
-                <label for="email">{{ trans('people.information_edit_email') }}</label>
-                <input type="email" class="form-control" name="email" id="email" value="{{ $contact->email }}">
-              </div>
-
-              {{-- Phone --}}
-              <div class="form-group">
-                <label for="phone">{{ trans('people.information_edit_phone') }}</label>
-                <input class="form-control" name="phone" id="phone" value="{{ $contact->phone_number }}">
-              </div>
-
-              {{-- Facebook --}}
-              <div class="form-group">
-                <label for="facebook">{{ trans('people.information_edit_facebook') }}</label>
-                <input class="form-control" name="facebook" id="facebook" value="{{ $contact->facebook_profile_url }}" placeholder="https://facebook.com/john.doe">
-              </div>
-
-              {{-- Twitter --}}
-              <div class="form-group">
-                <label for="twitter">{{ trans('people.information_edit_twitter') }}</label>
-                <input class="form-control" name="twitter" id="twitter" value="{{ $contact->twitter_profile_url }}" placeholder="https://twitter.com/john.doe">
-              </div>
-
               {{-- Birthdate --}}
               <fieldset class="form-group dates">
 

@@ -27,6 +27,9 @@
 
           <h2>
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
+            @if (! is_null($contact->birthdate))
+            <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->getAge() }})</span>
+            @endif
           </h2>
 
           <ul class="tags">
@@ -48,6 +51,15 @@
           </form>
 
           <ul class="horizontal profile-detail-summary">
+            @if ($contact->is_dead)
+              <li>
+                @if (! is_null($contact->deceased_date))
+                  {{ trans('people.deceased_label_with_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->deceased_date)]) }}
+                @else
+                  {{ trans('people.deceased_label') }}
+                @endif
+              </li>
+            @endif
             <li>
               @if (is_null($contact->getLastCalled(Auth::user()->timezone)))
                 {{ trans('people.last_called_empty') }}
