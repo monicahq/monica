@@ -86,16 +86,7 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
-    'information_edit_facebook' => 'Profil Facebook (optionel)',
-    'information_edit_twitter' => 'Profil Twitter (optionel)',
     'information_edit_linkedin' => 'Profil LinkedIn (optionel)',
-    'information_edit_street' => 'Rue (optionnel)',
-    'information_edit_province' => 'Province (optionnel)',
-    'information_edit_postalcode' => 'Code postal (optionnel)',
-    'information_edit_city' => 'Ville',
-    'information_edit_country' => 'Pays',
-    'information_edit_email' => 'Adresse courriel',
-    'information_edit_phone' => 'Numéro de téléphone',
     'information_edit_probably' => 'Cette personne a probably',
     'information_edit_probably_yo' => 'ans',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est',
@@ -348,4 +339,19 @@ return [
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
 
+    // Contact information
+    'contact_info_title' => 'Contact information',
+    'contact_info_form_content' => 'Content',
+    'contact_info_form_contact_type' => 'Contact type',
+    'contact_info_form_personalize' => 'Personalize',
+    'contact_info_address' => 'Lives in',
+
+    // Addresses
+    'contact_address_title' => 'Addresses',
+    'contact_address_form_name' => 'Label (optional)',
+    'contact_address_form_street' => 'Street (optional)',
+    'contact_address_form_city' => 'City (optional)',
+    'contact_address_form_province' => 'Province (optional)',
+    'contact_address_form_postal_code' => 'Postal code (optional)',
+    'contact_address_form_country' => 'Country (optional)',
 ];

@@ -9,6 +9,7 @@ return [
     'edit' => 'Modifica',
     'upload' => 'Carica',
     'close' => 'Chiudi',
+    'done' => 'Done',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Read documentation',
@@ -54,4 +55,7 @@ return [
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
     'gender_none' => 'Preferisco non specificarlo',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];

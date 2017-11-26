@@ -10,6 +10,7 @@ return [
     'upload' => 'Nahrát',
     'close' => 'Zavřít',
     'remove' => 'Odstranit',
+    'done' => 'Done',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',
@@ -59,4 +60,7 @@ return [
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',
     'gender_none' => 'Nepovím',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];
