@@ -66,13 +66,9 @@ class ApiContactController extends ApiController
                 Rule::in(['exact', 'approximate', 'unknown']),
             ],
             'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',
@@ -80,6 +76,7 @@ class ApiContactController extends ApiController
             'is_partial' => 'required|integer',
             'is_dead' => 'required|integer',
             'deceased_date' => 'nullable|date',
+            'avatar_url' => 'nullable|max:400',
         ]);
 
         if ($validator->fails()) {
@@ -113,7 +110,27 @@ class ApiContactController extends ApiController
 
         // Create the contact
         try {
-            $contact = Contact::create($request->all());
+            $contact = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'birthdate',
+                    'is_birthdate_approximate',
+                    'age',
+                    'job',
+                    'company',
+                    'food_preferencies',
+                    'linkedin_profile_url',
+                    'first_met_information',
+                    'first_met_date',
+                    'first_met_through_contact_id',
+                    'is_partial',
+                    'is_dead',
+                    'deceased_date',
+                    'avatar_url' => 'nullable|max:400',
+                ]);
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
@@ -170,13 +187,9 @@ class ApiContactController extends ApiController
                 Rule::in(['exact', 'approximate', 'unknown']),
             ],
             'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',

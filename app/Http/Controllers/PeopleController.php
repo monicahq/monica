@@ -181,7 +181,7 @@ class PeopleController extends Controller
         $contact->last_name = $request->input('lastname');
 
         if ($request->file('avatar') != '') {
-            $contact->has_avatar = 'true';
+            $contact->has_avatar = true;
             $contact->avatar_location = config('filesystems.default');
             $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
         }
