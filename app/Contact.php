@@ -70,6 +70,7 @@ class Contact extends Model
         'linkedin_profile_url',
         'is_dead',
         'deceased_date',
+        'avatar_external_url',
     ];
 
     /**

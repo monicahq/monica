@@ -84,18 +84,6 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
-        }
-
         // Make sure the `first_met_through_contact_id` is a contact id that the
         // user is authorized to access
         if ($request->get('first_met_through_contact_id')) {
@@ -128,11 +116,16 @@ class ApiContactController extends ApiController
                     'is_partial',
                     'is_dead',
                     'deceased_date',
-                    'avatar_url' => 'nullable|max:400',
-                ]);
-            );
+                ]) + [
+                'avatar_external_url' => $request->get('avatar_url'),
+            ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        if ($request->get('avatar_url')) {
+            $contact->has_avatar = true;
+            $contact->avatar_location = 'external';
         }
 
         // Saving first met information (these are not the same field names than
@@ -202,19 +195,6 @@ class ApiContactController extends ApiController
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
-        }
-
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->where('id', '!=', $contactId)
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
         }
 
         // Make sure the `first_met_through_contact_id` is a contact id that the

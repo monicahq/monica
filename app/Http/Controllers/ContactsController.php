@@ -13,7 +13,7 @@ use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PeopleController extends Controller
+class ContactsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -163,17 +163,6 @@ class PeopleController extends Controller
             return back()
                 ->withInput()
                 ->withErrors($validator);
-        }
-
-        // Make sure the email address is unique in this account
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->where('id', '!=', $contact->id)
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return redirect()->back()->withErrors(trans('people.people_edit_email_error'))->withInput();
-            }
         }
 
         $contact->gender = $request->input('gender');

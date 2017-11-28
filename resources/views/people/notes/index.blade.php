@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <form method="POST" action="{{ action('People\\NotesController@destroy', compact('contact', 'note')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\NotesController@destroy', compact('contact', 'note')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

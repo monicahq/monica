@@ -29,101 +29,101 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
 
     Route::group(['as' => 'people'], function () {
-        Route::get('/people/', 'PeopleController@index')->name('.index');
-        Route::get('/people/add', 'PeopleController@create')->name('.create');
-        Route::post('/people/', 'PeopleController@store')->name('.store');
+        Route::get('/people/', 'ContactsController@index')->name('.index');
+        Route::get('/people/add', 'ContactsController@create')->name('.create');
+        Route::post('/people/', 'ContactsController@store')->name('.store');
 
         // Dashboard
-        Route::get('/people/{contact}', 'PeopleController@show')->name('.show');
-        Route::get('/people/{contact}/edit', 'PeopleController@edit')->name('.edit');
-        Route::post('/people/{contact}/update', 'PeopleController@update')->name('.update');
-        Route::delete('/people/{contact}', 'PeopleController@delete')->name('.delete');
+        Route::get('/people/{contact}', 'ContactsController@show')->name('.show');
+        Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('.edit');
+        Route::post('/people/{contact}/update', 'ContactsController@update')->name('.update');
+        Route::delete('/people/{contact}', 'ContactsController@delete')->name('.delete');
 
         // Contact information
-        Route::get('/people/{contact}/contactfield', 'People\\ContactFieldsController@getContactFields');
-        Route::post('/people/{contact}/contactfield', 'People\\ContactFieldsController@storeContactField');
-        Route::put('/people/{contact}/contactfield/{contact_field}', 'People\\ContactFieldsController@editContactField');
-        Route::delete('/people/{contact}/contactfield/{contact_field}', 'People\\ContactFieldsController@destroyContactField');
-        Route::get('/people/{contact}/contactfieldtypes', 'People\\ContactFieldsController@getContactFieldTypes');
+        Route::get('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@getContactFields');
+        Route::post('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@storeContactField');
+        Route::put('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@editContactField');
+        Route::delete('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@destroyContactField');
+        Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
 
         // Addresses
-        Route::get('/people/{contact}/countries', 'People\\AddressesController@getCountries');
-        Route::get('/people/{contact}/addresses', 'People\\AddressesController@get');
-        Route::post('/people/{contact}/addresses', 'People\\AddressesController@store');
-        Route::put('/people/{contact}/addresses/{address}', 'People\\AddressesController@edit');
-        Route::delete('/people/{contact}/addresses/{address}', 'People\\AddressesController@destroy');
+        Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
+        Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
+        Route::post('/people/{contact}/addresses', 'Contacts\\AddressesController@store');
+        Route::put('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@edit');
+        Route::delete('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@destroy');
 
         // Work information
-        Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'PeopleController@editWork'])->name('.work.edit');
-        Route::post('/people/{contact}/work/update', 'PeopleController@updateWork')->name('.work.update');
+        Route::get('/people/{contact}/work/edit', ['as' => '.edit', 'uses' => 'ContactsController@editWork'])->name('.work.edit');
+        Route::post('/people/{contact}/work/update', 'ContactsController@updateWork')->name('.work.update');
 
         // Introductions
-        Route::get('/people/{contact}/introductions/edit', 'People\\IntroductionsController@edit')->name('.introductions.edit');
-        Route::post('/people/{contact}/introductions/update', 'People\\IntroductionsController@update')->name('.introductions.update');
+        Route::get('/people/{contact}/introductions/edit', 'Contacts\\IntroductionsController@edit')->name('.introductions.edit');
+        Route::post('/people/{contact}/introductions/update', 'Contacts\\IntroductionsController@update')->name('.introductions.update');
 
         // Tags
-        Route::post('/people/{contact}/tags/update', 'People\\TagsController@update')->name('.tags.update');
+        Route::post('/people/{contact}/tags/update', 'Contacts\\TagsController@update')->name('.tags.update');
 
         // Notes
-        Route::get('/people/{contact}/notes/add', 'People\\NotesController@create')->name('.notes.add');
-        Route::post('/people/{contact}/notes/store', 'People\\NotesController@store')->name('.notes.store');
-        Route::get('/people/{contact}/notes/{note}/edit', 'People\\NotesController@edit')->name('.notes.edit');
-        Route::put('/people/{contact}/notes/{note}', 'People\\NotesController@update')->name('.notes.update');
-        Route::delete('/people/{contact}/notes/{note}', 'People\\NotesController@destroy')->name('.notes.delete');
+        Route::get('/people/{contact}/notes/add', 'Contacts\\NotesController@create')->name('.notes.add');
+        Route::post('/people/{contact}/notes/store', 'Contacts\\NotesController@store')->name('.notes.store');
+        Route::get('/people/{contact}/notes/{note}/edit', 'Contacts\\NotesController@edit')->name('.notes.edit');
+        Route::put('/people/{contact}/notes/{note}', 'Contacts\\NotesController@update')->name('.notes.update');
+        Route::delete('/people/{contact}/notes/{note}', 'Contacts\\NotesController@destroy')->name('.notes.delete');
 
         // Food preferencies
-        Route::get('/people/{contact}/food', 'PeopleController@editFoodPreferencies')->name('.food');
-        Route::post('/people/{contact}/food/save', 'PeopleController@updateFoodPreferencies')->name('.food.update');
+        Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('.food');
+        Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('.food.update');
 
         // Kid
-        Route::get('/people/{contact}/kids/add', 'People\\KidsController@create')->name('.kids.add');
-        Route::post('/people/{contact}/kids/store', 'People\\KidsController@store')->name('.kids.store');
-        Route::post('/people/{contact}/kids/storeExistingContact', 'People\\KidsController@storeExistingContact')->name('.kids.storeexisting');
-        Route::get('/people/{contact}/kids/{kid}/edit', 'People\\KidsController@edit')->name('.kids.edit');
-        Route::put('/people/{contact}/kids/{kid}', 'People\\KidsController@update')->name('.kids.update');
-        Route::delete('/people/{contact}/kids/{kid}', 'People\\KidsController@destroy')->name('.kids.delete');
-        Route::post('/people/{contact}/kids/{kid}/unlink', 'People\\KidsController@unlink')->name('.kids.unlink');
+        Route::get('/people/{contact}/kids/add', 'Contacts\\KidsController@create')->name('.kids.add');
+        Route::post('/people/{contact}/kids/store', 'Contacts\\KidsController@store')->name('.kids.store');
+        Route::post('/people/{contact}/kids/storeExistingContact', 'Contacts\\KidsController@storeExistingContact')->name('.kids.storeexisting');
+        Route::get('/people/{contact}/kids/{kid}/edit', 'Contacts\\KidsController@edit')->name('.kids.edit');
+        Route::put('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@update')->name('.kids.update');
+        Route::delete('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@destroy')->name('.kids.delete');
+        Route::post('/people/{contact}/kids/{kid}/unlink', 'Contacts\\KidsController@unlink')->name('.kids.unlink');
 
         // Relationships (significant others)
-        Route::get('/people/{contact}/relationships/add', 'People\\RelationshipsController@create')->name('.relationships.add');
-        Route::post('/people/{contact}/relationships/store', 'People\\RelationshipsController@store')->name('.relationships.store');
-        Route::post('/people/{contact}/relationships/storeExistingContact', 'People\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
-        Route::get('/people/{contact}/relationships/{partner}/edit', 'People\\RelationshipsController@edit')->name('.relationships.edit');
-        Route::put('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@update')->name('.relationships.update');
-        Route::delete('/people/{contact}/relationships/{partner}', 'People\\RelationshipsController@destroy')->name('.relationships.delete');
-        Route::post('/people/{contact}/relationships/{partner}/unlink', 'People\\RelationshipsController@unlink')->name('.relationships.unlink');
+        Route::get('/people/{contact}/relationships/add', 'Contacts\\RelationshipsController@create')->name('.relationships.add');
+        Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('.relationships.store');
+        Route::post('/people/{contact}/relationships/storeExistingContact', 'Contacts\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
+        Route::get('/people/{contact}/relationships/{partner}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');
+        Route::put('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
+        Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
+        Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
 
         // Reminders
-        Route::get('/people/{contact}/reminders/add', 'People\\RemindersController@create')->name('.reminders.add');
-        Route::post('/people/{contact}/reminders/store', 'People\\RemindersController@store')->name('.reminders.store');
-        Route::get('/people/{contact}/reminders/{reminder}/edit', 'People\\RemindersController@edit')->name('.reminders.edit');
-        Route::put('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@update')->name('.reminders.update');
-        Route::delete('/people/{contact}/reminders/{reminder}', 'People\\RemindersController@destroy')->name('.reminders.delete');
+        Route::get('/people/{contact}/reminders/add', 'Contacts\\RemindersController@create')->name('.reminders.add');
+        Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('.reminders.store');
+        Route::get('/people/{contact}/reminders/{reminder}/edit', 'Contacts\\RemindersController@edit')->name('.reminders.edit');
+        Route::put('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@update')->name('.reminders.update');
+        Route::delete('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
-        Route::get('/people/{contact}/tasks/add', 'People\\TasksController@create')->name('.tasks.add');
-        Route::post('/people/{contact}/tasks/store', 'People\\TasksController@store')->name('.tasks.store');
-        Route::patch('/people/{contact}/tasks/{task}/toggle', 'People\\TasksController@toggle')->name('.tasks.toggle');
-        Route::delete('/people/{contact}/tasks/{task}', 'People\\TasksController@destroy')->name('.tasks.delete');
+        Route::get('/people/{contact}/tasks/add', 'Contacts\\TasksController@create')->name('.tasks.add');
+        Route::post('/people/{contact}/tasks/store', 'Contacts\\TasksController@store')->name('.tasks.store');
+        Route::patch('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle')->name('.tasks.toggle');
+        Route::delete('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
-        Route::get('/people/{contact}/gifts/add', 'People\\GiftsController@create')->name('.gifts.add');
-        Route::post('/people/{contact}/gifts/store', 'People\\GiftsController@store')->name('.gifts.store');
-        Route::delete('/people/{contact}/gifts/{gift}', 'People\\GiftsController@destroy')->name('.gifts.delete');
+        Route::get('/people/{contact}/gifts/add', 'Contacts\\GiftsController@create')->name('.gifts.add');
+        Route::post('/people/{contact}/gifts/store', 'Contacts\\GiftsController@store')->name('.gifts.store');
+        Route::delete('/people/{contact}/gifts/{gift}', 'Contacts\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
-        Route::get('/people/{contact}/debt/add', 'People\\DebtController@create')->name('.debt.add');
-        Route::post('/people/{contact}/debt/store', 'People\\DebtController@store')->name('.debt.store');
-        Route::get('/people/{contact}/debt/{debt}/edit', 'People\\DebtController@edit')->name('.debt.edit');
-        Route::put('/people/{contact}/debt/{debt}', 'People\\DebtController@update')->name('.debt.update');
-        Route::delete('/people/{contact}/debt/{debt}', 'People\\DebtController@destroy')->name('.debt.delete');
+        Route::get('/people/{contact}/debt/add', 'Contacts\\DebtController@create')->name('.debt.add');
+        Route::post('/people/{contact}/debt/store', 'Contacts\\DebtController@store')->name('.debt.store');
+        Route::get('/people/{contact}/debt/{debt}/edit', 'Contacts\\DebtController@edit')->name('.debt.edit');
+        Route::put('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@update')->name('.debt.update');
+        Route::delete('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@destroy')->name('.debt.delete');
 
         // Phone calls
-        Route::post('/people/{contact}/call/store', 'People\\CallsController@store')->name('.call.store');
-        Route::delete('/people/{contact}/call/{call}', 'People\\CallsController@destroy')->name('.call.delete');
+        Route::post('/people/{contact}/call/store', 'Contacts\\CallsController@store')->name('.call.store');
+        Route::delete('/people/{contact}/call/{call}', 'Contacts\\CallsController@destroy')->name('.call.delete');
 
         // Search
-        Route::post('/people/search', 'PeopleController@search')->name('people.search');
+        Route::post('/people/search', 'ContactsController@search')->name('people.search');
     });
 
     // Activities
