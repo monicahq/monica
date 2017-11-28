@@ -70,6 +70,7 @@ class Contact extends Model
         'linkedin_profile_url',
         'is_dead',
         'deceased_date',
+        'avatar_external_url',
     ];
 
     /**
@@ -94,6 +95,7 @@ class Contact extends Model
     protected $casts = [
         'is_partial' => 'boolean',
         'is_dead' => 'boolean',
+        'has_avatar' => 'boolean',
     ];
 
     /**
@@ -726,14 +728,39 @@ class Contact extends Model
      * @param  int $size
      * @return string
      */
-    public function getAvatarURL($size)
+    public function getAvatarURL($size = 100)
     {
+        // it either returns null or the gravatar url if it's defined
+        if (! $this->has_avatar) {
+            return $this->gravatar_url;
+        }
+
+        if ($this->avatar_location == 'external') {
+            return $this->avatar_external_url;
+        }
+
         $original_avatar_url = Storage::disk($this->avatar_location)->url($this->avatar_file_name);
         $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
         return Storage::disk($this->avatar_location)->url($resized_avatar);
+    }
+
+    /**
+     * Returns the source of the avatar, or null if avatar is undefined.
+     */
+    public function getAvatarSource()
+    {
+        if (! $this->has_avatar) {
+            return;
+        }
+
+        if ($this->avatar_location == 'external') {
+            return 'external';
+        }
+
+        return 'internal';
     }
 
     /**

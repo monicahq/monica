@@ -92,7 +92,7 @@
 
                 <li class="people-list-item">
                   <a href="{{ route('people.show', $contact) }}">
-                    @if ($contact->has_avatar == 'true')
+                    @if ($contact->has_avatar == true)
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
                     @else
                       @if (! is_null($contact->gravatar_url))

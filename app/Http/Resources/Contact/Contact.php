@@ -52,35 +52,17 @@ class Contact extends Resource
                     'job' => $this->job,
                     'company' => $this->company,
                 ]),
-                'avatar' => [
-                    'gravatar_url' => $this->getGravatar(110),
-                ],
+                'avatar' => $this->when(! $this->is_partial, [
+                    'url' => $this->getAvatarUrl(),
+                    'source' => $this->getAvatarSource(),
+                ]),
                 'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
-                'how_you_met' => [
+                'how_you_met' => $this->when(! $this->is_partial, [
                     'general_information' => $this->first_met_additional_info,
                     'first_met_date' => (is_null($this->first_met) ? null : $this->first_met->format(config('api.timestamp_format'))),
                     'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
-                ],
+                ]),
             ],
-            'contact' => $this->when(! $this->is_partial, [
-                'emails' => [
-                    [
-                        'name' => 'personal',
-                        'email' => $this->email,
-                    ],
-                ],
-                'phone_numbers' => [
-                    [
-                        'name' => 'home',
-                        'phone_number' => $this->phone_number,
-                    ],
-                ],
-                'social_network' => [
-                    'facebook_profile_url' => $this->facebook_profile_url,
-                    'twitter_profile_url' => $this->twitter_profile_url,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
-                ],
-            ]),
             'addresses' => $this->when(! $this->is_partial, $this->getAddressesForAPI()),
             'tags' => $this->when(! $this->is_partial, $this->getTagsForAPI()),
             'statistics' => $this->when(! $this->is_partial, [
