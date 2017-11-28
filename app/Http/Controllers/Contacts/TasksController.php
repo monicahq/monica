@@ -10,15 +10,42 @@ use App\Http\Requests\People\TasksRequest;
 class TasksController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * Get all the tasks of this contact.
      */
-    public function index(Contact $contact)
+    public function get(Contact $contact)
     {
-        return view('people.tasks.index')
-            ->withContact($contact);
+        $tasks = collect([]);
+
+        foreach ($contact->tasks as $task) {
+            $data = [
+                'id' => $task->id,
+                'title' => $task->title,
+                'description' => $task->description,
+                'completed' => $task->completed,
+                'completed_at' => $task->completed_at,
+                'archived' => $task->archived,
+                'archived_at' => $task->archived_at,
+                'completed_at' => $task->completed_at,
+                'edit' => false,
+            ];
+            $tasks->push($data);
+        }
+
+        return $tasks;
+    }
+
+    /**
+     * Store the address.
+     */
+    public function store(TasksRequest $request, Contact $contact)
+    {
+        $task = $contact->tasks()->create([
+            'account_id' => auth()->user()->account->id,
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+        ]);
+
+        return $task;
     }
 
     /**
@@ -32,56 +59,6 @@ class TasksController extends Controller
         return view('people.tasks.add')
             ->withContact($contact)
             ->withTask(new Task);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function store(TasksRequest $request, Contact $contact)
-    {
-        $task = $contact->tasks()->create(
-            $request->only([
-                'title',
-                'description',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'status' => 'inprogress',
-            ]
-        );
-
-        $contact->logEvent('task', $task->id, 'create');
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact, Task $task)
-    {
-        //
     }
 
     /**

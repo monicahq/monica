@@ -26,7 +26,17 @@ class Task extends Model
      *
      * @var array
      */
-    protected $dates = ['completed_at'];
+    protected $dates = ['completed_at', 'archived_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'completed' => 'boolean',
+        'archived' => 'boolean',
+    ];
 
     /**
      * Get the account record associated with the task.
@@ -56,7 +66,7 @@ class Task extends Model
      */
     public function scopeCompleted(Builder $query)
     {
-        return $query->where('status', 'completed');
+        return $query->where('completed', true);
     }
 
     /**
@@ -67,7 +77,7 @@ class Task extends Model
      */
     public function scopeInProgress(Builder $query)
     {
-        return $query->where('status', 'inprogress');
+        return $query->where('completed', 'false');
     }
 
     /**
@@ -81,20 +91,5 @@ class Task extends Model
         $this->save();
 
         return $this;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->created_at;
     }
 }

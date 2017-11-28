@@ -16,6 +16,7 @@ require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
+
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')
@@ -40,6 +41,11 @@ Vue.component(
 Vue.component(
     'contact-information',
     require('./components/people/ContactInformation.vue')
+);
+
+Vue.component(
+    'contact-task',
+    require('./components/people/Tasks.vue')
 );
 
 // Settings
