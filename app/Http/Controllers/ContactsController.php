@@ -13,7 +13,7 @@ use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PeopleController extends Controller
+class ContactsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -165,23 +165,12 @@ class PeopleController extends Controller
                 ->withErrors($validator);
         }
 
-        // Make sure the email address is unique in this account
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->where('id', '!=', $contact->id)
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return redirect()->back()->withErrors(trans('people.people_edit_email_error'))->withInput();
-            }
-        }
-
         $contact->gender = $request->input('gender');
         $contact->first_name = $request->input('firstname');
         $contact->last_name = $request->input('lastname');
 
         if ($request->file('avatar') != '') {
-            $contact->has_avatar = 'true';
+            $contact->has_avatar = true;
             $contact->avatar_location = config('filesystems.default');
             $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
         }

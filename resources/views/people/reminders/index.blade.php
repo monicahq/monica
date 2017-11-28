@@ -64,7 +64,7 @@
           @endif
         </div>
 
-        <form method="POST" action="{{ action('People\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

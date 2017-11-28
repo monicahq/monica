@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\People;
+namespace App\Http\Controllers\Contacts;
 
 use App\Gift;
 use App\Contact;

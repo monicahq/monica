@@ -63,6 +63,7 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'has_avatar' => false,
     ];
 });
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\People;
+namespace App\Http\Controllers\Contacts;
 
 use Auth;
 use App\Contact;

@@ -59,7 +59,7 @@
             </a>
           </div>
 
-          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+          <form method="POST" action="{{ action('Contacts\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
           </form>
@@ -105,7 +105,7 @@
             </a>
           </div>
 
-          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+          <form method="POST" action="{{ action('Contacts\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
           </form>

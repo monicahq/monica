@@ -66,13 +66,9 @@ class ApiContactController extends ApiController
                 Rule::in(['exact', 'approximate', 'unknown']),
             ],
             'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',
@@ -80,23 +76,12 @@ class ApiContactController extends ApiController
             'is_partial' => 'required|integer',
             'is_dead' => 'required|integer',
             'deceased_date' => 'nullable|date',
+            'avatar_url' => 'nullable|max:400',
         ]);
 
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
-        }
-
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
         }
 
         // Make sure the `first_met_through_contact_id` is a contact id that the
@@ -113,9 +98,34 @@ class ApiContactController extends ApiController
 
         // Create the contact
         try {
-            $contact = Contact::create($request->all());
+            $contact = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'birthdate',
+                    'is_birthdate_approximate',
+                    'age',
+                    'job',
+                    'company',
+                    'food_preferencies',
+                    'linkedin_profile_url',
+                    'first_met_information',
+                    'first_met_date',
+                    'first_met_through_contact_id',
+                    'is_partial',
+                    'is_dead',
+                    'deceased_date',
+                ]) + [
+                'avatar_external_url' => $request->get('avatar_url'),
+            ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        if ($request->get('avatar_url')) {
+            $contact->has_avatar = true;
+            $contact->avatar_location = 'external';
         }
 
         // Saving first met information (these are not the same field names than
@@ -170,13 +180,9 @@ class ApiContactController extends ApiController
                 Rule::in(['exact', 'approximate', 'unknown']),
             ],
             'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',
@@ -189,19 +195,6 @@ class ApiContactController extends ApiController
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
-        }
-
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->where('id', '!=', $contactId)
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
         }
 
         // Make sure the `first_met_through_contact_id` is a contact id that the

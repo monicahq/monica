@@ -201,7 +201,7 @@
 
   </div>
 
-  <form method="POST" action="{{ action('PeopleController@delete', $contact) }}" id="contact-delete-form" class="hidden">
+  <form method="POST" action="{{ action('ContactsController@delete', $contact) }}" id="contact-delete-form" class="hidden">
     {{ method_field('DELETE') }}
     {{ csrf_field() }}
   </form>

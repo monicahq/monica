@@ -40,7 +40,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('People\\TasksController@destroy', compact('contact', 'task')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\TasksController@destroy', compact('contact', 'task')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>
