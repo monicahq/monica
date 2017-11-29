@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/reminders/add" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>

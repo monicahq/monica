@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>

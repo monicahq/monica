@@ -6,6 +6,7 @@ use App\Task;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TasksRequest;
+use App\Http\Requests\People\TaskToggleRequest;
 
 class TasksController extends Controller
 {
@@ -22,10 +23,9 @@ class TasksController extends Controller
                 'title' => $task->title,
                 'description' => $task->description,
                 'completed' => $task->completed,
-                'completed_at' => $task->completed_at,
+                'completed_at' => \App\Helpers\DateHelper::getShortDate($task->completed_at),
                 'archived' => $task->archived,
-                'archived_at' => $task->archived_at,
-                'completed_at' => $task->completed_at,
+                'archived_at' => \App\Helpers\DateHelper::getShortDate($task->archived_at),
                 'edit' => false,
             ];
             $tasks->push($data);
@@ -35,7 +35,7 @@ class TasksController extends Controller
     }
 
     /**
-     * Store the address.
+     * Store the task.
      */
     public function store(TasksRequest $request, Contact $contact)
     {
@@ -49,58 +49,33 @@ class TasksController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Contact $contact)
-    {
-        return view('people.tasks.add')
-            ->withContact($contact)
-            ->withTask(new Task);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
+     * Edit the task field.
      */
     public function update(TasksRequest $request, Contact $contact, Task $task)
     {
-        $task->update(
-            $request->only([
-                'title',
-                'status',
-                'description',
-                'completed_at',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $task->update([
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            'completed' => $request->get('completed'),
+        ]);
 
         $contact->logEvent('task', $task->id, 'update');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_update_success'));
+        return $task;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle(TasksRequest $request, Contact $contact, Task $task)
+    public function toggle(TaskToggleRequest $request, Contact $contact, Task $task)
     {
-        $task->toggle();
+        // check if the state of the task has changed
+        if ($task->completed) {
+            $task->completed_at = null;
+            $task->completed = false;
+        } else {
+            $task->completed = true;
+            $task->completed_at = \Carbon\Carbon::now();
+        }
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_complete_success'));
+        $task->save();
     }
 
     /**
@@ -115,8 +90,5 @@ class TasksController extends Controller
         $task->delete();
 
         $contact->events()->forObject($task)->get()->each->delete();
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_delete_success'));
     }
 }

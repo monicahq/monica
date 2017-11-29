@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.notes_title') }}
 
-    <span>
+    <span class="fr">
       <a href="{{ route('people.notes.add', $contact) }}" class="btn">{{ trans('people.notes_add_one_more') }}</a>
     </span>
   </h3>

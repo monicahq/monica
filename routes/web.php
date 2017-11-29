@@ -103,9 +103,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Tasks
         Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@get');
         Route::post('/people/{contact}/tasks', 'Contacts\\TasksController@store');
-        Route::get('/people/{contact}/tasks/add', 'Contacts\\TasksController@create')->name('.tasks.add');
-        Route::post('/people/{contact}/tasks/store', 'Contacts\\TasksController@store')->name('.tasks.store');
-        Route::patch('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle')->name('.tasks.toggle');
+        Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
+        Route::put('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@update');
         Route::delete('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
