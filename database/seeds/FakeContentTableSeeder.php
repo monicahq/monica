@@ -131,11 +131,12 @@ class FakeContentTableSeeder extends Seeder
 
             // tasks
             if (rand(1, 2) == 1) {
-                for ($j = 0; $j < rand(1, 6); $j++) {
+                for ($j = 0; $j < rand(1, 10); $j++) {
                     $task = $contact->tasks()->create([
                         'title' => $faker->realText(rand(40, 100)),
                         'description' => $faker->realText(rand(100, 1000)),
-                        'status' => (rand(1, 2) == 1 ? 'inprogress' : 'completed'),
+                        'completed' => (rand(1, 2) == 1 ? 0 : 1),
+                        'completed_at' => (rand(1, 2) == 1 ? $faker->dateTimeThisCentury() : null),
                         'account_id' => $contact->account_id,
                     ]);
 
