@@ -1,14 +1,21 @@
 UNRELEASED CHANGES:
 
-* Add more usage statistics to reflect latest changes in the DB.
+*
 
 RELEASED VERSIONS:
+
+v1.2.0 - 2017-11-29
+-------------------
+
+* Add a much better way to manage tasks of a contact
+* Tasks can now be mark as completed and can now be edited
+* Add more usage statistics to reflect latest changes in the DB
 
 v1.1.0 - 2017-11-26
 -------------------
 
-* Add the ability to add multiple contact fields and addresses per contact.
-* Add a new Personalization tab under Settings.
+* Add the ability to add multiple contact fields and addresses per contact
+* Add a new Personalization tab under Settings
 
 v1.0.0 - 2017-11-09
 -------------------
