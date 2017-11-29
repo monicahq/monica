@@ -6,7 +6,6 @@ use App\Task;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
