@@ -6,124 +6,78 @@ use App\Task;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TasksRequest;
+use App\Http\Requests\People\TaskToggleRequest;
 
 class TasksController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * Get all the tasks of this contact.
      */
-    public function index(Contact $contact)
+    public function get(Contact $contact)
     {
-        return view('people.tasks.index')
-            ->withContact($contact);
+        $tasks = collect([]);
+
+        foreach ($contact->tasks as $task) {
+            $data = [
+                'id' => $task->id,
+                'title' => $task->title,
+                'description' => $task->description,
+                'completed' => $task->completed,
+                'completed_at' => \App\Helpers\DateHelper::getShortDate($task->completed_at),
+                'edit' => false,
+            ];
+            $tasks->push($data);
+        }
+
+        return $tasks;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Contact $contact)
-    {
-        return view('people.tasks.add')
-            ->withContact($contact)
-            ->withTask(new Task);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * Store the task.
      */
     public function store(TasksRequest $request, Contact $contact)
     {
-        $task = $contact->tasks()->create(
-            $request->only([
-                'title',
-                'description',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'status' => 'inprogress',
-            ]
-        );
+        $task = $contact->tasks()->create([
+            'account_id' => auth()->user()->account->id,
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+        ]);
 
         $contact->logEvent('task', $task->id, 'create');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_add_success'));
+        return $task;
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
+     * Edit the task field.
      */
     public function update(TasksRequest $request, Contact $contact, Task $task)
     {
-        $task->update(
-            $request->only([
-                'title',
-                'status',
-                'description',
-                'completed_at',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $task->update([
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            'completed' => $request->get('completed'),
+        ]);
 
         $contact->logEvent('task', $task->id, 'update');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_update_success'));
+        return $task;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param TasksRequest $request
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function toggle(TasksRequest $request, Contact $contact, Task $task)
+    public function toggle(TaskToggleRequest $request, Contact $contact, Task $task)
     {
-        $task->toggle();
+        // check if the state of the task has changed
+        if ($task->completed) {
+            $task->completed_at = null;
+            $task->completed = false;
+        } else {
+            $task->completed = true;
+            $task->completed_at = \Carbon\Carbon::now();
+        }
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_complete_success'));
+        $contact->logEvent('task', $task->id, 'update');
+
+        $task->save();
     }
 
     /**
@@ -138,8 +92,5 @@ class TasksController extends Controller
         $task->delete();
 
         $contact->events()->forObject($task)->get()->each->delete();
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.tasks_delete_success'));
     }
 }

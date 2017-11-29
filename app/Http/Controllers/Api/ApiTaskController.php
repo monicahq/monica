@@ -6,7 +6,6 @@ use App\Task;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -56,10 +55,7 @@ class ApiTaskController extends ApiController
             'title' => 'required|max:255',
             'description' => 'string|max:1000000',
             'completed_at' => 'date',
-            'status' => [
-                'required',
-                Rule::in(['completed', 'inprogress', 'archived']),
-            ],
+            'completed' => 'boolean|required',
             'contact_id' => 'required|integer',
         ]);
 
@@ -109,10 +105,7 @@ class ApiTaskController extends ApiController
             'title' => 'required|max:255',
             'description' => 'string|max:1000000',
             'completed_at' => 'date',
-            'status' => [
-                'required',
-                Rule::in(['completed', 'inprogress', 'archived']),
-            ],
+            'completed' => 'boolean|required',
             'contact_id' => 'required|integer',
         ]);
 

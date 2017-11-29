@@ -118,8 +118,8 @@
                     <div class="dashboard-item">
                       <div class="truncate">
                         <a href="/people/{{ $task->contact_id }}">{{ App\Contact::find($task->contact_id)->getCompleteName(auth()->user()->name_order) }}</a>:
-                        {{ $task->getTitle() }}
-                        {{ $task->getDescription() }}
+                        {{ $task->title }}
+                        {{ $task->description }}
                       </div>
                     </div>
                     @endforeach

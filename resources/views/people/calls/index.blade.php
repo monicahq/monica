@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.call_title') }}
 
-    <span>
+    <span class="fr">
       <a href="#logCallModal" class="btn edit-information" data-toggle="modal">{{ trans('people.call_button') }}</a>
     </span>
   </h3>

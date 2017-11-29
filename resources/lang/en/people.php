@@ -195,20 +195,10 @@ return [
     'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
-    'tasks_desc' => 'Keep tracks of things you need to do for :name',
-    'tasks_blank_title' => 'It looks like you don\'t have any tasks about :name yet',
-    'tasks_blank_add_activity' => 'Add task',
-    'tasks_add_title_page' => 'Add a new task for :name',
-    'tasks_add_title' => 'What is the task you want to be reminded of?',
-    'tasks_add_optional_comment' => 'Comment (optional)',
-    'tasks_add_cta' => 'Add task',
-    'tasks_add_success' => 'The task has been added successfully',
-    'tasks_delete' => 'Delete',
-    'tasks_reactivate' => 'Reactivate',
-    'tasks_mark_complete' => 'Mark as complete',
+    'tasks_blank_title' => 'You don\'t have any tasks yet.',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Add a task',
-    'tasks_added_on' => 'added on :date',
-    'tasks_delete_confirmation' => 'Are you sure you want to delete this task?',
     'tasks_delete_success' => 'The task has been deleted successfully',
     'tasks_complete_success' => 'The task has changed status successfully',
 

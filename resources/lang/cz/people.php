@@ -193,20 +193,10 @@ return [
     'kids_unlink_confirmation' => 'Opravdu chcete smazat tento vztah? Dítě nebude smazáno - jen údaje o vztahu mezi oběma kontakty.',
 
     // tasks
-    'tasks_desc' => 'Udržovat přehled o detailech pro :name',
-    'tasks_blank_title' => 'Zdá se, že zatím nemáte žádné úkoly pro :name',
-    'tasks_blank_add_activity' => 'Přidat úkol',
-    'tasks_add_title_page' => 'Přidat úkol pro kontakt :name',
-    'tasks_add_title' => 'Na jaký úkol chcete být upozorněni?',
-    'tasks_add_optional_comment' => 'Komentář (volitelné)',
-    'tasks_add_cta' => 'Přidat úkol',
-    'tasks_add_success' => 'Úkol byl úspěšně přidán',
-    'tasks_delete' => 'Smazat',
-    'tasks_reactivate' => 'Reaktivovat',
-    'tasks_mark_complete' => 'Označit jako hotové',
+    'tasks_blank_title' => 'You don\'t have any tasks yet.',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Přidat úkol',
-    'tasks_added_on' => 'přidáno :date',
-    'tasks_delete_confirmation' => 'Opravdu chcete smazat tento úkol?',
     'tasks_delete_success' => 'Úkol byl úspěšně smazán',
     'tasks_complete_success' => 'Úkol úspěšně změnil svůj stav',
 

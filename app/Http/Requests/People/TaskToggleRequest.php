@@ -4,7 +4,7 @@ namespace App\Http\Requests\People;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TasksRequest extends FormRequest
+class TaskToggleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,6 @@ class TasksRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->method() === 'PATCH') {
-            return [];
-        }
-
-        return [
-            'title' => 'required|string',
-            'description' => 'nullable',
-            'completed' => 'required|boolean',
-        ];
+        return [];
     }
 }

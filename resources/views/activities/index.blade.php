@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.section_personal_activities') }}
 
-    <span><a href="{{ route('activities.add', $contact) }}" class="btn">{{ trans('people.activities_add_activity') }}</a></span>
+    <span class="fr"><a href="{{ route('activities.add', $contact) }}" class="btn">{{ trans('people.activities_add_activity') }}</a></span>
   </h3>
 </div>
 

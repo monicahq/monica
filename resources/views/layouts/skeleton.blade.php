@@ -14,6 +14,9 @@
           'csrfToken' => csrf_token(),
       ]); ?>
     </script>
+
+    <!-- The script below puts all the translation keys in a JS file so we
+    can reuse it in Vue.js files -->
     <script>
       window.trans = <?php
       // copy all translations from /resources/lang/CURRENT_LOCALE/* to global JS variable

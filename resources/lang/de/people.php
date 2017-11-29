@@ -194,20 +194,10 @@ return [
     'kids_unlink_confirmation' => 'Bist Du dir sicher, dass du diese Verbindung lösen möchtest? Das Kind wird nicht gelöscht nur die Verbindung zwischen beiden Kontakten.',
 
     // tasks
-    'tasks_desc' => 'Behalte Aufgaben für :name im Auge',
-    'tasks_blank_title' => 'Es scheint als hättest du noch keine Aufgaben für :name',
-    'tasks_blank_add_activity' => 'Aufgabe hinzufügen',
-    'tasks_add_title_page' => 'Neue Aufgabe für :name hinzufügen',
-    'tasks_add_title' => 'An welche Aufgabe möchtest du erinnert werden?',
-    'tasks_add_optional_comment' => 'Kommentar (optional)',
-    'tasks_add_cta' => 'Aufgabe hinzufügen',
-    'tasks_add_success' => 'Die Aufgabe wurde erfolgreich hinzugefügt',
-    'tasks_delete' => 'Löschen',
-    'tasks_reactivate' => 'Reaktivieren',
-    'tasks_mark_complete' => 'Als erledigt markieren',
+    'tasks_blank_title' => 'You don\'t have any tasks yet.',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Aufgabe hinzufügen',
-    'tasks_added_on' => 'hinzugefügt am :date',
-    'tasks_delete_confirmation' => 'Möchtest du diese Aufgabe wirklich löschen?',
     'tasks_delete_success' => 'Die Aufgabe wurde erfolgreich gelöscht',
     'tasks_complete_success' => 'Der Status der Aufgabe wurder erfolgreich geändert',
 

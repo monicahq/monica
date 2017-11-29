@@ -70,7 +70,7 @@ class DashboardController extends Controller
             ->get();
 
         // Active tasks
-        $tasks = $account->tasks()->with('contact')->where('status', 'inprogress')->get();
+        $tasks = $account->tasks()->with('contact')->where('completed', 0)->get();
 
         $data = [
             'events' => $events,
