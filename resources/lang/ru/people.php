@@ -193,20 +193,10 @@ return [
     'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
-    'tasks_desc' => 'Управляйте Задачами связанными с :name',
     'tasks_blank_title' => 'Похоже что у вас пока нет задач связанных с :name',
-    'tasks_blank_add_activity' => 'Добавить задачу',
-    'tasks_add_title_page' => 'Добавить новую задачу по :name',
-    'tasks_add_title' => 'Название',
-    'tasks_add_optional_comment' => 'Комментарий (не обязательно)',
-    'tasks_add_cta' => 'Добавить задачу',
-    'tasks_add_success' => 'Задача была успешно добавлена',
-    'tasks_delete' => 'Удалить',
-    'tasks_reactivate' => 'Вернуть',
-    'tasks_mark_complete' => 'Выполнено',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Добавить задачу',
-    'tasks_added_on' => 'дата создания: :date',
-    'tasks_delete_confirmation' => 'Вы уверены что хотите удалить эту задачу?',
     'tasks_delete_success' => 'Задача была усрешна удалена',
     'tasks_complete_success' => 'Статус задачи был изменён',
 

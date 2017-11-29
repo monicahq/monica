@@ -106,10 +106,11 @@ class ContactTest extends FeatureTestCase
         $task = [
             'title' => $this->faker->sentence(),
             'description' => $this->faker->sentence(3),
+            'completed' => 0,
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/tasks/store',
+            '/people/'.$contact->id.'/tasks',
             $task
         );
 

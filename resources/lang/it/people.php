@@ -187,20 +187,10 @@ return [
     'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
-    'tasks_desc' => 'Tieni traccia delle cose che devi fare per :name',
     'tasks_blank_title' => 'Sembra tu non abbia nulla da fare che riguardi :name',
-    'tasks_blank_add_activity' => 'Aggiungi compito',
-    'tasks_add_title_page' => 'Aggiungi un nuovo compito che riguarda :name',
-    'tasks_add_title' => 'Di che compito vuoi ti ricordiamo?',
-    'tasks_add_optional_comment' => 'Commenti (facoltativi)',
-    'tasks_add_cta' => 'Aggiungi compito task',
-    'tasks_add_success' => 'Compito aggiunto',
-    'tasks_delete' => 'Rimuovi',
-    'tasks_reactivate' => 'Riattiva',
-    'tasks_mark_complete' => 'Contrassegna come completa',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Aggiungi compito',
-    'tasks_added_on' => 'aggiunto il :date',
-    'tasks_delete_confirmation' => 'Rimuovere questo compito?',
     'tasks_delete_success' => 'Compito rimosso',
     'tasks_complete_success' => 'Compito completato',
 

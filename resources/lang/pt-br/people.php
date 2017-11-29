@@ -193,20 +193,10 @@ return [
     'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
 
     // tasks
-    'tasks_desc' => 'Mantenha na linhas as coisas que você precisa para :name',
     'tasks_blank_title' => 'Parece que você não tem nenhuma tarefa para :name ainda',
-    'tasks_blank_add_activity' => 'Adicionar tarefa',
-    'tasks_add_title_page' => 'Adicionar uma tarefa para :name',
-    'tasks_add_title' => 'Qual é a tarefa que você quer lembrar?',
-    'tasks_add_optional_comment' => 'Comentário (Opcional)',
-    'tasks_add_cta' => 'Adicionar tarefa',
-    'tasks_add_success' => 'A tarefa foi adicionada com sucesso',
-    'tasks_delete' => 'Deletar',
-    'tasks_reactivate' => 'Reativar',
-    'tasks_mark_complete' => 'Marque como completo',
+    'tasks_form_title' => 'Title',
+    'tasks_form_description' => 'Description (optional)',
     'tasks_add_task' => 'Adicionar uma tarefa',
-    'tasks_added_on' => 'adicionado em :date',
-    'tasks_delete_confirmation' => 'Você tem certeza de que deseja excluir esta tarefa?',
     'tasks_delete_success' => 'A tarefa foi excluída com sucesso',
     'tasks_complete_success' => 'O status da tarefa foi alterado com sucesso',
 

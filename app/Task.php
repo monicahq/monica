@@ -79,17 +79,4 @@ class Task extends Model
     {
         return $query->where('completed', 'false');
     }
-
-    /**
-     * Toggle task status.
-     *
-     * @return static
-     */
-    public function toggle()
-    {
-        $this->status = $this->status === 'completed' ? 'inprogress' : 'completed';
-        $this->save();
-
-        return $this;
-    }
 }

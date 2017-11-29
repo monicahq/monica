@@ -45,6 +45,8 @@ class TasksController extends Controller
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
 
+        $contact->logEvent('task', $task->id, 'create');
+
         return $task;
     }
 
@@ -74,6 +76,8 @@ class TasksController extends Controller
             $task->completed = true;
             $task->completed_at = \Carbon\Carbon::now();
         }
+
+        $contact->logEvent('task', $task->id, 'update');
 
         $task->save();
     }
