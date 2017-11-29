@@ -24,8 +24,6 @@ class TasksController extends Controller
                 'description' => $task->description,
                 'completed' => $task->completed,
                 'completed_at' => \App\Helpers\DateHelper::getShortDate($task->completed_at),
-                'archived' => $task->archived,
-                'archived_at' => \App\Helpers\DateHelper::getShortDate($task->archived_at),
                 'edit' => false,
             ];
             $tasks->push($data);

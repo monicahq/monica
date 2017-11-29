@@ -15,17 +15,11 @@ class ChangeTasksTableStructure extends Migration
     {
         Schema::table('tasks', function (Blueprint $table) {
             $table->boolean('completed')->default(0)->after('description');
-            $table->boolean('archived')->default(0)->after('completed');
-            $table->date('archived_at')->nullable()->after('completed_at');
         });
 
         DB::table('tasks')
             ->where('status', 'completed')
             ->update(['completed' => 1]);
-
-        DB::table('tasks')
-            ->where('status', 'archived')
-            ->update(['archived' => 1]);
 
         Schema::table('tasks', function (Blueprint $table) {
             $table->dropColumn('status');
