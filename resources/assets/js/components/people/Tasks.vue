@@ -194,12 +194,6 @@
                     this.createForm
                 );
 
-                this.$notify({
-                  group: 'app',
-                  title: 'Important message',
-                  text: 'Hello user! This is a notification!'
-                });
-
                 this.addMode = false;
             },
 
