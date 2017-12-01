@@ -17,6 +17,10 @@ require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
 
+import Notifications from 'vue-notification';
+
+Vue.use(Notifications);
+
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')

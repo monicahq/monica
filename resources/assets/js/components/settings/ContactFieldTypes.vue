@@ -3,6 +3,8 @@
 
 <template>
   <div>
+    <notifications group="main" position="bottom right" />
+
     <h3 class="with-actions">
       {{ trans('settings.personalization_contact_field_type_title') }}
       <a class="btn fr nt2" @click="add">{{ trans('settings.personalization_contact_field_type_add') }}</a>
@@ -266,6 +268,14 @@
                     'post', '/settings/personalization/contactfieldtypes',
                     this.createForm, '#modal-create-contact-field-type', this.submitted
                 );
+
+                this.$notify({
+                    group: 'main',
+                    title: _.get(window.trans, 'settings.personalization_contact_field_type_add_success'),
+                    text: '',
+                    width: '500px',
+                    type: 'success'
+                });
             },
 
             edit(contactFieldType) {
@@ -282,6 +292,14 @@
                     'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
                     this.editForm, '#modal-edit-contact-field-type', this.edited
                 );
+
+                this.$notify({
+                    group: 'main',
+                    title: _.get(window.trans, 'settings.personalization_contact_field_type_edit_success'),
+                    text: '',
+                    width: '500px',
+                    type: 'success'
+                });
             },
 
             showDelete(contactFieldType) {
@@ -295,6 +313,14 @@
                     'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
                     this.editForm, '#modal-delete-contact-field-type', this.deleted
                 );
+
+                this.$notify({
+                    group: 'main',
+                    title: _.get(window.trans, 'settings.personalization_contact_field_type_delete_success'),
+                    text: '',
+                    width: '500px',
+                    type: 'success'
+                });
             },
 
             persistClient(method, uri, form, modal, success) {
