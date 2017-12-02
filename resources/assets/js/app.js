@@ -18,7 +18,6 @@ require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 const Vue = require('vue');
 
 import Notifications from 'vue-notification';
-
 Vue.use(Notifications);
 
 Vue.component(
@@ -50,6 +49,11 @@ Vue.component(
 Vue.component(
     'contact-task',
     require('./components/people/Tasks.vue')
+);
+
+Vue.component(
+    'contact-note',
+    require('./components/people/Notes.vue')
 );
 
 // Settings

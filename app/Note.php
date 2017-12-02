@@ -22,6 +22,19 @@ class Note extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_favorited' => 'boolean',
+    ];
+
+    protected $dates = [
+        'favorited_at',
+    ];
+
+    /**
      * Get the account record associated with the note.
      *
      * @return BelongsTo
