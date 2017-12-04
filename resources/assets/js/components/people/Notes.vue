@@ -13,6 +13,7 @@
         <form class="bg-near-white pa2 br2 mb3">
           <textarea class="w-100 br2 pa2 b--light-gray" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="trans('people.notes_add_cta')"></textarea>
           <a class="pointer btn btn-primary" @click.prevent="store" v-if="addMode">{{ trans('app.add') }}</a>
+          <a class="pointer btn btn-secondary" @click="addMode = false" v-if="addMode">{{ trans('app.cancel') }}</a>
         </form>
       </div>
 

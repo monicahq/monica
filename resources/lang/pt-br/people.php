@@ -242,15 +242,9 @@ return [
     'notes_create_success' => 'A nota foi adicionada com sucesso',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'A nota foi excluída com sucesso',
-    'notes_add_title' => 'Adicione uma nota sobre :name',
     'notes_add_cta' => 'Adicionar nota',
-    'notes_edit_title' => 'Edit note about :name',
-    'notes_edit_cta' => 'Save note',
-    'notes_written_on' => 'Escrito em :date',
-    'notes_add_one_more' => 'Adicionar outra nota',
-    'notes_title' => 'Notas',
-    'notes_blank_link' => 'Adicionar uma nota',
-    'notes_blank_name' => 'sobre :name',
+    'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Tem certeza de que deseja excluir esta anotação? A exclusão é permanente',
 
     // gifts

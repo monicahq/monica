@@ -11,6 +11,7 @@ return [
     'close' => 'Zavřít',
     'remove' => 'Odstranit',
     'done' => 'Done',
+    'for' => 'for',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',

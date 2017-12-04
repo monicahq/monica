@@ -7,13 +7,14 @@ return [
     'cancel' => 'Annuler',
     'delete' => 'Supprimer',
     'edit' => 'Mettre à jour',
-    'upload' => 'Upload',
-    'close' => 'Close',
-    'remove' => 'Remove',
+    'upload' => 'Envoyer',
+    'close' => 'Fermer',
+    'remove' => 'Enlever',
     'done' => 'Done',
+    'for' => 'pour',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
-    'markdown_link' => 'Read documentation',
+    'markdown_link' => 'Lire la documentation',
 
     'header_settings_link' => 'Paramètres',
     'header_logout_link' => 'Déconnexion',

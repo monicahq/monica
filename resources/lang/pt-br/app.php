@@ -11,6 +11,7 @@ return [
     'close' => 'Close',
     'remove' => 'Remove',
     'done' => 'Done',
+    'for' => 'for',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Read documentation',

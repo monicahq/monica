@@ -247,15 +247,9 @@ return [
     'notes_create_success' => 'La note a été ajoutée avec succès.',
     'notes_update_success' => 'La note a été modifiée avec succès.',
     'notes_delete_success' => 'La note a été supprimée avec succès.',
-    'notes_add_title' => 'Ajouter une note à propos de :name.',
     'notes_add_cta' => 'Ajouter la note',
-    'notes_edit_title' => 'Modifier la note à propos de :name',
-    'notes_edit_cta' => 'Enregistrer la note',
-    'notes_written_on' => 'Ecrit le :date',
-    'notes_add_one_more' => 'Ajouter une autre note',
-    'notes_title' => 'Notes',
-    'notes_blank_link' => 'Ajouter une note',
-    'notes_blank_name' => 'à propos de :name',
+    'notes_favorite' => 'Ajouter/retirer des favoris',
+    'notes_delete_title' => 'Supprimer une note',
     'notes_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer cette note ?',
 
     // gifts

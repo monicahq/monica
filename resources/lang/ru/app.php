@@ -11,6 +11,7 @@ return [
     'close' => 'Закрыть',
     'remove' => 'Убрать',
     'done' => 'Done',
+    'for' => 'for',
 
     'markdown_description' => 'Хотите форматировать ваш текст? Мы поддерживаем Markdown для добавления этих функций',
     'markdown_link' => 'Читать документацию',

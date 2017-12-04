@@ -236,15 +236,9 @@ return [
     'notes_create_success' => 'Nota creata',
     'notes_update_success' => 'Nota aggiornata',
     'notes_delete_success' => 'Nota rimossa',
-    'notes_add_title' => 'Aggiungi una nota su :name',
     'notes_add_cta' => 'Aggiungi nota',
-    'notes_edit_title' => 'Modifica la nota su :name',
-    'notes_edit_cta' => 'Salva nota',
-    'notes_written_on' => 'Scritta il :date',
-    'notes_add_one_more' => 'Aggiungi un\'altra nota',
-    'notes_title' => 'Note',
-    'notes_blank_link' => 'Aggiungi nota',
-    'notes_blank_name' => 'su :name',
+    'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Rimuovere nota? Questo cambio è permanente.',
 
     // gifts

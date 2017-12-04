@@ -5,6 +5,7 @@ namespace App;
 use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -52,6 +53,17 @@ class Note extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Limit notes to favorited ones.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeFavorited(Builder $query)
+    {
+        return $query->where('is_favorited', true);
     }
 
     /**
