@@ -242,15 +242,8 @@ return [
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',
     'notes_update_success' => 'Poznámka byla úspěšně uložena',
     'notes_delete_success' => 'Poznámka byla úspěšně smazána',
-    'notes_add_title' => 'Přidat poznámku k :name',
     'notes_add_cta' => 'Přidat poznámku',
-    'notes_edit_title' => 'Upravit poznámku o :name',
-    'notes_edit_cta' => 'Uložit poznámku',
-    'notes_written_on' => 'Zapsána :date',
-    'notes_add_one_more' => 'Přidat další poznámku',
-    'notes_title' => 'Poznámky',
-    'notes_blank_link' => 'Přidat poznámku',
-    'notes_blank_name' => 'k :name',
+    'notes_favorite' => 'Add/remove from favorites',
     'notes_delete_confirmation' => 'Opravdu chcete smazat tuto poznámku? Smazání je trvalé.',
 
     // gifts

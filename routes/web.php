@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
         // Notes
         Route::get('/people/{contact}/notes', 'Contacts\\NotesController@get');
         Route::post('/people/{contact}/notes', 'Contacts\\NotesController@store');
+        Route::put('/people/{contact}/notes/{note}', 'Contacts\\NotesController@update');
+        Route::delete('/people/{contact}/notes/{note}', 'Contacts\\NotesController@destroy');
         Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
         Route::get('/people/{contact}/notes/add', 'Contacts\\NotesController@create')->name('.notes.add');

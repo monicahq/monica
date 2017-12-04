@@ -1,4 +1,7 @@
 <style scoped>
+  .note:hover {
+      background-color: #f6fbff;
+  }
 </style>
 
 <template>
@@ -6,56 +9,71 @@
     <notifications group="main" position="bottom right" />
 
     <div>
-      <img src="/img/people/notes.svg" class="icon-section icon-notes">
-      <h3>
-        {{ trans('people.section_personal_notes') }}
-      </h3>
-    </div>
-
-    <div>
-
-      <!-- EMPTY STATE -->
-      <div v-if="notes.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3">
-        <p>{{ trans('people.notes_blank_title') }}</p>
-        <p><a class="pointer">{{ trans('people.notes_add_note') }}</a></p>
-      </div>
-
       <div>
-        <form class="bg-near-white pa2 br2 mt3 mb3">
-          <textarea class="w-100" v-model="createForm.body"></textarea>
-          <a class="pointer" @click.prevent="store">Add</a>
+        <form class="bg-near-white pa2 br2 mb3">
+          <textarea class="w-100 br2 pa2 b--light-gray" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="trans('people.notes_add_cta')"></textarea>
+          <a class="pointer btn btn-primary" @click.prevent="store" v-if="addMode">{{ trans('app.add') }}</a>
         </form>
       </div>
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
-        <li v-for="note in notes">
-          <div class="ba br2 b--black-10 br--top w-100 mb2">
+        <li v-for="note in notes" class="note">
+          <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit">
             <div class="pa2">
-              <vue-markdown>{{ note.body }}</vue-markdown>
+              {{ note.body }}
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
-                <i class="fa fa-star-o" @click="toggleFavorite(note)"></i>
-                {{ note.created_at }}
+                <div class="f5 di mr1">
+                  <i @click="toggleFavorite(note)" class="pointer" v-bind:class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" v-tooltip.top="trans('people.notes_favorite')"></i>
+                </div>
+                {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer">{{ trans('app.edit') }}</a>
+                <a class="pointer" @click="toggleEditMode(note)">{{ trans('app.edit') }}</a>
                 |
-                <a class="pointer">{{ trans('app.delete') }}</a>
+                <a class="pointer" @click.prevent="showDelete(note)">{{ trans('app.delete') }}</a>
               </div>
             </div>
           </div>
+
+          <!-- EDIT MODE -->
+          <form class="bg-near-white pa2 br2 mt3 mb3" v-show="note.edit">
+            <textarea class="w-100 br2 pa2 b--light-gray" v-model="note.body" @keyup.esc="note.edit = false"></textarea>
+            <a class="pointer btn btn-primary" @click.prevent="update(note)">{{ trans('app.update') }}</a>
+          </form>
+
         </li>
       </ul>
 
+    </div>
+
+    <!-- Delete Note modal -->
+    <div class="modal" id="modal-delete-note" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ trans('people.notes_delete_title') }}</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{ trans('people.notes_delete_confirmation') }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
+            <button type="button" class="btn btn-danger" @click.prevent="trash(note)">{{ trans('app.delete') }}</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
 </template>
 
 <script>
-    import VueMarkdown from 'vue-markdown';
 
     export default {
         /*
@@ -65,11 +83,17 @@
             return {
                 notes: [],
 
-                updateMode: false,
                 addMode: false,
                 editMode: false,
 
-                createForm: {
+                newNote: {
+                    id: 0,
+                    body: '',
+                    is_favorited: 0
+                },
+
+                note: {
+                    id: 0,
                     body: '',
                     is_favorited: 0
                 }
@@ -77,7 +101,7 @@
         },
 
         components: {
-            VueMarkdown
+        //     VueMarkdown
         },
 
         /**
@@ -95,6 +119,12 @@
         },
 
         props: ['contactId'],
+
+        computed: {
+            compiledMarkdown: function (text) {
+                return marked(text, { sanitize: true })
+            }
+        },
 
         methods: {
             /**
@@ -120,6 +150,13 @@
               })
             },
 
+            toggleEditMode(note) {
+                this.note.id = note.id;
+                this.note.body = note.body;
+                this.note.is_favorited = note.is_favorited;
+                Vue.set(note, 'edit', !note.edit);
+            },
+
             getNotes() {
                 axios.get('/people/' + this.contactId + '/notes')
                         .then(response => {
@@ -128,10 +165,19 @@
             },
 
             store() {
-                this.persistClient(
-                    'post', '/people/' + this.contactId + '/notes',
-                    this.createForm, 'people.notes_create_success'
-                );
+                axios.post('/people/' + this.contactId + '/notes/', this.newNote)
+                      .then(response => {
+                          this.newNote.body = '';
+                          this.getNotes();
+                          this.addMode = false;
+
+                          this.$notify({
+                              group: 'main',
+                              title: _.get(window.trans, 'people.notes_create_success'),
+                              text: '',
+                              type: 'success'
+                          });
+                      });
             },
 
             toggleFavorite(note) {
@@ -141,35 +187,41 @@
                       });
             },
 
-            persistClient(method, uri, form, message) {
-                form.errors = {};
+            update(note) {
+                axios.put('/people/' + this.contactId + '/notes/' + note.id, note)
+                      .then(response => {
+                          Vue.set(note, 'edit', note.edit);
+                          this.getNotes();
 
-                axios[method](uri, form)
-                    .then(response => {
-                        this.reinitialize();
-                        this.getNotes();
+                          this.$notify({
+                              group: 'main',
+                              title: _.get(window.trans, 'people.notes_update_success'),
+                              text: '',
+                              type: 'success'
+                          });
+                      });
+            },
 
-                        this.$notify({
-                            group: 'main',
-                            title: _.get(window.trans, message),
-                            text: '',
-                            type: 'error'
-                        });
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = ['Something went wrong. Please try again.'];
-                        }
+            showDelete(note) {
+                this.note.id = note.id
 
-                        this.$notify({
-                            group: 'main',
-                            title: _.get(window.trans, 'app.error_title'),
-                            text: '',
-                            type: 'error'
-                        });
-                    });
+                $('#modal-delete-note').modal('show');
+            },
+
+            trash(note) {
+                axios.delete('/people/' + this.contactId + '/notes/' + note.id)
+                      .then(response => {
+                          this.getNotes();
+
+                          $('#modal-delete-note').modal('hide');
+
+                          this.$notify({
+                              group: 'main',
+                              title: _.get(window.trans, 'people.notes_delete_success'),
+                              text: '',
+                              type: 'success'
+                          });
+                      });
             },
         }
     }

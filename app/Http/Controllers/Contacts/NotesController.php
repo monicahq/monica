@@ -16,15 +16,17 @@ class NotesController extends Controller
     public function get(Contact $contact)
     {
         $notesCollection = collect([]);
-        $notes = $contact->notes()->orderBy('created_at', 'desc')->get();
+        $notes = $contact->notes()->latest()->get();
 
         foreach ($notes as $note) {
             $data = [
                 'id' => $note->id,
-                'body' => $note->getParsedBodyAttribute(),
+                'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
-                'favorited_at' => \App\Helpers\DateHelper::getShortDate($note->favorited_at),
-                'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
+                'favorited_at' => $note->favorited_at,
+                'favorited_at_short' => \App\Helpers\DateHelper::getShortDate($note->favorited_at),
+                'created_at' => $note->created_at,
+                'created_at_short' => \App\Helpers\DateHelper::getShortDate($note->created_at),
                 'edit' => false,
             ];
             $notesCollection->push($data);
@@ -83,8 +85,7 @@ class NotesController extends Controller
 
         $contact->logEvent('note', $note->id, 'update');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.notes_update_success'));
+        return $note;
     }
 
     /**
@@ -99,8 +100,5 @@ class NotesController extends Controller
         $note->delete();
 
         $contact->events()->forObject($note)->get()->each->delete();
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.notes_delete_success'));
     }
 }

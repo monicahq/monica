@@ -42,7 +42,9 @@
 
           <div class="col-xs-12 col-sm-9">
             <div class="row section notes">
-              @include('people.notes.index')
+              <div class="col-xs-12 section-title">
+                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+              </div>
             </div>
 
             <div class="row section calls">

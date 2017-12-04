@@ -244,15 +244,9 @@ return [
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'The note has been deleted successfully',
-    'notes_add_title' => 'Add a note about :name',
     'notes_add_cta' => 'Add note',
-    'notes_edit_title' => 'Edit note about :name',
-    'notes_edit_cta' => 'Save note',
-    'notes_written_on' => 'Written on :date',
-    'notes_add_one_more' => 'Add another note',
-    'notes_title' => 'Notes',
-    'notes_blank_link' => 'Add a note',
-    'notes_blank_name' => 'about :name',
+    'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
     // gifts
