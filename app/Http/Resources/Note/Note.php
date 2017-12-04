@@ -19,6 +19,8 @@ class Note extends Resource
             'id' => $this->id,
             'object' => 'note',
             'body' => $this->body,
+            'is_favorited' => (bool) $this->is_favorited,
+            'favorited_at' => (is_null($this->favorited_at) ? null : $this->favorited_at->format(config('api.timestamp_format'))),
             'account' => [
                 'id' => $this->account_id,
             ],

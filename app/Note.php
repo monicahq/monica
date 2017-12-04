@@ -36,6 +36,16 @@ class Note extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'body',
+        'is_favorited',
+    ];
+
+    /**
      * Get the account record associated with the note.
      *
      * @return BelongsTo

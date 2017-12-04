@@ -55,24 +55,6 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas('contacts', $params);
     }
 
-    public function test_user_can_add_note_to_contact()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $body = $this->faker->paragraph();
-
-        $this->post(
-            route('people.notes.store', $contact), [
-            'body' => $body,
-        ]);
-
-        $this->assertDatabaseHas('notes', [
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-            'body' => $body,
-        ]);
-    }
-
     public function test_user_can_be_reminded_about_an_event_once()
     {
         list($user, $contact) = $this->fetchUser();
