@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.section_personal_gifts') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/gifts/add" class="btn">{{ trans('people.gifts_add_gift') }}</a>
     </span>
   </h3>
@@ -59,7 +59,7 @@
             </a>
           </div>
 
-          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+          <form method="POST" action="{{ action('Contacts\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
           </form>
@@ -105,7 +105,7 @@
             </a>
           </div>
 
-          <form method="POST" action="{{ action('People\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
+          <form method="POST" action="{{ action('Contacts\\GiftsController@destroy', compact('contact', 'gift')) }}" class="entry-delete-form hidden">
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
           </form>

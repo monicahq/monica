@@ -40,6 +40,8 @@ class SettingsController extends Controller
     {
         $request->user()->update(
             $request->only([
+                'first_name',
+                'last_name',
                 'email',
                 'timezone',
                 'locale',
@@ -79,6 +81,10 @@ class SettingsController extends Controller
             $account->offpsrings->each->forceDelete();
             $account->relationships->each->forceDelete();
             $account->progenitors->each->forceDelete();
+            $account->contactFields->each->forceDelete();
+            $account->contactFieldTypes->each->forceDelete();
+            $account->calls->each->forceDelete();
+            $account->activityStatistics->each->forceDelete();
             $account->forceDelete();
         }
 
@@ -113,6 +119,10 @@ class SettingsController extends Controller
             $account->offpsrings->each->forceDelete();
             $account->relationships->each->forceDelete();
             $account->progenitors->each->forceDelete();
+            $account->contactFields->each->forceDelete();
+            $account->contactFieldTypes->each->forceDelete();
+            $account->activityStatistics->each->forceDelete();
+            $account->calls->each->forceDelete();
         }
 
         return redirect('/settings')

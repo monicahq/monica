@@ -11,6 +11,7 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\Offspring;
+use App\ContactField;
 use App\Relationship;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -37,6 +38,13 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('contact', function ($value) {
             return Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('contactfield', function ($value, $route) {
+            return ContactField::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

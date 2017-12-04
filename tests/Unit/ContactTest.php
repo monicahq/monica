@@ -282,73 +282,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetPartialAddressReturnsNullIfNoCityIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getPartialAddress());
-    }
-
-    public function testGetPartialAddressReturnsCityIfProvinceIsUndefined()
-    {
-        $contact = new Contact;
-        $contact->city = 'Montreal';
-
-        $this->assertEquals(
-            'Montreal',
-            $contact->getPartialAddress()
-        );
-    }
-
-    public function testGetPartialAddressReturnsCityAndProvince()
-    {
-        $contact = new Contact;
-        $contact->city = 'Montreal';
-        $contact->province = 'QC';
-
-        $this->assertEquals(
-            'Montreal, QC',
-            $contact->getPartialAddress()
-        );
-    }
-
-    public function testGetCountryReturnsNullIfNoStreetIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getCountryName());
-    }
-
-    public function testGetCountryCodeReturnsStreetWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->country_id = 1;
-
-        $this->assertEquals(
-            'United States',
-            $contact->getCountryName()
-        );
-    }
-
-    public function testGetCountryISOReturnsNullIfISONotFound()
-    {
-        $contact = new Contact;
-        $contact->country_id = null;
-
-        $this->assertNull($contact->getCountryISO());
-    }
-
-    public function testGetCountryISOReturnsTheRightISO()
-    {
-        $contact = new Contact;
-        $contact->country_id = 1;
-
-        $this->assertEquals(
-            'us',
-            $contact->getCountryISO()
-        );
-    }
-
     public function testUpdateFoodPreferenciesSetsNullIfEmptyValueGiven()
     {
         $contact = factory(\App\Contact::class)->create();
@@ -413,11 +346,71 @@ class ContactTest extends TestCase
         config(['filesystems.default' => 'public']);
 
         $contact = new Contact;
+        $contact->has_avatar = true;
         $contact->avatar_file_name = 'h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX.jpg';
 
         $this->assertEquals(
             '/storage/avatars/h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX_100.jpg',
             $contact->getAvatarURL(100)
+        );
+    }
+
+    public function test_get_avatar_returns_null_if_not_set()
+    {
+        $contact = new Contact;
+
+        $this->assertNull(
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_returns_gravatar()
+    {
+        $contact = new Contact;
+        $contact->gravatar_url = 'https://gravatar.com/url';
+
+        $this->assertEquals(
+            'https://gravatar.com/url',
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_returns_external_url()
+    {
+        $contact = new Contact();
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'external';
+        $contact->avatar_external_url = 'https://facebook.com/johndoe.png';
+
+        $this->assertEquals(
+            'https://facebook.com/johndoe.png',
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_source_returns_external_or_internal()
+    {
+        $contact = new Contact();
+        $contact->has_avatar = false;
+
+        $this->assertNull(
+            $contact->getAvatarSource()
+        );
+
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'external';
+
+        $this->assertEquals(
+            'external',
+            $contact->getAvatarSource()
+        );
+
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'public';
+
+        $this->assertEquals(
+            'internal',
+            $contact->getAvatarSource()
         );
     }
 

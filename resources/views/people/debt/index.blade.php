@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
@@ -54,7 +54,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('People\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

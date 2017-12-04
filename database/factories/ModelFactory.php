@@ -63,6 +63,7 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'has_avatar' => false,
     ];
 });
 
@@ -132,6 +133,12 @@ $factory->define(App\Call::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Address::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

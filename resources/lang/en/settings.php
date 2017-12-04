@@ -2,6 +2,7 @@
 
 return [
     'sidebar_settings' => 'Account settings',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Export data',
     'sidebar_settings_users' => 'Users',
     'sidebar_settings_subscriptions' => 'Subscription',
@@ -145,5 +146,25 @@ return [
     'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+
+    'personalization_title' => 'Here you can find different settings to configure your account. These features are more for "power users" who want maximum control over Monica.',
+    'personalization_contact_field_type_title' => 'Contact field types',
+    'personalization_contact_field_type_add' => 'Add new field type',
+    'personalization_contact_field_type_description' => 'Here you can configure all the different types of contact fields that you can associate to all your contacts. If in the future, a new social network appears, you will be able to add this new type of ways of contacting your contacts right here.',
+    'personalization_contact_field_type_table_name' => 'Name',
+    'personalization_contact_field_type_table_protocol' => 'Protocol',
+    'personalization_contact_field_type_table_actions' => 'Actions',
+    'personalization_contact_field_type_modal_title' => 'Add a new contact field type',
+    'personalization_contact_field_type_modal_edit_title' => 'Edit an existing contact field type',
+    'personalization_contact_field_type_modal_delete_title' => 'Delete an existing contact field type',
+    'personalization_contact_field_type_modal_delete_description' => 'Are you sure you want to delete this contact field type? Deleting this type of contact field will delete ALL the data with this type for all your contacts.',
+    'personalization_contact_field_type_modal_name' => 'Name',
+    'personalization_contact_field_type_modal_protocol' => 'Protocol (optional)',
+    'personalization_contact_field_type_modal_protocol_help' => 'Each new contact field type can be clickable. If a protocol is set, we will use it to trigger the action that is set.',
+    'personalization_contact_field_type_modal_icon' => 'Icon (optional)',
+    'personalization_contact_field_type_modal_icon_help' => 'You can associate an icon with this contact field type. You need to add a reference to a Font Awesome icon.',
+    'personalization_contact_field_type_delete_success' => 'The contact field type has been deleted with success.',
+    'personalization_contact_field_type_add_success' => 'The contact field type has been successfully added.',
+    'personalization_contact_field_type_edit_success' => 'The contact field type has been successfully updated.',
 
 ];

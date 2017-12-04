@@ -20,7 +20,7 @@ class Task extends Resource
             'object' => 'task',
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
+            'completed' => (bool) $this->completed,
             'completed_at' => (is_null($this->completed_at) ? null : $this->completed_at->format(config('api.timestamp_format'))),
             'account' => [
                 'id' => $this->account->id,

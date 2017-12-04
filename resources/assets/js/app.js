@@ -16,6 +16,17 @@ require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
+
+// Notifications
+import Notifications from 'vue-notification';
+Vue.use(Notifications);
+
+// Tooltip
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
+Vue.use(Tooltip);
+
+// Custom components
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')
@@ -30,6 +41,40 @@ Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue')
 );
+
+// Contacts
+Vue.component(
+    'contact-address',
+    require('./components/people/Addresses.vue')
+);
+
+Vue.component(
+    'contact-information',
+    require('./components/people/ContactInformation.vue')
+);
+
+Vue.component(
+    'contact-task',
+    require('./components/people/Tasks.vue')
+);
+
+Vue.component(
+    'contact-note',
+    require('./components/people/Notes.vue')
+);
+
+// Settings
+Vue.component(
+    'contact-field-types',
+    require('./components/settings/ContactFieldTypes.vue')
+);
+
+
+// This let us access the `trans` method for localization in Vue templates
+// ({{ trans('app.save') }})
+Vue.prototype.trans = (key) => {
+    return _.get(window.trans, key, key);
+};
 
 const app = new Vue({
     el: '#app',

@@ -39,8 +39,16 @@
 
         <form action="/settings/save" method="POST">
           {{ csrf_field() }}
+
+          {{-- names --}}
           <div class="form-group">
-            <p>{{ trans('settings.name', ['name' => auth()->user()->name]) }}</p>
+            <label for="firstname">First name</label>
+            <input type="text" class="form-control" name="first_name" id="first_name" required value="{{ auth()->user()->first_name }}">
+          </div>
+
+          <div class="form-group">
+            <label for="firstname">Last name</label>
+            <input type="text" class="form-control" name="last_name" id="last_name" required value="{{ auth()->user()->last_name }}">
           </div>
 
           {{-- email address --}}

@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/reminders/add" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>
@@ -64,7 +64,7 @@
           @endif
         </div>
 
-        <form method="POST" action="{{ action('People\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>
