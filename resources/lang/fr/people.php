@@ -148,7 +148,7 @@ return [
     'significant_other_sidebar_title' => 'Conjoint',
     'significant_other_cta' => 'Ajouter un conjoint',
     'significant_other_add_title' => 'Quel est le nom du conjoint de :name ?',
-    'significant_other_add_firstname' => 'Nom',
+    'significant_other_add_firstname' => 'Prénom',
     'significant_other_add_unknown' => 'Je ne connais pas son âge.',
     'significant_other_add_probably' => 'Cette personne a probablement',
     'significant_other_add_probably_yo' => 'ans',
