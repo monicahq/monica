@@ -1,10 +1,17 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v1.3.0 - 2017-12-04
+-------------------
+
+* Notes can be set as favorites
+* Favorite notes are shown on the dashboard
 * Notes are now managed inline
 * Add dynamic notifications when adding/updating/deleting data from Vue files
 * Add ability to change account's owner first and last names
-
-RELEASED VERSIONS:
 
 v1.2.0 - 2017-11-29
 -------------------
