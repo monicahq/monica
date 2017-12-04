@@ -41,12 +41,14 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
-            <div class="row section calls">
-              @include('people.calls.index')
+            <div class="row section notes">
+              <div class="col-xs-12 section-title">
+                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+              </div>
             </div>
 
-            <div class="row section notes">
-              @include('people.notes.index')
+            <div class="row section calls">
+              @include('people.calls.index')
             </div>
 
             <div class="row section activities">

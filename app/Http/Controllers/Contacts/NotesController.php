@@ -6,80 +6,64 @@ use App\Note;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\NotesRequest;
+use App\Http\Requests\People\NoteToggleRequest;
 
 class NotesController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * Get all the tasks of this contact.
      */
-    public function index(Contact $contact)
+    public function get(Contact $contact)
     {
-        return view('people.notes.index')
-            ->withContact($contact);
+        $notesCollection = collect([]);
+        $notes = $contact->notes()->latest()->get();
+
+        foreach ($notes as $note) {
+            $data = [
+                'id' => $note->id,
+                'body' => $note->body,
+                'is_favorited' => $note->is_favorited,
+                'favorited_at' => $note->favorited_at,
+                'favorited_at_short' => \App\Helpers\DateHelper::getShortDate($note->favorited_at),
+                'created_at' => $note->created_at,
+                'created_at_short' => \App\Helpers\DateHelper::getShortDate($note->created_at),
+                'edit' => false,
+            ];
+            $notesCollection->push($data);
+        }
+
+        return $notesCollection;
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Contact $contact)
-    {
-        return view('people.notes.add')
-            ->withContact($contact)
-            ->withNote(new Note);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param NotesRequest $request
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * Store the task.
      */
     public function store(NotesRequest $request, Contact $contact)
     {
-        $note = $contact->notes()->create(
-            $request->only([
-                'body',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $note = $contact->notes()->create([
+            'account_id' => auth()->user()->account->id,
+            'body' => $request->get('body'),
+        ]);
 
         $contact->logEvent('note', $note->id, 'create');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.notes_create_success'));
+        return $note;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Note $note
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Note $note)
+    public function toggle(NoteToggleRequest $request, Contact $contact, Note $note)
     {
-        //
-    }
+        // check if the state of the note has changed
+        if ($note->is_favorited) {
+            $note->favorited_at = null;
+            $note->is_favorited = false;
+        } else {
+            $note->is_favorited = true;
+            $note->favorited_at = \Carbon\Carbon::now();
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Contact $contact
-     * @param Note $note
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact, Note $note)
-    {
-        return view('people.notes.edit')
-            ->withContact($contact)
-            ->withNote($note);
+        $contact->logEvent('note', $note->id, 'update');
+
+        $note->save();
     }
 
     /**
@@ -101,8 +85,7 @@ class NotesController extends Controller
 
         $contact->logEvent('note', $note->id, 'update');
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.notes_update_success'));
+        return $note;
     }
 
     /**
@@ -117,8 +100,5 @@ class NotesController extends Controller
         $note->delete();
 
         $contact->events()->forObject($note)->get()->each->delete();
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.notes_delete_success'));
     }
 }

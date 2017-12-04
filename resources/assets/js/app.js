@@ -17,10 +17,16 @@ require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
 
+// Notifications
 import Notifications from 'vue-notification';
-
 Vue.use(Notifications);
 
+// Tooltip
+import Tooltip from 'vue-directive-tooltip';
+import 'vue-directive-tooltip/css/index.css';
+Vue.use(Tooltip);
+
+// Custom components
 Vue.component(
     'passport-clients',
     require('./components/passport/Clients.vue')
@@ -50,6 +56,11 @@ Vue.component(
 Vue.component(
     'contact-task',
     require('./components/people/Tasks.vue')
+);
+
+Vue.component(
+    'contact-note',
+    require('./components/people/Notes.vue')
 );
 
 // Settings

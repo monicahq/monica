@@ -65,11 +65,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/tags/update', 'Contacts\\TagsController@update')->name('.tags.update');
 
         // Notes
-        Route::get('/people/{contact}/notes/add', 'Contacts\\NotesController@create')->name('.notes.add');
-        Route::post('/people/{contact}/notes/store', 'Contacts\\NotesController@store')->name('.notes.store');
-        Route::get('/people/{contact}/notes/{note}/edit', 'Contacts\\NotesController@edit')->name('.notes.edit');
-        Route::put('/people/{contact}/notes/{note}', 'Contacts\\NotesController@update')->name('.notes.update');
-        Route::delete('/people/{contact}/notes/{note}', 'Contacts\\NotesController@destroy')->name('.notes.delete');
+        Route::get('/people/{contact}/notes', 'Contacts\\NotesController@get');
+        Route::post('/people/{contact}/notes', 'Contacts\\NotesController@store')->name('.notes.store');
+        Route::put('/people/{contact}/notes/{note}', 'Contacts\\NotesController@update');
+        Route::delete('/people/{contact}/notes/{note}', 'Contacts\\NotesController@destroy');
+        Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
         // Food preferencies
         Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('.food');

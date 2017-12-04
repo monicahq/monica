@@ -243,15 +243,9 @@ return [
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',
     'notes_update_success' => 'Die Notiz wurde erfolgreich aktualisiert',
     'notes_delete_success' => 'Die Notiz wurde erfolgreich gelöscht',
-    'notes_add_title' => 'Füge eine Notiz über :name hinzu',
     'notes_add_cta' => 'Notiz hinzufügen',
-    'notes_edit_title' => 'Notiz über :name ändern',
-    'notes_edit_cta' => 'Notiz speichern',
-    'notes_written_on' => 'Geschrieben am :date',
-    'notes_add_one_more' => 'Weitere Notiz hinzufügen',
-    'notes_title' => 'Notizen',
-    'notes_blank_link' => 'Notiz hinzufügen',
-    'notes_blank_name' => 'über :name',
+    'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Möchtest du diese Notiz wirklich löschen?',
 
     // gifts

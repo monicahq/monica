@@ -25,6 +25,7 @@ class NotesRequest extends FormRequest
     {
         return [
             'body' => 'required|string',
+            'is_favorited' => 'boolean|required',
         ];
     }
 }

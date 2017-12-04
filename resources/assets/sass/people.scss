@@ -396,8 +396,7 @@
       margin-bottom: 35px;
 
       &.kids,
-      &.food-preferencies,
-      &.notes {
+      &.food-preferencies {
         .section-heading img {
           position: relative;
           top: -3px;
@@ -438,59 +437,6 @@
         h3 {
           font-weight: 400;
           font-size: 14px;
-        }
-      }
-    }
-
-    .notes {
-      .blank-note-state {
-        text-align: center;
-
-        img {
-          background-color: #e3f7f7;
-          border: 1px solid #d2caca;
-          border-radius: 50%;
-          filter: grayscale(30%);
-          margin-bottom: 10px;
-          padding: 4px;
-          width: 60px;
-        }
-      }
-
-      .notes-add-box {
-        background-color: #f6f8f9;
-        border-radius: 3px;
-        margin-bottom: 30px;
-        padding: 10px;
-
-        .actions {
-          margin-top: 10px;
-
-          .btn {
-            width: 49%;
-          }
-        }
-      }
-
-      .note-item {
-        border: 1px solid #eee;
-        border-radius: 3px;
-        margin-bottom: 15px;
-
-        .note-item-body {
-          padding: 10px;
-        }
-      }
-
-      .note-item-actions {
-        background-color: #f9f9f9;
-        color: #666;
-        font-size: 12px;
-        margin-top: 10px;
-        padding: 5px 10px;
-
-        li {
-          margin-right: 10px;
         }
       }
     }

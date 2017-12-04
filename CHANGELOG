@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Notes are now managed inline
 * Add dynamic notifications when adding/updating/deleting data from Vue files
 * Add ability to change account's owner first and last names
 

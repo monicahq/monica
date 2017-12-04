@@ -3,7 +3,10 @@
 return [
     'dashboard_blank_title' => 'Welcome to your account!',
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
+    'dashboard_blank_cta' => 'Ajoutez votre premier contact',
+
+    'notes_title' => 'Vous n\'avez encore aucune note.',
+    'notes_description' => 'Cliquez sur l\'étoile d\'un de vos contacts pour lister vos notes favorites ici.',
 
     'reminders_title' => 'Prochains rappels',
     'reminders_blank_description' => 'Aucun rappel planifié.',
@@ -32,6 +35,7 @@ return [
     'tab_last_edited_contacts' => 'Derniers contacts modifiés',
     'tab_whats_coming' => 'Prochainement',
     'tab_lastest_actions' => 'Dernières actions',
+    'tab_important_notes' => 'Notes importantes',
     'tasks_title' => 'Tâches',
     'tasks_blank' => 'Aucune tâche n\'est planifiée.',
     'reminders_in_days' => 'dans :number jours',

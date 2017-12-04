@@ -54,6 +54,7 @@ class ApiNoteController extends ApiController
         $validator = Validator::make($request->all(), [
             'body' => 'required|max:100000',
             'contact_id' => 'required|integer',
+            'is_favorited' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -73,6 +74,11 @@ class ApiNoteController extends ApiController
             $note = Note::create($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        if ($request->get('is_favorited')) {
+            $note->favorited_at = \Carbon\Carbon::now();
+            $note->save();
         }
 
         $note->account_id = auth()->user()->account->id;
@@ -120,6 +126,14 @@ class ApiNoteController extends ApiController
             $note->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
+        }
+
+        if ($request->get('is_favorited')) {
+            $note->favorited_at = \Carbon\Carbon::now();
+            $note->save();
+        } else {
+            $note->favorited_at = null;
+            $note->save();
         }
 
         return new NoteResource($note);

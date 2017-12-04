@@ -111,7 +111,7 @@ class Account extends Model
      */
     public function notes()
     {
-        return $this->hasMany(Note::class);
+        return $this->hasMany(Note::class)->orderBy('created_at', 'desc');
     }
 
     /**

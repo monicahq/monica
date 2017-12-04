@@ -242,15 +242,9 @@ return [
     'notes_create_success' => 'Заметка была добавлена',
     'notes_update_success' => 'The note has been saved successfully',
     'notes_delete_success' => 'Заметка была удалена',
-    'notes_add_title' => 'Добавить заметку о :name',
     'notes_add_cta' => 'Добавить заметку',
-    'notes_edit_title' => 'Edit note about :name',
-    'notes_edit_cta' => 'Save note',
-    'notes_written_on' => 'Дата создания: :date',
-    'notes_add_one_more' => 'Добавить заметку',
-    'notes_title' => 'Заметки',
-    'notes_blank_link' => 'Добавить заметку',
-    'notes_blank_name' => 'о :name',
+    'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Вы уверены что хотите удалить эту заметку? Восстановление невозможно.',
 
     // gifts
