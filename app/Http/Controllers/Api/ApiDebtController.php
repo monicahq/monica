@@ -63,7 +63,7 @@ class ApiDebtController extends ApiController
                 'string',
                 Rule::in(['inprogress', 'completed']),
             ],
-            'amount' => 'required|integer',
+            'amount' => 'required|numeric',
             'reason' => 'string|max:1000000|nullable',
             'contact_id' => 'required|integer',
         ]);
@@ -121,7 +121,7 @@ class ApiDebtController extends ApiController
                 'string',
                 Rule::in(['inprogress', 'completed']),
             ],
-            'amount' => 'required|integer',
+            'amount' => 'required|numeric',
             'reason' => 'string|max:1000000|nullable',
             'contact_id' => 'required|integer',
         ]);
