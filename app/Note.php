@@ -41,6 +41,8 @@ class Note extends Model
      * @var array
      */
     protected $fillable = [
+        'account_id',
+        'contact_id',
         'body',
         'is_favorited',
     ];
