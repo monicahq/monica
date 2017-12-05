@@ -137,7 +137,7 @@
                       {{ trans('people.information_edit_probably') }}
 
                       <input type="number" class="form-control" name="age" id="age"
-                              value="{{ (is_null($contact->getAge())) ? 1 : $contact->getAge() }}"
+                              value="{{ (is_null($contact->birthdate->getAge())) ? 1 : $contact->birthdate->getAge() }}"
                               min="0"
                               max="99">
 
@@ -154,10 +154,7 @@
                       <div class="form-inline">
                         {{ trans('people.information_edit_exact') }}
 
-                        <input type="date" id="specificDate" name="specificDate" class="form-control"
-                              value="{{ (is_null($contact->birthdate)) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->birthdate->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
+                        @include('partials.components.date-select', ['contact' => $contact, 'date' => $contact->birthdate, 'class' => 'birthdate'])
                       </div>
                   </label>
                 </div>
@@ -178,7 +175,7 @@
                     <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
                     {{ trans('people.deceased_know_date') }}
 
-                    @include('partials.components.date-select', ['contact' => $contact])
+                    @include('partials.components.date-select', ['contact' => $contact, 'date' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
                 </div>
                 <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">

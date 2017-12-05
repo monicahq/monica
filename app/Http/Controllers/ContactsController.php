@@ -180,9 +180,9 @@ class ContactsController extends Controller
             $contact->is_dead = true;
 
             if ($request->input('checkboxDatePersonDeceased') != '') {
-                $day = $request->input('dayDeceased');
-                $month = $request->input('monthDeceased');
-                $year = $request->input('yearDeceased');
+                $day = $request->input('deceased_date_day');
+                $month = $request->input('deceased_date_month');
+                $year = $request->input('deceased_date_year');
 
                 $date = \Carbon\Carbon::createFromDate($year, $month, $day);
                 $contact->deceased_date = $date;

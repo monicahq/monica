@@ -75,6 +75,9 @@
 
           <span class="form-inline">
             {{ trans('people.significant_other_add_exact') }}
+
+            @include('partials.components.date-select', ['contact' => $contact, 'date' => $contact->birthdate])
+
             <input type="date" name="birthdate" class="form-control" id="specificDate"
             value="{{ old('birthdate') ?? (! is_null($partner->birthdate) ? $partner->birthdate->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
             min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"

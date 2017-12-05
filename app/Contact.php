@@ -269,6 +269,36 @@ class Contact extends Model
     }
 
     /**
+     * Get the Special date represented the birthdate.
+     *
+     * @return HasOne
+     */
+    public function birthdate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'birthday_special_date_id');
+    }
+
+    /**
+     * Get the Special date represented the deceased date.
+     *
+     * @return HasOne
+     */
+    public function deceasedDate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'deceased_special_date_id');
+    }
+
+    /**
+     * Get the Special date represented the date first met.
+     *
+     * @return HasOne
+     */
+    public function firstMetDate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'first_met_special_date_id');
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
@@ -437,39 +467,6 @@ class Contact extends Model
         return DateHelper::getShortDate(
             Carbon::parse($this->last_talked_to, $timezone)
         );
-    }
-
-    /**
-     * Gets the age of the contact in years, or returns null if the birthdate
-     * is not set.
-     *
-     * @return int
-     */
-    public function getAge()
-    {
-        if (is_null($this->birthdate)) {
-            return;
-        }
-
-        return $this->birthdate->diffInYears(Carbon::now());
-    }
-
-    /**
-     * Returns 'true' if the birthdate is an approximation.
-     *
-     * @return string
-     */
-    public function isBirthdateApproximate()
-    {
-        if ($this->is_birthdate_approximate === 'unknown') {
-            return true;
-        }
-
-        if ($this->is_birthdate_approximate === 'exact') {
-            return false;
-        }
-
-        return $this->is_birthdate_approximate;
     }
 
     /**
