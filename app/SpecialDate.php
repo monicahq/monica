@@ -109,7 +109,7 @@ class SpecialDate extends Model
 
     /**
      * Deletes the reminder for this date, if it exists.
-     * @return boolean
+     * @return int
      */
     public function deleteReminder()
     {
@@ -117,12 +117,7 @@ class SpecialDate extends Model
             return;
         }
 
-        try {
-            Reminder::destroy($this->reminder_id);
-            return true;
-        } catch (ModelNotFoundException $e) {
-            return false;
-        }
+        return Reminder::destroy($this->reminder_id);
     }
 
     /**

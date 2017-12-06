@@ -90,6 +90,7 @@ $factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,
+        'date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
         'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
     ];
 });

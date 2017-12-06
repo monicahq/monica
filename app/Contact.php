@@ -23,10 +23,7 @@ class Contact extends Model
     use Searchable;
 
     protected $dates = [
-        'birthdate',
         'last_talked_to',
-        'first_met',
-        'deceased_date',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -62,7 +59,6 @@ class Contact extends Model
         'last_name',
         'gender',
         'birthdate',
-        'is_birthdate_approximate',
         'account_id',
         'is_partial',
         'job',
@@ -70,7 +66,6 @@ class Contact extends Model
         'food_preferencies',
         'linkedin_profile_url',
         'is_dead',
-        'deceased_date',
         'avatar_external_url',
     ];
 

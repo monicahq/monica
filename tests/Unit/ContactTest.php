@@ -540,4 +540,11 @@ class ContactTest extends TestCase
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
     }
+
+    public function test_set_special_date_creates_a_date_and_saves_the_id()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertNull($contact->setSpecialDate(null, 2010, 10, 10));
+    }
 }
