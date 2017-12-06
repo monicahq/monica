@@ -8,6 +8,7 @@ use Validator;
 use App\Contact;
 use App\Offspring;
 use App\Progenitor;
+use App\SpecialDate;
 use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
@@ -208,14 +209,22 @@ class ContactsController extends Controller
             $contact->deceased_date = null;
         }
 
-        $contact->is_birthdate_approximate = $request->input('is_birthdate_approximate');
         $contact->save();
 
-        $contact->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('specificDate'),
-            $request->get('age')
-        );
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                $contact->removeSpecialDate('birthdate');
+            case 'approximate':
+                $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+            case 'exact':
+                $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+        }
+
+        // $contact->setBirthday(
+        //     $request->get('is_birthdate_approximate'),
+        //     $request->get('specificDate'),
+        //     $request->get('age')
+        // );
 
         $contact->logEvent('contact', $contact->id, 'update');
 

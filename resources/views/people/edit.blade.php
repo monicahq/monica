@@ -120,7 +120,7 @@
                 {{-- Don't know the birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_unknown">
-                    <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_unknown" value="unknown" {{ ($contact->is_birthdate_approximate == 'unknown')?'checked':'' }}>
+                    <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_unknown" value="unknown" {{ ($contact->is_birthdate_approximate == 'unknown')?'checked':'' }}>
 
                     <div class="form-inline">
                       {{ trans('people.significant_other_add_unknown') }}
@@ -131,7 +131,7 @@
                 {{-- Approximate birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_approximate">
-                    <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_approximate" value="approximate" {{ ($contact->is_birthdate_approximate == 'approximate')?'checked':'' }}>
+                    <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_approximate" value="approximate" {{ ($contact->is_birthdate_approximate == 'approximate')?'checked':'' }}>
 
                     <div class="form-inline">
                       {{ trans('people.information_edit_probably') }}
@@ -149,7 +149,7 @@
                 {{-- Exact birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_exact">
-                      <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_exact" value="exact" {{ ($contact->is_birthdate_approximate == 'exact')?'checked':'' }}>
+                      <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_exact" value="exact" {{ ($contact->is_birthdate_approximate == 'exact')?'checked':'' }}>
 
                       <div class="form-inline">
                         {{ trans('people.information_edit_exact') }}

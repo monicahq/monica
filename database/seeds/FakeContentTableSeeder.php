@@ -15,13 +15,14 @@ class FakeContentTableSeeder extends Seeder
     public function run()
     {
         // truncate all the tables
-        DB::table('accounts')->delete();
-        DB::table('users')->delete();
-        DB::table('contacts')->delete();
-        DB::table('reminders')->delete();
-        DB::table('tasks')->delete();
-        DB::table('notes')->delete();
-        DB::table('activities')->delete();
+        $tableNames = Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
+
+        foreach ($tableNames as $name) {
+            if ($name == 'migrations') {
+                continue;
+            }
+            DB::table($name)->truncate();
+        }
 
         // populate account table
         $accountID = DB::table('accounts')->insertGetId([

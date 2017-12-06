@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class MoveAgesData extends Migration
 {
@@ -15,84 +17,86 @@ class MoveAgesData extends Migration
     {
         $contacts = DB::table('contacts')->select('account_id', 'id', 'is_birthdate_approximate', 'birthdate', 'birthday_reminder_id', 'first_met', 'deceased_date')->get();
 
+        $output = new ConsoleOutput();
+        $progress = new ProgressBar($output, count($contacts));
+        $progress->start();
+
         foreach ($contacts as $contact) {
+            $specialDateDeceasedDateId = null;
+            $specialDateBirthdateId = null;
+            $specialDateFirstMetDateId = null;
+
             if ($contact->deceased_date) {
-                $specialDateId = DB::table('special_dates')->insertGetId([
+                $specialDateDeceasedDateId = DB::table('special_dates')->insertGetId([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
-                    'is_approximate' => false,
+                    'is_age_based' => false,
                     'date' => $contact->deceased_date,
                     'reminder_id' => null,
                     'created_at' => \Carbon\Carbon::now(),
                 ]);
-
-                DB::table('contacts')
-                    ->where('id', $contact->id)
-                    ->update(['deceased_special_date_id' => $specialDateId]);
             }
 
+            $isBirthdayApproximate = $contact->is_birthdate_approximate;
+
             if ($contact->birthdate) {
-                // we don't know the date
-                if ($contact->is_birthdate_approximate == 'unknown') {
-                   // do nothing
-                }
+                switch ($isBirthdayApproximate) {
+                    case 'unknown':
+                        break;
+                    case 'approximate':
+                        $specialDateBirthdateId = DB::table('special_dates')->insertGetId([
+                            'account_id' => $contact->account_id,
+                            'contact_id' => $contact->id,
+                            'is_age_based' => true,
+                            'date' => $contact->birthdate,
+                            'reminder_id' => $contact->birthday_reminder_id,
+                            'created_at' => \Carbon\Carbon::now(),
+                        ]);
 
-                // Approximate birthdate
-                if ($contact->is_birthdate_approximate == 'approximate') {
-                   $specialDateId = DB::table('special_dates')->insertGetId([
-                        'account_id' => $contact->account_id,
-                        'contact_id' => $contact->id,
-                        'is_approximate' => true,
-                        'date' => $contact->birthdate,
-                        'reminder_id' => $contact->birthday_reminder_id,
-                        'created_at' => \Carbon\Carbon::now(),
-                    ]);
+                        break;
+                    case 'exact':
+                        $specialDateBirthdateId = DB::table('special_dates')->insertGetId([
+                            'account_id' => $contact->account_id,
+                            'contact_id' => $contact->id,
+                            'is_age_based' => false,
+                            'date' => $contact->birthdate,
+                            'reminder_id' => $contact->birthday_reminder_id,
+                            'created_at' => \Carbon\Carbon::now(),
+                        ]);
 
-                    DB::table('contacts')
-                        ->where('birthday_special_date_id', $specialDateId)
-                        ->update(['id' => $contact->id]);
-
-                    DB::table('reminders')
-                        ->where('id', $contact->birthday_reminder_id)
-                        ->update(['special_date_id' => $specialDateId]);
-                }
-
-                // Exact birthdate
-                if ($contact->is_birthdate_approximate == 'exact') {
-                   $specialDateId = DB::table('special_dates')->insertGetId([
-                        'account_id' => $contact->account_id,
-                        'contact_id' => $contact->id,
-                        'is_approximate' => false,
-                        'date' => $contact->birthdate,
-                        'reminder_id' => $contact->birthday_reminder_id,
-                        'created_at' => \Carbon\Carbon::now(),
-                    ]);
-
-                    DB::table('contacts')
-                        ->where('id', $contact->id)
-                        ->update(['birthday_special_date_id' => $specialDateId]);
-
-                    DB::table('reminders')
-                        ->where('id', $contact->birthday_reminder_id)
-                        ->update(['special_date_id' => $specialDateId]);
+                        break;
                 }
             }
 
             if ($contact->first_met) {
-               $specialDateId = DB::table('special_dates')->insertGetId([
+               $specialDateFirstMetDateId = DB::table('special_dates')->insertGetId([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
-                    'is_approximate' => false,
+                    'is_age_based' => false,
                     'date' => $contact->first_met,
                     'reminder_id' => null,
                     'created_at' => \Carbon\Carbon::now(),
                 ]);
-
-                DB::table('contacts')
-                    ->where('id', $contact->id)
-                    ->update(['first_met_special_date_id' => $specialDateId]);
             }
+
+            if ($contact->birthdate && $specialDateBirthdateId) {
+                DB::table('reminders')
+                            ->where('id', $contact->birthday_reminder_id)
+                            ->update(['special_date_id' => $specialDateBirthdateId]);
+            }
+
+            DB::table('contacts')
+                    ->where('id', $contact->id)
+                    ->update([
+                        'deceased_special_date_id' => $specialDateDeceasedDateId,
+                        'birthday_special_date_id' => $specialDateBirthdateId,
+                        'first_met_special_date_id' => $specialDateFirstMetDateId,
+                    ]);
+
+            $progress->advance();
         }
+
+        $progress->finish();
 
         Schema::table('contacts', function ($table) {
             $table->dropColumn([

@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\SpecialDate;
 use App\Traits\Searchable;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
@@ -1252,5 +1253,13 @@ class Contact extends Model
         }
 
         return $contact;
+    }
+
+    /**
+     * Sets a Special Date for this contact.
+     */
+    public function setSpecialDate(SpecialDate $specialDate)
+    {
+        $this->birthday_special_date_id = $specialDate->id;
     }
 }

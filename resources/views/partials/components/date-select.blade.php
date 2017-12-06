@@ -23,7 +23,7 @@
   </select>
 
   <select id="{{ $class }}_year" name="{{ $class }}_year">
-    <option value="unknown">Unknown</option>
+    <option value="0">Unknown</option>
     @foreach($years as $year => $value)
       <option value="{{ $value }}"
       {{ ($date == null) ? '' : (($date->date->year == $value) ? 'selected="selected"': '') }}
