@@ -91,7 +91,6 @@ class ContactsController extends Controller
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
 
-        $contact->is_birthdate_approximate = 'unknown';
         $contact->save();
 
         $contact->setAvatarColor();
@@ -177,54 +176,54 @@ class ContactsController extends Controller
         }
 
         // Is the person deceased?
-        if ($request->input('markPersonDeceased') != '') {
-            $contact->is_dead = true;
+        // if ($request->input('markPersonDeceased') != '') {
+        //     $contact->is_dead = true;
 
-            if ($request->input('checkboxDatePersonDeceased') != '') {
-                $day = $request->input('deceased_date_day');
-                $month = $request->input('deceased_date_month');
-                $year = $request->input('deceased_date_year');
+        //     if ($request->input('checkboxDatePersonDeceased') != '') {
+        //         $day = $request->input('deceased_date_day');
+        //         $month = $request->input('deceased_date_month');
+        //         $year = $request->input('deceased_date_year');
 
-                $date = \Carbon\Carbon::createFromDate($year, $month, $day);
-                $contact->deceased_date = $date;
+        //         $date = \Carbon\Carbon::createFromDate($year, $month, $day);
+        //         $contact->deceased_date = $date;
 
-                if ($request->input('addReminderDeceased') != '') {
-                    $reminder = $contact->reminders()->create(
-                        [
-                            'account_id' => $contact->account_id,
-                            'title' => trans('people.deceased_reminder_title', ['name' => $contact->getFirstName()]),
-                            'description' => '',
-                            'frequency_type' => 'year',
-                            'next_expected_date' => $date,
-                            'frequency_number' => 1,
-                        ]
-                    );
+        //         if ($request->input('addReminderDeceased') != '') {
+        //             $reminder = $contact->reminders()->create(
+        //                 [
+        //                     'account_id' => $contact->account_id,
+        //                     'title' => trans('people.deceased_reminder_title', ['name' => $contact->getFirstName()]),
+        //                     'description' => '',
+        //                     'frequency_type' => 'year',
+        //                     'next_expected_date' => $date,
+        //                     'frequency_number' => 1,
+        //                 ]
+        //             );
 
-                    $reminder->calculateNextExpectedDate(auth()->user()->timezone);
-                    $reminder->save();
-                }
-            }
-        } else {
-            $contact->is_dead = false;
-            $contact->deceased_date = null;
-        }
+        //             $reminder->calculateNextExpectedDate(auth()->user()->timezone);
+        //             $reminder->save();
+        //         }
+        //     }
+        // } else {
+        //     $contact->is_dead = false;
+        //     $contact->deceased_date = null;
+        // }
 
         $contact->save();
 
+        $contact->removeSpecialDate('birthdate');
+
         switch ($request->input('birthdate')) {
             case 'unknown':
-                $contact->removeSpecialDate('birthdate');
+                break;
             case 'approximate':
-                $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+                $specialDate->setReminder('year', 1);
+                break;
             case 'exact':
-                $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $specialDate->setReminder('year', 1);
+                break;
         }
-
-        // $contact->setBirthday(
-        //     $request->get('is_birthdate_approximate'),
-        //     $request->get('specificDate'),
-        //     $request->get('age')
-        // );
 
         $contact->logEvent('contact', $contact->id, 'update');
 

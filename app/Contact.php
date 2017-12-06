@@ -1256,10 +1256,72 @@ class Contact extends Model
     }
 
     /**
-     * Sets a Special Date for this contact.
+     * Sets a Special Date for this contact, for a specific occasion (birthday,
+     * decease date,...) of which we know the date.
+     *
+     * @return SpecialDate
      */
-    public function setSpecialDate(SpecialDate $specialDate)
+    public function setSpecialDate(string $occasion, int $year, int $month, int $day)
     {
-        $this->birthday_special_date_id = $specialDate->id;
+        if (is_null($occasion)) {
+            return;
+        }
+
+        $specialDate = new SpecialDate;
+        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+
+        if ($occasion == 'birthdate') {
+            $this->birthday_special_date_id = $specialDate->id;
+        }
+
+        $this->save();
+
+        return $specialDate;
+    }
+
+    /**
+     * Sets a Special Date for this contact, for a specific occasion (birthday,
+     * decease date,...) of which we know only the age (meaning it's going to
+     * be approximate).
+     */
+    public function setSpecialDateFromAge(string $occasion, int $age)
+    {
+        if (is_null($occasion)) {
+            return;
+        }
+
+        $specialDate = new SpecialDate;
+        $specialDate->createFromAge($age)->setToContact($this);
+
+        if ($occasion == 'birthdate') {
+            $this->birthday_special_date_id = $specialDate->id;
+        }
+
+        $this->save();
+
+        return $specialDate;
+    }
+
+    /**
+     * Removes the date that is set for a specific occasion (like a birthdate,
+     * the deceased date,...)
+     * @param string $occasion
+     */
+    public function removeSpecialDate(string $occasion)
+    {
+        if (is_null($occasion)) {
+            return;
+        }
+
+        if ($occasion == 'birthdate') {
+            if (! $this->birthday_special_date_id) {
+                return;
+            }
+
+            $this->birthdate->deleteReminder();
+            $this->birthdate->delete();
+            $this->birthday_special_date_id = null;
+            $this->save();
+        }
     }
 }

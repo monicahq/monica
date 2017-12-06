@@ -2,14 +2,14 @@
 
 namespace App;
 
+use App\Reminder;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
 /**
- * A special date is a date that is not necessarily based on a year or even a
- * date with a month or a day.
+ * A special date is a date that is not necessarily based on a year that we know.
  * This happens when we add a birthdate for instance. It can be based:
  *     * on a real date, where we know the day, month and year
  *     * on a date where we just know the day and the month but not the year
@@ -82,19 +82,61 @@ class SpecialDate extends Model
         return $this->belongsTo(Reminder::class);
     }
 
-    public function setAnnualReminder()
+    /**
+     * Sets a reminder for this date. If a reminder is already defined for this
+     * date, it will delete it first and recreate one.
+     * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
+     * @param int $frequencyNumber
+     */
+    public function setReminder(string $frequency, int $frequencyNumber)
     {
+        $this->deleteReminder();
 
+        $reminder = new Reminder;
+        $reminder->frequency_type = $frequency;
+        $reminder->frequency_number = $frequencyNumber;
+        $reminder->next_expected_date = $this->date;
+        $reminder->special_date_id = $this->id;
+        $reminder->account_id = $this->account_id;
+        $reminder->contact_id = $this->contact_id;
+        $reminder->save();
+
+        $reminder->calculateNextExpectedDate(auth()->user()->timezone)->save();
+
+        $this->reminder_id = $reminder->id;
+        $this->save();
     }
 
-    public function deleteAnnualReminder()
+    /**
+     * Deletes the reminder for this date, if it exists.
+     * @return boolean
+     */
+    public function deleteReminder()
     {
+        if (! $this->reminder_id) {
+            return;
+        }
 
+        try {
+            Reminder::destroy($this->reminder_id);
+            return true;
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
     }
 
+    /**
+     * Returns the age that the date represents, if the date is set and if it's
+     * not based on a year we don't know.
+     * @return integer
+     */
     public function getAge()
     {
         if (is_null($this->date)) {
+            return;
+        }
+
+        if ($this->is_year_unknown) {
             return;
         }
 
@@ -105,11 +147,13 @@ class SpecialDate extends Model
      * Create a SpecialDate from an age.
      * @param  int $age
      */
-    public static function createFromAge(int $age)
+    public function createFromAge(int $age)
     {
         $this->is_age_based = true;
         $this->date = Carbon::now()->subYears($age)->month(1)->day(1);
         $this->save();
+
+        return $this;
     }
 
     /**
@@ -118,16 +162,31 @@ class SpecialDate extends Model
      * @param  int    $month
      * @param  int    $day
      */
-    public static function createFromDate(int $year, int $month, int $day)
+    public function createFromDate(int $year, int $month, int $day)
     {
-        if ($year) {
-            $dateOfBirth = Carbon::createFromDate($year, $month, $day);
+        // year 0 represents the `unknown` choice in the dropdown representing
+        // the years
+        if ($year != 0) {
+            $date = Carbon::createFromDate($year, $month, $day);
         } else {
-            $dateOfBirth = Carbon::createFromDate(Carbon::now()->year, $month, $day);
+            $date = Carbon::createFromDate(Carbon::now()->year, $month, $day);
             $this->is_year_unknown = true;
         }
 
-        $this->date = $dateOfBirth;
+        $this->date = $date;
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Associates a special date to a contact
+     * @param Contact $contact
+     */
+    public function setToContact(Contact $contact)
+    {
+        $this->account_id = $contact->account_id;
+        $this->contact_id = $contact->id;
         $this->save();
     }
 }

@@ -62,7 +62,6 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
         'has_avatar' => false,
     ];
 });
@@ -80,6 +79,14 @@ $factory->define(App\Call::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Task::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_id' => 1,
+        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+    ];
+});
+
+$factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,

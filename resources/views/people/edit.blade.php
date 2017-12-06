@@ -137,7 +137,7 @@
                       {{ trans('people.information_edit_probably') }}
 
                       <input type="number" class="form-control" name="age" id="age"
-                              value="{{ (is_null($contact->birthdate->getAge())) ? 1 : $contact->birthdate->getAge() }}"
+                              value="{{ (is_null($contact->birthdate)) ? 1 : $contact->birthdate->getAge() }}"
                               min="0"
                               max="99">
 
@@ -154,7 +154,7 @@
                       <div class="form-inline">
                         {{ trans('people.information_edit_exact') }}
 
-                        @include('partials.components.date-select', ['contact' => $contact, 'date' => $contact->birthdate, 'class' => 'birthdate'])
+                        @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->birthdate, 'class' => 'birthdate'])
                       </div>
                   </label>
                 </div>
@@ -175,7 +175,7 @@
                     <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
                     {{ trans('people.deceased_know_date') }}
 
-                    @include('partials.components.date-select', ['contact' => $contact, 'date' => $contact->deceasedDate, 'class' => 'deceased_date'])
+                    @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
                 </div>
                 <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">
