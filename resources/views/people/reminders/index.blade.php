@@ -57,7 +57,7 @@
 
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if ($reminder->is_birthday == false)
+          @if (! $reminder->special_date_id)
             <a href="#" onclick="if (confirm('{{ trans('people.reminders_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>

@@ -69,7 +69,29 @@ class FakeContentTableSeeder extends Seeder
                 $contact->food_preferencies = $faker->realText();
             }
 
+            // deceased?
+            if (rand(1, 7) == 1) {
+                $contact->is_dead = true;
+
+                if (rand(1,3) == 1) {
+                    $deceasedDate = $faker->dateTimeThisCentury();
+                    $specialDate = $contact->setSpecialDate('deceased_date', $deceasedDate->year, $deceasedDate->month, $deceasedDate->day);
+                    $newReminder = $specialDate->setReminder('year', 1);
+                    $newReminder->title = trans('people.deceased_reminder_title', ['name' => $contact->first_name]);
+                    $newReminder->save();
+                }
+            }
+
             $contact->save();
+
+            // add birthday
+            if (rand(1, 2) == 1) {
+                $birthdate = $faker->dateTimeThisCentury();
+                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->year, $birthdate->month, $birthdate->day);
+                $newReminder = $specialDate->setReminder('year', 1);
+                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
+                $newReminder->save();
+            }
 
             // create kids
             if (rand(1, 2) == 1) {

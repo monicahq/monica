@@ -107,29 +107,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testGetAgeReturnsFalseIfNoBirthdateIsDefinedForContact()
-    {
-        $contact = new Contact;
-        $contact->birthdate = null;
-
-        $this->assertNull(
-            $contact->getAge()
-        );
-    }
-
-    public function testGetAgeReturnsAnAgeIfBirthdateIsDefined()
-    {
-        $dateFiveYearsAgo = Carbon::now()->subYears(25);
-
-        $contact = new Contact;
-        $contact->birthdate = $dateFiveYearsAgo;
-
-        $this->assertEquals(
-            25,
-            $contact->getAge()
-        );
-    }
-
     public function testGetInitialsWithAFullName()
     {
         $contact = new Contact;
@@ -414,17 +391,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testIsBirthdateApproximate()
-    {
-        $contact = new Contact;
-        $contact->is_birthdate_approximate = 'true';
-
-        $this->assertEquals(
-            'true',
-            $contact->isBirthdateApproximate()
-        );
-    }
-
     public function testHasDebt()
     {
         $contact = new Contact;
@@ -548,5 +514,23 @@ class ContactTest extends TestCase
         $this->assertNull($contact->setSpecialDate(null, 2010, 10, 10));
 
         $this->assertNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('birthdate', 2010, 10, 10);
+        $this->assertNotNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
+        $this->assertNotNull($contact->deceased_special_date_id);
+    }
+
+    public function test_set_special_date_with_age_creates_a_date_and_saves_the_id()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertNull($contact->setSpecialDateFromAge(null, 33));
+
+        $this->assertNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDateFromAge('birthdate', 33);
+        $this->assertNotNull($contact->birthday_special_date_id);
     }
 }

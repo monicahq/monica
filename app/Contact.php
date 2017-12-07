@@ -1256,7 +1256,7 @@ class Contact extends Model
      *
      * @return SpecialDate
      */
-    public function setSpecialDate(string $occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
         if (is_null($occasion)) {
             return;
@@ -1283,7 +1283,7 @@ class Contact extends Model
      * decease date,...) of which we know only the age (meaning it's going to
      * be approximate).
      */
-    public function setSpecialDateFromAge(string $occasion, int $age)
+    public function setSpecialDateFromAge($occasion, int $age)
     {
         if (is_null($occasion)) {
             return;
@@ -1306,7 +1306,7 @@ class Contact extends Model
      * the deceased date,...)
      * @param string $occasion
      */
-    public function removeSpecialDate(string $occasion)
+    public function removeSpecialDate($occasion)
     {
         if (is_null($occasion)) {
             return;
@@ -1319,6 +1319,7 @@ class Contact extends Model
 
             $this->birthdate->deleteReminder();
             $this->birthdate->delete();
+
             $this->birthday_special_date_id = null;
             $this->save();
         }
@@ -1330,6 +1331,7 @@ class Contact extends Model
 
             $this->deceasedDate->deleteReminder();
             $this->deceasedDate->delete();
+
             $this->deceased_special_date_id = null;
             $this->save();
         }
