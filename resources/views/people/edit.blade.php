@@ -37,7 +37,7 @@
 
               @include('partials.errors')
 
-              <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
+              <h2>{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h2>
 
               <p class="delete-contact">
                 {{ trans('people.people_delete_message') }}
@@ -89,13 +89,13 @@
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->getFirstName() }}" autofocus required>
+                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->first_name }}" autofocus required>
               </div>
 
               {{-- Last name --}}
               <div class="form-group">
                 <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
+                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->last_name }}">
               </div>
 
               @else
@@ -103,13 +103,13 @@
               {{-- Last name --}}
               <div class="form-group">
                 <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
+                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->last_name }}">
               </div>
 
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->getFirstName() }}" autofocus required>
+                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->first_name }}" autofocus required>
               </div>
 
               @endif
@@ -172,15 +172,15 @@
                 </div>
                 <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
+                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
                     {{ trans('people.deceased_know_date') }}
 
                     @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
                 </div>
-                <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">
+                <div class="form-check {{ ($contact->deceasedDate == null) ? 'hidden' : '' }}" id="reminderDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased">
+                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate->reminder_id != null) ? 'checked' : '' }}>
                     {{ trans('people.deceased_add_reminder') }}
                   </label>
                 </div>

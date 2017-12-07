@@ -33,7 +33,7 @@
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
 
-            <h2>{{ trans('people.kids_add_title', ['name' => $contact->getLastName()]) }}</h2>
+            <h2>{{ trans('people.kids_add_title', ['name' => $contact->last_name]) }}</h2>
 
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
@@ -68,7 +68,7 @@
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
-                    <p>{{ trans('people.kids_add_no_existing_contact', ['name' => $contact->getFirstName()]) }}</p>
+                    <p>{{ trans('people.kids_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
                   </div>
 
                 @else
@@ -79,7 +79,7 @@
                     @include('partials.errors')
 
                     <div class="form-group">
-                      <label for="existingKid">{{ trans('people.kids_add_existing_contact', ['name' => $contact->getFirstName()]) }}</label>
+                      <label for="existingKid">{{ trans('people.kids_add_existing_contact', ['name' => $contact->first_name]) }}</label>
                       <select class="form-control" name="existingKid" id="existingKid">
                         @foreach ($contact->getPotentialContacts() as $kid)
 

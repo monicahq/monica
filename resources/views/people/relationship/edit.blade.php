@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->first_name]) }}</h2>
 
             @include('people.relationship.form', [
               'method' => 'PUT',

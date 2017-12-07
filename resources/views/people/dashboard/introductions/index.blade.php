@@ -6,7 +6,7 @@
 
   @if(! $contact->hasFirstMetInformation())
     <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('people.introductions_blank_cta', ['name' => $contact->getFirstName()]) }}</a>
+      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('people.introductions_blank_cta', ['name' => $contact->first_name]) }}</a>
     </p>
   @else
     <ul>

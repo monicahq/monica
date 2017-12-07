@@ -115,32 +115,27 @@ class Reminder extends Model
      * Get the title of a reminder.
      * @return string
      */
-    public function getTitle()
+    public function getTitleAttribute($value)
     {
-        if ($this->is_birthday) {
-            // we need to construct the title of the reminder as in the case of a
-            // birthday, the title field is null
-            return trans('people.reminders_birthday', ['name' => $this->contact->first_name]);
-        }
+        return $value;
+    }
 
-        if (is_null($this->title)) {
-            return;
-        }
-
-        return $this->title;
+    /**
+     * Set the title of a reminder.
+     * @return string
+     */
+    public function setTitleAttribute($title)
+    {
+        $this->attributes['title'] = $title;
     }
 
     /**
      * Get the description of a reminder.
      * @return string
      */
-    public function getDescription()
+    public function getDescriptionAttribute($value)
     {
-        if (is_null($this->description)) {
-            return;
-        }
-
-        return $this->description;
+        return $value;
     }
 
     /**

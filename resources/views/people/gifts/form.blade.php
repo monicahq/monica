@@ -2,7 +2,7 @@
     {{ method_field($method) }}
     {{ csrf_field() }}
 
-    <h2>{{ trans('people.gifts_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+    <h2>{{ trans('people.gifts_add_title', ['name' => $contact->first_name]) }}</h2>
 
     @include('partials.errors')
 
@@ -48,7 +48,7 @@
             <div class="form-check">
                 <label class="form-check-label" id="has_recipient">
                     <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1">
-                    {{ trans('people.gifts_add_someone', ['name' => $contact->getFirstName()]) }}
+                    {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
                 </label>
             </div>
             <select id="recipient" name="recipient" class="form-control">

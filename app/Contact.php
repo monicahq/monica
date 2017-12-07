@@ -329,6 +329,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the first name of the contact.
+     *
+     * @return string
+     */
+    public function getFirstNameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Mutator first_name.
      *
      * @param string|null $value
@@ -336,6 +346,16 @@ class Contact extends Model
     public function setFirstNameAttribute($value)
     {
         $this->attributes['first_name'] = trim($value);
+    }
+
+    /**
+     * Get the last name of the contact.
+     *
+     * @return string
+     */
+    public function getLastNameAttribute($value)
+    {
+        return $value;
     }
 
     /**
@@ -399,26 +419,6 @@ class Contact extends Model
         }
 
         return trim($completeName);
-    }
-
-    /**
-     * Get the first name of the contact.
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
-
-    /**
-     * Get the last name of the contact.
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->last_name;
     }
 
     /**
@@ -1269,6 +1269,10 @@ class Contact extends Model
             $this->birthday_special_date_id = $specialDate->id;
         }
 
+        if ($occasion == 'deceased_date') {
+            $this->deceased_special_date_id = $specialDate->id;
+        }
+
         $this->save();
 
         return $specialDate;
@@ -1316,6 +1320,17 @@ class Contact extends Model
             $this->birthdate->deleteReminder();
             $this->birthdate->delete();
             $this->birthday_special_date_id = null;
+            $this->save();
+        }
+
+        if ($occasion == 'deceased_date') {
+            if (! $this->deceased_special_date_id) {
+                return;
+            }
+
+            $this->deceasedDate->deleteReminder();
+            $this->deceasedDate->delete();
+            $this->deceased_special_date_id = null;
             $this->save();
         }
     }

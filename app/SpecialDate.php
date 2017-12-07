@@ -83,10 +83,34 @@ class SpecialDate extends Model
     }
 
     /**
+     * Mutator for the reminder id attribute
+     * @return integer
+     */
+    public function getReminderIdAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Returns a short version of the date, taking into account if the year is
+     * unknown or not. This will return either `July 21` or `July 21, 2017`
+     * @return [type] [description]
+     */
+    public function toShortString()
+    {
+        if ($this->is_year_unknown) {
+            return \App\Helpers\DateHelper::getShortDateWithoutYear($this->date);
+        }
+
+        return \App\Helpers\DateHelper::getShortDate($this->date);
+    }
+
+    /**
      * Sets a reminder for this date. If a reminder is already defined for this
      * date, it will delete it first and recreate one.
      * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
      * @param int $frequencyNumber
+     * @return Reminder
      */
     public function setReminder(string $frequency, int $frequencyNumber)
     {
@@ -105,6 +129,8 @@ class SpecialDate extends Model
 
         $this->reminder_id = $reminder->id;
         $this->save();
+
+        return $reminder;
     }
 
     /**

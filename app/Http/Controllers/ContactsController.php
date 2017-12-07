@@ -176,52 +176,39 @@ class ContactsController extends Controller
         }
 
         // Is the person deceased?
-        // if ($request->input('markPersonDeceased') != '') {
-        //     $contact->is_dead = true;
+        $contact->removeSpecialDate('deceased_date');
+        $contact->is_dead = false;
 
-        //     if ($request->input('checkboxDatePersonDeceased') != '') {
-        //         $day = $request->input('deceased_date_day');
-        //         $month = $request->input('deceased_date_month');
-        //         $year = $request->input('deceased_date_year');
+        if ($request->input('markPersonDeceased') != '') {
+            $contact->is_dead = true;
 
-        //         $date = \Carbon\Carbon::createFromDate($year, $month, $day);
-        //         $contact->deceased_date = $date;
+            if ($request->input('checkboxDatePersonDeceased') != '') {
 
-        //         if ($request->input('addReminderDeceased') != '') {
-        //             $reminder = $contact->reminders()->create(
-        //                 [
-        //                     'account_id' => $contact->account_id,
-        //                     'title' => trans('people.deceased_reminder_title', ['name' => $contact->getFirstName()]),
-        //                     'description' => '',
-        //                     'frequency_type' => 'year',
-        //                     'next_expected_date' => $date,
-        //                     'frequency_number' => 1,
-        //                 ]
-        //             );
+                $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
-        //             $reminder->calculateNextExpectedDate(auth()->user()->timezone);
-        //             $reminder->save();
-        //         }
-        //     }
-        // } else {
-        //     $contact->is_dead = false;
-        //     $contact->deceased_date = null;
-        // }
+                if ($request->input('addReminderDeceased') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1);
+                    $newReminder->title = trans('people.deceased_reminder_title', ['name' => $contact->first_name]);
+                    $newReminder->save();
+                }
+            }
+        }
 
         $contact->save();
 
+        // Saves birthdate if defined
         $contact->removeSpecialDate('birthdate');
-
         switch ($request->input('birthdate')) {
             case 'unknown':
                 break;
             case 'approximate':
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
-                $specialDate->setReminder('year', 1);
                 break;
             case 'exact':
                 $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $specialDate->setReminder('year', 1);
+                $newReminder = $specialDate->setReminder('year', 1);
+                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
+                $newReminder->save();
                 break;
         }
 

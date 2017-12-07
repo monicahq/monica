@@ -17,7 +17,7 @@ class ContactTest extends TestCase
     {
         $contact = new Contact;
 
-        $this->assertNull($contact->getFirstName());
+        $this->assertNull($contact->first_name);
     }
 
     public function testGetFirstnameReturnsNameWhenDefined()
@@ -27,7 +27,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Peter',
-            $contact->getFirstName()
+            $contact->first_name
         );
     }
 
@@ -46,12 +46,12 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Peter',
-            $contact->getFirstName()
+            $contact->first_name
         );
 
         $this->assertEquals(
             'Gregory',
-            $contact->getLastName()
+            $contact->last_name
         );
 
         $contact = new Contact;
@@ -76,7 +76,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             null,
-            $contact->getLastName()
+            $contact->last_name
         );
 
         $contact->first_name = 'Peter';
@@ -546,5 +546,7 @@ class ContactTest extends TestCase
         $contact = factory(Contact::class)->create();
 
         $this->assertNull($contact->setSpecialDate(null, 2010, 10, 10));
+
+        $this->assertNull($contact->birthday_special_date_id);
     }
 }

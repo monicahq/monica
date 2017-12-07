@@ -46,12 +46,12 @@
         </div>
 
         <div class="table-cell title">
-          {{ $reminder->getTitle() }}
+          {{ $reminder->title }}
         </div>
 
         <div class="table-cell comment">
-            @if (!is_null($reminder->getDescription()))
-              {{ $reminder->getDescription() }}
+            @if (!is_null($reminder->description))
+              {{ $reminder->description }}
             @endif
         </div>
 

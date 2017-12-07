@@ -14,6 +14,22 @@ class SpecialDateTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
+    public function test_reminder_id_getter_returns_null_if_undefined()
+    {
+        $reminder = new Reminder;
+
+        $this->assertNull($reminder->reminder_id);
+    }
+
+    public function test_reminder_id_getter_returns_correct_string()
+    {
+        $reminder = new Reminder;
+        $reminder->reminder_id = 3;
+
+        $this->assertInternalType('integer', $reminder->reminder_id);
+        $this->assertEquals(3, $reminder->reminder_id);
+    }
+
     public function test_delete_reminder_returns_null_if_no_reminder_is_set()
     {
         $specialDate = new SpecialDate;
@@ -195,6 +211,32 @@ class SpecialDateTest extends FeatureTestCase
         $this->assertEquals(
             1,
             $specialDate->contact_id
+        );
+    }
+
+    public function test_to_short_string_returns_date_with_year()
+    {
+        $specialDate = new SpecialDate;
+        $specialDate->is_year_unknown = false;
+        $specialDate->date = Carbon::create(2001, 5, 21);
+
+
+        $this->assertEquals(
+            'May 21, 2001',
+            $specialDate->toShortString()
+        );
+    }
+
+    public function test_to_short_string_returns_date_without_year()
+    {
+        $specialDate = new SpecialDate;
+        $specialDate->is_year_unknown = true;
+        $specialDate->date = Carbon::create(2001, 5, 21);
+
+
+        $this->assertEquals(
+            'May 21',
+            $specialDate->toShortString()
         );
     }
 }

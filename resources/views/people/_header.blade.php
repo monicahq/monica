@@ -32,29 +32,11 @@
             @endif
           </h2>
 
-          <ul class="tags">
-            <ul class="tags-list">
-              @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
-              @endforeach
-            </ul>
-            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
-          </ul>
-
-          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
-            {{ csrf_field() }}
-            <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
-            <div class="tagsFormActions">
-              <button type="submit" class="btn btn-primary">{{ trans('app.update') }}</button>
-              <a href="#" class="btn" id="tagsFormCancel">{{ trans('app.cancel') }}</a>
-            </div>
-          </form>
-
           <ul class="horizontal profile-detail-summary">
             @if ($contact->is_dead)
               <li>
-                @if (! is_null($contact->deceased_date))
-                  {{ trans('people.deceased_label_with_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->deceased_date)]) }}
+                @if (! is_null($contact->deceasedDate))
+                  {{ trans('people.deceased_label_with_date', ['date' => $contact->deceasedDate->toShortString()]) }}
                 @else
                   {{ trans('people.deceased_label') }}
                 @endif
@@ -75,6 +57,24 @@
               @endif
             </li>
           </ul>
+
+          <ul class="tags">
+            <ul class="tags-list">
+              @foreach ($contact->tags as $tag)
+                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+              @endforeach
+            </ul>
+            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+          </ul>
+
+          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
+            {{ csrf_field() }}
+            <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
+            <div class="tagsFormActions">
+              <button type="submit" class="btn btn-primary">{{ trans('app.update') }}</button>
+              <a href="#" class="btn" id="tagsFormCancel">{{ trans('app.cancel') }}</a>
+            </div>
+          </form>
 
           <ul class="horizontal quick-actions">
             <li>

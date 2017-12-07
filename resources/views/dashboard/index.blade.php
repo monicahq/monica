@@ -60,7 +60,7 @@
                         <a href="/people/{{ $reminder->contact->id }}">{{ $reminder->contact->getCompleteName(auth()->user()->name_order) }}</a>:
                         @endif
                         @if ($reminder->is_birthday)
-                          {{ trans('people.reminders_birthday', ['name' => $reminder->contact->first_name]) }}
+                          {{ trans('people.reminders_birthday', ['name' => $reminder->contact->firstname]) }}
                         @else
                           {{ $reminder->getTitle() }}
                         @endif
