@@ -17,10 +17,6 @@ class MoveAgesData extends Migration
     {
         $contacts = DB::table('contacts')->select('account_id', 'id', 'is_birthdate_approximate', 'birthdate', 'birthday_reminder_id', 'first_met', 'deceased_date')->get();
 
-        $output = new ConsoleOutput();
-        $progress = new ProgressBar($output, count($contacts));
-        $progress->start();
-
         foreach ($contacts as $contact) {
             $specialDateDeceasedDateId = null;
             $specialDateBirthdateId = null;
@@ -92,11 +88,7 @@ class MoveAgesData extends Migration
                         'birthday_special_date_id' => $specialDateBirthdateId,
                         'first_met_special_date_id' => $specialDateFirstMetDateId,
                     ]);
-
-            $progress->advance();
         }
-
-        $progress->finish();
 
         Schema::table('contacts', function ($table) {
             $table->dropColumn([

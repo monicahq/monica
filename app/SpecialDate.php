@@ -125,7 +125,7 @@ class SpecialDate extends Model
         $reminder->contact_id = $this->contact_id;
         $reminder->save();
 
-        $reminder->calculateNextExpectedDate(auth()->user()->timezone)->save();
+        $reminder->calculateNextExpectedDate($reminder->account->timezone())->save();
 
         $this->reminder_id = $reminder->id;
         $this->save();

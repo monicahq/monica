@@ -14,16 +14,6 @@ class FakeContentTableSeeder extends Seeder
      */
     public function run()
     {
-        // truncate all the tables
-        $tableNames = Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
-
-        foreach ($tableNames as $name) {
-            if ($name == 'migrations') {
-                continue;
-            }
-            DB::table($name)->truncate();
-        }
-
         // populate account table
         $accountID = DB::table('accounts')->insertGetId([
             'api_key' => str_random(30),
@@ -75,7 +65,7 @@ class FakeContentTableSeeder extends Seeder
 
                 if (rand(1,3) == 1) {
                     $deceasedDate = $faker->dateTimeThisCentury();
-                    $specialDate = $contact->setSpecialDate('deceased_date', $deceasedDate->year, $deceasedDate->month, $deceasedDate->day);
+                    $specialDate = $contact->setSpecialDate('deceased_date', $deceasedDate->format('Y'), $deceasedDate->format('m'), $deceasedDate->format('d'));
                     $newReminder = $specialDate->setReminder('year', 1);
                     $newReminder->title = trans('people.deceased_reminder_title', ['name' => $contact->first_name]);
                     $newReminder->save();
@@ -87,7 +77,7 @@ class FakeContentTableSeeder extends Seeder
             // add birthday
             if (rand(1, 2) == 1) {
                 $birthdate = $faker->dateTimeThisCentury();
-                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->year, $birthdate->month, $birthdate->day);
+                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
                 $newReminder = $specialDate->setReminder('year', 1);
                 $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
                 $newReminder->save();
@@ -111,8 +101,6 @@ class FakeContentTableSeeder extends Seeder
                         'gender' => $gender,
                         'first_name' => $name,
                         'last_name' => (rand(1, 2) == 1) ? $faker->lastName : $contact->last_name,
-                        'is_birthdate_approximate' => $birthdate_approximate,
-                        'birthdate' => $birthdate_approximate !== 'unknown' ? $birthdate : null,
                     ]);
 
                     $contact->offsprings()->create(

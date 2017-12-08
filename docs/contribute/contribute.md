@@ -22,20 +22,9 @@ guarantee that it will work fine with Monica.
 1. `npm install`.
 1. Create a database called `monica` in your mySQL instance.
 1. `php artisan key:generate` to generate a random APP_KEY
-1. `php artisan migrate` to run all migrations and create the database structure.
+1. `php artisan setup:test` to run all migrations and create the database structure.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan passport:install` to create the access tokens required for the API.
-1. `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-1. `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-
-**Optional step**: Seeding the database with fake data
-
-This step is to populate the instance with fake data, so you can test with real
-data instead of lorem ipsum.
-
-1. `php artisan db:seed --class FakeContentTableSeeder` to load all seeds.
 
 Note that this will create two accounts:
 
