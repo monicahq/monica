@@ -36,7 +36,7 @@ class FakeContentTableSeeder extends Seeder
         $faker = Faker::create();
 
         // create a random number of contacts
-        $numberOfContacts = rand(3, 100);
+        $numberOfContacts = rand(30, 100);
         echo 'Generating '.$numberOfContacts.' fake contacts'.PHP_EOL;
 
         for ($i = 0; $i < $numberOfContacts; $i++) {
@@ -102,6 +102,40 @@ class FakeContentTableSeeder extends Seeder
                     $specialDate = $contact->setSpecialDateFromAge('birthdate', rand(10, 100));
                 }
             }
+
+            // add first met information
+            if (rand(1, 2) == 1) {
+                $contact->first_met_where = $faker->realText(20);
+            }
+
+            if (rand(1, 2) == 1) {
+                $contact->first_met_additional_info = $faker->realText(20);
+            }
+
+            if (rand(1, 2) == 1) {
+                $firstMetDate = $faker->dateTimeThisCentury();
+
+                if (rand(1, 2) == 1) {
+                    // add a date where we don't know the year
+                    $specialDate = $contact->setSpecialDate('first_met', 0, $firstMetDate->format('m'), $firstMetDate->format('d'));
+                } else {
+                    // add a date where we know the year
+                    $specialDate = $contact->setSpecialDate('first_met', $firstMetDate->format('Y'), $firstMetDate->format('m'), $firstMetDate->format('d'));
+                }
+                $newReminder = $specialDate->setReminder('year', 1);
+                $newReminder->title = trans('people.introductions_reminder_title', ['name' => $contact->first_name]);
+                $newReminder->save();
+            }
+
+            if (rand(1, 2) == 1) {
+                do {
+                    $rand = rand(1, $numberOfContacts);
+                } while(in_array($rand, array($contact->id)));
+
+                $contact->first_met_through_contact_id = $rand;
+            }
+
+            $contact->save();
 
             // create kids
             if (rand(1, 2) == 1) {
