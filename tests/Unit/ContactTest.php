@@ -520,6 +520,9 @@ class ContactTest extends TestCase
 
         $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
         $this->assertNotNull($contact->deceased_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('first_met', 2010, 10, 10);
+        $this->assertNotNull($contact->first_met_special_date_id);
     }
 
     public function test_set_special_date_with_age_creates_a_date_and_saves_the_id()
@@ -532,5 +535,20 @@ class ContactTest extends TestCase
 
         $specialDate = $contact->setSpecialDateFromAge('birthdate', 33);
         $this->assertNotNull($contact->birthday_special_date_id);
+    }
+
+    public function test_has_first_met_information_returns_false_if_no_information_is_present()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertFalse($contact->hasFirstMetInformation());
+    }
+
+    public function test_has_first_met_information_returns_true_if_at_least_one_info_is_present()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $contact->first_met_additional_info = 'data';
+        $this->assertTrue($contact->hasFirstMetInformation());
     }
 }

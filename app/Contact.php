@@ -1226,7 +1226,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) or ! is_null($this->first_met) or ! is_null($this->first_met_through_contact_id);
+        return ! is_null($this->first_met_additional_info) or ! is_null($this->firstMetDate) or ! is_null($this->first_met_through_contact_id);
     }
 
     /**
@@ -1271,6 +1271,10 @@ class Contact extends Model
 
         if ($occasion == 'deceased_date') {
             $this->deceased_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'first_met') {
+            $this->first_met_special_date_id = $specialDate->id;
         }
 
         $this->save();
@@ -1333,6 +1337,18 @@ class Contact extends Model
             $this->deceasedDate->delete();
 
             $this->deceased_special_date_id = null;
+            $this->save();
+        }
+
+        if ($occasion == 'first_met') {
+            if (! $this->first_met_special_date_id) {
+                return;
+            }
+
+            $this->firstMetDate->deleteReminder();
+            $this->firstMetDate->delete();
+
+            $this->first_met_special_date_id = null;
             $this->save();
         }
     }
