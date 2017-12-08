@@ -141,29 +141,35 @@ class FakeContentTableSeeder extends Seeder
             if (rand(1, 2) == 1) {
                 foreach (range(1, rand(2, 6)) as $index) {
                     $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-                    $name = $faker->firstName($gender);
-                    $birthdate = $faker->date($format = 'Y-m-d', $max = 'now');
-                    $age = rand(2, 14);
-                    if (rand(1, 2) == 1) {
-                        $birthdate_approximate = 'unknown';
-                    } else {
-                        $birthdate_approximate = 'exact';
-                    }
-
-                    $childID = DB::table('contacts')->insertGetId([
-                        'account_id' => $contact->account_id,
-                        'gender' => $gender,
-                        'first_name' => $name,
-                        'last_name' => (rand(1, 2) == 1) ? $faker->lastName : $contact->last_name,
+                    $kid = Contact::create([
+                            'first_name' => $faker->firstName($gender),
+                            'last_name' => $faker->lastName($gender),
+                            'gender' => $gender,
+                            'account_id' => $contact->account_id,
                     ]);
 
-                    $contact->offsprings()->create(
-                        [
-                            'account_id' => $contact->account_id,
-                            'contact_id' => $childID,
-                            'is_the_child_of' => $contact->id,
-                        ]
-                    );
+                    // is real contact?
+                    if (rand(1, 2) == 1) {
+                        $kid->is_partial = true;
+                        $kid->isTheOffspringOf($contact);
+                    } else {
+                        $kid->is_partial = false;
+                        $kid->isTheOffspringOf($contact, true);
+                    }
+                    $kid->save();
+
+                    // birthdate
+                    $kidBirthDate = $faker->dateTimeThisCentury();
+                    if (rand(1, 2) == 1) {
+                        // add a date where we don't know the year
+                        $specialDate = $kid->setSpecialDate('birthdate', 0, $kidBirthDate->format('m'), $kidBirthDate->format('d'));
+                    } else {
+                        // add a date where we know the year
+                        $specialDate = $kid->setSpecialDate('birthdate', $kidBirthDate->format('Y'), $kidBirthDate->format('m'), $kidBirthDate->format('d'));
+                    }
+                    $newReminder = $specialDate->setReminder('year', 1);
+                    $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
+                    $newReminder->save();
                 }
             }
 

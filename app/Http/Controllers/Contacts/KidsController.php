@@ -61,8 +61,6 @@ class KidsController extends Controller
             $kid->logEvent('contact', $kid->id, 'create');
 
             $kid->isTheOffspringOf($contact, true);
-
-            $contactToSaveTheReminderTo = $kid;
         } else {
             $kid = Contact::create(
                 $request->only([
@@ -80,15 +78,15 @@ class KidsController extends Controller
         }
 
         // birthdate
-        $contactToSaveTheReminderTo->removeSpecialDate('birthdate');
+        $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
             case 'unknown':
                 break;
             case 'approximate':
-                $specialDate = $contactToSaveTheReminderTo->setSpecialDateFromAge('birthdate', $request->input('age'));
+                $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
-                $specialDate = $contactToSaveTheReminderTo->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
                 $newReminder = $specialDate->setReminder('year', 1);
                 $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
                 $newReminder->save();
