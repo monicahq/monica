@@ -173,6 +173,42 @@ class FakeContentTableSeeder extends Seeder
                 }
             }
 
+            // create partners
+            if (rand(1, 2) == 1) {
+                foreach (range(1, rand(2, 6)) as $index) {
+                    $gender = (rand(1, 2) == 1) ? 'male' : 'female';
+                    $partner = Contact::create([
+                            'first_name' => $faker->firstName($gender),
+                            'last_name' => $faker->lastName($gender),
+                            'gender' => $gender,
+                            'account_id' => $contact->account_id,
+                    ]);
+
+                    // is real contact?
+                    if (rand(1, 2) == 1) {
+                        $partner->is_partial = true;
+                        $contact->setRelationshipWith($partner);
+                    } else {
+                        $partner->is_partial = false;
+                        $contact->setRelationshipWith($partner, true);
+                    }
+                    $partner->save();
+
+                    // birthdate
+                    $partnerBirthDate = $faker->dateTimeThisCentury();
+                    if (rand(1, 2) == 1) {
+                        // add a date where we don't know the year
+                        $specialDate = $partner->setSpecialDate('birthdate', 0, $partnerBirthDate->format('m'), $partnerBirthDate->format('d'));
+                    } else {
+                        // add a date where we know the year
+                        $specialDate = $partner->setSpecialDate('birthdate', $partnerBirthDate->format('Y'), $partnerBirthDate->format('m'), $partnerBirthDate->format('d'));
+                    }
+                    $newReminder = $specialDate->setReminder('year', 1);
+                    $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]);
+                    $newReminder->save();
+                }
+            }
+
             // notes
             if (rand(1, 2) == 1) {
                 for ($j = 0; $j < rand(1, 13); $j++) {
