@@ -180,7 +180,7 @@
                 </div>
                 <div class="form-check {{ ($contact->deceasedDate == null) ? 'hidden' : '' }}" id="reminderDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate->reminder_id != null) ? 'checked' : '' }}>
+                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
                     {{ trans('people.deceased_add_reminder') }}
                   </label>
                 </div>
