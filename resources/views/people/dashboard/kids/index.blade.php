@@ -18,7 +18,7 @@
           <span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span>
 
           @if ($kid->birthday_special_date_id)
-            ({{ $kid->birthdate->getAge() }})
+            {{ $kid->birthdate->getAge() }}
           @endif
 
           <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
@@ -34,7 +34,7 @@
           <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span></a>
 
           @if ($kid->birthday_special_date_id)
-            ({{ $kid->birthdate->getAge() }})
+            {{ $kid->birthdate->getAge() }}
           @endif
 
           <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_unlink_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>

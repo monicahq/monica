@@ -265,6 +265,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the contact records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function specialDates()
+    {
+        return $this->hasMany(SpecialDate::class);
+    }
+
+    /**
      * Get the Special date represented the birthdate.
      *
      * @return HasOne

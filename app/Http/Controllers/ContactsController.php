@@ -254,6 +254,7 @@ class ContactsController extends Controller
         $contact->tasks->each->delete();
         $contact->contactFields->each->delete();
         $contact->addresses->each->delete();
+        $contact->specialDates->each->delete();
 
         // delete all relationships
         $relationships = Relationship::where('contact_id', $contact->id)

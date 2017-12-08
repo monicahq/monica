@@ -43,6 +43,8 @@ class KidsController extends Controller
      */
     public function store(KidsRequest $request, Contact $contact)
     {
+        $contactToSaveTheReminderTo = $contact;
+
         // this is a real contact, not just a significant other
         if ($request->get('realContact')) {
             $kid = Contact::create(
@@ -50,7 +52,6 @@ class KidsController extends Controller
                     'first_name',
                     'last_name',
                     'gender',
-                    'is_birthdate_approximate',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -60,13 +61,14 @@ class KidsController extends Controller
             $kid->logEvent('contact', $kid->id, 'create');
 
             $kid->isTheOffspringOf($contact, true);
+
+            $contactToSaveTheReminderTo = $kid;
         } else {
             $kid = Contact::create(
                 $request->only([
                     'first_name',
                     'last_name',
                     'gender',
-                    'is_birthdate_approximate',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -77,11 +79,21 @@ class KidsController extends Controller
             $kid->isTheOffspringOf($contact);
         }
 
-        $kid->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        $contactToSaveTheReminderTo->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $contactToSaveTheReminderTo->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'exact':
+                $specialDate = $contactToSaveTheReminderTo->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $newReminder = $specialDate->setReminder('year', 1);
+                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
+                $newReminder->save();
+                break;
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_add_success'));
@@ -134,18 +146,27 @@ class KidsController extends Controller
                 'first_name',
                 'last_name',
                 'gender',
-                'is_birthdate_approximate',
             ])
             + [
                 'account_id' => $contact->account_id,
             ]
         );
 
-        $kid->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        $kid->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'exact':
+                $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $newReminder = $specialDate->setReminder('year', 1);
+                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
+                $newReminder->save();
+                break;
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.kids_update_success'));
@@ -174,6 +195,7 @@ class KidsController extends Controller
 
         $contact->unsetOffspring($kid);
 
+        $kid->specialDates->each->delete();
         $kid->delete();
 
         return redirect('/people/'.$contact->id)
