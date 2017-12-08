@@ -85,13 +85,8 @@
                       {{ (! is_null($contact->first_met)) ? 'checked' : '' }}
                       >
 
-                      <span class="form-inline">
-                        {{ trans('people.introductions_first_met_date_known') }}
-                        <input type="date" name="first_met" class="form-control" id="specificDate"
-                        value="{{ old('first_met') ?? (! is_null($contact->first_met) ? $contact->first_met->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
-                        min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                        max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-                      </span>
+                      {{ trans('people.introductions_first_met_date_known') }}
+                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate, 'class' => 'first_met'])
                     </label>
                   </div>
                 </fieldset>

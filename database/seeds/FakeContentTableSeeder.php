@@ -65,7 +65,14 @@ class FakeContentTableSeeder extends Seeder
 
                 if (rand(1,3) == 1) {
                     $deceasedDate = $faker->dateTimeThisCentury();
-                    $specialDate = $contact->setSpecialDate('deceased_date', $deceasedDate->format('Y'), $deceasedDate->format('m'), $deceasedDate->format('d'));
+
+                    if (rand(1, 2) == 1) {
+                        // add a date where we don't know the year
+                        $specialDate = $contact->setSpecialDate('deceased_date', 0, $deceasedDate->format('m'), $deceasedDate->format('d'));
+                    } else {
+                        // add a date where we know the year
+                        $specialDate = $contact->setSpecialDate('deceased_date', $deceasedDate->format('Y'), $deceasedDate->format('m'), $deceasedDate->format('d'));
+                    }
                     $newReminder = $specialDate->setReminder('year', 1);
                     $newReminder->title = trans('people.deceased_reminder_title', ['name' => $contact->first_name]);
                     $newReminder->save();
@@ -77,10 +84,23 @@ class FakeContentTableSeeder extends Seeder
             // add birthday
             if (rand(1, 2) == 1) {
                 $birthdate = $faker->dateTimeThisCentury();
-                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
-                $newReminder->save();
+
+                if (rand(1, 2) == 1) {
+                    if (rand(1, 2) == 1) {
+                        // add a date where we don't know the year
+                        $specialDate = $contact->setSpecialDate('birthdate', 0, $birthdate->format('m'), $birthdate->format('d'));
+                    } else {
+                        // add a date where we know the year
+                        $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+                    }
+
+                    $newReminder = $specialDate->setReminder('year', 1);
+                    $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
+                    $newReminder->save();
+                } else {
+                    // add a birthdate based on an approximate age
+                    $specialDate = $contact->setSpecialDateFromAge('birthdate', rand(10, 100));
+                }
             }
 
             // create kids
