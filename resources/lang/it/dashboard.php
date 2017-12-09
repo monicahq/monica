@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
+    'dashboard_blank_title' => 'Benvenuto nel tuo account!',
+    'dashboard_blank_description' => 'Con Monica puoi organizzare tutte le interazioni con le persone a cui tieni.',
+    'dashboard_blank_cta' => 'Aggiungi il tuo primo contatto',
 
-    'notes_title' => 'You don\'t any notes yet.',
-    'notes_description' => 'Star a note of one of your contact to list favorite notes here.',
+    'notes_title' => 'Non hai alcuna nota.',
+    'notes_description' => 'Contrassegna una nota nei tuoi contatti per farla apparire qui.',
 
     'reminders_title' => 'Prossimi promemoria',
     'reminders_blank_description' => 'Nessun promemoria pianificato.',
@@ -36,7 +36,7 @@ return [
     'tab_last_edited_contacts' => 'Ultimi contatti aggiornati',
     'tab_whats_coming' => 'In arrivo',
     'tab_lastest_actions' => 'Ultime azioni',
-    'tab_important_notes' => 'Important notes',
+    'tab_important_notes' => 'Note importanti',
     'tasks_title' => 'Da fare',
     'tasks_blank' => 'Non ci sono cose da fare.',
     'reminders_in_days' => '{1} fra un giorno|fra :number giorni',
