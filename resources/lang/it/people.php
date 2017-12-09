@@ -171,7 +171,7 @@ return [
     'kids_add_lastname' => 'Cognome (facoltativo)',
     'kids_add_also_create' => 'Aggiungi anche questa persona come Contatto.',
     'kids_add_also_desc' => 'Ció ti permetterá di trattare questo figlio come un qualsiasi altro contatto.',
-    'kids_add_no_existing_contact' => "Non hai contatti che possono essere figli di :name al momento.",
+    'kids_add_no_existing_contact' => 'Non hai contatti che possono essere figli di :name al momento.',
     'kids_add_existing_contact' => 'Scegli un contatto esistente come figlio di :name',
     'kids_add_probably' => 'Questa persona probabilmente ha ',
     'kids_add_probably_yo' => 'anni',
