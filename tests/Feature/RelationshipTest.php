@@ -44,11 +44,13 @@ class RelationshipTest extends FeatureTestCase
         $this->post(
             route('people.relationships.store', $contact), [
                 'first_name' => 'Jessica',
+                'gender' => 'none',
                 'is_birthdate_approximate' => 'unknown',
         ]);
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Jessica',
+            'gender' => 'none',
             'account_id' => $user->account_id,
             'is_partial' => 1,
         ]);
@@ -65,12 +67,13 @@ class RelationshipTest extends FeatureTestCase
         $this->post(
             route('people.relationships.store', $contact), [
                 'first_name' => 'Jessica',
-                'is_birthdate_approximate' => 'unknown',
+                'gender' => 'none',
                 'realContact' => 1,
         ]);
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Jessica',
+            'gender' => 'none',
             'account_id' => $user->account_id,
             'is_partial' => 0,
         ]);

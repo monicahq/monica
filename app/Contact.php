@@ -846,61 +846,6 @@ class Contact extends Model
     }
 
     /**
-     * Assigns a birthday or birth year based on the data provided.
-     *
-     * @param string $approximation ['unknown', 'exact', 'approximate']
-     * @param \DateTime|string $exactDate
-     * @param string|int $age
-     * @return static
-     */
-    public function setBirthday($approximation, $dateOfBirth, $age = null)
-    {
-        // delete any existing reminder for a birthdate about this contact
-        $this->clearBirthdateReminder();
-
-        if ($approximation === 'approximate') {
-            $this->birthdate = Carbon::now()->subYears($age)->month(1)->day(1);
-        } elseif ($approximation === 'exact') {
-            $this->birthdate = Carbon::parse($dateOfBirth);
-            $this->setBirthdateReminder();
-        } else {
-            $this->birthdate = null;
-        }
-
-        $this->save();
-
-        return $this;
-    }
-
-    /**
-     * Set a reminder for the birthdate of this contact.
-     */
-    public function setBirthdateReminder()
-    {
-        $reminder = Reminder::addBirthdayReminder(
-            $this,
-            $this->birthdate
-        );
-
-        $this->birthday_reminder_id = $reminder->id;
-        $this->save();
-    }
-
-    /**
-     * Clear any existing birthdate reminder about this contact.
-     *
-     * @return void
-     */
-    public function clearBirthdateReminder()
-    {
-        if ($this->birthday_reminder_id) {
-            $this->reminders->find($this->birthday_reminder_id)->delete();
-            $this->birthday_reminder_id = null;
-            $this->save();
-        }
-    }
-
-    /**
      * Get the list of all potential contacts to add as either a significant
      * other or a kid.
      *

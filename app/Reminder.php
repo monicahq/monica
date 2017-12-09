@@ -83,35 +83,6 @@ class Reminder extends Model
     }
 
     /**
-     * Add a new birthday reminder.
-     *
-     * @param Contact $contact
-     * @param Carbon|string $date
-     * @return Reminder
-     */
-    public static function addBirthdayReminder(Contact $contact, $birthdate)
-    {
-        $birthdate = Carbon::parse($birthdate);
-
-        $reminder = $contact->reminders()
-            ->create([
-                'frequency_type' => 'year',
-                'frequency_number' => 1,
-                'next_expected_date' => $birthdate,
-                'account_id' => $contact->account_id,
-                'is_birthday' => true,
-            ]);
-
-        foreach ($contact->account->users as $user) {
-            $userTimezone = $user->timezone;
-        }
-
-        $reminder->calculateNextExpectedDate($userTimezone)->save();
-
-        return $reminder;
-    }
-
-    /**
      * Get the title of a reminder.
      * @return string
      */
