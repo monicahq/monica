@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add ability to add a birthday (or any date) without knowing the year
 * Change the way we use to setup the dev environment. Read `contribute.md` for more information
+* Remove the table `important_dates` which was not used
 
 RELEASED VERSIONS:
 
