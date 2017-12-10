@@ -22,16 +22,20 @@ guarantee that it will work fine with Monica.
 1. `npm install`.
 1. Create a database called `monica` in your mySQL instance.
 1. `php artisan key:generate` to generate a random APP_KEY
-1. `php artisan setup:test` to run all migrations and create the database structure.
+1. `php artisan setup:test` setup the database.
+    1. By default this command will also populate the database with fake data.
+    1. Use the `-- skipSeed` option to skip the process of adding fake data in your dev environment.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan passport:install` to create the access tokens required for the API.
 
-Note that this will create two accounts:
+If you haven't skipped the seeding of fake data, we will create two accounts by default:
 
 * First account is `admin@admin.com` with the password `admin`. This account
 contains a lot of fake data that will let you play with the product.
 * Second account is `blank@blank.com` with the password `blank`. This account
 does not contain any data and shall be used to check all the blank states.
+
+Otherwise, you won't have any account setup. To add a default account, you should register a new account.
 
 ### Setup the testing environment
 

@@ -4,25 +4,24 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Console\ConfirmableTrait;
 
 class SetupTest extends Command
 {
-    use ConfirmableTrait;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'setup:test';
+    protected $signature = 'setup:test
+                            {--skipSeed : Whether we should populate the database with fake data}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create the test environment with fake data for testing purposes.';
+    protected $description = 'Create the test environment with optional fake data for testing purposes.';
 
     /**
      * Create a new command instance.
@@ -41,7 +40,7 @@ class SetupTest extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed()) {
+        if (! $this->confirm('Are you sure you want to proceed? This will delete ALL data in your environment.')) {
             return;
         }
 
@@ -57,10 +56,13 @@ class SetupTest extends Command
         $this->call('db:seed', ['--class' => 'CountriesSeederTable']);
         $this->info('Filled the Countries table');
 
-        $this->info('Filling the database with fake data');
-        $this->call('db:seed', ['--class' => 'FakeContentTableSeeder']);
-        $this->info('Filled database with fake data');
+        if (! $this->option('skipSeed')) {
+            $this->info('Filling the database with fake data');
+            $this->call('db:seed', ['--class' => 'FakeContentTableSeeder']);
+            $this->info('Filled database with fake data');
+            $this->info('You can now sign in with username: admin@admin.com and password: admin');
+        }
 
-        $this->info('You can now sign in with username: admin@admin.com and password: admin');
+        $this->info('Setup is done. Have fun.');
     }
 }

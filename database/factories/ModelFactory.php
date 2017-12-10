@@ -114,19 +114,6 @@ $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Kid::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => 1,
-        'child_of_contact_id' => 1,
-        'gender' => 'male',
-        'first_name' => encrypt($faker->firstName),
-        'is_birthdate_approximate' => 'false',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-        'birthday_reminder_id' => 1,
-        'food_preferencies' => encrypt($faker->sentence),
-    ];
-});
-
 $factory->define(App\Country::class, function (Faker\Generator $faker) {
     return [
         'iso' => 'ca',

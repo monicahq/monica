@@ -123,6 +123,8 @@ class SettingsController extends Controller
             $account->contactFieldTypes->each->forceDelete();
             $account->activityStatistics->each->forceDelete();
             $account->calls->each->forceDelete();
+            $account->activities->each->forceDelete();
+            $account->addresses->each->forceDelete();
         }
 
         return redirect('/settings')

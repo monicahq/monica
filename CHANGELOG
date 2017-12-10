@@ -1,7 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add ability to add a birthday (or any date) without knowing the year
-* Add a better way to setup the dev environment. Read `contribute.md` for more information
+* Change the way we use to setup the dev environment. Read `contribute.md` for more information
 
 RELEASED VERSIONS:
 
