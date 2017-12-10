@@ -9,16 +9,16 @@ return [
     'edit' => 'Modifica',
     'upload' => 'Carica',
     'close' => 'Chiudi',
-    'done' => 'Done',
-    'for' => 'for',
+    'done' => 'Fatto',
+    'for' => 'per',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
-    'markdown_link' => 'Read documentation',
+    'markdown_description' => 'Vuoi formattare il tuo testo? Supportiamo Markdown per grassetto, corsivo, liste, e altro ancora.',
+    'markdown_link' => 'Leggi documentazione',
 
     'header_settings_link' => 'Impostazioni',
     'header_logout_link' => 'Logout',
 
-    'main_nav_cta' => 'Aggiungi persone',
+    'main_nav_cta' => 'Aggiungi contatti',
     'main_nav_dashboard' => 'Home',
     'main_nav_family' => 'Contatti',
     'main_nav_journal' => 'Diario',
@@ -51,12 +51,12 @@ return [
     'breadcrumb_settings_import_upload' => 'Carica',
     'breadcrumb_settings_tags' => 'Etichette',
     'breadcrumb_api' => 'API',
-    'breadcrumb_edit_introductions' => 'How did you meet',
+    'breadcrumb_edit_introductions' => 'Come vi siete conosciuti',
 
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
     'gender_none' => 'Preferisco non specificarlo',
 
-    'error_title' => 'Whoops! Something went wrong.',
-    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
+    'error_title' => 'Ops! Qualcosa è andato storto.',
+    'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
 ];
