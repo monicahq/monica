@@ -1,3 +1,27 @@
+<!-- This uses the MarkdownTOC's Sublime Text plugin to autogenerate the TOC -->
+<!-- MarkdownTOC autolink="true" depth="4" -->
+
+- [Contribute as a developer][contribute-as-a-developer]
+    - [Testing environment][testing-environment]
+        - [Setup][setup]
+        - [Run the test suite][run-the-test-suite]
+    - [Backend][backend]
+        - [Things to consider when adding new code][things-to-consider-when-adding-new-code]
+            - [Add a new table to the database schema][add-a-new-table-to-the-database-schema]
+            - [Manipulating data during a migration][manipulating-data-during-a-migration]
+        - [Email testing][email-testing]
+        - [Email reminders][email-reminders]
+        - [Statistics][statistics]
+    - [Database][database]
+        - [Connecting to mySQL][connecting-to-mysql]
+    - [Front-end][front-end]
+        - [Mix][mix]
+        - [Watching and compiling assets][watching-and-compiling-assets]
+        - [CSS][css]
+        - [JS and Vue][js-and-vue]
+
+<!-- /MarkdownTOC -->
+
 # Contribute as a developer
 
 Are you interested in giving a hand? We can't be more excited about it. Thanks in advance! Here are some guidelines that could help you to get started quickly.
