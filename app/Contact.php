@@ -405,6 +405,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the last consulted at date of the contact.
+     *
+     * @return string
+     */
+    public function getLastConsultedAtAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Get the complete name of the contact.
      *
      * @return string

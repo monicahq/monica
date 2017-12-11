@@ -58,6 +58,7 @@ class FakeContentTableSeeder extends Seeder
                 'gender' => $gender,
                 'first_name' => $this->faker->firstName($gender),
                 'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
+                'created_at' => $this->faker->dateTimeThisCentury(),
             ]);
 
             $this->contact = Contact::find($contactID);
@@ -204,6 +205,7 @@ class FakeContentTableSeeder extends Seeder
                         'last_name' => $this->faker->lastName($gender),
                         'gender' => $gender,
                         'account_id' => $this->contact->account_id,
+                        'created_at' => $this->faker->dateTimeThisCentury(),
                 ]);
 
                 // is real contact?
@@ -242,6 +244,7 @@ class FakeContentTableSeeder extends Seeder
                         'last_name' => $this->faker->lastName($gender),
                         'gender' => $gender,
                         'account_id' => $this->contact->account_id,
+                        'created_at' => $this->faker->dateTimeThisCentury(),
                 ]);
 
                 // is real contact?

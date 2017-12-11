@@ -14,7 +14,7 @@ class AddLastConsultedAtToContacts extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->datetime('last_consulted_at')->nullable()->after('linkedin_profile_url');
+            $table->timestamp('last_consulted_at')->nullable()->after('linkedin_profile_url');
         });
 
         $contacts = DB::table('contacts')->select('id')->get();
