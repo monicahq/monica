@@ -294,7 +294,7 @@ class FakeContentTableSeeder extends Seeder
                     'activity_type_id' => rand(1, 13),
                     'description' => $this->faker->realText(rand(100, 1000)),
                     'account_id' => $this->contact->account_id,
-                ]);
+                ], ['account_id' => $this->contact->account_id]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');
             }
