@@ -21,7 +21,9 @@
           <span class="name">{{ $partner->getCompleteName(auth()->user()->name_order) }}</span>
 
           @if ($partner->birthday_special_date_id)
-            ({{ $partner->birthdate->getAge() }})
+            @if ($partner->birthdate->getAge())
+              ({{ $partner->birthdate->getAge() }})
+            @endif
           @endif
 
           <a href="{{ route('people.relationships.edit', [$contact, $partner]) }}" class="action-link {{ $contact->id }}-edit-relationship">
@@ -42,7 +44,9 @@
           <a href="{{ route('people.show', $partner) }}">{{ $partner->getCompleteName(auth()->user()->name_order) }}</a>
 
           @if ($partner->birthday_special_date_id)
-            {{ $partner->birthdate->getAge() }}
+            @if ($partner->birthdate->getAge())
+              ({{ $partner->birthdate->getAge() }})
+            @endif
           @endif
 
           <a href="#" onclick="if (confirm('{{ trans('people.significant_other_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link {{ $contact->id }}-unlink-relationship">

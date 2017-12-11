@@ -28,7 +28,9 @@
           <h2>
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
             @if ($contact->birthday_special_date_id)
-            <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
+              @if ($contact->birthdate->getAge())
+                <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
+              @endif
             @endif
           </h2>
 
