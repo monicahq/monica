@@ -114,7 +114,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}
+                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                     </span>
                   </a>
                 </li>

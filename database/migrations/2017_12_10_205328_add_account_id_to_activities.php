@@ -28,7 +28,5 @@ class AddAccountIdToActivities extends Migration
                 ->where('contact_id', $activityContact->contact_id)
                 ->update(['account_id' => $contact->account_id]);
         }
-
-
     }
 }

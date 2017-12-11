@@ -24,6 +24,7 @@ class Contact extends Model
 
     protected $dates = [
         'last_talked_to',
+        'last_consulted_at',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -58,7 +59,6 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'gender',
-        'birthdate',
         'account_id',
         'is_partial',
         'job',
@@ -67,6 +67,7 @@ class Contact extends Model
         'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
+        'last_consulted_at',
     ];
 
     /**
@@ -391,6 +392,16 @@ class Contact extends Model
         preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
 
         return implode('', $initials[0]);
+    }
+
+    /**
+     * Mutator last_consulted_at.
+     *
+     * @param datetime $value
+     */
+    public function setLastConsultedAtAttribute($value)
+    {
+        $this->attributes['last_consulted_at'] = $value;
     }
 
     /**

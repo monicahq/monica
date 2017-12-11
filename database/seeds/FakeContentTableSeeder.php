@@ -36,7 +36,6 @@ class FakeContentTableSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => bcrypt('admin'),
             'timezone' => config('app.timezone'),
-            'remember_token' => str_random(10),
         ]);
 
         $this->faker = Faker::create();
@@ -77,6 +76,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
+            $this->changeUpdatedAt();
 
             $progress->advance();
         }
@@ -383,5 +383,11 @@ class FakeContentTableSeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    public function changeUpdatedAt()
+    {
+        $this->contact->last_consulted_at = $this->faker->dateTimeThisYear();
+        $this->contact->save();
     }
 }

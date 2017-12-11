@@ -126,6 +126,9 @@ class ContactsController extends Controller
 
         $reminders = $contact->getRemindersAboutRelatives();
 
+        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
+        $contact->save();
+
         return view('people.profile')
             ->withContact($contact)
             ->withReminders($reminders);
