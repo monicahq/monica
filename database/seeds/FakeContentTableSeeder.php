@@ -4,6 +4,8 @@ use App\Account;
 use App\Contact;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -43,6 +45,10 @@ class FakeContentTableSeeder extends Seeder
         $this->numberOfContacts = rand(30, 100);
         echo 'Generating '.$this->numberOfContacts.' fake contacts'.PHP_EOL;
 
+        $output = new ConsoleOutput();
+        $progress = new ProgressBar($output, $this->numberOfContacts);
+        $progress->start();
+
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
@@ -69,7 +75,11 @@ class FakeContentTableSeeder extends Seeder
             $this->populateTasks();
             $this->populateDebts();
             $this->populateGifts();
+
+            $progress->advance();
         }
+
+        $progress->finish();
 
         // create the second test, blank account
         $accountID = DB::table('accounts')->insertGetId([
@@ -265,6 +275,8 @@ class FakeContentTableSeeder extends Seeder
                 $note = $this->contact->notes()->create([
                     'body' => $this->faker->realText(rand(40, 500)),
                     'account_id' => $this->contact->account_id,
+                    'is_favorited' => (rand(1,3) == 1 ? true : false),
+                    'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
 
                 $this->contact->logEvent('note', $note->id, 'create');

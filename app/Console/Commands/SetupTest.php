@@ -44,24 +44,32 @@ class SetupTest extends Command
             return;
         }
 
-        $this->line('Performing all migrations');
         $this->callSilent('migrate:fresh');
-        $this->info('Performed migrations');
+        $this->info('✓ Performed migrations');
 
-        $this->line('Filling the Activity Types table');
         $this->call('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
-        $this->info('Filled the Activity Types table');
+        $this->info('✓ Filled the Activity Types table');
 
-        $this->line('Filling the Countries table');
         $this->call('db:seed', ['--class' => 'CountriesSeederTable']);
-        $this->info('Filled the Countries table');
+        $this->info('✓ Filled the Countries table');
 
         if (! $this->option('skipSeed')) {
-            $this->info('Filling the database with fake data');
             $this->call('db:seed', ['--class' => 'FakeContentTableSeeder']);
-            $this->info('Filled database with fake data');
-            $this->info('You can now sign in with username: admin@admin.com and password: admin');
+            $this->info('');
+            $this->info('✓ Filled database with fake data');
         }
+
+        $this->line('');
+        $this->line('-----------------------------');
+        $this->line('|');
+        $this->line('| Welcome to Monica v'.config('monica.app_version'));
+        $this->line('|');
+        $this->line('-----------------------------');
+        $this->info('| You can now sign in to your account:');
+        $this->line('| username: admin@admin.com');
+        $this->line('| password: admin');
+        $this->line('| URL:      '.config('app.url'));
+        $this->line('-----------------------------');
 
         $this->info('Setup is done. Have fun.');
     }
