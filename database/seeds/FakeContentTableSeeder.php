@@ -42,7 +42,7 @@ class FakeContentTableSeeder extends Seeder
         $this->faker = Faker::create();
 
         // create a random number of contacts
-        $this->numberOfContacts = rand(30, 100);
+        $this->numberOfContacts = rand(60, 200);
         echo 'Generating '.$this->numberOfContacts.' fake contacts'.PHP_EOL;
 
         $output = new ConsoleOutput();
@@ -75,6 +75,8 @@ class FakeContentTableSeeder extends Seeder
             $this->populateTasks();
             $this->populateDebts();
             $this->populateGifts();
+            $this->populateAddresses();
+            $this->populateContactFields();
 
             $progress->advance();
         }
@@ -351,6 +353,34 @@ class FakeContentTableSeeder extends Seeder
                 ]);
 
                 $this->contact->logEvent('gift', $gift->id, 'create');
+            }
+        }
+    }
+
+    public function populateAddresses()
+    {
+        if (rand(1, 3) == 1) {
+            $address = $this->contact->addresses()->create([
+                'account_id' => $this->contact->account_id,
+                'country_id' => rand(1, 242),
+                'name' => $this->faker->word,
+                'street' => (rand(1,3) == 1) ? $this->faker->streetAddress : null,
+                'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
+                'province' => (rand(1, 3) == 1) ? $this->faker->state : null,
+                'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,
+            ]);
+        }
+    }
+
+    public function populateContactFields()
+    {
+        if (rand(1, 3) == 1) {
+            for ($j = 0; $j < rand(1, 4); $j++) {
+                $contactField = $this->contact->contactFields()->create([
+                    'contact_field_type_id' => rand(1, 6),
+                    'data' => $this->faker->url,
+                    'account_id' => $this->contact->account->id,
+                ]);
             }
         }
     }
