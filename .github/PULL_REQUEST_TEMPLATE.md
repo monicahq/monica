@@ -9,9 +9,10 @@
 #### Code-related tasks
 - [ ] Tests added for this feature/bug.
 - [ ] Impact on the seeders.
+- [ ] Impact on the API.
 
 #### If the code changes the SQL schema
-- [ ] Impact on account exports.
+- [ ] Impact on account export.
 - [ ] Impact on importing data with `vCard` and `.csv` files.
 - [ ] Impact on account reset and deletion.
 
