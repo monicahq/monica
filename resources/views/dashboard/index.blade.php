@@ -62,7 +62,7 @@
                         @if ($reminder->is_birthday)
                           {{ trans('people.reminders_birthday', ['name' => $reminder->contact->firstname]) }}
                         @else
-                          {{ $reminder->getTitle() }}
+                          {{ $reminder->title }}
                         @endif
                       </li>
                     @endforeach
