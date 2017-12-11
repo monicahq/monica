@@ -1,7 +1,7 @@
 # Contribute as a developer
 
 The best way to contribute to Monica is to use
-[Homestead](https://laravel.com/docs/5.3/homestead), which is an official,
+[Homestead](https://laravel.com/docs/homestead), which is an official,
 pre-packaged Vagrant box that provides you a wonderful development environment
 without requiring you to install PHP, a web server, and any other server
 software on your local machine. The big advantage is that it runs on any
@@ -15,13 +15,17 @@ The official Monica installation uses mySQL as the database system. While
 Laravel technically supports Postgre and other database types, we can't
 guarantee that it will work fine with Monica.
 
+Once vagrant box is running, you can connect to it with `vagrant ssh` command.
+Go to your monica directory then execute:
+
 1. `composer install` in the folder the repository has been cloned.
 1. `cp .env.example .env`
 1. Update `.env` to your specific needs.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install`.
 1. Create a database called `monica` in your mySQL instance.
-1. `php artisan key:generate` to generate a random APP_KEY
+From Homestead directory: `sudo scripts/create-mysql.sh monica`
+or `mysql -e "CREATE DATABASE 'monica'";`
 1. `php artisan migrate` to run all migrations and create the database structure.
 1. `php artisan storage:link` to access the avatars.
 1. `php artisan passport:install` to create the access tokens required for the API.
@@ -72,7 +76,7 @@ If you want to connect directly to Monica's MySQL instance read [_Connecting to 
 
 #### Mix
 
-We use [mix](https://laravel.com/docs/5.5/mix) to manage the front-end and its
+We use [mix](https://laravel.com/docs/mix) to manage the front-end and its
 dependencies, and also to compile and/watch the assets. Please note that we
 should do our best to not introduce new dependencies if we can prevent it.
 
