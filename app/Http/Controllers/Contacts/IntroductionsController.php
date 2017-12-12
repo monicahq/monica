@@ -52,9 +52,7 @@ class IntroductionsController extends Controller
             $specialDate = $contact->setSpecialDate('first_met', $request->input('first_met_year'), $request->input('first_met_month'), $request->input('first_met_day'));
 
             if ($request->addReminder == 'on') {
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.introductions_reminder_title', ['name' => $contact->first_name]);
-                $newReminder->save();
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.introductions_reminder_title', ['name' => $contact->first_name]));
             }
         }
 

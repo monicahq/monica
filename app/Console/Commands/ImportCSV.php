@@ -130,9 +130,7 @@ class ImportCSV extends Command
                     $birthdate = date('Y-m-d', strtotime($data[14]));
 
                     $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                    $newReminder = $specialDate->setReminder('year', 1);
-                    $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]);
-                    $newReminder->save();
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
                 $imported++;

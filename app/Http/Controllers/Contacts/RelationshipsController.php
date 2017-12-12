@@ -86,9 +86,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]);
-                $newReminder->save();
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
                 break;
         }
 
@@ -168,9 +166,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]);
-                $newReminder->save();
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
                 break;
         }
 

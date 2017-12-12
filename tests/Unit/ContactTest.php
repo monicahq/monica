@@ -178,10 +178,9 @@ class ContactTest extends TestCase
         ]);
         $contact->activities()->attach($activity3);
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
-            'Oct 29, 2015',
-            $contact->getLastActivityDate($timezone)
+            '2015-10-29 10:10:10',
+            $contact->getLastActivityDate()
         );
     }
 
@@ -194,10 +193,9 @@ class ContactTest extends TestCase
         ]);
         $contact->activities()->attach($activity1);
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
-            'Oct 29, 2015',
-            $contact->getLastActivityDate($timezone)
+            '2015-10-29 10:10:10',
+            $contact->getLastActivityDate()
         );
     }
 
@@ -207,10 +205,9 @@ class ContactTest extends TestCase
         $contact->account_id = 1;
         $contact->id = 1;
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
             null,
-            $contact->getLastActivityDate($timezone)
+            $contact->getLastActivityDate()
         );
     }
 
@@ -219,10 +216,9 @@ class ContactTest extends TestCase
         $contact = new Contact;
         $contact->last_talked_to = null;
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
             null,
-            $contact->getLastCalled($timezone)
+            $contact->getLastCalled()
         );
     }
 
@@ -231,10 +227,9 @@ class ContactTest extends TestCase
         $contact = new Contact;
         $contact->last_talked_to = '2013-10-29 10:10:10';
 
-        $timezone = 'America/New_York';
-        $this->assertStringEndsWith(
-            'Oct 29, 2013',
-            $contact->getLastCalled($timezone)
+        $this->assertEquals(
+            '2013-10-29 10:10:10',
+            $contact->getLastCalled()
         );
     }
 

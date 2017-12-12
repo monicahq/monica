@@ -87,9 +87,7 @@ class KidsController extends Controller
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
-                $newReminder->save();
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
                 break;
         }
 
@@ -160,9 +158,7 @@ class KidsController extends Controller
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1);
-                $newReminder->title = trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]);
-                $newReminder->save();
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
                 break;
         }
 

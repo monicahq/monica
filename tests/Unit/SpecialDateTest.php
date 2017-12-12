@@ -75,7 +75,7 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->reminder_id = $reminder->id;
         $specialDate->save();
 
-        $specialDate->setReminder('year', 1);
+        $specialDate->setReminder('year', 1, '');
 
         $this->assertNotEquals(1, $specialDate->reminder_id);
     }
@@ -86,7 +86,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $specialDate = factory(\App\SpecialDate::class)->make();
 
-        $specialDate->setReminder('year', 1);
+        $specialDate->setReminder('year', 1, '');
 
         $this->assertNotNull($specialDate->reminder_id);
     }

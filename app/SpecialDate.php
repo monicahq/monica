@@ -112,7 +112,7 @@ class SpecialDate extends Model
      * @param int $frequencyNumber
      * @return Reminder
      */
-    public function setReminder(string $frequency, int $frequencyNumber)
+    public function setReminder(string $frequency, int $frequencyNumber, string $title)
     {
         $this->deleteReminder();
 
@@ -123,6 +123,7 @@ class SpecialDate extends Model
         $reminder->special_date_id = $this->id;
         $reminder->account_id = $this->account_id;
         $reminder->contact_id = $this->contact_id;
+        $reminder->title = $title;
         $reminder->save();
 
         $reminder->calculateNextExpectedDate($reminder->account->timezone())->save();
@@ -157,7 +158,7 @@ class SpecialDate extends Model
             return;
         }
 
-        if ($this->is_year_unknown) {
+        if ($this->is_year_unknown == true) {
             return;
         }
 

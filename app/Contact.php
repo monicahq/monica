@@ -465,9 +465,9 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return string 'Oct 29, 1981'
+     * @return DateTime
      */
-    public function getLastActivityDate($timezone)
+    public function getLastActivityDate()
     {
         if ($this->activities->count() === 0) {
             return;
@@ -475,9 +475,7 @@ class Contact extends Model
 
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
-        return DateHelper::getShortDate(
-            Carbon::parse($lastActivity->date_it_happened, $timezone)
-        );
+        return $lastActivity->date_it_happened;
     }
 
     /**
@@ -485,15 +483,13 @@ class Contact extends Model
      *
      * @return string
      */
-    public function getLastCalled($timezone)
+    public function getLastCalled()
     {
         if (is_null($this->last_talked_to)) {
             return;
         }
 
-        return DateHelper::getShortDate(
-            Carbon::parse($this->last_talked_to, $timezone)
-        );
+        return $this->last_talked_to;
     }
 
     /**
