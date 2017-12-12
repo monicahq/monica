@@ -5,7 +5,7 @@ return [
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
     'dashboard_blank_cta' => 'Add your first contact',
 
-    'notes_title' => 'You don\'t any notes yet.',
+    'notes_title' => 'You don\'t have any starred notes yet.',
     'notes_description' => 'Star a note of one of your contact to list favorite notes here.',
 
     'reminders_title' => 'Upcoming reminders',
