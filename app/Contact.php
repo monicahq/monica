@@ -1275,6 +1275,14 @@ class Contact extends Model
             $this->birthday_special_date_id = $specialDate->id;
         }
 
+        if ($occasion == 'deceased_date') {
+            $this->deceased_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'first_met') {
+            $this->first_met_special_date_id = $specialDate->id;
+        }
+
         $this->save();
 
         return $specialDate;

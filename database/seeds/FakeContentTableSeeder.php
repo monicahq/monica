@@ -42,7 +42,7 @@ class FakeContentTableSeeder extends Seeder
         $this->faker = Faker::create();
 
         // create a random number of contacts
-        $this->numberOfContacts = rand(60, 200);
+        $this->numberOfContacts = rand(60, 100);
         echo 'Generating '.$this->numberOfContacts.' fake contacts'.PHP_EOL;
 
         $output = new ConsoleOutput();
@@ -63,10 +63,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->gender = $gender;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
-            $this->contact->created_at = $this->faker->dateTimeThisCentury();
             $this->contact->save();
-
-            // $this->contact = Contact::find($contactID);
 
             // set an external avatar
             $this->contact->has_avatar = true;
@@ -212,10 +209,7 @@ class FakeContentTableSeeder extends Seeder
                 $kid->gender = $gender;
                 $kid->first_name = $this->faker->firstName($gender);
                 $kid->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
-                $kid->created_at = $this->faker->dateTimeThisCentury();
                 $kid->save();
-
-                \Log::info($kid->id.' '.$kid->created_at);
 
                 // is real contact?
                 if (rand(1, 2) == 1) {
@@ -252,7 +246,6 @@ class FakeContentTableSeeder extends Seeder
                 $partner->gender = $gender;
                 $partner->first_name = $this->faker->firstName($gender);
                 $partner->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
-                $partner->created_at = $this->faker->dateTimeThisCentury();
                 $partner->save();
 
                 // is real contact?
