@@ -5,10 +5,16 @@ php:
 
 services:
   - mysql
+  - postgresql
+env:
+  - DB=mysql
+  - DB=postgres
 
 before_script:
-  - cp .env.travis .env
-  - mysql -e 'create database monica;'
+  - sh -c "if [ '$DB' = 'postgres' ]; then cp .env.postgres.travis .env; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then cp .env.mysql.travis .env; fi"
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'CREATE DATABASE monica;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE monica;'; fi"
   - composer self-update
   - composer install --no-interaction
 
