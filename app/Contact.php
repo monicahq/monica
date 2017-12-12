@@ -25,6 +25,8 @@ class Contact extends Model
     protected $dates = [
         'last_talked_to',
         'last_consulted_at',
+        'created_at',
+        'updated_at',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -68,6 +70,7 @@ class Contact extends Model
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
+        'created_at',
     ];
 
     /**

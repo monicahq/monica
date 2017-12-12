@@ -58,16 +58,15 @@ class FakeContentTableSeeder extends Seeder
             $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-            // create contact entry
-            $contactID = DB::table('contacts')->insertGetId([
-                'account_id' => $accountID,
-                'gender' => $gender,
-                'first_name' => $this->faker->firstName($gender),
-                'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
-                'created_at' => $this->faker->dateTimeThisCentury(),
-            ]);
+            $this->contact = new Contact;
+            $this->contact->account_id = $accountID;
+            $this->contact->gender = $gender;
+            $this->contact->first_name = $this->faker->firstName($gender);
+            $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
+            $this->contact->created_at = $this->faker->dateTimeThisCentury();
+            $this->contact->save();
 
-            $this->contact = Contact::find($contactID);
+            // $this->contact = Contact::find($contactID);
 
             // set an external avatar
             $this->contact->has_avatar = true;
@@ -207,13 +206,16 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             foreach (range(1, rand(2, 6)) as $index) {
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-                $kid = Contact::create([
-                        'first_name' => $this->faker->firstName($gender),
-                        'last_name' => $this->faker->lastName($gender),
-                        'gender' => $gender,
-                        'account_id' => $this->contact->account_id,
-                        'created_at' => $this->faker->dateTimeThisCentury(),
-                ]);
+
+                $kid = new Contact;
+                $kid->account_id = $this->contact->account_id;
+                $kid->gender = $gender;
+                $kid->first_name = $this->faker->firstName($gender);
+                $kid->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
+                $kid->created_at = $this->faker->dateTimeThisCentury();
+                $kid->save();
+
+                \Log::info($kid->id.' '.$kid->created_at);
 
                 // is real contact?
                 if (rand(1, 2) == 1) {
@@ -244,13 +246,14 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             foreach (range(1, rand(2, 6)) as $index) {
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-                $partner = Contact::create([
-                        'first_name' => $this->faker->firstName($gender),
-                        'last_name' => $this->faker->lastName($gender),
-                        'gender' => $gender,
-                        'account_id' => $this->contact->account_id,
-                        'created_at' => $this->faker->dateTimeThisCentury(),
-                ]);
+
+                $partner = new Contact;
+                $partner->account_id = $this->contact->account_id;
+                $partner->gender = $gender;
+                $partner->first_name = $this->faker->firstName($gender);
+                $partner->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
+                $partner->created_at = $this->faker->dateTimeThisCentury();
+                $partner->save();
 
                 // is real contact?
                 if (rand(1, 2) == 1) {

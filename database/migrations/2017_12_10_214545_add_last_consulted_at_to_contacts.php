@@ -17,12 +17,20 @@ class AddLastConsultedAtToContacts extends Migration
             $table->timestamp('last_consulted_at')->nullable()->after('linkedin_profile_url');
         });
 
-        $contacts = DB::table('contacts')->select('id')->get();
+        $contacts = DB::table('contacts')->select('id', 'updated_at')->get();
 
         foreach ($contacts as $contact) {
-            DB::table('contacts')
-                ->where('contact_id', $contact->id)
+
+            if ($contact->updated_at) {
+                DB::table('contacts')
+                ->where('id', $contact->id)
                 ->update(['last_consulted_at' => $contact->updated_at]);
+            } else {
+                DB::table('contacts')
+                ->where('id', $contact->id)
+                ->update(['last_consulted_at' => $contact->created_at]);
+            }
+
         }
     }
 }
