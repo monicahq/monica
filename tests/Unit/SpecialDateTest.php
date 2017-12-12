@@ -2,10 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
-use Tests\TestCase;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -220,7 +218,6 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->is_year_unknown = false;
         $specialDate->date = Carbon::create(2001, 5, 21);
 
-
         $this->assertEquals(
             'May 21, 2001',
             $specialDate->toShortString()
@@ -232,7 +229,6 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate = new SpecialDate;
         $specialDate->is_year_unknown = true;
         $specialDate->date = Carbon::create(2001, 5, 21);
-
 
         $this->assertEquals(
             'May 21',

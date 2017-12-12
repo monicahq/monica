@@ -20,7 +20,6 @@ class AddLastConsultedAtToContacts extends Migration
         $contacts = DB::table('contacts')->select('id', 'updated_at')->get();
 
         foreach ($contacts as $contact) {
-
             if ($contact->updated_at) {
                 DB::table('contacts')
                 ->where('id', $contact->id)
@@ -30,7 +29,6 @@ class AddLastConsultedAtToContacts extends Migration
                 ->where('id', $contact->id)
                 ->update(['last_consulted_at' => $contact->created_at]);
             }
-
         }
     }
 }

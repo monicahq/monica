@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Call;
 use App\Debt;
 use App\Contact;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

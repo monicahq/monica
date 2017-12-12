@@ -125,7 +125,7 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 7) == 1) {
             $this->contact->is_dead = true;
 
-            if (rand(1,3) == 1) {
+            if (rand(1, 3) == 1) {
                 $deceasedDate = $this->faker->dateTimeThisCentury();
 
                 if (rand(1, 2) == 1) {
@@ -190,7 +190,7 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             do {
                 $rand = rand(1, $this->numberOfContacts);
-            } while(in_array($rand, array($this->contact->id)));
+            } while (in_array($rand, [$this->contact->id]));
 
             $this->contact->first_met_through_contact_id = $rand;
         }
@@ -279,7 +279,7 @@ class FakeContentTableSeeder extends Seeder
                 $note = $this->contact->notes()->create([
                     'body' => $this->faker->realText(rand(40, 500)),
                     'account_id' => $this->contact->account_id,
-                    'is_favorited' => (rand(1,3) == 1 ? true : false),
+                    'is_favorited' => (rand(1, 3) == 1 ? true : false),
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
 
@@ -366,7 +366,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->contact->account_id,
                 'country_id' => rand(1, 242),
                 'name' => $this->faker->word,
-                'street' => (rand(1,3) == 1) ? $this->faker->streetAddress : null,
+                'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
                 'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
                 'province' => (rand(1, 3) == 1) ? $this->faker->state : null,
                 'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,

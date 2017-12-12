@@ -1,10 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class MoveAgesData extends Migration
 {
@@ -65,7 +62,7 @@ class MoveAgesData extends Migration
             }
 
             if ($contact->first_met) {
-               $specialDateFirstMetDateId = DB::table('special_dates')->insertGetId([
+                $specialDateFirstMetDateId = DB::table('special_dates')->insertGetId([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'is_age_based' => false,

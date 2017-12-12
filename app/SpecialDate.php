@@ -2,11 +2,9 @@
 
 namespace App;
 
-use App\Reminder;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
 
 /**
  * A special date is a date that is not necessarily based on a year that we know.
@@ -14,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *     * on a real date, where we know the day, month and year
  *     * on a date where we just know the day and the month but not the year
  *     * on an age (we know this person is 33 but we don't know his birthdate,
- *       so we'll give an estimation)
+ *       so we'll give an estimation).
  *
  * Instead of adding a lot of logic in the Contact table, we've decided to
  * create this class that will deal with this complexity.
@@ -83,8 +81,8 @@ class SpecialDate extends Model
     }
 
     /**
-     * Mutator for the reminder id attribute
-     * @return integer
+     * Mutator for the reminder id attribute.
+     * @return int
      */
     public function getReminderIdAttribute($value)
     {
@@ -93,8 +91,7 @@ class SpecialDate extends Model
 
     /**
      * Returns a short version of the date, taking into account if the year is
-     * unknown or not. This will return either `July 21` or `July 21, 2017`
-     * @return [type] [description]
+     * unknown or not. This will return either `July 21` or `July 21, 2017`.
      */
     public function toShortString()
     {
@@ -150,7 +147,7 @@ class SpecialDate extends Model
     /**
      * Returns the age that the date represents, if the date is set and if it's
      * not based on a year we don't know.
-     * @return integer
+     * @return int
      */
     public function getAge()
     {
@@ -202,7 +199,7 @@ class SpecialDate extends Model
     }
 
     /**
-     * Associates a special date to a contact
+     * Associates a special date to a contact.
      * @param Contact $contact
      */
     public function setToContact(Contact $contact)

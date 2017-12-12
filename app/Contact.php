@@ -2,10 +2,7 @@
 
 namespace App;
 
-use Carbon\Carbon;
-use App\SpecialDate;
 use App\Traits\Searchable;
-use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -1290,7 +1287,7 @@ class Contact extends Model
 
     /**
      * Removes the date that is set for a specific occasion (like a birthdate,
-     * the deceased date,...)
+     * the deceased date,...).
      * @param string $occasion
      */
     public function removeSpecialDate($occasion)

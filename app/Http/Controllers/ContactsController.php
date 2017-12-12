@@ -7,10 +7,6 @@ use Auth;
 use App\Tag;
 use Validator;
 use App\Contact;
-use App\Offspring;
-use App\Progenitor;
-use App\SpecialDate;
-use App\Relationship;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -187,7 +183,6 @@ class ContactsController extends Controller
             $contact->is_dead = true;
 
             if ($request->input('checkboxDatePersonDeceased') != '') {
-
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {

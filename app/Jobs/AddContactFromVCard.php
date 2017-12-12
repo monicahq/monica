@@ -6,7 +6,6 @@ use App\User;
 use App\Address;
 use App\Contact;
 use App\Country;
-use App\Reminder;
 use App\ImportJob;
 use App\ContactField;
 use App\ImportJobReport;
