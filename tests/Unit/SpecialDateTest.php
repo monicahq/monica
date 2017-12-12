@@ -72,6 +72,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $specialDate = factory(\App\SpecialDate::class)->make();
         $specialDate->reminder_id = $reminder->id;
+        $specialDate->account_id = $user->account_id;
         $specialDate->save();
 
         $specialDate->setReminder('year', 1, '');
