@@ -66,6 +66,7 @@ class SpecialDateTest extends FeatureTestCase
         $user = $this->signIn();
 
         $reminder = new Reminder;
+        $reminder->account_id = $user->account_id;
         $reminder->id = 1;
         $reminder->save();
 
@@ -83,6 +84,8 @@ class SpecialDateTest extends FeatureTestCase
         $user = $this->signIn();
 
         $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate->account_id = $user->account_id;
+        $specialDate->save();
 
         $specialDate->setReminder('year', 1, '');
 
