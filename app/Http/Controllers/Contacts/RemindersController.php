@@ -127,10 +127,6 @@ class RemindersController extends Controller
             return redirect('/people/');
         }
 
-        if ($reminder->contact_id != $contact->id) {
-            return redirect('/people/');
-        }
-
         $reminder->delete();
 
         $contact->events()->forObject($reminder)->get()->each->delete();
