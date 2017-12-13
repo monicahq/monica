@@ -9,6 +9,7 @@
           <label for="name" class="f6 b db mb2">Name</label>
           <input id="name" class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text">
           <small id="name-desc" class="f6 black-60 db mb2">Helper text for the form control.</small>
+          <rate :length="5"></rate>
         </div>
         <div class="measure">
           <label for="comment" class="f6 b db mb2">Comment <span class="normal black-60">(optional)</span></label>
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+    import Rate from 'vue-rate';
+
     export default {
         /*
          * The component's data.
@@ -47,6 +50,10 @@
         },
 
         props: ['contactId'],
+
+        components: {
+            'rate': Rate
+        },
 
         methods: {
             /**
