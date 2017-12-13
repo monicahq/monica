@@ -116,12 +116,21 @@ class RemindersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Contact $contact
      * @param Reminder $reminder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Reminder $reminder)
+    public function destroy(Contact $contact, $reminderId)
     {
+        $reminder = Reminder::findOrFail($reminderId);
+
+        if ($reminder->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        if ($reminder->contact_id != $contact->id) {
+            return redirect('/people/');
+        }
+
         $reminder->delete();
 
         $contact->events()->forObject($reminder)->get()->each->delete();

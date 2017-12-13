@@ -19,7 +19,7 @@ class CreateAgesTable extends Migration
             $table->integer('contact_id');
             $table->boolean('is_age_based')->default(0);
             $table->boolean('is_year_unknown')->default(0);
-            $table->date('date');
+            $table->datetime('date');
             $table->integer('reminder_id')->nullable();
             $table->timestamps();
         });
