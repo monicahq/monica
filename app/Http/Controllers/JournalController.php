@@ -27,7 +27,12 @@ class JournalController extends Controller
         return view('journal.index', $data);
     }
 
-    public function add()
+    /**
+     * Display the Create journal entry screen.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         return view('journal.add');
     }

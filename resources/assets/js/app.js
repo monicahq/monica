@@ -63,6 +63,12 @@ Vue.component(
     require('./components/people/Notes.vue')
 );
 
+// Journal
+Vue.component(
+    'add-entry',
+    require('./components/journal/AddEntry.vue')
+);
+
 // Settings
 Vue.component(
     'contact-field-types',

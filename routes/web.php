@@ -138,7 +138,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['as' => 'journal'], function () {
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);
-        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@add']);
+        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@create']);
         Route::post('/journal/create', ['as' => '.create', 'uses' => 'JournalController@save']);
         Route::delete('/journal/{entryId}', ['as' => '.delete', 'uses' => 'JournalController@deleteEntry']);
     });

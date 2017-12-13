@@ -1,22 +1,7 @@
-@extends('layouts.skeleton')
+<style scoped>
+</style>
 
-@section('content')
-
-  {{-- Breadcrumb --}}
-  <section class="ph3 ph5-ns pv3 w-100 f6">
-    <ul>
-      <li class="di">
-        <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
-      </li>
-      <li class="di">
-        > <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
-      </li>
-      <li class="di">
-        > {{ trans('journal.journal_add') }}
-      </li>
-    </ul>
-  </section>
-
+<template>
   <section class="cf ph3 ph5-ns w-100 mv5">
     <div class="fl w-70 pa2 outline">
       <form class="black-80">
@@ -35,5 +20,40 @@
       <div class=" bg-white tc pv4">test</div>
     </div>
   </section>
+</template>
 
-@endsection
+<script>
+    export default {
+        /*
+         * The component's data.
+         */
+        data() {
+            return {
+            };
+        },
+
+        /**
+         * Prepare the component (Vue 1.x).
+         */
+        ready() {
+            this.prepareComponent();
+        },
+
+        /**
+         * Prepare the component (Vue 2.x).
+         */
+        mounted() {
+            this.prepareComponent();
+        },
+
+        props: ['contactId'],
+
+        methods: {
+            /**
+             * Prepare the component.
+             */
+            prepareComponent() {
+            },
+        }
+    }
+</script>
