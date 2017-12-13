@@ -36,47 +36,4 @@ class RelationshipTest extends FeatureTestCase
             'Add significant other'
         );
     }
-
-    public function test_user_can_add_a_partial_contact_as_relationship()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $this->post(
-            route('people.relationships.store', $contact), [
-                'first_name' => 'Jessica',
-                'is_birthdate_approximate' => 'unknown',
-        ]);
-
-        $this->assertDatabaseHas('contacts', [
-            'first_name' => 'Jessica',
-            'account_id' => $user->account_id,
-            'is_partial' => 1,
-        ]);
-
-        $response = $this->get('people/'.$contact->id);
-        $response->assertSee('Jessica');
-        $response->assertSee($contact->id.'-edit-relationship');
-    }
-
-    public function test_user_can_add_a_real_contact_as_relationship()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $this->post(
-            route('people.relationships.store', $contact), [
-                'first_name' => 'Jessica',
-                'is_birthdate_approximate' => 'unknown',
-                'realContact' => 1,
-        ]);
-
-        $this->assertDatabaseHas('contacts', [
-            'first_name' => 'Jessica',
-            'account_id' => $user->account_id,
-            'is_partial' => 0,
-        ]);
-
-        $response = $this->get('people/'.$contact->id);
-        $response->assertSee('Jessica');
-        $response->assertSee($contact->id.'-unlink-relationship');
-    }
 }

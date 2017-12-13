@@ -46,32 +46,20 @@ class IntroductionsController extends Controller
             $contact->first_met_through_contact_id = null;
         }
 
+        $contact->removeSpecialDate('first_met');
+
         if ($request->is_first_met_date_known == 'known') {
-            $contact->first_met = $request->get('first_met');
-        } else {
-            $contact->first_met = null;
+            $specialDate = $contact->setSpecialDate('first_met', $request->input('first_met_year'), $request->input('first_met_month'), $request->input('first_met_day'));
+
+            if ($request->addReminder == 'on') {
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.introductions_reminder_title', ['name' => $contact->first_name]));
+            }
         }
 
         if ($request->first_met_additional_info != '') {
             $contact->first_met_additional_info = $request->get('first_met_additional_info');
         } else {
             $contact->first_met_additional_info = null;
-        }
-
-        if ($request->addReminder == 'on') {
-            $reminder = $contact->reminders()->create(
-                [
-                    'account_id' => $contact->account_id,
-                    'title' => trans('people.introductions_reminder_title'),
-                    'description' => '',
-                    'frequency_type' => 'year',
-                    'next_expected_date' => $request->get('first_met'),
-                    'frequency_number' => 1,
-                ]
-            );
-
-            $reminder->calculateNextExpectedDate(auth()->user()->timezone);
-            $reminder->save();
         }
 
         $contact->save();

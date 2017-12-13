@@ -63,10 +63,8 @@ class ImportVCardsTest extends TestCase
         ]);
 
         // Allows checking if birthday was correctly set
-        $this->assertDatabaseHas('contacts', [
-            'first_name' => 'Bono',
-            'birthdate' => '1960-05-10 00:00:00',
-            'job' => 'U2',
+        $this->assertDatabaseHas('special_dates', [
+            'date' => '1960-05-10',
         ]);
 
         // Allows checking nickname fallback

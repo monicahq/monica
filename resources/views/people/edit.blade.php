@@ -37,7 +37,7 @@
 
               @include('partials.errors')
 
-              <h2>{{ trans('people.information_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
+              <h2>{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h2>
 
               <p class="delete-contact">
                 {{ trans('people.people_delete_message') }}
@@ -89,13 +89,13 @@
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->getFirstName() }}" autofocus required>
+                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->first_name }}" autofocus required>
               </div>
 
               {{-- Last name --}}
               <div class="form-group">
                 <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
+                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->last_name }}">
               </div>
 
               @else
@@ -103,13 +103,13 @@
               {{-- Last name --}}
               <div class="form-group">
                 <label for="lastname">{{ trans('people.information_edit_lastname') }}</label>
-                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->getLastName() }}">
+                <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $contact->last_name }}">
               </div>
 
               {{-- First name --}}
               <div class="form-group">
                 <label for="firstname">{{ trans('people.information_edit_firstname') }}</label>
-                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->getFirstName() }}" autofocus required>
+                <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $contact->first_name }}" autofocus required>
               </div>
 
               @endif
@@ -120,7 +120,7 @@
                 {{-- Don't know the birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_unknown">
-                    <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_unknown" value="unknown" {{ ($contact->is_birthdate_approximate == 'unknown')?'checked':'' }}>
+                    <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_unknown" value="unknown" {{ is_null($contact->birthday_special_date_id) ? 'checked' : '' }}>
 
                     <div class="form-inline">
                       {{ trans('people.significant_other_add_unknown') }}
@@ -131,15 +131,15 @@
                 {{-- Approximate birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_approximate">
-                    <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_approximate" value="approximate" {{ ($contact->is_birthdate_approximate == 'approximate')?'checked':'' }}>
+                    <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_approximate" value="approximate" {{ is_null($contact->birthday_special_date_id) ? '' : ($contact->birthdate->is_age_based == true ? 'checked' : '') }}>
 
                     <div class="form-inline">
                       {{ trans('people.information_edit_probably') }}
 
                       <input type="number" class="form-control" name="age" id="age"
-                              value="{{ (is_null($contact->getAge())) ? 1 : $contact->getAge() }}"
+                              value="{{ (is_null($contact->birthdate)) ? 1 : $contact->birthdate->getAge() }}"
                               min="0"
-                              max="99">
+                              max="120">
 
                       {{ trans('people.information_edit_probably_yo') }}
                     </div>
@@ -149,15 +149,12 @@
                 {{-- Exact birthdate --}}
                 <div class="form-check">
                   <label class="form-check-label" for="birthdateApproximate_exact">
-                      <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="birthdateApproximate_exact" value="exact" {{ ($contact->is_birthdate_approximate == 'exact')?'checked':'' }}>
+                      <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_exact" value="exact" {{ is_null($contact->birthday_special_date_id) ? '' : ($contact->birthdate->is_age_based == true ? '' : 'checked') }}>
 
                       <div class="form-inline">
                         {{ trans('people.information_edit_exact') }}
 
-                        <input type="date" id="specificDate" name="specificDate" class="form-control"
-                              value="{{ (is_null($contact->birthdate)) ? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') : $contact->birthdate->format('Y-m-d') }}"
-                              min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                              max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
+                        @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->birthdate, 'class' => 'birthdate'])
                       </div>
                   </label>
                 </div>
@@ -175,15 +172,15 @@
                 </div>
                 <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceased_date != null) ? 'checked' : '' }}>
+                    <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
                     {{ trans('people.deceased_know_date') }}
 
-                    @include('partials.components.date-select', ['contact' => $contact])
+                    @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
                 </div>
-                <div class="form-check {{ ($contact->deceased_date == null) ? 'hidden' : '' }}" id="reminderDeceased">
+                <div class="form-check {{ ($contact->deceasedDate == null) ? 'hidden' : '' }}" id="reminderDeceased">
                   <label class="form-check-label">
-                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased">
+                    <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
                     {{ trans('people.deceased_add_reminder') }}
                   </label>
                 </div>
