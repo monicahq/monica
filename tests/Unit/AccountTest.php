@@ -105,4 +105,24 @@ class AccountTest extends TestCase
             $account->hasLimitations()
         );
     }
+
+    public function test_get_timezone_gets_the_first_timezone_it_finds()
+    {
+        $account = factory(Account::class)->create();
+
+        $user1 = factory(User::class)->create([
+            'account_id' => $account->id,
+            'timezone' => 'EN_en',
+        ]);
+
+        $user2 = factory(User::class)->create([
+            'account_id' => $account->id,
+            'timezone' => 'DE_de',
+        ]);
+
+        $this->assertEquals(
+            'EN_en',
+            $account->timezone()
+        );
+    }
 }

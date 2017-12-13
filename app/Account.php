@@ -354,6 +354,23 @@ class Account extends Model
     }
 
     /**
+     * Get the timezone of the user. In case an account has multiple timezones,
+     * takes the first it finds.
+     * @return string
+     */
+    public function timezone()
+    {
+        $timezone = '';
+
+        foreach ($this->users as $user) {
+            $timezone = $user->timezone;
+            break;
+        }
+
+        return $timezone;
+    }
+
+    /**
      * Populates the Contact Field Types table right after an account is
      * created.
      */

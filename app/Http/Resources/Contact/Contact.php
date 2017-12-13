@@ -23,9 +23,8 @@ class Contact extends Resource
             'gender' => $this->gender,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
-            'deceased_date' => (is_null($this->deceased_date) ? null : $this->deceased_date->format(config('api.timestamp_format'))),
-            'last_called' => $this->when(! $this->is_partial, (is_null($this->last_called) ? null : (string) $this->last_called)),
-            'last_talked_to' => $this->when(! $this->is_partial, (is_null($this->last_talked_to) ? null : (string) $this->last_talked_to)),
+            'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
+            'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'information' => [
                 'family' => $this->when(! $this->is_partial, [
                     'kids' => [
@@ -42,10 +41,15 @@ class Contact extends Resource
                     ],
                 ]),
                 'dates' => [
-                    [
-                        'name' => 'birthdate',
-                        'is_birthdate_approximate' => $this->is_birthdate_approximate,
-                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format(config('api.timestamp_format'))),
+                    'birthdate' => [
+                        'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),
+                        'is_year_unknown' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_year_unknown),
+                        'date' => (is_null($this->birthdate) ? null : $this->birthdate->date->format(config('api.timestamp_format'))),
+                    ],
+                    'deceased_date' => [
+                        'is_age_based' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_age_based),
+                        'is_year_unknown' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_year_unknown),
+                        'date' => (is_null($this->deceasedDate) ? null : $this->deceasedDate->date->format(config('api.timestamp_format'))),
                     ],
                 ],
                 'career' => $this->when(! $this->is_partial, [
@@ -59,7 +63,11 @@ class Contact extends Resource
                 'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
                 'how_you_met' => $this->when(! $this->is_partial, [
                     'general_information' => $this->first_met_additional_info,
-                    'first_met_date' => (is_null($this->first_met) ? null : $this->first_met->format(config('api.timestamp_format'))),
+                    'first_met_date' => [
+                        'is_age_based' => (is_null($this->firstMetDate) ? null : (bool) $this->firstMetDate->is_age_based),
+                        'is_year_unknown' => (is_null($this->firstMetDate) ? null : (bool) $this->firstMetDate->is_year_unknown),
+                        'date' => (is_null($this->firstMetDate) ? null : $this->firstMetDate->date->format(config('api.timestamp_format'))),
+                    ],
                     'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
                 ]),
             ],

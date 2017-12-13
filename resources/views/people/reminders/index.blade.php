@@ -46,25 +46,25 @@
         </div>
 
         <div class="table-cell title">
-          {{ $reminder->getTitle() }}
+          {{ $reminder->title }}
         </div>
 
         <div class="table-cell comment">
-            @if (!is_null($reminder->getDescription()))
-              {{ $reminder->getDescription() }}
+            @if (!is_null($reminder->description))
+              {{ $reminder->description }}
             @endif
         </div>
 
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if ($reminder->is_birthday == false)
+          @if (! $reminder->special_date_id)
             <a href="#" onclick="if (confirm('{{ trans('people.reminders_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
           @endif
         </div>
 
-        <form method="POST" action="{{ action('Contacts\\RemindersController@destroy', compact('contact', 'reminder')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

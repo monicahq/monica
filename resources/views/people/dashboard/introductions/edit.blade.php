@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->getFirstName()]) }}</h2>
+            <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->first_name]) }}</h2>
 
               <form method="POST" action="{{ route('people.introductions.update', $contact) }}">
                 {{ csrf_field() }}
@@ -85,13 +85,8 @@
                       {{ (! is_null($contact->first_met)) ? 'checked' : '' }}
                       >
 
-                      <span class="form-inline">
-                        {{ trans('people.introductions_first_met_date_known') }}
-                        <input type="date" name="first_met" class="form-control" id="specificDate"
-                        value="{{ old('first_met') ?? (! is_null($contact->first_met) ? $contact->first_met->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
-                        min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                        max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-                      </span>
+                      {{ trans('people.introductions_first_met_date_known') }}
+                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate, 'class' => 'first_met'])
                     </label>
                   </div>
                 </fieldset>

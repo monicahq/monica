@@ -6,7 +6,7 @@
 
   @if(! $contact->hasFirstMetInformation())
     <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('people.introductions_blank_cta', ['name' => $contact->getFirstName()]) }}</a>
+      <a href="{{ route('people.introductions.edit', $contact) }}">{{ trans('people.introductions_blank_cta', ['name' => $contact->first_name]) }}</a>
     </p>
   @else
     <ul>
@@ -17,10 +17,10 @@
       </li>
       @endif
 
-      @if ($contact->first_met)
+      @if ($contact->firstMetDate)
       <li>
         <i class="fa fa-hourglass-start"></i>
-        {{ trans('people.introductions_met_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->first_met)]) }}
+        {{ trans('people.introductions_met_date', ['date' => $contact->firstMetDate->toShortString()]) }}
       </li>
       @endif
 

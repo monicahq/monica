@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\Tag;
 use App\User;
@@ -20,6 +21,31 @@ use App\Http\Requests\InvitationRequest;
 
 class SettingsController extends Controller
 {
+    protected $ignoredTables = [
+        'accounts',
+        'activity_type_groups',
+        'activity_types',
+        'api_usage',
+        'cache',
+        'countries',
+        'currencies',
+        'default_contact_field_types',
+        'failed_jobs',
+        'instances',
+        'jobs',
+        'migrations',
+        'oauth_access_tokens',
+        'oauth_auth_codes',
+        'oauth_clients',
+        'oauth_personal_access_clients',
+        'oauth_refresh_tokens',
+        'password_resets',
+        'sessions',
+        'statistics',
+        'subscriptions',
+        'users',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -67,25 +93,23 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if ($account) {
-            $account->reminders->each->forceDelete();
-            $account->notes->each->forceDelete();
-            $account->tasks->each->forceDelete();
-            $account->activities->each->forceDelete();
-            $account->debts->each->forceDelete();
-            $account->events->each->forceDelete();
-            $account->contacts->each->forceDelete();
-            $account->invitations->each->forceDelete();
-            $account->importjobs->each->forceDelete();
-            $account->importjobreports->each->forceDelete();
-            $account->offpsrings->each->forceDelete();
-            $account->relationships->each->forceDelete();
-            $account->progenitors->each->forceDelete();
-            $account->contactFields->each->forceDelete();
-            $account->contactFieldTypes->each->forceDelete();
-            $account->calls->each->forceDelete();
-            $account->activityStatistics->each->forceDelete();
-            $account->forceDelete();
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+
+        // Looping over the tables
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            if (in_array($tableName, $this->ignoredTables)) {
+                continue;
+            }
+
+            DB::table($tableName)->where('account_id', $account->id)->delete();
+        }
+
+        DB::table('accounts')->where('id', $account->id)->delete();
+
+        if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
+            auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancelNow();
         }
 
         auth()->logout();
@@ -105,24 +129,17 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if ($account) {
-            $account->reminders->each->forceDelete();
-            $account->notes->each->forceDelete();
-            $account->tasks->each->forceDelete();
-            $account->activities->each->forceDelete();
-            $account->debts->each->forceDelete();
-            $account->events->each->forceDelete();
-            $account->contacts->each->forceDelete();
-            $account->invitations->each->forceDelete();
-            $account->importjobs->each->forceDelete();
-            $account->importjobreports->each->forceDelete();
-            $account->offpsrings->each->forceDelete();
-            $account->relationships->each->forceDelete();
-            $account->progenitors->each->forceDelete();
-            $account->contactFields->each->forceDelete();
-            $account->contactFieldTypes->each->forceDelete();
-            $account->activityStatistics->each->forceDelete();
-            $account->calls->each->forceDelete();
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+
+        // Looping over the tables
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            if (in_array($tableName, $this->ignoredTables)) {
+                continue;
+            }
+
+            DB::table($tableName)->where('account_id', $account->id)->delete();
         }
 
         return redirect('/settings')

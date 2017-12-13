@@ -37,7 +37,7 @@
 
               @include('partials.errors')
 
-              <h2>{{ trans('people.work_edit_title', ['name' => $contact->getFirstName()]) }}</h2>
+              <h2>{{ trans('people.work_edit_title', ['name' => $contact->first_name]) }}</h2>
 
               {{-- Job --}}
               <div class="form-group">
