@@ -98,7 +98,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('.reminders.store');
         Route::get('/people/{contact}/reminders/{reminder}/edit', 'Contacts\\RemindersController@edit')->name('.reminders.edit');
         Route::put('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@update')->name('.reminders.update');
-        Route::delete('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
+        // Special route to delete reminders. In one migration in summer '17, I
+        // accidentely f**ked up the reminders table by messing up the contact ids
+        // and now the only way to delete those reminders is to bypass the ReminderRequest
+        // by creating a new route.
+        Route::delete('/people/{contact}/reminders/{rmd}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
         Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@get');

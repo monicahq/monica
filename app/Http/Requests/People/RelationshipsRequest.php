@@ -28,8 +28,10 @@ class RelationshipsRequest extends FormRequest
             'last_name' => 'string|nullable|max:100',
             'gender' => 'in:male,female,none',
             'status' => 'in:active,past|nullable',
-            'is_birthdate_approximate' => 'required|in:unknown,approximate,exact',
-            'birthdate' => 'date|nullable',
+            'birthdate' => 'required|in:unknown,approximate,exact',
+            'birthdate_year' => 'int|nullable',
+            'birthdate_month' => 'int|nullable',
+            'birthdate_day' => 'int|nullable',
             'age' => 'int|nullable',
         ];
     }

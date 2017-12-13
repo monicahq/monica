@@ -2,7 +2,7 @@
     {{ method_field($method) }}
     {{ csrf_field() }}
 
-    <h2>{{ trans('people.activities_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+    <h2>{{ trans('people.activities_add_title', ['name' => $contact->first_name]) }}</h2>
 
 
     <div class="form-group user-input">

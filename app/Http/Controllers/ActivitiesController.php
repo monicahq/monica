@@ -59,7 +59,7 @@ class ActivitiesController extends Controller
         $specifiedContacts = $request->get('contacts');
         foreach ($specifiedContacts as $newContactId) {
             $newContact = Contact::findOrFail($newContactId);
-            $newContact->activities()->save($activity);
+            $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }

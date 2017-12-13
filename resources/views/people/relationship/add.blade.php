@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->first_name]) }}</h2>
 
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
@@ -68,7 +68,7 @@
 
                   <div class="significant-other-blank-state">
                     <img src="/img/people/no_record_found.svg">
-                    <p>{{ trans('people.significant_other_add_no_existing_contact', ['name' => $contact->getFirstName()]) }}</p>
+                    <p>{{ trans('people.significant_other_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
                   </div>
 
                 @else
@@ -79,7 +79,7 @@
                     @include('partials.errors')
 
                     <div class="form-group">
-                      <label for="existingPartner">{{ trans('people.significant_other_add_existing_contact', ['name' => $contact->getFirstName()]) }}</label>
+                      <label for="existingPartner">{{ trans('people.significant_other_add_existing_contact', ['name' => $contact->first_name]) }}</label>
                       <select class="form-control" name="existingPartner" id="existingPartner">
                         @foreach ($contact->getPotentialContacts() as $partner)
 

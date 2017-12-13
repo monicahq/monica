@@ -1,6 +1,10 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to add a birthday (or any date) without knowing the year
+* Add the artisan command (CLI) `php artisan setup:test` to setup the development environment
+* Remove the table `important_dates` which was not used
+* Change how resetting an account is achieved
+* Add progress bar when generating fake data to populate the dev environment
 
 RELEASED VERSIONS:
 
