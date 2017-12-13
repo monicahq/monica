@@ -12,7 +12,7 @@ class MoveAgesData extends Migration
      */
     public function up()
     {
-        $contacts = DB::table('contacts')->select('account_id', 'id', 'is_birthdate_approximate', 'birthdate', 'birthday_reminder_id', 'first_met', 'deceased_date')->get();
+        $contacts = DB::table('contacts')->select('account_id', 'id', 'first_name', 'is_birthdate_approximate', 'birthdate', 'birthday_reminder_id', 'first_met', 'deceased_date')->get();
 
         foreach ($contacts as $contact) {
             $specialDateDeceasedDateId = null;
@@ -73,9 +73,25 @@ class MoveAgesData extends Migration
             }
 
             if ($contact->birthdate && $specialDateBirthdateId) {
-                DB::table('reminders')
+                // is title field null? If so, that means it's a birthdate and we need to populate the title field with a title
+                $reminder = DB::table('reminders')->where('id', $contact->birthday_reminder_id)
+                                                  ->select('title')
+                                                  ->get();
+
+                if ($reminder->isEmpty()) {
+                    DB::table('reminders')
                             ->where('id', $contact->birthday_reminder_id)
-                            ->update(['special_date_id' => $specialDateBirthdateId]);
+                            ->update([
+                                'special_date_id' => $specialDateBirthdateId,
+                            ]);
+                } else {
+                    DB::table('reminders')
+                            ->where('id', $contact->birthday_reminder_id)
+                            ->update([
+                                'special_date_id' => $specialDateBirthdateId,
+                                'title' => 'Wish happy birthday to '.$contact->first_name,
+                            ]);
+                }
             }
 
             DB::table('contacts')
