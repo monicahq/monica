@@ -13,7 +13,7 @@
             @if (! is_null($contact->gravatar_url))
               <img src="{{ $contact->gravatar_url }}" width="87">
             @else
-              @if (count($contact->getInitials()) == 1)
+              @if (strlen($contact->getInitials()) == 1)
               <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
