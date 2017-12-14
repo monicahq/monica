@@ -51,6 +51,9 @@ class SetupTest extends Command
         $this->call('db:seed', ['--class' => 'CountriesSeederTable']);
         $this->info('✓ Filled the Countries table');
 
+        $this->callSilent('storage:link');
+        $this->info('✓ Symlinked the storage folder for the avatars');
+
         if (! $this->option('skipSeed')) {
             $this->call('db:seed', ['--class' => 'FakeContentTableSeeder']);
             $this->info('');
