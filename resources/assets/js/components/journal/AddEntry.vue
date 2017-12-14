@@ -15,6 +15,7 @@
           <label for="comment" class="f6 b db mb2">Comment <span class="normal black-60">(optional)</span></label>
           <textarea id="comment" class="w-100"></textarea>
         </div>
+        <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in">
       </form>
     </div>
     <div class="fl w-30 pa2 outline">
