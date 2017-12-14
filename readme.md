@@ -29,7 +29,7 @@
   * [Why Open Source?](#why-open-source)
   * [Patreon](#patreon)
 * [Contact](#contact)
-* [](#)
+* [Thank you, open source](#thank-you-open-source)
 * [License](#license)
 
 <!-- /MarkdownTOC -->
@@ -211,10 +211,12 @@ You can support the development of this tool [on Patreon](https://www.patreon.co
 
 If you need to talk, you can contact me at regis AT monicahq DOT com. You can also reach me [on Twitter](https://twitter.com/djaiss).
 
-##
+## Thank you, open source
+
+Monica use a lot of open source projects and we thank them with all our hearts. We hope that providing Monica as an free, open source project will help other people the same way those softwares have helped us.
 
 ## License
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the AGPL License.
+Licensed under the AGPL License. [View license](/LICENSE).
