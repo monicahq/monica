@@ -56,6 +56,7 @@ return [
     'password_new1_placeholder' => 'Enter a new password',
     'password_new2' => 'Confirmation',
     'password_new2_placeholder' => 'Retype the new password',
+    'password_btn' => 'Change password',
     
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',
