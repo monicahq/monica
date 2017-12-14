@@ -71,6 +71,8 @@ Once the above softwares are installed (or if you've finished the installation o
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. `npm install` to install all the front-end dependencies and tools needed to compile assets.
 1. Create a database called `monica` in your mySQL instance.
+    1. From Homestead directory: `sudo scripts/create-mysql.sh monica` or `mysql -e "CREATE DATABASE 'monica'";` inside mySQL.
+    1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
 1. `php artisan setup:test` to setup the database.
     1. By default this command will also populate the database with fake data.
     1. Use the `-- skipSeed` option to skip the process of adding fake data in your dev environment.

@@ -29,6 +29,7 @@
   * [Why Open Source?](#why-open-source)
   * [Patreon](#patreon)
 * [Contact](#contact)
+* [Thank you, open source](#thank-you-open-source)
 * [License](#license)
 
 <!-- /MarkdownTOC -->
@@ -94,6 +95,7 @@ There are multiple ways of getting started with Monica.
 1. You can run it with Docker ([instructions](docs/installation/docker.md)).
 1. You can install it from scratch on Debian Stretch ([instructions](docs/installation/debian.md)).
 1. You can deploy to Heroku ([instructions](docs/installation/heroku.md)).
+1. You can install it through [YunoHost](https://github.com/YunoHost-Apps/monica_ynh).
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 
@@ -167,7 +169,9 @@ Here what we should do in order to realize our vision:
 
 ### Monetization
 
-The big topic. Yes, we plan to make money out of this tool to sustain it on the long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab and we believe this kind of business model is inspiring, where everyone wins.
+While it's not the driving force behind this project, it would be great if the tool could generate money, so we could work full time on it and sustain it on the long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab and we believe this kind of business model is inspiring, where everyone wins.
+
+If you want to have it for free with all the features, run the project yourself on a server you own. However, if you want to support the development of the project, here is what you can do:
 
 * On https://monicahq.com, Monica will be offered in two versions. Note that this can change anytime as we are trying different business models to see if this project can be sustained in the long run:
   * a free plan:
@@ -207,8 +211,12 @@ You can support the development of this tool [on Patreon](https://www.patreon.co
 
 If you need to talk, you can contact me at regis AT monicahq DOT com. You can also reach me [on Twitter](https://twitter.com/djaiss).
 
+## Thank you, open source
+
+Monica use a lot of open source projects and we thank them with all our hearts. We hope that providing Monica as an free, open source project will help other people the same way those softwares have helped us.
+
 ## License
 
 Copyright (c) 2016-2017 Regis Freyd
 
-Licensed under the AGPL License.
+Licensed under the AGPL License. [View license](/LICENSE).
