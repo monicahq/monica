@@ -6,25 +6,32 @@
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
 
+<!-- This uses the MarkdownTOC's Sublime Text plugin to autogenerate the TOC -->
+<!-- MarkdownTOC autolink="true" depth="4" bracket="round" list_bullets="*" -->
+
 * [Introduction](#introduction)
-   * [Purpose](#purpose)
-   * [Principles](#principles)
-   * [Who is it for?](#who-is-it-for)
-   * [What Monica isn't](#what-monica-isnt)
+  * [Purpose](#purpose)
+  * [Features](#features)
+  * [Who is it for?](#who-is-it-for)
+  * [What Monica isn't](#what-monica-isnt)
+  * [Where does this tool come from?](#where-does-this-tool-come-from)
 * [Get started](#get-started)
-   * [Update your instance](#update-your-instance)
+  * [Update your instance](#update-your-instance)
+* [Contribute](#contribute)
+  * [As a community](#as-a-community)
 * [Contribute as a developer](#contribute-as-a-developer)
-   * [How the community can help](#how-the-community-can-help)
-* [Vision, goals and strategy](#vision-goals-and-strategy)
-   * [Vision](#vision)
-   * [Goals](#goals)
-   * [Strategy](#strategy)
-   * [Monetization](#monetization)
-      * [The API](#the-api)
-   * [Why Open Source?](#why-open-source)
-   * [Patreon](#patreon)
+* [Principles, vision, goals and strategy](#principles-vision-goals-and-strategy)
+  * [Principles](#principles)
+  * [Vision](#vision)
+  * [Goals](#goals)
+  * [Strategy](#strategy)
+  * [Monetization](#monetization)
+  * [Why Open Source?](#why-open-source)
+  * [Patreon](#patreon)
 * [Contact](#contact)
 * [License](#license)
+
+<!-- /MarkdownTOC -->
 
 ## Introduction
 
