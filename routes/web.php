@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
         // and now the only way to delete those reminders is to bypass the ReminderRequest
         // by creating a new route.
         Route::delete('/people/{contact}/reminders/{rmd}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
-        
+
         // Tasks
         Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@get');
         Route::post('/people/{contact}/tasks', 'Contacts\\TasksController@store');
