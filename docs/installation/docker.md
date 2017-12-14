@@ -23,11 +23,7 @@ Then open `.env` in an editor and update it for your own needs:
   output of `pwgen -s 32 1`.
 - Edit the `MAIL_*` settings to point to your own mailserver.
 
-Now select one of these methods to be up and running quickly:
-
-# Note for macOS
-
-You will need to stop Apache if you wish to have Monica available on port 80.
+Note for macOS: you will need to stop Apache if you wish to have Monica available on port 80.
 
 You can do this like so:
 
@@ -41,9 +37,11 @@ To start Apache up again use this command:
 $ sudo /usr/sbin/apachectl start
 ```
 
+Now select one of these methods to be up and running quickly:
+
 #### Use docker-compose to run a pre-built image
 
-This is the easiest and fastest way to try MonicaHQ! Use this process
+This is the easiest and fastest way to try Monica! Use this process
 if you want to download the newest image from Docker Hub and run it
 with a pre-packaged MySQL database.
 
