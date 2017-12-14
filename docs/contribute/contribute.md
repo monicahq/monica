@@ -74,7 +74,6 @@ Once the above softwares are installed (or if you've finished the installation o
 1. `php artisan setup:test` to setup the database.
     1. By default this command will also populate the database with fake data.
     1. Use the `-- skipSeed` option to skip the process of adding fake data in your dev environment.
-1. `php artisan storage:link` to symlink the avatars of the contacts.
 1. Optional: `php artisan passport:install` to create the access tokens required for the API.
 
 If you haven't skipped the seeding of fake data, two accounts are created by default:
