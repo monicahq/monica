@@ -254,7 +254,7 @@
 
           <div class="form-group">
             <label for="layout">{{ trans('settings.password_current') }}</label>
-            <input type="password" class="form-control" name="current_password" id="current_password" placeholder="{{ trans('settings.password_current_placeholder') }}" required />
+            <input type="password" class="form-control" name="password_current" id="password_current" placeholder="{{ trans('settings.password_current_placeholder') }}" required />
           </div>
           <div class="form-group">
             <label for="layout">{{ trans('settings.password_new1') }}</label>
