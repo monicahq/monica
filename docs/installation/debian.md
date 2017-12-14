@@ -76,21 +76,20 @@ exit
 
 #### 7. Configure Monica
 
-Run `composer install` in the folder the repository has been cloned to.
-Which in our case would be /var/www/monica.
+Run `composer install` in the folder the repository has been cloned to. Which in our case would be /var/www/monica.
 
 Create a copy of the example configuration file `cp .env.example .env`.
 
-Now Update `.env` with your specific needs. If you would run the setup
-with the exact commands used above your file should look like this:
+Now update `.env` with your specific needs. If you would run the setup with the exact commands used above your file should look like this:
 
 ```
-# Two choices: local|production.
+# Two choices: local|production. Use local if you want to install Monica as a
+# development version. Use production otherwise.
 APP_ENV=local
 
-# true if you want to show debug information on error. For production, put this
+# true if you want to show debug information on errors. For production, put this
 # to false.
-APP_DEBUG=true
+APP_DEBUG=false
 
 # The encryption key. This is the most important part of the application. Keep
 # this secure otherwise, everyone will be able to access your application.
@@ -101,17 +100,14 @@ APP_KEY=ChangeMeBy32KeyLengthOrGenerated
 # The URL of your application.
 APP_URL=http://localhost
 
-# Frequency of creation of new log files.
-# Possible values: single|daily|syslog|errorlog
-APP_LOG=daily
-
 # Database information
+# To keep this information secure, we urge you to change the default password
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=monicadb
-DB_USERNAME=monica
-DB_PASSWORD=strongpassword
+DB_DATABASE=monica
+DB_USERNAME=homestead
+DB_PASSWORD=secret
 DB_TEST_DATABASE=monica_test
 DB_TEST_USERNAME=homestead
 DB_TEST_PASSWORD=secret
@@ -131,36 +127,72 @@ APP_EMAIL_NEW_USERS_NOTIFICATION=EmailThatWillSendNotificationsForNewUser
 # application at their leisure.
 # Must be exactly one of the timezones used in this list:
 # https://github.com/monicahq/monica/blob/master/resources/views/settings/index.blade.php#L70
-APP_DEFAULT_TIMEZONE=America/New_York
-APP_DISABLE_SIGNUP=false
+APP_DEFAULT_TIMEZONE=US/Eastern
+
+# Ability to disable signups on your instance.
+# Can be true or false. Default to false.
+APP_DISABLE_SIGNUP=true
+
+# Frequency of creation of new log files. Logs are written when an error occurs.
+# Possible values: single|daily|syslog|errorlog
+APP_LOG=daily
 
 # Specific to the hosted version on .com. You probably don't need those.
+# Let them empty if you don't need them.
 GOOGLE_ANALYTICS_APP_ID=
 INTERCOM_APP_ID=
+
+# Error tracking. Specific to hosted version on .com. You probably don't need
+# those.
+SENTRY_SUPPORT=false
+SENTRY_DSN=
+
+# Send a daily ping to https://version.monicahq.com to check if a new version
+# is available. When a new version is detected, you will have a message in the
+# UI, as well as the release notes for the new changes. Can be true or false.
+# Default to true.
+CHECK_VERSION=true
+
+# Have access to paid features available on https://monicahq.com, for free.
+# Can be true or false. Default to false.
+# If set to true, that means your users will have to pay to access the paid
+# features. We use Stripe to do this.
+REQUIRES_SUBSCRIPTION=false
+
+# ONLY NECESSARY IF MONICA REQUIRES A SUBSCRIPTION TO WORK
+# Leave blank unless you know what you are doing.
+STRIPE_KEY=
+STRIPE_SECRET=
+PAID_PLAN_FRIENDLY_NAME=
+PAID_PLAN_ID=
+PAID_PLAN_PRICE=
 
 # Change this only if you know what you are doing
 CACHE_DRIVER=database
 SESSION_DRIVER=file
 QUEUE_DRIVER=sync
+
+# Default filesystem to store uploaded files.
+# Possible values: public|s3
+DEFAULT_FILESYSTEM=public
+
+# AWS keys for S3 when using this storage method
+AWS_KEY=
+AWS_SECRET=
+AWS_REGION=us-east-1
+AWS_BUCKET=
+AWS_SERVER=
 ```
 
-The next 5 lines are taken more or less 1:1 from the main generic installation
-guide. Mainly because the author was unsure about their purpose.
-
-Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-* `php artisan migrate` to run all migrations.
-* `php artisan storage:link` to enable avatar uploads for the contacts.
-* `php artisan db:seed --class ActivityTypesTableSeeder` to populate the
-activity types.
-* `php artisan db:seed --class CountriesSeederTable` to populate the countries
-table.
-* `php artisan passport:install` to generate the secure asset tokens required
-for the API.
+Then run the following instructions:
+* Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+* Open the file `.env` to set the different variables needed by the project. The file comes with predefined values - you won't have to change most of them.
+* Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
+* Optional: run `php artisan passport:install` to generate the secure asset tokens required for the API. If you don't plan to use the API, don't do this step.
 
 #### 8. Configure cron job
 
-As recommended by the generic installation instructions we create a
-cronjob which runs `artisan schedule:run` every minute.
+As recommended by the generic installation instructions we create a cronjob which runs `artisan schedule:run` every minute.
 
 For this execute this command:
 ```
@@ -201,8 +233,7 @@ and change it to:
 </Directory>
 ```
 
-Save the apache2.conf file and open `/etc/apache2/sites-enabled/000-default.conf`
-and look for this line:
+Save the apache2.conf file and open `/etc/apache2/sites-enabled/000-default.conf` and look for this line:
 
 ```
 DocumentRoot /var/www/html
@@ -212,8 +243,7 @@ and change it to:
 DocumentRoot /var/www/monica/public
 ```
 
-After you save the 000-default.conf file you can finally restart
-Apache and are up and running.
+After you save the 000-default.conf file you can finally restart Apache and are up and running.
 ```
 sudo service apache2 restart
 ```
