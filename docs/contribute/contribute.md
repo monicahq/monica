@@ -1,24 +1,24 @@
 <!-- This uses the MarkdownTOC's Sublime Text plugin to autogenerate the TOC -->
-<!-- MarkdownTOC autolink="true" depth="4" -->
+<!-- MarkdownTOC autolink="true" depth="4" bracket="round" list_bullets="*" -->
 
-- [Contribute as a developer][contribute-as-a-developer]
-    - [Testing environment][testing-environment]
-        - [Setup][setup]
-        - [Run the test suite][run-the-test-suite]
-    - [Backend][backend]
-        - [Things to consider when adding new code][things-to-consider-when-adding-new-code]
-            - [Add a new table to the database schema][add-a-new-table-to-the-database-schema]
-            - [Manipulating data during a migration][manipulating-data-during-a-migration]
-        - [Email testing][email-testing]
-        - [Email reminders][email-reminders]
-        - [Statistics][statistics]
-    - [Database][database]
-        - [Connecting to mySQL][connecting-to-mysql]
-    - [Front-end][front-end]
-        - [Mix][mix]
-        - [Watching and compiling assets][watching-and-compiling-assets]
-        - [CSS][css]
-        - [JS and Vue][js-and-vue]
+* [Contribute as a developer](#contribute-as-a-developer)
+  * [Testing environment](#testing-environment)
+    * [Setup](#setup)
+    * [Run the test suite](#run-the-test-suite)
+  * [Backend](#backend)
+    * [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
+      * [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
+      * [Manipulating data during a migration](#manipulating-data-during-a-migration)
+    * [Email testing](#email-testing)
+    * [Email reminders](#email-reminders)
+    * [Statistics](#statistics)
+  * [Database](#database)
+    * [Connecting to mySQL](#connecting-to-mysql)
+  * [Front-end](#front-end)
+    * [Mix](#mix)
+    * [Watching and compiling assets](#watching-and-compiling-assets)
+    * [CSS](#css)
+    * [JS and Vue](#js-and-vue)
 
 <!-- /MarkdownTOC -->
 

@@ -28,11 +28,7 @@
 
 ## Introduction
 
-Monica is an open-source web application to organize the interactions with your
-loved ones. I call it a PRM, or Personal Relationship Management of software.
-Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management)
-(a popular tool used by sales teams in the corporate world) for your friends or
-family. This is what it currently looks like:
+Monica is an open-source web application to organize the interactions with your loved ones. I call it a PRM, or Personal Relationship Management of software. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management) (a popular tool used by sales teams in the corporate world) for your friends or family. This is what it currently looks like:
 
 <p align="center">
 <img src="https://app.monicahq.com/img/main-app.png" alt="screenshot of the application">
