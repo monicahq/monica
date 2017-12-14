@@ -49,6 +49,14 @@ return [
     'locale_it' => 'Italian',
     'locale_de' => 'German',
 
+    'password_change' => 'Password change',
+    'password_current' => 'Current password',
+    'password_current_placeholder' => 'Enter your current password',
+    'password_new1' => 'New password',
+    'password_new1_placeholder' => 'Enter a new password',
+    'password_new2' => 'Confirmation',
+    'password_new2_placeholder' => 'Retype the new password',
+    
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',
     'users_list_you' => 'That\'s you',
