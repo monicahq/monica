@@ -5,6 +5,7 @@ namespace App;
 use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -20,6 +21,31 @@ class Note extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_favorited' => 'boolean',
+    ];
+
+    protected $dates = [
+        'favorited_at',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'account_id',
+        'contact_id',
+        'body',
+        'is_favorited',
+    ];
 
     /**
      * Get the account record associated with the note.
@@ -39,6 +65,17 @@ class Note extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Limit notes to favorited ones.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeFavorited(Builder $query)
+    {
+        return $query->where('is_favorited', true);
     }
 
     /**

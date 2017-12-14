@@ -10,6 +10,8 @@ return [
     'upload' => 'Закачать',
     'close' => 'Закрыть',
     'remove' => 'Убрать',
+    'done' => 'Done',
+    'for' => 'for',
 
     'markdown_description' => 'Хотите форматировать ваш текст? Мы поддерживаем Markdown для добавления этих функций',
     'markdown_link' => 'Читать документацию',
@@ -57,4 +59,7 @@ return [
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',
     'gender_none' => 'Неизвестно',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];

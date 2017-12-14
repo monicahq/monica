@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use App\Traits\Searchable;
-use App\Helpers\DateHelper;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -12,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
 use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
@@ -21,10 +20,10 @@ class Contact extends Model
     use Searchable;
 
     protected $dates = [
-        'birthdate',
         'last_talked_to',
-        'first_met',
-        'deceased_date',
+        'last_consulted_at',
+        'created_at',
+        'updated_at',
     ];
 
     // The list of columns we want the Searchable trait to use.
@@ -32,11 +31,6 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'email',
-        'street',
-        'city',
-        'postal_code',
-        'province',
         'food_preferencies',
         'job',
         'company',
@@ -64,25 +58,16 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'gender',
-        'birthdate',
-        'is_birthdate_approximate',
         'account_id',
         'is_partial',
-        'phone_number',
-        'email',
         'job',
         'company',
-        'street',
-        'city',
-        'province',
-        'postal_code',
-        'country_id',
         'food_preferencies',
-        'facebook_profile_url',
-        'twitter_profile_url',
         'linkedin_profile_url',
         'is_dead',
-        'deceased_date',
+        'avatar_external_url',
+        'last_consulted_at',
+        'created_at',
     ];
 
     /**
@@ -107,6 +92,7 @@ class Contact extends Model
     protected $casts = [
         'is_partial' => 'boolean',
         'is_dead' => 'boolean',
+        'has_avatar' => 'boolean',
     ];
 
     /**
@@ -137,16 +123,6 @@ class Contact extends Model
     public function activityStatistics()
     {
         return $this->hasMany('App\ActivityStatistic');
-    }
-
-    /**
-     * Get the contact records associated with the contact.
-     *
-     * @return BelongsTo
-     */
-    public function country()
-    {
-        return $this->belongsTo('App\Country');
     }
 
     /**
@@ -270,6 +246,66 @@ class Contact extends Model
     }
 
     /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
+    }
+
+    /**
+     * Get the Address Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany('App\Address');
+    }
+
+    /**
+     * Get the contact records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function specialDates()
+    {
+        return $this->hasMany(SpecialDate::class);
+    }
+
+    /**
+     * Get the Special date represented the birthdate.
+     *
+     * @return HasOne
+     */
+    public function birthdate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'birthday_special_date_id');
+    }
+
+    /**
+     * Get the Special date represented the deceased date.
+     *
+     * @return HasOne
+     */
+    public function deceasedDate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'deceased_special_date_id');
+    }
+
+    /**
+     * Get the Special date represented the date first met.
+     *
+     * @return HasOne
+     */
+    public function firstMetDate()
+    {
+        return $this->hasOne('App\SpecialDate', 'id', 'first_met_special_date_id');
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
@@ -304,6 +340,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the first name of the contact.
+     *
+     * @return string
+     */
+    public function getFirstNameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Mutator first_name.
      *
      * @param string|null $value
@@ -311,6 +357,16 @@ class Contact extends Model
     public function setFirstNameAttribute($value)
     {
         $this->attributes['first_name'] = trim($value);
+    }
+
+    /**
+     * Get the last name of the contact.
+     *
+     * @return string
+     */
+    public function getLastNameAttribute($value)
+    {
+        return $value;
     }
 
     /**
@@ -336,6 +392,26 @@ class Contact extends Model
         preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
 
         return implode('', $initials[0]);
+    }
+
+    /**
+     * Mutator last_consulted_at.
+     *
+     * @param datetime $value
+     */
+    public function setLastConsultedAtAttribute($value)
+    {
+        $this->attributes['last_consulted_at'] = $value;
+    }
+
+    /**
+     * Get the last consulted at date of the contact.
+     *
+     * @return string
+     */
+    public function getLastConsultedAtAttribute($value)
+    {
+        return $value;
     }
 
     /**
@@ -377,26 +453,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the first name of the contact.
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->first_name;
-    }
-
-    /**
-     * Get the last name of the contact.
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->last_name;
-    }
-
-    /**
      * Get the initials of the contact, used for avatars.
      *
      * @return string
@@ -409,9 +465,9 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return string 'Oct 29, 1981'
+     * @return DateTime
      */
-    public function getLastActivityDate($timezone)
+    public function getLastActivityDate()
     {
         if ($this->activities->count() === 0) {
             return;
@@ -419,9 +475,7 @@ class Contact extends Model
 
         $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
 
-        return DateHelper::getShortDate(
-            Carbon::parse($lastActivity->date_it_happened, $timezone)
-        );
+        return $lastActivity->date_it_happened;
     }
 
     /**
@@ -429,105 +483,13 @@ class Contact extends Model
      *
      * @return string
      */
-    public function getLastCalled($timezone)
+    public function getLastCalled()
     {
         if (is_null($this->last_talked_to)) {
             return;
         }
 
-        return DateHelper::getShortDate(
-            Carbon::parse($this->last_talked_to, $timezone)
-        );
-    }
-
-    /**
-     * Gets the age of the contact in years, or returns null if the birthdate
-     * is not set.
-     *
-     * @return int
-     */
-    public function getAge()
-    {
-        if (is_null($this->birthdate)) {
-            return;
-        }
-
-        return $this->birthdate->diffInYears(Carbon::now());
-    }
-
-    /**
-     * Returns 'true' if the birthdate is an approximation.
-     *
-     * @return string
-     */
-    public function isBirthdateApproximate()
-    {
-        if ($this->is_birthdate_approximate === 'unknown') {
-            return true;
-        }
-
-        if ($this->is_birthdate_approximate === 'exact') {
-            return false;
-        }
-
-        return $this->is_birthdate_approximate;
-    }
-
-    /**
-     * Get the address in a format like 'Lives in Scranton, MS'.
-     *
-     * @return string
-     */
-    public function getPartialAddress()
-    {
-        $address = $this->city;
-
-        if (is_null($address)) {
-            return;
-        }
-
-        if (! is_null($this->province)) {
-            $address = $address.', '.$this->province;
-        }
-
-        return $address;
-    }
-
-    /**
-     * Get the country of the contact.
-     *
-     * @return string or null
-     */
-    public function getCountryName()
-    {
-        if ($this->country) {
-            return $this->country->country;
-        }
-    }
-
-    /**
-     * Get the country ISO of the contact.
-     *
-     * @return string or null
-     */
-    public function getCountryISO()
-    {
-        if ($this->country) {
-            return $this->country->iso;
-        }
-    }
-
-    /**
-     * Get an URL for Google Maps for the address.
-     *
-     * @return string
-     */
-    public function getGoogleMapAddress()
-    {
-        $address = $this->getFullAddress();
-        $address = urlencode($address);
-
-        return "https://www.google.ca/maps/place/{$address}";
+        return $this->last_talked_to;
     }
 
     /**
@@ -786,14 +748,39 @@ class Contact extends Model
      * @param  int $size
      * @return string
      */
-    public function getAvatarURL($size)
+    public function getAvatarURL($size = 100)
     {
+        // it either returns null or the gravatar url if it's defined
+        if (! $this->has_avatar) {
+            return $this->gravatar_url;
+        }
+
+        if ($this->avatar_location == 'external') {
+            return $this->avatar_external_url;
+        }
+
         $original_avatar_url = Storage::disk($this->avatar_location)->url($this->avatar_file_name);
         $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
         return Storage::disk($this->avatar_location)->url($resized_avatar);
+    }
+
+    /**
+     * Returns the source of the avatar, or null if avatar is undefined.
+     */
+    public function getAvatarSource()
+    {
+        if (! $this->has_avatar) {
+            return;
+        }
+
+        if ($this->avatar_location == 'external') {
+            return 'external';
+        }
+
+        return 'internal';
     }
 
     /**
@@ -850,6 +837,14 @@ class Contact extends Model
     }
 
     /**
+     * Get the list of addresses for this contact.
+     */
+    public function getAddressesForAPI()
+    {
+        return AddressShortResource::collection($this->addresses);
+    }
+
+    /**
      * Update the last called info on the contact, if the call has been made
      * in the most recent date.
      *
@@ -865,61 +860,6 @@ class Contact extends Model
         }
 
         $this->save();
-    }
-
-    /**
-     * Assigns a birthday or birth year based on the data provided.
-     *
-     * @param string $approximation ['unknown', 'exact', 'approximate']
-     * @param \DateTime|string $exactDate
-     * @param string|int $age
-     * @return static
-     */
-    public function setBirthday($approximation, $dateOfBirth, $age = null)
-    {
-        // delete any existing reminder for a birthdate about this contact
-        $this->clearBirthdateReminder();
-
-        if ($approximation === 'approximate') {
-            $this->birthdate = Carbon::now()->subYears($age)->month(1)->day(1);
-        } elseif ($approximation === 'exact') {
-            $this->birthdate = Carbon::parse($dateOfBirth);
-            $this->setBirthdateReminder();
-        } else {
-            $this->birthdate = null;
-        }
-
-        $this->save();
-
-        return $this;
-    }
-
-    /**
-     * Set a reminder for the birthdate of this contact.
-     */
-    public function setBirthdateReminder()
-    {
-        $reminder = Reminder::addBirthdayReminder(
-            $this,
-            $this->birthdate
-        );
-
-        $this->birthday_reminder_id = $reminder->id;
-        $this->save();
-    }
-
-    /**
-     * Clear any existing birthdate reminder about this contact.
-     *
-     * @return void
-     */
-    public function clearBirthdateReminder()
-    {
-        if ($this->birthday_reminder_id) {
-            $this->reminders->find($this->birthday_reminder_id)->delete();
-            $this->birthday_reminder_id = null;
-            $this->save();
-        }
     }
 
     /**
@@ -1258,7 +1198,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) or ! is_null($this->first_met) or ! is_null($this->first_met_through_contact_id);
+        return ! is_null($this->first_met_additional_info) or ! is_null($this->firstMetDate) or ! is_null($this->first_met_through_contact_id);
     }
 
     /**
@@ -1280,5 +1220,116 @@ class Contact extends Model
         }
 
         return $contact;
+    }
+
+    /**
+     * Sets a Special Date for this contact, for a specific occasion (birthday,
+     * decease date,...) of which we know the date.
+     *
+     * @return SpecialDate
+     */
+    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    {
+        if (is_null($occasion)) {
+            return;
+        }
+
+        $specialDate = new SpecialDate;
+        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+
+        if ($occasion == 'birthdate') {
+            $this->birthday_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'deceased_date') {
+            $this->deceased_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'first_met') {
+            $this->first_met_special_date_id = $specialDate->id;
+        }
+
+        $this->save();
+
+        return $specialDate;
+    }
+
+    /**
+     * Sets a Special Date for this contact, for a specific occasion (birthday,
+     * decease date,...) of which we know only the age (meaning it's going to
+     * be approximate).
+     */
+    public function setSpecialDateFromAge($occasion, int $age)
+    {
+        if (is_null($occasion)) {
+            return;
+        }
+
+        $specialDate = new SpecialDate;
+        $specialDate->createFromAge($age)->setToContact($this);
+
+        if ($occasion == 'birthdate') {
+            $this->birthday_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'deceased_date') {
+            $this->deceased_special_date_id = $specialDate->id;
+        }
+
+        if ($occasion == 'first_met') {
+            $this->first_met_special_date_id = $specialDate->id;
+        }
+
+        $this->save();
+
+        return $specialDate;
+    }
+
+    /**
+     * Removes the date that is set for a specific occasion (like a birthdate,
+     * the deceased date,...).
+     * @param string $occasion
+     */
+    public function removeSpecialDate($occasion)
+    {
+        if (is_null($occasion)) {
+            return;
+        }
+
+        if ($occasion == 'birthdate') {
+            if (! $this->birthday_special_date_id) {
+                return;
+            }
+
+            $this->birthdate->deleteReminder();
+            $this->birthdate->delete();
+
+            $this->birthday_special_date_id = null;
+            $this->save();
+        }
+
+        if ($occasion == 'deceased_date') {
+            if (! $this->deceased_special_date_id) {
+                return;
+            }
+
+            $this->deceasedDate->deleteReminder();
+            $this->deceasedDate->delete();
+
+            $this->deceased_special_date_id = null;
+            $this->save();
+        }
+
+        if ($occasion == 'first_met') {
+            if (! $this->first_met_special_date_id) {
+                return;
+            }
+
+            $this->firstMetDate->deleteReminder();
+            $this->firstMetDate->delete();
+
+            $this->first_met_special_date_id = null;
+            $this->save();
+        }
     }
 }

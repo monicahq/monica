@@ -2,16 +2,16 @@
 
 {{ trans('mail.want_reminded_of') }}:
 
-{!! $reminder->getTitle() !!}
+{!! $reminder->title !!}
 
 {{ trans('mail.for') }}
 
 {{ $contact->getCompleteName($user->name_order) }}
 
 {{-- COMMENTS --}}
-@if (! is_null($reminder->getDescription()))
+@if (! is_null($reminder->description))
 COMMENT:
-{!! $reminder->getDescription() !!}
+{!! $reminder->description !!}
 @endif
 
 -------

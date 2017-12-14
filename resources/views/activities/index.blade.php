@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.section_personal_activities') }}
 
-    <span><a href="{{ route('activities.add', $contact) }}" class="btn">{{ trans('people.activities_add_activity') }}</a></span>
+    <span class="fr"><a href="{{ route('activities.add', $contact) }}" class="btn">{{ trans('people.activities_add_activity') }}</a></span>
   </h3>
 </div>
 
@@ -11,7 +11,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.activities_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.activities_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="{{ route('activities.add', $contact) }}">{{ trans('people.activities_blank_add_activity') }}</a>
     </div>
   </div>

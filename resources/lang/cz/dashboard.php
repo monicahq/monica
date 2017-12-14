@@ -5,6 +5,9 @@ return [
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
     'dashboard_blank_cta' => 'Add your first contact',
 
+    'notes_title' => 'You don\'t any notes yet.',
+    'notes_description' => 'Star a note of one of your contact to list favorite notes here.',
+
     'reminders_title' => 'Nadcházející upozornění',
     'reminders_blank_description' => 'Nejsou naplánována žádná upozornění.',
     'event_title' => 'Nejnovější změny',
@@ -32,6 +35,7 @@ return [
     'tab_last_edited_contacts' => 'Naposledy upravované kontakty',
     'tab_whats_coming' => 'Co bude dál',
     'tab_lastest_actions' => 'Nejnovější změny',
+    'tab_important_notes' => 'Important notes',
     'tasks_title' => 'Úkoly',
     'tasks_blank' => 'Nejsou naplánovány žádné úkoly.',
     'reminders_in_days' => '{1} za 1 den|za :number dny',

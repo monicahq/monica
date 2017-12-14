@@ -61,6 +61,9 @@ class DashboardController extends Controller
                 ];
             });
 
+        // List of notes
+        $notes = $account->notes()->favorited()->get();
+
         // List of upcoming reminders
         $upcomingReminders = $account->reminders()
             ->where('next_expected_date', '>', Carbon::now())
@@ -70,7 +73,7 @@ class DashboardController extends Controller
             ->get();
 
         // Active tasks
-        $tasks = $account->tasks()->with('contact')->where('status', 'inprogress')->get();
+        $tasks = $account->tasks()->with('contact')->where('completed', 0)->get();
 
         $data = [
             'events' => $events,
@@ -87,6 +90,7 @@ class DashboardController extends Controller
             'tasks' => $tasks,
             'debts' => $debt,
             'user' => auth()->user(),
+            'notes' => $notes,
         ];
 
         return view('dashboard.index', $data);

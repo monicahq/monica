@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use DB;
 use Validator;
 use App\Contact;
-use App\Offspring;
-use App\Progenitor;
-use App\Relationship;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
@@ -61,30 +58,26 @@ class ApiContactController extends ApiController
             'last_name' => 'nullable|max:100',
             'gender' => 'required',
             'birthdate' => 'nullable|date',
-            'is_birthdate_approximate' => [
-                'nullable',
-                Rule::in(['exact', 'approximate', 'unknown']),
-            ],
-            'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
+            'birthdate_is_age_based' => 'boolean',
+            'birthdate_is_year_unknown' => 'boolean',
+            'birthdate_age' => 'nullable|integer',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
-            'street' => 'nullable|max:255',
-            'city' => 'nullable|max:255',
-            'province' => 'nullable|max:255',
-            'postal_code' => 'nullable|max:255',
-            'country_id' => 'nullable|integer|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',
+            'first_met_date_is_age_based' => 'boolean',
+            'first_met_date_is_year_unknown' => 'boolean',
+            'first_met_date_age' => 'nullable|integer',
             'first_met_through_contact_id' => 'nullable|integer',
-            'is_partial' => 'required|integer',
-            'is_dead' => 'required|integer',
+            'is_partial' => 'required|boolean',
+            'is_dead' => 'required|boolean',
             'deceased_date' => 'nullable|date',
+            'deceased_date_is_age_based' => 'boolean',
+            'deceased_date_is_year_unknown' => 'boolean',
+            'deceased_date_age' => 'nullable|integer',
+            'avatar_url' => 'nullable|max:400',
         ]);
 
         if ($validator->fails()) {
@@ -92,23 +85,11 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
-        }
-
         // Make sure the `first_met_through_contact_id` is a contact id that the
         // user is authorized to access
         if ($request->get('first_met_through_contact_id')) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
+                $contactFirstMetThrough = Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('first_met_through_contact_id'))
                     ->firstOrFail();
             } catch (ModelNotFoundException $e) {
@@ -118,15 +99,29 @@ class ApiContactController extends ApiController
 
         // Create the contact
         try {
-            $contact = Contact::create($request->all());
+            $contact = Contact::create(
+                $request->only([
+                    'first_name',
+                    'last_name',
+                    'gender',
+                    'job',
+                    'company',
+                    'food_preferencies',
+                    'linkedin_profile_url',
+                    'first_met_through_contact_id',
+                    'is_partial',
+                    'is_dead',
+                    'deceased_date',
+                ]) + [
+                'avatar_external_url' => $request->get('avatar_url'),
+            ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        // Saving first met information (these are not the same field names than
-        // the ones provided in the JSON)
-        if ($request->get('first_met_date')) {
-            $contact->first_met = $request->get('first_met_date');
+        if ($request->get('avatar_url')) {
+            $contact->has_avatar = true;
+            $contact->avatar_location = 'external';
         }
 
         if ($request->get('first_met_information')) {
@@ -136,14 +131,61 @@ class ApiContactController extends ApiController
         $contact->account_id = auth()->user()->account->id;
         $contact->save();
 
-        $contact->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        if ($request->get('birthdate')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+
+            if ($request->get('birthdate_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('birthdate_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
+            }
+        }
+
+        // first met date
+        if ($request->get('first_met_date')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+
+            if ($request->get('first_met_date_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('first_met_date_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
+            }
+        }
+
+        // deceased date
+        if ($request->get('deceased_date')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+
+            if ($request->get('deceased_date_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('deceased_date_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
+            }
+        }
 
         $contact->setAvatarColor();
-
         $contact->logEvent('contact', $contact->id, 'create');
 
         return new ContactResource($contact);
@@ -166,34 +208,30 @@ class ApiContactController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'first_name' => 'nullable|max:50',
+            'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
-            'gender' => 'nullable',
+            'gender' => 'required',
             'birthdate' => 'nullable|date',
-            'is_birthdate_approximate' => [
-                'nullable',
-                Rule::in(['exact', 'approximate', 'unknown']),
-            ],
-            'age' => 'nullable|integer',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|max:255',
+            'birthdate_is_age_based' => 'nullable|boolean',
+            'birthdate_is_year_unknown' => 'nullable|boolean',
+            'birthdate_age' => 'nullable|integer',
             'job' => 'nullable|max:255',
             'company' => 'nullable|max:255',
-            'street' => 'nullable|max:255',
-            'city' => 'nullable|max:255',
-            'province' => 'nullable|max:255',
-            'postal_code' => 'nullable|max:255',
-            'country_id' => 'nullable|integer|max:255',
             'food_preferencies' => 'nullable|max:100000',
-            'facebook_profile_url' => 'nullable|max:255',
-            'twitter_profile_url' => 'nullable|max:255',
             'linkedin_profile_url' => 'nullable|max:255',
             'first_met_information' => 'nullable|max:1000000',
             'first_met_date' => 'nullable|date',
+            'first_met_date_is_age_based' => 'nullable|boolean',
+            'first_met_date_is_year_unknown' => 'nullable|boolean',
+            'first_met_date_age' => 'nullable|integer',
             'first_met_through_contact_id' => 'nullable|integer',
-            'is_partial' => 'required|integer',
-            'is_dead' => 'required|integer',
+            'is_partial' => 'required|boolean',
+            'is_dead' => 'required|boolean',
             'deceased_date' => 'nullable|date',
+            'deceased_date_is_age_based' => 'nullable|boolean',
+            'deceased_date_is_year_unknown' => 'nullable|boolean',
+            'deceased_date_age' => 'nullable|integer',
+            'avatar_url' => 'nullable|max:400',
         ]);
 
         if ($validator->fails()) {
@@ -201,24 +239,11 @@ class ApiContactController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        // Make sure the email is unique
-        if ($request->input('email') != '') {
-            $otherContact = Contact::where('email', $request->input('email'))
-                                    ->where('id', '!=', $contactId)
-                                    ->count();
-
-            if ($otherContact > 0) {
-                return $this->setErrorCode(35)
-                        ->setHTTPStatusCode(500)
-                        ->respondWithError(trans('people.people_edit_email_error'));
-            }
-        }
-
         // Make sure the `first_met_through_contact_id` is a contact id that the
         // user is authorized to access
         if ($request->get('first_met_through_contact_id')) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
+                $contactFirstMetThrough = Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('first_met_through_contact_id'))
                     ->firstOrFail();
             } catch (ModelNotFoundException $e) {
@@ -233,14 +258,6 @@ class ApiContactController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        // Saving first met information (these are not the same field names than
-        // the ones provided in the JSON)
-        if ($request->get('first_met_date')) {
-            $contact->first_met = $request->get('first_met_date');
-        } else {
-            $contact->first_met = null;
-        }
-
         if ($request->get('first_met_information')) {
             $contact->first_met_additional_info = $request->get('first_met_information');
         } else {
@@ -249,11 +266,62 @@ class ApiContactController extends ApiController
 
         $contact->save();
 
-        $contact->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        $contact->removeSpecialDate('birthdate');
+        if ($request->get('birthdate')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+
+            if ($request->get('birthdate_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('birthdate_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
+            }
+        }
+
+        // first met date
+        $contact->removeSpecialDate('first_met');
+        if ($request->get('first_met_date')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+
+            if ($request->get('first_met_date_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('first_met_date_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
+            }
+        }
+
+        // deceased date
+        $contact->removeSpecialDate('deceased_date');
+        if ($request->get('deceased_date')) {
+
+            // in this case, we know the month and day, but not necessarily the year
+            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+
+            if ($request->get('deceased_date_is_year_unknown') == true) {
+                $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
+            } else {
+                $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+            }
+        } else {
+            if ($request->get('deceased_date_is_age_based') == true) {
+                $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
+            }
+        }
 
         $contact->logEvent('contact', $contact->id, 'update');
 
@@ -275,41 +343,23 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->activities->each->delete();
-        $contact->calls->each->delete();
-        $contact->debts->each->delete();
-        $contact->events->each->delete();
-        $contact->gifts->each->delete();
-        $contact->notes->each->delete();
-        $contact->reminders->each->delete();
-        $contact->tags->each->delete();
-        $contact->tasks->each->delete();
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+            $tableData = DB::table($tableName)->get();
 
-        // delete all relationships
-        $relationships = Relationship::where('contact_id', $contact->id)
-                                    ->orWhere('with_contact_id', $contact->id)
-                                    ->get();
+            $contactIdRowExists = false;
+            foreach ($tableData as $data) {
+                foreach ($data as $columnName => $value) {
+                    if ($columnName == 'contact_id') {
+                        $contactIdRowExists = true;
+                    }
+                }
+            }
 
-        foreach ($relationships as $relationship) {
-            $relationship->delete();
-        }
-
-        // delete all offsprings
-        $offsprings = Offspring::where('contact_id', $contact->id)
-                                ->orWhere('is_the_child_of', $contact->id)
-                                ->get();
-
-        foreach ($offsprings as $offspring) {
-            $offspring->delete();
-        }
-
-        // delete all progenitors
-        $progenitors = Progenitor::where('contact_id', $contact->id)
-                                ->orWhere('is_the_parent_of', $contact->id)
-                                ->get();
-
-        foreach ($progenitors as $progenitor) {
-            $progenitor->delete();
+            if ($contactIdRowExists == true) {
+                DB::table($tableName)->where('contact_id', $contact->id)->delete();
+            }
         }
 
         $contact->delete();

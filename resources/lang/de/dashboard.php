@@ -5,6 +5,9 @@ return [
     'dashboard_blank_description' => 'Monica ist der Ort um all deine Interaktionen zu organisieren die dir wichtig sind.',
     'dashboard_blank_cta' => 'Füge deinen ersten Kontakt hinzu',
 
+    'notes_title' => 'You don\'t any notes yet.',
+    'notes_description' => 'Star a note of one of your contact to list favorite notes here.',
+
     'reminders_title' => 'Anstehende Erinnerungen',
     'reminders_blank_description' => 'Es sind keine Erinnerungen geplant.',
     'event_title' => 'Letzte Aktionen',
@@ -33,6 +36,7 @@ return [
     'tab_last_edited_contacts' => 'zuletzt bearbeitete Kontakte',
     'tab_whats_coming' => 'Was steht an',
     'tab_lastest_actions' => 'letzte Aktionen',
+    'tab_important_notes' => 'Important notes',
     'tasks_title' => 'Aufgaben',
     'tasks_blank' => 'Es sind keine Aufgaben geplant.',
     'reminders_in_days' => '{1} in 1 Tag|in :number Tagen',

@@ -10,19 +10,19 @@
     <fieldset class="form-group">
         <label class="form-check-inline" for="youowe">
             <input type="radio" class="form-check-input" name="in_debt" id="youowe" value="yes" @if(old('in_debt') !== 'no' || $debt->in_debt !== 'no') checked @endif>
-            {{ trans('people.debt_add_you_owe', ['name' => $contact->getFirstName()]) }}
+            {{ trans('people.debt_add_you_owe', ['name' => $contact->first_name]) }}
         </label>
 
         <label class="form-check-inline" for="theyowe">
             <input type="radio" class="form-check-input" name="in_debt" id="theyowe" value="no">
-            {{ trans('people.debt_add_they_owe', ['name' => $contact->getFirstName()]) }}
+            {{ trans('people.debt_add_they_owe', ['name' => $contact->first_name]) }}
         </label>
     </fieldset>
 
     {{-- Amount --}}
     <div class="form-group">
         <label for="amount">{{ trans('people.debt_add_amount') }} ({{ Auth::user()->currency->symbol }})</label>
-        <input type="number" class="form-control" name="amount" id="amount" maxlength="254" value="{{ old('amount') ?? $debt->amount }}" autofocus required>
+        <input type="number" step=".01" class="form-control" name="amount" id="amount" maxlength="254" value="{{ old('amount') ?? $debt->amount }}" autofocus required>
     </div>
 
     {{-- Reason --}}

@@ -17,8 +17,10 @@
 
           <span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span>
 
-          @if (! is_null($kid->getAge()))
-            ({{ $kid->getAge() }})
+          @if ($kid->birthday_special_date_id)
+            @if ($kid->birthdate->getAge())
+              ({{ $kid->birthdate->getAge() }})
+            @endif
           @endif
 
           <a href="{{ route('people.kids.edit', [$contact, $kid]) }}" class="action-link">{{ trans('app.edit') }}</a>
@@ -33,13 +35,15 @@
 
           <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span></a>
 
-          @if (! is_null($kid->getAge()))
-            ({{ $kid->getAge() }})
+          @if ($kid->birthday_special_date_id)
+            @if ($kid->birthdate->getAge())
+              ({{ $kid->birthdate->getAge() }})
+            @endif
           @endif
 
           <a href="#" class="action-link" onclick="if (confirm('{{ trans('people.kids_unlink_confirmation') }}')) { $(this).closest('li').find('.entry-delete-form').submit(); } return false;">Remove</a>
 
-          <form method="POST" action="{{ action('People\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
+          <form method="POST" action="{{ action('Contacts\\KidsController@unlink', compact('contact', 'kid')) }}" class="entry-delete-form hidden">
             {{ csrf_field() }}
           </form>
 

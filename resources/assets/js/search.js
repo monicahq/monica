@@ -51,7 +51,7 @@ function Search(form, input, resultsContainer, showResults) {
 
     function getAvatar(contact) {
         let avatar;
-        if ((contact.has_avatar === 'true')) {
+        if ((contact.has_avatar === 1)) {
             avatar = `<img src="/storage/${contact.avatar_file_name}" class="avatar">`;
         } else if (contact.gravatar_url !== null) {
             avatar = `<img src="${contact.gravatar_url}" class="avatar">`;

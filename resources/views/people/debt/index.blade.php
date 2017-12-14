@@ -3,7 +3,7 @@
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span>
+    <span class="fr">
       <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
@@ -13,7 +13,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.debts_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.debts_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
@@ -35,7 +35,7 @@
             ]) }}
           @else
             {{ trans('people.debt_they_owe', [
-                'name' => $contact->getFirstName(),
+                'name' => $contact->first_name,
                 'amount' => MoneyHelper::format($debt->amount)
             ]) }}
           @endif
@@ -54,7 +54,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('People\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ action('Contacts\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>
@@ -66,7 +66,7 @@
           <strong>
             @if ($contact->isOwedMoney())
               {{ trans('people.debt_they_owe', [
-                  'name' => $contact->getFirstName(),
+                  'name' => $contact->first_name,
                   'amount' => MoneyHelper::format($contact->totalOutstandingDebtAmount())
               ]) }}
             @else

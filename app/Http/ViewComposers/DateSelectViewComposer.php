@@ -34,7 +34,7 @@ class DateSelectViewComposer
         $maxYear = Carbon::now(auth()->user()->timezone)->year;
         $minYear = Carbon::now(auth()->user()->timezone)->subYears(120)->format('Y');
 
-        for ($year = $minYear; $year <= $maxYear; $year++) {
+        for ($year = $maxYear; $year >= $minYear; $year--) {
             array_push($years, $year);
         }
 
