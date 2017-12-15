@@ -24,6 +24,12 @@
 
     <div class="main-content">
 
+      @foreach ($journalEntries as $journalEntry)
+
+      @include($journalEntry->getLayout(), ['object' => $journalEntry->getObject() ])
+
+      @endforeach
+
       @if ($entries->count() == 0)
 
         <div class="blank-people-state">
@@ -82,7 +88,7 @@
               @endforeach
             </div>
 
-			
+
             <div class="col-md-3">
               <a class="btn btn-primary btn-add-people" href="/journal/add">{{ trans('journal.journal_add') }}</a>
             </div>

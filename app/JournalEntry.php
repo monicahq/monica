@@ -41,4 +41,28 @@ class JournalEntry extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    public function add($resourceToLog)
+    {
+        $this->account_id = $resourceToLog->account_id;
+        $this->date = \Carbon\Carbon::now();
+        $this->journalable_id = $resourceToLog->id;
+        $this->journalable_type = get_class($resourceToLog);
+        $this->save();
+    }
+
+    public function getLayout()
+    {
+        if ($this->journalable_type == 'App\Activity') {
+            return 'partials.components.journal.activity';
+        }
+    }
+
+    public function getObject()
+    {
+        $type = $this->journalable_type;
+        $correspondingObject = (new $type)::findOrFail($this->journalable_id);
+
+        return $correspondingObject;
+    }
 }

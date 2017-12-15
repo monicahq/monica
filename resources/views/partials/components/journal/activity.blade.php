@@ -1,0 +1,2 @@
+
+<p>{{ $object->summary }}</p>

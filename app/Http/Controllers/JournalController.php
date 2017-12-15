@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Entry;
+use App\JournalEntry;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -16,12 +17,15 @@ class JournalController extends Controller
      */
     public function index()
     {
+        $journalEntries = auth()->user()->account->journalEntries()->get();
+
         $entries = Entry::where('account_id', Auth::user()->account_id)
                       ->orderBy('created_at', 'desc')
                       ->get();
 
         $data = [
             'entries' => $entries,
+            'journalEntries' => $journalEntries,
         ];
 
         return view('journal.index', $data);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\JournalEntry;
 use App\Contact;
 use App\Activity;
 use App\Http\Requests\People\ActivitiesRequest;
@@ -63,6 +64,10 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }
+
+        // Log a journal entry
+        $journalEntry = new JournalEntry;
+        $journalEntry->add($activity);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_add_success'));

@@ -255,6 +255,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Journal Entries records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function journalEntries()
+    {
+        return $this->hasMany('App\JournalEntry');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this

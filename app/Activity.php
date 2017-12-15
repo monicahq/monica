@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -12,7 +13,7 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
  * @property Contact $contact
  * @property ActivityType $type
  */
-class Activity extends Model
+class Activity extends Model implements IsJournalableInterface
 {
     /**
      * The table associated with the model.
@@ -70,6 +71,14 @@ class Activity extends Model
     public function type()
     {
         return $this->belongsTo(ActivityType::class, 'activity_type_id');
+    }
+
+    /**
+     * Get all of the activities journal entries.
+     */
+    public function journalEntries()
+    {
+        return $this->morphMany('App\JournalEntry', 'journalable');
     }
 
     /**
@@ -140,5 +149,10 @@ class Activity extends Model
         }
 
         return $attendees;
+    }
+
+    public function deleteJournalEntry()
+    {
+        return;
     }
 }
