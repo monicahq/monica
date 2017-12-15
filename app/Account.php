@@ -261,7 +261,7 @@ class Account extends Model
      */
     public function journalEntries()
     {
-        return $this->hasMany('App\JournalEntry');
+        return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
     }
 
     /**

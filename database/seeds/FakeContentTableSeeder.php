@@ -13,6 +13,7 @@ class FakeContentTableSeeder extends Seeder
     private $numberOfContacts;
     private $contact;
     private $faker;
+    private $account;
 
     /**
      * Run the database seeds.
@@ -38,6 +39,8 @@ class FakeContentTableSeeder extends Seeder
             'password' => bcrypt('admin'),
             'timezone' => config('app.timezone'),
         ]);
+
+        $this->account = $account;
 
         $this->faker = Faker::create();
 
@@ -90,6 +93,8 @@ class FakeContentTableSeeder extends Seeder
 
             $progress->advance();
         }
+
+        $this->populateEntries();
 
         $progress->finish();
 
@@ -292,13 +297,22 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
+                $date = $this->faker->date($format = 'Y-m-d', $max = 'now');
+
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
-                    'date_it_happened' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+                    'date_it_happened' => $date,
                     'activity_type_id' => rand(1, 13),
                     'description' => $this->faker->realText(rand(100, 1000)),
                     'account_id' => $this->contact->account_id,
                 ], ['account_id' => $this->contact->account_id]);
+
+                $entry = DB::table('journal_entries')->insertGetId([
+                    'account_id' => $this->account->id,
+                    'date' => $date,
+                    'journalable_id' => $activity->id,
+                    'journalable_type' => 'App\Activity',
+                ]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');
             }
@@ -384,6 +398,27 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->contact->account->id,
                 ]);
             }
+        }
+    }
+
+    public function populateEntries()
+    {
+        for ($j = 0; $j < rand(10, 100); $j++) {
+            $date = $this->faker->dateTimeThisYear();
+
+            $entryId = DB::table('entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'title' => $this->faker->realText(rand(12, 20)),
+                'post' => $this->faker->realText(rand(400, 500)),
+                'created_at' => $date,
+            ]);
+
+            $journalEntry = DB::table('journal_entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'date' => $date,
+                'journalable_id' => $entryId,
+                'journalable_type' => 'App\Entry',
+            ]);
         }
     }
 
