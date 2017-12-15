@@ -22,14 +22,16 @@ class ContactShort extends Resource
             'gender' => $this->gender,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
-            'deceased_date' => (is_null($this->deceased_date) ? null : $this->deceased_date->format(config('api.timestamp_format'))),
             'information' => [
-                'dates' => [
-                    [
-                        'name' => 'birthdate',
-                        'is_birthdate_approximate' => $this->is_birthdate_approximate,
-                        'birthdate' => (is_null($this->birthdate) ? null : $this->birthdate->format(config('api.timestamp_format'))),
-                    ],
+                'birthdate' => [
+                    'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),
+                    'is_year_unknown' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_year_unknown),
+                    'date' => (is_null($this->birthdate) ? null : $this->birthdate->date->format(config('api.timestamp_format'))),
+                ],
+                'deceased_date' => [
+                    'is_age_based' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_age_based),
+                    'is_year_unknown' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_year_unknown),
+                    'date' => (is_null($this->deceasedDate) ? null : $this->deceasedDate->date->format(config('api.timestamp_format'))),
                 ],
             ],
             'account' => [

@@ -98,7 +98,7 @@
                       @if (! is_null($contact->gravatar_url))
                         <img src="{{ $contact->gravatar_url }}" width="43">
                       @else
-                        @if (count($contact->getInitials()) == 1)
+                        @if (strlen($contact->getInitials()) == 1)
                         <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
                           {{ $contact->getInitials() }}
                         </div>
@@ -114,7 +114,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}
+                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                     </span>
                   </a>
                 </li>

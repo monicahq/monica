@@ -62,7 +62,6 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
         'has_avatar' => false,
     ];
 });
@@ -87,6 +86,15 @@ $factory->define(App\Task::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_id' => 1,
+        'date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+    ];
+});
+
 $factory->define(App\Note::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
@@ -103,19 +111,6 @@ $factory->define(App\Relationship::class, function (Faker\Generator $faker) {
 $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
-    ];
-});
-
-$factory->define(App\Kid::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => 1,
-        'child_of_contact_id' => 1,
-        'gender' => 'male',
-        'first_name' => encrypt($faker->firstName),
-        'is_birthdate_approximate' => 'false',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-        'birthday_reminder_id' => 1,
-        'food_preferencies' => encrypt($faker->sentence),
     ];
 });
 

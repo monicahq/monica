@@ -51,7 +51,6 @@ class RelationshipsController extends Controller
                     'first_name',
                     'last_name',
                     'gender',
-                    'is_birthdate_approximate',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -67,7 +66,6 @@ class RelationshipsController extends Controller
                     'first_name',
                     'last_name',
                     'gender',
-                    'is_birthdate_approximate',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -78,11 +76,19 @@ class RelationshipsController extends Controller
             $contact->setRelationshipWith($partner);
         }
 
-        $partner->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        $partner->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'exact':
+                $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                break;
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));
@@ -135,7 +141,6 @@ class RelationshipsController extends Controller
                 'first_name',
                 'last_name',
                 'gender',
-                'is_birthdate_approximate',
             ])
             + [
                 'account_id' => $contact->account_id,
@@ -151,11 +156,19 @@ class RelationshipsController extends Controller
             $contact->updateRelationshipWith($partner);
         }
 
-        $partner->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('birthdate'),
-            $request->get('age')
-        );
+        // birthdate
+        $partner->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'exact':
+                $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                break;
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_edit_success'));
@@ -184,6 +197,7 @@ class RelationshipsController extends Controller
 
         $contact->unsetRelationshipWith($partner);
 
+        $partner->specialDates->each->delete();
         $partner->delete();
 
         return redirect('/people/'.$contact->id)
