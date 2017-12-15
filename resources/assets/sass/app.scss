@@ -24,6 +24,19 @@ $border-color: #dfdfdf;
 @import "settings";
 @import "modal";
 
+// Custom colors
+// Extending Tachyions
+.bg-gray-monica {
+  background-color: #f2f4f8;
+}
+
+.b--gray-monica {
+  border-color: #dde2e9;
+}
+.w-5 { width: 5%; }
+.w-95 { width: 95%; }
+
+
 // Utilities
 .border-bottom {
   border-bottom: 1px solid $border-color;

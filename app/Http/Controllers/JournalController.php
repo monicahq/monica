@@ -17,7 +17,7 @@ class JournalController extends Controller
      */
     public function index()
     {
-        $journalEntries = auth()->user()->account->journalEntries()->get();
+        $journalEntries = auth()->user()->account->journalEntries()->limit(1)->get();
 
         $entries = Entry::where('account_id', Auth::user()->account_id)
                       ->orderBy('created_at', 'desc')
