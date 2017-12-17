@@ -65,8 +65,23 @@ Vue.component(
 
 // Journal
 Vue.component(
-    'add-entry',
-    require('./components/journal/AddEntry.vue')
+    'journal-list',
+    require('./components/journal/JournalList.vue')
+);
+
+Vue.component(
+    'journal-calendar',
+    require('./components/journal/partials/JournalCalendar.vue')
+);
+
+Vue.component(
+    'journal-content-rate',
+    require('./components/journal/partials/JournalContentRate.vue')
+);
+
+Vue.component(
+    'journal-content-activity',
+    require('./components/journal/partials/JournalContentActivity.vue')
 );
 
 // Settings

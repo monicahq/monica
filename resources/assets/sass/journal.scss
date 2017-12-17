@@ -12,3 +12,23 @@
 .journal-calendar-content {
   width: calc(100% - 73px);
 }
+
+.journal-avatars-container {
+  position: relative;
+
+  img {
+    max-height: 50px;
+    border-radius: 50%;
+    max-width: 50px;
+    border: 2px solid #fff;
+  }
+}
+
+.journal-avatars-single {
+  position: absolute;
+  top: 0;
+
+  > .journal-avatars-single {
+    transform: translateX(-55%);
+  }
+}

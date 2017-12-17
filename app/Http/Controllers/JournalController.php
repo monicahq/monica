@@ -32,6 +32,28 @@ class JournalController extends Controller
     }
 
     /**
+     * Get all the journal entries.
+     * @return array
+     */
+    public function get()
+    {
+        $entries = collect([]);
+        $journalEntries = auth()->user()->account->journalEntries()->get();
+
+        foreach ($journalEntries as $journalEntry) {
+            $data = [
+                'id' => $journalEntry->id,
+                'date' => $journalEntry->date,
+                'journalable_id' => $journalEntry->journalable_id,
+                'journalable_type' => $journalEntry->journalable_type,
+            ];
+            $entries->push($data);
+        }
+
+        return $entries;
+    }
+
+    /**
      * Display the Create journal entry screen.
      *
      * @return \Illuminate\Http\Response
