@@ -116,7 +116,7 @@ Do you want to help? That's awesome. Here are simple things you can do.
 ## Contribute as a developer
 
 * Read our [Contribution Guide](/CONTRIBUTING.md).
-* Install the developer version locally so you can start contributing [instructions]((/docs/contribute/contribute.md)).
+* Install the developer version locally so you can start contributing [instructions](/docs/contribute/contribute.md).
 * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
 * Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) These are issues that you can solve relatively easily.
 * If you are an advanced developer, you can try to tackle [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). Beware though - they are harder to do and will require a lot of back and forth with the repository administrator in order to make sure we are going to the right direction with the product.
