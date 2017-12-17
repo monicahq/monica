@@ -111,6 +111,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->where('id', $value)
                 ->firstOrFail();
         });
+
+        Route::bind('journalEntry', function ($value, $route) {
+            return  JournalEntry::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
     }
 
     /**

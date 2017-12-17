@@ -68,11 +68,13 @@ class JournalEntry extends Model
         return $view;
     }
 
-    public function getObject()
+    public function getObjectData()
     {
         $type = $this->journalable_type;
+
+        // Instantiating the object
         $correspondingObject = (new $type)::findOrFail($this->journalable_id);
 
-        return $correspondingObject;
+        return $correspondingObject->getInfoForJournalEntry();
     }
 }

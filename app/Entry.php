@@ -50,4 +50,21 @@ class Entry extends Model
 
         return $this->title;
     }
+
+    public function getInfoForJournalEntry()
+    {
+        $data = [
+            'type' => 'activity',
+            'id' => $this->id,
+            'title' => $this->title,
+            'post' => $this->post,
+            'day' => $this->created_at->day,
+            'day_name' => \App\Helpers\DateHelper::getShortDay($this->created_at),
+            'month' => $this->created_at->month,
+            'month_name' => \App\Helpers\DateHelper::getShortMonth($this->created_at),
+            'year' => $this->created_at->year,
+        ];
+
+        return $data;
+    }
 }

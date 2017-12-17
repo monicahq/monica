@@ -297,13 +297,13 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = $this->faker->date($format = 'Y-m-d', $max = 'now');
+                $date = $this->faker->dateTimeThisYear($max = 'now')->format('Y-m-d');
 
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
                     'date_it_happened' => $date,
                     'activity_type_id' => rand(1, 13),
-                    'description' => $this->faker->realText(rand(100, 1000)),
+                    'description' => (rand(1,2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
                     'account_id' => $this->contact->account_id,
                 ], ['account_id' => $this->contact->account_id]);
 
@@ -418,6 +418,7 @@ class FakeContentTableSeeder extends Seeder
                 'date' => $date,
                 'journalable_id' => $entryId,
                 'journalable_type' => 'App\Entry',
+                'created_at' => \Carbon\Carbon::now(),
             ]);
         }
     }

@@ -23,12 +23,3 @@
     border: 2px solid #fff;
   }
 }
-
-.journal-avatars-single {
-  position: absolute;
-  top: 0;
-
-  > .journal-avatars-single {
-    transform: translateX(-55%);
-  }
-}

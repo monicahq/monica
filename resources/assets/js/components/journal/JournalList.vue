@@ -71,10 +71,12 @@
       </div>
 
       <!-- Logs -->
-      <div class="cf" v-for="entry in entries">
-        <journal-content-rate v-if="entry.journalable_type == 'App\\Day'"></journal-content-rate>
+      <div class="cf" v-for="journalEntry in journalEntries">
+        <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Day'" v-bind:day-id="journalEntry.id"></journal-content-rate>
 
-        <journal-content-activity v-if="entry.journalable_type == 'App\\Activity'"></journal-content-activity>
+        <journal-content-activity v-if="journalEntry.journalable_type == 'App\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
+
+        <journal-content-entry v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
       </div>
 
     </div>
@@ -93,7 +95,7 @@
          */
         data() {
             return {
-              entries: []
+              journalEntries: []
             };
         },
 
@@ -122,7 +124,7 @@
             getEntries() {
                 axios.get('/journal/entries')
                         .then(response => {
-                            this.entries = response.data;
+                            this.journalEntries = response.data;
                         });
             },
         }

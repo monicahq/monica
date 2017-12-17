@@ -48,7 +48,7 @@
 
       @foreach ($journalEntries as $journalEntry)
 
-      @include($journalEntry->getLayout(), ['object' => $journalEntry->getObject() ])
+      {{-- @include($journalEntry->getLayout(), ['object' => $journalEntry->getObjectData() ]) --}}
 
       @endforeach
     </div>

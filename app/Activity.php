@@ -155,4 +155,23 @@ class Activity extends Model implements IsJournalableInterface
     {
         return;
     }
+
+    public function getInfoForJournalEntry()
+    {
+        $data = [
+            'type' => 'activity',
+            'id' => $this->id,
+            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'summary' => $this->summary,
+            'description' => $this->description,
+            'day' => $this->date_it_happened->day,
+            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date_it_happened)),
+            'month' => $this->date_it_happened->month,
+            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date_it_happened)),
+            'year' => $this->date_it_happened->year,
+            'attendees' => $this->getContactsForAPI(),
+        ];
+
+        return $data;
+    }
 }

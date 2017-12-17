@@ -35,22 +35,49 @@ class JournalController extends Controller
      * Get all the journal entries.
      * @return array
      */
-    public function get()
+    public function list()
     {
         $entries = collect([]);
         $journalEntries = auth()->user()->account->journalEntries()->get();
 
+        // this is needed to determine if we need to display the calendar
+        // (month + year) next to the journal entry
+        $previousEntryMonth = 0;
+        $showCalendar = true;
+
         foreach ($journalEntries as $journalEntry) {
+            if ($previousEntryMonth == $journalEntry->date->month)
+            {
+                $showCalendar = false;
+            }
+
             $data = [
                 'id' => $journalEntry->id,
                 'date' => $journalEntry->date,
                 'journalable_id' => $journalEntry->journalable_id,
                 'journalable_type' => $journalEntry->journalable_type,
+                'object' => $journalEntry->getObjectData(),
+                'show_calendar' => $showCalendar,
             ];
             $entries->push($data);
+
+            $previousEntryMonth = $journalEntry->date->month;
+            $showCalendar = true;
         }
 
         return $entries;
+    }
+
+    /**
+     * Gets the details of a single Journal Entry.
+     * @param  JournalEntry $journalEntry
+     * @return array
+     */
+    public function get(JournalEntry $journalEntry)
+    {
+        $object = $journalEntry->getObjectData();
+
+        return $object;
     }
 
     /**

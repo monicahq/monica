@@ -84,6 +84,11 @@ Vue.component(
     require('./components/journal/partials/JournalContentActivity.vue')
 );
 
+Vue.component(
+    'journal-content-entry',
+    require('./components/journal/partials/JournalContentEntry.vue')
+);
+
 // Settings
 Vue.component(
     'contact-field-types',
