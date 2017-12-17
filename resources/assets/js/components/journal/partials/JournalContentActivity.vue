@@ -38,9 +38,12 @@
           </div>
 
           <div class="flex-none w-20">
-            <div class="flex justify-center items-center h-100 journal-avatars-container">
-              <div v-for="attendees in activity.attendees">
-                <img :src="attendees.information.avatar.avatar_external_url" class="br-100 pa1 ba b--black-10 h3 w3" v-tooltip="attendees.complete_name">
+            <div class="tr mt2">
+              <div v-for="attendees in activity.attendees" class="di">
+                <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 pa1 ba b--black-10 h3 w3" v-tooltip="attendees.complete_name">
+                <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="initials">
+                  {{ attendees.initials }}
+                </div>
               </div>
             </div>
           </div>

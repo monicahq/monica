@@ -76,6 +76,8 @@ class RelationshipsController extends Controller
             $contact->setRelationshipWith($partner);
         }
 
+        $partner->setAvatarColor();
+
         // birthdate
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {

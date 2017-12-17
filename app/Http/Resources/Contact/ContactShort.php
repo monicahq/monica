@@ -20,6 +20,7 @@ class ContactShort extends Resource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'complete_name' => $this->getCompleteName(),
+            'initials' => $this->getInitials(),
             'gender' => $this->gender,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
@@ -35,9 +36,9 @@ class ContactShort extends Resource
                     'date' => (is_null($this->deceasedDate) ? null : $this->deceasedDate->date->format(config('api.timestamp_format'))),
                 ],
                 'avatar' => [
-                    'avatar_external_url' => $this->avatar_external_url,
-                    'avatar_file_name' => $this->avatar_file_name,
-                    'avatar_location' => $this->avatar_location,
+                    'has_avatar' => $this->has_avatar,
+                    'avatar_url' => $this->getAvatarURL(),
+                    'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
             'account' => [

@@ -66,13 +66,16 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->gender = $gender;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
+            $this->contact->has_avatar = false;
             $this->contact->save();
 
             // set an external avatar
-            $this->contact->has_avatar = true;
-            $this->contact->avatar_location = 'external';
-            $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-            $this->contact->save();
+            if (rand(1, 2) == 1) {
+                $this->contact->has_avatar = true;
+                $this->contact->avatar_location = 'external';
+                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
+                $this->contact->save();
+            }
 
             $this->contact->setAvatarColor();
 
@@ -226,6 +229,8 @@ class FakeContentTableSeeder extends Seeder
                 }
                 $kid->save();
 
+                $kid->setAvatarColor();
+
                 // birthdate
                 $kidBirthDate = $this->faker->dateTimeThisCentury();
                 if (rand(1, 2) == 1) {
@@ -262,6 +267,8 @@ class FakeContentTableSeeder extends Seeder
                     $this->contact->setRelationshipWith($partner, true);
                 }
                 $partner->save();
+
+                $partner->setAvatarColor();
 
                 // birthdate
                 $partnerBirthDate = $this->faker->dateTimeThisCentury();
