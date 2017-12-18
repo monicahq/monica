@@ -247,6 +247,27 @@
           <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
         </form>
 
+        <form method="POST" action="/settings/passwordChange" class="settings-reset">
+          {{ csrf_field() }}
+
+          <h2>{{ trans('settings.password_change') }}</h2>
+
+          <div class="form-group">
+            <label for="password_current">{{ trans('settings.password_current') }}</label>
+            <input type="password" class="form-control" name="password_current" id="password_current" placeholder="{{ trans('settings.password_current_placeholder') }}" required />
+          </div>
+          <div class="form-group">
+            <label for="password">{{ trans('settings.password_new1') }}</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="{{ trans('settings.password_new1_placeholder') }}" required />
+          </div>
+          <div class="form-group">
+            <label for="password_confirmation">{{ trans('settings.password_new2') }}</label>
+            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="{{ trans('settings.password_new2_placeholder') }}" required />
+          </div>
+          
+          <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
+        </form>
+
         <form method="POST" action="{{ action('SettingsController@reset') }}" class="settings-reset" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
           {{ csrf_field() }}
 

@@ -152,6 +152,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/reset', ['as' => '.reset', 'uses' => 'SettingsController@reset']);
         Route::post('/settings/save', 'SettingsController@save');
+        Route::post('/settings/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
 
