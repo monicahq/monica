@@ -9,7 +9,7 @@
 
     <!-- Right column: showing logs -->
     <div class="fl journal-calendar-content">
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line">
         <div class="flex">
 
           <!-- Day -->
@@ -25,7 +25,7 @@
             <p>{{ entry.post }}</p>
 
             <ul class="f7">
-              <li class="di">
+              <li class="di mr2">
                 <a href="">Edit</a>
               </li>
               <li class="di">

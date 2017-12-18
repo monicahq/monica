@@ -49,6 +49,8 @@ class JournalEntry extends Model
         $this->journalable_id = $resourceToLog->id;
         $this->journalable_type = get_class($resourceToLog);
         $this->save();
+
+        return $this;
     }
 
     public function getLayout()

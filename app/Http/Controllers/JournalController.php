@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Entry;
-use App\JournalEntry;
 use Validator;
+use App\JournalEntry;
 use Illuminate\Http\Request;
+use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller
 {
@@ -17,18 +18,7 @@ class JournalController extends Controller
      */
     public function index()
     {
-        $journalEntries = auth()->user()->account->journalEntries()->limit(1)->get();
-
-        $entries = Entry::where('account_id', Auth::user()->account_id)
-                      ->orderBy('created_at', 'desc')
-                      ->get();
-
-        $data = [
-            'entries' => $entries,
-            'journalEntries' => $journalEntries,
-        ];
-
-        return view('journal.index', $data);
+        return view('journal.index');
     }
 
     /**
@@ -38,7 +28,7 @@ class JournalController extends Controller
     public function list()
     {
         $entries = collect([]);
-        $journalEntries = auth()->user()->account->journalEntries()->get();
+        $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
 
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry
@@ -65,7 +55,18 @@ class JournalController extends Controller
             $showCalendar = true;
         }
 
-        return $entries;
+        // I need the pagination items when I send back the array.
+        // There is probably a simpler way to achieve this.
+        $jsonToSendBack = [
+            'total' => $journalEntries->total(),
+            'per_page' => $journalEntries->perPage(),
+            'current_page' => $journalEntries->currentPage(),
+            'next_page_url' => $journalEntries->nextPageUrl(),
+            'prev_page_url' => $journalEntries->previousPageUrl(),
+            'data' => $entries,
+        ];
+
+        return $jsonToSendBack;
     }
 
     /**
@@ -78,6 +79,31 @@ class JournalController extends Controller
         $object = $journalEntry->getObjectData();
 
         return $object;
+    }
+
+    /**
+     * Store the day entry.
+     */
+    public function storeDay(DaysRequest $request)
+    {
+        $day = auth()->user()->account->days()->create([
+            'date' => \Carbon\Carbon::now(auth()->user()->timezone),
+            'rate' => $request->get('rate'),
+        ]);
+
+        // Log a journal entry
+        $journalEntry = (new JournalEntry)->add($day);
+
+        return $journalEntry;
+    }
+
+    /**
+    * Indicates whether the user has already rated the current day.
+     * @return boolean [description]
+     */
+    public function hasRated()
+    {
+        return auth()->user()->hasAlreadyRatedToday();
     }
 
     /**

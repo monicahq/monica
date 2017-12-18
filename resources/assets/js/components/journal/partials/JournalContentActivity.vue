@@ -27,14 +27,14 @@
 
             <p v-if="showDescription">{{ activity.description }}</p>
 
-            <ul class="f7">
+            <!-- <ul class="f7">
               <li class="di">
                 <a href="">Edit</a>
               </li>
               <li class="di">
                 <a href="">Delete</a>
               </li>
-            </ul>
+            </ul> -->
           </div>
 
           <div class="flex-none w-20">

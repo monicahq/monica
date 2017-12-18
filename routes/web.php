@@ -143,6 +143,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['as' => 'journal'], function () {
         Route::get('/journal/entries', 'JournalController@list')->name('.list');
         Route::get('/journal/entries/{journalEntry}', 'JournalController@get');
+        Route::get('/journal/hasRated', 'JournalController@hasRated');
+        Route::post('/journal/day', 'JournalController@storeDay');
 
 
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);

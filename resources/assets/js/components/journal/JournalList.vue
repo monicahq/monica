@@ -8,17 +8,17 @@
     <div class="fl w-70-ns w-100 pa2">
 
       <!-- How was your day -->
-      <div class="br3 ba b--gray-monica bg-white pa3 mb4">
+      <div class="br3 ba b--gray-monica bg-white pa3 mb4" v-if="hasRated == false">
         <div class="flex items-center">
-          <div class="w-50 f3 pl2">
-            How was your day?
+          <div class="w-70 f3 pl2">
+            How was your day? You can rate it once a day.
           </div>
-          <div class="w-50">
+          <div class="w-30">
             <div class="flex items-center h-100">
               <div class="flex-none tr w-100">
 
                 <!-- sad smiley -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 journal-sad-smiley">
+                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 journal-sad-smiley" @click="rate(1)">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-695.000000, -165.000000)">
@@ -34,7 +34,7 @@
                 </svg>
 
                 <!-- mediocre day -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3">
+                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(2)">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-754.000000, -165.000000)">
@@ -49,7 +49,7 @@
                 </svg>
 
                 <!-- happy day -->
-                <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(3)">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-814.000000, -165.000000)">
@@ -71,12 +71,16 @@
       </div>
 
       <!-- Logs -->
-      <div class="cf" v-for="journalEntry in journalEntries">
-        <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Day'" v-bind:day-id="journalEntry.id"></journal-content-rate>
+      <div class="cf" v-for="journalEntry in journalEntries.data" :key="journalEntry.id">
+        <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Day'" v-bind:journal-entry="journalEntry"></journal-content-rate>
 
         <journal-content-activity v-if="journalEntry.journalable_type == 'App\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
 
         <journal-content-entry v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
+      </div>
+
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+        <p class="mb0 pointer" @click="loadMore()">Load more</p>
       </div>
 
     </div>
@@ -95,7 +99,13 @@
          */
         data() {
             return {
-              journalEntries: []
+              journalEntries: [],
+
+              day: {
+                      rate: ''
+                  },
+
+              hasRated: false
             };
         },
 
@@ -126,6 +136,52 @@
                         .then(response => {
                             this.journalEntries = response.data;
                         });
+            },
+
+            hasAlreadyRatedToday() {
+                axios.get('/journal/hasRated')
+                        .then(response => {
+                            this.hasRated = response.data;
+                        });
+            },
+
+            rate(rate) {
+                this.day.rate = rate;
+
+                axios.post('/journal/day', this.day)
+                        .then(response => {
+                            this.journalEntries.data.unshift(response.data);
+                        });
+            },
+
+            loadMore() {
+                axios.get('/journal/entries?page=' + (this.journalEntries.current_page + 1))
+                        .then(response => {
+                            this.journalEntries.current_page = response.data.current_page;
+                            this.journalEntries.next_page_url = response.data.next_page_url;
+                            this.journalEntries.per_page = response.data.per_page;
+                            this.journalEntries.prev_page_url = response.data.prev_page_url;
+                            this.journalEntries.total = response.data.total;
+
+                            for (var j of response.data.data) {
+                                this.journalEntries.data.push(j);
+                            }
+                        });
+            },
+
+            persistClient(method, uri, form) {
+                form.errors = {};
+
+                axios[method](uri, form)
+                    .then(response => {
+                    })
+                    .catch(error => {
+                        if (typeof error.response.data === 'object') {
+                            form.errors = _.flatten(_.toArray(error.response.data));
+                        } else {
+                            form.errors = ['Something went wrong. Please try again.'];
+                        }
+                    });
             },
         }
     }

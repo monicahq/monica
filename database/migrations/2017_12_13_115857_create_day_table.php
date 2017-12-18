@@ -16,8 +16,8 @@ class CreateDayTable extends Migration
         Schema::create('days', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->dateTime('date');
-            $table->integer('rate')->nullable();;
+            $table->date('date');
+            $table->integer('rate');
             $table->mediumText('comment')->nullable();
             $table->timestamps();
         });

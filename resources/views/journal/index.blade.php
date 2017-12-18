@@ -43,14 +43,5 @@
         </div>
       </div>
     </div>
-
-    <div class="main-content">
-
-      @foreach ($journalEntries as $journalEntry)
-
-      {{-- @include($journalEntry->getLayout(), ['object' => $journalEntry->getObjectData() ]) --}}
-
-      @endforeach
-    </div>
   </div>
 @endsection

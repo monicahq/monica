@@ -255,13 +255,23 @@ class Account extends Model
     }
 
     /**
-     * Get the Journal Entries records associated with the contact.
+     * Get the Journal Entries records associated with the account.
      *
      * @return HasMany
      */
     public function journalEntries()
     {
         return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the Days records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function days()
+    {
+        return $this->hasMany('App\Day');
     }
 
     /**

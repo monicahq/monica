@@ -117,6 +117,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->where('id', $value)
                 ->firstOrFail();
         });
+
+        Route::bind('day', function ($value, $route) {
+            return  Day::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
     }
 
     /**

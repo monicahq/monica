@@ -4,8 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Interfaces\IsJournalableInterface;
 
-class Day extends Model
+class Day extends Model implements IsJournalableInterface
 {
     /**
      * The attributes that aren't mass assignable.
@@ -54,5 +55,27 @@ class Day extends Model
     public function getCommentAttribute($value)
     {
         return $value;
+    }
+
+    public function deleteJournalEntry()
+    {
+        return;
+    }
+
+    public function getInfoForJournalEntry()
+    {
+        $data = [
+            'type' => 'day',
+            'id' => $this->id,
+            'rate' => $this->rate,
+            'comment' => $this->comment,
+            'day' => $this->date->day,
+            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date)),
+            'month' => $this->date->month,
+            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date)),
+            'year' => $this->date->year,
+        ];
+
+        return $data;
     }
 }
