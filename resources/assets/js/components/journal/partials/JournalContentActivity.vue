@@ -9,13 +9,13 @@
 
     <!-- Right column: showing logs -->
     <div class="fl journal-calendar-content">
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line">
         <div class="flex">
 
           <!-- Day -->
           <div class="flex-none w-10 tc">
-            <h3 class="mb0 normal">{{ activity.day }}</h3>
-            <p class="mb0">{{ activity.day_name }}</p>
+            <h3 class="mb0 normal fw5">{{ activity.day }}</h3>
+            <p class="mb0 black-60 f6">{{ activity.day_name }}</p>
           </div>
 
           <!-- Log content -->
@@ -39,9 +39,9 @@
 
           <div class="flex-none w-20">
             <div class="tr mt2">
-              <div v-for="attendees in activity.attendees" class="di">
-                <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 pa1 ba b--black-10 h3 w3" v-tooltip="attendees.complete_name">
-                <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="initials">
+              <div v-for="attendees in activity.attendees" class="dib h3 w3 pointer" @click="redirect(attendees)">
+                <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 pa1 ba b--black-10" v-tooltip="attendees.complete_name">
+                <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="journal-initial br3 relative white tc pt3">
                   {{ attendees.initials }}
                 </div>
               </div>
@@ -115,6 +115,10 @@
             toggleDescription() {
                 this.showDescription = !this.showDescription
             },
+
+            redirect(attendee) {
+                window.location.href = "/people/" + attendee.id
+            }
         }
     }
 </script>
