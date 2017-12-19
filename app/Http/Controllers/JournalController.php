@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Day;
 use App\Entry;
 use Validator;
 use App\JournalEntry;
@@ -104,6 +105,17 @@ class JournalController extends Controller
         ];
 
         return $data;
+    }
+
+    /**
+     * Delete the Day entry
+     * @return mixed
+     */
+    public function trashDay($day)
+    {
+        $day = Day::findOrFail($day->id);
+        $day->deleteJournalEntry();
+        $day->delete();
     }
 
     /**

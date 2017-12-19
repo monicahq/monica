@@ -21,20 +21,11 @@
           <!-- Log content -->
           <div class="flex-auto">
             <p class="mb1">
-              {{ activity.activity_type }}
+              <span class="pl2 pr2 ba b--moon-gray br3 f6">{{ activity.activity_type }}</span>
             </p>
             <p class="mb1">{{ activity.summary }}</p>
 
             <p v-if="showDescription">{{ activity.description }}</p>
-
-            <!-- <ul class="f7">
-              <li class="di">
-                <a href="">Edit</a>
-              </li>
-              <li class="di">
-                <a href="">Delete</a>
-              </li>
-            </ul> -->
           </div>
 
           <div class="flex-none w-20">

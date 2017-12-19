@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\IsJournalableInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Day extends Model implements IsJournalableInterface
 {
@@ -59,7 +61,16 @@ class Day extends Model implements IsJournalableInterface
 
     public function deleteJournalEntry()
     {
-        return;
+        try {
+            $journalEntry = JournalEntry::where('account_id', $this->account_id)
+                ->where('journalable_id', $this->id)
+                ->where('journalable_type', 'App\Day')
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
+
+        $journalEntry->delete();
     }
 
     public function getInfoForJournalEntry()

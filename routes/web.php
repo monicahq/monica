@@ -145,6 +145,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/journal/entries/{journalEntry}', 'JournalController@get');
         Route::get('/journal/hasRated', 'JournalController@hasRated');
         Route::post('/journal/day', 'JournalController@storeDay');
+        Route::delete('/journal/day/{day}', 'JournalController@trashDay');
 
 
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);

@@ -18,7 +18,7 @@
               <div class="flex-none tr w-100">
 
                 <!-- sad smiley monochrome -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(1)" @mouseover="showSadSmileyColor == true" v-if="!showSadSmileyColor">
+                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(1)" @mouseover="showSadSmileyColor = true" v-if="!showSadSmileyColor">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-695.000000, -165.000000)">
@@ -34,7 +34,7 @@
                 </svg>
 
                 <!-- sad smiley color -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(1)" v-if="showSadSmileyColor">
+                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(1)" v-if="showSadSmileyColor" @mouseleave="showSadSmileyColor = false">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-695.000000, -345.000000)">
@@ -49,8 +49,8 @@
                     </g>
                 </svg>
 
-                <!-- mediocre day -->
-                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(2)">
+                <!-- mediocre day monochrome -->
+                <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(2)">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-754.000000, -165.000000)">
@@ -64,8 +64,8 @@
                     </g>
                 </svg>
 
-                <!-- happy day -->
-                <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(3)">
+                <!-- happy day monochrome -->
+                <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(3)" @mouseover="showHappySmileyColor = true" v-if="!showHappySmileyColor">
                     <defs></defs>
                     <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Desktop" transform="translate(-814.000000, -165.000000)">
@@ -80,8 +80,33 @@
                         </g>
                     </g>
                 </svg>
+
+                <!-- happy day color -->
+                <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(3)" v-if="showHappySmileyColor" @mouseleave="showHappySmileyColor = false">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Desktop" transform="translate(-814.000000, -345.000000)">
+                            <g id="Group-3" transform="translate(814.000000, 345.000000)">
+                                <path d="M42,20.5961538 C42,31.9710023 32.5972745,41.1923077 20.9996949,41.1923077 C9.40181023,41.1923077 0,31.9710023 0,20.5961538 C0,9.22130542 9.40181023,0 20.9996949,0 C32.5972745,0 42,9.22130542 42,20.5961538" id="Fill-11" fill="#F9CE32"></path>
+                                <path d="M11.3076923,21 L11.3076923,21 C10.4192308,21 9.69230769,20.3391608 9.69230769,19.5314685 L9.69230769,16.006993 C9.69230769,15.1993007 10.4192308,14.5384615 11.3076923,14.5384615 C12.1961538,14.5384615 12.9230769,15.1993007 12.9230769,16.006993 L12.9230769,19.5314685 C12.9230769,20.3391608 12.1961538,21 11.3076923,21" id="Fill-12" fill="#36301D"></path>
+                                <path d="M30.6923077,21 L30.6923077,21 C29.8038462,21 29.0769231,20.3391608 29.0769231,19.5314685 L29.0769231,16.006993 C29.0769231,15.1993007 29.8038462,14.5384615 30.6923077,14.5384615 C31.5807692,14.5384615 32.3076923,15.1993007 32.3076923,16.006993 L32.3076923,19.5314685 C32.3076923,20.3391608 31.5807692,21 30.6923077,21" id="Fill-13" fill="#36301D"></path>
+                                <path d="M27.0720842,24.0517885 L27.6146482,24.3231607 L27.078106,24.0385354 L27.0720842,24.0517885 L27.6146482,24.3231607 L27.078106,24.0385354 L27.0756973,24.0432687 C27.0404698,24.1114273 26.6683226,24.8097374 25.6979098,25.4916389 C24.7250883,26.1716472 23.1440652,26.864593 20.5631224,26.868064 C19.1874426,26.8677485 18.0993036,26.6692681 17.239993,26.3852739 C15.9516293,25.9577049 15.1687955,25.3417531 14.6996974,24.8539142 C14.4660516,24.6096793 14.3127969,24.3966836 14.222771,24.2556332 C14.1776075,24.1852658 14.1484018,24.1325691 14.1330462,24.1035385 L14.1200993,24.0782946 L14.0261593,24.1278358 L14.1210026,24.0801879 L14.1200993,24.0782946 L14.0261593,24.1278358 L14.1210026,24.0801879 L13.4688418,24.4099367 L14.1264222,24.0921788 L14.1210026,24.0801879 L13.4688418,24.4099367 L14.1264222,24.0921788 C13.8828405,23.5383902 13.2565734,23.296364 12.7281606,23.5516432 C12.1997478,23.8069224 11.9688119,24.4629489 12.2123936,25.0170531 C12.2659876,25.1388551 12.7408064,26.1596563 14.0342887,27.154267 C14.6795244,27.6503102 15.5267914,28.1353091 16.6058977,28.491564 C17.6847028,28.84845 18.9935407,29.0772231 20.5631224,29.0769075 C23.7028881,29.0813252 25.8180447,28.1431978 27.1220651,27.1429072 C28.4293976,26.1448255 28.919873,25.1224465 28.9737681,25.0038001 C29.224576,24.4531669 29.0023717,23.7939849 28.4769698,23.5311325 C27.9518689,23.2682801 27.3228921,23.5014709 27.0720842,24.0517885" id="Fill-14" fill="#36301D"></path>
+                                <path d="M7.26939206,25.8461538 C5.48457391,25.8461538 4.03846154,24.5805233 4.03846154,23.0190896 C4.03846154,21.457656 5.48457391,20.1923077 7.26939206,20.1923077 C9.05324247,20.1923077 10.5,21.457656 10.5,23.0190896 C10.5,24.5805233 9.05324247,25.8461538 7.26939206,25.8461538" id="Fill-15" fill="#EB9260"></path>
+                                <path d="M37.1540074,25.8461538 C35.3691893,25.8461538 33.9230769,24.5805233 33.9230769,23.0190896 C33.9230769,21.457656 35.3691893,20.1923077 37.1540074,20.1923077 C38.9381804,20.1923077 40.3846154,21.457656 40.3846154,23.0190896 C40.3846154,24.5805233 38.9381804,25.8461538 37.1540074,25.8461538" id="Fill-16" fill="#EB9260"></path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="br3 ba b--gray-monica bg-white pa3 mb4" v-if="hasRated != 'justnow'">
+        <div class="flex items-center">
+          <div class="w-70 f3 pl2">
+            Thanks. Come back tomorrow to rate your day again.
           </div>
         </div>
       </div>
@@ -124,6 +149,7 @@
               hasRated: 'notyet',
 
               showSadSmileyColor: false,
+              showHappySmileyColor: false,
             };
         },
 
@@ -160,7 +186,6 @@
             hasAlreadyRatedToday() {
                 axios.get('/journal/hasRated')
                         .then(response => {
-                          console.log(response.data);
                             this.hasRated = response.data;
                         });
             },

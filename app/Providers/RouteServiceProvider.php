@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Route;
+use App\Day;
 use App\Debt;
 use App\Gift;
 use App\Note;
