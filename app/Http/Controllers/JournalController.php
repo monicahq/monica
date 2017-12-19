@@ -94,7 +94,16 @@ class JournalController extends Controller
         // Log a journal entry
         $journalEntry = (new JournalEntry)->add($day);
 
-        return $journalEntry;
+        $data = [
+            'id' => $journalEntry->id,
+            'date' => $journalEntry->date,
+            'journalable_id' => $journalEntry->journalable_id,
+            'journalable_type' => $journalEntry->journalable_type,
+            'object' => $journalEntry->getObjectData(),
+            'show_calendar' => true,
+        ];
+
+        return $data;
     }
 
     /**
@@ -103,7 +112,11 @@ class JournalController extends Controller
      */
     public function hasRated()
     {
-        return auth()->user()->hasAlreadyRatedToday();
+        if (auth()->user()->hasAlreadyRatedToday()) {
+            return 'true';
+        }
+
+        return 'notyet';
     }
 
     /**
