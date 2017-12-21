@@ -20,6 +20,9 @@
 
           <!-- Log content -->
           <div class="flex-auto">
+            <p class="mb1">
+              <span class="pr2 f6 avenir">Journal entry</span>
+            </p>
             <p class="mb1">{{ entry.title }}</p>
 
             <p>{{ entry.post }}</p>

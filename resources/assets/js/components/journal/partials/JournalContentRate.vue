@@ -26,7 +26,7 @@
                 <a href="">Edit</a>
               </li> -->
               <li class="di">
-                <a @click.prevent="destroy()">Delete</a>
+                <a class="pointer" v-on:click="destroy()">{{ trans('app.delete') }}</a>
               </li>
             </ul>
           </div>
@@ -147,7 +147,7 @@
             destroy() {
                 axios.delete('/journal/day/' + this.day.id)
                         .then(response => {
-                            EMETTRE UN EVENT AU PARENT
+                            this.$emit('deleteJournalEntry', this.journalEntry.id);
                         });
             },
 

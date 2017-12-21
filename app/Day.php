@@ -85,6 +85,7 @@ class Day extends Model implements IsJournalableInterface
             'month' => $this->date->month,
             'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date)),
             'year' => $this->date->year,
+            'happens_today' => $this->date->isToday(),
         ];
 
         return $data;

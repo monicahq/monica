@@ -128,7 +128,7 @@ class JournalController extends Controller
             return 'true';
         }
 
-        return 'notyet';
+        return 'notYet';
     }
 
     /**
