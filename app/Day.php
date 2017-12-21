@@ -3,6 +3,7 @@
 namespace App;
 
 use App\JournalEntry;
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\IsJournalableInterface;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Day extends Model implements IsJournalableInterface
 {
+    use Journalable;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -59,20 +62,10 @@ class Day extends Model implements IsJournalableInterface
         return $value;
     }
 
-    public function deleteJournalEntry()
-    {
-        try {
-            $journalEntry = JournalEntry::where('account_id', $this->account_id)
-                ->where('journalable_id', $this->id)
-                ->where('journalable_type', 'App\Day')
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return;
-        }
-
-        $journalEntry->delete();
-    }
-
+    /**
+     * Get all the information of the Entry for the journal.
+     * @return array
+     */
     public function getInfoForJournalEntry()
     {
         $data = [

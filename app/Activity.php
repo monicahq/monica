@@ -3,6 +3,8 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\JournalEntry;
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +17,8 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
  */
 class Activity extends Model implements IsJournalableInterface
 {
+    use Journalable;
+
     /**
      * The table associated with the model.
      *
@@ -151,11 +155,10 @@ class Activity extends Model implements IsJournalableInterface
         return $attendees;
     }
 
-    public function deleteJournalEntry()
-    {
-        return;
-    }
-
+    /**
+     * Gets the information about the activity for the journal.
+     * @return array
+     */
     public function getInfoForJournalEntry()
     {
         $data = [

@@ -23,16 +23,13 @@
             <p class="mb1">
               <span class="pr2 f6 avenir">{{ trans('journal.journal_entry_type_journal') }}</span>
             </p>
-            <p class="mb1">{{ entry.title }}</p>
+            <h3 class="mb1">{{ entry.title }}</h3>
 
             <p>{{ entry.post }}</p>
 
             <ul class="f7">
-              <li class="di mr2">
-                <a href="">Edit</a>
-              </li>
               <li class="di">
-                <a href="">Delete</a>
+                <a class="pointer" @click="trash()">Delete</a>
               </li>
             </ul>
           </div>
@@ -78,6 +75,13 @@
               // not necessary, just a way to add more clarity to the code
                 this.entry = this.journalEntry.object
             },
+
+            trash() {
+                axios.delete('/journal/' + this.entry.id)
+                        .then(response => {
+                            this.$emit('deleteJournalEntry', this.journalEntry.id);
+                        });
+            }
         }
     }
 </script>

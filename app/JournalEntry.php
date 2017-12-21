@@ -53,23 +53,6 @@ class JournalEntry extends Model
         return $this;
     }
 
-    public function getLayout()
-    {
-        switch ($this->journalable_type) {
-            case 'App\Activity':
-                $view = 'partials.components.journal.activity';
-                break;
-            case 'App\Entry':
-                $view = 'partials.components.journal.entry';
-                break;
-            case 2:
-                echo "i equals 2";
-                break;
-        }
-
-        return $view;
-    }
-
     public function getObjectData()
     {
         $type = $this->journalable_type;

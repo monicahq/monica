@@ -2,10 +2,14 @@
 
 namespace App;
 
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\IsJournalableInterface;
 
-class Entry extends Model
+class Entry extends Model implements IsJournalableInterface
 {
+    use Journalable;
+
     protected $table = 'entries';
 
     /**
@@ -33,24 +37,32 @@ class Entry extends Model
         return $this->belongsTo('App\Account');
     }
 
-    public function getPost()
+    /**
+     * Get the Entry title.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getTitleAttribute($value)
     {
-        if (is_null($this->post)) {
-            return;
-        }
-
-        return $this->post;
+        return $value;
     }
 
-    public function getTitle()
+    /**
+     * Get the Entry post.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPostAttribute($value)
     {
-        if (is_null($this->title)) {
-            return;
-        }
-
-        return $this->title;
+        return $value;
     }
 
+    /**
+     * Get all the information of the Entry for the journal.
+     * @return array
+     */
     public function getInfoForJournalEntry()
     {
         $data = [

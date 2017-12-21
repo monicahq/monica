@@ -169,6 +169,9 @@ class JournalController extends Controller
 
         $entry->save();
 
+        // Log a journal entry
+        $journalEntry = (new JournalEntry)->add($entry);
+
         return redirect()->route('journal.index');
     }
 
@@ -183,9 +186,7 @@ class JournalController extends Controller
             return redirect()->route('people.index');
         }
 
+        $entry->deleteJournalEntry();
         $entry->delete();
-        $request->session()->flash('success', trans('journal.entry_delete_success'));
-
-        return redirect('/journal');
     }
 }

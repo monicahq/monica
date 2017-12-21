@@ -120,7 +120,7 @@
 
         <journal-content-activity v-if="journalEntry.journalable_type == 'App\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
 
-        <journal-content-entry v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
+        <journal-content-entry v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
       </div>
 
       <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
