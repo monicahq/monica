@@ -166,6 +166,8 @@ class ActivitiesController extends Controller
      */
     public function destroy(Contact $contact, Activity $activity)
     {
+        $activity->deleteJournalEntry();
+
         $activity->delete();
 
         $contact->events()->forObject($activity)->get()->each->delete();

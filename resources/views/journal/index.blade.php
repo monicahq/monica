@@ -12,10 +12,7 @@
               <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li class="di">
-              > <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
-            </li>
-            <li class="di">
-              > {{ trans('journal.journal_add') }}
+              > {{ trans('app.breadcrumb_journal') }}
             </li>
           </ul>
       </div>
