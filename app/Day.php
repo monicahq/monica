@@ -2,10 +2,8 @@
 
 namespace App;
 
-use App\JournalEntry;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

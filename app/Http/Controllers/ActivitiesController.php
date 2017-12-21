@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\JournalEntry;
 use App\Contact;
 use App\Activity;
+use App\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller

@@ -132,7 +132,7 @@ class User extends Authenticatable
 
     /**
      * Indicates whether the user has already rated the current day.
-     * @return boolean
+     * @return bool
      */
     public function hasAlreadyRatedToday()
     {

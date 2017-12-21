@@ -42,6 +42,10 @@ class JournalEntry extends Model
         return $this->belongsTo(Account::class);
     }
 
+    /**
+     * Adds a new entry in the journal.
+     * @param mixed $resourceToLog
+     */
     public function add($resourceToLog)
     {
         $this->account_id = $resourceToLog->account_id;
@@ -53,6 +57,10 @@ class JournalEntry extends Model
         return $this;
     }
 
+    /**
+     * Get the information about the object represented by the Journal Entry.
+     * @return array
+     */
     public function getObjectData()
     {
         $type = $this->journalable_type;

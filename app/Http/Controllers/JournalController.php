@@ -37,8 +37,7 @@ class JournalController extends Controller
         $showCalendar = true;
 
         foreach ($journalEntries as $journalEntry) {
-            if ($previousEntryMonth == $journalEntry->date->month)
-            {
+            if ($previousEntryMonth == $journalEntry->date->month) {
                 $showCalendar = false;
             }
 
@@ -108,7 +107,7 @@ class JournalController extends Controller
     }
 
     /**
-     * Delete the Day entry
+     * Delete the Day entry.
      * @return mixed
      */
     public function trashDay($day)
@@ -119,7 +118,7 @@ class JournalController extends Controller
     }
 
     /**
-    * Indicates whether the user has already rated the current day.
+     * Indicates whether the user has already rated the current day.
      * @return boolean [description]
      */
     public function hasRated()
