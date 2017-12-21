@@ -123,11 +123,18 @@
         <journal-content-entry v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
       </div>
 
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="journalEntriesLength">
         <p class="mb0 pointer" @click="loadMore()">
           <span v-if="!loadingMore">{{ trans('app.load_more') }}</span>
           <span class="black-50" v-if="loadingMore">{{ trans('app.loading') }}</span>
         </p>
+      </div>
+
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="!journalEntriesLength">
+        <h3>
+          {{ trans('journal.journal_blank_cta') }}
+        </h3>
+        <p>{{ trans('journal.journal_blank_description') }}</p>
       </div>
 
     </div>
@@ -161,6 +168,12 @@
               showHappySmileyColor: false,
               loadingMore: false,
             };
+        },
+
+        computed: {
+            journalEntriesLength() {
+                return this.journalEntries.data.length;
+            }
         },
 
         /**
