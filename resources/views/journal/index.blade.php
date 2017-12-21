@@ -26,22 +26,5 @@
       <journal-list></journal-list>
     </section>
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12">
-            <ul class="horizontal">
-              <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
-              </li>
-              <li>
-                {{ trans('app.breadcrumb_journal') }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 @endsection

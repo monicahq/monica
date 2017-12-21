@@ -1,4 +1,16 @@
 <style scoped>
+  .journal-avatar-small {
+    height: 25px;
+    width: 25px;
+    font-size: 13px;
+  }
+
+  .journal-initial-small {
+    height: 25px;
+    width: 25px;
+    font-size: 13px;
+    padding-top: 2px;
+  }
 </style>
 
 <template>
@@ -9,9 +21,9 @@
 
     <!-- Right column: showing logs -->
     <div class="fl journal-calendar-content">
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line">
-        <div class="flex">
-
+      <div class="br3 ba b--gray-monica bg-white mb3 journal-line">
+        <!-- Actual log -->
+        <div class="flex pb3 pt3">
           <!-- Day -->
           <div class="flex-none w-10 tc">
             <h3 class="mb0 normal fw5">{{ activity.day }}</h3>
@@ -21,22 +33,11 @@
           <!-- Log content -->
           <div class="flex-auto">
             <p class="mb1">
-              <span class="pr2 f6 avenir">Activity: {{ activity.activity_type }}</span>
+              <span class="pr2 f6 avenir">{{ trans('journal.journal_entry_type_activity') }}: {{ activity.activity_type }}</span>
             </p>
             <p class="mb1">{{ activity.summary }}</p>
 
             <p v-if="showDescription">{{ activity.description }}</p>
-          </div>
-
-          <div class="flex-none w-20">
-            <div class="tr mt2">
-              <div v-for="attendees in activity.attendees" class="dib h3 w3 pointer" @click="redirect(attendees)">
-                <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 pa1 ba b--black-10" v-tooltip="attendees.complete_name">
-                <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="journal-initial br3 relative white tc pt3">
-                  {{ attendees.initials }}
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Comment -->
@@ -60,6 +61,28 @@
             </div>
           </template>
 
+        </div>
+
+        <!-- Edit/Delete/Attendees -->
+        <div class="flex bt b--gray-monica">
+          <div class="w-10">
+            &nbsp;
+          </div>
+
+          <div class="flex-none w-30 mt2 pt1 pb2">
+            <p class="mb0 f6 gray">{{ trans('journal.journal_created_automatically') }}</p>
+          </div>
+
+          <!-- Avatars of the attendees -->
+          <div class="flex-auto w-60 tr mt2 pa1 pr3 pb2">
+            <span class="f6 gray">{{ trans('app.with') }} </span>
+            <div v-for="attendees in activity.attendees" class="dib pointer ml2" @click="redirect(attendees)">
+              <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name">
+              <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
+                {{ attendees.initials }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

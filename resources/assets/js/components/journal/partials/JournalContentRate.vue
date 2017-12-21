@@ -9,8 +9,9 @@
 
     <!-- Right column: showing logs -->
     <div class="fl journal-calendar-content">
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 journal-line">
-        <div class="flex">
+      <div class="br3 ba b--gray-monica bg-white mb3 journal-line">
+        <!-- Actual log -->
+        <div class="flex pb2 pt3">
 
           <!-- Day -->
           <div class="flex-none w-10 tc">
@@ -19,16 +20,8 @@
           </div>
 
           <!-- Log content -->
-          <div class="flex-auto">
-            <p class="mb2">You rated your day.</p>
-            <ul class="f7">
-              <!-- <li class="di">
-                <a href="">Edit</a>
-              </li> -->
-              <li class="di">
-                <a class="pointer" v-on:click="destroy()">{{ trans('app.delete') }}</a>
-              </li>
-            </ul>
+          <div class="flex-auto flex items-center">
+            <p class="mb2">{{ trans('journal.journal_entry_rate') }}</p>
           </div>
 
           <div class="flex-none">
@@ -103,6 +96,20 @@
             </div>
           </template>
 
+        </div>
+
+        <!-- Edit/Delete -->
+        <div class="flex bt b--gray-monica">
+          <div class="w-10">
+            &nbsp;
+          </div>
+          <div class="flex-none w-90 mt2 pt0 pr3 pb2">
+            <ul class="f7">
+              <li class="di">
+                <a class="pointer" v-on:click="destroy()">{{ trans('app.delete') }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

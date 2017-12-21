@@ -11,11 +11,11 @@
     <div class="fl w-70-ns w-100 pa2">
 
       <!-- How was your day -->
-      <div class="br3 ba b--gray-monica bg-white pa3 mb4">
+      <div class="br3 ba b--gray-monica bg-white pa3 mb4" v-if="hasRated != true">
         <transition name="fade" mode="out-in">
           <div class="flex items-center" v-if="hasRated == 'notYet'" key="rate">
             <div class="w-70 f3 pl2">
-              How was your day? You can rate it once a day.
+              {{ trans('journal.journal_rate') }}
             </div>
             <div class="w-30">
               <div class="flex items-center h-100">
@@ -108,7 +108,7 @@
 
           <div class="flex items-center" v-if="hasRated == 'justNow'" key="comeback">
             <div class="w-70 f3 pl2">
-              Thanks. Come back tomorrow to rate your day again.
+              {{ trans('journal.journal_come_back') }}
             </div>
           </div>
         </transition>
@@ -125,8 +125,8 @@
 
       <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">
         <p class="mb0 pointer" @click="loadMore()">
-          <span v-if="!loadingMore">Load more</span>
-          <span class="black-50" v-if="loadingMore">Loading...</span>
+          <span v-if="!loadingMore">{{ trans('app.load_more') }}</span>
+          <span class="black-50" v-if="loadingMore">{{ trans('app.loading') }}</span>
         </p>
       </div>
 
@@ -134,7 +134,10 @@
 
     <!-- Right sidebar -->
     <div class="fl w-30 pa2">
-      test
+      <a href="/journal/add" class="btn btn-primary w-100 mb4">
+        {{ trans('journal.journal_add') }}
+      </a>
+      <p>{{ trans('journal.journal_description') }}</p>
     </div>
   </div>
 </template>

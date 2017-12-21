@@ -97,6 +97,7 @@ class FakeContentTableSeeder extends Seeder
             $progress->advance();
         }
 
+        $this->populateDayRatings();
         $this->populateEntries();
 
         $progress->finish();
@@ -425,6 +426,28 @@ class FakeContentTableSeeder extends Seeder
                 'date' => $date,
                 'journalable_id' => $entryId,
                 'journalable_type' => 'App\Entry',
+                'created_at' => \Carbon\Carbon::now(),
+            ]);
+        }
+    }
+
+    public function populateDayRatings()
+    {
+        for ($j = 0; $j < rand(10, 100); $j++) {
+            $date = $this->faker->dateTimeThisYear();
+
+            $dayId = DB::table('days')->insertGetId([
+                'account_id' => $this->account->id,
+                'rate' => rand(1, 3),
+                'date' => $date,
+                'created_at' => $date,
+            ]);
+
+            $journalEntry = DB::table('journal_entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'date' => $date,
+                'journalable_id' => $dayId,
+                'journalable_type' => 'App\Day',
                 'created_at' => \Carbon\Carbon::now(),
             ]);
         }
