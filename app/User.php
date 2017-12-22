@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class User extends Authenticatable
 {
@@ -126,5 +127,22 @@ class User extends Authenticatable
     {
         $this->contacts_sort_order = $preference;
         $this->save();
+    }
+
+    /**
+     * Indicates whether the user has already rated the current day.
+     * @return bool
+     */
+    public function hasAlreadyRatedToday()
+    {
+        try {
+            $day = Day::where('account_id', $this->account_id)
+                ->where('date', \Carbon\Carbon::now($this->timezone)->format('Y-m-d'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 }

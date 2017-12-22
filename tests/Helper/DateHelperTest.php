@@ -138,4 +138,70 @@ class DateHelperTest extends FeatureTestCase
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
         );
     }
+
+    public function testGetShortMonthWithEnglishLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'en';
+
+        $this->assertEquals(
+            'Jan',
+            DateHelper::getShortMonth($date, $locale)
+        );
+    }
+
+    public function testGetShortMonthWithFrenchLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'fr';
+
+        $this->assertEquals(
+            'jan',
+            DateHelper::getShortMonth($date, $locale)
+        );
+    }
+
+    public function testGetShortMonthWithUnknownLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'jp';
+
+        $this->assertEquals(
+            'Jan',
+            DateHelper::getShortMonth($date, $locale)
+        );
+    }
+
+    public function testGetShortDayWithEnglishLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'en';
+
+        $this->assertEquals(
+            'Sun',
+            DateHelper::getShortDay($date, $locale)
+        );
+    }
+
+    public function testGetShortDayWithFrenchLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'fr';
+
+        $this->assertEquals(
+            'dim',
+            DateHelper::getShortDay($date, $locale)
+        );
+    }
+
+    public function testGetShortDayWithUnknownLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = 'jp';
+
+        $this->assertEquals(
+            'Sun',
+            DateHelper::getShortDay($date, $locale)
+        );
+    }
 }

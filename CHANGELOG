@@ -1,6 +1,11 @@
 UNRELEASED CHANGES:
 
+<<<<<<< HEAD
+* Activities made with contact now appears in the Journal
+* Add ability to rate how a day went in the Journal
+=======
 * Add validation when changing email address
+>>>>>>> master
 * Add ability to change account's password in the settings
 * Show a user's avatar when searching
 

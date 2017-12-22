@@ -77,6 +77,8 @@ class KidsController extends Controller
             $kid->isTheOffspringOf($contact);
         }
 
+        $kid->setAvatarColor();
+
         // birthdate
         $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {

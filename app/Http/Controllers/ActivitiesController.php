@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\Activity;
+use App\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller
@@ -63,6 +64,9 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }
+
+        // Log a journal entry
+        $journalEntry = (new JournalEntry)->add($activity);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_add_success'));
@@ -162,6 +166,8 @@ class ActivitiesController extends Controller
      */
     public function destroy(Contact $contact, Activity $activity)
     {
+        $activity->deleteJournalEntry();
+
         $activity->delete();
 
         $contact->events()->forObject($activity)->get()->each->delete();

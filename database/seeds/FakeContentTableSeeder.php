@@ -13,6 +13,7 @@ class FakeContentTableSeeder extends Seeder
     private $numberOfContacts;
     private $contact;
     private $faker;
+    private $account;
 
     /**
      * Run the database seeds.
@@ -39,6 +40,8 @@ class FakeContentTableSeeder extends Seeder
             'timezone' => config('app.timezone'),
         ]);
 
+        $this->account = $account;
+
         $this->faker = Faker::create();
 
         // create a random number of contacts
@@ -63,13 +66,16 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->gender = $gender;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
+            $this->contact->has_avatar = false;
             $this->contact->save();
 
             // set an external avatar
-            $this->contact->has_avatar = true;
-            $this->contact->avatar_location = 'external';
-            $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-            $this->contact->save();
+            if (rand(1, 2) == 1) {
+                $this->contact->has_avatar = true;
+                $this->contact->avatar_location = 'external';
+                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
+                $this->contact->save();
+            }
 
             $this->contact->setAvatarColor();
 
@@ -90,6 +96,9 @@ class FakeContentTableSeeder extends Seeder
 
             $progress->advance();
         }
+
+        $this->populateDayRatings();
+        $this->populateEntries();
 
         $progress->finish();
 
@@ -221,6 +230,8 @@ class FakeContentTableSeeder extends Seeder
                 }
                 $kid->save();
 
+                $kid->setAvatarColor();
+
                 // birthdate
                 $kidBirthDate = $this->faker->dateTimeThisCentury();
                 if (rand(1, 2) == 1) {
@@ -258,6 +269,8 @@ class FakeContentTableSeeder extends Seeder
                 }
                 $partner->save();
 
+                $partner->setAvatarColor();
+
                 // birthdate
                 $partnerBirthDate = $this->faker->dateTimeThisCentury();
                 if (rand(1, 2) == 1) {
@@ -292,13 +305,22 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
+                $date = $this->faker->dateTimeThisYear($max = 'now')->format('Y-m-d');
+
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
-                    'date_it_happened' => $this->faker->date($format = 'Y-m-d', $max = 'now'),
+                    'date_it_happened' => $date,
                     'activity_type_id' => rand(1, 13),
-                    'description' => $this->faker->realText(rand(100, 1000)),
+                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
                     'account_id' => $this->contact->account_id,
                 ], ['account_id' => $this->contact->account_id]);
+
+                $entry = DB::table('journal_entries')->insertGetId([
+                    'account_id' => $this->account->id,
+                    'date' => $date,
+                    'journalable_id' => $activity->id,
+                    'journalable_type' => 'App\Activity',
+                ]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');
             }
@@ -384,6 +406,50 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->contact->account->id,
                 ]);
             }
+        }
+    }
+
+    public function populateEntries()
+    {
+        for ($j = 0; $j < rand(10, 100); $j++) {
+            $date = $this->faker->dateTimeThisYear();
+
+            $entryId = DB::table('entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'title' => $this->faker->realText(rand(12, 20)),
+                'post' => $this->faker->realText(rand(400, 500)),
+                'created_at' => $date,
+            ]);
+
+            $journalEntry = DB::table('journal_entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'date' => $date,
+                'journalable_id' => $entryId,
+                'journalable_type' => 'App\Entry',
+                'created_at' => \Carbon\Carbon::now(),
+            ]);
+        }
+    }
+
+    public function populateDayRatings()
+    {
+        for ($j = 0; $j < rand(10, 100); $j++) {
+            $date = $this->faker->dateTimeThisYear();
+
+            $dayId = DB::table('days')->insertGetId([
+                'account_id' => $this->account->id,
+                'rate' => rand(1, 3),
+                'date' => $date,
+                'created_at' => $date,
+            ]);
+
+            $journalEntry = DB::table('journal_entries')->insertGetId([
+                'account_id' => $this->account->id,
+                'date' => $date,
+                'journalable_id' => $dayId,
+                'journalable_type' => 'App\Day',
+                'created_at' => \Carbon\Carbon::now(),
+            ]);
         }
     }
 
