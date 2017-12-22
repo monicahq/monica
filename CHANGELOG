@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add validation when changing email address
 * Add ability to change account's password in the settings
 
 RELEASED VERSIONS:
