@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Day;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

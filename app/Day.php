@@ -5,7 +5,6 @@ namespace App;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Day extends Model implements IsJournalableInterface
 {

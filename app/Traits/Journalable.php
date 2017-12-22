@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\JournalEntry;
-use Illuminate\Database\Eloquent\Builder;
 
 trait Journalable
 {

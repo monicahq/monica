@@ -3,7 +3,6 @@
 namespace App;
 
 use Carbon\Carbon;
-use App\JournalEntry;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
