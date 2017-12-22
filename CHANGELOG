@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add validation when changing email address
 * Add ability to change account's password in the settings
+* Show a user's avatar when searching
 
 RELEASED VERSIONS:
 
