@@ -18,5 +18,7 @@ return [
     'sent' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
     'token' => 'Toto není platný odkaz na reset hesla.',
     'user' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
+    'changed' => 'Password changed successfuly.',
+    'invalid' => 'Current password you entered is not correct.',
 
 ];
