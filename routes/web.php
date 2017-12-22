@@ -23,9 +23,11 @@ Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+});
 
+Route::middleware(['auth', '2fa'])->group(function () {
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
 
     Route::group(['as' => 'people'], function () {
@@ -185,5 +187,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
 
         Route::get('/settings/api', 'SettingsController@api')->name('.api');
+
+        Route::get('/settings/2fa/enable', 'Settings\\Google2FAController@enableTwoFactor')->name('.2fa.enable');
+        Route::get('/settings/2fa/disable', 'Settings\\Google2FAController@disableTwoFactor')->name('.2fa.disable');
     });
 });
