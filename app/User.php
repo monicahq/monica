@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order',
+        'first_name', 'last_name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order', 'google2fa_secret',
     ];
 
     /**
@@ -126,5 +126,31 @@ class User extends Authenticatable
     {
         $this->contacts_sort_order = $preference;
         $this->save();
+    }
+
+    /**
+     * Ecrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function setGoogle2faSecretAttribute($value)
+    {
+         $this->attributes['google2fa_secret'] = encrypt($value);
+    }
+
+    /**
+     * Decrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getGoogle2faSecretAttribute($value)
+    {
+        if (is_null($value))
+        {
+            return $value;
+        }
+        return decrypt($value);
     }
 }

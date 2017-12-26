@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', '2fa'])->group(function () {
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+    Route::post('/dashboard/', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people/', 'ContactsController@index')->name('.index');
@@ -189,6 +190,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/settings/api', 'SettingsController@api')->name('.api');
 
         Route::get('/settings/2fa/enable', 'Settings\\Google2FAController@enableTwoFactor')->name('.2fa.enable');
+        Route::post('/settings/2fa/enable', 'Settings\\Google2FAController@validateTwoFactor');
         Route::get('/settings/2fa/disable', 'Settings\\Google2FAController@disableTwoFactor')->name('.2fa.disable');
     });
 });

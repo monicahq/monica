@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Settings;
 use Crypt;
 use Google2FA;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use \ParagonIE\ConstantTime\Base32;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class Google2FAController extends Controller
 {
-    use ValidatesRequests;
+    use RedirectsUsers;
+
+    protected $redirectTo = '/settings';
 
     /**
      * Create a new authentication controller instance.
@@ -33,12 +35,7 @@ class Google2FAController extends Controller
         //generate new secret
         $secret = $this->generateSecret();
 
-        //get user
         $user = $request->user();
-
-        //encrypt and then save secret
-        $user->google2fa_secret = Crypt::encrypt($secret);
-        $user->save();
 
         //generate image for QR barcode
         $imageDataUri = Google2FA::getQRCodeInline(
@@ -48,7 +45,44 @@ class Google2FAController extends Controller
             200
         );
 
+        $request->session()->put('Google2FA_secret', $secret);
+
         return view('settings.2fa.enable', ['image' => $imageDataUri, 'secret' => $secret]);
+    }
+
+    /**
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function validateTwoFactor(Request $request)
+    {
+        $this->validate($request, [
+            'one_time_password' => 'required',
+        ]);
+        
+        //retrieve secret
+        $secret = $request->session()->pull('Google2FA_secret');
+
+        $backend = new Authenticator($request);
+
+        if ($backend->verifyGoogle2FA($secret, $request['one_time_password']))
+        {
+            //get user
+            $user = $request->user();
+
+            //encrypt and then save secret
+            $user->google2fa_secret = $secret;
+            $user->save();
+
+            $backend->storeAuthPassed();
+
+            return redirect($this->redirectPath())
+                ->with('status', 'ok');
+        }
+
+        return redirect($this->redirectPath())
+            ->withErrors('ko');
     }
 
     /**
@@ -63,6 +97,8 @@ class Google2FAController extends Controller
         //make secret column blank
         $user->google2fa_secret = null;
         $user->save();
+
+        (new Authenticator($request))->logout();
 
         return view('settings.2fa.disable');
     }

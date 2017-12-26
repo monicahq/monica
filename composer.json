@@ -24,6 +24,7 @@
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/google2fa": "^2.0",
         "pragmarx/google2fa-laravel": "^0.1.4",
+        "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
         "roave/security-advisories": "dev-master",
         "sabre/vobject": "^4.1",

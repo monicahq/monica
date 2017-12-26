@@ -41,7 +41,7 @@ return [
     /*
      * One Time Password Window
      */
-    'window' => 1,
+    'window' => 8,
 
     /*
      * Forbid user to reuse One Time Passwords.
