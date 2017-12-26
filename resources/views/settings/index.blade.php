@@ -268,13 +268,14 @@
           <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
         </form>
 
-        <form method="POST" action="/settings/passwordChange" class="settings-reset">
-          TFA
+        @if (config('google2fa.enabled')===true)
+        <form class="settings-reset">
+          Two Factor Authentication
 
           <h2></h2>
 
           <div class="form-group">
-                    @if (Auth::user()->google2fa_secret)
+                    @if ((new PragmaRX\Google2FALaravel\Support\Authenticator(request()))->isActivated())
                     <a href="{{ url('settings/2fa/disable') }}" class="btn btn-warning">Disable 2FA</a>
                     @else
                     <a href="{{ url('settings/2fa/enable') }}" class="btn btn-primary">Enable 2FA</a>
@@ -282,6 +283,7 @@
           </div>
           
         </form>
+        @endif
 
         <form method="POST" action="{{ action('SettingsController@reset') }}" class="settings-reset" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
           {{ csrf_field() }}
