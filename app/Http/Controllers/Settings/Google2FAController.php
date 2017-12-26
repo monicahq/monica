@@ -64,9 +64,9 @@ class Google2FAController extends Controller
         //retrieve secret
         $secret = $request->session()->pull('Google2FA_secret');
 
-        $backend = new Authenticator($request);
+        $authenticator = new Authenticator($request);
 
-        if ($backend->verifyGoogle2FA($secret, $request['one_time_password']))
+        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password']))
         {
             //get user
             $user = $request->user();
@@ -75,7 +75,7 @@ class Google2FAController extends Controller
             $user->google2fa_secret = $secret;
             $user->save();
 
-            $backend->storeAuthPassed();
+            $authenticator->login();
 
             return redirect($this->redirectPath())
                 ->with('status', 'ok');
