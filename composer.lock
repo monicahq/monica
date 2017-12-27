@@ -1475,16 +1475,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.27",
+            "version": "v5.5.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b4fb6eeb227b7327b4ca7f92263b693ec9ac9875"
+                "reference": "cfafae1f2043208390a7c984e3070696f4969605"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b4fb6eeb227b7327b4ca7f92263b693ec9ac9875",
-                "reference": "b4fb6eeb227b7327b4ca7f92263b693ec9ac9875",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/cfafae1f2043208390a7c984e3070696f4969605",
+                "reference": "cfafae1f2043208390a7c984e3070696f4969605",
                 "shasum": ""
             },
             "require": {
@@ -1605,7 +1605,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-12-20T15:43:48+00:00"
+            "time": "2017-12-26T16:24:40+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2744,12 +2744,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/google2fa-laravel.git",
-                "reference": "27724e6426658d37bc9a20de51b2f8139581a301"
+                "reference": "8ac00145615458ca3d019def267ae57d96932948"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/google2fa-laravel/zipball/27724e6426658d37bc9a20de51b2f8139581a301",
-                "reference": "27724e6426658d37bc9a20de51b2f8139581a301",
+                "url": "https://api.github.com/repos/asbiin/google2fa-laravel/zipball/8ac00145615458ca3d019def267ae57d96932948",
+                "reference": "8ac00145615458ca3d019def267ae57d96932948",
                 "shasum": ""
             },
             "require": {
@@ -2809,7 +2809,7 @@
             "support": {
                 "source": "https://github.com/asbiin/google2fa-laravel/tree/create-authenticator-controller"
             },
-            "time": "2017-12-26T00:17:07+00:00"
+            "time": "2017-12-27T12:15:03+00:00"
         },
         {
             "name": "pragmarx/random",
