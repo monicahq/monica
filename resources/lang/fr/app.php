@@ -12,6 +12,10 @@ return [
     'remove' => 'Enlever',
     'done' => 'C\'est fait',
     'for' => 'pour',
+    'unknown' => 'Je ne sais pas',
+    'load_more' => 'Charger plus',
+    'loading' => 'Chargement...',
+    'with' => 'avec',
 
     'markdown_description' => 'Souhaitez-vous formatter votre texte d\' une belle manière? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
     'markdown_link' => 'Lire la documentation',

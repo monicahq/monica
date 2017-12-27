@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Day;
 use App\Entry;
 use Validator;
+use App\JournalEntry;
 use Illuminate\Http\Request;
+use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller
 {
@@ -16,18 +19,123 @@ class JournalController extends Controller
      */
     public function index()
     {
-        $entries = Entry::where('account_id', Auth::user()->account_id)
-                      ->orderBy('created_at', 'desc')
-                      ->get();
-
-        $data = [
-            'entries' => $entries,
-        ];
-
-        return view('journal.index', $data);
+        return view('journal.index');
     }
 
-    public function add()
+    /**
+     * Get all the journal entries.
+     * @return array
+     */
+    public function list()
+    {
+        $entries = collect([]);
+        $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
+
+        // this is needed to determine if we need to display the calendar
+        // (month + year) next to the journal entry
+        $previousEntryMonth = 0;
+        $showCalendar = true;
+
+        foreach ($journalEntries as $journalEntry) {
+            if ($previousEntryMonth == $journalEntry->date->month) {
+                $showCalendar = false;
+            }
+
+            $data = [
+                'id' => $journalEntry->id,
+                'date' => $journalEntry->date,
+                'journalable_id' => $journalEntry->journalable_id,
+                'journalable_type' => $journalEntry->journalable_type,
+                'object' => $journalEntry->getObjectData(),
+                'show_calendar' => $showCalendar,
+            ];
+            $entries->push($data);
+
+            $previousEntryMonth = $journalEntry->date->month;
+            $showCalendar = true;
+        }
+
+        // I need the pagination items when I send back the array.
+        // There is probably a simpler way to achieve this.
+        $jsonToSendBack = [
+            'total' => $journalEntries->total(),
+            'per_page' => $journalEntries->perPage(),
+            'current_page' => $journalEntries->currentPage(),
+            'next_page_url' => $journalEntries->nextPageUrl(),
+            'prev_page_url' => $journalEntries->previousPageUrl(),
+            'data' => $entries,
+        ];
+
+        return $jsonToSendBack;
+    }
+
+    /**
+     * Gets the details of a single Journal Entry.
+     * @param  JournalEntry $journalEntry
+     * @return array
+     */
+    public function get(JournalEntry $journalEntry)
+    {
+        $object = $journalEntry->getObjectData();
+
+        return $object;
+    }
+
+    /**
+     * Store the day entry.
+     */
+    public function storeDay(DaysRequest $request)
+    {
+        $day = auth()->user()->account->days()->create([
+            'date' => \Carbon\Carbon::now(auth()->user()->timezone),
+            'rate' => $request->get('rate'),
+        ]);
+
+        // Log a journal entry
+        $journalEntry = (new JournalEntry)->add($day);
+
+        $data = [
+            'id' => $journalEntry->id,
+            'date' => $journalEntry->date,
+            'journalable_id' => $journalEntry->journalable_id,
+            'journalable_type' => $journalEntry->journalable_type,
+            'object' => $journalEntry->getObjectData(),
+            'show_calendar' => true,
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Delete the Day entry.
+     * @return mixed
+     */
+    public function trashDay($day)
+    {
+        $day = Day::findOrFail($day->id);
+        $day->deleteJournalEntry();
+        $day->delete();
+    }
+
+    /**
+     * Indicates whether the user has already rated the current day.
+     * @return bool
+     */
+    public function hasRated()
+    {
+        if (auth()->user()->hasAlreadyRatedToday()) {
+            return 'true';
+        }
+
+        return 'notYet';
+    }
+
+    /**
+     * Display the Create journal entry screen.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
         return view('journal.add');
     }
@@ -60,6 +168,9 @@ class JournalController extends Controller
 
         $entry->save();
 
+        // Log a journal entry
+        $journalEntry = (new JournalEntry)->add($entry);
+
         return redirect()->route('journal.index');
     }
 
@@ -74,9 +185,7 @@ class JournalController extends Controller
             return redirect()->route('people.index');
         }
 
+        $entry->deleteJournalEntry();
         $entry->delete();
-        $request->session()->flash('success', trans('journal.entry_delete_success'));
-
-        return redirect('/journal');
     }
 }

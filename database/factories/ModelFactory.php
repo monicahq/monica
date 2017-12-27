@@ -36,7 +36,8 @@ $factory->define(App\Activity::class, function (Faker\Generator $faker) {
         'activity_type_id' => function () {
             return factory(App\ActivityType::class)->create()->id;
         },
-        'description' => encrypt($faker->sentence),
+        'description' => $faker->sentence,
+        'summary' => $faker->sentence,
         'date_it_happened' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
     ];
 });
@@ -134,6 +135,12 @@ $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Address::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

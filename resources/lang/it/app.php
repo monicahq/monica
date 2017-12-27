@@ -11,6 +11,10 @@ return [
     'close' => 'Chiudi',
     'done' => 'Fatto',
     'for' => 'per',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Vuoi formattare il tuo testo? Supportiamo Markdown per grassetto, corsivo, liste, e altro ancora.',
     'markdown_link' => 'Leggi documentazione',

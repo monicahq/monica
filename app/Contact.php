@@ -45,6 +45,7 @@ class Contact extends Model
         'has_avatar',
         'avatar_file_name',
         'gravatar_url',
+        'avatar_external_url',
         'default_avatar_color',
     ];
 

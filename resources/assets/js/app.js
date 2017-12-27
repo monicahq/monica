@@ -63,6 +63,32 @@ Vue.component(
     require('./components/people/Notes.vue')
 );
 
+// Journal
+Vue.component(
+    'journal-list',
+    require('./components/journal/JournalList.vue')
+);
+
+Vue.component(
+    'journal-calendar',
+    require('./components/journal/partials/JournalCalendar.vue')
+);
+
+Vue.component(
+    'journal-content-rate',
+    require('./components/journal/partials/JournalContentRate.vue')
+);
+
+Vue.component(
+    'journal-content-activity',
+    require('./components/journal/partials/JournalContentActivity.vue')
+);
+
+Vue.component(
+    'journal-content-entry',
+    require('./components/journal/partials/JournalContentEntry.vue')
+);
+
 // Settings
 Vue.component(
     'contact-field-types',
