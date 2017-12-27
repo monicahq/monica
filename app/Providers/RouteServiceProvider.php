@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Route;
 use App\Day;
+use App\Pet;
 use App\Debt;
 use App\Gift;
 use App\Note;
@@ -121,6 +122,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('day', function ($value, $route) {
             return  Day::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('pet', function ($value, $route) {
+            return Pet::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

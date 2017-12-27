@@ -338,4 +338,23 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
+
+    // Pets
+    'pets_kind' => 'Sorte d\'animal',
+    'pets_name' => 'Nom (optionel)',
+    'pets_create_success' => 'L\'animal a été ajouté avec succès',
+    'pets_update_success' => 'L\'animal a été mis à jour',
+    'pets_delete_success' => 'L\'animal a été supprimé',
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Oiseau',
+    'pets_cat' => 'Chat',
+    'pets_dog' => 'Chien',
+    'pets_fish' => 'Poisson',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Cheval',
+    'pets_rabbit' => 'Lapin',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Petit animal',
+    'pets_other' => 'Autre',
 ];

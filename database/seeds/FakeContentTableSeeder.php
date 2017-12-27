@@ -92,6 +92,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
+            $this->populatePets();
             $this->changeUpdatedAt();
 
             $progress->advance();
@@ -428,6 +429,23 @@ class FakeContentTableSeeder extends Seeder
                 'journalable_type' => 'App\Entry',
                 'created_at' => \Carbon\Carbon::now(),
             ]);
+        }
+    }
+
+    public function populatePets()
+    {
+        if (rand(1, 3) == 1) {
+            for ($j = 0; $j < rand(1, 3); $j++) {
+                $date = $this->faker->dateTimeThisYear();
+
+                $petId = DB::table('pets')->insertGetId([
+                    'account_id' => $this->account->id,
+                    'contact_id' => $this->contact->id,
+                    'pet_category_id' => rand(1, 11),
+                    'name' => (rand(1, 3) == 1) ? $this->faker->firstName : null,
+                    'created_at' => $date,
+                ]);
+            }
         }
     }
 
