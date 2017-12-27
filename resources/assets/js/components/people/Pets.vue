@@ -8,7 +8,7 @@
 
     <div class="w-100 dt">
       <div class="dtc">
-        <h3 class="f6 ttu normal">Pets</h3>
+        <h3 class="f6 ttu normal">{{ trans('people.pets_title') }}</h3>
       </div>
       <div class="dtc tr" v-if="pets.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ trans('app.edit') }}</a>
@@ -27,8 +27,8 @@
 
         <div class="w-100 dt" v-show="!pet.edit">
           <div class="dtc">
-            {{ pet.category_name }}
-            {{ pet.name }}
+            {{ trans('people.pets_' + pet.category_name) }}
+            <span v-if="pet.name">- {{ pet.name }}</span>
           </div>
           <div class="dtc tr" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(pet)"></i>
@@ -45,7 +45,7 @@
               </label>
               <select class="db w-100 h2" v-model="updateForm.pet_category_id">
                 <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
-                  {{ petCategory.name }}
+                  {{ trans('people.pets_' + petCategory.name) }}
                 </option>
               </select>
             </div>
@@ -77,7 +77,7 @@
           </label>
           <select class="db w-100 h2" v-model="createForm.pet_category_id">
             <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
-              {{ petCategory.name }}
+              {{ trans('people.pets_' + petCategory.name) }}
             </option>
           </select>
         </div>
