@@ -69,7 +69,13 @@ class PetsController extends Controller
             ]
         );
 
-        return $pet;
+        return $data = [
+            'id' => $pet->id,
+            'name' => $pet->name,
+            'pet_category_id' => $pet->pet_category_id,
+            'category_name' => $pet->petCategory->name,
+            'edit' => false,
+        ];
     }
 
     /**

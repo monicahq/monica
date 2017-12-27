@@ -41,7 +41,7 @@
           <form class="measure center">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                Kind of pet
+                {{ trans('people.pets_kind') }}
               </label>
               <select class="db w-100 h2" v-model="updateForm.pet_category_id">
                 <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
@@ -51,7 +51,7 @@
             </div>
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                Name (optional)
+                {{ trans('people.pets_name') }}
               </label>
               <input class="pa2 db w-100" @keyup.enter="update(pet)" type="text" v-model="updateForm.name">
             </div>
@@ -73,7 +73,7 @@
       <form class="measure center">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            Kind of pet
+            {{ trans('people.pets_kind') }}
           </label>
           <select class="db w-100 h2" v-model="createForm.pet_category_id">
             <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
@@ -83,7 +83,7 @@
         </div>
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            Name (optional)
+            {{ trans('people.pets_name') }}
           </label>
           <input class="pa2 db w-100" type="text" @keyup.enter="store" @keyup.esc="addMode = false" v-model="createForm.name">
         </div>
@@ -170,6 +170,7 @@
                       .then(response => {
                           this.addMode = false;
                           this.pets.push(response.data);
+                          this.createForm.name = '';
 
                           this.$notify({
                               group: 'main',
@@ -197,8 +198,9 @@
                 axios.put('/people/' + this.contactId + '/pet/' + pet.id, this.updateForm)
                       .then(response => {
                           Vue.set(pet, 'edit', !pet.edit);
-                          Vue.set(pet, 'name', response.data.name)
-                          Vue.set(pet, 'pet_category_id', response.data.pet_category_id)
+                          Vue.set(pet, 'name', response.data.name);
+                          Vue.set(pet, 'pet_category_id', response.data.pet_category_id);
+                          Vue.set(pet, 'category_name', response.data.category_name);
 
                           this.$notify({
                               group: 'main',
@@ -212,7 +214,7 @@
             trash(pet) {
                 axios.delete('/people/' + this.contactId + '/pet/' + pet.id)
                       .then(response => {
-                          this.pets.pop(pet);
+                          this.getPets();
 
                           this.$notify({
                               group: 'main',

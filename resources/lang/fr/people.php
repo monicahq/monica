@@ -338,4 +338,11 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
+
+    // Pets
+    'pets_kind' => 'Sorte d\'animal',
+    'pets_name' => 'Nom (optionel)',
+    'pets_create_success' => 'L\'animal a été ajouté avec succès',
+    'pets_update_success' => 'L\'animal a été mis à jour',
+    'pets_delete_success' => 'L\'animal a été supprimé',
 ];

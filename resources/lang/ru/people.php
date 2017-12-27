@@ -333,4 +333,11 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
 ];

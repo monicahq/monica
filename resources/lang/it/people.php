@@ -327,4 +327,11 @@ return [
     'contact_address_form_province' => 'Provincia (facoltativa)',
     'contact_address_form_postal_code' => 'Codice postale (facoltativa)',
     'contact_address_form_country' => 'Regione (facoltativa)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
 ];

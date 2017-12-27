@@ -43,4 +43,15 @@ class Pet extends Model
     {
         return $this->belongsTo(PetCategory::class);
     }
+
+    /**
+     * Set the name to null if it's an empty string.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value ?: null;
+    }
 }
