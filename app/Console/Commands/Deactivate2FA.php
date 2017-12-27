@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\User;
+use Illuminate\Console\Command;
 
 class Deactivate2FA extends Command
 {
@@ -42,29 +42,34 @@ class Deactivate2FA extends Command
         $email = $this->option('email');
 
         // if no email was passed to the option, prompt the user to enter the email
-        if (!$email) $email = $this->ask('what is the user\'s email?');
+        if (! $email) {
+            $email = $this->ask('what is the user\'s email?');
+        }
 
         // retrieve the user with the specified email
         $user = User::where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             // show an error and exist if the user does not exist
             $this->error('No user with that email.');
+
             return;
         }
-        if (is_null($user->google2fa_secret))
-        {
+        if (is_null($user->google2fa_secret)) {
             // show an error and exist if the user does not exist
             $this->error('2FA is currently not activated for this user.');
+
             return;
         }
 
-        // Print a warning 
+        // Print a warning
         $this->info('2FA will be deactivated for '.$user->email);
         $this->info('This action can\'t be cancelled.');
 
         // ask for confirmation if not forced
-        if (!$this->option('force') && !$this->confirm('Do you wish to continue?')) return;
+        if (! $this->option('force') && ! $this->confirm('Do you wish to continue?')) {
+            return;
+        }
 
         // remove google2fa_secret key
         $user->google2fa_secret = null;

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Crypt;
 use Google2FA;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class Google2FAController extends Controller
@@ -26,7 +25,6 @@ class Google2FAController extends Controller
     }
 
     /**
-     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -51,7 +49,6 @@ class Google2FAController extends Controller
     }
 
     /**
-     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -60,14 +57,13 @@ class Google2FAController extends Controller
         $this->validate($request, [
             'one_time_password' => 'required',
         ]);
-        
+
         //retrieve secret
         $secret = $request->session()->pull('Google2FA_secret');
 
         $authenticator = new Authenticator($request);
 
-        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password']))
-        {
+        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
             //get user
             $user = $request->user();
 
@@ -86,7 +82,6 @@ class Google2FAController extends Controller
     }
 
     /**
-     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -104,7 +99,7 @@ class Google2FAController extends Controller
     }
 
     /**
-     * Generate a secret key in Base32 format
+     * Generate a secret key in Base32 format.
      *
      * @return string
      */
