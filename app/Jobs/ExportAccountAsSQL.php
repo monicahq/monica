@@ -33,6 +33,7 @@ class ExportAccountAsSQL
         'oauth_personal_access_clients',
         'oauth_refresh_tokens',
         'password_resets',
+        'pet_categories',
         'sessions',
         'statistics',
         'subscriptions',
