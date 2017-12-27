@@ -12,6 +12,10 @@ return [
     'remove' => 'Убрать',
     'done' => 'Done',
     'for' => 'for',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Хотите форматировать ваш текст? Мы поддерживаем Markdown для добавления этих функций',
     'markdown_link' => 'Читать документацию',

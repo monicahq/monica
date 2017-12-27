@@ -155,37 +155,4 @@ class ActivityTest extends FeatureTestCase
         $response->assertSee('An activity about John Doe has been updated');
         $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_update_'.$activity->id.'">');
     }
-
-    public function test_user_can_delete_an_activity()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $activity = factory(\App\Activity::class)->create([
-            'account_id' => $user->account_id,
-            'summary' => 'This is the title',
-            'date_it_happened' => \Carbon\Carbon::now(),
-        ]);
-
-        // Attach the created activity to the current user to make this an update
-        $contact->activities()->save($activity);
-
-        $response = $this->delete('/activities/'.$activity->id);
-        $response->assertStatus(302);
-
-        $params['id'] = $activity->id;
-
-        $this->assertDatabaseMissing('activities', $params);
-
-        $this->assertDatabaseMissing('activity_contact', [
-            'activity_id' => $activity->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        // make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $activity->id;
-
-        $this->assertDatabaseMissing('events', $eventParams);
-    }
 }

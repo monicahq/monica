@@ -24,7 +24,7 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        $lastUpdatedContacts = $account->contacts()->latest('updated_at')->limit(10)->get();
+        $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
 
         // Latest statistics
         if ($account->contacts()->count() === 0) {

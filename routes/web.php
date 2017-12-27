@@ -96,6 +96,13 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
         Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
 
+        // Pets
+        Route::get('/people/{contact}/pets', 'Contacts\\PetsController@get');
+        Route::post('/people/{contact}/pet', 'Contacts\\PetsController@store');
+        Route::put('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@update');
+        Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@trash');
+        Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
+
         // Reminders
         Route::get('/people/{contact}/reminders/add', 'Contacts\\RemindersController@create')->name('.reminders.add');
         Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('.reminders.store');
@@ -145,9 +152,15 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
     Route::group(['as' => 'journal'], function () {
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);
-        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@add']);
+        Route::get('/journal/entries', 'JournalController@list')->name('.list');
+        Route::get('/journal/entries/{journalEntry}', 'JournalController@get');
+        Route::get('/journal/hasRated', 'JournalController@hasRated');
+        Route::post('/journal/day', 'JournalController@storeDay');
+        Route::delete('/journal/day/{day}', 'JournalController@trashDay');
+
+        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@create']);
         Route::post('/journal/create', ['as' => '.create', 'uses' => 'JournalController@save']);
-        Route::delete('/journal/{entryId}', ['as' => '.delete', 'uses' => 'JournalController@deleteEntry']);
+        Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
     });
 
     Route::group(['as' => 'settings'], function () {

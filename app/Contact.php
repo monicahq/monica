@@ -45,6 +45,7 @@ class Contact extends Model
         'has_avatar',
         'avatar_file_name',
         'gravatar_url',
+        'avatar_external_url',
         'default_avatar_color',
     ];
 
@@ -263,6 +264,16 @@ class Contact extends Model
     public function addresses()
     {
         return $this->hasMany('App\Address');
+    }
+
+    /**
+     * Get the Pets records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function pets()
+    {
+        return $this->hasMany('App\Pet');
     }
 
     /**

@@ -7,6 +7,9 @@
 {{-- Progenitors --}}
 @include('people.progenitors.index')
 
+{{-- Pets --}}
+<pet v-bind:contact-id="{!! $contact->id !!}"></pet>
+
 {{-- Contact information --}}
 <contact-information v-bind:contact-id="{!! $contact->id !!}"></contact-information>
 
