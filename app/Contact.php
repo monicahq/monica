@@ -267,6 +267,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Pets records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function pets()
+    {
+        return $this->hasMany('App\Pet');
+    }
+
+    /**
      * Get the contact records associated with the account.
      *
      * @return HasMany

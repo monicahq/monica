@@ -93,6 +93,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
         Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
 
+        // Pets
+        Route::get('/people/{contact}/pets', 'Contacts\\PetsController@get');
+        Route::post('/people/{contact}/pet', 'Contacts\\PetsController@store');
+        Route::put('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@update');
+        Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@trash');
+        Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
+
         // Reminders
         Route::get('/people/{contact}/reminders/add', 'Contacts\\RemindersController@create')->name('.reminders.add');
         Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('.reminders.store');
