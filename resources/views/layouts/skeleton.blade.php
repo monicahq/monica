@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
+    <link rel="manifest" href="/manifest.webmanifest">
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
