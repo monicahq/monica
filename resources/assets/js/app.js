@@ -42,6 +42,12 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+// Partials
+Vue.component(
+    'avatar',
+    require('./components/partials/Avatar.vue')
+);
+
 // Contacts
 Vue.component(
     'contact-address',

@@ -3,6 +3,28 @@
 @section('content')
   <div class="dashboard">
 
+    <section class="pt2 ph3 ph5-ns pv3 cf w-100 bg-gray-monica">
+      <div class="mw9 center flex justify-center items-center">
+        <div class="pr2">
+          Last consulted
+        </div>
+        <div class="pr2">
+          @foreach($lastUpdatedContacts as $contact)
+            <avatar v-bind:contact="{{ $contact->toJson() }}"></avatar>
+          @endforeach
+        </div>
+      </div>
+    </section>
+
+    {{-- Main section --}}
+    <section class="ph3 ph5-ns pv3 cf w-100 bg-gray-monica">
+
+    </section>
+
+  </div>
+
+  <div class="dashboard">
+
     <!-- Page content -->
     <div class="main-content">
 

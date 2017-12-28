@@ -8,6 +8,7 @@ use App\Event;
 use App\Contact;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class DashboardController extends Controller
 {
@@ -24,7 +25,15 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
+
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
+        $lastUpdatedContactsCollection = collect([]);
+        foreach ($lastUpdatedContacts as $contact) {
+            dd($contact->toShort());
+            $lastUpdatedContactsCollection->push(new ContactShortResource($contact));
+        }
+
+        dd($lastUpdatedContactsCollection);
 
         // Latest statistics
         if ($account->contacts()->count() === 0) {
@@ -77,7 +86,7 @@ class DashboardController extends Controller
 
         $data = [
             'events' => $events,
-            'lastUpdatedContacts' => $lastUpdatedContacts,
+            'lastUpdatedContacts' => $lastUpdatedContactsCollection,
             'upcomingReminders' => $upcomingReminders,
             'number_of_contacts' => $account->contacts_count,
             'number_of_reminders' => $account->reminders_count,
