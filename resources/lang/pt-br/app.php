@@ -10,6 +10,12 @@ return [
     'upload' => 'Upload',
     'close' => 'Close',
     'remove' => 'Remove',
+    'done' => 'Done',
+    'for' => 'for',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Read documentation',
@@ -51,8 +57,13 @@ return [
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
+    'breadcrumb_api' => 'API',
+    'breadcrumb_edit_introductions' => 'How did you meet',
 
     'gender_male' => 'Homem',
     'gender_female' => 'Mulher',
     'gender_none' => 'Prefiro não dizer',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];

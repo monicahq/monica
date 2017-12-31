@@ -25,7 +25,7 @@ class DebtRequest extends FormRequest
     {
         return [
             'in_debt' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|numeric',
             'reason' => 'string|nullable',
             'status' => '',
         ];

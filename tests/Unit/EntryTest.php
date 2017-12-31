@@ -10,39 +10,30 @@ class EntryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetPostReturnsNullIfUndefined()
+    public function test_get_info_for_journal_entry()
     {
         $entry = new Entry;
+        $entry->id = 1;
+        $entry->title = 'This is the title';
+        $entry->post = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.';
+        $entry->created_at = '2017-01-01 00:00:00';
+        $entry->save();
 
-        $this->assertNull($entry->getPost());
-    }
-
-    public function testGetPostReturnsPost()
-    {
-        $entry = new Entry;
-        $entry->post = 'This is a test';
+        $data = [
+            'type' => 'activity',
+            'id' => 1,
+            'title' => 'This is the title',
+            'post' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.',
+            'day' => 1,
+            'day_name' => 'Sun',
+            'month' => 1,
+            'month_name' => 'Jan',
+            'year' => 2017,
+        ];
 
         $this->assertEquals(
-            'This is a test',
-            $entry->getPost()
-        );
-    }
-
-    public function testGetTitleReturnsNullIfUndefined()
-    {
-        $entry = new Entry;
-
-        $this->assertNull($entry->getTitle());
-    }
-
-    public function testGetTitleReturnsTitle()
-    {
-        $entry = new Entry;
-        $entry->title = 'This is a test';
-
-        $this->assertEquals(
-            'This is a test',
-            $entry->getTitle()
+            $data,
+            $entry->getInfoForJournalEntry()
         );
     }
 }

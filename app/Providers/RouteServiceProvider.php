@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Route;
+use App\Day;
+use App\Pet;
 use App\Debt;
 use App\Gift;
 use App\Note;
@@ -11,6 +13,7 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\Offspring;
+use App\ContactField;
 use App\Relationship;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -41,9 +44,15 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
+        Route::bind('contactfield', function ($value, $route) {
+            return ContactField::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
         Route::bind('activity', function ($value, $route) {
             return  Activity::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
                 ->firstOrFail();
         });
@@ -104,6 +113,24 @@ class RouteServiceProvider extends ServiceProvider
                 ->where('id', $value)
                 ->firstOrFail();
         });
+
+        Route::bind('journalEntry', function ($value, $route) {
+            return  JournalEntry::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('day', function ($value, $route) {
+            return  Day::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('pet', function ($value, $route) {
+            return Pet::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
     }
 
     /**
@@ -114,6 +141,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
+        $this->mapApiRoutes($router);
+
         $this->mapWebRoutes($router);
 
         //
@@ -132,7 +161,25 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'namespace' => $this->namespace, 'middleware' => 'web',
         ], function ($router) {
-            require app_path('Http/routes.php');
+            require base_path('routes/web.php');
+        });
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes(Router $router)
+    {
+        $router->group([
+            'prefix' => 'api',
+            'namespace' => $this->namespace,
+            'middleware' => 'auth:api',
+        ], function ($router) {
+            require base_path('routes/api.php');
         });
     }
 }

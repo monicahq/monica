@@ -83,64 +83,30 @@ class Reminder extends Model
     }
 
     /**
-     * Add a new birthday reminder.
-     *
-     * @param Contact $contact
-     * @param Carbon|string $date
-     * @return Reminder
-     */
-    public static function addBirthdayReminder(Contact $contact, $birthdate)
-    {
-        $birthdate = Carbon::parse($birthdate);
-
-        $reminder = $contact->reminders()
-            ->create([
-                'frequency_type' => 'year',
-                'frequency_number' => 1,
-                'next_expected_date' => $birthdate,
-                'account_id' => $contact->account_id,
-                'is_birthday' => true,
-            ]);
-
-        foreach ($contact->account->users as $user) {
-            $userTimezone = $user->timezone;
-        }
-
-        $reminder->calculateNextExpectedDate($userTimezone)->save();
-
-        return $reminder;
-    }
-
-    /**
      * Get the title of a reminder.
      * @return string
      */
-    public function getTitle()
+    public function getTitleAttribute($value)
     {
-        if ($this->is_birthday) {
-            // we need to construct the title of the reminder as in the case of a
-            // birthday, the title field is null
-            return trans('people.reminders_birthday', ['name' => $this->contact->first_name]);
-        }
+        return $value;
+    }
 
-        if (is_null($this->title)) {
-            return;
-        }
-
-        return $this->title;
+    /**
+     * Set the title of a reminder.
+     * @return string
+     */
+    public function setTitleAttribute($title)
+    {
+        $this->attributes['title'] = $title;
     }
 
     /**
      * Get the description of a reminder.
      * @return string
      */
-    public function getDescription()
+    public function getDescriptionAttribute($value)
     {
-        if (is_null($this->description)) {
-            return;
-        }
-
-        return $this->description;
+        return $value;
     }
 
     /**
@@ -151,31 +117,6 @@ class Reminder extends Model
     public function getNextExpectedDate()
     {
         return $this->next_expected_date->format('Y-m-d');
-    }
-
-    /**
-     * Get the contact object that the reminder is about.
-     * We need this method because in the case of partial contacts, we can't say
-     * that the reminder is from the contact associated with the reminder, because
-     * the contact is just partial and should not clicked. Therefore, in the
-     * case of a partial contact, the reminder should be about the contact that
-     * the author should be linked with (either a significant other or a parent).
-     *
-     * @return Contact
-     */
-    public function getContact()
-    {
-        $contact = $this->contact;
-
-        if ($contact->is_kid) {
-            $contact = $contact->getFirstProgenitor();
-        }
-
-        if ($contact->is_significant_other) {
-            $contact = $contact->getFirstPartner();
-        }
-
-        return $contact;
     }
 
     /**

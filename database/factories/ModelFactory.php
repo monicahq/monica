@@ -33,11 +33,11 @@ $factory->define(App\Account::class, function (Faker\Generator $faker) {
 $factory->define(App\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
-        'contact_id' => 1,
         'activity_type_id' => function () {
             return factory(App\ActivityType::class)->create()->id;
         },
-        'description' => encrypt($faker->sentence),
+        'description' => $faker->sentence,
+        'summary' => $faker->sentence,
         'date_it_happened' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
     ];
 });
@@ -63,7 +63,7 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'has_avatar' => false,
     ];
 });
 
@@ -87,6 +87,15 @@ $factory->define(App\Task::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_id' => 1,
+        'date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+    ];
+});
+
 $factory->define(App\Note::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
@@ -106,19 +115,6 @@ $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Kid::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => 1,
-        'child_of_contact_id' => 1,
-        'gender' => 'male',
-        'first_name' => encrypt($faker->firstName),
-        'is_birthdate_approximate' => 'false',
-        'birthdate' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-        'birthday_reminder_id' => 1,
-        'food_preferencies' => encrypt($faker->sentence),
-    ];
-});
-
 $factory->define(App\Country::class, function (Faker\Generator $faker) {
     return [
         'iso' => 'ca',
@@ -133,6 +129,18 @@ $factory->define(App\Call::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Address::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

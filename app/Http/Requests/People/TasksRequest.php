@@ -29,9 +29,8 @@ class TasksRequest extends FormRequest
 
         return [
             'title' => 'required|string',
-            'description' => '',
-            'completed_at' => 'date|nullable',
-            'status' => 'in:completed,inprogress,archived|nullable',
+            'description' => 'nullable',
+            'completed' => 'required|boolean',
         ];
     }
 }

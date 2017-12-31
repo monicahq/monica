@@ -2,11 +2,32 @@
 
 namespace App;
 
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\IsJournalableInterface;
 
-class Entry extends Model
+class Entry extends Model implements IsJournalableInterface
 {
+    use Journalable;
+
     protected $table = 'entries';
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'post',
+    ];
 
     /**
      * Get the account record associated with the entry.
@@ -16,21 +37,46 @@ class Entry extends Model
         return $this->belongsTo('App\Account');
     }
 
-    public function getPost()
+    /**
+     * Get the Entry title.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getTitleAttribute($value)
     {
-        if (is_null($this->post)) {
-            return;
-        }
-
-        return $this->post;
+        return $value;
     }
 
-    public function getTitle()
+    /**
+     * Get the Entry post.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getPostAttribute($value)
     {
-        if (is_null($this->title)) {
-            return;
-        }
+        return $value;
+    }
 
-        return $this->title;
+    /**
+     * Get all the information of the Entry for the journal.
+     * @return array
+     */
+    public function getInfoForJournalEntry()
+    {
+        $data = [
+            'type' => 'activity',
+            'id' => $this->id,
+            'title' => $this->title,
+            'post' => $this->post,
+            'day' => $this->created_at->day,
+            'day_name' => \App\Helpers\DateHelper::getShortDay($this->created_at),
+            'month' => $this->created_at->month,
+            'month_name' => \App\Helpers\DateHelper::getShortMonth($this->created_at),
+            'year' => $this->created_at->year,
+        ];
+
+        return $data;
     }
 }

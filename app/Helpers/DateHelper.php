@@ -51,6 +51,68 @@ class DateHelper
     }
 
     /**
+     * Return the month of the date according to the timezone of the user
+     * like "Oct", or "Dec.
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortMonth($date, $locale = null)
+    {
+        $date = new Date($date);
+        $locale = self::getLocale($locale);
+        $format = 'M';
+
+        \Log::info($date);
+
+        return $date->format($format);
+    }
+
+    /**
+     * Return the day of the date according to the timezone of the user
+     * like "Mon", or "Wed.
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortDay($date, $locale = null)
+    {
+        $date = new Date($date);
+        $locale = self::getLocale($locale);
+        $format = 'D';
+
+        return $date->format($format);
+    }
+
+    /**
+     * Return a date according to the timezone of the user, in a short format
+     * like "Oct 29".
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortDateWithoutYear($date, $locale = null)
+    {
+        $date = new Date($date);
+        $locale = self::getLocale($locale);
+
+        switch ($locale) {
+            case 'en':
+                $format = 'M d';
+                break;
+            case 'pt-br':
+            case 'fr':
+                $format = 'd M';
+                break;
+            default:
+                $format = 'M d';
+                break;
+        }
+
+        return $date->format($format);
+    }
+
+    /**
      * Return a date and the time according to the timezone of the user, in a short format
      * like "Oct 29, 1981 19:32".
      *

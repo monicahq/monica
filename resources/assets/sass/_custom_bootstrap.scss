@@ -10,46 +10,46 @@ $font-family-sans-serif: 'Open Sans', sans-serif;
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 $font-size-root: 14px;
 
-@import "../../vendor/bootstrap/scss/variables";
-@import "../../vendor/bootstrap/scss/mixins";
+@import "~bootstrap/scss/_variables";
+@import "~bootstrap/scss/_mixins";
 
 // Reset and dependencies
-@import "../../vendor/bootstrap/scss/normalize";
-@import "../../vendor/bootstrap/scss/print";
+@import "~bootstrap/scss/_normalize";
+@import "~bootstrap/scss/_print";
 
 // Core CSS
-@import "../../vendor/bootstrap/scss/reboot";
+@import "~bootstrap/scss/_reboot";
 //@import "bootstrap/type";
 //@import "bootstrap/images";
 //@import "bootstrap/code";
-@import "../../vendor/bootstrap/scss/grid";
-@import "../../vendor/bootstrap/scss/tables";
-@import "../../vendor/bootstrap/scss/forms";
+@import "~bootstrap/scss/_grid";
+@import "~bootstrap/scss/_tables";
+@import "~bootstrap/scss/_forms";
 //@import "bootstrap/buttons";
 
 // Components
 //@import "bootstrap/animation";
-@import "../../vendor/bootstrap/scss/_dropdown";
+@import "~bootstrap/scss/_dropdown";
 //@import "bootstrap/button-group";
 //@import "bootstrap/input-group";
 //@import "bootstrap/custom-forms";
-@import "../../vendor/bootstrap/scss/nav";
+@import "~bootstrap/scss/_nav";
 // @import "bootstrap/navbar";
-@import "../../vendor/bootstrap/scss/card";
+@import "~bootstrap/scss/_card";
 // @import "bootstrap/breadcrumb";
-@import "../../vendor/bootstrap/scss/pagination";
+@import "~bootstrap/scss/_pagination";
 // @import "bootstrap/pager";
 // @import "bootstrap/labels";
 // @import "bootstrap/jumbotron";
-@import "../../vendor/bootstrap/scss/alert";
+@import "~bootstrap/scss/_alert";
 // @import "../../vendor/bootstrap/scss/progress";
 // @import "bootstrap/media";
 // @import "bootstrap/list-group";
 // @import "bootstrap/responsive-embed";
-@import "../../vendor/bootstrap/scss/close";
+@import "~bootstrap/scss/_close";
 
 // Components w/ JavaScript
-@import "../../vendor/bootstrap/scss/modal";
+@import "~bootstrap/scss/_modal";
 //@import "../../vendor/bootstrap/tooltip";
 // @import "bootstrap/popover";
 // @import "bootstrap/carousel";
@@ -58,4 +58,4 @@ $font-size-root: 14px;
 // @import "bootstrap/utilities";
 // @import "bootstrap/utilities-background";
 // @import "bootstrap/utilities-spacing";
-@import "../../vendor/bootstrap/scss/utilities-responsive";
+@import "~bootstrap/scss/_utilities-responsive";

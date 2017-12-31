@@ -111,7 +111,7 @@ class Account extends Model
      */
     public function notes()
     {
-        return $this->hasMany(Note::class);
+        return $this->hasMany(Note::class)->orderBy('created_at', 'desc');
     }
 
     /**
@@ -215,13 +215,63 @@ class Account extends Model
     }
 
     /**
-     * Get the tags records associated with the contact.
+     * Get the tags records associated with the account.
      *
      * @return HasMany
      */
     public function tags()
     {
         return $this->hasMany('App\Tag')->orderBy('name', 'asc');
+    }
+
+    /**
+     * Get the calls records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany(Call::class)->orderBy('called_at', 'desc');
+    }
+
+    /**
+     * Get the Contact Field types records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function contactFieldTypes()
+    {
+        return $this->hasMany('App\ContactFieldType');
+    }
+
+    /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
+    }
+
+    /**
+     * Get the Journal Entries records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function journalEntries()
+    {
+        return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the Days records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function days()
+    {
+        return $this->hasMany('App\Day');
     }
 
     /**
@@ -321,5 +371,55 @@ class Account extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Get the timezone of the user. In case an account has multiple timezones,
+     * takes the first it finds.
+     * @return string
+     */
+    public function timezone()
+    {
+        $timezone = '';
+
+        foreach ($this->users as $user) {
+            $timezone = $user->timezone;
+            break;
+        }
+
+        return $timezone;
+    }
+
+    /**
+     * Populates the Contact Field Types table right after an account is
+     * created.
+     */
+    public function populateContactFieldTypeTable($ignoreMigratedTable = false)
+    {
+        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
+
+        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
+            if ($ignoreMigratedTable == false) {
+                $contactFieldType = ContactFieldType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultContactFieldType->name,
+                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                    'delible' => $defaultContactFieldType->delible,
+                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                ]);
+            } else {
+                if ($defaultContactFieldType->migrated == 0) {
+                    $contactFieldType = ContactFieldType::create([
+                        'account_id' => $this->id,
+                        'name' => $defaultContactFieldType->name,
+                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                        'delible' => $defaultContactFieldType->delible,
+                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                    ]);
+                }
+            }
+        }
     }
 }

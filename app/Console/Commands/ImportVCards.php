@@ -3,8 +3,11 @@
 namespace App\Console\Commands;
 
 use App\User;
+use App\Address;
 use App\Contact;
 use App\Country;
+use App\ContactField;
+use App\ContactFieldType;
 use Sabre\VObject\Reader;
 use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;
@@ -101,35 +104,60 @@ class ImportVCards extends Command
                 }
 
                 $contact->gender = 'none';
-                $contact->is_birthdate_approximate = 'unknown';
+                $contact->job = $this->formatValue($vcard->ORG);
+
+                $contact->setAvatarColor();
+
+                $contact->save();
 
                 if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
-                    $contact->birthdate = new \DateTime((string) $vcard->BDAY);
+                    $birthdate = new \DateTime((string) $vcard->BDAY);
+
+                    $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
-                $contact->email = $this->formatValue($vcard->EMAIL);
-                $contact->phone_number = $this->formatValue($vcard->TEL);
-
                 if ($vcard->ADR) {
-                    $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
-                    $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
-                    $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
-                    $contact->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
+                    $address = new Address();
+                    $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
+                    $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
+                    $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
+                    $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
 
                     $country = Country::where('country', $vcard->ADR->getParts()[6])
                         ->orWhere('iso', strtolower($vcard->ADR->getParts()[6]))
                         ->first();
 
                     if ($country) {
-                        $contact->country_id = $country->id;
+                        $address->country_id = $country->id;
                     }
+
+                    $address->contact_id = $contact->id;
+                    $address->account_id = $contact->account_id;
+                    $address->save();
                 }
 
-                $contact->job = $this->formatValue($vcard->ORG);
+                if (! is_null($this->formatValue($vcard->EMAIL))) {
+                    // Saves the email
+                    $contactFieldType = ContactFieldType::where('type', 'email')->first();
+                    $contactField = new ContactField;
+                    $contactField->account_id = $contact->account_id;
+                    $contactField->contact_id = $contact->id;
+                    $contactField->data = $this->formatValue($vcard->EMAIL);
+                    $contactField->contact_field_type_id = $contactFieldType->id;
+                    $contactField->save();
+                }
 
-                $contact->setAvatarColor();
-
-                $contact->save();
+                if (! is_null($this->formatValue($vcard->TEL))) {
+                    // Saves the phone number
+                    $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+                    $contactField = new ContactField;
+                    $contactField->account_id = $contact->account_id;
+                    $contactField->contact_id = $contact->id;
+                    $contactField->data = $this->formatValue($vcard->TEL);
+                    $contactField->contact_field_type_id = $contactFieldType->id;
+                    $contactField->save();
+                }
 
                 $contact->logEvent('contact', $contact->id, 'create');
 
@@ -164,12 +192,22 @@ class ImportVCards extends Command
     {
         $email = (string) $vcard->EMAIL;
 
-        $contact = Contact::where([
+        $contactFieldType = ContactFieldType::where([
             ['account_id', $user->account_id],
-            ['email', $email],
+            ['type', 'email'],
         ])->first();
 
-        return $email && $contact;
+        $contactField = null;
+
+        if ($contactFieldType) {
+            $contactField = ContactField::where([
+                ['account_id', $user->account_id],
+                ['data', $email],
+                ['contact_field_type_id', $contactFieldType->id],
+            ])->first();
+        }
+
+        return $email && $contactField;
     }
 
     /**

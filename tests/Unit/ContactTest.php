@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Call;
 use App\Debt;
 use App\Contact;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -17,7 +16,7 @@ class ContactTest extends TestCase
     {
         $contact = new Contact;
 
-        $this->assertNull($contact->getFirstName());
+        $this->assertNull($contact->first_name);
     }
 
     public function testGetFirstnameReturnsNameWhenDefined()
@@ -27,7 +26,7 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Peter',
-            $contact->getFirstName()
+            $contact->first_name
         );
     }
 
@@ -37,6 +36,7 @@ class ContactTest extends TestCase
         $contact->first_name = 'Peter';
         $contact->middle_name = 'H';
         $contact->last_name = 'Gregory';
+        $contact->is_dead = false;
 
         $this->assertEquals(
             'Peter H Gregory',
@@ -45,12 +45,12 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             'Peter',
-            $contact->getFirstName()
+            $contact->first_name
         );
 
         $this->assertEquals(
             'Gregory',
-            $contact->getLastName()
+            $contact->last_name
         );
 
         $contact = new Contact;
@@ -75,7 +75,16 @@ class ContactTest extends TestCase
 
         $this->assertEquals(
             null,
-            $contact->getLastName()
+            $contact->last_name
+        );
+
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->is_dead = true;
+        $this->assertEquals(
+            'Peter H Gregory ⚰',
+            $contact->getCompleteName()
         );
     }
 
@@ -94,29 +103,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             'Peter H Gregory',
             $contact->getCompleteName('firstname_first')
-        );
-    }
-
-    public function testGetAgeReturnsFalseIfNoBirthdateIsDefinedForContact()
-    {
-        $contact = new Contact;
-        $contact->birthdate = null;
-
-        $this->assertNull(
-            $contact->getAge()
-        );
-    }
-
-    public function testGetAgeReturnsAnAgeIfBirthdateIsDefined()
-    {
-        $dateFiveYearsAgo = Carbon::now()->subYears(25);
-
-        $contact = new Contact;
-        $contact->birthdate = $dateFiveYearsAgo;
-
-        $this->assertEquals(
-            25,
-            $contact->getAge()
         );
     }
 
@@ -178,23 +164,22 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
         $activity2 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity2);
 
         $activity3 = factory(\App\Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity3);
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
-            'Oct 29, 2015',
-            $contact->getLastActivityDate($timezone)
+            '2015-10-29 10:10:10',
+            $contact->getLastActivityDate()
         );
     }
 
@@ -204,13 +189,12 @@ class ContactTest extends TestCase
 
         $activity1 = factory(\App\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
-            'contact_id' => $contact->id,
         ]);
+        $contact->activities()->attach($activity1);
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
-            'Oct 29, 2015',
-            $contact->getLastActivityDate($timezone)
+            '2015-10-29 10:10:10',
+            $contact->getLastActivityDate()
         );
     }
 
@@ -220,10 +204,9 @@ class ContactTest extends TestCase
         $contact->account_id = 1;
         $contact->id = 1;
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
             null,
-            $contact->getLastActivityDate($timezone)
+            $contact->getLastActivityDate()
         );
     }
 
@@ -232,10 +215,9 @@ class ContactTest extends TestCase
         $contact = new Contact;
         $contact->last_talked_to = null;
 
-        $timezone = 'America/New_York';
         $this->assertEquals(
             null,
-            $contact->getLastCalled($timezone)
+            $contact->getLastCalled()
         );
     }
 
@@ -244,10 +226,9 @@ class ContactTest extends TestCase
         $contact = new Contact;
         $contact->last_talked_to = '2013-10-29 10:10:10';
 
-        $timezone = 'America/New_York';
-        $this->assertStringEndsWith(
-            'Oct 29, 2013',
-            $contact->getLastCalled($timezone)
+        $this->assertEquals(
+            '2013-10-29 10:10:10',
+            $contact->getLastCalled()
         );
     }
 
@@ -269,73 +250,6 @@ class ContactTest extends TestCase
         $this->assertEquals(
             strlen($contact->default_avatar_color) == 7,
             $contact->setAvatarColor()
-        );
-    }
-
-    public function testGetPartialAddressReturnsNullIfNoCityIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getPartialAddress());
-    }
-
-    public function testGetPartialAddressReturnsCityIfProvinceIsUndefined()
-    {
-        $contact = new Contact;
-        $contact->city = 'Montreal';
-
-        $this->assertEquals(
-            'Montreal',
-            $contact->getPartialAddress()
-        );
-    }
-
-    public function testGetPartialAddressReturnsCityAndProvince()
-    {
-        $contact = new Contact;
-        $contact->city = 'Montreal';
-        $contact->province = 'QC';
-
-        $this->assertEquals(
-            'Montreal, QC',
-            $contact->getPartialAddress()
-        );
-    }
-
-    public function testGetCountryReturnsNullIfNoStreetIsDefined()
-    {
-        $contact = new Contact;
-
-        $this->assertNull($contact->getCountryName());
-    }
-
-    public function testGetCountryCodeReturnsStreetWhenDefined()
-    {
-        $contact = new Contact;
-        $contact->country_id = 1;
-
-        $this->assertEquals(
-            'United States',
-            $contact->getCountryName()
-        );
-    }
-
-    public function testGetCountryISOReturnsNullIfISONotFound()
-    {
-        $contact = new Contact;
-        $contact->country_id = null;
-
-        $this->assertNull($contact->getCountryISO());
-    }
-
-    public function testGetCountryISOReturnsTheRightISO()
-    {
-        $contact = new Contact;
-        $contact->country_id = 1;
-
-        $this->assertEquals(
-            'us',
-            $contact->getCountryISO()
         );
     }
 
@@ -400,7 +314,10 @@ class ContactTest extends TestCase
 
     public function testGetAvatarReturnsPath()
     {
+        config(['filesystems.default' => 'public']);
+
         $contact = new Contact;
+        $contact->has_avatar = true;
         $contact->avatar_file_name = 'h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX.jpg';
 
         $this->assertEquals(
@@ -409,14 +326,62 @@ class ContactTest extends TestCase
         );
     }
 
-    public function testIsBirthdateApproximate()
+    public function test_get_avatar_returns_null_if_not_set()
     {
         $contact = new Contact;
-        $contact->is_birthdate_approximate = 'true';
+
+        $this->assertNull(
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_returns_gravatar()
+    {
+        $contact = new Contact;
+        $contact->gravatar_url = 'https://gravatar.com/url';
 
         $this->assertEquals(
-            'true',
-            $contact->isBirthdateApproximate()
+            'https://gravatar.com/url',
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_returns_external_url()
+    {
+        $contact = new Contact();
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'external';
+        $contact->avatar_external_url = 'https://facebook.com/johndoe.png';
+
+        $this->assertEquals(
+            'https://facebook.com/johndoe.png',
+            $contact->getAvatarURL()
+        );
+    }
+
+    public function test_get_avatar_source_returns_external_or_internal()
+    {
+        $contact = new Contact();
+        $contact->has_avatar = false;
+
+        $this->assertNull(
+            $contact->getAvatarSource()
+        );
+
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'external';
+
+        $this->assertEquals(
+            'external',
+            $contact->getAvatarSource()
+        );
+
+        $contact->has_avatar = true;
+        $contact->avatar_location = 'public';
+
+        $this->assertEquals(
+            'internal',
+            $contact->getAvatarSource()
         );
     }
 
@@ -454,79 +419,6 @@ class ContactTest extends TestCase
         );
     }
 
-    public function test_set_birthday_method()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        $birthdate = '1987-03-01 17:56:03';
-        $age = 30;
-
-        $contact = new Contact;
-        $contact->setBirthday('approximate', $birthdate, $age);
-
-        $this->assertEquals(
-            '1987-01-01',
-            $contact->birthdate->toDateString()
-        );
-
-        $this->assertEquals(
-            0,
-            $contact->reminders->count()
-        );
-
-        $contact = new Contact;
-        $contact->setBirthday('unknown', $birthdate, $age);
-
-        $this->assertEquals(
-            null,
-            $contact->birthdate
-        );
-
-        $this->assertEquals(
-            0,
-            $contact->reminders->count()
-        );
-
-        $account = factory(\App\Account::class)->create();
-        $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user = factory(\App\User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $contact->setBirthday('exact', $birthdate, $age);
-        $this->assertEquals(
-            '1987-03-01',
-            $contact->birthdate->toDateString()
-        );
-
-        $this->assertEquals(
-            1,
-            $contact->reminders->count()
-        );
-    }
-
-    public function test_set_birthdate_reminder_method()
-    {
-        $account = factory(\App\Account::class)->create();
-        $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user = factory(\App\User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertNull(
-            $contact->birthday_reminder_id
-        );
-
-        $contact->setBirthdateReminder();
-
-        $this->assertNotNull(
-            $contact->birthday_reminder_id
-        );
-    }
-
     /**
      * @group test
      */
@@ -541,7 +433,7 @@ class ContactTest extends TestCase
         $john = factory(\App\Contact::class)->create([
             'id' => 2,
             'account_id' => $account->id,
-            'is_kid' => 1,
+            'is_partial' => 1,
         ]);
 
         $offspring = factory(\App\Offspring::class)->create([
@@ -607,5 +499,50 @@ class ContactTest extends TestCase
         $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300, 'status' => 'complete']));
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
+    }
+
+    public function test_set_special_date_creates_a_date_and_saves_the_id()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertNull($contact->setSpecialDate(null, 2010, 10, 10));
+
+        $this->assertNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('birthdate', 2010, 10, 10);
+        $this->assertNotNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
+        $this->assertNotNull($contact->deceased_special_date_id);
+
+        $specialDate = $contact->setSpecialDate('first_met', 2010, 10, 10);
+        $this->assertNotNull($contact->first_met_special_date_id);
+    }
+
+    public function test_set_special_date_with_age_creates_a_date_and_saves_the_id()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertNull($contact->setSpecialDateFromAge(null, 33));
+
+        $this->assertNull($contact->birthday_special_date_id);
+
+        $specialDate = $contact->setSpecialDateFromAge('birthdate', 33);
+        $this->assertNotNull($contact->birthday_special_date_id);
+    }
+
+    public function test_has_first_met_information_returns_false_if_no_information_is_present()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertFalse($contact->hasFirstMetInformation());
+    }
+
+    public function test_has_first_met_information_returns_true_if_at_least_one_info_is_present()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $contact->first_met_additional_info = 'data';
+        $this->assertTrue($contact->hasFirstMetInformation());
     }
 }

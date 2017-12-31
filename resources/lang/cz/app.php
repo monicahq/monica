@@ -10,6 +10,12 @@ return [
     'upload' => 'Nahrát',
     'close' => 'Zavřít',
     'remove' => 'Odstranit',
+    'done' => 'Done',
+    'for' => 'for',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',
@@ -53,8 +59,13 @@ return [
     'breadcrumb_edit_significant_other' => 'Upravit drahou polovičku',
     'breadcrumb_add_note' => 'Přidat poznámku',
     'breadcrumb_edit_note' => 'Upravit poznámku',
+    'breadcrumb_api' => 'API',
+    'breadcrumb_edit_introductions' => 'How did you meet',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',
     'gender_none' => 'Nepovím',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];

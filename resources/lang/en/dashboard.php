@@ -5,6 +5,9 @@ return [
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
     'dashboard_blank_cta' => 'Add your first contact',
 
+    'notes_title' => 'You don\'t have any starred notes yet.',
+    'notes_description' => 'Star a note of one of your contact to list favorite notes here.',
+
     'reminders_title' => 'Upcoming reminders',
     'reminders_blank_description' => 'No reminders are planned.',
     'event_title' => 'Latest actions',
@@ -23,6 +26,7 @@ return [
     'event_update_task' => 'updated a task',
     'event_create_activity' => 'An activity about :name has been added',
     'event_update_activity' => 'An activity about :name has been updated',
+    'event_delete_activity' => 'An activity about :name has been removed',
     'event_create_debt' => 'added a debt',
     'event_update_debt' => 'updated a debt',
     'event_create_gift' => 'added a gift',
@@ -32,6 +36,7 @@ return [
     'tab_last_edited_contacts' => 'Last edited contacts',
     'tab_whats_coming' => 'What\'s coming',
     'tab_lastest_actions' => 'Latest actions',
+    'tab_important_notes' => 'Important notes',
     'tasks_title' => 'Tasks',
     'tasks_blank' => 'No tasks are planned.',
     'reminders_in_days' => '{1} in 1 day|in :number days',

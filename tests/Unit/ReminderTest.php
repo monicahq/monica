@@ -11,34 +11,36 @@ class ReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetTitleReturnsNullIfNotDefined()
+    public function test_title_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
 
-        $this->assertNull($reminder->getTitle());
+        $this->assertNull($reminder->title);
     }
 
-    public function testGetTitleReturnsStringIfDefined()
+    public function test_title_getter_returns_correct_string()
     {
         $reminder = new Reminder;
         $reminder->title = 'this is a test';
 
-        $this->assertInternalType('string', $reminder->getTitle());
+        $this->assertInternalType('string', $reminder->title);
+        $this->assertEquals('this is a test', $reminder->title);
     }
 
-    public function testGetDescriptionReturnsNullIfNotDefined()
+    public function test_description_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
 
-        $this->assertNull($reminder->getDescription());
+        $this->assertNull($reminder->description);
     }
 
-    public function testGetDescriptionReturnsStringIfDefined()
+    public function test_description_getter_returns_correct_string()
     {
         $reminder = new Reminder;
         $reminder->description = 'this is a test';
 
-        $this->assertInternalType('string', $reminder->getDescription());
+        $this->assertInternalType('string', $reminder->description);
+        $this->assertEquals('this is a test', $reminder->description);
     }
 
     public function testGetNextExpectedDateReturnsString()
@@ -97,32 +99,5 @@ class ReminderTest extends TestCase
             '2017-02-02',
             $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
         );
-    }
-
-    public function test_add_birthday_reminder()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $account = factory(\App\Account::class)->create();
-        $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user = factory(\App\User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $birthdate = '1980-01-01';
-
-        $reminder = Reminder::addBirthdayReminder(
-            $contact,
-            $birthdate
-        );
-
-        $this->assertDatabaseHas('reminders', [
-            'id' => $reminder->id,
-            'next_expected_date' => '2018-01-01 00:00:00',
-            'is_birthday' => 1,
-            'contact_id' => $contact->id,
-        ]);
     }
 }

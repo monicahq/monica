@@ -6,10 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
+    <link rel="manifest" href="/manifest.webmanifest">
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
-    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
+    <script>
+      window.Laravel = <?php echo json_encode([
+          'csrfToken' => csrf_token(),
+      ]); ?>
+    </script>
+
+    <!-- The script below puts all the translation keys in a JS file so we
+    can reuse it in Vue.js files -->
+    <script>
+      window.trans = <?php
+      // copy all translations from /resources/lang/CURRENT_LOCALE/* to global JS variable
+      $lang_files = File::files(resource_path() . '/lang/' . App::getLocale());
+      $trans = [];
+      foreach ($lang_files as $f) {
+          $filename = pathinfo($f)['filename'];
+          $trans[$filename] = trans($filename);
+      }
+      echo json_encode($trans);
+      ?>;
+    </script>
   </head>
   <body data-account-id={{ auth()->user()->account_id }}>
 
@@ -24,11 +44,8 @@
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ elixir('js/app.js') }}"></script>
+      <script src="{{ mix('js/app.js') }}"></script>
     @endif
-
-    {{-- Vanilla JS WITH ALL THE JS FOR THE PAGES --}}
-    <script src="{{ elixir('js/vanilla.js') }}"></script>
 
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))

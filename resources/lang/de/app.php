@@ -9,6 +9,12 @@ return [
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
     'close' => 'Schließen',
+    'done' => 'Done',
+    'for' => 'for',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Read documentation',
@@ -48,8 +54,13 @@ return [
     'breadcrumb_settings_import_report' => 'Import-Bericht',
     'breadcrumb_settings_import_upload' => 'Upload',
     'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_api' => 'API',
+    'breadcrumb_edit_introductions' => 'How did you meet',
 
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
     'gender_none' => 'Möchte ich nicht angeben',
+
+    'error_title' => 'Whoops! Something went wrong.',
+    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
 ];

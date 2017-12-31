@@ -40,10 +40,10 @@
               @include('partials.errors')
 
               <p>
-                @if (is_null($contact->getLastName()))
-                {{ trans('people.food_preferencies_edit_description_no_last_name', ['firstname' => $contact->getFirstname()]) }}</p>
+                @if (is_null($contact->last_name))
+                {{ trans('people.food_preferencies_edit_description_no_last_name', ['firstname' => $contact->first_name]) }}</p>
                 @else
-                {{ trans('people.food_preferencies_edit_description', ['firstname' => $contact->getFirstname(), 'family' => $contact->getLastName()]) }}</p>
+                {{ trans('people.food_preferencies_edit_description', ['firstname' => $contact->first_name, 'family' => $contact->last_name]) }}</p>
                 @endif
 
               <div class="form-group">

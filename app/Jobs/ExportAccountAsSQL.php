@@ -13,22 +13,30 @@ class ExportAccountAsSQL
     use Dispatchable, SerializesModels;
 
     protected $ignoredTables = [
+        'accounts',
         'activity_type_groups',
         'activity_types',
+        'api_usage',
         'cache',
         'countries',
         'currencies',
+        'default_contact_field_types',
         'failed_jobs',
-        'jobs',
-        'migrations',
-        'password_resets',
-        'sessions',
-        'statistics',
-        'accounts',
-        'subscriptions',
         'import_jobs',
         'import_job_reports',
         'instances',
+        'jobs',
+        'migrations',
+        'oauth_access_tokens',
+        'oauth_auth_codes',
+        'oauth_clients',
+        'oauth_personal_access_clients',
+        'oauth_refresh_tokens',
+        'password_resets',
+        'pet_categories',
+        'sessions',
+        'statistics',
+        'subscriptions',
     ];
 
     protected $ignoredColumns = [
