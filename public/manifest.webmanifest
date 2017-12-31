@@ -1,0 +1,17 @@
+{
+  "name": "Monica",
+  "short_name": "Monica",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Intuitive personal relationships management.",
+  "icons": [{
+    "src": "/img/touch/140x140.png",
+    "sizes": "140x140",
+    "type": "image/png"
+  }],
+  "orientation": "portrait-primary",
+  "related_applications": [{
+    "platform": "web"
+  }]
+}
