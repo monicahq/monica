@@ -3,17 +3,17 @@
 
 <template>
   <div>
-    <div class="tc" v-if="contact.information.avatar.has_avatar">
-      <img v-if="contact.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br4 h3 w3 dib" v-tooltip="contact.complete_name">
+    <div class="tc" v-if="contact.has_avatar">
+      <img v-if="contact.has_avatar" :src="contact.avatar_url" class="br4 h3 w3 dib" v-tooltip="contact.complete_name">
     </div>
 
-    <div class="tc" v-if="contact.information.avatar.gravatar_url">
+    <div class="tc" v-if="contact.gravatar_url">
       <img
-        :src="contact.information.avatar.gravatar_url"
+        :src="contact.gravatar_url"
         class="br4 h3 w3 dib" width="43">
     </div>
 
-    <div v-if="!contat.information.avatar.has_avatar" v-bind:style="{ 'background-color': contact.information.avatar.default_avatar_color }" class="br4 h3 w3 dib pt3 white">
+    <div v-if="!contact.has_avatar" v-tooltip.bottom="contact.complete_name" v-bind:style="{ 'background-color': contact.default_avatar_color }" class="br4 h3 w3 dib pt3 white tc">
       {{ contact.initials }}
     </div>
   </div>

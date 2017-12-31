@@ -25,15 +25,20 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-
-        $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
+        // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
+        $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
         foreach ($lastUpdatedContacts as $contact) {
-            dd($contact->toShort());
-            $lastUpdatedContactsCollection->push(new ContactShortResource($contact));
+            $data = [
+                'id' => $contact->id,
+                'has_avatar' => $contact->has_avatar,
+                'avatar_url' => $contact->getAvatarURL(),
+                'initials' => $contact->getInitials(),
+                'default_avatar_color' => $contact->default_avatar_color,
+                'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
+            ];
+            $lastUpdatedContactsCollection->push(json_encode($data));
         }
-
-        dd($lastUpdatedContactsCollection);
 
         // Latest statistics
         if ($account->contacts()->count() === 0) {
@@ -74,12 +79,12 @@ class DashboardController extends Controller
         $notes = $account->notes()->favorited()->get();
 
         // List of upcoming reminders
-        $upcomingReminders = $account->reminders()
-            ->where('next_expected_date', '>', Carbon::now())
-            ->orderBy('next_expected_date', 'asc')
-            ->with('contact')
-            ->limit(10)
-            ->get();
+        //$upcomingReminders = $account->reminders()
+            // ->where('next_expected_date', '>', Carbon::now())
+            // ->orderBy('next_expected_date', 'asc')
+            // ->with('contact')
+            // ->limit(10)
+            // ->get();
 
         // Active tasks
         $tasks = $account->tasks()->with('contact')->where('completed', 0)->get();
@@ -87,7 +92,6 @@ class DashboardController extends Controller
         $data = [
             'events' => $events,
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'upcomingReminders' => $upcomingReminders,
             'number_of_contacts' => $account->contacts_count,
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,

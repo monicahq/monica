@@ -464,6 +464,27 @@ class Contact extends Model
     }
 
     /**
+     * Get the incomplete name of the contact, like `John D.`
+     *
+     * @return string
+     */
+    public function getIncompleteName()
+    {
+        $incompleteName = '';
+        $incompleteName = $this->first_name;
+
+        if (! is_null($this->last_name)) {
+            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+        }
+
+        if ($this->is_dead) {
+            $incompleteName .= ' ⚰';
+        }
+
+        return trim($incompleteName);
+    }
+
+    /**
      * Get the initials of the contact, used for avatars.
      *
      * @return string
