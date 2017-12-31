@@ -90,7 +90,7 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item">
+                <li class="people-list-item bg-white">
                   <a href="{{ route('people.show', $contact) }}">
                     @if ($contact->has_avatar == true)
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
