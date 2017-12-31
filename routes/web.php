@@ -26,7 +26,12 @@ Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvita
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', 'Auth\LoginController@logout');
 
-    Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+    Route::group(['as' => 'dashboard'], function () {
+        Route::get('/dashboard/', 'DashboardController@index')->name('.index');
+        Route::get('/dashboard/calls', 'DashboardController@calls');
+        Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::post('/dashboard/setTab', 'DashboardController@setTab');
+    });
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people/', 'ContactsController@index')->name('.index');

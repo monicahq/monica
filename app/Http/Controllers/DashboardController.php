@@ -8,6 +8,7 @@ use App\Event;
 use App\Contact;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use Illuminate\Http\Request;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class DashboardController extends Controller
@@ -75,17 +76,6 @@ class DashboardController extends Controller
                 ];
             });
 
-        // List of notes
-        $notes = $account->notes()->favorited()->get();
-
-        // List of upcoming reminders
-        //$upcomingReminders = $account->reminders()
-            // ->where('next_expected_date', '>', Carbon::now())
-            // ->orderBy('next_expected_date', 'asc')
-            // ->with('contact')
-            // ->limit(10)
-            // ->get();
-
         // Active tasks
         $tasks = $account->tasks()->with('contact')->where('completed', 0)->get();
 
@@ -103,9 +93,69 @@ class DashboardController extends Controller
             'tasks' => $tasks,
             'debts' => $debt,
             'user' => auth()->user(),
-            'notes' => $notes,
         ];
 
         return view('dashboard.index', $data);
+    }
+
+    /**
+     * Get calls for the dashboard
+     * @return Collection
+     */
+    public function calls()
+    {
+        $callsCollection = collect([]);
+        $calls = auth()->user()->account->calls()->limit(15)->get();
+
+        foreach ($calls as $call) {
+            $data = [
+                'id' => $call->id,
+                'called_at' => \App\Helpers\DateHelper::getShortDate($call->called_at),
+                'name' => $call->contact->getIncompleteName(),
+                'contact_id' => $call->contact->id,
+            ];
+            $callsCollection->push($data);
+        }
+
+        return $callsCollection;
+    }
+
+    /**
+     * Get notes for the dashboard
+     * @return Collection
+     */
+    public function notes()
+    {
+        $notesCollection = collect([]);
+        $notes = auth()->user()->account->notes()->favorited()->get();
+
+        foreach ($notes as $note) {
+            $data = [
+                'id' => $note->id,
+                'body' => $note->body,
+                'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
+                'name' => $note->contact->getIncompleteName(),
+                'contact' => [
+                    'contact_id' => $note->contact->id,
+                    'has_avatar' => $note->contact->has_avatar,
+                    'avatar_url' => $note->contact->getAvatarURL(),
+                    'initials' => $note->contact->getInitials(),
+                    'default_avatar_color' => $note->contact->default_avatar_color,
+                    'complete_name' => $note->contact->getCompleteName(auth()->user()->name_order),
+                ],
+            ];
+            $notesCollection->push($data);
+        }
+
+        return $notesCollection;
+    }
+
+    /**
+     * Save the current active tab to the User table
+     */
+    public function setTab(Request $request)
+    {
+        auth()->user()->dashboard_active_tab = $request->get('tab');
+        auth()->user()->save();
     }
 }

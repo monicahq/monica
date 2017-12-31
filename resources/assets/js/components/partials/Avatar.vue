@@ -13,7 +13,7 @@
         class="br4 h3 w3 dib" width="43">
     </div>
 
-    <div v-if="!contact.has_avatar" v-tooltip.bottom="contact.complete_name" v-bind:style="{ 'background-color': contact.default_avatar_color }" class="br4 h3 w3 dib pt3 white tc">
+    <div v-if="!contact.has_avatar" v-tooltip.bottom="contact.complete_name" v-bind:style="{ 'background-color': contact.default_avatar_color }" class="br4 h3 w3 dib pt3 white tc f4">
       {{ contact.initials }}
     </div>
   </div>

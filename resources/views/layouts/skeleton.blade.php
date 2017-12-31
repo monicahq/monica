@@ -31,7 +31,7 @@
       ?>;
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }}>
+  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
 
     @include('partials.header')
 

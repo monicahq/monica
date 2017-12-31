@@ -1364,4 +1364,23 @@ class Contact extends Model
             $this->save();
         }
     }
+
+    /**
+     * Gets the contact related to this contact if the current contact is partial.
+     */
+    public function getRelatedRealContact()
+    {
+        // Look in the Relationships table
+        $relatedContact = \App\Relationship::where('with_contact_id', $this->id)->first();
+
+        if (count($relatedContact) != 0) {
+            return \App\Contact::find($relatedContact->contact_id);
+        }
+
+        // Look in the Offspring table
+        $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
+        if (count($relatedContact) != 0) {
+            return Contact::find($relatedContact->is_the_child_of);
+        }
+    }
 }

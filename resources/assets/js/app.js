@@ -48,6 +48,12 @@ Vue.component(
     require('./components/partials/Avatar.vue')
 );
 
+// Dashboard
+Vue.component(
+    'dashboard-log',
+    require('./components/dashboard/DashboardLog.vue')
+);
+
 // Contacts
 Vue.component(
     'contact-address',
