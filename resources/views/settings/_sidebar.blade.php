@@ -98,5 +98,17 @@
       <a href="/settings/api">{{ trans('settings.sidebar_settings_api') }}</a>
     </li>
     @endif
+
+    @if (Route::currentRouteName() == 'settings.security')
+    <li class="selected">
+      <i class="fa fa-cog"></i>
+      {{ trans('settings.sidebar_settings_security') }}
+    </li>
+    @else
+    <li>
+      <i class="fa fa-cog"></i>
+      <a href="/settings/security">{{ trans('settings.sidebar_settings_security') }}</a>
+    </li>
+    @endif
   </ul>
 </div>

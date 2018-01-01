@@ -8,7 +8,7 @@
 
           <div class="signup-box">
             <img class="logo" src="/img/small-logo.png" alt="">
-            <h2>Two Factor Authentication</h2>
+            <h2>{{ trans('auth.2fa_title') }}</h2>
 
             @include ('partials.errors')
 
@@ -16,26 +16,27 @@
               {{ csrf_field() }}
 
               @if ($errors->has('totp'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('totp') }}</strong>
-                                </span>
-                                @endif
+                <span class="help-block">
+                  <strong>{{ $errors->first('totp') }}</strong>
+                </span>
+              @endif
               <div class="form-group">
-                <label for="one_time_password">Enter code</label>
-                <input type="number" class="form-control" id="one_time_password" name="one_time_password" />
+                <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
+                <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
               </div>
 
-              <div class="checkbox">
-                <label for="remember">Remember me on this nrowser</label>
+              <div class="form-group checkbox">
                 <input type="checkbox" name="remember" id="remember" />
+                <label for="remember">Remember me on this browser</label>
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">Validate</button>
+                <button type="submit" class="btn btn-primary">{{ trans('auth.2fa_validate') }}</button>
+                <a href="/logout" class="btn">{{ trans('auth.2fa_cancel') }}</a>
               </div>
 
               <div class="form-group">
-                 Use recuperation code ..
+                 {{ trans('auth.2fa_recuperation_code') }}
               </div>
 
             </form>

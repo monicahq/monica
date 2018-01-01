@@ -12,7 +12,7 @@ class Google2FAController extends Controller
 {
     use RedirectsUsers;
 
-    protected $redirectTo = '/settings';
+    protected $redirectTo = '/settings/security';
 
     /**
      * Create a new authentication controller instance.
@@ -45,7 +45,7 @@ class Google2FAController extends Controller
 
         $request->session()->put('Google2FA_secret', $secret);
 
-        return view('settings.2fa.enable', ['image' => $imageDataUri, 'secret' => $secret]);
+        return view('settings.security.2fa-enable', ['image' => $imageDataUri, 'secret' => $secret]);
     }
 
     /**
@@ -87,15 +87,40 @@ class Google2FAController extends Controller
      */
     public function disableTwoFactor(Request $request)
     {
+        return view('settings.security.2fa-disable');
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivateTwoFactor(Request $request)
+    {
+        $this->validate($request, [
+            'one_time_password' => 'required',
+        ]);
+
         $user = $request->user();
 
-        //make secret column blank
-        $user->google2fa_secret = null;
-        $user->save();
+        //retrieve secret
+        $secret = $user->google2fa_secret;
 
-        (new Authenticator($request))->logout();
+        $authenticator = new Authenticator($request);
 
-        return view('settings.2fa.disable');
+        if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
+
+            //make secret column blank
+            $user->google2fa_secret = null;
+            $user->save();
+
+            (new Authenticator($request))->logout();
+
+            return redirect($this->redirectPath())
+                ->with('status', 'ok');
+        }
+
+        return redirect($this->redirectPath())
+            ->withErrors('ko');
     }
 
     /**

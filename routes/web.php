@@ -168,7 +168,6 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::post('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/reset', ['as' => '.reset', 'uses' => 'SettingsController@reset']);
         Route::post('/settings/save', 'SettingsController@save');
-        Route::post('/settings/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
 
@@ -202,8 +201,12 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         Route::get('/settings/api', 'SettingsController@api')->name('.api');
 
-        Route::get('/settings/2fa/enable', 'Settings\\Google2FAController@enableTwoFactor')->name('.2fa.enable');
-        Route::post('/settings/2fa/enable', 'Settings\\Google2FAController@validateTwoFactor');
-        Route::get('/settings/2fa/disable', 'Settings\\Google2FAController@disableTwoFactor')->name('.2fa.disable');
+        // Security
+        Route::get('/settings/security', 'SettingsController@security')->name('.security');
+        Route::post('/settings/security/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
+        Route::get('/settings/security/2fa-enable', 'Settings\\Google2FAController@enableTwoFactor')->name('.security.2fa-enable');
+        Route::post('/settings/security/2fa-enable', 'Settings\\Google2FAController@validateTwoFactor');
+        Route::get('/settings/security/2fa-disable', 'Settings\\Google2FAController@disableTwoFactor')->name('.security.2fa-disable');
+        Route::post('/settings/security/2fa-disable', 'Settings\\Google2FAController@deactivateTwoFactor');
     });
 });
