@@ -145,3 +145,17 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
         'account_id' => 1,
     ];
 });
+
+$factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'name' => 'test',
+    ];
+});
+
+$factory->define(App\ContactField::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'data' => $faker->text(15),
+    ];
+});

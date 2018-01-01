@@ -73,6 +73,22 @@ class SearchTest extends TestCase
         $this->assertTrue($searchResults->contains($contact));
     }
 
+    public function testSearchContactsThroughContactFeildAndResultContainsContact()
+    {
+        $contact = factory(\App\Contact::class)->create();
+
+        $field = factory(\App\ContactFieldType::class)->create();
+
+        $value = factory(\App\ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $searchResults = $contact->search($field->name + ':' + $value->data, $contact->account_id);
+
+        $this->assertTrue($searchResults->contains($contact));
+    }
+
     /** @test */
     public function testFailingSearchContacts()
     {
