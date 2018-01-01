@@ -76,9 +76,6 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Active tasks
-        $tasks = $account->tasks()->with('contact')->where('completed', 0)->get();
-
         $data = [
             'events' => $events,
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
@@ -90,7 +87,6 @@ class DashboardController extends Controller
             'number_of_tasks' => $account->tasks_count,
             'debt_due' => $debt_due,
             'debt_owed' => $debt_owed,
-            'tasks' => $tasks,
             'debts' => $debt,
             'user' => auth()->user(),
         ];

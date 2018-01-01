@@ -20,6 +20,6 @@
     </li>
     @endforeach
   @else
-  <p>No event planned for this month</p>
+  <p>No reminder for this month</p>
   @endif
 </ul>
