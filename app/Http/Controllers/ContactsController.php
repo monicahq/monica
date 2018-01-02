@@ -40,11 +40,10 @@ class ContactsController extends Controller
 
             $count = 2;
 
-            while(true)
-            {
-                if ($request->get('tag' . $count)) {
+            while (true) {
+                if ($request->get('tag'.$count)) {
                     $tags = $tags->concat(
-                        Tag::where('name_slug', $request->get('tag' . $count))
+                        Tag::where('name_slug', $request->get('tag'.$count))
                                     ->where('account_id', auth()->user()->account_id)
                                     ->get()
                     );
@@ -65,7 +64,7 @@ class ContactsController extends Controller
                     $query->where('id', $tag->id);
                 });
 
-                $url = $url . 'tag' . $tagCount . '=' . $tag->name_slug . '&';
+                $url = $url.'tag'.$tagCount.'='.$tag->name_slug.'&';
 
                 $tagCount++;
             }
