@@ -40,6 +40,9 @@
         <form action="/settings/save" method="POST">
           {{ csrf_field() }}
 
+          {{-- id --}}
+          <input type="hidden" name="id" value="{{ auth()->user()->id }}" />
+
           {{-- names --}}
           <div class="form-group">
             <label for="firstname">First name</label>
@@ -264,7 +267,7 @@
             <label for="password_confirmation">{{ trans('settings.password_new2') }}</label>
             <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="{{ trans('settings.password_new2_placeholder') }}" required />
           </div>
-          
+
           <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
         </form>
 
