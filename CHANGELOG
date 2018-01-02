@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v1.5.0 - 2018-01-02
+-------------------
+
 * Add Webmanifest to create bookmarks on phones
 * Add pets management
 * Activities made with contact now appears in the Journal
@@ -7,8 +14,7 @@ UNRELEASED CHANGES:
 * Add validation when changing email address
 * Add ability to change account's password in the settings
 * Show a user's avatar when searching
-
-RELEASED VERSIONS:
+* Fix timezone not being saved in the Settings tab
 
 v1.4.1 - 2017-12-13
 -------------------
