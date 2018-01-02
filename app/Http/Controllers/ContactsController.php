@@ -369,7 +369,6 @@ class ContactsController extends Controller
                     ['contact_field_type_id', $field_id],
                 ]);
             })->get();
-
         } else {
             $results = Contact::search($needle, $accountId);
         }
