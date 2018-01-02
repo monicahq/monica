@@ -7,6 +7,7 @@ use Auth;
 use App\Tag;
 use Validator;
 use App\Contact;
+use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -354,7 +355,24 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = Contact::search($needle, $accountId);
+        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
+            $search_field = $matches[1];
+            $search_term = $matches[2];
+
+            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
+
+            $field_id = $field->id;
+
+            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
+                $query->where([
+                    ['data', 'like', "$search_term%"],
+                    ['contact_field_type_id', $field_id],
+                ]);
+            })->get();
+        } else {
+            $results = Contact::search($needle, $accountId);
+        }
+
         if (count($results) !== 0) {
             return $results;
         } else {
