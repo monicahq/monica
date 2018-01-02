@@ -355,18 +355,18 @@ class ContactsController extends Controller
             return;
         }
 
-        if(preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
+        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
             $search_field = $matches[1];
             $search_term = $matches[2];
 
-            $field = ContactFieldType::where('name','LIKE',$search_field)->first();
+            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
 
             $field_id = $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term){
+            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
                 $query->where([
                     ['data', 'like', "$search_term%"],
-                    ['contact_field_type_id',$field_id]
+                    ['contact_field_type_id', $field_id],
                 ]);
             })->get();
 
