@@ -21,7 +21,7 @@ The official Monica installation uses mySQL as the database system and **this is
 Once the softwares above are installed:
 
 1. Create a database called `monica` in your mySQL instance. This will let you store your data.
-1. Clone the repository: `git clone git@github.com:monicahq/monica.git` in the folder you want to install the software to.
+1. Clone the repository: `git clone https://github.com/monicahq/monica` in the folder you want to install the software to.
 1. Run `cd monica` to go to the root of the newly created folder containing Monica's code.
 1. Run `composer install` at the root of the folder Monica has been cloned.
 1. Run `cp .env.example .env`. This will create the `.env` file that contains all the settings about Monica.
