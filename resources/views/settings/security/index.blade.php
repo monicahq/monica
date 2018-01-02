@@ -17,7 +17,7 @@
               <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
-              {{ trans('app.breadcrumb_security') }}
+              {{ trans('app.breadcrumb_settings_security') }}
             </li>
           </ul>
         </div>

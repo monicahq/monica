@@ -8,11 +8,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
-class Google2FAController extends Controller
+class MultiFAController extends Controller
 {
     use RedirectsUsers;
 
     protected $redirectTo = '/settings/security';
+
+    /**
+     * Session var name to store secret code
+     */
+    private const SESSION_TFA_SECRET = '2FA_secret';
 
     /**
      * Create a new authentication controller instance.
@@ -43,7 +48,7 @@ class Google2FAController extends Controller
             200
         );
 
-        $request->session()->put('Google2FA_secret', $secret);
+        $request->session()->put(MultiFAController::SESSION_TFA_SECRET, $secret);
 
         return view('settings.security.2fa-enable', ['image' => $imageDataUri, 'secret' => $secret]);
     }
@@ -59,7 +64,7 @@ class Google2FAController extends Controller
         ]);
 
         //retrieve secret
-        $secret = $request->session()->pull('Google2FA_secret');
+        $secret = $request->session()->pull(MultiFAController::SESSION_TFA_SECRET);
 
         $authenticator = new Authenticator($request);
 
@@ -74,11 +79,11 @@ class Google2FAController extends Controller
             $authenticator->login();
 
             return redirect($this->redirectPath())
-                ->with('status', 'ok');
+                ->with('status', trans('settings.2fa_enable_success'));
         }
 
         return redirect($this->redirectPath())
-            ->withErrors('ko');
+            ->withErrors(trans('settings.2fa_enable_error'));
     }
 
     /**
@@ -116,11 +121,11 @@ class Google2FAController extends Controller
             (new Authenticator($request))->logout();
 
             return redirect($this->redirectPath())
-                ->with('status', 'ok');
+                ->with('status', trans('settings.2fa_disable_success'));
         }
 
         return redirect($this->redirectPath())
-            ->withErrors('ko');
+            ->withErrors(trans('settings.2fa_disable_error'));
     }
 
     /**
