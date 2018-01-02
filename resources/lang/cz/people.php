@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Jméno',
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',

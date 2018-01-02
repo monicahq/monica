@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Aggiungi una persona',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
     'people_add_lastname' => 'Cognome (facoltativo)',
