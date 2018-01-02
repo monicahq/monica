@@ -23,6 +23,7 @@ class DateSelectViewComposer
         Carbon::setLocale(auth()->user()->locale);
         $months = [];
         $currentDate = Carbon::now();
+        $currentDate->day = 1;
 
         for ($month = 1; $month < 13; $month++) {
             $currentDate->month = $month;
