@@ -40,6 +40,9 @@
         <form action="/settings/save" method="POST">
           {{ csrf_field() }}
 
+          {{-- id --}}
+          <input type="hidden" name="id" value="{{ auth()->user()->id }}" />
+
           {{-- names --}}
           <div class="form-group">
             <label for="firstname">First name</label>
