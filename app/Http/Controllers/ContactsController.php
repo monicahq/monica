@@ -70,7 +70,6 @@ class ContactsController extends Controller
             }
 
             $contacts = $contacts->get();
-
         } else {
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
