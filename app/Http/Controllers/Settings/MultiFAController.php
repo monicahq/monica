@@ -15,7 +15,7 @@ class MultiFAController extends Controller
     protected $redirectTo = '/settings/security';
 
     /**
-     * Session var name to store secret code
+     * Session var name to store secret code.
      */
     private const SESSION_TFA_SECRET = '2FA_secret';
 
@@ -48,7 +48,7 @@ class MultiFAController extends Controller
             200
         );
 
-        $request->session()->put(MultiFAController::SESSION_TFA_SECRET, $secret);
+        $request->session()->put(self::SESSION_TFA_SECRET, $secret);
 
         return view('settings.security.2fa-enable', ['image' => $imageDataUri, 'secret' => $secret]);
     }
@@ -64,7 +64,7 @@ class MultiFAController extends Controller
         ]);
 
         //retrieve secret
-        $secret = $request->session()->pull(MultiFAController::SESSION_TFA_SECRET);
+        $secret = $request->session()->pull(self::SESSION_TFA_SECRET);
 
         $authenticator = new Authenticator($request);
 
