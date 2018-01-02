@@ -41,11 +41,11 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('contact', function ($value) {
             try {
-            return Contact::where('account_id', auth()->user()->account_id)
+                return Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
             } catch (ModelNotFoundException $ex) {
-                    redirect('/people/notfound')->send();
+                redirect('/people/notfound')->send();
             }
         });
 
