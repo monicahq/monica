@@ -63,6 +63,11 @@ Vue.component(
     require('./components/people/Notes.vue')
 );
 
+Vue.component(
+    'pet',
+    require('./components/people/Pets.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',

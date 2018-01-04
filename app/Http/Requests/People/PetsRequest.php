@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\People;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SettingsRequest extends FormRequest
+class PetsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class SettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email' => 'required|email|max:2083|unique:users,email,'.$this->id,
-            'timezone' => '',
-            'layout' => '',
-            'locale' => '',
-            'currency_id' => '',
+            'name' => 'max:255|nullable',
+            'pet_category_id' => 'integer',
         ];
     }
 }

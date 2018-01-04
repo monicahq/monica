@@ -267,7 +267,7 @@
             <label for="password_confirmation">{{ trans('settings.password_new2') }}</label>
             <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="{{ trans('settings.password_new2_placeholder') }}" required />
           </div>
-          
+
           <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
         </form>
 
