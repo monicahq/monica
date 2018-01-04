@@ -13,6 +13,9 @@ addons:
     organization: "monicahq"
     token:
       secure: "efqSYGxNxCSfJ9qKR66iTjQU5tolPCZVmhkI0Om1XgWyYdZEcLX68vp1BvC1EE5SFL3a0Wxamg1RIUI4fH1RG3YivK3ND7MbqvKAlwTbaYbCu6GMKWlutySk5cakA6zLP7V6dsGeYMDHo3/vaGW9xQe44uOzon8qfxFXJu+luTwJnqH7EjHLUCWvx04y4ZcrTd/W/m2ToDMpyEnY3NXfIekkx+m3OibB1UCOAll39JyLevGKT4ym2tDxz/2TvEt3IV82lV/PUjvOCXEopxg7hiLg/Q8B9KRgn+UNGXQfT0G0uvg5W2nMKIoNetGM7uu2/mwhlaaGZdjfV7kc1nTE2WRqPi2C27K0aqv0+CajC/+FmcDmcEHWKDPjTnid9S36IDorrVa0/v+DualS7utGRqNo68dP6DD5+DmLNRuZicpOtrZPhQZYDaViPo8aqwDKjsjknlaeM1P4Cd0QdznwuO01hIJ1Gs9gxytBIyzZVTTZ/JfDvp7mhbK+3GTrPQgWzQtI0lBkYmcst0fQsZsZ05tn9lvehRVO22SN6lk7Mrc9emUdoGbP9Z4SO4bTn/KNG+uhPDBvpYSLkQlDZbScWJiKaB/QteLmId2qifsrmLkliNfBmirfUuHNY3FkttzN9gATS7kejA8NxYE5dcT/vr8dxamQYz1f/A1T5URcSyM="
+    branches:
+        - master
+        - sonar-analyser
 
 jdk:
   - oraclejdk8
@@ -27,7 +30,7 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit phpunit.result.xml --coverage-clover phpunit.coverage.xml
-  - sonar-scanner
+  - sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml
 
 cache:
   directories:
