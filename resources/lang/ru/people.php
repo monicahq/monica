@@ -238,7 +238,7 @@ return [
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',
     'activities_activity' => 'Activity Category',
-    
+
     // notes
     'notes_create_success' => 'Заметка была добавлена',
     'notes_update_success' => 'The note has been saved successfully',
