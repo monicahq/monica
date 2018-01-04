@@ -47,10 +47,12 @@
         </form>
       </li>
 
-      @include('people.modal.activity_view')
-
       @endforeach
     </ul>
   </div>
+  @foreach($contact->activities as $activity)
 
+      @include('people.modal.activity_view')
+
+  @endforeach
 @endif

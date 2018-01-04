@@ -96,7 +96,7 @@ class ActivityTest extends FeatureTestCase
 
         // Check that the Contact view contains the newly created note
         $response = $this->get('/people/'.$contact->id);
-        $response->assertSeeText($activityTitle);
+        $response->assertSee($activityTitle);
 
         // Visit the dashboard and checks that the note event appears on the
         // dashboard
