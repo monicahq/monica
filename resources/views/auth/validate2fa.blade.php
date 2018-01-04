@@ -12,7 +12,7 @@
 
             @include ('partials.errors')
 
-            <form class="" action="/dashboard" method="post">
+            <form class="" action="/validate2fa" method="post">
               {{ csrf_field() }}
 
               @if ($errors->has('totp'))
@@ -31,8 +31,8 @@
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('auth.2fa_validate') }}</button>
-                <a href="/logout" class="btn">{{ trans('auth.2fa_cancel') }}</a>
+                <button type="submit" class="btn btn-primary">{{ trans('app.verify') }}</button>
+                <a href="/logout" class="btn">{{ trans('app.cancel') }}</a>
               </div>
 
               <div class="form-group">

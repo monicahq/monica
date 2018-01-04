@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', '2fa'])->group(function () {
     Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
-    Route::post('/dashboard/', 'DashboardController@index');
+    Route::post('/validate2fa', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people/', 'ContactsController@index')->name('.index');
