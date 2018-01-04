@@ -47,7 +47,7 @@
         </form>
       </li>
 
-     
+      @include('people.modal.activity_view')
 
       @endforeach
     </ul>
