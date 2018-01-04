@@ -12,8 +12,8 @@ addons:
     organization: "monicahq"
 # Add a SONAR_TOKEN variable in the travis Repository Settings
 # see https://docs.travis-ci.com/user/sonarcloud/
-    token:
-      secure: "EuWnrXgqKQnMw7+8BbBsRaZt5pK+G91d2rNY59+L04mA8Jvc6j7LeSQ6MD/OdNP/BX6nFxals1oDkBUKI174UP1+gtyioJ8AjuBcgv6yRKfLvgVBnZc8k2oUnAWcsJvqgdxk4YFL7TM+hUCQtuf6jonKc2VYI+BNZUf2Tps3efaTKBulVMhT5uytDbv9eda61N87BYcMF2kvopzKrPsX8cFfKb6ojrpB5JHG80h32NQQR/HxYUn+8MqcM+riT6JLX0IhIA/e2KHMfFAvgb1Y9XJ7K3wamh+A9blppvYmLksWQoYVRBH1utksLBClAWwaYNivqcnDDON1RilUH/1F04LB17HrZVKy3KUUbG43e4BZ+4Dn0euhsG/L2CSmhuKmeMK245k/xYBXMrj8f+mZoma6gTr+JKg0jSV4/SrbmRDiVXxtlhSqbalQHodj/GCEzKzHBiQZa6GRJer9PncUpKRQ1+AlPAavCeUFepAJNZDlCGVnW5PLSLB2i67DZt9tvk+9mnynqyaCJ1yZI9wGuqTmfYMUQhKv334NPM1kALHSxIHLhQZPSaYN/btg2EGGbyDQ7KjI1MJ9Mi2cWg+d2R2yNrFHp5UZqKMDLs/xvvs69jOKjKO0M0G7RDhPMX6uxsRvEpmfSaqWVYHd5g/OtfBdd8IPsSDvrSizTjSFOkQ="
+#    token:
+#      secure: "EuWnrXgqKQnMw7+8BbBsRaZt5pK+G91d2rNY59+L04mA8Jvc6j7LeSQ6MD/OdNP/BX6nFxals1oDkBUKI174UP1+gtyioJ8AjuBcgv6yRKfLvgVBnZc8k2oUnAWcsJvqgdxk4YFL7TM+hUCQtuf6jonKc2VYI+BNZUf2Tps3efaTKBulVMhT5uytDbv9eda61N87BYcMF2kvopzKrPsX8cFfKb6ojrpB5JHG80h32NQQR/HxYUn+8MqcM+riT6JLX0IhIA/e2KHMfFAvgb1Y9XJ7K3wamh+A9blppvYmLksWQoYVRBH1utksLBClAWwaYNivqcnDDON1RilUH/1F04LB17HrZVKy3KUUbG43e4BZ+4Dn0euhsG/L2CSmhuKmeMK245k/xYBXMrj8f+mZoma6gTr+JKg0jSV4/SrbmRDiVXxtlhSqbalQHodj/GCEzKzHBiQZa6GRJer9PncUpKRQ1+AlPAavCeUFepAJNZDlCGVnW5PLSLB2i67DZt9tvk+9mnynqyaCJ1yZI9wGuqTmfYMUQhKv334NPM1kALHSxIHLhQZPSaYN/btg2EGGbyDQ7KjI1MJ9Mi2cWg+d2R2yNrFHp5UZqKMDLs/xvvs69jOKjKO0M0G7RDhPMX6uxsRvEpmfSaqWVYHd5g/OtfBdd8IPsSDvrSizTjSFOkQ="
     branches:
         - master
         - sonar-analyser
@@ -31,7 +31,7 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit phpunit.result.xml --coverage-clover phpunit.coverage.xml
-  - sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml -Dsonar.projectVersion=`php artisan monica:getversion`
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml -Dsonar.projectVersion=`php artisan monica:getversion`; fi'
 
 cache:
   directories:
