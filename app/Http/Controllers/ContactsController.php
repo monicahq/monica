@@ -51,7 +51,7 @@ class ContactsController extends Controller
             ->withContacts($contacts)
             ->withTag($tag);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
