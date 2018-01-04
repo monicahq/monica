@@ -238,7 +238,11 @@ return [
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',
     'activities_activity' => 'Activity Category',
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 290ee7b5f59455ee9bf0568e5790315182accf39
     // notes
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',
     'notes_update_success' => 'Poznámka byla úspěšně uložena',
