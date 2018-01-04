@@ -12,8 +12,10 @@ addons:
     organization: "monicahq"
 # Add a SONAR_TOKEN variable in the travis Repository Settings
 # see https://docs.travis-ci.com/user/sonarcloud/
-#    token:
-#      secure: "EuWnrXgqKQnMw7+8BbBsRaZt5pK+G91d2rNY59+L04mA8Jvc6j7LeSQ6MD/OdNP/BX6nFxals1oDkBUKI174UP1+gtyioJ8AjuBcgv6yRKfLvgVBnZc8k2oUnAWcsJvqgdxk4YFL7TM+hUCQtuf6jonKc2VYI+BNZUf2Tps3efaTKBulVMhT5uytDbv9eda61N87BYcMF2kvopzKrPsX8cFfKb6ojrpB5JHG80h32NQQR/HxYUn+8MqcM+riT6JLX0IhIA/e2KHMfFAvgb1Y9XJ7K3wamh+A9blppvYmLksWQoYVRBH1utksLBClAWwaYNivqcnDDON1RilUH/1F04LB17HrZVKy3KUUbG43e4BZ+4Dn0euhsG/L2CSmhuKmeMK245k/xYBXMrj8f+mZoma6gTr+JKg0jSV4/SrbmRDiVXxtlhSqbalQHodj/GCEzKzHBiQZa6GRJer9PncUpKRQ1+AlPAavCeUFepAJNZDlCGVnW5PLSLB2i67DZt9tvk+9mnynqyaCJ1yZI9wGuqTmfYMUQhKv334NPM1kALHSxIHLhQZPSaYN/btg2EGGbyDQ7KjI1MJ9Mi2cWg+d2R2yNrFHp5UZqKMDLs/xvvs69jOKjKO0M0G7RDhPMX6uxsRvEpmfSaqWVYHd5g/OtfBdd8IPsSDvrSizTjSFOkQ="
+    token:
+      secure: "EuWnrXgqKQnMw7+8BbBsRaZt5pK+G91d2rNY59+L04mA8Jvc6j7LeSQ6MD/OdNP/BX6nFxals1oDkBUKI174UP1+gtyioJ8AjuBcgv6yRKfLvgVBnZc8k2oUnAWcsJvqgdxk4YFL7TM+hUCQtuf6jonKc2VYI+BNZUf2Tps3efaTKBulVMhT5uytDbv9eda61N87BYcMF2kvopzKrPsX8cFfKb6ojrpB5JHG80h32NQQR/HxYUn+8MqcM+riT6JLX0IhIA/e2KHMfFAvgb1Y9XJ7K3wamh+A9blppvYmLksWQoYVRBH1utksLBClAWwaYNivqcnDDON1RilUH/1F04LB17HrZVKy3KUUbG43e4BZ+4Dn0euhsG/L2CSmhuKmeMK245k/xYBXMrj8f+mZoma6gTr+JKg0jSV4/SrbmRDiVXxtlhSqbalQHodj/GCEzKzHBiQZa6GRJer9PncUpKRQ1+AlPAavCeUFepAJNZDlCGVnW5PLSLB2i67DZt9tvk+9mnynqyaCJ1yZI9wGuqTmfYMUQhKv334NPM1kALHSxIHLhQZPSaYN/btg2EGGbyDQ7KjI1MJ9Mi2cWg+d2R2yNrFHp5UZqKMDLs/xvvs69jOKjKO0M0G7RDhPMX6uxsRvEpmfSaqWVYHd5g/OtfBdd8IPsSDvrSizTjSFOkQ="
+    github_token:
+      secure: "cPIfxvj81Rh2Z2mLvs1tuZPydP1L0+myjhotZ7J6vsXC6cW6SvDrIBR0UF4Sdie13mM0VHz2FMC9djopDWt+ShrVMWuP3K1UsRWPkMC5eGids81og2Kk0nuWGb9dA9V3inSH24j6uRt+1KwOWIsinq7cubZWXpbWB/uxTC6Fl7rcBLZ2vmMojox7kovoUcC6oW9TeMv/faM2XwvJAsoNdCfLlS27UoHB5b3cf5SWOGPpMg3ivdmmuUJkltj+yV/bwicBt4RfL3Xwrj/bc1N6UfwQbf2dUB52YW8TF7phTc4ZNsex0B+8mKFcikdsCsdt1YJqaEBQS7SNmHtb/SPoBhlUIJ8vcni0X5WjsJDub0w7gENApsZzWtYy0r95/0La74NxurIPG3EMpRy9DBwx5qif2uWDUEC0MdKDMQ17jap1aiESvj8dTK+Ymt2UGGCXa8ccUF7RsTNixM/cWBOc4urqDQfLRjq+zkRsit2662ebAkuDhceqswl01B+2PZ21Uajv6YPSo24MwVKW3/KM4AY9vMfkutdOMohcB1cmoqZXtYqC/X5Spi+6C2AEknj/OB6HDFlvLS0rRSp/MsXO0Yiq93e0+7j1hbQ4gG93QURPvtH/le7aZgFRba+yK8p0aQd1nToWKvO6dk/XXLQM50o4KaDER/xjOiMpOVyeG/4="
     branches:
         - master
         - sonar-analyser
@@ -31,7 +33,8 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit phpunit.result.xml --coverage-clover phpunit.coverage.xml
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml -Dsonar.projectVersion=`php artisan monica:getversion`; fi'
+#  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml -Dsonar.projectVersion=`php artisan monica:getversion`; fi'
+  - sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml -Dsonar.projectVersion=`php artisan monica:getversion`
 
 cache:
   directories:
