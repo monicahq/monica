@@ -26,7 +26,11 @@
                   <br>
 
                   <label for="activity_type_id">{{ trans('people.activities_activity') }}</label>
-                  <p>{{ trans('people.activity_type_'.$activity->type->key) }}</p>
+                  @if (isset($activity->type))
+                     <p>{{ trans('people.activity_type_'.$activity->type->key) }}</p>
+                  @else
+                     <p>{{ trans('app.unknown')}}</p>
+                  @endif
                   <br>
 
                   <label for="description">{{ trans('people.activities_add_optional_comment') }}</label>
