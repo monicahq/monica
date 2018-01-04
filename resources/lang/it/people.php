@@ -231,7 +231,8 @@ return [
     'activities_update_success' => 'Attività aggiornata',
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
-
+    'activities_activity' => 'Activity Category',
+    
     // notes
     'notes_create_success' => 'Nota creata',
     'notes_update_success' => 'Nota aggiornata',

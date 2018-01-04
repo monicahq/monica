@@ -30,6 +30,9 @@
           {{ $activity->getSummary() }}
         </div>
         <div class="table-cell list-actions">
+            <a href="#activity{{$activity->id}}Modal" data-toggle="modal">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </a>
           <a href="{{ route('activities.edit', [$activity, $contact]) }}" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
@@ -43,6 +46,9 @@
           {{ csrf_field() }}
         </form>
       </li>
+
+      @include('people.modal.activity_view')
+
       @endforeach
     </ul>
   </div>
