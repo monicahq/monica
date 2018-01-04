@@ -66,7 +66,7 @@ class MultiFAController extends Controller
         //retrieve secret
         $secret = $request->session()->pull(self::SESSION_TFA_SECRET);
 
-        $authenticator = new Authenticator($request);
+        $authenticator = app(Authenticator::class)->boot($request);
 
         if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
             //get user
@@ -81,6 +81,8 @@ class MultiFAController extends Controller
             return redirect($this->redirectPath())
                 ->with('status', trans('settings.2fa_enable_success'));
         }
+
+        $authenticator->logout();
 
         return redirect($this->redirectPath())
             ->withErrors(trans('settings.2fa_enable_error'));
@@ -110,7 +112,7 @@ class MultiFAController extends Controller
         //retrieve secret
         $secret = $user->google2fa_secret;
 
-        $authenticator = new Authenticator($request);
+        $authenticator = app(Authenticator::class)->boot($request);
 
         if ($authenticator->verifyGoogle2FA($secret, $request['one_time_password'])) {
 
@@ -118,7 +120,7 @@ class MultiFAController extends Controller
             $user->google2fa_secret = null;
             $user->save();
 
-            (new Authenticator($request))->logout();
+            $authenticator->logout();
 
             return redirect($this->redirectPath())
                 ->with('status', trans('settings.2fa_disable_success'));
