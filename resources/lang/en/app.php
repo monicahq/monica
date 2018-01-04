@@ -11,6 +11,7 @@ return [
     'close' => 'Close',
     'remove' => 'Remove',
     'done' => 'Done',
+    'verify' => 'Verify',
     'for' => 'for',
     'unknown' => 'I don\'t know',
     'load_more' => 'Load more',
