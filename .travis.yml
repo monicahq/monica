@@ -27,7 +27,7 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit phpunit.result.xml --coverage-clover phpunit.coverage.xml
-  - sonar-scanner -Dsonar.php.tests.reportPath=phpunit.result.xml -Dsonar.php.coverage.reportPaths=phpunit.coverage.xml
+  - sonar-scanner
 
 cache:
   directories:
