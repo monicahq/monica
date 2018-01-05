@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -z "${SONAR_TOKEN:-}" ]; then
+  exit 0
+fi
 set -euo pipefail
 
 function installSonar {
@@ -21,14 +24,14 @@ function installSonar {
 
 function CommonParams {
   extra=""
-  if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
-    extra="$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG"
-  fi
+#  if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
+#    extra="$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG"
+#  fi
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=monicahq \
        -Dsonar.php.tests.reportPath=junit.xml \
-       -Dsoar.php.coverage.reportPaths=clover.xml \
+       -Dsonar.php.coverage.reportPaths=clover.xml \
        -Dsonar.projectVersion=$(php artisan monica:getversion) \
        $extra
 }
