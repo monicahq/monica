@@ -1,8 +1,9 @@
 #!/bin/bash
 
-COMMON_PARAMS=-Dsonar.php.tests.reportPath=junit.xml \
-              -Dsonar.php.coverage.reportPaths=clover.xml \
-              -Dsonar.projectVersion=$(php artisan monica:getversion)
+export COMMON_PARAMS=\
+    -Dsonar.php.tests.reportPath=junit.xml \
+    -Dsonar.php.coverage.reportPaths=clover.xml \
+    -Dsonar.projectVersion=$(php artisan monica:getversion)
 
 if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo 'Analyze master'
