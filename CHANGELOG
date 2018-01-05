@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix vCard import if custom field types are not present
 
 RELEASED VERSIONS:
 
