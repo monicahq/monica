@@ -20,8 +20,8 @@ function installSonar {
 }
 
 function CommonParams {
-    extra=""
-    if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
+    extra=
+    if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
         extra=$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG
     fi
 
