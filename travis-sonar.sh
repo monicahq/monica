@@ -1,7 +1,34 @@
 #!/bin/bash
 set -euo pipefail
 
-export COMMON_PARAMS="-Dsonar.php.tests.reportPath=junit.xml \
+function installSonar {
+    echo 'Setup sonar scanner'
+    
+    # set version of sonar scanner to use :
+    sonarversion=3.0.3.778
+
+    mkdir -p $HOME/sonarscanner
+    pushd $HOME/sonarscanner > /dev/null
+    if [ ! -d "sonar-scanner-$sonarversion" ]; then
+        wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
+        unzip -q sonar-scanner-cli-$sonarversion.zip
+        rm sonar-scanner-cli-$sonarversion.zip
+    fi
+    export SONAR_SCANNER_HOME=$HOME/sonarscanner/sonar-scanner-$sonarversion
+    export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+    popd > /dev/null
+}
+
+installSonar
+
+if [ -z "${SONAR_HOST_URL:-}" ]; then
+    export SONAR_HOST_URL=https://sonarcloud.io
+fi
+export COMMON_PARAMS="\
+    -Dsonar.host.url=$SONAR_HOST_URL \
+    -Dsonar.login=$SONAR_TOKEN \
+    -Dsonar.organization=monicahq \
+    -Dsonar.php.tests.reportPath=junit.xml \
     -Dsonar.php.coverage.reportPaths=clover.xml \
     -Dsonar.projectVersion=$(php artisan monica:getversion)"
 
@@ -16,7 +43,7 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; th
 elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo 'Analyze release branch'
   sonar-scanner $COMMON_PARAMS \
-    #-Dsonar.branch.name=$TRAVIS_BRANCH \
+    -Dsonar.branch.name=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
