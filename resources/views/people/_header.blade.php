@@ -14,13 +14,13 @@
               <img src="{{ $contact->gravatar_url }}" width="87">
             @else
               @if (strlen($contact->getInitials()) == 1)
-              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-                {{ $contact->getInitials() }}
-              </div>
+                <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                  {{ $contact->getInitials() }}
+                </div>
               @else
-              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
-                {{ $contact->getInitials() }}
-              </div>
+                <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                  {{ $contact->getInitials() }}
+                </div>
               @endif
             @endif
           @endif
@@ -60,23 +60,7 @@
             </li>
           </ul>
 
-          <ul class="tags">
-            <ul class="tags-list">
-              @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
-              @endforeach
-            </ul>
-            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
-          </ul>
-
-          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
-            {{ csrf_field() }}
-            <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
-            <div class="tagsFormActions">
-              <button type="submit" class="btn btn-primary">{{ trans('app.update') }}</button>
-              <a href="#" class="btn" id="tagsFormCancel">{{ trans('app.cancel') }}</a>
-            </div>
-          </form>
+          @include('partials.components.tags-with-form')
 
           <ul class="horizontal quick-actions">
             <li>

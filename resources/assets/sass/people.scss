@@ -54,6 +54,11 @@
     border-bottom: 1px solid #eee;
     padding: 10px;
 
+    #tagsDisplay {
+      margin-left: 20px;
+      display: inline;
+    }
+
     &:hover {
       background-color: #f7fbfc;
     }
@@ -142,6 +147,34 @@
       position: relative;
       text-align: right;
       top: 16px;
+    }
+
+    .people-list-item-tags {
+      display: inline;
+      margin-left: 20px;
+
+      .tags, .tagsForm {
+        display: none;
+      }
+
+      .tagsForm {
+        margin-top: 10px;
+
+        .tagsFormActions {
+          margin-top: 10px;
+          margin-bottom: -20px;
+        }
+
+      }
+
+      .tags-inline {
+        display: inline-flex;
+        margin-top: 5px;
+
+        li {
+          align-self: baseline;
+        }
+      }
     }
   }
 }
@@ -243,14 +276,15 @@
         }
       }
 
-      #tagsForm {
+      .tagsForm {
+        display: none;
         padding-left: 100px;
         position: relative;
 
         #tags_tagsinput {
-          height: 40px!important;
-          min-height: 40px!important;
-          width: 370px!important;
+          height: 40px !important;
+          min-height: 40px !important;
+          width: 370px !important;
           display: inline-block;
           overflow: hidden;
         }
@@ -258,7 +292,7 @@
         .tagsFormActions {
           display: inline;
           position: relative;
-          top: -17px;
+          top: 5px;
         }
       }
 
@@ -660,8 +694,8 @@
           }
         }
 
-        #tagsForm {
-          display: block;
+        .tagsForm {
+          display: none;
           margin-top: 40px;
           padding-left: 0;
 
@@ -670,7 +704,6 @@
           }
 
           .tagsFormActions {
-            display: block;
             margin-top: 20px;
           }
         }

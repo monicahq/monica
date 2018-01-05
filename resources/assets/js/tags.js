@@ -1,61 +1,73 @@
-// Code to manage tags in the contact view
+// Code to manage tags in both contacts view and profile view
 
-$('#tags').tagsInput({
-   'maxChars' : 255,
+$('#tagsDisplay').click(function (e) {
+    $.each($('.people-list-item').nextAll(), function () {
+        $(this).find('.tags').toggleClass("tags-inline");
+    });
+    e.preventDefault();
 });
 
-$('#tagsForm').hide();
-
-$('#tagsFormCancel').click( function(e) {
-  $('#tagsForm').hide();
-  $('.tags').toggle();
+$('.tagsFormCancel').click(function (e) {
+    var tagsForm = $(this.closest('.tagsForm'));
+    tagsForm.hide();
+    tagsForm.prev().toggle();
+    e.preventDefault();
 });
 
-$('#showTagForm').click(function(e) {
-  $('#tagsForm').toggle();
-  $('.tags').toggle();
-  e.preventDefault();
-  return false;
+$('.showTagForm').click(function (e) {
+    var tags = $(this.closest('.tags'));
+    tags.next().toggle();
+    tags.toggle();
+    tags.next().find("input[name = 'tags']").tagsInput({
+        'maxChars': 255,
+        'height': 'auto',
+        'width': 'auto',
+    });
+    e.preventDefault();
+    return false;
 });
 
-$('#tags_tagsinput').keyup(function(e) {
-  if (e.keyCode == 27) {
-    $('#tagsForm').toggle();
-    $('.tags').toggle();
-  }
+$('.tagsForm').keyup(function (e) {
+    if (e.keyCode == 27) {
+        $(this).toggle();
+        $(this).prev().toggle();
+    }
 });
 
-$('#tagsForm').submit(function(e) {
+$('.tagsForm').submit(function (e) {
 
-  // gather the list of tags in the input and translating it into a comma
-  // separated string
-  var tags = $.map(
-    $('#tagsForm .tag span'), function(e,i) {
-      return $(e).text().trim();
-  });
+    // gather the list of tags in the input and translating it into a comma
+    // separated string
+    var currentForm = $(this);
+    var currentTags = currentForm.prev();
 
-  var tagsTring = tags.join(',');
+    var tags = $.map(
+        currentForm.find('.tag span'), function (e, i) {
+            return $(e).text().trim();
+        });
 
-  $.post(
-    $( this ).prop( 'action' ),
-    {
-      "_token": $(this).find( 'input[name=_token]' ).val(),
-      'tags': tagsTring
-    },
-    function( data ) {
-      // success
-      $('#tagsForm').toggle();
+    var tagsTring = tags.join(',');
 
-      $('.tags-list').empty();
+    $.post(
+        $(this).prop('action'),
+        {
+            "_token": $(this).find('input[name=_token]').val(),
+            'tags': tagsTring
+        },
+        function (data) {
+            // success
+            $(currentForm).toggle();
 
-      // add the new tag
-      for (var i = 0; i < data['tags'].length ; i++) {
-        $('.tags-list').append('<li class="pretty-tag"><a href="/people?tags=' + data.tags[i].slug + '">' + data.tags[i].slug + '</a></li>');
-      }
+            $(currentTags.find('.tags-list')).empty();
 
-      $('.tags').toggle();
-    },
-    'json'
-  );
-  e.preventDefault();
+            // add the new tag
+            for (var i = 0; i < data['tags'].length; i++) {
+                $(currentTags.find('.tags-list')).append('<li class="pretty-tag"><a href="/people?tags=' + data.tags[i].slug + '">' + data.tags[i].slug + '</a></li>');
+            }
+
+            $(currentTags).toggle();
+        },
+        'json'
+    );
+    e.preventDefault();
 });
