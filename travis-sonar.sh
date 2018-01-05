@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-set -x
 
 export COMMON_PARAMS="-Dsonar.php.tests.reportPath=junit.xml \
     -Dsonar.php.coverage.reportPaths=clover.xml \
@@ -17,7 +16,7 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; th
 elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   echo 'Analyze release branch'
   sonar-scanner $COMMON_PARAMS \
-    -Dsonar.branch.name=$TRAVIS_BRANCH \
+    #-Dsonar.branch.name=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
