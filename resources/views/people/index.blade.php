@@ -48,7 +48,7 @@
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
-            <div class="col-xs-12 col-md-9">
+            <div class="col-xs-12 col-md-9 mb4">
 
               @if (! is_null($tag))
               <p class="clear-filter">

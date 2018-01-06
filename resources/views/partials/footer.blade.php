@@ -1,4 +1,4 @@
-<footer class="ph3 ph5-ns pb4 mt3 cf w-100">
+<footer class="ph3 ph5-ns pb4 cf w-100">
   <div class="mw9 flex f6">
     <div class="fl w-40-ns w-100 pa2 bt b--gray-monica pt3">
       <ul>

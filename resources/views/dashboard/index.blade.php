@@ -4,15 +4,24 @@
   <div class="dashboard">
 
     <section class="ph3 ph5-ns pv4 cf w-100 bg-gray-monica">
-      <div class="mw9 center flex justify-center items-center">
-        <div class="pr2">
-          Last consulted
+      <div class="mw9 center">
+        <div class="fl w-70 ph2">
+          <div class="flex items-center">
+            <div class="pr2">
+              {{ trans('people.people_list_last_updated') }}
+            </div>
+            @foreach($lastUpdatedContacts as $contact)
+            <div class="pr2 pointer">
+              <avatar v-bind:contact="{{ $contact }}"></avatar>
+            </div>
+            @endforeach
+          </div>
         </div>
-        @foreach($lastUpdatedContacts as $contact)
-        <div class="pr2 pointer">
-          <avatar v-bind:contact="{{ $contact }}"></avatar>
+        <div class="fl w-30 tr ph2">
+          <a href="/people/add" class="btn btn-primary" style="padding: 15px 45px;">
+            {{ trans('people.people_list_blank_cta') }}
+          </a>
         </div>
-        @endforeach
       </div>
     </section>
 
