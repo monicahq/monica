@@ -11,7 +11,6 @@ return [
     'tab_favorite_notes' => 'Notes favorites',
     'tab_calls_blank' => 'Vous n\'avez encore enregistré aucun appel.',
 
-
     'statistics_contacts' => 'Contacts',
     'statistics_activities' => 'Activités',
     'statistics_gifts' => 'Cadeaux',
