@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+REPOSITORY_OWNER=monicahq/monica
+
 function installSonar {
   echo 'Setup sonar scanner'
 
@@ -21,7 +23,7 @@ function installSonar {
 
 function CommonParams {
   extra=""
-  if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
+  if [ "$TRAVIS_REPO_SLUG" != "$REPOSITORY_OWNER" ]; then
     # Avoid forks to send reports to the same project
     project="${TRAVIS_REPO_SLUG/\//_}"
     extra="$extra -Dsonar.projectKey=monica:$project -Dsonar.projectName=$project"
@@ -92,9 +94,27 @@ elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -
     -Dsonar.login=$SONAR_TOKEN
 
 elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
-  echo '==================================='
-  echo 'SONAR:Analyze internal pull request'
-  echo '==================================='
+
+  PULL_REQUEST_BRANCH=
+  PULL_REQUEST_REPOSITORY=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.full_name)
+
+  if [ "$PULL_REQUEST_REPOSITORY" == "$REPOSITORY_OWNER" ]; then
+
+    echo '==================================='
+    echo 'SONAR:Analyze internal pull request'
+    echo '==================================='
+    PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
+
+  else
+
+    echo '==================================='
+    echo 'SONAR:Analyze external pull request'
+    echo '==================================='
+    PULL_REQUEST_USER=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.login)
+    PULL_REQUEST_BRANCH=$PULL_REQUEST_USER:$TRAVIS_PULL_REQUEST_BRANCH
+
+  fi
+
   installSonar
   gitFetch
 
@@ -115,7 +135,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
   # analyse with GitHub token to add comment on the PR
   echo sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_PULL_REQUEST_BRANCH \
+    -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
     -Dsonar.branch.target=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
@@ -126,7 +146,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG
 
   $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_PULL_REQUEST_BRANCH \
+    -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
     -Dsonar.branch.target=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
@@ -137,31 +157,9 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.login=$SONAR_TOKEN
 
-else
-  echo 'No analysis for external pull request .. yet'
+elif [ ! -a "travis-sonarlauncher.sh.x" ]; then
 
-  user=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .user.login)
-
-  echo TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG
-  echo TRAVIS_BRANCH=$TRAVIS_BRANCH
-  echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
-  echo TRAVIS_COMMIT=$TRAVIS_COMMIT
-  echo TRAVIS_PULL_REQUEST_SHA=$TRAVIS_PULL_REQUEST_SHA
-  echo TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST
-  echo TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
-  echo PULL_REQUEST_USER=$user
-
-#  TODO : try to launch something like this :
-#  $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-#    -Dsonar.branch.name=$user:$TRAVIS_PULL_REQUEST_BRANCH \
-#    -Dsonar.branch.target=$TRAVIS_BRANCH \
-#    -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
-#    -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
-#    -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
-#    -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
-#    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
-#    -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
-#    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG \
-#    -Dsonar.login=$SONAR_TOKEN
+  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.0/travis-sonarlauncher.tar | tar x
+  ./travis-sonarlauncher.sh.x
 
 fi
