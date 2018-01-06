@@ -12,7 +12,7 @@
             </div>
             @foreach($lastUpdatedContacts as $contact)
             <div class="pr2 pointer">
-              <avatar v-bind:contact="{{ $contact }}"></avatar>
+              <avatar v-bind:contact="{{ $contact }}" v-bind:clickable="true"></avatar>
             </div>
             @endforeach
           </div>
