@@ -34,7 +34,8 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             @include('people.debt.form', [
               'method' => 'POST',
-              'action' => route('people.debt.store', $contact)
+              'action' => route('people.debt.store', $contact),
+              'update_or_add' =>'add'
             ])
           </div>
         </div>
