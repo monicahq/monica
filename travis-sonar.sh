@@ -111,7 +111,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
       -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
       -Dsonar.github.oauth=$GITHUB_TOKEN \
       -Dsonar.login=$SONAR_TOKEN
-  elif
+  fi
 
   # analyse with GitHub token to add comment on the PR
   echo sonar-scanner $(CommonParams) \
