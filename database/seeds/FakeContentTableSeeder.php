@@ -89,6 +89,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateActivities();
             $this->populateTasks();
             $this->populateDebts();
+            $this->populateCalls();
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
@@ -475,5 +476,15 @@ class FakeContentTableSeeder extends Seeder
     {
         $this->contact->last_consulted_at = $this->faker->dateTimeThisYear();
         $this->contact->save();
+    }
+
+    public function populateCalls()
+    {
+        if (rand(1, 3) == 1) {
+            $calls = $this->contact->calls()->create([
+                'account_id' => $this->contact->account_id,
+                'called_at' => $this->faker->dateTimeThisYear(),
+            ]);
+        }
     }
 }

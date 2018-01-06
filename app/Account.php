@@ -422,4 +422,20 @@ class Account extends Model
             }
         }
     }
+
+    /**
+     * Get the reminders for the month given in parameter.
+     * - 0 means current month
+     * - 1 means month+1
+     * - 2 means month+2...
+     * @param  int    $month
+     */
+    public function getRemindersForMonth(int $month)
+    {
+        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+        $reminders = auth()->user()->account->reminders()->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])->orderBy('next_expected_date', 'asc')->get();
+
+        return $reminders;
+    }
 }
