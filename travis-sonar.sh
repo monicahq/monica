@@ -22,7 +22,9 @@ function installSonar {
 function CommonParams {
   extra=""
   if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
-    extra="$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG"
+    # Avoid forks to send reports to the same project
+    project="${TRAVIS_REPO_SLUG/\//_}"
+    extra="$extra -Dsonar.projectKey=monica:$project -Dsonar.projectName=$project"
   fi
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
@@ -47,7 +49,7 @@ if [ -z "${SONAR_HOST_URL:-}" ]; then
   export SONAR_HOST_URL=https://sonarcloud.io
 fi
 
-if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo '===================='
   echo 'SONAR:Analyze master'
   echo '===================='
@@ -67,7 +69,7 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; th
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.login=$SONAR_TOKEN
 
-elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo '============================'
   echo 'SONAR:Analyze release branch'
   echo '============================'
@@ -89,7 +91,7 @@ elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.login=$SONAR_TOKEN
 
-elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
+elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo '==================================='
   echo 'SONAR:Analyze internal pull request'
   echo '==================================='
