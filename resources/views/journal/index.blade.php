@@ -7,14 +7,14 @@
     {{-- Breadcrumb --}}
     <section class="ph3 ph5-ns pv3 w-100 f6 bb b--gray-monica">
       <div class="mw9 center pa2">
-          <ul>
-            <li class="di">
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
-            </li>
-            <li class="di">
-              > {{ trans('app.breadcrumb_journal') }}
-            </li>
-          </ul>
+        <ul>
+          <li class="di">
+            <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+          </li>
+          <li class="di">
+            > {{ trans('app.breadcrumb_journal') }}
+          </li>
+        </ul>
       </div>
     </section>
 

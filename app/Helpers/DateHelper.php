@@ -180,4 +180,17 @@ class DateHelper
 
         return $date;
     }
+
+    /**
+     * Get the name of the month and year of the month given in parameter.
+     * @param  int    $month
+     * @return string
+     */
+    public static function getMonthAndYear(int $month)
+    {
+        $month = Carbon::now()->addMonthsNoOverflow($month)->format('M');
+        $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
+
+        return $month.' '.$year;
+    }
 }
