@@ -1,3 +1,4 @@
+sudo: required
 language: php
 
 php:
@@ -5,6 +6,9 @@ php:
 
 services:
   - mysql
+
+jdk:
+  - oraclejdk8
 
 before_script:
   - cp .env.travis .env
@@ -15,4 +19,10 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
+  - ./travis-sonar.sh
+
+cache:
+  directories:
+    - $HOME/.sonar/cache
+    - $HOME/sonarscanner
