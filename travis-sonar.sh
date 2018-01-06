@@ -1,7 +1,4 @@
 #!/bin/bash
-if [ -z "${SONAR_TOKEN:-}" ]; then
-  exit 0
-fi
 set -euo pipefail
 
 function installSonar {
@@ -24,9 +21,9 @@ function installSonar {
 
 function CommonParams {
   extra=""
-#  if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
-#    extra="$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG"
-#  fi
+  if [ "$TRAVIS_REPO_SLUG" != "monicahq/monica" ]; then
+    extra="$extra -Dsonar.projectKey=monica:$TRAVIS_REPO_SLUG -Dsonar.projectName=$TRAVIS_REPO_SLUG"
+  fi
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=monicahq \
@@ -98,7 +95,21 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
   echo '==================================='
   installSonar
   gitFetch
-  
+
+  # analyse with GitHub token to add comment on the PR
+  echo sonar-scanner $(CommonParams) \
+    -Dsonar.analysis.mode=preview \
+    -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
+    -Dsonar.github.repository=$TRAVIS_REPO_SLUG
+
+  sonar-scanner $(CommonParams) \
+    -Dsonar.analysis.mode=preview \
+    -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
+    -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
+    -Dsonar.github.oauth=$GITHUB_TOKEN \
+    -Dsonar.login=$SONAR_TOKEN
+
+  # analyse with GitHub token to add comment on the PR
   echo sonar-scanner $(CommonParams) \
     -Dsonar.branch.name=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.branch.target=$TRAVIS_BRANCH \
