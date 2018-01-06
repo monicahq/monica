@@ -140,6 +140,8 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 else
   echo 'No analysis for external pull request .. yet'
 
+  user=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .user.login)
+
   echo TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG
   echo TRAVIS_BRANCH=$TRAVIS_BRANCH
   echo TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
@@ -147,5 +149,6 @@ else
   echo TRAVIS_PULL_REQUEST_SHA=$TRAVIS_PULL_REQUEST_SHA
   echo TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST
   echo TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
+  echo PULL_REQUEST_USER=$user
 
 fi
