@@ -14,7 +14,7 @@ return [
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
     'people_list_lastnameZA' => 'Sort by last name Z → A',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with ',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Search your contacts...',

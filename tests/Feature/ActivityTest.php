@@ -97,12 +97,6 @@ class ActivityTest extends FeatureTestCase
         // Check that the Contact view contains the newly created note
         $response = $this->get('/people/'.$contact->id);
         $response->assertSee($activityTitle);
-
-        // Visit the dashboard and checks that the note event appears on the
-        // dashboard
-        $response = $this->get('/dashboard');
-        $response->assertSee('An activity about John Doe has been added');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_create');
     }
 
     public function test_user_can_edit_an_activity()
@@ -148,11 +142,5 @@ class ActivityTest extends FeatureTestCase
         $eventParams['nature_of_operation'] = 'update';
 
         $this->assertDatabaseHas('events', $eventParams);
-
-        // Visit the dashboard and checks that the note event appears on the
-        // dashboard
-        $response = $this->get('/dashboard');
-        $response->assertSee('An activity about John Doe has been updated');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="activity_update_'.$activity->id.'">');
     }
 }

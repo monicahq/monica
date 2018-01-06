@@ -464,6 +464,27 @@ class Contact extends Model
     }
 
     /**
+     * Get the incomplete name of the contact, like `John D.`.
+     *
+     * @return string
+     */
+    public function getIncompleteName()
+    {
+        $incompleteName = '';
+        $incompleteName = $this->first_name;
+
+        if (! is_null($this->last_name)) {
+            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+        }
+
+        if ($this->is_dead) {
+            $incompleteName .= ' ⚰';
+        }
+
+        return trim($incompleteName);
+    }
+
+    /**
      * Get the initials of the contact, used for avatars.
      *
      * @return string
@@ -1341,6 +1362,25 @@ class Contact extends Model
 
             $this->first_met_special_date_id = null;
             $this->save();
+        }
+    }
+
+    /**
+     * Gets the contact related to this contact if the current contact is partial.
+     */
+    public function getRelatedRealContact()
+    {
+        // Look in the Relationships table
+        $relatedContact = \App\Relationship::where('with_contact_id', $this->id)->first();
+
+        if (count($relatedContact) != 0) {
+            return \App\Contact::find($relatedContact->contact_id);
+        }
+
+        // Look in the Offspring table
+        $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
+        if (count($relatedContact) != 0) {
+            return self::find($relatedContact->is_the_child_of);
         }
     }
 }
