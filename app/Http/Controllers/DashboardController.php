@@ -130,7 +130,7 @@ class DashboardController extends Controller
                 'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
                 'name' => $note->contact->getIncompleteName(),
                 'contact' => [
-                    'contact_id' => $note->contact->id,
+                    'id' => $note->contact->id,
                     'has_avatar' => $note->contact->has_avatar,
                     'avatar_url' => $note->contact->getAvatarURL(110),
                     'initials' => $note->contact->getInitials(),
