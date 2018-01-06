@@ -151,4 +151,17 @@ else
   echo TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
   echo PULL_REQUEST_USER=$user
 
+#  TODO : try to launch something like this :
+#  $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
+#    -Dsonar.branch.name=$user:$TRAVIS_PULL_REQUEST_BRANCH \
+#    -Dsonar.branch.target=$TRAVIS_BRANCH \
+#    -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
+#    -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
+#    -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
+#    -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
+#    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
+#    -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
+#    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG \
+#    -Dsonar.login=$SONAR_TOKEN
+
 fi
