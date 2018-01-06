@@ -1380,7 +1380,7 @@ class Contact extends Model
         // Look in the Offspring table
         $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
         if (count($relatedContact) != 0) {
-            return Contact::find($relatedContact->is_the_child_of);
+            return self::find($relatedContact->is_the_child_of);
         }
     }
 }
