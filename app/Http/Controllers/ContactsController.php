@@ -91,6 +91,11 @@ class ContactsController extends Controller
         return view('people.create');
     }
 
+    public function missing()
+    {
+        return view('people.missing');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

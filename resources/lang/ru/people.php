@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Добавить человека',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
@@ -119,9 +120,11 @@ return [
     'reminders_add_recurrent' => 'Повторять напоминание с периодичностью: ',
     'reminders_add_starting_from' => 'начиная с даты указанной выше',
     'reminders_add_cta' => 'Добавить напоминание',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Вы должны указать текст для этого напоминания',
     'reminders_create_success' => 'Напоминание было добавлено',
     'reminders_delete_success' => 'Напоминание было удалено',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
     'reminder_frequency_month' => 'каждый :number месяц|каждые :number месяца|каждые :number месяцев',

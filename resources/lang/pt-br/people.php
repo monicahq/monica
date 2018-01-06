@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Primeiro nome',
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
@@ -119,9 +120,11 @@ return [
     'reminders_add_recurrent' => 'Lembre-me sobre isso a todo momento',
     'reminders_add_starting_from' => 'começar a partir da data especificada acima',
     'reminders_add_cta' => 'Adicionar lembrete',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Você precisa indicar um texto para esse lembrete',
     'reminders_create_success' => 'O lembrete foi adicionado com sucesso',
     'reminders_delete_success' => 'O lembrete foi excluído com sucesso',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'toda semana|cada :number semanas',
     'reminder_frequency_month' => 'todo month|cada :number mêses',
