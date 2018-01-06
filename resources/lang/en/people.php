@@ -121,9 +121,11 @@ return [
     'reminders_add_recurrent' => 'Remind me about this every',
     'reminders_add_starting_from' => 'starting from the date specified above',
     'reminders_add_cta' => 'Add reminder',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'You need to indicate a text for this reminder',
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'every week|every :number weeks',

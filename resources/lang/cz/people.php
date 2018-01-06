@@ -120,9 +120,11 @@ return [
     'reminders_add_recurrent' => 'Upozornit',
     'reminders_add_starting_from' => 'po datu zadaném výše',
     'reminders_add_cta' => 'Přidat upozornění',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Musíte zadat text tohoto upozornění',
     'reminders_create_success' => 'Upozornění bylo úspěšně přidáno',
     'reminders_delete_success' => 'Upozornění bylo úspěšně smazáno',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'každý týden|každé :number týdny',
     'reminder_frequency_month' => 'každý měsíc|každé :number měsíce',
