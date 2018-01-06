@@ -6,7 +6,7 @@
 
   {{-- Breadcrumb --}}
   <div class="breadcrumb">
-    <div class="{{ Auth::user()->getFluidLayout() }}">
+    <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
           <ul class="horizontal">
@@ -17,10 +17,7 @@
               <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
-              <a href="/settings/security">{{ trans('app.breadcrumb_settings_security') }}</a>
-            </li>
-            <li>
-              {{ trans('app.breadcrumb_settings_security_2fa') }}
+              {{ trans('app.breadcrumb_settings_security') }}
             </li>
           </ul>
         </div>
@@ -28,8 +25,10 @@
     </div>
   </div>
 
-  <div class="{{ Auth::user()->getFluidLayout() }}">
+  <div class="{{ auth()->user()->getFluidLayout() }}">
     <div class="row">
+
+      @include('settings._sidebar')
 
       <div class="col-xs-12 col-md-9">
 
@@ -43,16 +42,19 @@
 
           <div class="panel-body">
             {{ trans('settings.2fa_enable_otp') }}
-            <br />
+            <p>
             <img alt="Image of QR barcode" src="{{ $image }}" />
             <br />
             {{ trans('settings.2fa_enable_otp_help') }} <code>{{ $secret }}</code>
-            <br />
+            </p>
           </div>
 
           {{-- code --}}
           <div class="form-group">
-            <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
+              <p>
+              {{ trans('settings.2fa_enable_otp_validate') }}
+              </p>
+              <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
             <input type="number" class="form-control" id="one_time_password" name="one_time_password" />
           </div>
 

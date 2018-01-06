@@ -6,7 +6,7 @@
 
   {{-- Breadcrumb --}}
   <div class="breadcrumb">
-    <div class="{{ Auth::user()->getFluidLayout() }}">
+    <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
           <ul class="horizontal">
@@ -17,10 +17,7 @@
               <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
-              <a href="/settings/security">{{ trans('app.breadcrumb_settings') }}</a>
-            </li>
-            <li>
-              {{ trans('app.breadcrumb_settings_security_2fa') }}
+              {{ trans('app.breadcrumb_settings_security') }}
             </li>
           </ul>
         </div>
@@ -28,13 +25,15 @@
     </div>
   </div>
 
-  <div class="{{ Auth::user()->getFluidLayout() }}">
+  <div class="{{ auth()->user()->getFluidLayout() }}">
     <div class="row">
 
-    <div class="col-xs-12 col-md-9">
+      @include('settings._sidebar')
 
-      <h3 class="with-actions">{{ trans('settings.2fa_title') }}</h3>
-      <p>{{ trans('settings.2fa_disable_description') }}</p>
+      <div class="col-xs-12 col-md-9">
+
+        <h3 class="with-actions">{{ trans('settings.2fa_title') }}</h3>
+        <p>{{ trans('settings.2fa_disable_description') }}</p>
 
         @include('partials.errors')
       

@@ -51,6 +51,7 @@ return [
     'locale_de' => 'German',
 
     'security_title' => 'Security',
+    'security_help' => 'Change security matters for your account.',
     'password_change' => 'Password change',
     'password_current' => 'Current password',
     'password_current_placeholder' => 'Enter your current password',
@@ -64,10 +65,11 @@ return [
     '2fa_enable_description' => 'Enable Two Factor Authentication to increase security with your account.',
     '2fa_enable_otp' => 'Open up your two factor authentication mobile app and scan the following QR barcode:',
     '2fa_enable_otp_help' => 'If your two factor authentication mobile app does not support QR barcodes, enter in the following code:',
+    '2fa_enable_otp_validate' => 'Please validate the new device you\'ve just set:',
     '2fa_enable_success' => 'Two Factor Authentication activated',
     '2fa_enable_error' => 'Error when trying to activate Two Factor Authentication',
     '2fa_disable_title' => 'Disable Two Factor Authentication',
-    '2fa_disable_description' => 'Disable Two Factor Authentication for your account. Be careful that your account will not be secured anymore.',
+    '2fa_disable_description' => 'Disable Two Factor Authentication for your account. Be careful, your account will not be secured anymore !',
     '2fa_disable_success' => 'Two Factor Authentication disabled',
     '2fa_disable_error' => 'Error when trying to disable Two Factor Authentication',
 

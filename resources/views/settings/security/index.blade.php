@@ -41,7 +41,7 @@
         @endif
 
         <h3 class="with-actions">{{ trans('settings.security_title') }}</h3>
-        <p></p>
+        <p>{{ trans('settings.security_help') }}</p>
 
         <form method="POST" action="/settings/security/passwordChange" class="settings-reset">
           {{ csrf_field() }}
