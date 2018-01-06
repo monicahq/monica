@@ -464,7 +464,7 @@ class Contact extends Model
     }
 
     /**
-     * Get the incomplete name of the contact, like `John D.`
+     * Get the incomplete name of the contact, like `John D.`.
      *
      * @return string
      */

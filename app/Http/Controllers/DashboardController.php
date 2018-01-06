@@ -6,10 +6,8 @@ use Auth;
 use App\Debt;
 use App\Event;
 use App\Contact;
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class DashboardController extends Controller
 {
@@ -95,7 +93,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get calls for the dashboard
+     * Get calls for the dashboard.
      * @return Collection
      */
     public function calls()
@@ -117,7 +115,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get notes for the dashboard
+     * Get notes for the dashboard.
      * @return Collection
      */
     public function notes()
@@ -147,7 +145,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Save the current active tab to the User table
+     * Save the current active tab to the User table.
      */
     public function setTab(Request $request)
     {

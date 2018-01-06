@@ -190,6 +190,7 @@ class DateHelper
     {
         $month = Carbon::now()->addMonthsNoOverflow($month)->format('M');
         $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
+
         return $month.' '.$year;
     }
 }
