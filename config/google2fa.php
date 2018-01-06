@@ -62,7 +62,7 @@ return [
      * One Time Password error message
      */
     'error_messages' => [
-        'wrong_otp' => "The two factor authentication has failed.",
+        'wrong_otp' => 'The two factor authentication has failed.',
     ],
 
 ];
