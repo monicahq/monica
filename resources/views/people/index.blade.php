@@ -51,10 +51,10 @@
             <div class="col-xs-12 col-md-9">
 
               @if (! is_null($tag))
-              <p class="clear-filter">
-                {!! trans('people.people_list_filter_tag', ['name' => $tag->name]) !!}
-                <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
-              </p>
+                <p class="clear-filter">
+                  {!! trans('people.people_list_filter_tag', ['name' => $tag->name]) !!}
+                  <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                </p>
               @endif
 
               <ul class="list">
@@ -62,7 +62,7 @@
                 {{-- Sorting options --}}
                 <li class="people-list-item sorting">
                   {{ trans('people.people_list_stats', ['count' => $contacts->count()]) }}
-
+                  <a href="#" id="tagsDisplay"><i class="fa fa-tag"></i> {{ trans('settings.tags_list_title') }}</a>
                   <div class="options">
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
@@ -90,34 +90,39 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item">
-                  <a href="{{ route('people.show', $contact) }}">
-                    @if ($contact->has_avatar == true)
-                      <img src="{{ $contact->getAvatarURL(110) }}" width="43">
-                    @else
-                      @if (! is_null($contact->gravatar_url))
-                        <img src="{{ $contact->gravatar_url }}" width="43">
+                  <li class="people-list-item">
+                    <a href="{{ route('people.show', $contact) }}">
+                      @if ($contact->has_avatar == true)
+                        <img src="{{ $contact->getAvatarURL(110) }}" width="43">
                       @else
-                        @if (strlen($contact->getInitials()) == 1)
-                        <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-                          {{ $contact->getInitials() }}
-                        </div>
+                        @if (! is_null($contact->gravatar_url))
+                          <img src="{{ $contact->gravatar_url }}" width="43">
                         @else
-                        <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
-                          {{ $contact->getInitials() }}
-                        </div>
+                          @if (strlen($contact->getInitials()) == 1)
+                            <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                              {{ $contact->getInitials() }}
+                            </div>
+                          @else
+                            <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                              {{ $contact->getInitials() }}
+                            </div>
+                          @endif
                         @endif
                       @endif
-                    @endif
-                    <span class="people-list-item-name">
+                      <span class="people-list-item-name">
                       {{ $contact->getCompleteName(auth()->user()->name_order) }}
                     </span>
 
-                    <span class="people-list-item-information">
+                      <span class="people-list-item-information">
                       {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                     </span>
-                  </a>
-                </li>
+                    </a>
+
+                    <div class="people-list-item-tags">
+                      @include('partials.components.tags-with-form')
+                    </div>
+
+                  </li>
 
                 @endforeach
               </ul>
@@ -132,14 +137,14 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $tag)
-                @if ($tag->contacts()->count() > 0)
-                <li>
-                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
-                  <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
-                </li>
-                @endif
-              @endforeach
+                @foreach (auth()->user()->account->tags as $tag)
+                  @if ($tag->contacts()->count() > 0)
+                    <li>
+                      <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
+                      <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
+                    </li>
+                  @endif
+                @endforeach
               </ul>
             </div>
 
