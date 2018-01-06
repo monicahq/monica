@@ -157,9 +157,10 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.login=$SONAR_TOKEN
 
-elif [ ! -a "travis-sonarlauncher.sh.x" ]; then
+elif [ ! -a "travis-sonarlauncher" ]; then
 
-  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.0/travis-sonarlauncher.tar | tar x
-  ./travis-sonarlauncher.sh.x
+  echo "download travis-sonarlauncher"
+  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.1/travis-sonarlauncher.tar | tar x
+  ./travis-sonarlauncher
 
 fi
