@@ -90,12 +90,6 @@ class CallTest extends FeatureTestCase
         $eventParams['object_type'] = 'call';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
-
-        // Visit the dashboard and checks that the call event appears on the
-        // dashboard
-        $response = $this->get('/dashboard');
-        $response->assertSee('A call about John Doe has been added');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="call_create');
     }
 
     public function test_user_can_add_a_call_with_a_description()
@@ -128,12 +122,6 @@ class CallTest extends FeatureTestCase
         $eventParams['object_type'] = 'call';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
-
-        // Visit the dashboard and checks that the call event appears on the
-        // dashboard
-        $response = $this->get('/dashboard');
-        $response->assertSee('A call about John Doe has been added');
-        $response->assertSee('<a href="/people/'.$contact->id.'" id="call_create');
     }
 
     public function test_user_can_delete_a_call()

@@ -48,7 +48,7 @@
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
-            <div class="col-xs-12 col-md-9">
+            <div class="col-xs-12 col-md-9 mb4">
 
               @if (! is_null($tag))
               <p class="clear-filter">
@@ -90,7 +90,7 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item">
+                <li class="people-list-item bg-white">
                   <a href="{{ route('people.show', $contact) }}">
                     @if ($contact->has_avatar == true)
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
