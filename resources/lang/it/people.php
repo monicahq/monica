@@ -14,7 +14,7 @@ return [
     'people_list_firstnameZA' => 'Ordina per nome Z → A',
     'people_list_lastnameAZ' => 'Ordina per cognome A → Z',
     'people_list_lastnameZA' => 'Ordina per cognome Z → A',
-    'people_list_filter_tag' => 'Tutti i contatti etichettati con <span class="pretty-tag">:name</span>',
+    'people_list_filter_tag' => 'Tutti i contatti etichettati con ',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '{0} 0 contatti|{1,1} 1 contatto|{2,*} :count contatti',
     'people_search' => 'Cerca nei tuoi contatti...',
@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Aggiungi una persona',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
     'people_add_lastname' => 'Cognome (facoltativo)',

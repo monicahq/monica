@@ -14,7 +14,7 @@ return [
     'people_list_firstnameZA' => 'Nach Vorname sortieren Z → A',
     'people_list_lastnameAZ' => 'Nach Nachname sortieren A → Z',
     'people_list_lastnameZA' => 'Nach Nachname sortieren Z → A',
-    'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: <span class="pretty-tag">:name</span>',
+    'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: ',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
     'people_search' => 'Suche in deinen Kontakten...',
@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Person hinzufügen',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Vorname',
     'people_add_middlename' => 'zweiter Vorname (Optional)',
     'people_add_lastname' => 'Nachname (Optional)',
