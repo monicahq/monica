@@ -72,7 +72,7 @@
             </svg>
             <span class="black-50 mr1 f6">{{ note.created_at }}</span>
             <span class="mr1 black-50">•</span>
-            <a :href="'/people/' + note.contact.contact_id">{{ note.name }}</a>
+            <a :href="'/people/' + note.contact.id">{{ note.name }}</a>
             <p>
               {{ note.body }}
             </p>
