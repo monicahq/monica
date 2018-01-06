@@ -28,7 +28,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
-    Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+    Route::group(['as' => 'dashboard'], function () {
+        Route::get('/dashboard/', 'DashboardController@index')->name('.index');
+        Route::get('/dashboard/calls', 'DashboardController@calls');
+        Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::post('/dashboard/setTab', 'DashboardController@setTab');
+    });
     Route::post('/validate2fa', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
