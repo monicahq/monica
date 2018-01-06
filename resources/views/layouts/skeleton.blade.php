@@ -31,7 +31,7 @@
       ?>;
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }}>
+  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
 
     @include('partials.header')
 
@@ -39,7 +39,9 @@
       @yield('content')
     </div>
 
-    @include('partials.footer')
+    <div class="mt4">
+      @include('partials.footer')
+    </div>
 
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
