@@ -29,27 +29,56 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $tag = null;
+        $tags = null;
+        $url = '';
+        $tagCount = 1;
 
-        if ($request->get('tags')) {
-            $tag = Tag::where('name_slug', $request->get('tags'))
+        if ($request->get('tag1')) {
+            $tags = Tag::where('name_slug', $request->get('tag1'))
                         ->where('account_id', auth()->user()->account_id)
-                        ->first();
+                        ->get();
 
-            if (is_null($tag)) {
+            $count = 2;
+
+            while (true) {
+                if ($request->get('tag'.$count)) {
+                    $tags = $tags->concat(
+                        Tag::where('name_slug', $request->get('tag'.$count))
+                                    ->where('account_id', auth()->user()->account_id)
+                                    ->get()
+                    );
+                } else {
+                    break;
+                }
+
+                $count++;
+            }
+            if (is_null($tags)) {
                 return redirect()->route('people.index');
             }
 
-            $contacts = $user->account->contacts()->real()->whereHas('tags', function ($query) use ($tag) {
-                $query->where('id', $tag->id);
-            })->sortedBy($sort)->get();
+            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+
+            foreach ($tags as $tag) {
+                $contacts = $contacts->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+
+                $url = $url.'tag'.$tagCount.'='.$tag->name_slug.'&';
+
+                $tagCount++;
+            }
+
+            $contacts = $contacts->get();
         } else {
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
         return view('people.index')
             ->withContacts($contacts)
-            ->withTag($tag);
+            ->withTags($tags)
+            ->withUrl($url)
+            ->withTagCount($tagCount);
     }
 
     /**

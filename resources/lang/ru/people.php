@@ -14,7 +14,7 @@ return [
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
-    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом <span class="pretty-tag">:name</span>',
+    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
     'people_search' => 'Поиск по контактам...',
