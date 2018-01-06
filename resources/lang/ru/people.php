@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Добавить человека',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
