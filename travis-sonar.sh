@@ -111,7 +111,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
     PULL_REQUEST_USER=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.owner.login)
-    PULL_REQUEST_BRANCH=$PULL_REQUEST_USER:$TRAVIS_PULL_REQUEST_BRANCH
+    PULL_REQUEST_BRANCH=PR${TRAVIS_PULL_REQUEST}_($PULL_REQUEST_USER)_$TRAVIS_PULL_REQUEST_BRANCH
 
   fi
 
