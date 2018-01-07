@@ -47,6 +47,19 @@ function gitFetch {
   git fetch --unshallow || true    
 }
 
+function getSonarlauncher {
+  sonarlauncherversion=0.1.2
+  mkdir -p ~/sonarlauncher
+  pushd ~/sonarlauncher > /dev/null
+  if [ ! -d "$sonarlauncherversion" ]; then
+    echo "Download travis-sonarlauncher"
+    mkdir -p ~/sonarlauncher/$sonarlauncherversion
+    curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/travis-sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
+  fi
+  popd > /dev/null
+  cp ~/sonarlauncher/$sonarlauncherversion/travis-sonarlauncher .
+}
+
 if [ -z "${SONAR_HOST_URL:-}" ]; then
   export SONAR_HOST_URL=https://sonarcloud.io
 fi
@@ -99,20 +112,16 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   PULL_REQUEST_REPOSITORY=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.full_name)
 
   if [ "$PULL_REQUEST_REPOSITORY" == "$REPOSITORY_OWNER" ]; then
-
     echo '==================================='
     echo 'SONAR:Analyze internal pull request'
     echo '==================================='
     PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
-
   else
-
     echo '==================================='
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
     PULL_REQUEST_USER=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.owner.login)
     PULL_REQUEST_BRANCH="PR${TRAVIS_PULL_REQUEST}_($PULL_REQUEST_USER)_$TRAVIS_PULL_REQUEST_BRANCH"
-
   fi
 
   installSonar
@@ -159,8 +168,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
 elif [ ! -a "travis-sonarlauncher" ]; then
 
-  echo "download travis-sonarlauncher"
-  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.2/travis-sonarlauncher.tar | tar x
+  getSonarlauncher
   ./travis-sonarlauncher
 
 fi
