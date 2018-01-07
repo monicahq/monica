@@ -45,13 +45,34 @@ This is the easiest and fastest way to try Monica! Use this process
 if you want to download the newest image from Docker Hub and run it
 with a pre-packaged MySQL database.
 
+Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that allready.
+
+```sh
+$ curl https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
+$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+```
+
+Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
+
 Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
 the MySQL container).
+
+Start by downloading all the images and setup your new instance.
 
 ```shell
 $ docker-compose pull
 $ docker-compose up
 ```
+
+Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
+
+```shell
+$ docker-compose run monicahq shell
+$ php artisan setup:production
+$ exit
+```
+
+Start your instance again with `docker-compose up` and login.
 
 #### Use docker-compose to build and run your own image
 

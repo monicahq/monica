@@ -31,6 +31,17 @@
           <div class="{{ Auth::user()->getFluidLayout() }}">
             <div class="row">
               <div class="col-xs-12">
+                  @if (! is_null($tags))
+                      <p class="clear-filter">
+                        {!! trans('people.people_list_filter_tag') !!}
+                        @foreach ($tags as $tag)
+                            <span class="pretty-tag">
+                            {!! $tag->name !!}
+                            </span>
+                        @endforeach
+                        <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                      </p>
+                  @endif
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
                   <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
@@ -50,11 +61,16 @@
 
             <div class="col-xs-12 col-md-9 mb4">
 
-              @if (! is_null($tag))
-              <p class="clear-filter">
-                {!! trans('people.people_list_filter_tag', ['name' => $tag->name]) !!}
-                <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
-              </p>
+              @if (! is_null($tags))
+                  <p class="clear-filter">
+                    {!! trans('people.people_list_filter_tag') !!}
+                    @foreach ($tags as $tag)
+                        <span class="pretty-tag">
+                        {!! $tag->name !!}
+                        </span>
+                    @endforeach
+                    <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                  </p>
               @endif
 
               <ul class="list">
@@ -132,11 +148,11 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $tag)
-                @if ($tag->contacts()->count() > 0)
+              @foreach (auth()->user()->account->tags as $dbtag)
+                @if ($dbtag->contacts()->count() > 0)
                 <li>
-                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
-                  <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
+                    <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
+                    <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
               @endforeach
