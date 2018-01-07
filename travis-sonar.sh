@@ -160,7 +160,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 elif [ ! -a "travis-sonarlauncher" ]; then
 
   echo "download travis-sonarlauncher"
-  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.1/travis-sonarlauncher.tar | tar x
+  curl -sSL https://github.com/monicahq/monica-sonarlauncher/releases/download/0.1.2/travis-sonarlauncher.tar | tar x
   ./travis-sonarlauncher
 
 fi
