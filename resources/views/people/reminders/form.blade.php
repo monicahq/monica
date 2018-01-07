@@ -74,7 +74,13 @@
     </div>
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.reminders_add_cta') }}</button>
+        <button type="submit" class="btn btn-primary">
+            @if($update_or_add == 'add')
+            {{ trans('people.reminders_add_cta') }}
+            @elseif ($update_or_add == 'edit')
+            {{ trans('people.reminders_edit_update_cta') }}
+            @endif
+        </button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>
