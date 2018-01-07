@@ -51,9 +51,6 @@ class Account extends Model
      */
     public function activities()
     {
-        // try to make sonar report this :
-        $test = $object ?? null;
-
         return $this->hasMany(Activity::class);
     }
 
