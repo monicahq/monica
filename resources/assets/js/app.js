@@ -42,6 +42,18 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+// Partials
+Vue.component(
+    'avatar',
+    require('./components/partials/Avatar.vue')
+);
+
+// Dashboard
+Vue.component(
+    'dashboard-log',
+    require('./components/dashboard/DashboardLog.vue')
+);
+
 // Contacts
 Vue.component(
     'contact-address',
