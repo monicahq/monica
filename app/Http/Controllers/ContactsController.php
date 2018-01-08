@@ -30,7 +30,7 @@ class ContactsController extends Controller
         }
 
         $date_flag = false;
- 
+
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
             $sort = 'firstnameAZ';
