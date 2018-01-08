@@ -14,6 +14,8 @@ return [
     'people_list_firstnameZA' => 'Ordina per nome Z → A',
     'people_list_lastnameAZ' => 'Ordina per cognome A → Z',
     'people_list_lastnameZA' => 'Ordina per cognome Z → A',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con ',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '{0} 0 contatti|{1,1} 1 contatto|{2,*} :count contatti',

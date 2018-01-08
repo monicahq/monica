@@ -14,6 +14,8 @@ return [
     'people_list_firstnameZA' => 'Řadit podle jména Z → A',
     'people_list_lastnameAZ' => 'Řadit podle příjmení A → Z',
     'people_list_lastnameZA' => 'Řadit podle příjmení Z → A',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '{0} 0 kontaktů|{1,1} 1 kontakt|{2,*} :count kontaktů',
