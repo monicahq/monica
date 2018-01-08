@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Hasher;
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,8 @@ use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 class Contact extends Model
 {
     use Searchable;
+
+    use Hasher;
 
     protected $dates = [
         'last_talked_to',
