@@ -4,6 +4,7 @@ UNRELEASED CHANGES:
 * Display missing page when loading a contact that does not exist
 * Add ability to filter contacts by more than one tag
 * Change the structure of the dashboard
+* Add two factor authentication ability
 
 RELEASED VERSIONS:
 
