@@ -31,8 +31,8 @@ class ContactsController extends Controller
 
         $date_flag = false;
         
-        if(str_contains($sort,'lastactivitydate')) {
-            $date_sort = str_after($sort,'lastactivitydate');
+        if (str_contains($sort, 'lastactivitydate')) {
+            $date_sort = str_after($sort, 'lastactivitydate');
             $sort = 'firstnameAZ';
             $date_flag = true;
         }
@@ -82,13 +82,13 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
-        if($date_flag) {
+        if ($date_flag) {
 
-            foreach($contacts as $contact) {
+            foreach ($contacts as $contact) {
                 $contact['sort_date'] = $contact->getLastActivityDate();
             }
 
-            if($date_sort == 'NewtoOld') {
+            if ($date_sort == 'NewtoOld') {
                 $contacts = $contacts->sortByDesc('sort_date');
             } elseif ($date_sort == 'OldtoNew') {
                 $contacts = $contacts->sortBy('sort_date');
