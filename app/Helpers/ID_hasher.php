@@ -9,12 +9,16 @@ class ID_hasher
 
     public function encode_id($id)
     {
-        return Hashids::encode($id);
+        return 'h'.Hashids::encode($id);
     }
 
     public function decode_id($hash)
     {
-        return Hashids::decode($hash);
+        if(str_contains($hash,'h')) {
+            return Hashids::decode(str_after($hash,'h'));
+        } else {
+            return $hash;
+        }
     }
 
 }
