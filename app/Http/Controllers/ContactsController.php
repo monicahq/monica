@@ -83,7 +83,6 @@ class ContactsController extends Controller
         }
 
         if ($date_flag) {
-
             foreach ($contacts as $contact) {
                 $contact['sort_date'] = $contact->getLastActivityDate();
             }
@@ -93,7 +92,6 @@ class ContactsController extends Controller
             } elseif ($date_sort == 'OldtoNew') {
                 $contacts = $contacts->sortBy('sort_date');
             }
-
         }
 
         return view('people.index')
