@@ -29,6 +29,14 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
+        $date_flag = false;
+
+        if (str_contains($sort, 'lastactivitydate')) {
+            $date_sort = str_after($sort, 'lastactivitydate');
+            $sort = 'firstnameAZ';
+            $date_flag = true;
+        }
+
         $tags = null;
         $url = '';
         $tagCount = 1;
@@ -72,6 +80,18 @@ class ContactsController extends Controller
             $contacts = $contacts->get();
         } else {
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
+        }
+
+        if ($date_flag) {
+            foreach ($contacts as $contact) {
+                $contact['sort_date'] = $contact->getLastActivityDate();
+            }
+
+            if ($date_sort == 'NewtoOld') {
+                $contacts = $contacts->sortByDesc('sort_date');
+            } elseif ($date_sort == 'OldtoNew') {
+                $contacts = $contacts->sortBy('sort_date');
+            }
         }
 
         return view('people.index')
