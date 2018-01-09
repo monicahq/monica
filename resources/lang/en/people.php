@@ -242,7 +242,7 @@ return [
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',
-
+    'activities_activity' => 'Activity Category',
     // notes
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',

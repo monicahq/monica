@@ -26,3 +26,4 @@ cache:
   directories:
     - $HOME/.sonar/cache
     - $HOME/sonarscanner
+    - $HOME/sonarlauncher

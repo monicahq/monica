@@ -1373,13 +1373,13 @@ class Contact extends Model
         // Look in the Relationships table
         $relatedContact = \App\Relationship::where('with_contact_id', $this->id)->first();
 
-        if (count($relatedContact) != 0) {
+        if ($relatedContact) {
             return \App\Contact::find($relatedContact->contact_id);
         }
 
         // Look in the Offspring table
         $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
-        if (count($relatedContact) != 0) {
+        if ($relatedContact) {
             return self::find($relatedContact->is_the_child_of);
         }
     }
