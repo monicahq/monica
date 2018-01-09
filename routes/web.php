@@ -23,15 +23,18 @@ Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+});
 
+Route::middleware(['auth', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
         Route::get('/dashboard/', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
+    Route::post('/validate2fa', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people/', 'ContactsController@index')->name('.index');
@@ -171,7 +174,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/settings/delete', ['as' => '.delete', 'uses' => 'SettingsController@delete']);
         Route::post('/settings/reset', ['as' => '.reset', 'uses' => 'SettingsController@reset']);
         Route::post('/settings/save', 'SettingsController@save');
-        Route::post('/settings/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
         Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
 
@@ -204,5 +206,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
 
         Route::get('/settings/api', 'SettingsController@api')->name('.api');
+
+        // Security
+        Route::get('/settings/security', 'SettingsController@security')->name('.security');
+        Route::post('/settings/security/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
+        Route::get('/settings/security/2fa-enable', 'Settings\\MultiFAController@enableTwoFactor')->name('.security.2fa-enable');
+        Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
+        Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('.security.2fa-disable');
+        Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
     });
 });
