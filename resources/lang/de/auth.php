@@ -18,5 +18,9 @@ return [
     'not_authorized' => 'Du hast keine Berechtigung diese Aktion auszuführen',
     'signup_disabled' => 'Registrierung ist zur Zeit abgeschaltet',
     'back_homepage' => 'Zurück zur Seite',
+    '2fa_title' => 'Two Factor Authentication',
+    '2fa_wrong_validation' => 'The two factor authentication has failed.',
+    '2fa_one_time_password' => 'Authentication code',
+    '2fa_recuperation_code' => 'Enter a two factor recovery code',
 
 ];

@@ -14,7 +14,7 @@ return [
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
-    'people_list_filter_tag' => 'Affichge des contacts avec le tag <span class="pretty-tag">:name</span>',
+    'people_list_filter_tag' => 'Affichge des contacts avec le tag ',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Recherchez dans vos contacts...',
@@ -25,6 +25,7 @@ return [
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
@@ -124,9 +125,11 @@ return [
     'reminders_add_recurrent' => 'Rappelez-moi tous les',
     'reminders_add_starting_from' => 'à compter de la date définie ci-après',
     'reminders_add_cta' => 'Ajouter le rappel',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Vous devez indiquer un texte pour ce rappel.',
     'reminders_create_success' => 'Le rappel a été ajouté avec succès.',
     'reminders_delete_success' => 'Le rappel a été supprimé avec succès.',
+    'reminders_update_success' => 'The reminder has been updated successfully',
     'reminders_type_week' => 'semaine',
     'reminders_type_month' => 'mois',
     'reminders_type_year' => 'année',
@@ -242,6 +245,7 @@ return [
     'activities_update_success' => 'L\'activité a été mise à jour avec succès.',
     'activities_delete_success' => 'L\'activité a été supprimée avec succès.',
     'activities_who_was_involved' => 'Qui était impliqué?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès.',

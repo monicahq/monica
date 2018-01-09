@@ -10,6 +10,7 @@ return [
     'upload' => 'Carica',
     'close' => 'Chiudi',
     'done' => 'Fatto',
+    'verify' => 'Verify',
     'for' => 'per',
     'unknown' => 'I don\'t know',
     'load_more' => 'Load more',
@@ -56,6 +57,8 @@ return [
     'breadcrumb_settings_tags' => 'Etichette',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'Come vi siete conosciuti',
+    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',

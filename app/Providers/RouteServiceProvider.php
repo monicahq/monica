@@ -16,6 +16,7 @@ use App\Offspring;
 use App\ContactField;
 use App\Relationship;
 use Illuminate\Routing\Router;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -39,9 +40,13 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('contact', function ($value) {
-            return Contact::where('account_id', auth()->user()->account_id)
+            try {
+                return Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
+            } catch (ModelNotFoundException $ex) {
+                redirect('/people/notfound')->send();
+            }
         });
 
         Route::bind('contactfield', function ($value, $route) {
