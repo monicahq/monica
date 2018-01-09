@@ -101,6 +101,32 @@ To run the test suite:
 
 * `phpunit` or `./vendor/bin/phpunit` in the root of the folder containing Monica's code from GitHub.
 
+
+Browser tests
+* install java
+```
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java9-installer
+```
+* install chrome
+```
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
+```
+* run selenium
+```
+vendor/bin/selenium-server-standalone -role hub -enablePassThrough false -log selenium-server.log &
+export PATH="$(pwd)/vendor/bin:$PATH" & vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node-1.log -enablePassThrough false
+```
+* run tests
+```
+./vendor/bin/steward run local chrome
+```
+
+
+
 ## Backend
 
 ### Things to consider when adding new code
