@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix vCard import if custom field types are not present
 * Fetch Countries in alphabetical order in "Add Address" form in People Profile page
 * Add ability to edit a reminder
 * Display missing page when loading a contact that does not exist
