@@ -13,4 +13,10 @@ trait Hasher
 
         return $ID_hasher->encode_id(parent::getRouteKey());
     }
+
+    public function resolveRouteBinding($value)
+    {
+        dd($value);
+        return $this->where($this->getRouteKeyName(), $value->id)->first();
+    }
 }

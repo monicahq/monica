@@ -46,7 +46,7 @@
           @endif
         </div>
         <div class="table-cell list-actions">
-          <a href="{{ route('people.debt.edit', ['people' => $contact->id, 'debtId' => $debt->id]) }}">
+          <a href="{{ route('people.debt.edit', [$contact, $debt]) }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
           <a href="#" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
