@@ -166,7 +166,7 @@
             },
 
             store() {
-                axios.post('/people/' + this.contactId + '/notes/', this.newNote)
+                axios.post('/people/' + this.contactId + '/notes', this.newNote)
                       .then(response => {
                           this.newNote.body = '';
                           this.getNotes();

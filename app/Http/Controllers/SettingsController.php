@@ -18,6 +18,7 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class SettingsController extends Controller
 {
@@ -429,5 +430,10 @@ class SettingsController extends Controller
     public function api()
     {
         return view('settings.api.index');
+    }
+
+    public function security(Request $request)
+    {
+        return view('settings.security.index', ['is2FAActivated' => (new Authenticator($request))->isActivated()]);
     }
 }

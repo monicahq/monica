@@ -242,6 +242,7 @@ return [
     'activities_update_success' => 'Aktivita byla úspěšně aktualizována',
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',

@@ -11,6 +11,7 @@ return [
     'close' => 'Close',
     'remove' => 'Remove',
     'done' => 'Done',
+    'verify' => 'Verify',
     'for' => 'for',
     'unknown' => 'I don\'t know',
     'load_more' => 'Load more',
@@ -62,6 +63,8 @@ return [
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'How did you meet',
     'breadcrumb_settings_personalization' => 'Personalization',
+    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',
