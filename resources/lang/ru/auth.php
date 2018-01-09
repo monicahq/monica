@@ -18,5 +18,9 @@ return [
     'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
     'not_authorized' => 'Вам не разрешено выполнять это действие.',
     'signup_disabled' => 'Регистрация сейчас выключена.',
+    '2fa_title' => 'Two Factor Authentication',
+    '2fa_wrong_validation' => 'The two factor authentication has failed.',
+    '2fa_one_time_password' => 'Authentication code',
+    '2fa_recuperation_code' => 'Enter a two factor recovery code',
 
 ];

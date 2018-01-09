@@ -81,6 +81,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // create a new account
+        $account = new Account;
+        $account->api_key = str_random(30);
+        $account->created_at = Carbon::now();
+        $account->save();
+
         $user = new User;
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
@@ -88,14 +94,6 @@ class RegisterController extends Controller
         $user->password = bcrypt($data['password']);
         $user->timezone = config('app.timezone');
         $user->created_at = Carbon::now();
-        $user->save();
-
-        // create a new account
-        $account = new Account;
-        $account->api_key = str_random(30);
-        $account->created_at = Carbon::now();
-        $account->save();
-
         $user->account_id = $account->id;
         $user->save();
 

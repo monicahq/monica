@@ -11,7 +11,12 @@ return [
     'close' => 'Fermer',
     'remove' => 'Enlever',
     'done' => 'C\'est fait',
+    'verify' => 'Verify',
     'for' => 'pour',
+    'unknown' => 'Je ne sais pas',
+    'load_more' => 'Charger plus',
+    'loading' => 'Chargement...',
+    'with' => 'avec',
 
     'markdown_description' => 'Souhaitez-vous formatter votre texte d\' une belle manière? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
     'markdown_link' => 'Lire la documentation',
@@ -55,6 +60,8 @@ return [
     'breadcrumb_edit_significant_other' => 'Mettre à jour un partenaire',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'Comment vous vous êtes rencontrés',
+    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',

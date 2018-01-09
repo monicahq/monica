@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order',
+        'first_name', 'last_name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order', 'google2fa_secret',
     ];
 
     /**
@@ -31,7 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'google2fa_secret',
     ];
 
     /**
@@ -126,5 +127,48 @@ class User extends Authenticatable
     {
         $this->contacts_sort_order = $preference;
         $this->save();
+    }
+
+    /**
+     * Indicates whether the user has already rated the current day.
+     * @return bool
+     */
+    public function hasAlreadyRatedToday()
+    {
+        try {
+            $day = Day::where('account_id', $this->account_id)
+                ->where('date', \Carbon\Carbon::now($this->timezone)->format('Y-m-d'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Ecrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function setGoogle2faSecretAttribute($value)
+    {
+        $this->attributes['google2fa_secret'] = encrypt($value);
+    }
+
+    /**
+     * Decrypt the user's google_2fa secret.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getGoogle2faSecretAttribute($value)
+    {
+        if (is_null($value)) {
+            return $value;
+        }
+
+        return decrypt($value);
     }
 }

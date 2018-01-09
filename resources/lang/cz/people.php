@@ -14,7 +14,9 @@ return [
     'people_list_firstnameZA' => 'Řadit podle jména Z → A',
     'people_list_lastnameAZ' => 'Řadit podle příjmení A → Z',
     'people_list_lastnameZA' => 'Řadit podle příjmení Z → A',
-    'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem <span class="pretty-tag">:name</span>',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
+    'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '{0} 0 kontaktů|{1,1} 1 kontakt|{2,*} :count kontaktů',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
@@ -25,6 +27,7 @@ return [
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Jméno',
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',
@@ -119,9 +122,11 @@ return [
     'reminders_add_recurrent' => 'Upozornit',
     'reminders_add_starting_from' => 'po datu zadaném výše',
     'reminders_add_cta' => 'Přidat upozornění',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Musíte zadat text tohoto upozornění',
     'reminders_create_success' => 'Upozornění bylo úspěšně přidáno',
     'reminders_delete_success' => 'Upozornění bylo úspěšně smazáno',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'každý týden|každé :number týdny',
     'reminder_frequency_month' => 'každý měsíc|každé :number měsíce',
@@ -237,6 +242,7 @@ return [
     'activities_update_success' => 'Aktivita byla úspěšně aktualizována',
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',
@@ -332,4 +338,23 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Bird',
+    'pets_cat' => 'Cat',
+    'pets_dog' => 'Dog',
+    'pets_fish' => 'Fish',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Horse',
+    'pets_rabbit' => 'Rabbit',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Small animal',
+    'pets_other' => 'Other',
 ];

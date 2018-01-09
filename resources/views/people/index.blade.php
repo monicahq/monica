@@ -31,6 +31,17 @@
           <div class="{{ Auth::user()->getFluidLayout() }}">
             <div class="row">
               <div class="col-xs-12">
+                  @if (! is_null($tags))
+                      <p class="clear-filter">
+                        {!! trans('people.people_list_filter_tag') !!}
+                        @foreach ($tags as $tag)
+                            <span class="pretty-tag">
+                            {!! $tag->name !!}
+                            </span>
+                        @endforeach
+                        <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                      </p>
+                  @endif
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
                   <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
@@ -48,13 +59,18 @@
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
 
-            <div class="col-xs-12 col-md-9">
+            <div class="col-xs-12 col-md-9 mb4">
 
-              @if (! is_null($tag))
-              <p class="clear-filter">
-                {!! trans('people.people_list_filter_tag', ['name' => $tag->name]) !!}
-                <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
-              </p>
+              @if (! is_null($tags))
+                  <p class="clear-filter">
+                    {!! trans('people.people_list_filter_tag') !!}
+                    @foreach ($tags as $tag)
+                        <span class="pretty-tag">
+                        {!! $tag->name !!}
+                        </span>
+                    @endforeach
+                    <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                  </p>
               @endif
 
               <ul class="list">
@@ -82,6 +98,14 @@
                         <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="/people?sort=lastnameZA">
                           {{ trans('people.people_list_lastnameZA') }}
                         </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateNewtoOld')?'selected':'' }}" href="/people?sort=lastactivitydateNewtoOld">
+                          {{ trans('people.people_list_lastactivitydateNewtoOld') }}
+                        </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateOldtoNew')?'selected':'' }}" href="/people?sort=lastactivitydateOldtoNew">
+                          {{ trans('people.people_list_lastactivitydateOldtoNew') }}
+                        </a>
                       </div>
                     </div>
 
@@ -90,7 +114,7 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item">
+                <li class="people-list-item bg-white">
                   <a href="{{ route('people.show', $contact) }}">
                     @if ($contact->has_avatar == true)
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
@@ -98,7 +122,7 @@
                       @if (! is_null($contact->gravatar_url))
                         <img src="{{ $contact->gravatar_url }}" width="43">
                       @else
-                        @if (count($contact->getInitials()) == 1)
+                        @if (strlen($contact->getInitials()) == 1)
                         <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
                           {{ $contact->getInitials() }}
                         </div>
@@ -114,7 +138,7 @@
                     </span>
 
                     <span class="people-list-item-information">
-                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->updated_at) }}
+                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                     </span>
                   </a>
                 </li>
@@ -132,11 +156,11 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $tag)
-                @if ($tag->contacts()->count() > 0)
+              @foreach (auth()->user()->account->tags as $dbtag)
+                @if ($dbtag->contacts()->count() > 0)
                 <li>
-                  <span class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></span>
-                  <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }}</span>
+                    <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
+                    <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
               @endforeach

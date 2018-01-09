@@ -14,7 +14,9 @@ return [
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
-    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом <span class="pretty-tag">:name</span>',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
+    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
     'people_search' => 'Поиск по контактам...',
@@ -25,6 +27,7 @@ return [
 
     // people add
     'people_add_title' => 'Добавить человека',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
@@ -119,9 +122,11 @@ return [
     'reminders_add_recurrent' => 'Повторять напоминание с периодичностью: ',
     'reminders_add_starting_from' => 'начиная с даты указанной выше',
     'reminders_add_cta' => 'Добавить напоминание',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Вы должны указать текст для этого напоминания',
     'reminders_create_success' => 'Напоминание было добавлено',
     'reminders_delete_success' => 'Напоминание было удалено',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
     'reminder_frequency_month' => 'каждый :number месяц|каждые :number месяца|каждые :number месяцев',
@@ -237,6 +242,7 @@ return [
     'activities_update_success' => 'Активность была обновлена',
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Заметка была добавлена',
@@ -333,4 +339,23 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Bird',
+    'pets_cat' => 'Cat',
+    'pets_dog' => 'Dog',
+    'pets_fish' => 'Fish',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Horse',
+    'pets_rabbit' => 'Rabbit',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Small animal',
+    'pets_other' => 'Other',
 ];

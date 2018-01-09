@@ -38,10 +38,8 @@
 
     {{-- Don't know the birthdate --}}
     <div class="form-check">
-      <label class="form-check-label" for="is_birthdate_approximate_unknown">
-        <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_unknown" value="unknown"
-        @if(! in_array(old('is_birthdate_approximate'), ['approximate', 'exact']) || ! in_array($kid->is_birthdate_approximate, ['approximate', 'exact'])) checked @endif
-        >
+      <label class="form-check-label" for="birthdateApproximate_unknown">
+        <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_unknown" value="unknown" {{ is_null($kid->birthday_special_date_id) ? 'checked' : '' }}>
 
         <div class="form-inline">
           {{ trans('people.significant_other_add_unknown') }}
@@ -51,41 +49,35 @@
 
     {{-- Approximate birthdate --}}
     <div class="form-check">
-      <label class="form-check-label" for="is_birthdate_approximate_approximate">
-        <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_approximate" value="approximate"
-        @if(old('is_birthdate_approximate') === 'approximate' || $kid->is_birthdate_approximate === 'approximate') checked @endif
-        >
+      <label class="form-check-label" for="birthdateApproximate_approximate">
+        <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_approximate" value="approximate" {{ is_null($kid->birthday_special_date_id) ? '' : ($kid->birthdate->is_age_based == true ? 'checked' : '') }}>
 
         <div class="form-inline">
-          {{ trans('people.kids_add_probably') }}
+          {{ trans('people.information_edit_probably') }}
 
-          <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $kid->getAge() ?? 1 }}" min="0" max="99">
+          <input type="number" class="form-control" name="age" id="age"
+                  value="{{ (is_null($kid->birthdate)) ? 1 : $kid->birthdate->getAge() }}"
+                  min="0"
+                  max="120">
 
-          {{ trans('people.kids_add_probably_yo') }}
+          {{ trans('people.information_edit_probably_yo') }}
         </div>
       </label>
     </div>
 
     {{-- Exact birthdate --}}
     <div class="form-check">
-      <label class="form-check-label" for="is_birthdate_approximate_exact">
-        <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_exact" value="exact"
-        @if(old('is_birthdate_approximate') === 'exact' || $kid->is_birthdate_approximate === 'exact') checked @endif
-        >
+      <label class="form-check-label" for="birthdateApproximate_exact">
+          <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_exact" value="exact" {{ is_null($kid->birthday_special_date_id) ? '' : ($kid->birthdate->is_age_based == true ? '' : 'checked') }}>
 
-        <div class="form-inline">
-          {{ trans('people.kids_add_exact') }}
-          <input type="date" name="birthdate" class="form-control" id="specificDate"
-          value="{{ old('birthdate') ?? (! is_null($kid->birthdate) ? $kid->birthdate->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
-          min="{{ \Carbon\Carbon::now(auth()->user()->timezone)->subYears(120)->format('Y-m-d') }}"
-          max="{{ \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d') }}">
-        </div>
+          <div class="form-inline">
+            {{ trans('people.information_edit_exact') }}
+
+            @include('partials.components.date-select', ['contact' => $kid, 'specialDate' => $kid->birthdate, 'class' => 'birthdate'])
+          </div>
       </label>
     </div>
-
-    <div class="hint-reminder">
-      <p>{{ trans('people.kids_add_help') }}</p>
-    </div>
+    <p class="help">{{ trans('people.information_edit_help') }}</p>
   </fieldset>
 
   @if (\Route::currentRouteName() == 'people.kids.add')

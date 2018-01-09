@@ -23,6 +23,7 @@ class DateSelectViewComposer
         Carbon::setLocale(auth()->user()->locale);
         $months = [];
         $currentDate = Carbon::now();
+        $currentDate->day = 1;
 
         for ($month = 1; $month < 13; $month++) {
             $currentDate->month = $month;
@@ -34,7 +35,7 @@ class DateSelectViewComposer
         $maxYear = Carbon::now(auth()->user()->timezone)->year;
         $minYear = Carbon::now(auth()->user()->timezone)->subYears(120)->format('Y');
 
-        for ($year = $minYear; $year <= $maxYear; $year++) {
+        for ($year = $maxYear; $year >= $minYear; $year--) {
             array_push($years, $year);
         }
 

@@ -81,12 +81,9 @@ class MigrateContactsInformation extends Migration
                     ]);
                 }
             }
-
-            \Log::info('ACCOUNT PASSED: '.$account->id);
         }
 
         $instance = Instance::first();
         $instance->markDefaultContactFieldTypeAsMigrated();
-        \Log::info('PASSED');
     }
 }

@@ -13,7 +13,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.call_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.call_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="#logCallModal" data-toggle="modal">{{ trans('people.call_button') }}</a>
     </div>
   </div>

@@ -57,11 +57,5 @@ class TaskTest extends FeatureTestCase
         $eventParams['object_type'] = 'task';
         $eventParams['nature_of_operation'] = 'create';
         $this->assertDatabaseHas('events', $eventParams);
-
-        // Visit the dashboard and checks that the note event appears on the
-        // dashboard
-        $response = $this->get('/dashboard');
-        $response->assertSee('added a task');
-        $response->assertSee('<a href="/people/'.$contact->id);
     }
 }

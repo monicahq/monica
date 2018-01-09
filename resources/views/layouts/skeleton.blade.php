@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
+    <link rel="manifest" href="/manifest.webmanifest">
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
@@ -30,7 +31,7 @@
       ?>;
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }}>
+  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
 
     @include('partials.header')
 
@@ -38,7 +39,9 @@
       @yield('content')
     </div>
 
-    @include('partials.footer')
+    <div class="mt4">
+      @include('partials.footer')
+    </div>
 
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}

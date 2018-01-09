@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\Tag;
 use Validator;
 use App\Contact;
-use App\Offspring;
-use App\Progenitor;
-use App\Relationship;
+use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,27 +29,76 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $tag = null;
+        $date_flag = false;
 
-        if ($request->get('tags')) {
-            $tag = Tag::where('name_slug', $request->get('tags'))
+        if (str_contains($sort, 'lastactivitydate')) {
+            $date_sort = str_after($sort, 'lastactivitydate');
+            $sort = 'firstnameAZ';
+            $date_flag = true;
+        }
+
+        $tags = null;
+        $url = '';
+        $tagCount = 1;
+
+        if ($request->get('tag1')) {
+            $tags = Tag::where('name_slug', $request->get('tag1'))
                         ->where('account_id', auth()->user()->account_id)
-                        ->first();
+                        ->get();
 
-            if (is_null($tag)) {
+            $count = 2;
+
+            while (true) {
+                if ($request->get('tag'.$count)) {
+                    $tags = $tags->concat(
+                        Tag::where('name_slug', $request->get('tag'.$count))
+                                    ->where('account_id', auth()->user()->account_id)
+                                    ->get()
+                    );
+                } else {
+                    break;
+                }
+
+                $count++;
+            }
+            if (is_null($tags)) {
                 return redirect()->route('people.index');
             }
 
-            $contacts = $user->account->contacts()->real()->whereHas('tags', function ($query) use ($tag) {
-                $query->where('id', $tag->id);
-            })->sortedBy($sort)->get();
+            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+
+            foreach ($tags as $tag) {
+                $contacts = $contacts->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+
+                $url = $url.'tag'.$tagCount.'='.$tag->name_slug.'&';
+
+                $tagCount++;
+            }
+
+            $contacts = $contacts->get();
         } else {
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
+        if ($date_flag) {
+            foreach ($contacts as $contact) {
+                $contact['sort_date'] = $contact->getLastActivityDate();
+            }
+
+            if ($date_sort == 'NewtoOld') {
+                $contacts = $contacts->sortByDesc('sort_date');
+            } elseif ($date_sort == 'OldtoNew') {
+                $contacts = $contacts->sortBy('sort_date');
+            }
+        }
+
         return view('people.index')
             ->withContacts($contacts)
-            ->withTag($tag);
+            ->withTags($tags)
+            ->withUrl($url)
+            ->withTagCount($tagCount);
     }
 
     /**
@@ -61,6 +109,11 @@ class ContactsController extends Controller
     public function create()
     {
         return view('people.create');
+    }
+
+    public function missing()
+    {
+        return view('people.missing');
     }
 
     /**
@@ -90,7 +143,6 @@ class ContactsController extends Controller
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
 
-        $contact->is_birthdate_approximate = 'unknown';
         $contact->save();
 
         $contact->setAvatarColor();
@@ -125,6 +177,9 @@ class ContactsController extends Controller
         }]);
 
         $reminders = $contact->getRemindersAboutRelatives();
+
+        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
+        $contact->save();
 
         return view('people.profile')
             ->withContact($contact)
@@ -176,46 +231,36 @@ class ContactsController extends Controller
         }
 
         // Is the person deceased?
+        $contact->removeSpecialDate('deceased_date');
+        $contact->is_dead = false;
+
         if ($request->input('markPersonDeceased') != '') {
             $contact->is_dead = true;
 
             if ($request->input('checkboxDatePersonDeceased') != '') {
-                $day = $request->input('dayDeceased');
-                $month = $request->input('monthDeceased');
-                $year = $request->input('yearDeceased');
-
-                $date = \Carbon\Carbon::createFromDate($year, $month, $day);
-                $contact->deceased_date = $date;
+                $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $reminder = $contact->reminders()->create(
-                        [
-                            'account_id' => $contact->account_id,
-                            'title' => trans('people.deceased_reminder_title', ['name' => $contact->getFirstName()]),
-                            'description' => '',
-                            'frequency_type' => 'year',
-                            'next_expected_date' => $date,
-                            'frequency_number' => 1,
-                        ]
-                    );
-
-                    $reminder->calculateNextExpectedDate(auth()->user()->timezone);
-                    $reminder->save();
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
-        } else {
-            $contact->is_dead = false;
-            $contact->deceased_date = null;
         }
 
-        $contact->is_birthdate_approximate = $request->input('is_birthdate_approximate');
         $contact->save();
 
-        $contact->setBirthday(
-            $request->get('is_birthdate_approximate'),
-            $request->get('specificDate'),
-            $request->get('age')
-        );
+        // Saves birthdate if defined
+        $contact->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'exact':
+                $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
+        }
 
         $contact->logEvent('contact', $contact->id, 'update');
 
@@ -248,43 +293,27 @@ class ContactsController extends Controller
      */
     public function delete(Request $request, Contact $contact)
     {
-        $contact->activities->each->delete();
-        $contact->calls->each->delete();
-        $contact->debts->each->delete();
-        $contact->events->each->delete();
-        $contact->gifts->each->delete();
-        $contact->notes->each->delete();
-        $contact->reminders->each->delete();
-        $contact->tags->each->delete();
-        $contact->tasks->each->delete();
-        $contact->contactFields->each->delete();
-        $contact->addresses->each->delete();
+        // I know: this is a really brutal way of deleting objects. I'm doing
+        // this because I'll add more objects related to contacts in the future
+        // and I don't want to have to think of deleting a row that matches a
+        // contact.
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+            $tableData = DB::table($tableName)->get();
 
-        // delete all relationships
-        $relationships = Relationship::where('contact_id', $contact->id)
-                                    ->orWhere('with_contact_id', $contact->id)
-                                    ->get();
+            $contactIdRowExists = false;
+            foreach ($tableData as $data) {
+                foreach ($data as $columnName => $value) {
+                    if ($columnName == 'contact_id') {
+                        $contactIdRowExists = true;
+                    }
+                }
+            }
 
-        foreach ($relationships as $relationship) {
-            $relationship->delete();
-        }
-
-        // delete all offsprings
-        $offsprings = Offspring::where('contact_id', $contact->id)
-                                ->orWhere('is_the_child_of', $contact->id)
-                                ->get();
-
-        foreach ($offsprings as $offspring) {
-            $offspring->delete();
-        }
-
-        // delete all progenitors
-        $progenitors = Progenitor::where('contact_id', $contact->id)
-                                ->orWhere('is_the_parent_of', $contact->id)
-                                ->get();
-
-        foreach ($progenitors as $progenitor) {
-            $progenitor->delete();
+            if ($contactIdRowExists == true) {
+                DB::table($tableName)->where('contact_id', $contact->id)->delete();
+            }
         }
 
         $contact->delete();
@@ -380,7 +409,24 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = Contact::search($needle, $accountId);
+        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
+            $search_field = $matches[1];
+            $search_term = $matches[2];
+
+            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
+
+            $field_id = $field->id;
+
+            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
+                $query->where([
+                    ['data', 'like', "$search_term%"],
+                    ['contact_field_type_id', $field_id],
+                ]);
+            })->get();
+        } else {
+            $results = Contact::search($needle, $accountId);
+        }
+
         if (count($results) !== 0) {
             return $results;
         } else {

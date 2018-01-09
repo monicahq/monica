@@ -23,14 +23,23 @@ Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+});
 
-    Route::get('/dashboard/', ['as' => 'dashboard', 'uses' => 'DashboardController@index']);
+Route::middleware(['auth', '2fa'])->group(function () {
+    Route::group(['as' => 'dashboard'], function () {
+        Route::get('/dashboard/', 'DashboardController@index')->name('.index');
+        Route::get('/dashboard/calls', 'DashboardController@calls');
+        Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::post('/dashboard/setTab', 'DashboardController@setTab');
+    });
+    Route::post('/validate2fa', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people/', 'ContactsController@index')->name('.index');
         Route::get('/people/add', 'ContactsController@create')->name('.create');
+        Route::get('/people/notfound', 'ContactsController@missing')->name('.missing');
         Route::post('/people/', 'ContactsController@store')->name('.store');
 
         // Dashboard
@@ -93,12 +102,23 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
         Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
 
+        // Pets
+        Route::get('/people/{contact}/pets', 'Contacts\\PetsController@get');
+        Route::post('/people/{contact}/pet', 'Contacts\\PetsController@store');
+        Route::put('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@update');
+        Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@trash');
+        Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
+
         // Reminders
         Route::get('/people/{contact}/reminders/add', 'Contacts\\RemindersController@create')->name('.reminders.add');
         Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('.reminders.store');
         Route::get('/people/{contact}/reminders/{reminder}/edit', 'Contacts\\RemindersController@edit')->name('.reminders.edit');
         Route::put('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@update')->name('.reminders.update');
-        Route::delete('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
+        // Special route to delete reminders. In one migration in summer '17, I
+        // accidentely f**ked up the reminders table by messing up the contact ids
+        // and now the only way to delete those reminders is to bypass the ReminderRequest
+        // by creating a new route.
+        Route::delete('/people/{contact}/reminders/{rmd}', 'Contacts\\RemindersController@destroy')->name('.reminders.delete');
 
         // Tasks
         Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@get');
@@ -138,9 +158,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['as' => 'journal'], function () {
         Route::get('/journal', ['as' => '.index', 'uses' => 'JournalController@index']);
-        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@add']);
+        Route::get('/journal/entries', 'JournalController@list')->name('.list');
+        Route::get('/journal/entries/{journalEntry}', 'JournalController@get');
+        Route::get('/journal/hasRated', 'JournalController@hasRated');
+        Route::post('/journal/day', 'JournalController@storeDay');
+        Route::delete('/journal/day/{day}', 'JournalController@trashDay');
+
+        Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@create']);
         Route::post('/journal/create', ['as' => '.create', 'uses' => 'JournalController@save']);
-        Route::delete('/journal/{entryId}', ['as' => '.delete', 'uses' => 'JournalController@deleteEntry']);
+        Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
     });
 
     Route::group(['as' => 'settings'], function () {
@@ -180,5 +206,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/settings/tags/{user}', ['as' => '.tags.delete', 'uses' => 'SettingsController@deleteTag']);
 
         Route::get('/settings/api', 'SettingsController@api')->name('.api');
+
+        // Security
+        Route::get('/settings/security', 'SettingsController@security')->name('.security');
+        Route::post('/settings/security/passwordChange', 'Auth\\PasswordChangeController@passwordChange');
+        Route::get('/settings/security/2fa-enable', 'Settings\\MultiFAController@enableTwoFactor')->name('.security.2fa-enable');
+        Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
+        Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('.security.2fa-disable');
+        Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
     });
 });

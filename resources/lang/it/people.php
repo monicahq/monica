@@ -14,7 +14,9 @@ return [
     'people_list_firstnameZA' => 'Ordina per nome Z → A',
     'people_list_lastnameAZ' => 'Ordina per cognome A → Z',
     'people_list_lastnameZA' => 'Ordina per cognome Z → A',
-    'people_list_filter_tag' => 'Tutti i contatti etichettati con <span class="pretty-tag">:name</span>',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
+    'people_list_filter_tag' => 'Tutti i contatti etichettati con ',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '{0} 0 contatti|{1,1} 1 contatto|{2,*} :count contatti',
     'people_search' => 'Cerca nei tuoi contatti...',
@@ -25,6 +27,7 @@ return [
 
     // people add
     'people_add_title' => 'Aggiungi una persona',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
     'people_add_lastname' => 'Cognome (facoltativo)',
@@ -121,9 +124,11 @@ return [
     'reminders_add_recurrent' => 'Ricordamelo ogni',
     'reminders_add_starting_from' => 'a partire dalla data specificata qui sopra',
     'reminders_add_cta' => 'Aggiungi promemoria',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'Devi scrivere qualcosa per questo promemoria',
     'reminders_create_success' => 'Il promemoria è stato creato',
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
     'reminder_frequency_month' => 'ogni mese|ogni :number mesi',
@@ -231,6 +236,7 @@ return [
     'activities_update_success' => 'Attività aggiornata',
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Nota creata',
@@ -327,4 +333,23 @@ return [
     'contact_address_form_province' => 'Provincia (facoltativa)',
     'contact_address_form_postal_code' => 'Codice postale (facoltativa)',
     'contact_address_form_country' => 'Regione (facoltativa)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Bird',
+    'pets_cat' => 'Cat',
+    'pets_dog' => 'Dog',
+    'pets_fish' => 'Fish',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Horse',
+    'pets_rabbit' => 'Rabbit',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Small animal',
+    'pets_other' => 'Other',
 ];

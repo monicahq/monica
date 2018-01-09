@@ -255,6 +255,26 @@ class Account extends Model
     }
 
     /**
+     * Get the Journal Entries records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function journalEntries()
+    {
+        return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the Days records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function days()
+    {
+        return $this->hasMany('App\Day');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
@@ -354,6 +374,23 @@ class Account extends Model
     }
 
     /**
+     * Get the timezone of the user. In case an account has multiple timezones,
+     * takes the first it finds.
+     * @return string
+     */
+    public function timezone()
+    {
+        $timezone = '';
+
+        foreach ($this->users as $user) {
+            $timezone = $user->timezone;
+            break;
+        }
+
+        return $timezone;
+    }
+
+    /**
      * Populates the Contact Field Types table right after an account is
      * created.
      */
@@ -384,5 +421,21 @@ class Account extends Model
                 }
             }
         }
+    }
+
+    /**
+     * Get the reminders for the month given in parameter.
+     * - 0 means current month
+     * - 1 means month+1
+     * - 2 means month+2...
+     * @param  int    $month
+     */
+    public function getRemindersForMonth(int $month)
+    {
+        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+        $reminders = auth()->user()->account->reminders()->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])->orderBy('next_expected_date', 'asc')->get();
+
+        return $reminders;
     }
 }

@@ -1,3 +1,4 @@
+sudo: required
 language: php
 
 php:
@@ -10,6 +11,9 @@ env:
   - DB=mysql
   - DB=postgres
 
+jdk:
+  - oraclejdk8
+
 before_script:
   - sh -c "if [ '$DB' = 'postgres' ]; then cp .env.postgres.travis .env; fi"
   - sh -c "if [ '$DB' = 'mysql' ]; then cp .env.mysql.travis .env; fi"
@@ -21,4 +25,11 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
+  - ./travis-sonar.sh
+
+cache:
+  directories:
+    - $HOME/.sonar/cache
+    - $HOME/sonarscanner
+    - $HOME/sonarlauncher

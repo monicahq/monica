@@ -11,7 +11,7 @@
 
   <div class="col-xs-12">
     <div class="section-blank">
-      <h3>{{ trans('people.activities_blank_title', ['name' => $contact->getFirstName()]) }}</h3>
+      <h3>{{ trans('people.activities_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="{{ route('activities.add', $contact) }}">{{ trans('people.activities_blank_add_activity') }}</a>
     </div>
   </div>
@@ -30,6 +30,9 @@
           {{ $activity->getSummary() }}
         </div>
         <div class="table-cell list-actions">
+            <a href="#activity{{$activity->id}}Modal" data-toggle="modal">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </a>
           <a href="{{ route('activities.edit', [$activity, $contact]) }}" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
@@ -43,8 +46,13 @@
           {{ csrf_field() }}
         </form>
       </li>
+
       @endforeach
     </ul>
   </div>
+  @foreach($contact->activities as $activity)
 
+      @include('people.modal.activity_view')
+
+  @endforeach
 @endif

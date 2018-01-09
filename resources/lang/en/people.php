@@ -14,7 +14,9 @@ return [
     'people_list_firstnameZA' => 'Sort by first name Z → A',
     'people_list_lastnameAZ' => 'Sort by last name A → Z',
     'people_list_lastnameZA' => 'Sort by last name Z → A',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with <span class="pretty-tag">:name</span>',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with ',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Search your contacts...',
@@ -25,6 +27,7 @@ return [
 
     // people add
     'people_add_title' => 'Add a new person',
+    'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
@@ -120,9 +123,11 @@ return [
     'reminders_add_recurrent' => 'Remind me about this every',
     'reminders_add_starting_from' => 'starting from the date specified above',
     'reminders_add_cta' => 'Add reminder',
+    'reminders_edit_update_cta' => 'Update reminder',
     'reminders_add_error_custom_text' => 'You need to indicate a text for this reminder',
     'reminders_create_success' => 'The reminder has been added successfully',
     'reminders_delete_success' => 'The reminder has been deleted successfully',
+    'reminders_update_success' => 'The reminder has been updated successfully',
 
     'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'every week|every :number weeks',
@@ -239,7 +244,7 @@ return [
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',
-
+    'activities_activity' => 'Activity Category',
     // notes
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',
@@ -335,4 +340,23 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+
+    // Pets
+    'pets_kind' => 'Kind of pet',
+    'pets_name' => 'Name (optional)',
+    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_update_success' => 'The pet has been updated',
+    'pets_delete_success' => 'The pet has been deleted',
+    'pets_title' => 'Pets',
+    'pets_reptile' => 'Reptile',
+    'pets_bird' => 'Bird',
+    'pets_cat' => 'Cat',
+    'pets_dog' => 'Dog',
+    'pets_fish' => 'Fish',
+    'pets_hamster' => 'Hamster',
+    'pets_horse' => 'Horse',
+    'pets_rabbit' => 'Rabbit',
+    'pets_rat' => 'Rat',
+    'pets_small_animal' => 'Small animal',
+    'pets_other' => 'Other',
 ];

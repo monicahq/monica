@@ -1,8 +1,40 @@
 UNRELEASED CHANGES:
 
-*
+* Fix vCard import if custom field types are not present
+* Fetch Countries in alphabetical order in "Add Address" form in People Profile page
+* Add ability to edit a reminder
+* Display missing page when loading a contact that does not exist
+* Add ability to filter contacts by more than one tag
+* Change the structure of the dashboard
+* Add two factor authentication ability
 
 RELEASED VERSIONS:
+
+v1.5.0 - 2018-01-02
+-------------------
+
+* Add Webmanifest to create bookmarks on phones
+* Add pets management
+* Activities made with contact now appears in the Journal
+* Add ability to rate how a day went in the Journal
+* Add validation when changing email address
+* Add ability to change account's password in the settings
+* Show a user's avatar when searching
+* Fix timezone not being saved in the Settings tab
+
+v1.4.1 - 2017-12-13
+-------------------
+
+* Add default user account on setup
+
+v1.4.0 - 2017-12-13
+-------------------
+
+* Add ability to add a birthday (or any date) without knowing the year
+* Add the artisan command (CLI) `php artisan setup:test` to setup the development environment
+* Remove the table `important_dates` which was not used
+* Change how resetting an account is achieved
+* Add progress bar when generating fake data to populate the dev environment
 
 v1.3.0 - 2017-12-04
 -------------------

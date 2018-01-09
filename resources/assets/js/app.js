@@ -42,6 +42,18 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+// Partials
+Vue.component(
+    'avatar',
+    require('./components/partials/Avatar.vue')
+);
+
+// Dashboard
+Vue.component(
+    'dashboard-log',
+    require('./components/dashboard/DashboardLog.vue')
+);
+
 // Contacts
 Vue.component(
     'contact-address',
@@ -61,6 +73,37 @@ Vue.component(
 Vue.component(
     'contact-note',
     require('./components/people/Notes.vue')
+);
+
+Vue.component(
+    'pet',
+    require('./components/people/Pets.vue')
+);
+
+// Journal
+Vue.component(
+    'journal-list',
+    require('./components/journal/JournalList.vue')
+);
+
+Vue.component(
+    'journal-calendar',
+    require('./components/journal/partials/JournalCalendar.vue')
+);
+
+Vue.component(
+    'journal-content-rate',
+    require('./components/journal/partials/JournalContentRate.vue')
+);
+
+Vue.component(
+    'journal-content-activity',
+    require('./components/journal/partials/JournalContentActivity.vue')
+);
+
+Vue.component(
+    'journal-content-entry',
+    require('./components/journal/partials/JournalContentEntry.vue')
 );
 
 // Settings

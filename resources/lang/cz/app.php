@@ -11,7 +11,12 @@ return [
     'close' => 'Zavřít',
     'remove' => 'Odstranit',
     'done' => 'Done',
+    'verify' => 'Verify',
     'for' => 'for',
+    'unknown' => 'I don\'t know',
+    'load_more' => 'Load more',
+    'loading' => 'Loading...',
+    'with' => 'with',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',
@@ -57,6 +62,8 @@ return [
     'breadcrumb_edit_note' => 'Upravit poznámku',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'How did you meet',
+    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',

@@ -37,11 +37,9 @@
     <fieldset class="form-group dates">
 
       {{-- Don't know the birthdate --}}
-      <div class="form-check" for="is_birthdate_approximate_unknown">
-        <label class="form-check-label">
-          <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_unknown" value="unknown"
-          @if(! in_array(old('is_birthdate_approximate'), ['approximate', 'exact']) || ! in_array($partner->is_birthdate_approximate, ['approximate', 'exact'])) checked @endif
-          >
+      <div class="form-check">
+        <label class="form-check-label" for="birthdateApproximate_unknown">
+          <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_unknown" value="unknown" {{ is_null($partner->birthday_special_date_id) ? 'checked' : '' }}>
 
           <div class="form-inline">
             {{ trans('people.significant_other_add_unknown') }}
@@ -51,41 +49,35 @@
 
       {{-- Approximate birthdate --}}
       <div class="form-check">
-        <label class="form-check-label" for="is_birthdate_approximate_approximate">
-          <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_approximate" value="approximate"
-          @if(old('is_birthdate_approximate') === 'approximate' || $partner->is_birthdate_approximate === 'approximate') checked @endif
-          >
+        <label class="form-check-label" for="birthdateApproximate_approximate">
+          <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_approximate" value="approximate" {{ is_null($partner->birthday_special_date_id) ? '' : ($partner->birthdate->is_age_based == true ? 'checked' : '') }}>
 
           <div class="form-inline">
-            {{ trans('people.significant_other_add_probably') }}
+            {{ trans('people.information_edit_probably') }}
 
-            <input type="number" class="form-control" id="age" name="age" value="{{ old('age') ?? $partner->getAge() ?? 1 }}" min="1" max="99">
+            <input type="number" class="form-control" name="age" id="age"
+                    value="{{ (is_null($partner->birthdate)) ? 1 : $partner->birthdate->getAge() }}"
+                    min="0"
+                    max="120">
 
-            {{ trans('people.significant_other_add_probably_yo') }}
+            {{ trans('people.information_edit_probably_yo') }}
           </div>
         </label>
       </div>
 
       {{-- Exact birthdate --}}
       <div class="form-check">
-        <label class="form-check-label" for="is_birthdate_approximate_exact">
-          <input type="radio" class="form-check-input" name="is_birthdate_approximate" id="is_birthdate_approximate_exact" value="exact"
-          @if(old('is_birthdate_approximate') === 'exact' || $partner->is_birthdate_approximate === 'exact') checked @endif
-          >
+        <label class="form-check-label" for="birthdateApproximate_exact">
+            <input type="radio" class="form-check-input" name="birthdate" id="birthdateApproximate_exact" value="exact" {{ is_null($partner->birthday_special_date_id) ? '' : ($partner->birthdate->is_age_based == true ? '' : 'checked') }}>
 
-          <span class="form-inline">
-            {{ trans('people.significant_other_add_exact') }}
-            <input type="date" name="birthdate" class="form-control" id="specificDate"
-            value="{{ old('birthdate') ?? (! is_null($partner->birthdate) ? $partner->birthdate->format('Y-m-d') : \Carbon\Carbon::now(auth()->user()->timezone)->format('Y-m-d')) ?? '' }}"
-            min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-            max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}">
-          </span>
+            <div class="form-inline">
+              {{ trans('people.information_edit_exact') }}
+
+              @include('partials.components.date-select', ['contact' => $partner, 'specialDate' => $partner->birthdate, 'class' => 'birthdate'])
+            </div>
         </label>
       </div>
-
-      <div class="hint-reminder">
-        <p>{{ trans('people.significant_other_add_help') }}</p>
-      </div>
+      <p class="help">{{ trans('people.information_edit_help') }}</p>
     </fieldset>
 
     @if (\Route::currentRouteName() == 'people.relationships.add' or (\Route::currentRouteName() == 'people.relationships.edit' and $partner->is_partial == 1))

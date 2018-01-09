@@ -6,7 +6,6 @@ use App\User;
 use App\Address;
 use App\Contact;
 use App\Country;
-use App\Reminder;
 use App\ImportJob;
 use App\ContactField;
 use App\ImportJobReport;
@@ -86,18 +85,19 @@ class AddContactFromVCard implements ShouldQueue
                 }
 
                 $contact->gender = 'none';
-                $contact->is_birthdate_approximate = 'unknown';
-
-                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
-                    $contact->is_birthdate_approximate = 'exact';
-                    $contact->birthdate = new \DateTime((string) $vcard->BDAY);
-                }
 
                 $contact->job = $this->formatValue($vcard->ORG);
 
                 $contact->setAvatarColor();
 
                 $contact->save();
+
+                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
+                    $birthdate = new \DateTime((string) $vcard->BDAY);
+
+                    $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
 
                 if ($vcard->ADR) {
                     $address = new Address();
@@ -122,35 +122,29 @@ class AddContactFromVCard implements ShouldQueue
                 if (! is_null($this->formatValue($vcard->EMAIL))) {
                     // Saves the email
                     $contactFieldType = ContactFieldType::where('type', 'email')->first();
-                    $contactField = new ContactField;
-                    $contactField->account_id = $contact->account_id;
-                    $contactField->contact_id = $contact->id;
-                    $contactField->data = $this->formatValue($vcard->EMAIL);
-                    $contactField->contact_field_type_id = $contactFieldType->id;
-                    $contactField->save();
+
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->EMAIL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
                 }
 
                 if (! is_null($this->formatValue($vcard->TEL))) {
                     // Saves the phone number
                     $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-                    $contactField = new ContactField;
-                    $contactField->account_id = $contact->account_id;
-                    $contactField->contact_id = $contact->id;
-                    $contactField->data = $this->formatValue($vcard->TEL);
-                    $contactField->contact_field_type_id = $contactFieldType->id;
-                    $contactField->save();
-                }
 
-                // if birthdate is known, we need to create reminders
-                if (! $contact->isBirthdateApproximate()) {
-                    $reminder = Reminder::addBirthdayReminder(
-                        $contact,
-                        $contact->birthdate
-                    );
-
-                    $contact->update([
-                        'birthday_reminder_id' => $reminder->id,
-                    ]);
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->TEL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
                 }
 
                 $this->importedContacts++;
