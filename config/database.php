@@ -62,7 +62,7 @@ $db = [
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
-            'strict' => false,
+            'strict' => true,
             'engine' => null,
         ],
 
@@ -75,7 +75,7 @@ $db = [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-            'strict'    => false,
+            'strict'    => true,
         ],
 
         'pgsql' => [
