@@ -3,6 +3,7 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 services:
   - mysql
@@ -20,7 +21,7 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
-  - ./travis-sonar.sh
+  - test "$TRAVIS_PHP_VERSION" == "7.1" && ./travis-sonar.sh
 
 cache:
   directories:
