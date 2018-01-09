@@ -13,6 +13,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ApiPetController extends ApiController
 {
     /**
+     * Account ID column name.
+     */
+    const ACCOUNT_ID = 'account_id';
+
+    /**
+     * Contact ID column name.
+     */
+    const CONTACT_ID = 'contact_id';
+
+    /**
      * Get the detail of a given pet.
      * @param  Request $request
      * @return \Illuminate\Http\Response
@@ -20,7 +30,7 @@ class ApiPetController extends ApiController
     public function show(Request $request, $id)
     {
         try {
-            $pet = Pet::where('account_id', auth()->user()->account_id)
+            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
                 ->where('id', $id)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -40,7 +50,7 @@ class ApiPetController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'pet_category_id' => 'integer|required|exists:pet_categories,id',
-            'contact_id' => 'required|integer',
+            static::CONTACT_ID => 'required|integer|exists:contacts,id',
         ]);
 
         if ($validator->fails()) {
@@ -49,18 +59,10 @@ class ApiPetController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        try {
             $pet = Pet::create(
               $request->all()
               + [
-                'account_id' => auth()->user()->account->id,
+                static::ACCOUNT_ID => auth()->user()->account->id,
               ]
             );
         } catch (QueryException $e) {
@@ -79,7 +81,7 @@ class ApiPetController extends ApiController
     public function update(Request $request, $petId)
     {
         try {
-            $pet = Pet::where('account_id', auth()->user()->account_id)
+            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
                 ->where('id', $petId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -89,22 +91,12 @@ class ApiPetController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'pet_category_id' => 'sometimes|integer|required|exists:pet_categories,id',
-            'contact_id' => 'sometimes|required|integer',
+            static::CONTACT_ID => 'sometimes|required|integer|exists:contacts,id',
         ]);
 
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            if ($request->input('contact_id')) {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->input('contact_id'))
-                    ->firstOrFail();
-            }
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
         }
 
         try {
@@ -125,7 +117,7 @@ class ApiPetController extends ApiController
     public function destroy(Request $request, $petId)
     {
         try {
-            $pet = Pet::where('account_id', auth()->user()->account_id)
+            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
                 ->where('id', $petId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -146,7 +138,7 @@ class ApiPetController extends ApiController
     public function listContactPets(Request $request, $contactId)
     {
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            $contact = Contact::where(static::ACCOUNT_ID, auth()->user()->account_id)
                 ->where('id', $contactId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -167,7 +159,7 @@ class ApiPetController extends ApiController
      */
     public function storeContactPet(Request $request, $contactId)
     {
-        $request->request->add(['contact_id' => $contactId]);
+        $request->request->add([static::CONTACT_ID => $contactId]);
 
         return $this->store($request);
     }
@@ -181,7 +173,7 @@ class ApiPetController extends ApiController
      */
     public function moveContactPet(Request $request, $contactId, $petId)
     {
-        $request->request->add(['contact_id' => $contactId]);
+        $request->request->add([static::CONTACT_ID=> $contactId]);
 
         return $this->update($request, $petId);
     }
