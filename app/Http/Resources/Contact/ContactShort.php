@@ -37,7 +37,7 @@ class ContactShort extends Resource
                 ],
                 'avatar' => [
                     'has_avatar' => $this->has_avatar,
-                    'avatar_url' => $this->getAvatarURL(),
+                    'avatar_url' => $this->getAvatarURL(110),
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
