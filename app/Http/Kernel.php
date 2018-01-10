@@ -56,5 +56,6 @@ class Kernel extends HttpKernel
         //'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
     ];
 }

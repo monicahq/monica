@@ -14,6 +14,8 @@ return [
     'people_list_firstnameZA' => 'Nach Vorname sortieren Z → A',
     'people_list_lastnameAZ' => 'Nach Nachname sortieren A → Z',
     'people_list_lastnameZA' => 'Nach Nachname sortieren Z → A',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: ',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
@@ -241,6 +243,7 @@ return [
     'activities_update_success' => 'Aktivität erfolgreich aktualisiert',
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
     'activities_who_was_involved' => 'Wer war beteiligt?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',

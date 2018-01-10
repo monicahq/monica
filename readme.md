@@ -60,7 +60,9 @@ Monica allows people to keep track of everything that's important about their fr
 * Management of gifts
 * Management of addresses and all the different ways to contact someone
 * Management of contact field types
+* Management of contact pets
 * Basic journal
+* Ability to indicate how the day went
 * Export and import of data
 * Multi users
 * Labels to organize contacts
@@ -118,7 +120,8 @@ Do you want to help? That's awesome. Here are simple things you can do.
 * Read our [Contribution Guide](/CONTRIBUTING.md).
 * Install the developer version locally so you can start contributing [instructions](/docs/contribute/contribute.md).
 * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
-* Look for [issues labelled enhancements](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) These are issues that you can solve relatively easily.
+* Look for [issues labelled Help wanted](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) These are issues that you can solve relatively easily.
+* Look for [issues labelled Good first issue](https://github.com/monicahq/monica/labels/good%20first%20issue) These issues are for people who want to contribute, but try to work on a small feature first.
 * If you are an advanced developer, you can try to tackle [issues labelled feature requests](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3A%22feature+request%22). Beware though - they are harder to do and will require a lot of back and forth with the repository administrator in order to make sure we are going to the right direction with the product.
 
 We welcome contributions of all kinds from anyone.
@@ -131,8 +134,7 @@ We want to use technology in a way that does not harm human relationships, like 
 
 * It should be open-source.
 * It should be transparent.
-* It should be simple to use, simple to contribute to, simple to
-understand, extremely simple to maintain.
+* It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
 * It is not a social network and shall never be.
 * It should do one thing (organizing interactions) extremely well, and nothing more.
 * It should be well documented.
@@ -171,7 +173,7 @@ Here what we should do in order to realize our vision:
 
 While it's not the driving force behind this project, it would be great if the tool could generate money, so we could work full time on it and sustain it on the long run. We are a big fan of [Sentry](https://sentry.io), Wordpress and GitLab and we believe this kind of business model is inspiring, where everyone wins.
 
-If you want to have it for free with all the features, run the project yourself on a server you own. However, if you want to support the development of the project, here is what you can do:
+If you want to have it for free with all the features, run the project yourself on a server you own. However, if you want to support the development of the project, consider taking a Pro account, or support the project on Patreon.
 
 * On https://monicahq.com, Monica will be offered in two versions. Note that this can change anytime as we are trying different business models to see if this project can be sustained in the long run:
   * a free plan:
@@ -217,6 +219,6 @@ Monica use a lot of open source projects and we thank them with all our hearts. 
 
 ## License
 
-Copyright (c) 2016-2017 Regis Freyd
+Copyright (c) 2016-2018 Regis Freyd
 
 Licensed under the AGPL License. [View license](/LICENSE).

@@ -122,23 +122,29 @@ class AddContactFromVCard implements ShouldQueue
                 if (! is_null($this->formatValue($vcard->EMAIL))) {
                     // Saves the email
                     $contactFieldType = ContactFieldType::where('type', 'email')->first();
-                    $contactField = new ContactField;
-                    $contactField->account_id = $contact->account_id;
-                    $contactField->contact_id = $contact->id;
-                    $contactField->data = $this->formatValue($vcard->EMAIL);
-                    $contactField->contact_field_type_id = $contactFieldType->id;
-                    $contactField->save();
+
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->EMAIL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
                 }
 
                 if (! is_null($this->formatValue($vcard->TEL))) {
                     // Saves the phone number
                     $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-                    $contactField = new ContactField;
-                    $contactField->account_id = $contact->account_id;
-                    $contactField->contact_id = $contact->id;
-                    $contactField->data = $this->formatValue($vcard->TEL);
-                    $contactField->contact_field_type_id = $contactFieldType->id;
-                    $contactField->save();
+
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->TEL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
                 }
 
                 $this->importedContacts++;

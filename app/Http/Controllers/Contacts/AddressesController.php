@@ -43,7 +43,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        return Country::all();
+        return Country::orderBy('country')->get();
     }
 
     /**
