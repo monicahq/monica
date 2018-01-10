@@ -173,7 +173,7 @@ class ApiPetController extends ApiController
      */
     public function moveContactPet(Request $request, $contactId, $petId)
     {
-        $request->request->add([static::CONTACT_ID=> $contactId]);
+        $request->request->add([static::CONTACT_ID => $contactId]);
 
         return $this->update($request, $petId);
     }
