@@ -33,7 +33,7 @@
 
         @else
 
-          <a href="/people/{{ $kid->id }}"><span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span></a>
+          <a href="/people/{{ $kid->hashID() }}"><span class="name">{{ $kid->getCompleteName(auth()->user()->name_order) }}</span></a>
 
           @if ($kid->birthday_special_date_id)
             @if ($kid->birthdate->getAge())
