@@ -6,7 +6,6 @@ use App\Helpers\ID_hasher;
 
 trait Hasher
 {
-
     public function getRouteKey()
     {
         $ID_hasher = new ID_hasher();
