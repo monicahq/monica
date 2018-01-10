@@ -23,7 +23,7 @@ script:
   - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
 
 after_script:
-  - if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then ./travis-sonar.sh; fi
+  - 'if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then ./travis-sonar.sh; fi'
 
 cache:
   directories:
