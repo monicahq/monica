@@ -15,7 +15,9 @@ class ID_hasher
     public function decode_id($hash)
     {
         if(str_contains($hash,'h')) {
-            return Hashids::decode(str_after($hash,'h'));
+            $result = Hashids::decode(str_after($hash,'h'));
+
+            return $result[0]; // result is always an array due to quirk in Hashids libary
         } else {
             return $hash;
         }
