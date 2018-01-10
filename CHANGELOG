@@ -1,14 +1,19 @@
 UNRELEASED CHANGES:
 
-* Fix vCard import if custom field types are not present
-* Fetch Countries in alphabetical order in "Add Address" form in People Profile page
-* Add ability to edit a reminder
-* Display missing page when loading a contact that does not exist
-* Add ability to filter contacts by more than one tag
-* Change the structure of the dashboard
-* Add two factor authentication ability
+*
 
 RELEASED VERSIONS:
+
+v1.6.0 - 2018-01-09
+-------------------
+
+* Change the structure of the dashboard
+* Add two factor authentication ability
+* Add ability to edit a reminder
+* Fix vCard import if custom field types are not present
+* Fetch Countries in alphabetical order in "Add Address" form in People Profile page
+* Display missing page when loading a contact that does not exist
+* Add ability to filter contacts by more than one tag
 
 v1.5.0 - 2018-01-02
 -------------------
