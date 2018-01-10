@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
         foreach ($lastUpdatedContacts as $contact) {
             $data = [
-                'id' => $contact->id,
+                'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
                 'avatar_url' => $contact->getAvatarURL(110),
                 'initials' => $contact->getInitials(),
@@ -66,7 +66,7 @@ class DashboardController extends Controller
                     'id' => $event->id,
                     'date' => DateHelper::createDateFromFormat($event->created_at, auth()->user()->timezone),
                     'object' => $object ?? null,
-                    'contact_id' => $event->contact->id,
+                    'contact_id' => $event->contact->hashID(),
                     'object_type' => $event->object_type,
                     'object_id' => $event->object_id,
                     'contact_complete_name' => $event->contact->getCompleteName(auth()->user()->name_order),
@@ -106,7 +106,7 @@ class DashboardController extends Controller
                 'id' => $call->id,
                 'called_at' => \App\Helpers\DateHelper::getShortDate($call->called_at),
                 'name' => $call->contact->getIncompleteName(),
-                'contact_id' => $call->contact->id,
+                'contact_id' => $call->contact->hashID(),
             ];
             $callsCollection->push($data);
         }
@@ -130,7 +130,7 @@ class DashboardController extends Controller
                 'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
                 'name' => $note->contact->getIncompleteName(),
                 'contact' => [
-                    'id' => $note->contact->id,
+                    'id' => $note->contact->hashID(),
                     'has_avatar' => $note->contact->has_avatar,
                     'avatar_url' => $note->contact->getAvatarURL(110),
                     'initials' => $note->contact->getInitials(),
