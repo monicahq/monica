@@ -21,5 +21,4 @@ class ID_hasher
             return $hash;
         }
     }
-
 }
