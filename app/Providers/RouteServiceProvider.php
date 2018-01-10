@@ -42,9 +42,10 @@ class RouteServiceProvider extends ServiceProvider
 
         $ID_hasher = new ID_hasher();
 
-        Route::bind('contact', function ($value) use ($ID_hasher){
+        Route::bind('contact', function ($value) use ($ID_hasher) {
             try {
                 $value = $ID_hasher->decode_id($value);
+
                 return Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
@@ -62,6 +63,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('activity', function ($value, $route) use ($ID_hasher) {
             $value = $ID_hasher->decode_id($value);
+
             return  Activity::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
@@ -69,6 +71,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('reminder', function ($value, $route) use ($ID_hasher) {
             $value = $ID_hasher->decode_id($value);
+
             return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
@@ -91,6 +94,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('debt', function ($value, $route) use ($ID_hasher) {
             $value = $ID_hasher->decode_id($value);
+
             return  Debt::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
@@ -108,10 +112,11 @@ class RouteServiceProvider extends ServiceProvider
             return Contact::findOrFail($value);
         });
 
-        Route::bind('kid', function ($value, $route) use ($ID_hasher){
+        Route::bind('kid', function ($value, $route) use ($ID_hasher) {
             $contact = Contact::findOrFail($route->parameter('contact')->id);
 
             $value = $ID_hasher->decode_id($value);
+
             $offspring = Offspring::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $value)
                 ->where('is_the_child_of', $route->parameter('contact')->id)

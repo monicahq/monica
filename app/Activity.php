@@ -18,7 +18,6 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
-
     use Hasher;
 
     /**

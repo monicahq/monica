@@ -4,8 +4,6 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Helpers\ID_hasher;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ID_hasherTest extends TestCase
 {
@@ -22,7 +20,7 @@ class ID_hasherTest extends TestCase
 
         $test_hash = $ID_hasher->encode_id($test_id);
 
-        $test_value = ('h' == substr($test_hash,0,1));
+        $test_value = ('h' == substr($test_hash, 0, 1));
 
         $this->assertTrue($test_value);
     }

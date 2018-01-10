@@ -16,9 +16,9 @@ trait Hasher
 
     public function resolveRouteBinding($value)
     {
-            $ID_hasher = new ID_hasher();
+        $ID_hasher = new ID_hasher();
 
-            $value = $ID_hasher->decode_id($value);
+        $value = $ID_hasher->decode_id($value);
 
         return $this->where($this->getRouteKeyName(), $value)->first();
     }

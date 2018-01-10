@@ -19,7 +19,6 @@ use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 class Contact extends Model
 {
     use Searchable;
-
     use Hasher;
 
     protected $dates = [
