@@ -21,7 +21,7 @@ script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
-  - if [ "$TRAVIS_PHP_VERSION" == "7.1" ]; then ./travis-sonar.sh; fi
+  - if [ "$TRAVIS_PHP_VERSION" = "7.1" ]; then ./travis-sonar.sh; fi
 
 cache:
   directories:
