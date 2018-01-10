@@ -3,6 +3,7 @@
 
 * [Contribute as a developer](#contribute-as-a-developer)
   * [Considerations](#considerations)
+  * [Design rules](#design-rules)
   * [Install Monica locally](#install-monica-locally)
     * [Homestead \(macOS, Linux, Windows\)](#homestead-macos-linux-windows)
     * [Valet \(macOS\)](#valet-macos)
@@ -20,6 +21,7 @@
   * [Database](#database)
     * [Connecting to mySQL](#connecting-to-mysql)
   * [Front-end](#front-end)
+    * [Considerations](#considerations-1)
     * [Mix](#mix)
     * [Watching and compiling assets](#watching-and-compiling-assets)
     * [CSS](#css)
@@ -35,9 +37,14 @@ Are you interested in giving a hand? We can't be more excited about it. Thanks i
 
 * Monica is written with a great framework, [Laravel](https://github.com/laravel/laravel). We care deeply about keeping Monica very simple on purpose. The simpler the code is, the simpler it will be to maintain it and debug it when needed. That means we don't want to make it a one page application, or add any kind of complexities whatsoever.
 * That means we won't accept pull requests that add too much complexity, or written in a way we don't understand. Again, the number 1 priority should be to simplify the maintenance on the long run.
-* When adding a feature, do not introduce a new software in the existing stack. For instance, at the moment, the current version does not require Redis to be used. If we do create a feature that (for some reasons) depends on Redis, we will need all existing instances to install Redis on top of all the other things people have to setup to install Monica (there are thousands of them). We can't afford to do that.
 * It's better to move forward fast by shipping good features, than waiting for months and ship a perfect feature.
 * Our product philosophy is simple. Things do not have to be perfect. They just need to be shipped. As long as it works and aligns with the vision, you should ship as soon as possible. Even if it's ugly, or very small, that does not matter.
+
+## Design rules
+
+* **Keep it simple**. No new options, please. Options are evil. It creates a bloated software. Not everything should be configurable.
+* **Use what already exists in the current stack**. When adding a feature, do not introduce a new software in the existing stack. For instance, at the moment, the current version does not require Redis to be used. If we do create a feature that (for some reasons) depends on Redis, we will need all existing instances to install Redis on top of all the other things people have to setup to install Monica (there are thousands of them). We can't afford to do that.
+* **Always think about the API**. When introducing new classes and concepts in the app, your changes should always be implemented as well. Everything that we do should be accessible through the API.
 
 ## Install Monica locally
 
@@ -103,6 +110,15 @@ To run the test suite:
 
 ## Backend
 
+The project follows strict [object calisthenics](http://www.slideshare.net/guilhermeblanco/object-calisthenics-applied-to-php), as much as possible and more and more over time. We will soon implement those rules in the Linters and will block a pull request for the code that does not follow those guidelines.
+Here are the rules (adapted for PHP):
+* Only one indentation level per method,
+* Do not use the "else" keyword,
+* Do not chain different objects, unless if the execution includes getters and setters,
+* Keep your entities small: 100 lines per class and no more than 15 classes per package,
+* Any class that contains a collection (or array) cannot use any other properties,
+* Document your code.
+
 ### Things to consider when adding new code
 
 #### Add a new table to the database schema
@@ -153,6 +169,18 @@ If you want to connect directly to Monica's MySQL instance read [_Connecting to 
 
 ## Front-end
 
+### Considerations
+
+* If your contribution involves a change in the UI (even if it's very small), please ping @djaiss in an issue *before* you start working on it, explaining what you want to achieve, why and how. We want to maintain a high level of visual quality in the software and we will dismiss all pull requests that change the front end that have not been discussed before-hand.
+* That being said, we'll probably receive pull requests that change the front end before any previous discussion on the topic. In this case, we do not guarantee that we'll accept the pull request, but in order to increase the chances that it will:
+    * Make sure to follow the current visual style and layout.
+    * Make sure you do not introduce new colors in the UI.
+    * Make sure the user experience is consistent with the rest of the application (ie buttons behave the same, modals are like other modals,...).
+    * Make sure you don't introduce new CSS classes, unless they are absolutely necessary. Use the classes provided by [Tachyons](tachyons.io) which is the functional CSS framework we currently use.
+    * Do not use Jquery. When needed, use VueJS.
+
+The above comments can seem harsh and we apologize in advance. However you have to understand that we deeply care about providing the best user experience to our users. Features that are purely backend do not have the same impact as the ones that the user interacts with. Features that modify the front end will have a tremendous impact on how users perceive the software. Therefore we want to make sure that anything that touches the frontend is perfect and aligned with our vision.
+
 ### Mix
 
 We use [mix](https://laravel.com/docs/5.5/mix) to manage the front-end and its dependencies, and also to compile and/watch the assets. **Please note that we should do our best to prevent introducing new dependencies if we can prevent it**.
@@ -169,7 +197,7 @@ To monitor changes and compile assets on the fly, use `npm run watch`.
 
 ### CSS
 
-At the current time, we are using a mix of Bootstrap 4 and [Tachyons](https://tachyons.io). We aim to use a maximum of [Atomic CSS](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/) instead of having bloated, super hard to maintain CSS files. We'll get rid of Bootstrap entirely over time.
+At the current time, we are using a mix of Bootstrap 4 and [Tachyons](https://tachyons.io). We aim to use [Atomic CSS](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/) instead of having bloated, super hard to maintain CSS files. We'll get rid of Bootstrap entirely over time.
 
 This means that we should add new CSS classes only if it's absolutely necessary.
 
