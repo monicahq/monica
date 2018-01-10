@@ -4,7 +4,7 @@
     {{ trans('people.section_personal_gifts') }}
 
     <span class="fr">
-      <a href="/people/{{ $contact->id }}/gifts/add" class="btn">{{ trans('people.gifts_add_gift') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/gifts/add" class="btn">{{ trans('people.gifts_add_gift') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.gifts_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="/people/{{ $contact->id }}/gifts/add">{{ trans('people.gifts_blank_add_gift') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/gifts/add">{{ trans('people.gifts_blank_add_gift') }}</a>
     </div>
   </div>
 

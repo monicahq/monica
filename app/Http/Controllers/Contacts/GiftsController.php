@@ -63,7 +63,7 @@ class GiftsController extends Controller
 
         $contact->logEvent('gift', $gift->id, 'create');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_add_success'));
     }
 

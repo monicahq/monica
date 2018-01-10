@@ -21,4 +21,11 @@ trait Hasher
 
         return $this->where($this->getRouteKeyName(), $value)->first();
     }
+
+    public function hashID()
+    {
+        $ID_hasher = new ID_hasher();
+
+        return $ID_hasher->encode_id($this->id);
+    }
 }
