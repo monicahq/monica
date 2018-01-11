@@ -5,6 +5,7 @@
 - [ ] If the PR is related to an issue or fix one, don't forget to indicate it.
 - [ ] Make sure that the change you propose is the smallest possible.
 - [ ] Screenshots are included if the PR changes the UI.
+- [ ] If you change the UI, make sure the user experience is consistent with the current interface.
 
 #### Code-related tasks
 - [ ] Tests added for this feature/bug.
