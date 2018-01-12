@@ -14,6 +14,8 @@ return [
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
+    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
+    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
@@ -240,6 +242,7 @@ return [
     'activities_update_success' => 'Активность была обновлена',
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',
+    'activities_activity' => 'Activity Category',
 
     // notes
     'notes_create_success' => 'Заметка была добавлена',

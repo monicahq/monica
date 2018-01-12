@@ -98,6 +98,14 @@
                         <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="/people?sort=lastnameZA">
                           {{ trans('people.people_list_lastnameZA') }}
                         </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateNewtoOld')?'selected':'' }}" href="/people?sort=lastactivitydateNewtoOld">
+                          {{ trans('people.people_list_lastactivitydateNewtoOld') }}
+                        </a>
+
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateOldtoNew')?'selected':'' }}" href="/people?sort=lastactivitydateOldtoNew">
+                          {{ trans('people.people_list_lastactivitydateOldtoNew') }}
+                        </a>
                       </div>
                     </div>
 
