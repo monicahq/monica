@@ -50,7 +50,7 @@ $('#tagsForm').submit(function(e) {
 
       // add the new tag
       for (var i = 0; i < data['tags'].length ; i++) {
-        $('.tags-list').append('<li class="pretty-tag"><a href="/people?tags=' + data.tags[i].slug + '">' + data.tags[i].slug + '</a></li>');
+        $('.tags-list').append('<li class="pretty-tag"><a href="/people?tag1=' + data.tags[i].slug + '">' + data.tags[i].slug + '</a></li>');
       }
 
       $('.tags').toggle();
