@@ -25,19 +25,21 @@ before_script:
 
   # Start selenium server
   - vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
-  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium-server to start...; done;
+  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
 
   # Start selenium node for headless Chrome
   - export PATH="$(pwd)/vendor/bin:$PATH"
   - vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
-  - sleep 3
+  - until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done;
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit
+
   # Start http server
-  - bash -c "php artisan serve &" && sleep 5
+  - php artisan serve &
+  - until $(echo | nc localhost  8080); do sleep 1; echo Waiting for laravel server to start...; done;
   - vendor/bin/steward run laravel chrome
 
 after_script:
