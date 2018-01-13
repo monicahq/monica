@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add pet support to API
 * Fix avatars not being displayed in an activity on the journal
 
 RELEASED VERSIONS:
@@ -14,6 +15,8 @@ v1.6.0 - 2018-01-09
 * Fetch Countries in alphabetical order in "Add Address" form in People Profile page
 * Display missing page when loading a contact that does not exist
 * Add ability to filter contacts by more than one tag
+
+RELEASED VERSIONS:
 
 v1.5.0 - 2018-01-02
 -------------------
