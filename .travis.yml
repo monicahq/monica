@@ -39,7 +39,7 @@ script:
 
   # Start http server
   - php artisan serve &
-  - until $(echo | nc localhost  8080); do sleep 1; echo Waiting for laravel server to start...; done;
+  - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
   - vendor/bin/steward run laravel chrome
 
 after_script:
