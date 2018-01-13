@@ -41,7 +41,7 @@
         "sentry/sentry-laravel": "^0.7.0"
     },
     "require-dev": {
-        "enm1989/chromedriver": "^2.34",
+        "enm1989/chromedriver": "^2.35",
         "filp/whoops": "~2.0",
         "lmc/steward": "dev-update-dependencies",
         "mockery/mockery": "0.9.*",
