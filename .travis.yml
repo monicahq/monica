@@ -26,10 +26,10 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
-  - ./travis-sonar.sh
   - php artisan serve &
   - vendor/bin/steward -vvv run laravel chrome
+  - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
+  - ./travis-sonar.sh
 
 after_script:
   - vendor/bin/steward results -vvv

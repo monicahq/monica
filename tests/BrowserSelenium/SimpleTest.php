@@ -17,11 +17,10 @@ class SimpleTest extends BaseTestCase
     
     /**
      * A basic browser test example.
-     *
-     * @return void
      */
     public function testBasicExample()
     {
+        $this->init();
         $this->assertContains('Monica', $this->wd->getTitle());
     }
 }
