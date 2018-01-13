@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d8fc58c2a5cb5bdbcbdca5f0ce810b1",
+    "content-hash": "6afbf39544ce5f344107bd3d3f6c873e",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.12",
+            "version": "3.48.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "c7f3148d537db877e9b4b63308d61f52eaa253bc"
+                "reference": "e083a4dae6f460df1d02dcd827cf547592f5dc29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c7f3148d537db877e9b4b63308d61f52eaa253bc",
-                "reference": "c7f3148d537db877e9b4b63308d61f52eaa253bc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e083a4dae6f460df1d02dcd827cf547592f5dc29",
+                "reference": "e083a4dae6f460df1d02dcd827cf547592f5dc29",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-11T20:40:29+00:00"
+            "time": "2018-01-12T21:20:32+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4880,29 +4880,29 @@
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tijsverkoyen/CssToInlineStyles.git",
-                "reference": "ab03919dfd85a74ae0372f8baf9f3c7d5c03b04b"
+                "reference": "0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/ab03919dfd85a74ae0372f8baf9f3c7d5c03b04b",
-                "reference": "ab03919dfd85a74ae0372f8baf9f3c7d5c03b04b",
+                "url": "https://api.github.com/repos/tijsverkoyen/CssToInlineStyles/zipball/0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757",
+                "reference": "0ed4a2ea4e0902dac0489e6436ebcd5bbcae9757",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5 || ^7",
-                "symfony/css-selector": "^2.7|~3.0"
+                "php": "^5.5 || ^7.0",
+                "symfony/css-selector": "^2.7 || ^3.0 || ^4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.8|5.1.*"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -4923,7 +4923,7 @@
             ],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
-            "time": "2016-09-20T12:50:39+00:00"
+            "time": "2017-11-27T11:13:29+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -5185,16 +5185,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.34",
+            "version": "2.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "719378addf84efb2a7240809ce0203c9375f8365"
+                "reference": "ffdf8710c7af2344e8fd129a225f0a06569073b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/719378addf84efb2a7240809ce0203c9375f8365",
-                "reference": "719378addf84efb2a7240809ce0203c9375f8365",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/ffdf8710c7af2344e8fd129a225f0a06569073b1",
+                "reference": "ffdf8710c7af2344e8fd129a225f0a06569073b1",
                 "shasum": ""
             },
             "bin": [
@@ -5219,7 +5219,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-12-11T13:06:07+00:00"
+            "time": "2018-01-11T07:51:26+00:00"
         },
         {
             "name": "filp/whoops",
@@ -6919,16 +6919,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "b11c729f95109b56a0fe9650c6a63a0fcd8c439f"
+                "reference": "11c07feade1d65453e06df3b3b90171d6d982087"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/b11c729f95109b56a0fe9650c6a63a0fcd8c439f",
-                "reference": "b11c729f95109b56a0fe9650c6a63a0fcd8c439f",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/11c07feade1d65453e06df3b3b90171d6d982087",
+                "reference": "11c07feade1d65453e06df3b3b90171d6d982087",
                 "shasum": ""
             },
             "require": {
@@ -6979,7 +6979,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-12-22T14:50:35+00:00"
+            "time": "2018-01-12T06:34:42+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -7792,7 +7792,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "pragmarx/google2fa-laravel": 20,
-        "roave/security-advisories": 20
+        "roave/security-advisories": 20,
+        "lmc/steward": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
