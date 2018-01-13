@@ -46,7 +46,6 @@
         "lmc/steward": "dev-update-dependencies",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~6.0",
-        "phpunit/phpunit-selenium": "^4.1",
         "se/selenium-server-standalone": "^3.8",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"

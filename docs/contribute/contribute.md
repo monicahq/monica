@@ -117,9 +117,9 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
 * run selenium
 ```
-vendor/bin/selenium-server-standalone -role hub -log storage/logs/selenium-server.log -enablePassThrough false &
+vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
 export PATH="$(pwd)/vendor/bin:$PATH"
-xvfb-run -s "-screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log storage/logs/selenium-node.log -enablePassThrough false &
+xvfb-run -s "-ac -screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
 ```
 * run tests
 ```
