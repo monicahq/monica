@@ -46,4 +46,8 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
+    <logging>
+        <log type="coverage-clover" target="./results/clover.xml"/>
+        <log type="junit" target="./results/junit.xml"/>
+    </logging>
 </phpunit>

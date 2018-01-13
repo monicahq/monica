@@ -1,1 +1,2 @@
 tests_dir: ./tests/BrowserSelenium
+logs_dir: ./results
