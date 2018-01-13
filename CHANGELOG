@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix avatars not being displayed in an activity on the journal
+* Fix filtering of contacts by tags not taking into account the selected tag from the profile page
 
 RELEASED VERSIONS:
 
