@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests\BrowserSelenium;
 
 use Lmc\Steward\ConfigProvider;
 use Lmc\Steward\Test\AbstractTestCase;
@@ -8,12 +8,12 @@ use Lmc\Steward\Test\AbstractTestCase;
 /**
  * Abstract class for custom tests, could eg. define some properties or instantiate some common components in setUp().
  */
-abstract class MyAbstractTestCase extends AbstractTestCase
+abstract class BaseTestCase extends AbstractTestCase
 {
     /** @var int Default width of browser window (Steward's default is 1280) */
-    public static $browserWidth = 1024;
+    public static $browserWidth = 1280;
     /** @var int Default height of browser window (Steward's default is 1024) */
-    public static $browserHeight = 768;
+    public static $browserHeight = 1024;
     /** @var string */
     public static $baseUrl;
 
@@ -23,16 +23,14 @@ abstract class MyAbstractTestCase extends AbstractTestCase
 
         // Set base url according to environment
         switch (ConfigProvider::getInstance()->env) {
-            /*
-            case 'production':
-                self::$baseUrl = 'https://www.w3.org/';
+            case 'dev':
+                self::$baseUrl = env('APP_URL');
                 break;
-            case 'staging':
-                self::$baseUrl = 'http://some-staging-url/';
+            case 'laravel':
+                self::$baseUrl = 'http://127.0.0.1:8000/';
                 break;
-            */
             case 'local':
-                self::$baseUrl = 'http://localhost'; //env('APP_URL');
+                self::$baseUrl = 'http://127.0.0.1/';
                 break;
             default:
                 throw new \RuntimeException(sprintf('Unknown environment "%s"', ConfigProvider::getInstance()->env));

@@ -1,9 +1,15 @@
 <?php
 
-namespace Tests\Browser;
+namespace Tests\BrowserSelenium;
 
-class Example2Test extends MyAbstractTestCase
+/**
+ * @group basic
+ */
+class SimpleTest extends BaseTestCase
 {
+    /**
+     * @before
+     */
     public function init()
     {
         $this->wd->get(self::$baseUrl);
@@ -16,6 +22,6 @@ class Example2Test extends MyAbstractTestCase
      */
     public function testBasicExample()
     {
-        $this->assertContains('xx', $this->wd->getTitle());
+        $this->assertContains('Monica', $this->wd->getTitle());
     }
 }
