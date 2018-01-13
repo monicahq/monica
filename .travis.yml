@@ -10,17 +10,31 @@ services:
 jdk:
   - oraclejdk8
 
+addons:
+  chrome: stable
+
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database monica;'
   - composer self-update
-  - composer install --no-interaction
+  - composer install --no-interaction --no-suggest
+  - vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
+  - export PATH="$(pwd)/vendor/bin:$PATH"
+  - xvfb-run -s "-screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
+  - sleep 3
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
   - ./travis-sonar.sh
+  - php artisan serve &
+  - vendor/bin/steward -vvv run laravel chrome
+
+after_script:
+  - vendor/bin/steward results -vvv
+  - cat selenium-server.log
+  - cat selenium-node.log
 
 cache:
   directories:
