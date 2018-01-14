@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Copy of server.php with Code Coverage capture
+ * Copy of server.php with Code Coverage capture.
  */
 
 /**
- * Coverage files destination
+ * Coverage files destination.
  */
 const STORAGE = '/results/coverage';
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 use LiveCodeCoverage\LiveCodeCoverage;
 
 LiveCodeCoverage::bootstrap(
-    __DIR__ . STORAGE,
-    __DIR__ . '/phpunit.xml'
+    __DIR__.STORAGE,
+    __DIR__.'/phpunit.xml'
 );
 
 $uri = urldecode(
