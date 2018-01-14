@@ -35,7 +35,7 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
 
   # Start http server
   - php artisan serve &
@@ -47,6 +47,9 @@ after_script:
   - cat selenium-server.log
   - cat selenium-node.log
   - ./travis-sonar.sh
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:

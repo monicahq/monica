@@ -16,11 +16,11 @@ return [
     'failed' => 'Die Anmeldedaten stimmen nicht.',
     'throttle' => 'Zu viele Anmeldeversuche. Bitte in :seconds Sekunden erneut versuchen.',
     'not_authorized' => 'Du hast keine Berechtigung diese Aktion auszuführen',
-    'signup_disabled' => 'Registrierung ist zur Zeit abgeschaltet',
+    'signup_disabled' => 'Neue Registrierungen sind zur Zeit nicht möglich',
     'back_homepage' => 'Zurück zur Seite',
-    '2fa_title' => 'Two Factor Authentication',
-    '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Authentication code',
-    '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    '2fa_title' => 'Zwei-Faktor-Authentifizierung',
+    '2fa_wrong_validation' => 'Die Zwei-Faktor-Authentifizierung ist fehlgeschlagen.',
+    '2fa_one_time_password' => 'Authentifizierungscode',
+    '2fa_recuperation_code' => 'Bitte gib deinen Zwei-Faktor-Wiederherstellungscode ein',
 
 ];
