@@ -3,6 +3,9 @@
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
+<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/badges/gate?key=monica" alt="Quality gate" /></a>
+<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/badges/measure?key=monica&amp;metric=sqale_debt_ratio" alt="Technical debt ratio" /></a>
+<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/badges/measure?key=monica&amp;metric=coverage"  alt="Code coverage" /></a>
 <a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://codecov.io/gh/monicahq/monica"><img src="https://codecov.io/gh/monicahq/monica/branch/master/graph/badge.svg" /></a>
