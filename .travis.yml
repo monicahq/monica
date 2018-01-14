@@ -38,7 +38,7 @@ script:
   - vendor/bin/phpunit
 
   # Start http server
-  - php artisan serve &
+  - php -S 127.0.0.1:8000 -t public server-cc.php &
   - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
   - vendor/bin/steward run laravel chrome
 
@@ -46,10 +46,11 @@ after_script:
   - vendor/bin/steward results -vvv
   - cat selenium-server.log
   - cat selenium-node.log
+  - phpcov merge --clover=results/coverage2.xml ./results/coverage
   - ./travis-sonar.sh
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash) -f results/clover.xml
+  - bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:
