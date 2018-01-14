@@ -5,11 +5,11 @@ return [
     'dashboard_blank_description' => 'Monica ist der Ort um all deine Interaktionen zu organisieren die dir wichtig sind.',
     'dashboard_blank_cta' => 'Füge deinen ersten Kontakt hinzu',
 
-    'notes_title' => 'You don\'t any notes yet.',
+    'notes_title' => 'Du hast noch keine Notizen.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven\'t logged a call yet.',
+    'tab_recent_calls' => 'Kürzliche Telefonate',
+    'tab_favorite_notes' => 'Markierte Notizen',
+    'tab_calls_blank' => 'Du hast noch keine Telefonate protokolliert.',
 
     'statistics_contacts' => 'Kontakte',
     'statistics_activities' => 'Aktivitäten',
