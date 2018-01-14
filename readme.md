@@ -3,6 +3,7 @@
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
+<a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
