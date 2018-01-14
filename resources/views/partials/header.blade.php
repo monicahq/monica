@@ -51,6 +51,7 @@
           <li class="cta"><a href="/people/add" class="btn btn-primary">{{ trans('app.main_nav_cta') }}</a></li>
           <li><a href="/dashboard" class="header-nav-item-link">{{ trans('app.main_nav_dashboard') }}</a></li>
           <li><a href="/people" class="header-nav-item-link">{{ trans('app.main_nav_family') }}</a></li>
+          <li><a href="/journal" class="header-nav-item-link">{{ trans('app.main_nav_journal') }}</a></li>
           <li><a href="/settings" class="header-nav-item-link">{{ trans('app.header_settings_link') }}</a></li>
           <li><a href="/logout" class="header-nav-item-link">{{ trans('app.header_logout_link') }}</a></li>
         </ul>

@@ -224,15 +224,6 @@
                         });
             },
 
-            store() {
-                this.persistClient(
-                    'post', '/people/' + this.contactId + '/contactfield',
-                    this.createForm
-                );
-
-                this.addMode = false;
-            },
-
             reinitialize() {
                 this.createForm.country_id = '';
                 this.createForm.name = '';
