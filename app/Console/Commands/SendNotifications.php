@@ -49,6 +49,10 @@ class SendNotifications extends Command
                                 ->orderBy('next_expected_date', 'asc')->get();
 
         foreach ($reminders as $reminder) {
+            if (! $reminder->contact) {
+                continue;
+            }
+
             $account = $reminder->contact->account;
             $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
             $sendEmailToUser = false;
