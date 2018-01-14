@@ -10,16 +10,42 @@ services:
 jdk:
   - oraclejdk8
 
+addons:
+  chrome: stable
+
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database monica;'
   - composer self-update
-  - composer install --no-interaction
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+  # Start Xvfb
+  - "export DISPLAY=:99.0"
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24"
+
+  # Start selenium server
+  - vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
+  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
+
+  # Start selenium node for headless Chrome
+  - export PATH="$(pwd)/vendor/bin:$PATH"
+  - vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
+  - until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done;
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit --log-junit junit.xml --coverage-clover clover.xml
+  - vendor/bin/phpunit
+
+  # Start http server
+  - php artisan serve &
+  - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
+  - vendor/bin/steward run laravel chrome
+
+after_script:
+  - vendor/bin/steward results -vvv
+  - cat selenium-server.log
+  - cat selenium-node.log
   - ./travis-sonar.sh
 
 cache:
