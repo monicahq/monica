@@ -35,7 +35,7 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit --coverage-clover=coverage.xml
+  - vendor/bin/phpunit
 
   # Start http server
   - php artisan serve &
@@ -49,7 +49,7 @@ after_script:
   - ./travis-sonar.sh
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - bash <(curl -s https://codecov.io/bash) -f results/clover.xml
 
 cache:
   directories:
