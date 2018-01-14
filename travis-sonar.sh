@@ -31,8 +31,8 @@ function CommonParams {
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=monicahq \
-       -Dsonar.php.tests.reportPath=junit.xml \
-       -Dsonar.php.coverage.reportPaths=clover.xml \
+       -Dsonar.php.tests.reportPath=./results/junit.xml \
+       -Dsonar.php.coverage.reportPaths=./results/clover.xml \
        -Dsonar.projectVersion=$(php artisan monica:getversion) \
        $extra
 }
