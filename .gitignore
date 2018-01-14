@@ -13,3 +13,4 @@ monica.sublime-workspace
 .DS_Store
 npm-debug.log.*
 /results
+.vscode

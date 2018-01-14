@@ -56,26 +56,7 @@ class DashboardController extends Controller
                 return $totalOwedDebt + $debt->amount;
             }, 0);
 
-        // List of events
-        $events = $account->events()->limit(30)->get()
-            ->reject(function (Event $event) {
-                return $event->contact === null;
-            })
-            ->map(function (Event $event) use ($account) {
-                return [
-                    'id' => $event->id,
-                    'date' => DateHelper::createDateFromFormat($event->created_at, auth()->user()->timezone),
-                    'object' => $object ?? null,
-                    'contact_id' => $event->contact->id,
-                    'object_type' => $event->object_type,
-                    'object_id' => $event->object_id,
-                    'contact_complete_name' => $event->contact->getCompleteName(auth()->user()->name_order),
-                    'nature_of_operation' => $event->nature_of_operation,
-                ];
-            });
-
         $data = [
-            'events' => $events,
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
             'number_of_contacts' => $account->contacts_count,
             'number_of_reminders' => $account->reminders_count,
