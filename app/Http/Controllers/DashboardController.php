@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Debt;
-use App\Event;
 use App\Contact;
-use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
