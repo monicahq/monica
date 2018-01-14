@@ -3,8 +3,8 @@
 namespace Tests\BrowserSelenium;
 
 use Lmc\Steward\ConfigProvider;
-use Lmc\Steward\Test\AbstractTestCase;
 use Facebook\WebDriver\WebDriverBy;
+use Lmc\Steward\Test\AbstractTestCase;
 
 /**
  * Abstract class for custom tests, could eg. define some properties or instantiate some common components in setUp().
@@ -46,7 +46,7 @@ abstract class BaseTestCase extends AbstractTestCase
 
     /**
      * Init the WebDriver.
-     * (init should be run with "before" phpunit annotation, but it doesn't work !)
+     * (init should be run with "before" phpunit annotation, but it doesn't work !).
      */
     public function init()
     {
@@ -60,22 +60,24 @@ abstract class BaseTestCase extends AbstractTestCase
     {
         $this->init();
 
-        if ($this->getCurrentPath() == "/") {
-            $emailElement = $this->wd->findElement(WebDriverBy::id("email"));
-            $emailElement->sendKeys("admin@admin.com");
+        if ($this->getCurrentPath() == '/') {
+            $emailElement = $this->wd->findElement(WebDriverBy::id('email'));
+            $emailElement->sendKeys('admin@admin.com');
 
-            $passwordElement = $this->wd->findElement(WebDriverBy::id("password"));
-            $passwordElement->sendKeys("admin");
+            $passwordElement = $this->wd->findElement(WebDriverBy::id('password'));
+            $passwordElement->sendKeys('admin');
 
-            $this->wd->findElement(WebDriverBy::tagName("button"))->click();
+            $this->wd->findElement(WebDriverBy::tagName('button'))->click();
         }
     }
 
     /**
      * Get the current url path.
      */
-    public function getCurrentPath() {
+    public function getCurrentPath()
+    {
         $url = $this->wd->getCurrentURL();
+
         return parse_url($url)['path'];
     }
 }
