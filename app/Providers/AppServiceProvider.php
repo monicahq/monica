@@ -30,9 +30,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Comment out as we are removing Dusk from the repository
-        // if ($this->app->environment('local', 'testing')) {
-        //     $this->app->register(DuskServiceProvider::class);
-        // }
     }
 }
