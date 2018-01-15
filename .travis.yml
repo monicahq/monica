@@ -48,6 +48,9 @@ after_script:
   - cat selenium-node.log
   - ./travis-sonar.sh
 
+after_success:
+    - bash <(curl -s https://codecov.io/bash) -f results/clover.xml
+
 cache:
   directories:
     - $HOME/.sonar/cache

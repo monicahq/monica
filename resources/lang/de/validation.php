@@ -36,7 +36,7 @@ return [
     'digits_between'       => ':attribute muss zwischen :min und :max Ziffern liegen.',
     'distinct'             => 'Das :attribute Feld hat einen doppelten Wert.',
     'email'                => ':attribute muss eine gültige E-Mail-Adresse sein.',
-    'exists'               => 'The selected :attribute is invalid.',
+    'exists'               => ':attribute ist ungültig.',
     'filled'               => ':attribute ist ein Pflichtfeld.',
     'image'                => ':attribute muss ein Bild sein.',
     'in'                   => ':attribute ist ungültig.',
