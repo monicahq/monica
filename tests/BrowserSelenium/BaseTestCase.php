@@ -68,6 +68,8 @@ abstract class BaseTestCase extends AbstractTestCase
             $passwordElement->sendKeys('admin');
 
             $this->wd->findElement(WebDriverBy::tagName('button'))->click();
+            
+            $this->waitForLinkText('Logout');
         }
     }
 
