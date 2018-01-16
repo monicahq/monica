@@ -23,5 +23,8 @@ class SimpleTest extends BaseTestCase
         $this->initAndLogin();
         $this->assertContains('Monica', $this->wd->getTitle());
         $this->assertEquals('/dashboard', $this->getCurrentPath());
+
+        $link = $this->findByXpath("//a[@href='/logout']");
+        $this->assertNotNull($link);
     }
 }

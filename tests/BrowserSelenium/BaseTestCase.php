@@ -3,7 +3,7 @@
 namespace Tests\BrowserSelenium;
 
 use Lmc\Steward\ConfigProvider;
-use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Lmc\Steward\Test\AbstractTestCase;
 
 /**
@@ -25,7 +25,7 @@ abstract class BaseTestCase extends AbstractTestCase
         // Set base url according to environment
         switch (ConfigProvider::getInstance()->env) {
             case 'dev':
-                self::$baseUrl = 'http://monica.test/';
+                self::$baseUrl = 'http://monica.test/'; // env('APP_URL');
                 break;
             case 'laravel':
                 self::$baseUrl = 'http://127.0.0.1:8000/';
@@ -61,15 +61,14 @@ abstract class BaseTestCase extends AbstractTestCase
         $this->init();
 
         if ($this->getCurrentPath() == '/') {
-            $emailElement = $this->wd->findElement(WebDriverBy::id('email'));
-            $emailElement->sendKeys('admin@admin.com');
-
-            $passwordElement = $this->wd->findElement(WebDriverBy::id('password'));
-            $passwordElement->sendKeys('admin');
-
-            $this->wd->findElement(WebDriverBy::tagName('button'))->click();
+            //$url = $this->wd->getCurrentURL();
+            $this->findById('email')->sendKeys('admin@admin.com');
+            $this->findById('password')->sendKeys('admin');
+            $this->findByTag('button')->click();
             
-            $this->waitForLinkText('Logout');
+            $this->wd->wait()->until(
+                WebDriverExpectedCondition::urlContains('/dashboard')
+            );
         }
     }
 
@@ -80,6 +79,6 @@ abstract class BaseTestCase extends AbstractTestCase
     {
         $url = $this->wd->getCurrentURL();
 
-        return parse_url($url)['path'];
+        return parse_url($url, PHP_URL_PATH);
     }
 }
