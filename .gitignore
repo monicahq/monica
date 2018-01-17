@@ -12,3 +12,5 @@ monica.sublime-workspace
 /storage/oauth-public.key
 .DS_Store
 npm-debug.log.*
+/results
+.vscode

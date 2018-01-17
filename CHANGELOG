@@ -1,5 +1,14 @@
 UNRELEASED CHANGES:
 
+*
+
+v1.6.1 - 2018-01-14
+-------------------
+
+* Add missing journal link to the mobile main menu
+* Remove list of events being loaded in the dashboard for no reason
+* Remove duplicated code in Addresses.vue file
+* Fix reminders not being sent in some cases
 * Fix avatars not being displayed in an activity on the journal
 
 RELEASED VERSIONS:
