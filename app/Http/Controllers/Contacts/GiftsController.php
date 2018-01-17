@@ -4,11 +4,46 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Gift;
 use App\Contact;
+use App\Helpers\MoneyHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\GiftsRequest;
 
 class GiftsController extends Controller
 {
+    /**
+     * List all the gifts for the given contact.
+     *
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function get(Contact $contact)
+    {
+        $giftsCollection = collect([]);
+        $gifts = $contact->gifts()->get();
+
+        foreach ($gifts as $gift) {
+            $data = [
+                'id' => $gift->id,
+                'name' => $gift->name,
+                'is_for' => $gift->recipient_name,
+                'comment' => $gift->comment,
+                'url' => $gift->url,
+                'value' => MoneyHelper::format($gift->value),
+                'does_value_exist' => $gift->value ? true : false,
+                'is_an_idea' => $gift->is_an_idea,
+                'has_been_offered' => $gift->has_been_offered,
+                'has_been_received' => $gift->has_been_received,
+                'offered_at' => \App\Helpers\DateHelper::getShortDate($gift->offered_at, auth()->user()->locale),
+                'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at, auth()->user()->locale),
+                'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at, auth()->user()->locale),
+                'edit' => false,
+            ];
+            $giftsCollection->push($data);
+        }
+
+        return $giftsCollection;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -53,18 +88,6 @@ class GiftsController extends Controller
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.gifts_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Gift $gift
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Gift $gift)
-    {
-        //
     }
 
     /**
