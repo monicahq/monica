@@ -10,18 +10,6 @@ use App\Http\Requests\People\GiftsRequest;
 class GiftsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Contact $contact)
-    {
-        return view('people.gifts.index')
-            ->withContact($contact);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
