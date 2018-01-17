@@ -6,8 +6,12 @@ use Auth;
 use App\Day;
 use App\Entry;
 use Validator;
+use DatePeriod;
+use DateInterval;
+use Carbon\Carbon;
 use App\JournalEntry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller
@@ -187,5 +191,31 @@ class JournalController extends Controller
 
         $entry->deleteJournalEntry();
         $entry->delete();
+    }
+
+    /**
+     * Display mood trends over time.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function moods(Request $request)
+    {
+        $results = [
+            'unit' => 'months',
+            'range' => 12,
+            'data' => [],
+            'available_units' => ['days', 'weeks', 'months', 'years'],
+        ];
+        $start = Carbon::now()->subMonths($results['range']);
+        $dateIntervalValue = 'P1D';
+        $period = new DatePeriod($start, new DateInterval($dateIntervalValue), Carbon::now());
+        foreach ($period as $date) {
+            $dateString = $date->format('Y-m-d');
+            $rating = DB::table('days')->whereDate('date', $dateString)->pluck('rate')->first();
+            $results['data'][] = ['date' => $dateString, 'rating' => $rating];
+        }
+
+        return $results;
     }
 }

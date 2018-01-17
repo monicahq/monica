@@ -20,6 +20,7 @@
 
     {{-- Main section --}}
     <section class="ph3 ph5-ns pv3 cf w-100 bg-gray-monica">
+      <mood-trends></mood-trends>
       <journal-list></journal-list>
     </section>
 
