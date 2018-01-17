@@ -27,7 +27,10 @@ class Gift extends Model
      *
      * @var array
      */
-    protected $dates = ['date_offered'];
+    protected $dates = [
+        'offered_at',
+        'received_at',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -37,6 +40,7 @@ class Gift extends Model
     protected $casts = [
         'is_an_idea' => 'boolean',
         'has_been_offered' => 'boolean',
+        'has_been_received' => 'boolean',
     ];
 
     /**
@@ -115,6 +119,12 @@ class Gift extends Model
         return $this;
     }
 
+    /**
+     * Get the name of the recipient for this gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
     public function getRecipientNameAttribute()
     {
         if ($this->hasParticularRecipient()) {
@@ -122,28 +132,47 @@ class Gift extends Model
         }
     }
 
-    public function getName()
+    /**
+     * Get the gift name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
     {
-        return $this->name;
+        return $value;
     }
 
-    public function getUrl()
+    /**
+     * Get the URL of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getUrlAttribute($value)
     {
-        return $this->url;
+        return $value;
     }
 
-    public function getComment()
+    /**
+     * Get the comment of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCommentAttribute($value)
     {
-        return $this->comment;
+        return $value;
     }
 
-    public function getValue()
+    /**
+     * Get the value of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getValueAttribute($value)
     {
-        return $this->value;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->created_at;
+        return $value;
     }
 }
