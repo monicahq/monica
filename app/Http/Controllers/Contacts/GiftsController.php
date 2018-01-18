@@ -37,11 +37,25 @@ class GiftsController extends Controller
                 'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at, auth()->user()->locale),
                 'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at, auth()->user()->locale),
                 'edit' => false,
+                'show_comment' => false,
             ];
             $giftsCollection->push($data);
         }
 
         return $giftsCollection;
+    }
+
+    /**
+     * Mark a gift as being offered.
+     * @param  Contact $contact
+     * @param  Gift    $gift
+     * @return void
+     */
+    public function toggle(Contact $contact, Gift $gift)
+    {
+        $gift->toggle();
+
+        return $gift;
     }
 
     /**
@@ -75,8 +89,9 @@ class GiftsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'is_an_idea' => ! $request->get('offered'),
-                'has_been_offered' => $request->get('offered'),
+                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
+                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
+                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
             ]
         );
 
@@ -148,10 +163,6 @@ class GiftsController extends Controller
     public function destroy(Contact $contact, Gift $gift)
     {
         $gift->delete();
-
         $contact->events()->forObject($gift)->get()->each->delete();
-
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.gifts_delete_success'));
     }
 }

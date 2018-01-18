@@ -175,4 +175,25 @@ class Gift extends Model
     {
         return $value;
     }
+
+    /**
+     * Toggle a gift between the idea and offered state.
+     * @return void
+     */
+    public function toggle()
+    {
+        $this->has_been_received = false;
+
+        if ($this->is_an_idea == 1) {
+            $this->is_an_idea = false;
+            $this->has_been_offered = true;
+            $this->save();
+            return;
+        }
+
+        $this->is_an_idea = true;
+        $this->has_been_offered = false;
+        $this->save();
+        return;
+    }
 }

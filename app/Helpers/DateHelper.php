@@ -63,8 +63,6 @@ class DateHelper
         $locale = self::getLocale($locale);
         $format = 'M';
 
-        \Log::info($date);
-
         return $date->format($format);
     }
 

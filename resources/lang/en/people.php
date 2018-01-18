@@ -268,6 +268,7 @@ return [
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',
     'gifts_add_gift_already_offered' => 'Gift already offered',
+    'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
     'gifts_add_link' => 'Link to the web page (optional)',
     'gifts_add_value' => 'Value (optional)',
