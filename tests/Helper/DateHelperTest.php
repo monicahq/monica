@@ -94,7 +94,7 @@ class DateHelperTest extends FeatureTestCase
             DateHelper::getShortDateWithoutYear($date, $locale)
         );
 
-        $locale = 'pt-br';
+        $locale = 'fr';
 
         $this->assertEquals(
             '22 jan',
