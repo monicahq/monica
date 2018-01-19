@@ -80,8 +80,8 @@ abstract class BaseTestCase extends AbstractTestCase
      */
     public function getCurrentPath()
     {
-        $url = $this->wd->getCurrentURL();
-
-        return parse_url($url, PHP_URL_PATH);
+        return urldecode(
+            parse_url($this->wd->getCurrentURL(), PHP_URL_PATH)
+        );
     }
 }
