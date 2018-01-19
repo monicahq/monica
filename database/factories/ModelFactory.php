@@ -150,6 +150,7 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,
+        ];
 });
       
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
