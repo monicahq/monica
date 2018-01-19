@@ -150,5 +150,20 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
         'contact_id' => 1,
+});
+      
+$factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
+    static $account_id;
+    static $stripe_plan;
+    static $name;
+    static $stripe_id;
+
+    return [
+        'account_id' => $account_id,
+        'name' => $name ?: $faker->randomElement(['main']),
+        'stripe_id' => $stripe_id,
+        'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
+        'quantity' => 1,
+        'created_at' => \Carbon\Carbon::now(),
     ];
 });
