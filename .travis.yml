@@ -50,7 +50,7 @@ script:
   - mkdir -p results/coverage
   - php -S 127.0.0.1:8000 -t public server-cc.php &
   - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
-  - vendor/bin/steward run laravel chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@ondemand.saucelabs.com
+  - vendor/bin/steward run laravel chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445
 
 after_script:
   - vendor/bin/steward results -vvv
