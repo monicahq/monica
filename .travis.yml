@@ -31,16 +31,16 @@ before_script:
   - |
     if [ ! "$SAUCELABS" = "1" ]; then
       # Start Xvfb
-      export DISPLAY=:99.0;
-      /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24;
+      export DISPLAY=:99.0
+      /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24
 
       # Start selenium server
-      java -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role hub -log selenium-server.log &;
-      until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
+      java -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role hub -log selenium-server.log &
+      until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done
 
       # Start selenium node for headless Chrome
-      java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role node -port 8910 -log selenium-node.log &;
-      until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done;
+      java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role node -port 8910 -log selenium-node.log &
+      until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done
     fi
 
 script:
@@ -57,9 +57,9 @@ script:
   # Run browser tests
   - |
     if [ "SAUCELABS" = "1" ]; then
-      vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'";
+      vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"
     else
-      vendor/bin/steward run travis chrome -vvv fi;
+      vendor/bin/steward run travis chrome -vvv fi
     fi
 
 after_script:
