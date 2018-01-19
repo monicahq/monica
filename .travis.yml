@@ -36,11 +36,11 @@ before_script:
 
       # Start selenium server
       java -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role hub -log selenium-server.log &
-      until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done
+      until $(nc localhost -z 4444); do sleep 1; echo Waiting for selenium hub to start...; done
 
       # Start selenium node for headless Chrome
       java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role node -port 8910 -log selenium-node.log &
-      until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done
+      until $(nc localhost -z 8910); do sleep 1; echo Waiting for selenium node to start...; done
     fi
 
 script:
@@ -52,26 +52,22 @@ script:
 
   # Start http server
   - php -S 127.0.0.1:8000 -t public server-cc.php &
-  - until $(echo | nc localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
+  - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run browser tests
-  - |
-    if [ "SAUCELABS" = "1" ]; then
-      vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"
-    else
-      vendor/bin/steward run travis chrome -vvv
-    fi
-
-after_script:
-  - vendor/bin/steward results -vvv
-  - .ci/travis-report.sh
-  - cat selenium-server.log
-  - cat selenium-node.log
-  - phpcov merge --clover=results/coverage2.xml ./results/coverage
-  - ./travis-sonar.sh
+  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'" fi
+  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+after_script:
+  - vendor/bin/steward results -vvv
+  - .ci/travis-report.sh 2>/dev/null
+  - cat selenium-server.log
+  - cat selenium-node.log
+  - vendor/bin/phpcov merge --clover=$(pwd)/results/coverage2.xml $(pwd)/results/coverage
+  - ./travis-sonar.sh
 
 cache:
   directories:
