@@ -154,4 +154,25 @@ class AccountTest extends TestCase
             $account->timezone()
         );
     }
+
+    public function test_has_invoices_returns_true_if_a_plan_exists()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertTrue($account->hasInvoices());
+    }
+
+    public function test_has_invoices_returns_false_if_a_plan_does_not_exist()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $this->assertFalse($account->hasInvoices());
+    }
 }
