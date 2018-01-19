@@ -152,7 +152,7 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
         'contact_id' => 1,
         ];
 });
-      
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;
