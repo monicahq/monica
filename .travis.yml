@@ -23,6 +23,7 @@ env:
 
 before_script:
   - cp .env.travis .env
+  - mkdir -p results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
@@ -48,10 +49,9 @@ script:
   #- vendor/bin/phpunit
 
   # Start http server
-  - mkdir -p results/coverage
-  #- php -S 127.0.0.1:8000 -t public server-cc.php &
-  - php artisan serve &
-  - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
+  - php -S 127.0.0.1:8000 -t public server-cc.php &
+  #- php artisan serve &
+  - until $(echo | nc localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run tests
   - vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"
