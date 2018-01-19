@@ -28,13 +28,14 @@ before_script:
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
   # Start Xvfb
-  - export DISPLAY=:99.0
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24"
+#  - export DISPLAY=:99.0
+#  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24"
 
-  - java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -log selenium-server.log &
+#  - java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -log selenium-server.log &
+
   # Start selenium server
 #  - java -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role hub -log selenium-server.log &
-  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
+#  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
 
   # Start selenium node for headless Chrome
 #  - java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role node -port 8910 -log selenium-node.log &
