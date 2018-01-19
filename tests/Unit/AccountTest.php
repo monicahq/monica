@@ -205,7 +205,7 @@ class AccountTest extends TestCase
         \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
 
         // add 3 reminders for the month of March
-        for ($i = 0; $i < 3 ; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $reminder = factory(Reminder::class)->create([
                 'account_id' => $account->id,
                 'next_expected_date' => '2017-03-03 00:00:00',
