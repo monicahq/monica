@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Gift;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

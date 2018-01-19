@@ -69,7 +69,7 @@
     @endif
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.gifts_add_cta') }}</button>
+        <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>

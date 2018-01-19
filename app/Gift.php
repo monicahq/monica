@@ -194,6 +194,5 @@ class Gift extends Model
         $this->is_an_idea = true;
         $this->has_been_offered = false;
         $this->save();
-        return;
     }
 }
