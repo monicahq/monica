@@ -45,6 +45,7 @@ script:
 
 after_script:
   - vendor/bin/steward results -vvv
+  - .ci/travis-report.sh
   - cat selenium-server.log
   - cat selenium-node.log
   - phpcov merge --clover=results/coverage2.xml ./results/coverage
