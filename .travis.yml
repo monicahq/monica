@@ -59,7 +59,7 @@ script:
     if [ "SAUCELABS" = "1" ]; then
       vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"
     else
-      vendor/bin/steward run travis chrome -vvv fi
+      vendor/bin/steward run travis chrome -vvv
     fi
 
 after_script:
