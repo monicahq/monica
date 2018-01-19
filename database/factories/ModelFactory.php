@@ -146,7 +146,7 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(\Laravel\Cashier\Subscription::class, function(Faker\Generator $faker) {
+$factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;
     static $name;
