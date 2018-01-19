@@ -23,7 +23,7 @@
 
     <!-- List of pets -->
     <ul v-if="pets.length > 0">
-      <li v-for="pet in pets" class="mb2" key="id">
+      <li v-for="pet in pets" class="mb2" :key="pet.id">
 
         <div class="w-100 dt" v-show="!pet.edit">
           <div class="dtc">
