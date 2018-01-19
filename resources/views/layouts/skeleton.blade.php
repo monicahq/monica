@@ -39,9 +39,7 @@
       @yield('content')
     </div>
 
-    <div class="mt4">
-      @include('partials.footer')
-    </div>
+    @include('partials.footer')
 
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}

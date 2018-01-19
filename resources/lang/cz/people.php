@@ -253,14 +253,11 @@ return [
     'notes_delete_confirmation' => 'Opravdu chcete smazat tuto poznámku? Smazání je trvalé.',
 
     // gifts
-    'gifts_blank_title' => 'Udržujte přehled o nápadech na dárky a o dárcích, které jste darovali osobě :name',
-    'gifts_blank_add_gift' => 'Přidat dárek',
     'gifts_add_success' => 'Dárek byl úspěšně přidán',
     'gifts_delete_success' => 'Dárek byl úspěšně smazán',
     'gifts_delete_confirmation' => 'Opravdu chcete smazat tento dárek?',
     'gifts_add_gift' => 'Přidat dárek',
     'gifts_link' => 'Odkaz',
-    'gifts_added_on' => 'Přidán :date',
     'gifts_delete_cta' => 'Smazat',
     'gifts_offered' => 'darováno',
     'gifts_add_title' => 'Správa dárků pro :name',
@@ -271,12 +268,11 @@ return [
     'gifts_add_value' => 'Hodnota (volitelné)',
     'gifts_add_comment' => 'Komentář (volitelné)',
     'gifts_add_someone' => 'Tento dárek je pro někoho konkrétního z rodiny od :name',
-    'gifts_add_cta' => 'Přidat',
-    'gifts_gift_idea' => 'Nápad na dárek',
-    'gifts_gift_already_offered' => 'Dárek již darován',
-    'gifts_table_date_added' => 'Datum přidání',
-    'gifts_table_description' => 'Popis',
-    'gifts_table_actions' => 'Akce',
+    'gifts_ideas' => 'Gift ideas',
+    'gifts_offered' => 'Gifts offered',
+    'gifts_received' => 'Gifts received',
+    'gifts_view_comment' => 'View comment',
+    'gifts_mark_offered' => 'Mark as offered',
 
     // debts
     'debt_delete_confirmation' => 'Opravdu chcete smazat tento dluh?',

@@ -31,8 +31,8 @@ function CommonParams {
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=monicahq \
-       -Dsonar.php.tests.reportPath=junit.xml \
-       -Dsonar.php.coverage.reportPaths=clover.xml \
+       -Dsonar.php.tests.reportPath=./results/junit.xml \
+       -Dsonar.php.coverage.reportPaths=./results/clover.xml \
        -Dsonar.projectVersion=$(php artisan monica:getversion) \
        $extra
 }
@@ -127,20 +127,20 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   installSonar
   gitFetch
 
-  if [ -n "${GITHUB_TOKEN:-}" ]; then
-    # analyse with GitHub token to add comment on the PR
-    echo sonar-scanner $(CommonParams) \
-      -Dsonar.analysis.mode=preview \
-      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-      -Dsonar.github.repository=$TRAVIS_REPO_SLUG
-
-    $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-      -Dsonar.analysis.mode=preview \
-      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-      -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
-      -Dsonar.github.oauth=$GITHUB_TOKEN \
-      -Dsonar.login=$SONAR_TOKEN
-  fi
+#  if [ -n "${GITHUB_TOKEN:-}" ]; then
+#    # analyse with GitHub token to add comment on the PR
+#    echo sonar-scanner $(CommonParams) \
+#      -Dsonar.analysis.mode=preview \
+#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
+#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG
+#
+#    $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
+#      -Dsonar.analysis.mode=preview \
+#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
+#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
+#      -Dsonar.github.oauth=$GITHUB_TOKEN \
+#      -Dsonar.login=$SONAR_TOKEN
+#  fi
 
   # analyse with GitHub token to add comment on the PR
   echo sonar-scanner $(CommonParams) \
