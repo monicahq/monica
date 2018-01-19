@@ -3,8 +3,8 @@
 namespace Tests\BrowserSelenium;
 
 use Lmc\Steward\ConfigProvider;
-use Facebook\WebDriver\WebDriverExpectedCondition;
 use Lmc\Steward\Test\AbstractTestCase;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Abstract class for custom tests, could eg. define some properties or instantiate some common components in setUp().
@@ -65,7 +65,7 @@ abstract class BaseTestCase extends AbstractTestCase
             $this->findById('email')->sendKeys('admin@admin.com');
             $this->findById('password')->sendKeys('admin');
             $this->findByTag('button')->submit();
-            
+
             $this->wd->wait()->until(
                 WebDriverExpectedCondition::urlContains('/dashboard')
             );
