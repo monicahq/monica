@@ -44,20 +44,24 @@ before_script:
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit
+  
+  #- vendor/bin/phpunit
 
   # Start http server
   - mkdir -p results/coverage
-  - php -S 127.0.0.1:8000 -t public server-cc.php &
+  #- php -S 127.0.0.1:8000 -t public server-cc.php &
+  - php artisan serve &
   - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
-  - vendor/bin/steward run laravel chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445
+
+  # Run tests
+  - vendor/bin/steward run laravel chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:${TRAVIS_JOB_NUMBER}"
 
 after_script:
   - vendor/bin/steward results -vvv
   - .ci/travis-report.sh
-  - cat selenium-server.log
-  - cat selenium-node.log
-  - phpcov merge --clover=results/coverage2.xml ./results/coverage
+  #- cat selenium-server.log
+  #- cat selenium-node.log
+  #- phpcov merge --clover=results/coverage2.xml ./results/coverage
   - ./travis-sonar.sh
 
 after_success:
