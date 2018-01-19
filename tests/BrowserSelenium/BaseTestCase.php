@@ -64,7 +64,7 @@ abstract class BaseTestCase extends AbstractTestCase
             //$url = $this->wd->getCurrentURL();
             $this->findById('email')->sendKeys('admin@admin.com');
             $this->findById('password')->sendKeys('admin');
-            $this->findByTag('button')->click();
+            $this->findByTag('button')->submit();
             
             $this->wd->wait()->until(
                 WebDriverExpectedCondition::urlContains('/dashboard')
