@@ -27,6 +27,9 @@ abstract class BaseTestCase extends AbstractTestCase
             case 'dev':
                 self::$baseUrl = 'http://monica.test/'; // env('APP_URL');
                 break;
+            case 'travis':
+                self::$baseUrl = 'http://localhost:8000/';
+                break;
             case 'laravel':
                 self::$baseUrl = 'http://127.0.0.1:8000/';
                 break;
