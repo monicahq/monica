@@ -82,6 +82,35 @@ class AccountTest extends TestCase
         );
     }
 
+    public function test_user_is_subscribed_returns_true_if_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        config(['monica.paid_plan_friendly_name' => 'fakePlan']);
+
+        $this->assertEquals(
+            true,
+            $account->isSubscribed()
+        );
+    }
+
+    public function test_user_is_subscribed_returns_false_if_no_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $this->assertEquals(
+            false,
+            $account->isSubscribed()
+        );
+    }
+
     public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
     {
         $account = factory(Account::class)->make([
