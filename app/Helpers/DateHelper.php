@@ -180,7 +180,8 @@ class DateHelper
     }
 
     /**
-     * Get the name of the month and year of the month given in parameter.
+     * Get the name of the month and year of a given date with a given number
+     * of months more.
      * @param  int    $month
      * @return string
      */
