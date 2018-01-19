@@ -374,8 +374,8 @@ class FakeContentTableSeeder extends Seeder
                     'url' => $this->faker->url,
                     'value' => rand(12, 120),
                     'account_id' => $this->contact->account_id,
-                    'is_an_idea' => 'true',
-                    'has_been_offered' => 'false',
+                    'is_an_idea' => true,
+                    'has_been_offered' => false,
                 ]);
 
                 $this->contact->logEvent('gift', $gift->id, 'create');

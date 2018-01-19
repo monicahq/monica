@@ -110,7 +110,7 @@ class ContactTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $gift = [
-            'offered' => false,
+            'offered' => 'idea',
             'name' => $this->faker->word,
             'url' => $this->faker->url,
             'value' => $this->faker->numberBetween(1, 2000),
