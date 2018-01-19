@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\User;
 use App\Account;
+use App\Reminder;
 use App\Invitation;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -174,5 +175,46 @@ class AccountTest extends TestCase
         $account = factory(Account::class)->create([]);
 
         $this->assertFalse($account->hasInvoices());
+    }
+
+    public function test_get_reminders_for_month_returns_no_reminders()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+
+        $this->assertEquals(
+            0,
+            $account->getRemindersForMonth(3)->count()
+        );
+    }
+
+    public function test_get_reminders_for_month_returns_reminders_for_given_month()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        for ($i = 0; $i <3 ; $i++) {
+            $reminder = factory(Reminder::class)->create([
+                'account_id' => $account->id,
+                'next_expected_date' => '2017-03-03 00:00:00',
+            ]);
+        }
+
+        $this->assertEquals(
+            3,
+            $account->getRemindersForMonth(2)->count()
+        );
     }
 }
