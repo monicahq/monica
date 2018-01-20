@@ -55,8 +55,8 @@ script:
   - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run browser tests
-  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'" fi
-  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv fi
+  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv; fi
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
