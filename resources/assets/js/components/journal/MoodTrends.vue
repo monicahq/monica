@@ -5,13 +5,12 @@
 <template>
   <div class="mw12 center pa2">
     <div class="load-data" v-if="loadingMore"></div>
-    <div id="mood-trends"></div>
+    <canvas id="mood-trends" width="100%"></canvas>
   </div>
 </template>
 
 <script>
-    // const Highcharts = require('highcharts');
-    const charts = require('chart.js');
+    const Chart = require('chart.js');
     const moment = require('moment');
 
     export default {
@@ -60,66 +59,75 @@
 
             drawChart() {
               var component = this;
-              // component.chart = Highcharts.stockChart('mood-trends', {
-              //     credits: {
-              //       enabled: false
-              //     },
-              //     chart: {
-              //         type: 'line',
-              //         borderRadius: 5
-              //     },
-              //     rangeSelector: {
-              //         allButtonsEnabled: true,
-              //         selected: 2
-              //     },
-              //     title: {
-              //         text: 'Mood Over Time'
-              //     },
-              //     subtitle: {
-              //       text: ['Last', component.moods.range, component.moods.unit].join(' ')
-              //     },
-              //     xAxis: {
-              //       type: 'datetime',
-              //       dateTimeLabelFormats: {
-              //          day: '%d %b %Y'
-              //       }
-              //     },
-              //     yAxis: {
-              //         title: {
-              //             text: 'Mood'
-              //         },
-              //         labels: {
-              //             formatter: function () {
-              //                 return component.getMoodLabel(this.value);
-              //             }
-              //         }
-              //     },
-              //     tooltip: {
-              //       formatter: function() {
-              //           return '<b>' + component.getMoodLabel(this.y) + '</b> on ' + moment(this.x).format('MMMM Do YYYY');
-              //       }
-              //     },
-              //     plotOptions: {
-              //         area: {
-              //             marker: {
-              //                 enabled: false,
-              //                 symbol: 'circle',
-              //                 radius: 2,
-              //                 states: {
-              //                     hover: {
-              //                         enabled: true
-              //                     }
-              //                 }
-              //             }
-              //         }
-              //     },
-              //     series: [{
-              //         name: 'Mood',
-              //         data: this.moods.data.map(function (data) {
-              //           return [moment(data.date).valueOf(), data.rating];
-              //         })
-              //     }]
-              // });
+              Chart.defaults.line.spanGaps = true;
+              component.chart = new Chart(document.getElementById('mood-trends'), {
+                  type: 'line',
+                  data: {
+                      labels: this.moods.data.map(function (data) {
+                        return moment(data.date).toDate();
+                      }),
+                      datasets: [{
+                          label: 'Mood',
+                          data: this.moods.data.map(function (data) {
+                            return data.rating;
+                          }),
+                          fill: false,
+                          backgroundColor: 'rgba(134, 190, 253, 1)',
+                          borderColor: 'rgba(134, 190, 253, 0.5)',
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                    responsive: true,
+                    title:{
+                        display: true,
+                        text:'Mood Over Time'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(tooltipItems, data) {
+                                return component.getMoodLabel(tooltipItems.yLabel);
+                            }
+                        }
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: "time",
+                            display: true,
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Date'
+                            },
+                            time: {
+                                tooltipFormat: 'll'
+                            }
+                        }],
+                        yAxes: [{
+                            type: 'linear',
+                            display: true,
+                            scaleLabel: {
+                                display: false,
+                                labelString: 'Mood'
+                            },
+                            ticks: {
+                                stepSize: 1,
+                                min: 0,
+                                max: 4,
+                                beginAtZero:true,
+                                callback: function(value, index, values) {
+                                    return component.getMoodLabel(value);
+                                }
+                            }
+                        }]
+                    }
+                  }
+              });
             },
 
             getMoodLabel(moodValue) {
