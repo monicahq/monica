@@ -93,6 +93,20 @@ class DateHelperTest extends FeatureTestCase
             'Jan 22',
             DateHelper::getShortDateWithoutYear($date, $locale)
         );
+
+        $locale = 'fr';
+
+        $this->assertEquals(
+            '22 jan',
+            DateHelper::getShortDateWithoutYear($date, $locale)
+        );
+
+        $locale = '';
+
+        $this->assertEquals(
+            'Jan 22',
+            DateHelper::getShortDateWithoutYear($date, $locale)
+        );
     }
 
     public function test_get_locale_returns_english_by_default()
@@ -202,6 +216,16 @@ class DateHelperTest extends FeatureTestCase
         $this->assertEquals(
             'Sun',
             DateHelper::getShortDay($date, $locale)
+        );
+    }
+
+    public function test_get_month_and_year()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $this->assertEquals(
+            'Jul 2017',
+            DateHelper::getMonthAndYear(6)
         );
     }
 }

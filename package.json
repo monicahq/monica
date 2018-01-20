@@ -32,5 +32,8 @@
     "vue-directive-tooltip": "^1.4.2",
     "vue-notification": "^1.3.4",
     "vue-resource": "^1.3.5"
+  },
+  "dependencies": {
+    "sweet-modal-vue": "^2.0.0"
   }
 }
