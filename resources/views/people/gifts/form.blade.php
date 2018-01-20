@@ -8,13 +8,18 @@
 
     {{-- Nature of gift --}}
     <fieldset class="form-group">
-        <label class="form-check-inline" for="offered_0">
-            <input type="radio" class="form-check-input" name="offered" id="offered_0" value="0" @if(old('offered') !== true || $gift->is_an_idea) checked @endif>
+        <label class="form-check-inline" for="idea">
+            <input type="radio" class="form-check-input" name="offered" id="idea" value="idea" @if(old('idea') !== true || $gift->is_an_idea) checked @endif>
             {{ trans('people.gifts_add_gift_idea') }}
         </label>
 
-        <label class="form-check-inline" for="offered_1">
-            <input type="radio" class="form-check-input" name="offered" id="offered_1" value="1" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
+        <label class="form-check-inline" for="received">
+            <input type="radio" class="form-check-input" name="offered" id="received" value="received" @if(old('received') === true || $gift->has_been_received) checked @endif>
+            {{ trans('people.gifts_add_gift_received') }}
+        </label>
+
+        <label class="form-check-inline" for="offered">
+            <input type="radio" class="form-check-input" name="offered" id="offered" value="offered" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
             {{ trans('people.gifts_add_gift_already_offered') }}
         </label>
     </fieldset>
@@ -64,7 +69,7 @@
     @endif
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.gifts_add_cta') }}</button>
+        <button type="submit" class="btn btn-primary">{{ trans('app.save') }}</button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>

@@ -30,6 +30,14 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     ]]);
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
+    // Pets
+    Route::resource('pets', 'Api\\ApiPetController');
+
+    // Contact Pets
+    Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@listContactPets');
+    Route::post('/contacts/{contact}/pets', 'Api\\ApiPetController@storeContactPet');
+    Route::put('/contacts/{contact}/pets/{pet}', 'Api\\ApiPetController@moveContactPet');
+
     // Tags
     Route::resource('tags', 'Api\\ApiTagController', ['except' => [
       'create', 'edit', 'patch',

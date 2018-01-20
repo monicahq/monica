@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\User;
 use App\Account;
+use App\Reminder;
 use App\Invitation;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -82,6 +83,35 @@ class AccountTest extends TestCase
         );
     }
 
+    public function test_user_is_subscribed_returns_true_if_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        config(['monica.paid_plan_friendly_name' => 'fakePlan']);
+
+        $this->assertEquals(
+            true,
+            $account->isSubscribed()
+        );
+    }
+
+    public function test_user_is_subscribed_returns_false_if_no_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $this->assertEquals(
+            false,
+            $account->isSubscribed()
+        );
+    }
+
     public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
     {
         $account = factory(Account::class)->make([
@@ -123,6 +153,68 @@ class AccountTest extends TestCase
         $this->assertEquals(
             'EN_en',
             $account->timezone()
+        );
+    }
+
+    public function test_has_invoices_returns_true_if_a_plan_exists()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertTrue($account->hasInvoices());
+    }
+
+    public function test_has_invoices_returns_false_if_a_plan_does_not_exist()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $this->assertFalse($account->hasInvoices());
+    }
+
+    public function test_get_reminders_for_month_returns_no_reminders()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+
+        $this->assertEquals(
+            0,
+            $account->getRemindersForMonth(3)->count()
+        );
+    }
+
+    public function test_get_reminders_for_month_returns_reminders_for_given_month()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+
+        // add 3 reminders for the month of March
+        for ($i = 0; $i < 3; $i++) {
+            $reminder = factory(Reminder::class)->create([
+                'account_id' => $account->id,
+                'next_expected_date' => '2017-03-03 00:00:00',
+            ]);
+        }
+
+        $this->assertEquals(
+            3,
+            $account->getRemindersForMonth(2)->count()
         );
     }
 }

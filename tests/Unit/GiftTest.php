@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Gift;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -11,82 +10,47 @@ class GiftTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetNameReturnsNullIfUndefined()
+    public function test_toggle_a_gift_idea()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getName());
-    }
-
-    public function testGetNameReturnsName()
-    {
-        $gift = new Gift;
-        $gift->name = 'This is a test';
+        $gift->is_an_idea = true;
+        $gift->toggle();
 
         $this->assertEquals(
-            'This is a test',
-            $gift->getName()
+            false,
+            $gift->is_an_idea
+        );
+
+        $this->assertEquals(
+            true,
+            $gift->has_been_offered
+        );
+
+        $this->assertEquals(
+            false,
+            $gift->has_been_received
         );
     }
 
-    public function testGetUrlReturnsNullIfUndefined()
+    public function test_toggle_a_gift_offered()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getUrl());
-    }
-
-    public function testGetURLReturnsURL()
-    {
-        $gift = new Gift;
-        $gift->url = 'https://test.com';
+        $gift->has_been_offered = true;
+        $gift->toggle();
 
         $this->assertEquals(
-            'https://test.com',
-            $gift->getUrl()
+            true,
+            $gift->is_an_idea
         );
-    }
-
-    public function testGetCommentReturnsNullIfUndefined()
-    {
-        $gift = new Gift;
-
-        $this->assertNull($gift->getComment());
-    }
-
-    public function testGetCommentReturnsComment()
-    {
-        $gift = new Gift;
-        $gift->comment = 'this is a test';
 
         $this->assertEquals(
-            'this is a test',
-            $gift->getComment()
+            false,
+            $gift->has_been_offered
         );
-    }
-
-    public function testGetValueReturnsNullIfUndefined()
-    {
-        $gift = new Gift;
-
-        $this->assertNull($gift->getValue());
-    }
-
-    public function testGetValueReturnsValue()
-    {
-        $gift = new Gift;
-        $gift->value = '220.00';
 
         $this->assertEquals(
-            '220.00',
-            $gift->getValue()
+            false,
+            $gift->has_been_received
         );
-    }
-
-    public function testGetCreatedAtReturnsCarbonObject()
-    {
-        $gift = factory(\App\Gift::class)->make();
-
-        $this->assertInstanceOf(Carbon::class, $gift->getCreatedAt());
     }
 }

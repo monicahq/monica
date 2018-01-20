@@ -128,8 +128,12 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
+        Route::get('/people/{contact}/gifts', 'Contacts\\GiftsController@get');
+        Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
         Route::get('/people/{contact}/gifts/add', 'Contacts\\GiftsController@create')->name('.gifts.add');
+        Route::get('/people/{contact}/gifts/{gift}/edit', 'Contacts\\GiftsController@edit');
         Route::post('/people/{contact}/gifts/store', 'Contacts\\GiftsController@store')->name('.gifts.store');
+        Route::post('/people/{contact}/gifts/{gift}/update', 'Contacts\\GiftsController@update')->name('.gifts.update');
         Route::delete('/people/{contact}/gifts/{gift}', 'Contacts\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt

@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.48.13",
+            "version": "3.50.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e083a4dae6f460df1d02dcd827cf547592f5dc29"
+                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e083a4dae6f460df1d02dcd827cf547592f5dc29",
-                "reference": "e083a4dae6f460df1d02dcd827cf547592f5dc29",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
+                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-12T21:20:32+00:00"
+            "time": "2018-01-18T01:08:26+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1363,16 +1363,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.28",
+            "version": "v5.5.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "cfafae1f2043208390a7c984e3070696f4969605"
+                "reference": "254e4c3e133f5bc8d6068cdf28ea062abc10adf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cfafae1f2043208390a7c984e3070696f4969605",
-                "reference": "cfafae1f2043208390a7c984e3070696f4969605",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/254e4c3e133f5bc8d6068cdf28ea062abc10adf2",
+                "reference": "254e4c3e133f5bc8d6068cdf28ea062abc10adf2",
                 "shasum": ""
             },
             "require": {
@@ -1493,7 +1493,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-12-26T16:24:40+00:00"
+            "time": "2018-01-18T13:27:23+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3158,12 +3158,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "a54d4cf91890993ee599c446e2eb3dba3f9eae32"
+                "reference": "402a514551804df5b4b2150f217e23a15408795a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a54d4cf91890993ee599c446e2eb3dba3f9eae32",
-                "reference": "a54d4cf91890993ee599c446e2eb3dba3f9eae32",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/402a514551804df5b4b2150f217e23a15408795a",
+                "reference": "402a514551804df5b4b2150f217e23a15408795a",
                 "shasum": ""
             },
             "conflict": {
@@ -3177,9 +3177,10 @@
                 "codeigniter/framework": "<=3.0.6",
                 "composer/composer": "<=1.0.0-alpha11",
                 "contao-components/mediaelement": ">=2.14.2,<2.21.1",
-                "contao/core": ">=2,<3.5.31",
+                "contao/core": ">=2,<3.5.32",
                 "contao/core-bundle": ">=4,<4.4.8",
                 "contao/listing-bundle": ">=4,<4.4.8",
+                "contao/newsletter-bundle": ">=4,<4.1",
                 "doctrine/annotations": ">=1,<1.2.7",
                 "doctrine/cache": ">=1,<1.3.2|>=1.4,<1.4.2",
                 "doctrine/common": ">=2,<2.4.3|>=2.5,<2.5.1",
@@ -3295,7 +3296,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-01-13T18:31:46+00:00"
+            "time": "2018-01-18T10:00:53+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -3672,16 +3673,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v5.8.0",
+            "version": "v5.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "bb3d932721977d1110b766b842f72cb32712b7f1"
+                "reference": "d1978a7f20cdbd05c5c462ffa6728f279f03e0c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/bb3d932721977d1110b766b842f72cb32712b7f1",
-                "reference": "bb3d932721977d1110b766b842f72cb32712b7f1",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d1978a7f20cdbd05c5c462ffa6728f279f03e0c9",
+                "reference": "d1978a7f20cdbd05c5c462ffa6728f279f03e0c9",
                 "shasum": ""
             },
             "require": {
@@ -3723,7 +3724,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2017-12-20T21:47:27+00:00"
+            "time": "2018-01-17T20:53:33+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
