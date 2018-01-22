@@ -4,13 +4,10 @@
  * Copy of server.php with Code Coverage capture.
  */
 
-/**
- * Coverage files destination.
- */
-const STORAGE = 'results/coverage';
-$root = realpath(__DIR__.'/../');
+/** Coverage files destination. */
+const STORAGE = '/results/coverage';
 
-require $root.'vendor/autoload.php';
+$root = realpath(__DIR__.'/../');
 
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
@@ -19,15 +16,18 @@ $uri = urldecode(
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists($root.'public'.$uri)) {
+if ($uri !== '/' && file_exists($root.'/public'.$uri)) {
     return false;
 }
 
-use LiveCodeCoverage\LiveCodeCoverage;
+/**
+ * Set CodeCoverage via LiveCodeCoverage.
+ */
+require $root.'/vendor/autoload.php';
 
-LiveCodeCoverage::bootstrap(
+\LiveCodeCoverage\LiveCodeCoverage::bootstrap(
     $root.STORAGE,
-    $root.'phpunit.xml'
+    $root.'/phpunit.xml'
 );
 
-require_once $root.'public/index.php';
+require_once $root.'/public/index.php';
