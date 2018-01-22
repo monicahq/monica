@@ -33,6 +33,7 @@ class VCardHelper
         $vCard = self::addContactFieldEntriesInVCard($contact, $vCard, 'email');
         $vCard = self::addContactFieldEntriesInVCard($contact, $vCard, 'phone');
         $vCard = self::addAddressToVCard($contact, $vCard);
+
         return $vCard;
     }
 
