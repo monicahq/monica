@@ -109,7 +109,7 @@ class Gift extends Model
     /**
      * Set the recipient for the gift.
      *
-     * @param integer $value
+     * @param int $value
      * @return string
      */
     public function setIsForAttribute($value)
