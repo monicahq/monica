@@ -525,6 +525,26 @@ class Contact extends Model
     }
 
     /**
+     * Get the job of the contact.
+     *
+     * @return string
+     */
+    public function getJobAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the company the contact works at.
+     *
+     * @return string
+     */
+    public function getCompanyAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Get the current Significant Others, if they exists, or return null otherwise.
      *
      * @return Collection
