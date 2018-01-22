@@ -146,7 +146,6 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     ];
 });
 
-
 $factory->define(App\Debt::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
@@ -170,7 +169,6 @@ $factory->define(App\ContactField::class, function (Faker\Generator $faker) {
         'contact_field_type_id' => 1,
         'data' => 'john@doe.com',
     ];
-
 });
 
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
