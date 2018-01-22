@@ -43,4 +43,14 @@ class ContactField extends Model
     {
         return $this->belongsTo(ContactFieldType::class);
     }
+
+    /**
+     * Get the data field of the contact field.
+     *
+     * @return string
+     */
+    public function getDataAttribute($value)
+    {
+        return $value;
+    }
 }

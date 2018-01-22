@@ -38,6 +38,8 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
             @include('people.dashboard.index')
+
+            <a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a>
           </div>
 
           <div class="col-xs-12 col-sm-9">

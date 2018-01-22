@@ -93,4 +93,59 @@ class AddressTest extends TestCase
             $address->getGoogleMapAddress()
         );
     }
+
+    public function test_it_returns_name()
+    {
+        $address = new Address;
+        $address->name = 'Test';
+
+        $this->assertEquals(
+            'Test',
+            $address->name
+        );
+    }
+
+    public function test_it_returns_street()
+    {
+        $address = new Address;
+        $address->street = '123 Street Machine';
+
+        $this->assertEquals(
+            '123 Street Machine',
+            $address->street
+        );
+    }
+
+    public function test_it_returns_city()
+    {
+        $address = new Address;
+        $address->city = 'Montreal';
+
+        $this->assertEquals(
+            'Montreal',
+            $address->city
+        );
+    }
+
+    public function test_it_returns_province()
+    {
+        $address = new Address;
+        $address->province = 'QC';
+
+        $this->assertEquals(
+            'QC',
+            $address->province
+        );
+    }
+
+    public function test_it_returns_postal_code()
+    {
+        $address = new Address;
+        $address->postal_code = 'H1L1L1';
+
+        $this->assertEquals(
+            'H1L1L1',
+            $address->postal_code
+        );
+    }
 }

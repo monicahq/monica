@@ -10,6 +10,7 @@ use App\Contact;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use Illuminate\Http\Request;
+use App\Helpers\VCardHelper;
 use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
@@ -432,5 +433,20 @@ class ContactsController extends Controller
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
+    }
+
+    /**
+     * Download the contact as vCard.
+     * @param  Contact $contact
+     * @return
+     */
+    public function vCard(Contact $contact)
+    {
+        if (config('app.debug')) {
+            \Debugbar::disable();
+        }
+
+        $vcard = VCardHelper::prepareVCard($contact);
+        return  $vcard->download();
     }
 }
