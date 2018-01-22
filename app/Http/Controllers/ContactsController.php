@@ -9,8 +9,8 @@ use Validator;
 use App\Contact;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
-use Illuminate\Http\Request;
 use App\Helpers\VCardHelper;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
@@ -447,6 +447,7 @@ class ContactsController extends Controller
         }
 
         $vcard = VCardHelper::prepareVCard($contact);
+
         return  $vcard->download();
     }
 }

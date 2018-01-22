@@ -2,15 +2,10 @@
 
 namespace Tests\Helper;
 
-use App\Address;
 use App\Contact;
-use Carbon\Carbon;
-use App\ContactField;
-use App\ContactFieldType;
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
 use JeroenDesloovere\VCard\VCard;
-use Illuminate\Support\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardHelperTest extends FeatureTestCase

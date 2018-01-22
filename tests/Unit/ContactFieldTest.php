@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\ContactField;
 use Tests\TestCase;
+use App\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactFieldTest extends TestCase

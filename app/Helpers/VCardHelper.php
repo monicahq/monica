@@ -3,10 +3,7 @@
 namespace App\Helpers;
 
 use App\Contact;
-use App\ContactField;
-use App\ContactFieldType;
 use JeroenDesloovere\VCard\VCard;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VCardHelper
 {
@@ -75,7 +72,7 @@ class VCardHelper
      *
      * @param Contact $contact
      * @param VCard   $vCard
-     * @param String  $fieldType
+     * @param string  $fieldType
      * @return VCard
      */
     public static function addContactFieldEntriesInVCard(Contact $contact, VCard $vCard, String $fieldType)
@@ -86,8 +83,7 @@ class VCardHelper
             return $vCard;
         }
 
-        foreach ($contactFields as $contactField)
-        {
+        foreach ($contactFields as $contactField) {
             if ($fieldType == 'email') {
                 $vCard->addEmail($contactField->data);
             }
