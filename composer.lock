@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c9cfda37b6baf88fdb6c61214df9d54",
+    "content-hash": "bb59cf258b0e181fe56399176e1cd1ef",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.50.0",
+            "version": "3.51.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a"
+                "reference": "a932a76e110dc2c65c216de21a1aa65e151d21ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
-                "reference": "ed3308588d5d8d8f7a96dc93ff297988cefa7b4a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a932a76e110dc2c65c216de21a1aa65e151d21ef",
+                "reference": "a932a76e110dc2c65c216de21a1aa65e151d21ef",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-18T01:08:26+00:00"
+            "time": "2018-01-19T20:32:42+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3165,16 +3165,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.7.2",
+            "version": "3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "bba83ad77bb9deb6d3c352a7361b818e415b221d"
+                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/bba83ad77bb9deb6d3c352a7361b818e415b221d",
-                "reference": "bba83ad77bb9deb6d3c352a7361b818e415b221d",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/44abcdad877d9a46685a3a4d221e3b2c4b87cb76",
+                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76",
                 "shasum": ""
             },
             "require": {
@@ -3185,17 +3185,15 @@
                 "rhumsaa/uuid": "self.version"
             },
             "require-dev": {
-                "apigen/apigen": "^4.1",
                 "codeception/aspect-mock": "^1.0 | ~2.0.0",
                 "doctrine/annotations": "~1.2.0",
                 "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
                 "ircmaxell/random-lib": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
-                "mockery/mockery": "^0.9.4",
+                "mockery/mockery": "^0.9.9",
                 "moontoast/math": "^1.1",
                 "php-mock/php-mock-phpunit": "^0.3|^1.1",
                 "phpunit/phpunit": "^4.7|^5.0",
-                "satooshi/php-coveralls": "^0.6.1",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "suggest": {
@@ -3243,7 +3241,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2018-01-13T22:22:03+00:00"
+            "time": "2018-01-20T00:28:24+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -5556,12 +5554,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/steward.git",
-                "reference": "ed94e0c16935f3966235bf22a15d0d370451977f"
+                "reference": "6aa4baf0d5fd072560c8129ac0418a73873e4a3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/steward/zipball/ed94e0c16935f3966235bf22a15d0d370451977f",
-                "reference": "ed94e0c16935f3966235bf22a15d0d370451977f",
+                "url": "https://api.github.com/repos/asbiin/steward/zipball/6aa4baf0d5fd072560c8129ac0418a73873e4a3f",
+                "reference": "6aa4baf0d5fd072560c8129ac0418a73873e4a3f",
                 "shasum": ""
             },
             "require": {
@@ -5576,9 +5574,9 @@
                 "nette/reflection": "^2.4.2",
                 "ondram/ci-detector": "^2.1",
                 "php": "^5.6 || ~7.0",
-                "phpunit/phpunit": "~6.0",
+                "phpunit/phpunit": "^5.7.26 || ^6.5.5",
                 "symfony/console": "^3.3.0",
-                "symfony/event-dispatcher": "~4.0",
+                "symfony/event-dispatcher": "~3.0 || ~4.0",
                 "symfony/filesystem": "~3.0",
                 "symfony/finder": "~3.0",
                 "symfony/options-resolver": "^3.2",
@@ -5589,7 +5587,7 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.0",
                 "php-coveralls/php-coveralls": "^1.0.2",
-                "php-mock/php-mock-phpunit": "~1.0",
+                "php-mock/php-mock-phpunit": "~2.0.0",
                 "squizlabs/php_codesniffer": "^2.4.1",
                 "symfony/var-dumper": "^3.2"
             },
@@ -5646,7 +5644,41 @@
             "support": {
                 "source": "https://github.com/asbiin/steward/tree/update-dependencies"
             },
-            "time": "2018-01-08T22:00:01+00:00"
+            "time": "2018-01-18T22:23:53+00:00"
+        },
+        {
+            "name": "matthiasnoback/live-code-coverage",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasnoback/live-code-coverage.git",
+                "reference": "8bca6731e8ac022910c480f45c2200c60ad0bd11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/8bca6731e8ac022910c480f45c2200c60ad0bd11",
+                "reference": "8bca6731e8ac022910c480f45c2200c60ad0bd11",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "phpunit/php-code-coverage": "^4.0 || ^5.2",
+                "phpunit/phpunit": "^5.7 || ^6.0",
+                "webmozart/assert": "^1.2"
+            },
+            "require-dev": {
+                "symfony/filesystem": "^3.3",
+                "symfony/finder": "^3.3",
+                "symfony/process": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2017-10-28T08:02:01+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -6646,6 +6678,58 @@
             "time": "2017-11-27T05:48:46+00:00"
         },
         {
+            "name": "phpunit/phpcov",
+            "version": "4.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpcov.git",
+                "reference": "1fc7ed3179a3ed27a386cd2336e91d8e747a3d71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/1fc7ed3179a3ed27a386cd2336e91d8e747a3d71",
+                "reference": "1fc7ed3179a3ed27a386cd2336e91d8e747a3d71",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0",
+                "phpunit/php-code-coverage": "^5.2.1",
+                "phpunit/phpunit": "^6.0",
+                "sebastian/diff": "^1.1 || ^2.0",
+                "sebastian/finder-facade": "^1.1",
+                "sebastian/version": "^2.0",
+                "symfony/console": "^3.0 || ^4.0"
+            },
+            "bin": [
+                "phpcov"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "CLI frontend for php-code-coverage",
+            "homepage": "https://github.com/sebastianbergmann/phpcov",
+            "time": "2018-01-17T16:55:55+00:00"
+        },
+        {
             "name": "phpunit/phpunit",
             "version": "6.5.5",
             "source": {
@@ -7108,6 +7192,45 @@
                 "exporter"
             ],
             "time": "2017-04-03T13:19:02+00:00"
+        },
+        {
+            "name": "sebastian/finder-facade",
+            "version": "1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/finder-facade.git",
+                "reference": "4a3174709c2dc565fe5fb26fcf827f6a1fc7b09f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/finder-facade/zipball/4a3174709c2dc565fe5fb26fcf827f6a1fc7b09f",
+                "reference": "4a3174709c2dc565fe5fb26fcf827f6a1fc7b09f",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/finder": "~2.3|~3.0|~4.0",
+                "theseer/fdomdocument": "~1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
+            "homepage": "https://github.com/sebastianbergmann/finder-facade",
+            "time": "2017-11-18T17:31:49+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -7655,6 +7778,46 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2018-01-03T07:37:34+00:00"
+        },
+        {
+            "name": "theseer/fdomdocument",
+            "version": "1.6.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/fDOMDocument.git",
+                "reference": "6e8203e40a32a9c770bcb62fe37e68b948da6dca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/fDOMDocument/zipball/6e8203e40a32a9c770bcb62fe37e68b948da6dca",
+                "reference": "6e8203e40a32a9c770bcb62fe37e68b948da6dca",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "lib-libxml": "*",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "The classes contained within this repository extend the standard DOM to use exceptions at all occasions of errors instead of PHP warnings or notices. They also add various custom methods and shortcuts for convenience and to simplify the usage of DOM.",
+            "homepage": "https://github.com/theseer/fDOMDocument",
+            "time": "2017-06-30T11:53:12+00:00"
         },
         {
             "name": "theseer/tokenizer",
