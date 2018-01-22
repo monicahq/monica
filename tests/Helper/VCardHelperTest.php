@@ -14,12 +14,15 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_fetches_all_contact_fields()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
 
         // populate a bunch of contact fields and contact field types
-        $contactFieldType = factory(\App\ContactFieldType::class)->create();
-        $contactField = factory(\App\ContactField::class)->create(['contact_id' => $contact->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+        ]);
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
 
@@ -31,8 +34,8 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_fetch_any_contact_field_types()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
 
@@ -43,9 +46,9 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_fetch_any_contact_fields()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
-        $contactFieldType = factory(\App\ContactFieldType::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
 
@@ -56,8 +59,8 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_add_contact_fields_in_vcard()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
         $vCard = VCardHelper::addContactFieldEntriesInVCard($contact, $vCard, 'email');
@@ -69,12 +72,15 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_adds_contact_fields_in_vcard()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $contactFieldType = factory(\App\ContactFieldType::class)->create();
-        $contactField = factory(\App\ContactField::class)->create(['contact_id' => $contact->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+        ]);
 
         $vCard = VCardHelper::addContactFieldEntriesInVCard($contact, $vCard, 'email');
 
@@ -86,8 +92,8 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_add_addresses_in_vcard()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
         $vCard = VCardHelper::addAddressToVCard($contact, $vCard);
@@ -99,8 +105,8 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_adds_addresses_in_vcard()
     {
-        $account = factory(\App\Account::class)->create(['id' => 1]);
-        $contact = factory(\App\Contact::class)->create();
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
         $contactFieldType = factory(\App\Address::class)->create([
@@ -109,6 +115,7 @@ class VCardHelperTest extends FeatureTestCase
             'street' => '123 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'account_id' => $account->id,
         ]);
 
         $contactFieldType = factory(\App\Address::class)->create([
@@ -117,6 +124,7 @@ class VCardHelperTest extends FeatureTestCase
             'street' => '123 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'account_id' => $account->id,
         ]);
 
         $vCard = VCardHelper::addAddressToVCard($contact, $vCard);
@@ -124,6 +132,19 @@ class VCardHelperTest extends FeatureTestCase
         $this->assertEquals(
             2,
             count($vCard->getProperties())
+        );
+    }
+
+    public function test_it_prepares_an_almost_empty_vcard()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+
+        $vCard = VCardHelper::prepareVCard($contact);
+
+        $this->assertEquals(
+            'John Doe',
+            $vCard->getProperties()[1]['value']
         );
     }
 }
