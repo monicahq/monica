@@ -96,7 +96,8 @@ class GiftsController extends Controller
         );
 
         if ($request->get('has_recipient')) {
-            $gift->forRecipient($request->get('recipient'))->save();
+            $gift->is_for = $request->get('recipient');
+            $gift->save();
         }
 
         $contact->logEvent('gift', $gift->id, 'create');
@@ -144,7 +145,8 @@ class GiftsController extends Controller
         );
 
         if ($request->get('has_recipient')) {
-            $gift->forRecipient($request->get('recipient'))->save();
+            $gift->is_for = $request->get('recipient');
+            $gift->save();
         }
 
         $contact->logEvent('gift', $gift->id, 'update');
