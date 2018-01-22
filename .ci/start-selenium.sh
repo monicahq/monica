@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -evuo pipefail
 
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P)

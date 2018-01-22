@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 if [ -z "${DISPLAY:-}" ]; then
