@@ -30,7 +30,7 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
+  - if [ ! "$SAUCELABS" = "1" ]; then sh .ci/start-selenium.sh; fi
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
