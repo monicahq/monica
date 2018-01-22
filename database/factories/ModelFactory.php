@@ -152,6 +152,7 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
         'account_id' => 1,
         'contact_id' => 1,
         ];
+});
 
 $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
     return [
