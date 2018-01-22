@@ -146,5 +146,47 @@ class VCardHelperTest extends FeatureTestCase
             'John Doe',
             $vCard->getProperties()[1]['value']
         );
+
+        $this->assertEquals(
+            5,
+            count($vCard->getProperties())
+        );
+    }
+
+    public function test_it_prepares_an_complete_vcard()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+
+        $contactFieldType = factory(\App\Address::class)->create([
+            'contact_id' => $contact->id,
+            'name' => 'Home',
+            'street' => '123 st',
+            'city' => 'Montreal',
+            'province' => 'Quebec',
+            'account_id' => $account->id,
+        ]);
+
+        $contactFieldType = factory(\App\Address::class)->create([
+            'contact_id' => $contact->id,
+            'name' => 'Home',
+            'street' => '123 st',
+            'city' => 'Montreal',
+            'province' => 'Quebec',
+            'account_id' => $account->id,
+        ]);
+
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+        ]);
+
+        $vCard = VCardHelper::prepareVCard($contact);
+
+        $this->assertEquals(
+            8,
+            count($vCard->getProperties())
+        );
     }
 }
