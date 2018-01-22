@@ -10,6 +10,9 @@ services:
 jdk:
   - oraclejdk8
 
+git:
+  depth: false
+
 addons:
   chrome: stable
 #  sauce_connect:
@@ -23,25 +26,11 @@ env:
 
 before_script:
   - cp .env.travis .env
-  - mkdir -p results/coverage
+  - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-
-  - |
-    if [ ! "$SAUCELABS" = "1" ]; then
-      # Start Xvfb
-      export DISPLAY=:99.0
-      /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24
-
-      # Start selenium server
-      java -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role hub -log selenium-server.log &
-      until $(nc localhost -z 4444); do sleep 1; echo Waiting for selenium hub to start...; done
-
-      # Start selenium node for headless Chrome
-      java -Dwebdriver.chrome.driver="$(pwd)/vendor/bin/chromedriver" -jar $(pwd)/vendor/se/selenium-server-standalone/bin/selenium-server-standalone.jar -role node -port 8910 -log selenium-node.log &
-      until $(nc localhost -z 8910); do sleep 1; echo Waiting for selenium node to start...; done
-    fi
+  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
@@ -51,7 +40,7 @@ script:
   - vendor/bin/phpunit
 
   # Start http server
-  - php -S 127.0.0.1:8000 -t public server-cc.php &
+  - php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php &
   - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run browser tests
@@ -66,7 +55,7 @@ after_script:
   - .ci/travis-report.sh 2>/dev/null
   - cat selenium-server.log
   - cat selenium-node.log
-  - vendor/bin/phpcov merge --clover=$(pwd)/results/coverage2.xml $(pwd)/results/coverage
+  - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
   - ./travis-sonar.sh
 
 cache:
