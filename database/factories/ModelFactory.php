@@ -146,6 +146,24 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
+    return [
+        'id' => 1,
+        'account_id' => 1,
+        'name' => 'Email',
+        'protocol' => 'mailto:',
+        'type' => 'email',
+    ];
+});
+
+$factory->define(App\ContactField::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_field_type_id' => 1,
+        'data' => 'john@doe.com',
+    ];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;
