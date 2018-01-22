@@ -47,15 +47,13 @@ script:
   - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
   - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv; fi
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
 after_script:
   - vendor/bin/steward results -vvv
   - .ci/travis-report.sh 2>/dev/null
   - cat selenium-server.log
   - cat selenium-node.log
   - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
+  - bash <(curl -s https://codecov.io/bash)
   - ./travis-sonar.sh
 
 cache:
