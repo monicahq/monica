@@ -14,6 +14,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_fetches_all_contact_fields()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
 
         // populate a bunch of contact fields and contact field types
@@ -30,6 +31,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_fetch_any_contact_field_types()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
@@ -41,6 +43,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_fetch_any_contact_fields()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
         $contactFieldType = factory(\App\ContactFieldType::class)->create();
 
@@ -53,6 +56,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_add_contact_fields_in_vcard()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
         $vCard = new VCard();
 
@@ -65,6 +69,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_adds_contact_fields_in_vcard()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
         $vCard = new VCard();
 
@@ -81,6 +86,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_doesnt_add_addresses_in_vcard()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
         $vCard = new VCard();
 
@@ -93,6 +99,7 @@ class VCardHelperTest extends FeatureTestCase
 
     public function test_it_adds_addresses_in_vcard()
     {
+        $account = factory(\App\Account::class)->create(['id' => 1]);
         $contact = factory(\App\Contact::class)->create();
         $vCard = new VCard();
 
