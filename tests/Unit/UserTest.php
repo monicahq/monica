@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Day;
 use App\User;
 use App\Account;
 use Tests\TestCase;
