@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add mood trend graph to journal index view
+* Add ability to export a contact to vCard
 
 v1.6.1 - 2018-01-14
 -------------------

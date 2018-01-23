@@ -61,8 +61,14 @@ class ReminderTest extends TestCase
         $reminder->next_expected_date = '1980-01-01 10:10:10';
         $reminder->frequency_number = 1;
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        Carbon::setTestNow(Carbon::create(1980, 1, 1));
+        $reminder->frequency_type = 'week';
+        $this->assertEquals(
+            '1980-01-08',
+            $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
+        );
 
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
         // from 1980, incrementing one week will lead to Jan 03, 2017
         $reminder->frequency_type = 'week';
         $this->assertEquals(

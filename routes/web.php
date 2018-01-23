@@ -55,6 +55,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@destroyContactField');
         Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
 
+        // Export as vCard
+        Route::get('/people/{contact}/vcard', 'ContactsController@vcard');
+
         // Addresses
         Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
