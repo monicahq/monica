@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Tag;
+use App\Account;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -10,15 +10,14 @@ class TagTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_the_slug()
+    public function test_it_belongs_to_an_account()
     {
-        $tag = factory(Tag::class)->create(['name' => 'this is great']);
+        $account = factory(Account::class)->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $tag = factory('App\Tag')->create([
+            'account_id' => $account->id,
+        ]);
 
-        $tag->updateSlug();
-
-        $this->assertEquals(
-            'this-is-great',
-            $tag->name_slug
-        );
+        $this->assertTrue($tag->account()->exists());
     }
 }
