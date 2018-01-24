@@ -8,7 +8,7 @@ class SimpleTest extends BaseTestCase
     {
         return '/';
     }
-    
+
     /**
      * A basic browser test example.
      */

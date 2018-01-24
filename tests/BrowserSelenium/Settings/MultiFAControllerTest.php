@@ -2,10 +2,8 @@
 
 namespace Tests\BrowserSelenium\Settings;
 
-use QrReader;
 use App\User;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-
+use QrReader;
 use Tests\BrowserSelenium\BaseTestCase;
 
 class MultiFAControllerTest extends BaseTestCase
@@ -16,7 +14,7 @@ class MultiFAControllerTest extends BaseTestCase
     }
 
     /**
-     * init
+     * init.
      */
     public function openPage()
     {
@@ -92,7 +90,7 @@ class MultiFAControllerTest extends BaseTestCase
         $this->assertEquals(32, strlen($key));
 
         $secretkey = $this->findById('secretkey');
-        $this->log("secret key: %s", $secretkey->getText());
+        $this->log('secret key: %s', $secretkey->getText());
 
         $this->assertEquals($secretkey->getText(), $key);
     }
@@ -102,18 +100,18 @@ class MultiFAControllerTest extends BaseTestCase
         $this->assertStringStartsWith('data:image/png', $imgsrc);
 
         $imgcode = str_replace('data:image/png;base64,', '', $imgsrc);
-        $this->log("img code: %s", $imgcode);
+        $this->log('img code: %s', $imgcode);
 
         $qrcode = new QrReader(base64_decode($imgcode), QrReader::SOURCE_TYPE_BLOB);
         $text = $qrcode->text();
-        $this->log("img content: %s", $text);
+        $this->log('img content: %s', $text);
         $this->assertStringStartsWith('otpauth://totp/', $text);
 
         // unparse $text
         // See PragmaRX\Google2FA\Support\QRCode getQRCodeUrl
         // example
         //otpauth://totp/monicalocal.test:admin%40admin.com?secret=H25L7JLI7I57KYE7U53BIIOUELWXMRE6&issuer=monicalocal.test
-            
+
         $ret = preg_match('@^otpauth://totp/([^:]+):([^?]+)\?secret=([^&]+)&issuer=(.+)@i', $text, $matches);
         $this->assertEquals(1, $ret, 'otp content does not match format');
         $this->assertCount(5, $matches);

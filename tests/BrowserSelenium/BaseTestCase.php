@@ -20,7 +20,6 @@ abstract class BaseTestCase extends AbstractTestCase
 
     protected function getUrl()
     {
-        return null;
     }
 
     public function setUp()
@@ -59,17 +58,14 @@ abstract class BaseTestCase extends AbstractTestCase
     public function init($url = null)
     {
         $uri = self::$baseUrl;
-        if (!isset($url) || $url == null)
-        {
+        if (! isset($url) || $url == null) {
             $url = '';
         }
-        if (ends_with($uri, '/'))
-        {
-            $uri = substr($uri, 0, strlen($uri)-1);
+        if (ends_with($uri, '/')) {
+            $uri = substr($uri, 0, strlen($uri) - 1);
         }
 
-        if (!starts_with($url, '/'))
-        {
+        if (! starts_with($url, '/')) {
             $url = '/'.$url;
         }
 
@@ -79,13 +75,11 @@ abstract class BaseTestCase extends AbstractTestCase
     /**
      * Init WebDriver and pass the login form.
      */
-    public function initAndLogin($url = null, $login = 'admin@admin.com', $password = 'admin') 
+    public function initAndLogin($url = null, $login = 'admin@admin.com', $password = 'admin')
     {
-        if (!isset($url) || $url == null)
-        {
+        if (! isset($url) || $url == null) {
             $url = $this->getUrl();
-            if ($url == null)
-            {
+            if ($url == null) {
                 $url = '/dashboard';
             }
         }
@@ -121,12 +115,11 @@ abstract class BaseTestCase extends AbstractTestCase
     public function getDestUri($path)
     {
         $parse_url = parse_url($this->wd->getCurrentURL());
-        $scheme = isset($parse_url['scheme']) ? $parse_url['scheme'] . '://' : '' ;
-        $host = isset($parse_url['host']) ? $parse_url['host'] : '' ;
-        $port = isset($parse_url['port']) ? ':' . $parse_url['port'] : '' ;
-     
-        if (starts_with($path, '/'))
-        {
+        $scheme = isset($parse_url['scheme']) ? $parse_url['scheme'].'://' : '';
+        $host = isset($parse_url['host']) ? $parse_url['host'] : '';
+        $port = isset($parse_url['port']) ? ':'.$parse_url['port'] : '';
+
+        if (starts_with($path, '/')) {
             $path = substr($path, 1);
         }
 
@@ -143,6 +136,6 @@ abstract class BaseTestCase extends AbstractTestCase
         $link->click();
         $this->wd->wait()->until(
             WebDriverExpectedCondition::urlContains($path)
-        );        
+        );
     }
 }
