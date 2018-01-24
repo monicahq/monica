@@ -2,9 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Tag;
 use App\Account;
-use App\Contact;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -20,6 +18,6 @@ class TagTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $this->assertTrue($task->account()->exists());
+        $this->assertTrue($tag->account()->exists());
     }
 }

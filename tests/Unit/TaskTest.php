@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Task;
 use App\Account;
-use App\Contact;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
