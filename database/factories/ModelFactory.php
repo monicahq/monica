@@ -59,7 +59,6 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Contact::class, function (Faker\Generator $faker) {
     return [
-        'id' => 1,
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',

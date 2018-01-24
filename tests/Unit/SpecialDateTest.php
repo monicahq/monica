@@ -201,7 +201,7 @@ class SpecialDateTest extends FeatureTestCase
     {
         $specialDate = factory(\App\SpecialDate::class)->make();
 
-        $contact = factory(\App\Contact::class)->make();
+        $contact = factory(\App\Contact::class)->create();
 
         $specialDate->setToContact($contact);
 
@@ -211,7 +211,7 @@ class SpecialDateTest extends FeatureTestCase
         );
 
         $this->assertEquals(
-            1,
+            $contact->id,
             $specialDate->contact_id
         );
     }
