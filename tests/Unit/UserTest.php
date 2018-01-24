@@ -11,6 +11,14 @@ class UserTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_account()
+    {
+        $account = factory(Account::class)->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+
+        $this->assertTrue($user->account()->exists());
+    }
+
     public function testUpdateContactViewPreference()
     {
         $user = new User;
@@ -86,6 +94,24 @@ class UserTest extends TestCase
         $this->assertEquals(
             $string,
             $user->getGoogle2faSecretAttribute(encrypt($string))
+        );
+    }
+
+    public function test_it_gets_fluid_layout()
+    {
+        $user = new User;
+        $user->fluid_container = true;
+
+        $this->assertEquals(
+            'container-fluid',
+            $user->getFluidLayout()
+        );
+
+        $user->fluid_container = false;
+
+        $this->assertEquals(
+            'container',
+            $user->getFluidLayout()
         );
     }
 }
