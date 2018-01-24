@@ -1,13 +1,27 @@
 #!/bin/bash
+
+realpath ()
+{
+    f=$@;
+    if [ -d "$f" ]; then
+        base="";
+        dir="$f";
+    else
+        base="/$(basename "$f")";
+        dir=$(dirname "$f");
+    fi;
+    dir=$(cd "$dir" && /bin/pwd -P);
+    echo "$dir$base"
+}
 set -evuo pipefail
 
-SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
-ROOT=$SELF_PATH/..
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
+ROOT=$(realpath $SELF_PATH/..)
 
 if [ -z "${DISPLAY:-}" ]; then
     echo Start Xvfb;
     export DISPLAY=:99.0;
-    /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24;
+    /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24 || true;
 fi
 
 if ! $(nc -z localhost 4444); then

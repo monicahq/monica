@@ -18,6 +18,10 @@ abstract class BaseTestCase extends AbstractTestCase
     /** @var string */
     public static $baseUrl;
 
+    protected function getUrl()
+    {
+    }
+
     public function setUp()
     {
         parent::setUp();
@@ -25,7 +29,7 @@ abstract class BaseTestCase extends AbstractTestCase
         // Set base url according to environment
         switch (ConfigProvider::getInstance()->env) {
             case 'dev':
-                self::$baseUrl = 'http://monica.test/'; // env('APP_URL');
+                self::$baseUrl = config('app.url');
                 break;
             case 'travis':
                 self::$baseUrl = 'http://localhost:8000/';
@@ -51,27 +55,47 @@ abstract class BaseTestCase extends AbstractTestCase
      * Init the WebDriver.
      * (init should be run with "before" phpunit annotation, but it doesn't work !).
      */
-    public function init()
+    public function init($url = null)
     {
-        $this->wd->get(self::$baseUrl);
+        $uri = self::$baseUrl;
+        if (! isset($url) || $url == null) {
+            $url = '';
+        }
+        if (ends_with($uri, '/')) {
+            $uri = substr($uri, 0, strlen($uri) - 1);
+        }
+
+        if (! starts_with($url, '/')) {
+            $url = '/'.$url;
+        }
+
+        $this->wd->get($uri.$url);
     }
 
     /**
      * Init WebDriver and pass the login form.
      */
-    public function initAndLogin()
+    public function initAndLogin($url = null, $login = 'admin@admin.com', $password = 'admin')
     {
-        $this->init();
+        if (! isset($url) || $url == null) {
+            $url = $this->getUrl();
+            if ($url == null) {
+                $url = '/dashboard';
+            }
+        }
+        $this->init($url);
 
-        if ($this->getCurrentPath() == '/') {
-            //$url = $this->wd->getCurrentURL();
-            $this->findById('email')->sendKeys('admin@admin.com');
-            $this->findById('password')->sendKeys('admin');
-            $this->findByTag('button')->submit();
+        switch ($this->getCurrentPath()) {
+            case '/':
+            case '/login':
+                $this->findById('email')->sendKeys($login);
+                $this->findById('password')->sendKeys($password);
+                $this->findByTag('button')->submit();
 
-            $this->wd->wait()->until(
-                WebDriverExpectedCondition::urlContains('/dashboard')
-            );
+                $this->wd->wait()->until(
+                    WebDriverExpectedCondition::urlContains($url)
+                );
+            break;
         }
     }
 
@@ -82,6 +106,36 @@ abstract class BaseTestCase extends AbstractTestCase
     {
         return urldecode(
             parse_url($this->wd->getCurrentURL(), PHP_URL_PATH)
+        );
+    }
+
+    /**
+     * Get full uri for destination path.
+     */
+    public function getDestUri($path)
+    {
+        $parse_url = parse_url($this->wd->getCurrentURL());
+        $scheme = isset($parse_url['scheme']) ? $parse_url['scheme'].'://' : '';
+        $host = isset($parse_url['host']) ? $parse_url['host'] : '';
+        $port = isset($parse_url['port']) ? ':'.$parse_url['port'] : '';
+
+        if (starts_with($path, '/')) {
+            $path = substr($path, 1);
+        }
+
+        return $scheme.$host.$port.'/'.$path;
+    }
+
+    /**
+     * Get url for path, find correponding link, and click it.
+     */
+    public function clickDestUri($path)
+    {
+        $uri = $this->getDestUri($path);
+        $link = $this->findByXpath("//a[@href='$uri']");
+        $link->click();
+        $this->wd->wait()->until(
+            WebDriverExpectedCondition::urlContains($path)
         );
     }
 }
