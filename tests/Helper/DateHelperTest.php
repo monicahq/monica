@@ -109,6 +109,17 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function test_it_returns_the_default_short_date()
+    {
+        $date = '2017-01-22 17:56:03';
+        $locale = null;
+
+        $this->assertEquals(
+            'Jan 22',
+            DateHelper::getShortDateWithoutYear($date, $locale)
+        );
+    }
+
     public function test_get_locale_returns_english_by_default()
     {
         $this->assertEquals(
