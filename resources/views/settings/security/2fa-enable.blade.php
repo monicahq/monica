@@ -43,9 +43,9 @@
           <div class="panel-body">
             {{ trans('settings.2fa_enable_otp') }}
             <p>
-            <img alt="Image of QR barcode" src="{{ $image }}" />
+            <img id="barcode" alt="Image of QR barcode" src="{{ $image }}" />
             <br />
-            {{ trans('settings.2fa_enable_otp_help') }} <code>{{ $secret }}</code>
+            {{ trans('settings.2fa_enable_otp_help') }} <code id="secretkey">{{ $secret }}</code>
             </p>
           </div>
 
