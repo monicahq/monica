@@ -1,7 +1,7 @@
 #!/bin/bash
 set -evuo pipefail
 
-SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
 ROOT=$(realpath $SELF_PATH/..)
 HOST=localhost
 
