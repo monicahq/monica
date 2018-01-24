@@ -18,9 +18,7 @@ abstract class BaseTestCase extends AbstractTestCase
     /** @var string */
     public static $baseUrl;
 
-    protected function getUrl()
-    {
-    }
+    abstract protected function getUrl();
 
     public function setUp()
     {
