@@ -36,7 +36,7 @@ abstract class BaseTestCase extends AbstractTestCase
                 self::$baseUrl = 'http://localhost:8000/';
                 break;
             case 'laravel':
-                self::$baseUrl = 'http://192.168.11.10:8000/';
+                self::$baseUrl = 'http://127.0.0.1:8000/';
                 break;
             case 'local':
                 self::$baseUrl = 'http://127.0.0.1/';
