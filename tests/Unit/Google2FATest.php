@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use Tests\FeatureTestCase;
 use Illuminate\Session\Store;
 use App\Http\Requests\Request;
