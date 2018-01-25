@@ -18,9 +18,7 @@ abstract class BaseTestCase extends AbstractTestCase
     /** @var string */
     public static $baseUrl;
 
-    protected function getUrl()
-    {
-    }
+    abstract protected function getUrl();
 
     public function setUp()
     {
@@ -138,4 +136,20 @@ abstract class BaseTestCase extends AbstractTestCase
             WebDriverExpectedCondition::urlContains($path)
         );
     }
+
+    public function hasDivAlert()
+    {
+        $res = $this->findMultipleByClass("alert");
+        return count($res) > 0;
+    }
+
+    public function getDivAlert()
+    {
+        $res = $this->findMultipleByClass("alert");
+        if (count($res) > 0)
+        {
+            return $res[0];
+        }
+        return null;
+    } 
 }
