@@ -59,7 +59,6 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Contact::class, function (Faker\Generator $faker) {
     return [
-        'id' => 1,
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -152,10 +151,26 @@ $factory->define(App\Day::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Progenitor::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Tag::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
+});
+
+$factory->define(App\Pet::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\PetCategory::class, function (Faker\Generator $faker) {
+    return [];
 });
 
 $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
