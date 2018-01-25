@@ -130,13 +130,15 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 To run the test suite, you need to launch selenium first, then steward :
 * Run selenium:
 ```
-vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
-export PATH="$(pwd)/vendor/bin:$PATH"
-xvfb-run -s "-ac -screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
+.ci/start-selenium.sh
 ```
 * Run the test suite:
 ```
 ./vendor/bin/steward -vvv run local chrome
+```
+or
+```
+.ci/runtests.sh
 ```
 
 ## Backend
