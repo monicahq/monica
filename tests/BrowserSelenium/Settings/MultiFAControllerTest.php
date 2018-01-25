@@ -147,12 +147,9 @@ class MultiFAControllerTest extends BaseTestCase
         $this->openPage();
         $this->clickDestUri('/settings/security/2fa-enable');
 
-        try
-        {
+        try {
             $this->enable2fa();
-        }
-        finally
-        {
+        } finally {
             $this->cleanup();
         }
     }
@@ -160,10 +157,10 @@ class MultiFAControllerTest extends BaseTestCase
     private function enable2fa()
     {
         $secretkey = $this->findById('secretkey')->getText();
-           $this->log('secret key: %s', $secretkey);
+        $this->log('secret key: %s', $secretkey);
 
         $input = $this->findById('one_time_password');
-    
+
         $google2fa = new \PragmaRX\Google2FA\Google2FA();
         $one_time_password = $google2fa->getCurrentOtp($secretkey);
         $input->sendKeys($one_time_password);
@@ -189,7 +186,7 @@ class MultiFAControllerTest extends BaseTestCase
 
         return $secretkey;
     }
-    
+
     /**
      * Test 2fa Enable Page and Disable Page.
      * @group multifa
@@ -199,8 +196,7 @@ class MultiFAControllerTest extends BaseTestCase
         $this->openPage();
         $this->clickDestUri('/settings/security/2fa-enable');
 
-        try
-        {
+        try {
             $secretkey = $this->enable2fa();
             $this->clickDestUri('/settings/security/2fa-disable');
 
@@ -219,9 +215,7 @@ class MultiFAControllerTest extends BaseTestCase
 
             // TODO: test if user has 2fa disabled actually
             // TODO: test if cookie auth is clean
-        }
-        finally
-        {
+        } finally {
             $this->cleanup();
         }
     }
