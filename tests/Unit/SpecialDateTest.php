@@ -12,6 +12,40 @@ class SpecialDateTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_an_account()
+    {
+        $account = factory('App\Account')->create([]);
+        $specialDate = factory('App\SpecialDate')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($specialDate->account()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create([]);
+        $specialDate = factory('App\SpecialDate')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($specialDate->contact()->exists());
+    }
+
+    public function test_it_belongs_to_a_reminder()
+    {
+        $account = factory('App\Account')->create([]);
+        $reminder = factory('App\Reminder')->create([]);
+        $specialDate = factory('App\SpecialDate')->create([
+            'account_id' => $account->id,
+            'reminder_id' => $reminder->id,
+        ]);
+
+        $this->assertTrue($specialDate->reminder()->exists());
+    }
+
     public function test_reminder_id_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
