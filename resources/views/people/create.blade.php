@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="mt4 mw7 center pa4 br3 ba b--gray-monica bg-white">
+<div class="mt4 mw7 center pa4 br3 ba b--gray-monica bg-white mb4">
 
   @if (session('status'))
   <div class="alert alert-success">
