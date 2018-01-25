@@ -11,6 +11,26 @@ class ReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_an_account()
+    {
+        $account = factory('App\Account')->create([]);
+        $reminder = factory('App\Reminder')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($reminder->account()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact()
+    {
+        $contact = factory('App\Contact')->create([]);
+        $reminder = factory('App\Reminder')->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($reminder->contact()->exists());
+    }
+
     public function test_title_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
