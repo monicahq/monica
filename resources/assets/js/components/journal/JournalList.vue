@@ -144,7 +144,9 @@
       <a href="/journal/add" class="btn btn-primary w-100 mb4">
         {{ trans('journal.journal_add') }}
       </a>
-      <p>{{ trans('journal.journal_description') }}</p>
+      <div class="alert alert-warning" role="alert">
+        <p>{{ trans('journal.journal_description') }}</p>
+      </div>
     </div>
   </div>
 </template>

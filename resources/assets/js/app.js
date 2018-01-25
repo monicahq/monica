@@ -111,6 +111,11 @@ Vue.component(
     require('./components/journal/partials/JournalContentEntry.vue')
 );
 
+Vue.component(
+    'mood-trends',
+    require('./components/journal/MoodTrends.vue')
+);
+
 // Settings
 Vue.component(
     'contact-field-types',

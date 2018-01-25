@@ -174,6 +174,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/journal/add', ['as' => '.create', 'uses' => 'JournalController@create']);
         Route::post('/journal/create', ['as' => '.create', 'uses' => 'JournalController@save']);
         Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
+        Route::get('/journal/moods', 'JournalController@moods')->name('.moods');
     });
 
     Route::group(['as' => 'settings'], function () {
