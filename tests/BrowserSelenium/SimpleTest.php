@@ -4,6 +4,11 @@ namespace Tests\BrowserSelenium;
 
 class SimpleTest extends BaseTestCase
 {
+    protected function getUrl()
+    {
+        return '/';
+    }
+
     /**
      * A basic browser test example.
      */
