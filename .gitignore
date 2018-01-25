@@ -13,4 +13,7 @@ monica.sublime-workspace
 .DS_Store
 npm-debug.log.*
 /results
+/logs
 .vscode
+selenium-node.log*
+selenium-server.log*
