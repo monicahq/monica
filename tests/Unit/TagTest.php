@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Tag;
-use App\Contact;
 use App\Account;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
