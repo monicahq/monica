@@ -6,14 +6,12 @@
 Homestead.yaml
 Homestead.json
 .env
-monica.sublime-workspace
-/.idea
 /storage/oauth-private.key
 /storage/oauth-public.key
 .DS_Store
+.vscode
 npm-debug.log.*
 /results
 /logs
-.vscode
 selenium-node.log*
 selenium-server.log*

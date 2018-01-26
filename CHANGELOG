@@ -1,6 +1,15 @@
 UNRELEASED CHANGES:
 
+*
+
+v1.6.2 - 2018-01-25
+-------------------
+
+* Add support for pets in the API
 * Add ability to export a contact to vCard
+* Add ability to mark a gift idea as being offered
+* Add translation for "preferences updated" message in the Settings page
+* Add a lot of unit tests
 
 v1.6.1 - 2018-01-14
 -------------------
