@@ -177,7 +177,7 @@ class MultiFAControllerTest extends BaseTestCase
 
             $input->sendKeys('000000');
             $this->findByTag('button')->submit();
-    
+
             $this->assertTrue($this->hasDivAlert());
             $divalert = $this->getDivAlert();
             $this->assertContains('alert-danger', $divalert->getAttribute('class'));
@@ -212,7 +212,7 @@ class MultiFAControllerTest extends BaseTestCase
             $one_time_password = $google2fa->getCurrentOtp($secretkey);
             $input->sendKeys($one_time_password);
             $this->findByTag('button')->submit();
-            
+
             $this->assertFalse($this->hasDivAlert());
             $this->assertEquals('/validate2fa', $this->getCurrentPath());
             $dashboardlinks = $this->findMultipleByXpath("//a[@href='/dashboard']");
@@ -305,7 +305,7 @@ class MultiFAControllerTest extends BaseTestCase
             $input->sendKeys('000000');
 
             $this->findByTag('button')->submit();
-    
+
             $this->assertTrue($this->hasDivAlert());
             $divalert = $this->getDivAlert();
             $this->assertContains('alert-danger', $divalert->getAttribute('class'));
