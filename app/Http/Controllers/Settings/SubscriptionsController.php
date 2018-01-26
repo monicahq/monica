@@ -18,6 +18,10 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
+        if (! auth()->user()->account->subscribed()) {
+            return view('settings.subscriptions.blank');
+        }
+
         return view('settings.subscriptions.account');
     }
 
