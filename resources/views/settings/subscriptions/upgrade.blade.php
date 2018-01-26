@@ -30,32 +30,37 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
 
-          @include ('partials.errors')
+          <div class="br3 ba b--gray-monica bg-white mb4">
+            <div class="pa3 bb b--gray-monica">
 
-          <form action="/settings/subscriptions/processPayment" method="POST" id="payment-form">
-            {{ csrf_field() }}
+              @include ('partials.errors')
 
-            <h2>{{ trans('settings.subscriptions_upgrade_title') }}</h2>
+              <form action="/settings/subscriptions/processPayment" method="POST" id="payment-form">
+                {{ csrf_field() }}
 
-            <p>{!! trans('settings.subscriptions_upgrade_description') !!}</p>
+                <h2>{{ trans('settings.subscriptions_upgrade_title') }}</h2>
 
-            <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="{{ config('services.stripe.key') }}"
-              data-amount="{{ config('monica.paid_plan_price') }}"
-              data-name="Monica"
-              data-email="{{ auth()->user()->email }}"
-              data-description="Widget"
-              data-image="https://s3.amazonaws.com/stripe-uploads/adK6oPZbepKr0KJ70S42c01UPm0HLFL2merchant-icon-1497151424388-Group.png"
-              data-locale="auto"
-              data-currency="usd">
-            </script>
+                <p>{!! trans('settings.subscriptions_upgrade_description') !!}</p>
 
-            <div class="warning-zone">
-              <p>{{ trans('settings.subscriptions_upgrade_warning') }}</p>
+                <script
+                  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                  data-key="{{ config('services.stripe.key') }}"
+                  data-amount="{{ config('monica.paid_plan_price') }}"
+                  data-name="Monica"
+                  data-email="{{ auth()->user()->email }}"
+                  data-description="Subscription"
+                  data-image="https://s3.amazonaws.com/stripe-uploads/adK6oPZbepKr0KJ70S42c01UPm0HLFL2merchant-icon-1497151424388-Group.png"
+                  data-locale="auto"
+                  data-currency="usd">
+                </script>
+
+                <div class="warning-zone">
+                  <p>{{ trans('settings.subscriptions_upgrade_warning') }}</p>
+                </div>
+
+              </form>
             </div>
-
-          </form>
+          </div>
 
         </div>
       </div>
