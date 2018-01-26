@@ -154,6 +154,74 @@ class MultiFAControllerTest extends BaseTestCase
         }
     }
 
+    /**
+     * Test the 2fa Enable Page.
+     * @group multifa
+     */
+    public function testEnable2faLoginWrongCode()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $this->enable2fa();
+            //$this->clickDestUri('/logout');
+            $link = $this->findByXpath("//a[@href='/logout']");
+            $link->click();
+            $this->initAndLogin('/dashboard');
+            $this->assertEquals('/dashboard', $this->getCurrentPath());
+
+            $inputs = $this->findMultipleById('one_time_password');
+            $this->assertCount(1, $inputs, 'Authentication code input not present');
+            $input = $inputs[0];
+
+            $input->sendKeys('000000');
+            $this->findByTag('button')->submit();
+    
+            $this->assertTrue($this->hasDivAlert());
+            $divalert = $this->getDivAlert();
+            $this->assertContains('alert-danger', $divalert->getAttribute('class'));
+            $this->assertContains('two factor authentication', $divalert->getText());
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    /**
+     * Test the 2fa Enable Page.
+     * @group multifa
+     */
+    public function testEnable2faLogin()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $secretkey = $this->enable2fa();
+            //$this->clickDestUri('/logout');
+            $link = $this->findByXpath("//a[@href='/logout']");
+            $link->click();
+            $this->initAndLogin('/dashboard');
+            $this->assertEquals('/dashboard', $this->getCurrentPath());
+
+            $inputs = $this->findMultipleById('one_time_password');
+            $this->assertCount(1, $inputs, 'Authentication code input not present');
+            $input = $inputs[0];
+
+            $google2fa = new \PragmaRX\Google2FA\Google2FA();
+            $one_time_password = $google2fa->getCurrentOtp($secretkey);
+            $input->sendKeys($one_time_password);
+            $this->findByTag('button')->submit();
+            
+            $this->assertFalse($this->hasDivAlert());
+            $this->assertEquals('/validate2fa', $this->getCurrentPath());
+            $dashboardlinks = $this->findMultipleByXpath("//a[@href='/dashboard']");
+            $this->assertGreaterThan(0, count($dashboardlinks));
+        } finally {
+            $this->cleanup();
+        }
+    }
+
     private function enable2fa()
     {
         $secretkey = $this->findById('secretkey')->getText();
@@ -173,7 +241,7 @@ class MultiFAControllerTest extends BaseTestCase
         $this->assertContains('Two Factor Authentication', $divalert->getText());
 
         // TODO: test if user has 2fa enabled actually
-        // TODO: test if cookie auth is right
+        // TODO: test if session token auth is right
 
         $disableuri = $this->getDestUri('/settings/security/2fa-disable');
 
@@ -214,7 +282,34 @@ class MultiFAControllerTest extends BaseTestCase
             $this->assertContains('Two Factor Authentication', $divalert->getText());
 
             // TODO: test if user has 2fa disabled actually
-            // TODO: test if cookie auth is clean
+            // TODO: test if session token auth is right
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    /**
+     * Test 2fa Enable Page and Disable Page.
+     * @group multifa
+     */
+    public function testEnable2faDisable2faWrongCode()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $this->enable2fa();
+            $this->clickDestUri('/settings/security/2fa-disable');
+
+            $input = $this->findById('one_time_password');
+            $input->sendKeys('000000');
+
+            $this->findByTag('button')->submit();
+    
+            $this->assertTrue($this->hasDivAlert());
+            $divalert = $this->getDivAlert();
+            $this->assertContains('alert-danger', $divalert->getAttribute('class'));
+            $this->assertContains('Two Factor Authentication', $divalert->getText());
         } finally {
             $this->cleanup();
         }
