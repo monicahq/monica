@@ -198,7 +198,7 @@ class DateHelper
      * This is used on the Upgrade page to tell the user when the next billing
      * date would be if he subscribed.
      *
-     * @param  String
+     * @param  string
      * @return Carbon
      */
     public static function getNextTheoriticalBillingDate(String $interval)

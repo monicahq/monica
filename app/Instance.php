@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use App\Account;
 use Illuminate\Database\Eloquent\Model;
 
 class Instance extends Model
