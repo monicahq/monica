@@ -457,4 +457,16 @@ class Account extends Model
 
         return $plan->stripe_plan;
     }
+
+    /**
+     * Get the friendly name of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanName()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->name;
+    }
 }

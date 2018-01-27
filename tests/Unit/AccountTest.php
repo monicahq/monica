@@ -255,4 +255,23 @@ class AccountTest extends TestCase
             $account->getSubscribedPlanId()
         );
     }
+
+    public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertEquals(
+            'fakePlan',
+            $account->getSubscribedPlanName()
+        );
+    }
 }

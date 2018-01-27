@@ -208,6 +208,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice');
         Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
         Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
+        Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('.subscriptions.upgrade.success');
 
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');

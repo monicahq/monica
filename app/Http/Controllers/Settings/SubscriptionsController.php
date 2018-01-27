@@ -79,6 +79,20 @@ class SubscriptionsController extends Controller
     }
 
     /**
+     * Display the downgrade success page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downgradeSuccess(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect('settings/');
+        }
+
+        return view('settings.subscriptions.downgrade-success');
+    }
+
+    /**
      * Display the downgrade view page.
      *
      * @return \Illuminate\Http\Response
@@ -107,9 +121,13 @@ class SubscriptionsController extends Controller
             return redirect('/settings/users/subscriptions/downgrade');
         }
 
-        auth()->user()->account->subscription(config('monica.paid_plan_monthly_friendly_name'))->cancelNow();
+        if (! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings');
+        }
 
-        return redirect('/settings/subscriptions');
+        auth()->user()->account->subscription(auth()->user()->account->getSubscribedPlanName())->cancelNow();
+
+        return redirect('/settings/subscriptions/downgrade/success');
     }
 
     /**
