@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,19 +31,25 @@ class SubscriptionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upgrade()
+    public function upgrade(Request $request)
     {
         if (! config('monica.requires_subscription')) {
             return redirect('settings/');
         }
 
         $account = auth()->user()->account;
+        $plan = $request->query('plan');
+
+        $data = [
+            'planInformation' => auth()->user()->account->getPlanInformationFromConfig($plan),
+            'nextTheoriticalDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+        ];
 
         if ($account->subscribed(config('monica.paid_plan_friendly_name'))) {
             return redirect('/settings/subscriptions');
         }
 
-        return view('settings.subscriptions.upgrade');
+        return view('settings.subscriptions.upgrade', $data);
     }
 
     /**
@@ -92,8 +99,12 @@ class SubscriptionsController extends Controller
 
         $stripeToken = $request->input('stripeToken');
 
-        auth()->user()->account->newSubscription(config('monica.paid_plan_friendly_name'), config('monica.paid_plan_id'))
-                    ->create($stripeToken);
+        $plan = auth()->user()->account->getPlanInformationFromConfig($request->input('plan'));
+
+        auth()->user()->account->newSubscription($plan['name'], $plan['id'])
+                    ->create($stripeToken, [
+                        'email' => auth()->user()->email,
+                    ]);
 
         return redirect('settings/subscriptions');
     }

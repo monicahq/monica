@@ -217,4 +217,81 @@ class AccountTest extends TestCase
             $account->getRemindersForMonth(2)->count()
         );
     }
+
+    public function test_it_fetches_the_monthly_plan_information()
+    {
+        $account = new Account;
+
+        config(['monica.paid_plan_friendly_name' => 'Chandler']);
+        config(['monica.paid_plan_id' => 'chandler_plan']);
+        config(['monica.paid_plan_price' => 1000]);
+
+        $this->assertEquals(
+            'monthly',
+            $account->getPlanInformationFromConfig('monthly')['type']
+        );
+
+        $this->assertEquals(
+            'Chandler',
+            $account->getPlanInformationFromConfig('monthly')['name']
+        );
+
+        $this->assertEquals(
+            'chandler_plan',
+            $account->getPlanInformationFromConfig('monthly')['id']
+        );
+
+        $this->assertEquals(
+            1000,
+            $account->getPlanInformationFromConfig('monthly')['price']
+        );
+
+        $this->assertEquals(
+            10,
+            $account->getPlanInformationFromConfig('monthly')['friendlyPrice']
+        );
+    }
+
+    public function test_it_fetches_the_annually_plan_information()
+    {
+        $account = new Account;
+
+        config(['monica.paid_plan_annual_friendly_name' => 'Chandler']);
+        config(['monica.paid_plan_annual_id' => 'chandler_plan']);
+        config(['monica.paid_plan_annual_price' => 1000]);
+
+        $this->assertEquals(
+            'annual',
+            $account->getPlanInformationFromConfig('annual')['type']
+        );
+
+        $this->assertEquals(
+            'Chandler',
+            $account->getPlanInformationFromConfig('annual')['name']
+        );
+
+        $this->assertEquals(
+            'chandler_plan',
+            $account->getPlanInformationFromConfig('annual')['id']
+        );
+
+        $this->assertEquals(
+            1000,
+            $account->getPlanInformationFromConfig('annual')['price']
+        );
+
+        $this->assertEquals(
+            10,
+            $account->getPlanInformationFromConfig('annual')['friendlyPrice']
+        );
+    }
+
+    public function test_it_returns_null_when_fetching_an_unknown_plan_information()
+    {
+        $account = new Account;
+
+        $this->assertNull(
+            $account->getPlanInformationFromConfig('unknown_plan')
+        );
+    }
 }
