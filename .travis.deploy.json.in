@@ -17,7 +17,7 @@
     },
 
     "version": {
-        "name": "$(version)",
+        "name": "$(version)"
     },
 
     "files":
