@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Helpers\InstanceHelper;
 use App\Http\Controllers\Controller;
 
 class SubscriptionsController extends Controller
@@ -20,7 +21,11 @@ class SubscriptionsController extends Controller
         }
 
         if (! auth()->user()->account->subscribed()) {
-            return view('settings.subscriptions.blank');
+            $data = [
+                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
+            ];
+
+            return view('settings.subscriptions.blank', $data);
         }
 
         return view('settings.subscriptions.account');
@@ -41,7 +46,7 @@ class SubscriptionsController extends Controller
         $plan = $request->query('plan');
 
         $data = [
-            'planInformation' => auth()->user()->account->getPlanInformationFromConfig($plan),
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
             'nextTheoriticalDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
         ];
 
@@ -50,6 +55,26 @@ class SubscriptionsController extends Controller
         }
 
         return view('settings.subscriptions.upgrade', $data);
+    }
+
+    /**
+     * Display the upgrade success page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upgradeSuccess(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect('settings/');
+        }
+
+        $plan = $request->query('plan');
+
+        $data = [
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
+        ];
+
+        return view('settings.subscriptions.success', $data);
     }
 
     /**
@@ -106,7 +131,7 @@ class SubscriptionsController extends Controller
                         'email' => auth()->user()->email,
                     ]);
 
-        return redirect('settings/subscriptions');
+        return redirect('settings/subscriptions/upgrade/success');
     }
 
     /**

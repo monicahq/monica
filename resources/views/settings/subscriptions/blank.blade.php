@@ -31,7 +31,7 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
 
           <h2 class="tc mt4 fw4">Upgrade Monica today and have more meaningful relationships.</h2>
-          <p class="tc mb4">Pick a plan below and join 39 awesome persons who upgraded their account.</p>
+          <p class="tc mb4">Pick a plan below and join over {{ $numberOfCustomers }} persons who upgraded their Monica.</p>
 
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa4 bb b--gray-monica">
@@ -115,6 +115,9 @@
           </div>
 
           <h3 class="tc mb4 mt3">Additional details you may be curious about</h3>
+          <h4>What is an open source project?</h4>
+          <p class="mb4">Monica is an open source project. This means it is built by an entirely benevolent community who just wants to provide a great tool for the greater good. Being open source means the code is publicly available on GitHub, and everyone can inspect it, modify it or enhance it. All the money we raise is dedicated to build better features, have more powerful servers, help pay the bills. Thanks for your help. We couldn't do it without you - litterally.</p>
+
           <h4>Is there any limit to the number of contacts we can have on the free plan?</h4>
           <p class="mb4">Absolutely not. Free plans do not have limitations on the number of contacts you can have.</p>
 
