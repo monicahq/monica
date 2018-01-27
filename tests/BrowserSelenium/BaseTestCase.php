@@ -136,4 +136,19 @@ abstract class BaseTestCase extends AbstractTestCase
             WebDriverExpectedCondition::urlContains($path)
         );
     }
+
+    public function hasDivAlert()
+    {
+        $res = $this->findMultipleByClass('alert');
+
+        return count($res) > 0;
+    }
+
+    public function getDivAlert()
+    {
+        $res = $this->findMultipleByClass('alert');
+        if (count($res) > 0) {
+            return $res[0];
+        }
+    }
 }
