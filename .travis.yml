@@ -30,6 +30,7 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+  - make dist
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
 script:
