@@ -25,9 +25,9 @@ class InstanceHelperTest extends TestCase
 
     public function test_it_fetches_the_monthly_plan_information()
     {
-        config(['monica.paid_plan_friendly_name' => 'Chandler']);
-        config(['monica.paid_plan_id' => 'chandler_plan']);
-        config(['monica.paid_plan_price' => 1000]);
+        config(['monica.paid_plan_monthly_friendly_name' => 'Monthly']);
+        config(['monica.paid_plan_monthly_id' => 'monthly']);
+        config(['monica.paid_plan_monthly_price' => 1000]);
 
         $this->assertEquals(
             'monthly',
@@ -35,12 +35,12 @@ class InstanceHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            'Chandler',
+            'Monthly',
             InstanceHelper::getPlanInformationFromConfig('monthly')['name']
         );
 
         $this->assertEquals(
-            'chandler_plan',
+            'monthly',
             InstanceHelper::getPlanInformationFromConfig('monthly')['id']
         );
 
@@ -57,8 +57,8 @@ class InstanceHelperTest extends TestCase
 
     public function test_it_fetches_the_annually_plan_information()
     {
-        config(['monica.paid_plan_annual_friendly_name' => 'Chandler']);
-        config(['monica.paid_plan_annual_id' => 'chandler_plan']);
+        config(['monica.paid_plan_annual_friendly_name' => 'Annual']);
+        config(['monica.paid_plan_annual_id' => 'annual']);
         config(['monica.paid_plan_annual_price' => 1000]);
 
         $this->assertEquals(
@@ -67,12 +67,12 @@ class InstanceHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            'Chandler',
+            'Annual',
             InstanceHelper::getPlanInformationFromConfig('annual')['name']
         );
 
         $this->assertEquals(
-            'chandler_plan',
+            'annual',
             InstanceHelper::getPlanInformationFromConfig('annual')['id']
         );
 

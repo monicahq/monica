@@ -30,25 +30,13 @@ class InstanceHelper
             return;
         }
 
-        if ($timePeriod == 'monthly') {
-            $planInformation = [
-                'type' => 'monthly',
-                'name' => config('monica.paid_plan_friendly_name'),
-                'id' => config('monica.paid_plan_id'),
-                'price' => config('monica.paid_plan_price'),
-                'friendlyPrice' => config('monica.paid_plan_price')/100,
-            ];
-        }
-
-        if ($timePeriod == 'annual') {
-            $planInformation = [
-                'type' => 'annual',
-                'name' => config('monica.paid_plan_annual_friendly_name'),
-                'id' => config('monica.paid_plan_annual_id'),
-                'price' => config('monica.paid_plan_annual_price'),
-                'friendlyPrice' => config('monica.paid_plan_annual_price')/100,
-            ];
-        }
+        $planInformation = [
+            'type' => $timePeriod,
+            'name' => config('monica.paid_plan_'.$timePeriod.'_friendly_name'),
+            'id' => config('monica.paid_plan_'.$timePeriod.'_id'),
+            'price' => config('monica.paid_plan_'.$timePeriod.'_price'),
+            'friendlyPrice' => config('monica.paid_plan_'.$timePeriod.'_price')/100,
+        ];
 
         return $planInformation;
     }

@@ -163,9 +163,9 @@ REQUIRES_SUBSCRIPTION=false
 # Leave blank unless you know what you are doing.
 STRIPE_KEY=
 STRIPE_SECRET=
-PAID_PLAN_FRIENDLY_NAME=
-PAID_PLAN_ID=
-PAID_PLAN_PRICE=
+paid_plan_monthly_friendly_name=
+paid_plan_monthly_id=
+paid_plan_monthly_price=
 
 # Change this only if you know what you are doing
 CACHE_DRIVER=database

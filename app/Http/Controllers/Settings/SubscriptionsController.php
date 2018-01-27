@@ -20,7 +20,7 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        if (! auth()->user()->account->subscribed()) {
+        if (! auth()->user()->account->isSubscribed()) {
             $data = [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ];
@@ -28,7 +28,14 @@ class SubscriptionsController extends Controller
             return view('settings.subscriptions.blank', $data);
         }
 
-        return view('settings.subscriptions.account');
+        $planId = auth()->user()->account->getSubscribedPlanId();
+
+        $data = [
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
+            'nextBillingDate' => auth()->user()->account->getNextBillingDate(),
+        ];
+
+        return view('settings.subscriptions.account', $data);
     }
 
     /**
@@ -47,10 +54,10 @@ class SubscriptionsController extends Controller
 
         $data = [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
-            'nextTheoriticalDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
         ];
 
-        if ($account->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if ($account->isSubscribed()) {
             return redirect('/settings/subscriptions');
         }
 
@@ -68,13 +75,7 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        $plan = $request->query('plan');
-
-        $data = [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
-        ];
-
-        return view('settings.subscriptions.success', $data);
+        return view('settings.subscriptions.success');
     }
 
     /**
@@ -88,7 +89,7 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        if (! auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if (! auth()->user()->account->isSubscribed()) {
             return redirect('/settings');
         }
 
@@ -106,7 +107,7 @@ class SubscriptionsController extends Controller
             return redirect('/settings/users/subscriptions/downgrade');
         }
 
-        auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancelNow();
+        auth()->user()->account->subscription(config('monica.paid_plan_monthly_friendly_name'))->cancelNow();
 
         return redirect('/settings/subscriptions');
     }
@@ -124,7 +125,7 @@ class SubscriptionsController extends Controller
 
         $stripeToken = $request->input('stripeToken');
 
-        $plan = auth()->user()->account->getPlanInformationFromConfig($request->input('plan'));
+        $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
 
         auth()->user()->account->newSubscription($plan['name'], $plan['id'])
                     ->create($stripeToken, [
@@ -143,7 +144,7 @@ class SubscriptionsController extends Controller
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',
-            'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_friendly_name')]),
+            'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_monthly_friendly_name')]),
         ]);
     }
 }

@@ -61,7 +61,7 @@
         <button class="btn btn-primary w-100">Submit Payment</button>
       </form>
 
-      <p>We'll charge your card USD ${{ $planInformation['friendlyPrice'] }} now. The next charge will be on {{ $nextTheoriticalDate }}. If you ever change your mind, you can cancel anytime, no questions asked.</p>
+      <p>We'll charge your card USD ${{ $planInformation['friendlyPrice'] }} now. The next charge will be on {{ $nextTheoriticalBillingDate }}. If you ever change your mind, you can cancel anytime, no questions asked.</p>
       <p>The payment is handled by <a href="https://stripe.com">Stripe</a>. No card information touches our server.</p>
     </div>
   </div>

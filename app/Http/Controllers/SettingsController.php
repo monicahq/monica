@@ -110,8 +110,8 @@ class SettingsController extends Controller
 
         DB::table('accounts')->where('id', $account->id)->delete();
 
-        if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
-            auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancelNow();
+        if (auth()->user()->account->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
+            auth()->user()->account->subscription(config('monica.paid_plan_monthly_friendly_name'))->cancelNow();
         }
 
         auth()->logout();
