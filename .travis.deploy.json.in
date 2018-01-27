@@ -1,0 +1,28 @@
+{
+    "package": {
+        "name": "monica",
+        "repo": "builds",
+        "subject": "monicahq",
+        "desc": "MonicaHQ, the Personal Relationship Manager",
+        "website_url": "www.monicahq.com",
+        "issue_tracker_url": "https://github.com/monicahq/monica/issues",
+        "vcs_url": "https://github.com/monicahq/monica.git",
+        "github_use_tag_release_notes": true,
+        "github_release_notes_file": "CHANGELOG",
+        "licenses": ["AGPL-V3"],
+        "labels": [],
+        "public_download_numbers": false,
+        "public_stats": false,
+        "attributes": []
+    },
+
+    "version": {
+        "name": "$(version)",
+    },
+
+    "files":
+        [
+          {"includePattern": "results/(monica.*)", "uploadPattern": "$1"}
+        ],
+    "publish": true
+}

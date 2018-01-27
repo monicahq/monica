@@ -30,7 +30,7 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - make dist
+  - make build
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
 script:
@@ -50,15 +50,31 @@ script:
 
 after_script:
   - vendor/bin/steward results -vvv
-  - .ci/travis-report.sh 2>/dev/null
+  - ".ci/travis-report.sh 2>/dev/null"
   - cat selenium-server.log
   - cat selenium-node.log
   - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
   - bash <(curl -s https://codecov.io/bash)
-  - ./travis-sonar.sh
+  - "./travis-sonar.sh"
 
 cache:
   directories:
-    - $HOME/.sonar/cache
-    - $HOME/sonarscanner
-    - $HOME/sonarlauncher
+  - "$HOME/.sonar/cache"
+  - "$HOME/sonarscanner"
+  - "$HOME/sonarlauncher"
+
+before_deploy:
+    - make dist
+
+deploy:
+  provider: bintray
+  file: .travis.deploy.json
+  user: asbin
+  key:
+    secure: d/WXJoPWoXIvP3pi+WPFRynx6BtAfwi2k+OTWkzdy+R5Gpb9alWNPl8vq7R7OPhRcjetGuZIP+z/XdrwYStglQP1ARUMOESEnERMK4GcFV6XqMw6DiPDu3YKF/ZzmKapQxhWWlcL3qLMttf0KFw+MJ1T8OUa+76syLR4b7TRLeWEiismY9ZPcKuNngwU89KNiTFvWroRu6kY9dwAlv2qWtuOsf3NcS9O9E4kkbHS6KDM6HSYaQRGEwcCJbVFAg2VcqHK609Bs9FlfVp6ax/9SJaZhGDcOfQTg7r9bjCInoSaXXD/R7aL7GySgqKmHobLCFHowOkd+EWfiKNrGs5Lx2OawZ+VUhnXF7CJAiulaK9datLa0UkXz5TTh9HhlPdcuy3opQf3oKsgLAFc75boJDzTwHXODqlB6rvEBsAniD9qpR1nPovdVGNhPNHWWgqxVj0CUsIY03DG1HLACC+SwM4OLTYmiWhhJnf/atg1ZcsyTqeFfMEGBrxBX7gEVvJSyiTXJV0gOoPHx7l/qFCPPckzXnI641eqUSBMJZLByxMRj5JSAq4PkjDx3rI2KRfYA8JI6H5S0aAKHMxE5By5kgLiniGxoW+Gbas2nf+2ZjJg6w9RNJkUM20oGmPR1Tpx1qntkAE5QjjIxMwuhQTJtkIY4ahJLxRvsBXcDbw8i6A=
+  on:
+    repo: monicahq/monica
+    branch:
+      - master
+      - features/800-remove-assets
+

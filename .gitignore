@@ -11,3 +11,4 @@ Homestead.json
 .DS_Store
 npm-debug.log*
 /results
+.travis.deploy.json
