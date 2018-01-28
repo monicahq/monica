@@ -74,7 +74,7 @@ results/$(DESTDIR).tar.gz: prepare
 	tar chfz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
 
 results/$(DESTDIR).zip: prepare
-	zip -r9 $@ $(DESTDIR) --exclude "*.gitignore*" "*.gitkeep*"
+	zip -rq9 $@ $(DESTDIR) --exclude "*.gitignore*" "*.gitkeep*"
 
 clean:
 	rm -rf $(DESTDIR)
