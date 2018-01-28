@@ -30,11 +30,11 @@ before_script:
   - mysql -e 'create database monica;'
   - composer self-update
 
-  # Assets build
+  # Build js and css assets
   - make build
   # Create dist file before running composer install with dev dependencies
   - make dist
-  
+
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
@@ -50,8 +50,8 @@ script:
   - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run browser tests
-  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
-  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv; fi
+  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vv; fi
 
 after_script:
   - vendor/bin/steward results -vvv
@@ -79,4 +79,3 @@ deploy:
     branch:
       - master
       - features/800-remove-assets
-

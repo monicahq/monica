@@ -15,14 +15,15 @@
         "public_stats": false,
         "attributes": []
     },
-
     "version": {
-        "name": "$(version)"
-    },
-
-    "files":
-        [
-          {"includePattern": "results/(monica.*)", "uploadPattern": "$1"}
-        ],
+        "name": "$(version)",
+        "attributes": [
+            {"name": "gitcommit", "values" : ["$(travis_commit)"], "type": "string"},
+            {"name": "date", "values" : ["$(date)"], "type": "date"}
+        ]
+    }
+    "files": [
+        {"includePattern": "results/(monica.*)", "uploadPattern": "$1"}
+    ],
     "publish": true
 }

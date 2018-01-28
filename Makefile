@@ -1,5 +1,5 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
-VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>1 >/dev/null); then echo "-dev"; fi)
+VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match &>/dev/null); then echo "-dev"; fi)
 ifneq ($(TRAVIS_BUILD_NUMBER),)
 VERSION := $(VERSION)-build$(TRAVIS_BUILD_NUMBER)
 endif
@@ -68,7 +68,7 @@ $(DESTDIR):
 	ln -s ../vendor $@/
 
 dist: results/$(DESTDIR).tar.gz results/$(DESTDIR).zip
-	sed -s "s/\$$(version)/$(VERSION)/" .travis.deploy.json.in > .travis.deploy.json
+	sed -s "s/\$$(version)/$(VERSION)/" .travis.deploy.json.in | sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | sed -s "/$$(date)/$(shell date --iso-8601=s)/" > .travis.deploy.json
 
 results/$(DESTDIR).tar.gz: prepare
 	tar chfz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
