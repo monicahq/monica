@@ -47,6 +47,16 @@
       <script src="{{ mix('js/app.js') }}"></script>
     @endif
 
+    {{-- Required only for the Upgrade account page --}}
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
+      <script src="https://js.stripe.com/v3/"></script>
+      <script>
+        var stripe = Stripe('pk_ffbmX2ktRBqDfUMU7RxlFMIATRDvE');
+      </script>
+      <script src="{{ mix('js/stripe.js') }}"></script>
+      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
+    @endif
+
     {{-- TRACKING SHIT --}}
     @if(config('app.env') != 'local' && !empty(config('monica.google_analytics_app_id')))
       <script>

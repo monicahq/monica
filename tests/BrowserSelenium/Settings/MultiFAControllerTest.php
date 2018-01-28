@@ -18,8 +18,19 @@ class MultiFAControllerTest extends BaseTestCase
      */
     public function openPage()
     {
+        $this->cleanup();
+
         $this->initAndLogin();
         $this->assertEquals('/settings/security', $this->getCurrentPath());
+    }
+
+    /**
+     * Cleanup.
+     */
+    public function cleanup()
+    {
+        exec('php artisan 2fa:deactivate --force --email=admin@admin.com', $output);
+        $this->log(implode($output));
     }
 
     /**
@@ -28,17 +39,12 @@ class MultiFAControllerTest extends BaseTestCase
      */
     public function testHasSettings2faEnableLink()
     {
-        // Ensure user admin@admin.com has disabled 2FA
-        //$user = User::where('email', 'admin@admin.com')->first();
-        //$user->google2fa_secret = null;
-        //$user->save();
-
         $this->openPage();
         $enableuri = $this->getDestUri('/settings/security/2fa-enable');
 
         $enablelinks = $this->findMultipleByXpath("//a[@href='$enableuri']");
-        $this->assertTrue(count($enablelinks) > 0, 'link /settings/security/2fa-enable not found');
-        $this->assertEquals(1, count($enablelinks), 'too many /settings/security/2fa-enable links');
+        $this->assertGreaterThan(0, count($enablelinks), 'link /settings/security/2fa-enable not found');
+        $this->assertCount(1, $enablelinks, 'too many /settings/security/2fa-enable links');
 
         $enablelink = $enablelinks[0];
         $this->assertEquals('btn btn-primary', $enablelink->getAttribute('class'));
@@ -50,11 +56,6 @@ class MultiFAControllerTest extends BaseTestCase
      */
     public function testHas2faEnableBarCode()
     {
-        // Ensure user admin@admin.com has disabled 2FA
-        //$user = User::where('email', 'admin@admin.com')->first();
-        //$user->google2fa_secret = null;
-        //$user->save();
-
         $this->openPage();
 
         $this->clickDestUri('/settings/security/2fa-enable');
@@ -75,11 +76,6 @@ class MultiFAControllerTest extends BaseTestCase
      */
     public function testBarCodeContent()
     {
-        // Ensure user admin@admin.com has disabled 2FA
-        //$user = User::where('email', 'admin@admin.com')->first();
-        //$user->google2fa_secret = null;
-        //$user->save();
-
         $this->openPage();
         $this->clickDestUri('/settings/security/2fa-enable');
 
@@ -109,7 +105,7 @@ class MultiFAControllerTest extends BaseTestCase
 
         // unparse $text
         // See PragmaRX\Google2FA\Support\QRCode getQRCodeUrl
-        // example
+        // example :
         //otpauth://totp/monicalocal.test:admin%40admin.com?secret=H25L7JLI7I57KYE7U53BIIOUELWXMRE6&issuer=monicalocal.test
 
         $ret = preg_match('@^otpauth://totp/([^:]+):([^?]+)\?secret=([^&]+)&issuer=(.+)@i', $text, $matches);
@@ -117,5 +113,205 @@ class MultiFAControllerTest extends BaseTestCase
         $this->assertCount(5, $matches);
 
         return $matches[3];
+    }
+
+    /**
+     * Test the 2fa Enable Page with wrong code.
+     * @group multifa
+     */
+    public function testEnable2faWrongCode()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        $secretkey = $this->findById('secretkey')->getText();
+        $this->log('secret key: %s', $secretkey);
+
+        $input = $this->findById('one_time_password');
+        $input->sendKeys('000000');
+
+        $this->findByTag('button')->submit();
+
+        $this->assertTrue($this->hasDivAlert());
+        $divalert = $this->getDivAlert();
+        $this->assertContains('alert-danger', $divalert->getAttribute('class'));
+        $this->assertContains('Two Factor Authentication', $divalert->getText());
+    }
+
+    /**
+     * Test the 2fa Enable Page.
+     * @group multifa
+     */
+    public function testEnable2fa()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $this->enable2fa();
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    /**
+     * Test the 2fa Enable Page.
+     * @group multifa
+     */
+    public function testEnable2faLoginWrongCode()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $this->enable2fa();
+            //$this->clickDestUri('/logout');
+            $link = $this->findByXpath("//a[@href='/logout']");
+            $link->click();
+            $this->initAndLogin('/dashboard');
+            $this->assertEquals('/dashboard', $this->getCurrentPath());
+
+            $inputs = $this->findMultipleById('one_time_password');
+            $this->assertCount(1, $inputs, 'Authentication code input not present');
+            $input = $inputs[0];
+
+            $input->sendKeys('000000');
+            $this->findByTag('button')->submit();
+
+            $this->assertTrue($this->hasDivAlert());
+            $divalert = $this->getDivAlert();
+            $this->assertContains('alert-danger', $divalert->getAttribute('class'));
+            $this->assertContains('two factor authentication', $divalert->getText());
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    /**
+     * Test the 2fa Enable Page.
+     * @group multifa
+     */
+    public function testEnable2faLogin()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $secretkey = $this->enable2fa();
+            //$this->clickDestUri('/logout');
+            $link = $this->findByXpath("//a[@href='/logout']");
+            $link->click();
+            $this->initAndLogin('/dashboard');
+            $this->assertEquals('/dashboard', $this->getCurrentPath());
+
+            $inputs = $this->findMultipleById('one_time_password');
+            $this->assertCount(1, $inputs, 'Authentication code input not present');
+            $input = $inputs[0];
+
+            $google2fa = new \PragmaRX\Google2FA\Google2FA();
+            $one_time_password = $google2fa->getCurrentOtp($secretkey);
+            $input->sendKeys($one_time_password);
+            $this->findByTag('button')->submit();
+
+            $this->assertFalse($this->hasDivAlert());
+            $this->assertEquals('/validate2fa', $this->getCurrentPath());
+            $dashboardlinks = $this->findMultipleByXpath("//a[@href='/dashboard']");
+            $this->assertGreaterThan(0, count($dashboardlinks));
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    private function enable2fa()
+    {
+        $secretkey = $this->findById('secretkey')->getText();
+        $this->log('secret key: %s', $secretkey);
+
+        $input = $this->findById('one_time_password');
+
+        $google2fa = new \PragmaRX\Google2FA\Google2FA();
+        $one_time_password = $google2fa->getCurrentOtp($secretkey);
+        $input->sendKeys($one_time_password);
+
+        $this->findByTag('button')->submit();
+
+        $this->assertTrue($this->hasDivAlert());
+        $divalert = $this->getDivAlert();
+        $this->assertContains('alert-success', $divalert->getAttribute('class'));
+        $this->assertContains('Two Factor Authentication', $divalert->getText());
+
+        // TODO: test if user has 2fa enabled actually
+        // TODO: test if session token auth is right
+
+        $disableuri = $this->getDestUri('/settings/security/2fa-disable');
+
+        $disablelinks = $this->findMultipleByXpath("//a[@href='$disableuri']");
+        $this->assertGreaterThan(0, count($disablelinks), 'link /settings/security/2fa-disable not found');
+        $this->assertCount(1, $disablelinks, 'too many /settings/security/2fa-disable links');
+
+        $disablelink = $disablelinks[0];
+        $this->assertEquals('btn btn-warning', $disablelink->getAttribute('class'));
+
+        return $secretkey;
+    }
+
+    /**
+     * Test 2fa Enable Page and Disable Page.
+     * @group multifa
+     */
+    public function testEnable2faDisable2fa()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $secretkey = $this->enable2fa();
+            $this->clickDestUri('/settings/security/2fa-disable');
+
+            $input = $this->findById('one_time_password');
+
+            $google2fa = new \PragmaRX\Google2FA\Google2FA();
+            $one_time_password = $google2fa->getCurrentOtp($secretkey);
+            $input->sendKeys($one_time_password);
+
+            $this->findByTag('button')->submit();
+
+            $this->assertTrue($this->hasDivAlert());
+            $divalert = $this->getDivAlert();
+            $this->assertContains('alert-success', $divalert->getAttribute('class'));
+            $this->assertContains('Two Factor Authentication', $divalert->getText());
+
+            // TODO: test if user has 2fa disabled actually
+            // TODO: test if session token auth is right
+        } finally {
+            $this->cleanup();
+        }
+    }
+
+    /**
+     * Test 2fa Enable Page and Disable Page.
+     * @group multifa
+     */
+    public function testEnable2faDisable2faWrongCode()
+    {
+        $this->openPage();
+        $this->clickDestUri('/settings/security/2fa-enable');
+
+        try {
+            $this->enable2fa();
+            $this->clickDestUri('/settings/security/2fa-disable');
+
+            $input = $this->findById('one_time_password');
+            $input->sendKeys('000000');
+
+            $this->findByTag('button')->submit();
+
+            $this->assertTrue($this->hasDivAlert());
+            $divalert = $this->getDivAlert();
+            $this->assertContains('alert-danger', $divalert->getAttribute('class'));
+            $this->assertContains('Two Factor Authentication', $divalert->getText());
+        } finally {
+            $this->cleanup();
+        }
     }
 }
