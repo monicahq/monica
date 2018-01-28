@@ -7,7 +7,15 @@ DESTDIR := monica-$(VERSION)
 
 default: build
 
-docker: docker_build docker_tag docker_push
+all:
+	$(MAKE) fullclean
+	$(MAKE) build
+	$(MAKE) dist
+
+docker:
+	$(MAKE) docker_build
+	$(MAKE) docker_tag
+	$(MAKE) docker_push
 
 docker_build:
 	docker-compose build
@@ -21,9 +29,9 @@ docker_push:
 
 .PHONY: docker_build docker_tag docker_push
 
-build: build-production
+build: build-prod
 
-build-production:
+build-prod:
 	composer install --no-interaction --prefer-dist --no-suggest --no-dev
 	npm install
 	npm run production
@@ -64,12 +72,27 @@ $(DESTDIR):
 	ln -s ../public $@/
 	ln -s ../resources $@/
 	ln -s ../routes $@/
-	ln -s ../storage $@/
 	ln -s ../tests $@/
 	ln -s ../vendor $@/
+	mkdir -p $@/storage/app/public
+	mkdir -p $@/storage/debugbar
+	mkdir -p $@/storage/logs
+	mkdir -p $@/storage/framework/views
+	mkdir -p $@/storage/framework/cache
+	mkdir -p $@/storage/framework/sessions
 
-dist: results/$(DESTDIR).tar.gz results/$(DESTDIR).zip
-	sed -s "s/\$$(version)/$(VERSION)/" .travis.deploy.json.in | sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > .travis.deploy.json
+dist: results/$(DESTDIR).tar.xz .travis.deploy.json
+
+.travis.deploy.json: .travis.deploy.json.in
+	sed -s "s/\$$(version)/$(VERSION)/" $< | \
+		sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | \
+		sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > $@
+
+results/$(DESTDIR).tar.xz: prepare
+	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
+
+results/$(DESTDIR).tar.bz2: prepare
+	tar chfj $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
 
 results/$(DESTDIR).tar.gz: prepare
 	tar chfz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
@@ -79,19 +102,16 @@ results/$(DESTDIR).zip: prepare
 
 clean:
 	rm -rf $(DESTDIR)
-	rm -f results/$(DESTDIR).tar.gz
-	rm -f results/$(DESTDIR).zip
+	rm -f results/$(DESTDIR).*
 	rm -f .travis.deploy.json
-	rm -f public/storage storage/oauth-private.key storage/oauth-public.key npm-debug.* bootstrap/cache/*
-	rm -f storage/logs/* storage/debugbar/* storage/framework/views/* storage/framework/cache/* storage/framework/sessions/*
 
 fullclean: clean
-	rm -rf vendor resources/vendor node_modules persist logs results public/fonts/vendor
-	rm -f public/css/* public/js/* public/mix-manifest.json
+	rm -rf vendor resources/vendor public/fonts/vendor node_modules
+	rm -f public/css/* public/js/* public/mix-manifest.json public/storage bootstrap/cache/*
 
-install: build
+install: build-dev
 	php artisan key:generate
 	php artisan setup:test
 	php artisan passport:install
 
-.PHONY: dist clean fullclean build prepare build-production
+.PHONY: dist clean fullclean install build prepare build-prod build-dev
