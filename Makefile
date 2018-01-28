@@ -1,9 +1,11 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
-VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match &>/dev/null); then echo "-dev"; fi)
+VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
 ifneq ($(TRAVIS_BUILD_NUMBER),)
 VERSION := $(VERSION)-build$(TRAVIS_BUILD_NUMBER)
 endif
 DESTDIR := monica-$(VERSION)
+
+default: build
 
 docker: docker_build docker_tag docker_push
 
@@ -18,7 +20,6 @@ docker_push:
 	docker push monicahq/monicahq:latest
 
 .PHONY: docker_build docker_tag docker_push
-
 
 build: build-production
 
