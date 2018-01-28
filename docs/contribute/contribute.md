@@ -105,11 +105,15 @@ To setup the test environment:
 
 ### Run the test suite
 
+The test suite uses Phpunit. It's mainly used to perform unit tests or quick, small functional tests.
+
 To run the test suite:
 
 * `phpunit` or `./vendor/bin/phpunit` in the root of the folder containing Monica's code from GitHub.
 
 ### Run browser tests
+
+Browsers tests simulate user interactions in a live browser.
 
 To run browser tests, first you need to install some requirements
 

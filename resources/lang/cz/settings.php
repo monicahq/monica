@@ -111,7 +111,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'Smíte mít pouze jednoho uživatele účtu',
     'subscriptions_downgrade_rule_users_constraint' => 'Aktuálně máte <a href=":url">:count uživatel</a> v tomto účtu.',
     'subscriptions_downgrade_rule_invitations' => 'Nesmíte mít čekající pozvánky',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'Aktuálně máte <a href="/settings/users/invitations">:count čekající pozvánky</a> odeslané uživatelům.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'Aktuálně máte <a href="/settings/users/">:count čekající pozvánky</a> odeslané uživatelům.',
     'subscriptions_downgrade_cta' => 'Přejít',
     'subscriptions_upgrade_title' => 'Navýšit svůj účet',
     'subscriptions_upgrade_description' => 'Vložte prosím níže údaje své platební karty. Monica používá <a href="https://stripe.com">Stripe</a> k bezpečnému zpracování plateb. Na našem serveru nejsou ukládány žádné informace.',
