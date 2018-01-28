@@ -110,7 +110,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'You must have only 1 user in your account',
     'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">:count users</a> in your account.',
     'subscriptions_downgrade_rule_invitations' => 'You must not have pending invitations',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href="/settings/users/invitations">:count pending invitations</a> sent to people.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href="/settings/users/">:count pending invitations</a> sent to people.',
     'subscriptions_downgrade_cta' => 'Downgrade',
     'subscriptions_upgrade_title' => 'Upgrade your account',
     'subscriptions_upgrade_description' => 'Please enter your card details below. Monica uses <a href="https://stripe.com">Stripe</a> to process your payments securely. No credit card information are stored on our servers.',
