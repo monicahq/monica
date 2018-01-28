@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix avatar being invalid in the Contact API call
 
 v1.6.2 - 2018-01-25
 -------------------
