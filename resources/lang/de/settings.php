@@ -112,7 +112,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'Du darfst nur einen Benutzer in deinem Konto haben',
     'subscriptions_downgrade_rule_users_constraint' => 'Du hast zur Zeit <a href=":url">:count Benutzer</a> in deinem Konto.',
     'subscriptions_downgrade_rule_invitations' => 'Du darfst keine Ausstehenden Einladungen haben',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'Du hast zur Zeit <a href="/settings/users/invitations">:count ausstehende Einladungen</a>.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'Du hast zur Zeit <a href="/settings/users/">:count ausstehende Einladungen</a>.',
     'subscriptions_downgrade_cta' => 'Downgrade',
     'subscriptions_upgrade_title' => 'Konto upgraden',
     'subscriptions_upgrade_description' => 'Bitte gib unten deine Kreditkarten-Informationen an. Monica benutzt <a href="https://stripe.com">Stripe</a> um die Zahlung sicher zu verarbeiten. Es werden keine Kreditkarten-Informationen auf unseren Servern gespeichert.',
