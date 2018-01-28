@@ -29,8 +29,13 @@ before_script:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+  # Assets build
   - make build
+  # Create dist file before running composer install with dev dependencies
+  - make dist
+  
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
 script:
@@ -62,9 +67,6 @@ cache:
   - "$HOME/.sonar/cache"
   - "$HOME/sonarscanner"
   - "$HOME/sonarlauncher"
-
-before_deploy:
-    - make dist
 
 deploy:
   provider: bintray
