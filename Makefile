@@ -71,10 +71,10 @@ dist: results/$(DESTDIR).tar.gz results/$(DESTDIR).zip
 	sed -s "s/\$$(version)/$(VERSION)/" .travis.deploy.json.in > .travis.deploy.json
 
 results/$(DESTDIR).tar.gz: prepare
-	tar chfvz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
+	tar chfz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
 
 results/$(DESTDIR).zip: prepare
-	zip -rv9 $@ $(DESTDIR) --exclude "*.gitignore*" "*.gitkeep*"
+	zip -r9 $@ $(DESTDIR) --exclude "*.gitignore*" "*.gitkeep*"
 
 clean:
 	rm -rf $(DESTDIR)
