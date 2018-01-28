@@ -311,7 +311,11 @@ class Account extends Model
 
         $isSubscribed = false;
 
-        if ($this->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
+            $isSubscribed = true;
+        }
+
+        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
             $isSubscribed = true;
         }
 
@@ -434,8 +438,35 @@ class Account extends Model
     {
         $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
         $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
-        $reminders = auth()->user()->account->reminders()->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])->orderBy('next_expected_date', 'asc')->get();
+        $reminders = auth()->user()->account->reminders()
+                            ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
+                            ->orderBy('next_expected_date', 'asc')
+                            ->get();
 
         return $reminders;
+    }
+
+    /**
+     * Get the id of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanId()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->stripe_plan;
+    }
+
+    /**
+     * Get the friendly name of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanName()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->name;
     }
 }

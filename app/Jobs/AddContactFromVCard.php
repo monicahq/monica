@@ -121,7 +121,9 @@ class AddContactFromVCard implements ShouldQueue
 
                 if (! is_null($this->formatValue($vcard->EMAIL))) {
                     // Saves the email
-                    $contactFieldType = ContactFieldType::where('type', 'email')->first();
+                    $contactFieldType = ContactFieldType::where('type', 'email')
+                                                        ->where('account_id', $contact->account_id)
+                                                        ->first();
 
                     if (! empty($contactFieldType)) {
                         $contactField = new ContactField;
@@ -135,7 +137,9 @@ class AddContactFromVCard implements ShouldQueue
 
                 if (! is_null($this->formatValue($vcard->TEL))) {
                     // Saves the phone number
-                    $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+                    $contactFieldType = ContactFieldType::where('type', 'phone')
+                                                        ->where('account_id', $contact->account_id)
+                                                        ->first();
 
                     if (! empty($contactFieldType)) {
                         $contactField = new ContactField;

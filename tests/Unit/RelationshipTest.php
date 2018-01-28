@@ -9,6 +9,26 @@ class RelationshipTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_a_contact()
+    {
+        $contact = factory('App\Contact')->create([]);
+        $relationship = factory('App\Relationship')->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($relationship->contact()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact_through_with_contact_field()
+    {
+        $contact = factory('App\Contact')->create([]);
+        $relationship = factory('App\Relationship')->create([
+            'with_contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($relationship->with_contact()->exists());
+    }
+
     public function test_get_potential_partners_does_not_return_contacts_who_are_already_partner_with_the_contact()
     {
         $account = factory(\App\Account::class)->create();

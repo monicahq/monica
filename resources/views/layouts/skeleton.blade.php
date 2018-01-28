@@ -39,14 +39,22 @@
       @yield('content')
     </div>
 
-    <div class="mt4">
-      @include('partials.footer')
-    </div>
+    @include('partials.footer')
 
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
       <script src="{{ mix('js/app.js') }}"></script>
+    @endif
+
+    {{-- Required only for the Upgrade account page --}}
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
+      <script src="https://js.stripe.com/v3/"></script>
+      <script>
+        var stripe = Stripe('pk_ffbmX2ktRBqDfUMU7RxlFMIATRDvE');
+      </script>
+      <script src="{{ mix('js/stripe.js') }}"></script>
+      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
     @endif
 
     {{-- TRACKING SHIT --}}

@@ -45,7 +45,7 @@
             <li class="{{ (auth()->user()->account->invitations()->count() > 0)?'fail':'success' }}">
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_invitations') }}</span>
-              <span class="rule-to-succeed">{!! trans('settings.subscriptions_downgrade_rule_invitations_constraint', ['url' => '/settings/users/invitations', 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
+              <span class="rule-to-succeed">{!! trans('settings.subscriptions_downgrade_rule_invitations_constraint', ['url' => '/settings/users', 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
             </li>
 
           </ul>

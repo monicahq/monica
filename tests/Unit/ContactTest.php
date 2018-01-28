@@ -321,7 +321,7 @@ class ContactTest extends TestCase
         $contact->avatar_file_name = 'h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX.jpg';
 
         $this->assertEquals(
-            '/storage/avatars/h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX_100.jpg',
+            asset('/storage/avatars/h0FMvD2cA3r2Q1EtGiv7aq9yl5BoXH2KIenDsoGX_100.jpg'),
             $contact->getAvatarURL(100)
         );
     }

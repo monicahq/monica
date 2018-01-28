@@ -23,7 +23,7 @@ class Tag extends Model
     ];
 
     /**
-     * Get the account record associated with the debt.
+     * Get the account record associated with the tag.
      */
     public function account()
     {
@@ -31,7 +31,7 @@ class Tag extends Model
     }
 
     /**
-     * Get the contact record associated with the debt.
+     * Get the contacts record associated with the tag.
      */
     public function contacts()
     {

@@ -232,13 +232,6 @@
         li {
           &:not(:last-child) {
             margin-right: 10px;
-
-            &::after {
-              color: #ad8362;
-              content: '\f085';
-              font-family: octicons;
-              margin-left: 14px;
-            }
           }
         }
       }

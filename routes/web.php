@@ -55,6 +55,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@destroyContactField');
         Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
 
+        // Export as vCard
+        Route::get('/people/{contact}/vcard', 'ContactsController@vcard');
+
         // Addresses
         Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
@@ -128,8 +131,12 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@destroy')->name('.tasks.delete');
 
         // Gifts
+        Route::get('/people/{contact}/gifts', 'Contacts\\GiftsController@get');
+        Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
         Route::get('/people/{contact}/gifts/add', 'Contacts\\GiftsController@create')->name('.gifts.add');
+        Route::get('/people/{contact}/gifts/{gift}/edit', 'Contacts\\GiftsController@edit');
         Route::post('/people/{contact}/gifts/store', 'Contacts\\GiftsController@store')->name('.gifts.store');
+        Route::post('/people/{contact}/gifts/{gift}/update', 'Contacts\\GiftsController@update')->name('.gifts.update');
         Route::delete('/people/{contact}/gifts/{gift}', 'Contacts\\GiftsController@destroy')->name('.gifts.delete');
 
         // Debt
@@ -196,10 +203,12 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('.subscriptions.index');
         Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('.subscriptions.upgrade');
+        Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('.subscriptions.upgrade.success');
         Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment');
         Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice');
         Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
         Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
+        Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('.subscriptions.upgrade.success');
 
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
