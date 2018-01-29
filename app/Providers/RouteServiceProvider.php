@@ -15,7 +15,7 @@ use App\Reminder;
 use App\Offspring;
 use App\ContactField;
 use App\Relationship;
-use App\Helpers\ID_hasher;
+use App\Helpers\idHasher;
 use Illuminate\Routing\Router;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -40,11 +40,11 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         Route::bind('contact', function ($value) use ($ID_hasher) {
             try {
-                $value = $ID_hasher->decode_id($value);
+                $value = $ID_hasher->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
@@ -62,7 +62,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('activity', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decode_id($value);
+            $value = $ID_hasher->decodeId($value);
 
             return  Activity::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
@@ -70,7 +70,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('reminder', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decode_id($value);
+            $value = $ID_hasher->decodeId($value);
 
             return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
@@ -93,7 +93,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('debt', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decode_id($value);
+            $value = $ID_hasher->decodeId($value);
 
             return  Debt::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
@@ -115,7 +115,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('kid', function ($value, $route) use ($ID_hasher) {
             $contact = Contact::findOrFail($route->parameter('contact')->id);
 
-            $value = $ID_hasher->decode_id($value);
+            $value = $ID_hasher->decodeId($value);
 
             $offspring = Offspring::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $value)

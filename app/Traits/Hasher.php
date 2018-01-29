@@ -2,30 +2,30 @@
 
 namespace App\Traits;
 
-use App\Helpers\ID_hasher;
+use App\Helpers\idHasher;
 
 trait Hasher
 {
     public function getRouteKey()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
-        return $ID_hasher->encode_id(parent::getRouteKey());
+        return $ID_hasher->encodeId(parent::getRouteKey());
     }
 
     public function resolveRouteBinding($value)
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
-        $value = $ID_hasher->decode_id($value);
+        $value = $ID_hasher->encodeId($value);
 
         return $this->where($this->getRouteKeyName(), $value)->first();
     }
 
     public function hashID()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
-        return $ID_hasher->encode_id($this->id);
+        return $ID_hasher->encodeId($this->id);
     }
 }

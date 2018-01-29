@@ -4,14 +4,14 @@ namespace App\Helpers;
 
 use Vinkla\Hashids\Facades\Hashids;
 
-class ID_hasher
+class idHasher
 {
-    public function encode_id($id)
+    public function encodeId($id)
     {
         return 'h'.Hashids::encode($id);
     }
 
-    public function decode_id($hash)
+    public function decodeId($hash)
     {
         if (str_contains($hash, 'h')) {
             $result = Hashids::decode(str_after($hash, 'h'));

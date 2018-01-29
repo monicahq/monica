@@ -7,7 +7,7 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use Tests\TestCase;
-use App\Helpers\ID_hasher;
+use App\Helpers\idHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ID_hasherTest extends TestCase
@@ -16,11 +16,11 @@ class ID_hasherTest extends TestCase
 
     public function testPrependH()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $test_id = rand();
 
-        $test_hash = $ID_hasher->encode_id($test_id);
+        $test_hash = $ID_hasher->encodeId($test_id);
 
         $test_value = ('h' == substr($test_hash, 0, 1));
 
@@ -29,69 +29,69 @@ class ID_hasherTest extends TestCase
 
     public function testGetIDback()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $test_id = rand();
 
-        $test_hash = $ID_hasher->encode_id($test_id);
+        $test_hash = $ID_hasher->encodeId($test_id);
 
-        $test_value = ($test_id == $ID_hasher->decode_id($test_hash));
+        $test_value = ($test_id == $ID_hasher->decodeId($test_hash));
 
         $this->assertTrue($test_value);
 
-        $test_value = ($test_id == $ID_hasher->decode_id($test_id));
+        $test_value = ($test_id == $ID_hasher->decodeId($test_id));
 
         $this->assertTrue($test_value);
     }
 
     public function testHashIDContact()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $contact = factory(Contact::class)->create();
 
         $test_hash = $contact->hashID();
 
-        $test_value = ($contact->id == $ID_hasher->decode_id($test_hash));
+        $test_value = ($contact->id == $ID_hasher->decodeId($test_hash));
 
         $this->assertTrue($test_value);
     }
 
     public function testHashIDActivity()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $activity = factory(Activity::class)->create();
 
         $test_hash = $activity->hashID();
 
-        $test_value = ($activity->id == $ID_hasher->decode_id($test_hash));
+        $test_value = ($activity->id == $ID_hasher->decodeId($test_hash));
 
         $this->assertTrue($test_value);
     }
 
     public function testHashIDDebt()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $debt = factory(Debt::class)->create();
 
         $test_hash = $debt->hashID();
 
-        $test_value = ($debt->id == $ID_hasher->decode_id($test_hash));
+        $test_value = ($debt->id == $ID_hasher->decodeId($test_hash));
 
         $this->assertTrue($test_value);
     }
 
     public function testHashIDReminder()
     {
-        $ID_hasher = new ID_hasher();
+        $ID_hasher = new idHasher();
 
         $reminder = factory(Reminder::class)->create();
 
         $test_hash = $reminder->hashID();
 
-        $test_value = ($reminder->id == $ID_hasher->decode_id($test_hash));
+        $test_value = ($reminder->id == $ID_hasher->decodeId($test_hash));
 
         $this->assertTrue($test_value);
     }
