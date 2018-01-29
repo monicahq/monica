@@ -112,7 +112,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'Devi avere un solo utente nel tuo account',
     'subscriptions_downgrade_rule_users_constraint' => 'Attualmente hai <a href=":url">:count utenti</a> nel tuo account.',
     'subscriptions_downgrade_rule_invitations' => 'Non puoi avere inviti in attesa',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'Attualmente hai <a href="/settings/users/invitations">:count inviti in attesa</a>.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'Attualmente hai <a href="/settings/users/">:count inviti in attesa</a>.',
     'subscriptions_downgrade_cta' => 'Retrocedi',
     'subscriptions_upgrade_title' => 'Promuovi il tuo account',
     'subscriptions_upgrade_description' => 'Inserisci i dettagli della tua carta. Monica usa <a href="https://stripe.com">Stripe</a> per processare i pagamenti in sicurezza. Non salviamo nessuna informazione sulla carta di credito nei nostri server.',
