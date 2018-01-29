@@ -1,9 +1,10 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
 VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+BUILD=$(VERSION)
 ifneq ($(TRAVIS_BUILD_NUMBER),)
-VERSION := $(VERSION)-build$(TRAVIS_BUILD_NUMBER)
+BUILD := $(BUILD)-build$(TRAVIS_BUILD_NUMBER)
 endif
-DESTDIR := monica-$(VERSION)
+DESTDIR := monica-$(BUILD)
 
 default: build
 
@@ -27,7 +28,11 @@ docker_push:
 	docker push monicahq/monicahq:$(GIT_TAG)
 	docker push monicahq/monicahq:latest
 
-.PHONY: docker_build docker_tag docker_push
+docker_push_bintray:
+	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(VERSION)
+	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(VERSION)
+
+.PHONY: docker docker_build docker_tag docker_push
 
 build: build-prod
 
@@ -84,7 +89,7 @@ $(DESTDIR):
 dist: results/$(DESTDIR).tar.xz .travis.deploy.json
 
 .travis.deploy.json: .travis.deploy.json.in
-	sed -s "s/\$$(version)/$(VERSION)/" $< | \
+	sed -s "s/\$$(version)/$(BUILD)/" $< | \
 		sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | \
 		sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > $@
 

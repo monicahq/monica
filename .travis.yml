@@ -6,6 +6,7 @@ php:
 
 services:
   - mysql
+  - docker
 
 jdk:
   - oraclejdk8
@@ -24,24 +25,29 @@ env:
   global:
 #    - SAUCELABS=1
 
-before_script:
+before_install:
   - cp .env.travis .env
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
+  - docker/get-docker-compose.sh
+  - docker-compose --version
 
+install:
   # Build js and css assets
   - make build
   # Create dist file before running composer install with dev dependencies
   - make dist
+  - make docker_build
 
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
 
-script:
+before_script:
+  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   
+script:
   # Run unit tests
   - vendor/bin/phpunit
 
@@ -67,6 +73,7 @@ cache:
   - "$HOME/.sonar/cache"
   - "$HOME/sonarscanner"
   - "$HOME/sonarlauncher"
+  - "$HOME/docker-compose"
 
 deploy:
   provider: bintray
@@ -79,3 +86,7 @@ deploy:
     branch:
       - master
       - features/800-remove-assets
+
+after_deploy:
+  - docker login -u asbin -p $BINTRAY_APIKEY deploy.key monicahq-docker-docker.bintray.io
+  - sudo make docker_push_bintray
