@@ -1,8 +1,9 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
-VERSION := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
-BUILD=$(VERSION)
+BUILD := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+ifneq ($(GIT_TAG),$(BUILD))
 ifneq ($(TRAVIS_BUILD_NUMBER),)
 BUILD := $(BUILD)-build$(TRAVIS_BUILD_NUMBER)
+endif
 endif
 DESTDIR := monica-$(BUILD)
 
@@ -30,10 +31,10 @@ docker_push:
 	docker push monicahq/monicahq:latest
 
 docker_push_bintray:
-	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(VERSION)
-	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(VERSION)
+	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 
-.PHONY: docker docker_build docker_tag docker_push
+.PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
 build: build-prod
 
@@ -53,7 +54,6 @@ prepare: $(DESTDIR)
 $(DESTDIR):
 	mkdir -p $@
 	ln -s ../readme.md $@/
-	ln -s ../CODE_OF_CONDUCT.md $@/
 	ln -s ../CONTRIBUTING.md $@/
 	ln -s ../CHANGELOG $@/
 	ln -s ../CONTRIBUTORS $@/
@@ -63,7 +63,6 @@ $(DESTDIR):
 	ln -s ../composer.lock $@/
 	ln -s ../package.json $@/
 	ln -s ../package-lock.json $@/
-	ln -s ../phpunit.xml $@/
 	ln -s ../app.json $@/
 	ln -s ../nginx_app.conf $@/
 	ln -s ../server.php $@/
@@ -78,7 +77,6 @@ $(DESTDIR):
 	ln -s ../public $@/
 	ln -s ../resources $@/
 	ln -s ../routes $@/
-	ln -s ../tests $@/
 	ln -s ../vendor $@/
 	mkdir -p $@/storage/app/public
 	mkdir -p $@/storage/debugbar
