@@ -63,7 +63,7 @@
           <ul class="tags">
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+                <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
             <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
