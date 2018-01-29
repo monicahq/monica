@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -evuo pipefail
 
 dockercomposeversion=1.18.0
 
