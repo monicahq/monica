@@ -800,7 +800,7 @@ class Contact extends Model
      * @param  int $size
      * @return string
      */
-    public function getAvatarURL($size = 100)
+    public function getAvatarURL($size = 110)
     {
         // it either returns null or the gravatar url if it's defined
         if (! $this->has_avatar) {
@@ -816,7 +816,7 @@ class Contact extends Model
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
-        return Storage::disk($this->avatar_location)->url($resized_avatar);
+        return asset(Storage::disk($this->avatar_location)->url($resized_avatar));
     }
 
     /**

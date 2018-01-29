@@ -83,7 +83,7 @@ class AccountTest extends TestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_true_if_plan_is_set()
+    public function test_user_is_subscribed_returns_true_if_monthly_plan_is_set()
     {
         $account = factory(Account::class)->create([]);
 
@@ -94,7 +94,26 @@ class AccountTest extends TestCase
             'name' => 'fakePlan',
         ]);
 
-        config(['monica.paid_plan_friendly_name' => 'fakePlan']);
+        config(['monica.paid_plan_monthly_friendly_name' => 'fakePlan']);
+
+        $this->assertEquals(
+            true,
+            $account->isSubscribed()
+        );
+    }
+
+    public function test_user_is_subscribed_returns_true_if_annual_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_annual',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'annualPlan',
+        ]);
+
+        config(['monica.paid_plan_annual_friendly_name' => 'annualPlan']);
 
         $this->assertEquals(
             true,
@@ -215,6 +234,44 @@ class AccountTest extends TestCase
         $this->assertEquals(
             3,
             $account->getRemindersForMonth(2)->count()
+        );
+    }
+
+    public function test_it_gets_the_id_of_the_subscribed_plan()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertEquals(
+            'chandler_5',
+            $account->getSubscribedPlanId()
+        );
+    }
+
+    public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertEquals(
+            'fakePlan',
+            $account->getSubscribedPlanName()
         );
     }
 }

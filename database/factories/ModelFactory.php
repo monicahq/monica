@@ -163,6 +163,12 @@ $factory->define(App\Tag::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\JournalEntry::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Pet::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,

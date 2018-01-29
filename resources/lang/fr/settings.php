@@ -112,7 +112,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'Vous devez avoir un seul utilisateur dans votre compte',
     'subscriptions_downgrade_rule_users_constraint' => 'Vous avez présentement <a href=":url">:count utilisateurs</a> dans votre compte.',
     'subscriptions_downgrade_rule_invitations' => 'Vous ne devez pas avoir d\'invitations en attente.',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'Vous avez présentement <a href="/settings/users/invitations">:count invitations en attentes</a> envoyés à des gens.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'Vous avez présentement <a href="/settings/users/">:count invitations en attentes</a> envoyés à des gens.',
     'subscriptions_downgrade_cta' => 'Passer au plan inférieur',
     'subscriptions_upgrade_title' => 'Passer au plan supérieur',
     'subscriptions_upgrade_description' => 'Merci d\'entrer les détails de votre carte ci-dessous. Monica utilise <a href="https://stripe.com">Stripe</a> pour traiter les paiements de manière sécurisée. Aucune information de carte de crédit ne sera stockée sur nos serveurs.',

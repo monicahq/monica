@@ -32,9 +32,13 @@
 
       <div class="col-xs-12 col-sm-9 personalization">
 
-        <p>{{ trans('settings.personalization_title') }}</p>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <p>{{ trans('settings.personalization_title') }}</p>
 
-        <contact-field-types></contact-field-types>
+            <contact-field-types></contact-field-types>
+          </div>
+        </div>
 
       </div>
     </div>
