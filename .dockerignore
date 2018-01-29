@@ -10,8 +10,6 @@ Dockerfile
 Homestead.json
 Homestead.yaml
 docker-compose.yml
-monica.sublime-workspace
-readme.md
 npm-debug.log*
 results/
 .ci/

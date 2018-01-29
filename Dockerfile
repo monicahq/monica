@@ -34,4 +34,4 @@ RUN docker/install-composer.sh && ./composer.phar install --no-interaction --pre
 USER root
 
 # This is the command that the container will run by default
-ENTRYPOINT ["make", "-f", "/var/www/monica/docker/Makefile", "docker"]
+ENTRYPOINT ["make", "-f", "/var/www/monica/docker/Makefile"]

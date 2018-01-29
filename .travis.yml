@@ -88,5 +88,5 @@ deploy:
       - features/800-remove-assets
 
 after_deploy:
-  - docker login -u asbin -p $BINTRAY_APIKEY deploy.key monicahq-docker-docker.bintray.io
-  - sudo make docker_push_bintray
+  - docker login -u asbin -p $BINTRAY_APIKEY monicahq-docker-docker.bintray.io
+  - make docker_push_bintray

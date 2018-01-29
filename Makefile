@@ -20,6 +20,7 @@ docker:
 
 docker_build:
 	docker-compose build
+	docker images
 
 docker_tag:
 	docker tag monicahq/monicahq monicahq/monicahq:$(GIT_TAG)
