@@ -11,8 +11,8 @@ services:
 jdk:
   - oraclejdk8
 
-#git:
-#  depth: false
+git:
+  depth: false
 
 addons:
   chrome: stable
@@ -30,10 +30,18 @@ before_install:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
+  - docker/get-docker-compose.sh
+  - docker-compose --version
 
 install:
   # Build js and css assets
-  - make build-dev
+  - make build
+  # Create dist file before running composer install with dev dependencies
+  - make dist
+  - make docker_build
+
+  # Get packages with require-dev
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 before_script:
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
@@ -68,33 +76,18 @@ cache:
   - "$HOME/sonarlauncher"
   - "$HOME/docker-compose"
 
-jobs:
-  include:
-    - stage: test
-    - stage: deploy
-      install:
-        - make build
-      before_install:
-        - cp .env.travis .env
-        - composer self-update
-        - docker/get-docker-compose.sh
-        - docker-compose --version
-      before_script: skip
-      after_script: skip
-      script:
-        - make dist
-        - make docker_build
-      deploy:
-        provider: bintray
-        file: .travis.deploy.json
-        user: asbin
-        key:
-          secure: d/WXJoPWoXIvP3pi+WPFRynx6BtAfwi2k+OTWkzdy+R5Gpb9alWNPl8vq7R7OPhRcjetGuZIP+z/XdrwYStglQP1ARUMOESEnERMK4GcFV6XqMw6DiPDu3YKF/ZzmKapQxhWWlcL3qLMttf0KFw+MJ1T8OUa+76syLR4b7TRLeWEiismY9ZPcKuNngwU89KNiTFvWroRu6kY9dwAlv2qWtuOsf3NcS9O9E4kkbHS6KDM6HSYaQRGEwcCJbVFAg2VcqHK609Bs9FlfVp6ax/9SJaZhGDcOfQTg7r9bjCInoSaXXD/R7aL7GySgqKmHobLCFHowOkd+EWfiKNrGs5Lx2OawZ+VUhnXF7CJAiulaK9datLa0UkXz5TTh9HhlPdcuy3opQf3oKsgLAFc75boJDzTwHXODqlB6rvEBsAniD9qpR1nPovdVGNhPNHWWgqxVj0CUsIY03DG1HLACC+SwM4OLTYmiWhhJnf/atg1ZcsyTqeFfMEGBrxBX7gEVvJSyiTXJV0gOoPHx7l/qFCPPckzXnI641eqUSBMJZLByxMRj5JSAq4PkjDx3rI2KRfYA8JI6H5S0aAKHMxE5By5kgLiniGxoW+Gbas2nf+2ZjJg6w9RNJkUM20oGmPR1Tpx1qntkAE5QjjIxMwuhQTJtkIY4ahJLxRvsBXcDbw8i6A=
-        on:
-          repo: monicahq/monica
-          branch:
-            - master
-            - features/800-remove-assets
-      after_deploy:
-        - docker login -u asbin -p $BINTRAY_APIKEY monicahq-docker-docker.bintray.io
-        - make docker_push_bintray
+deploy:
+  provider: bintray
+  file: .travis.deploy.json
+  user: asbin
+  key:
+    secure: d/WXJoPWoXIvP3pi+WPFRynx6BtAfwi2k+OTWkzdy+R5Gpb9alWNPl8vq7R7OPhRcjetGuZIP+z/XdrwYStglQP1ARUMOESEnERMK4GcFV6XqMw6DiPDu3YKF/ZzmKapQxhWWlcL3qLMttf0KFw+MJ1T8OUa+76syLR4b7TRLeWEiismY9ZPcKuNngwU89KNiTFvWroRu6kY9dwAlv2qWtuOsf3NcS9O9E4kkbHS6KDM6HSYaQRGEwcCJbVFAg2VcqHK609Bs9FlfVp6ax/9SJaZhGDcOfQTg7r9bjCInoSaXXD/R7aL7GySgqKmHobLCFHowOkd+EWfiKNrGs5Lx2OawZ+VUhnXF7CJAiulaK9datLa0UkXz5TTh9HhlPdcuy3opQf3oKsgLAFc75boJDzTwHXODqlB6rvEBsAniD9qpR1nPovdVGNhPNHWWgqxVj0CUsIY03DG1HLACC+SwM4OLTYmiWhhJnf/atg1ZcsyTqeFfMEGBrxBX7gEVvJSyiTXJV0gOoPHx7l/qFCPPckzXnI641eqUSBMJZLByxMRj5JSAq4PkjDx3rI2KRfYA8JI6H5S0aAKHMxE5By5kgLiniGxoW+Gbas2nf+2ZjJg6w9RNJkUM20oGmPR1Tpx1qntkAE5QjjIxMwuhQTJtkIY4ahJLxRvsBXcDbw8i6A=
+  on:
+    repo: monicahq/monica
+    branch:
+      - master
+      - features/800-remove-assets
+
+after_deploy:
+  - docker login -u asbin -p $BINTRAY_APIKEY monicahq-docker-docker.bintray.io
+  - make docker_push_bintray
