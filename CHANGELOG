@@ -20,6 +20,7 @@ v1.6.1 - 2018-01-14
 * Remove duplicated code in Addresses.vue file
 * Fix reminders not being sent in some cases
 * Fix avatars not being displayed in an activity on the journal
+* Fix filtering of contacts by tags not taking into account the selected tag from the profile page
 
 RELEASED VERSIONS:
 
