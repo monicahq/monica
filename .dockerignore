@@ -29,6 +29,7 @@ steward.yml
 .styleci.yml
 tests/
 .travis.deploy.json.in
+.travis.deploy.json
 travis-sonar.sh
 travis-sonar.sh.sig
 .travis.yml
