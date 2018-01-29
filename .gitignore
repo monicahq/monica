@@ -9,5 +9,9 @@ Homestead.json
 /storage/oauth-private.key
 /storage/oauth-public.key
 .DS_Store
+.vscode
 npm-debug.log.*
 /results
+/logs
+selenium-node.log*
+selenium-server.log*
