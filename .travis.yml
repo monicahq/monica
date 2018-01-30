@@ -6,6 +6,7 @@ php:
 
 services:
   - mysql
+  - docker
 
 jdk:
   - oraclejdk8
@@ -20,22 +21,34 @@ addons:
 #  jwt:
 #    secure: "niuYhwCsFVUHS6DU3j0xi24habQOSqKpzo7qUlGmlx1x31wZNDrl+wfifeTVv6nnjoShyr4s6svn3ULl1K8tQMdyHJlO247WKMg/PSnaSUyll5+luuP5SLpV+USP8g9a7HAjU+jQO5uE/GXKDDQcD+o5dV6gv9stmc9u/np45kwgVx55bj013ll0M5qlyflJZFgp3b/M+bvqkvIFDPN2U7iFs0dkhqxBI+6qbTAN4aTtxPSPrsYdt9W8Re1suzy2/CJEEQ2xKE4zm7WQ2dg6BrpbaU2bdG6wWZUw2toA8iCyxFgbJUlXmAjPEQ5Wr+gWEQ9bLcwCIoHxUMIRbqY/SNzve7KnGXOUEF0yttyAv3aq9STA58Mr+H15zXdA5ZAwpE/tNojfaacEya/bg9fwUWOCqrPXIhwFirhf8oD2y8n+SWD27rP0qD9um9HGqGkh6bqFefIZi2xVzLya1r/2kxqFskrj+0xPjjKYwMwJIM5s7HyrtIxR7QTpFEbgHpZjCmT31I65ds56ec34wbZ0W61bm4aQAxz7UIedCYsTrqtTzTYxUJEht3/1D5FH0PSBWQACJmdjSHvh0pP7zzG2cqzq2IhHCSZjnhh6LGUPQtgZh3kq1fSP0Zw74iSVrxQETsGoPwYA6R38e+V39vV8yUHjMUXNPIhgcQQZHiZcEWI="
 
-env:
-  global:
+#env:
+#  global:
 #    - SAUCELABS=1
 
-before_script:
+before_install:
   - cp .env.travis .env
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - mysql -e 'create database monica;'
   - composer self-update
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
+  - docker/get-docker-compose.sh
+  - docker-compose --version
 
-script:
+install:
+  # Build js and css assets
+  - make build
+  # Create dist file before running composer install with dev dependencies
+  - make dist
+  - make docker_build
+
+  # Get packages with require-dev
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+before_script:
+  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   
+script:
   # Run unit tests
   - vendor/bin/phpunit
 
@@ -44,20 +57,37 @@ script:
   - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
 
   # Run browser tests
-  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
-  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv; fi
+  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vv; fi
 
 after_script:
   - vendor/bin/steward results -vvv
-  - .ci/travis-report.sh 2>/dev/null
+  - ".ci/travis-report.sh 2>/dev/null"
   - cat selenium-server.log
   - cat selenium-node.log
   - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
   - bash <(curl -s https://codecov.io/bash)
-  - ./travis-sonar.sh
+  - "./travis-sonar.sh"
 
 cache:
   directories:
-    - $HOME/.sonar/cache
-    - $HOME/sonarscanner
-    - $HOME/sonarlauncher
+  - "$HOME/.sonar/cache"
+  - "$HOME/sonarscanner"
+  - "$HOME/sonarlauncher"
+  - "$HOME/docker-compose"
+
+deploy:
+  provider: bintray
+  file: .travis.deploy.json
+  user: asbin
+  key:
+    secure: d/WXJoPWoXIvP3pi+WPFRynx6BtAfwi2k+OTWkzdy+R5Gpb9alWNPl8vq7R7OPhRcjetGuZIP+z/XdrwYStglQP1ARUMOESEnERMK4GcFV6XqMw6DiPDu3YKF/ZzmKapQxhWWlcL3qLMttf0KFw+MJ1T8OUa+76syLR4b7TRLeWEiismY9ZPcKuNngwU89KNiTFvWroRu6kY9dwAlv2qWtuOsf3NcS9O9E4kkbHS6KDM6HSYaQRGEwcCJbVFAg2VcqHK609Bs9FlfVp6ax/9SJaZhGDcOfQTg7r9bjCInoSaXXD/R7aL7GySgqKmHobLCFHowOkd+EWfiKNrGs5Lx2OawZ+VUhnXF7CJAiulaK9datLa0UkXz5TTh9HhlPdcuy3opQf3oKsgLAFc75boJDzTwHXODqlB6rvEBsAniD9qpR1nPovdVGNhPNHWWgqxVj0CUsIY03DG1HLACC+SwM4OLTYmiWhhJnf/atg1ZcsyTqeFfMEGBrxBX7gEVvJSyiTXJV0gOoPHx7l/qFCPPckzXnI641eqUSBMJZLByxMRj5JSAq4PkjDx3rI2KRfYA8JI6H5S0aAKHMxE5By5kgLiniGxoW+Gbas2nf+2ZjJg6w9RNJkUM20oGmPR1Tpx1qntkAE5QjjIxMwuhQTJtkIY4ahJLxRvsBXcDbw8i6A=
+  on:
+    repo: monicahq/monica
+    branch:
+      - master
+      - features/800-remove-assets
+
+after_deploy:
+  - docker login -u asbin -p $BINTRAY_APIKEY monicahq-docker-docker.bintray.io
+  - make docker_push_bintray
