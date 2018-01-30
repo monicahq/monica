@@ -117,6 +117,11 @@ Vue.component(
     require('./components/settings/ContactFieldTypes.vue')
 );
 
+Vue.component(
+    'genders',
+    require('./components/settings/Genders.vue')
+);
+
 
 // This let us access the `trans` method for localization in Vue templates
 // ({{ trans('app.save') }})

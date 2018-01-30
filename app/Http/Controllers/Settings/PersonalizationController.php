@@ -126,4 +126,12 @@ class PersonalizationController extends Controller
 
         $contactFieldType->delete();
     }
+
+    /**
+     * Get all the genders.
+     */
+    public function getGenderTypes()
+    {
+        return auth()->user()->account->genders;
+    }
 }

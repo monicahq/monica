@@ -190,6 +190,8 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::put('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@editContactFieldType');
         Route::delete('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
+        Route::get('/settings/personalization/genders', 'Settings\\PersonalizationController@getGenderTypes');
+
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('.upload');

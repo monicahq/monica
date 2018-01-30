@@ -275,6 +275,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Genders records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function genders()
+    {
+        return $this->hasMany('App\Gender');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
