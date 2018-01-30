@@ -37,8 +37,8 @@ install:
   # Build js and css assets
   - make build
   # Create dist file before running composer install with dev dependencies
-  - make dist
   - make docker_build
+  - make dist
 
   # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
