@@ -36,6 +36,8 @@
           <div class="pa3 bb b--gray-monica">
             <p>{{ trans('settings.personalization_title') }}</p>
 
+            <genders></genders>
+
             <contact-field-types></contact-field-types>
           </div>
         </div>

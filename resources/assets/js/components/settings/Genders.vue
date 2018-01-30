@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       Gender types
-      <a class="btn fr nt2" @click="add">Add new gender type</a>
+      <a class="btn fr nt2" @click="showCreateModal">Add new gender type</a>
     </h3>
     <p>You can define as many genders as you need to. You need at least one gender type in your account.</p>
 
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="gender in genders">
+      <div class="dt-row bb b--light-gray" v-for="gender in genders" :key="gender.id">
         <div class="dtc">
           <div class="pa2">
             {{ gender.name }}
@@ -43,43 +43,20 @@
     </div>
 
     <!-- Create Gender type -->
-    <div class="modal" id="modal-create-contact-field-type" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add gender type</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <div class="alert alert-danger" v-if="createForm.errors.length > 0">
-              <p>{{ trans('app.error_title') }}</p>
-              <br>
-              <ul>
-                <li v-for="error in createForm.errors">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
-
-            <form class="form-horizontal" role="form" v-on:submit.prevent="store">
-              <div class="form-group">
-                <div class="form-group">
-                  <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
-                  <input type="text" class="form-control" name="name" id="name" required @keyup.enter="store" v-model="createForm.name">
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-primary" @click.prevent="store">{{ trans('app.save') }}</button>
-          </div>
+    <sweet-modal ref="createModal" overlay-theme="dark" title="Add gender type">
+      <form>
+        <div class="mb4">
+          <p class="b mb2">How should this new gender be called?</p>
+          <input type="text" v-model="createForm.name" autofocus="autofocus" required="required" class="br3 b--black-40 ba pa3 w-100 f4">
         </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeModal()" class="btn">{{ trans('app.cancel') }}</a>
+            <a @click="store()" class="btn btn-primary">{{ trans('app.save') }}</a>
+        </span>
       </div>
-    </div>
+    </sweet-modal>
 
     <!-- Edit Contact field type -->
     <div class="modal" id="modal-edit-contact-field-type" tabindex="-1">
@@ -157,13 +134,15 @@
 </template>
 
 <script>
+    import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+
     export default {
         /*
          * The component's data.
          */
         data() {
             return {
-                genderTypes: [],
+                genders: [],
 
                 submitted: false,
                 edited: false,
@@ -180,6 +159,11 @@
                     errors: []
                 },
             };
+        },
+
+        components: {
+            SweetModal,
+            SweetModalTab
         },
 
         /**
@@ -215,27 +199,21 @@
             getGenders() {
                 axios.get('/settings/personalization/genders/')
                         .then(response => {
-                            this.contactFieldTypes = response.data;
+                            this.genders = response.data;
                         });
             },
 
-            add() {
-                $('#modal-create-contact-field-type').modal('show');
+            showCreateModal() {
+                this.$refs.createModal.open();
             },
 
             store() {
-                this.persistClient(
-                    'post', '/settings/personalization/contactfieldtypes',
-                    this.createForm, '#modal-create-contact-field-type', this.submitted
-                );
-
-                this.$notify({
-                    group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_add_success'),
-                    text: '',
-                    width: '500px',
-                    type: 'success'
-                });
+                axios.post('/settings/personalization/genders/', this.createForm)
+                      .then(response => {
+                          this.$refs.createModal.close();
+                          this.genders.push(response.data);
+                          this.createForm.name = '';
+                      });
             },
 
             edit(contactFieldType) {
@@ -262,12 +240,6 @@
                 });
             },
 
-            showDelete(contactFieldType) {
-                this.editForm.id = contactFieldType.id
-
-                $('#modal-delete-contact-field-type').modal('show');
-            },
-
             trash() {
                 this.persistClient(
                     'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
@@ -281,32 +253,6 @@
                     width: '500px',
                     type: 'success'
                 });
-            },
-
-            persistClient(method, uri, form, modal, success) {
-                form.errors = {};
-
-                axios[method](uri, form)
-                    .then(response => {
-                        this.getContactFieldTypes();
-
-                        form.id = '';
-                        form.name = '';
-                        form.protocol = '';
-                        form.icon = '';
-                        form.errors = [];
-
-                        $(modal).modal('hide');
-
-                        success = true;
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = ['Something went wrong. Please try again.'];
-                        }
-                    });
             },
         }
     }

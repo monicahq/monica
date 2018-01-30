@@ -134,4 +134,22 @@ class PersonalizationController extends Controller
     {
         return auth()->user()->account->genders;
     }
+
+    public function storeGenders(Request $request)
+    {
+        Validator::make($request->all(), [
+            'name' => 'required|max:255',
+        ])->validate();
+
+        $gender = auth()->user()->account->genders()->create(
+            $request->only([
+                'name',
+            ])
+            + [
+                'account_id' => auth()->user()->account->id,
+            ]
+        );
+
+        return $gender;
+    }
 }

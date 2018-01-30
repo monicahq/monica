@@ -26,9 +26,12 @@ class AddCustomGender extends Migration
 
         $accounts = DB::table('accounts')->select('id')->get();
         foreach ($accounts as $account) {
-            $male = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => 'male']);
-            $female = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => 'female']);
-            $none = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => 'other']);
+            $user = DB::table('users')->select('locale')->where('account_id', $account->id)->first();
+            \App::setLocale($user->locale);
+
+            $male = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => trans('app.gender_male')]);
+            $female = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => {{ trans('app.gender_female') }}]);
+            $none = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => trans('app.gender_none')]);
 
             $contacts = DB::table('contacts')->select('id', 'gender')->where('account_id', $account->id)->get();
             foreach ($contacts as $contact) {
