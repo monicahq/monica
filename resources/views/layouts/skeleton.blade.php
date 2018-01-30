@@ -51,7 +51,7 @@
     @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
       <script src="https://js.stripe.com/v3/"></script>
       <script>
-        var stripe = Stripe('pk_ffbmX2ktRBqDfUMU7RxlFMIATRDvE');
+        var stripe = Stripe('{{config('services.stripe.key')}}');
       </script>
       <script src="{{ mix('js/stripe.js') }}"></script>
       <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
