@@ -36,7 +36,7 @@ docker_push_bintray:
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
-build: build-prod
+build: build-dev
 
 build-prod:
 	composer install --no-interaction --prefer-dist --no-suggest --no-dev
