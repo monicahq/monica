@@ -1,0 +1,58 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7-cli
+      - image: circleci/mysql:5.7.18
+        environment:
+          - MYSQL_USER=root
+          - MYSQL_PASSWORD=
+          - MYSQL_ALLOW_EMPTY_PASSWORD=true
+          - MYSQL_DATABASE=circle_test
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mysql:9.4
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install PHP extensions
+          command: sudo docker-php-ext-install pdo_mysql
+
+      - run:
+         name: Setup Laravel testing environment variables for CircleCI test
+         command: cp .env.circleci .env
+
+      - run:
+         name: Update composer to latest version
+         command: composer self-update
+
+      # Restore composer cache
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.json" }}
+            - composer-v1-
+
+      - run:
+         name: Update composer
+         command: composer install -n --prefer-dist --ignore-platform-reqs
+
+      # Save composer cache
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+
+      - run: php artisan migrate --env=testing --no-interaction -vvv
+      - run: php artisan db:seed --env=testing --no-interaction -vvv
+      - run: vendor/bin/phpunit
