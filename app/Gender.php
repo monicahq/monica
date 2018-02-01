@@ -34,6 +34,16 @@ class Gender extends Model
     }
 
     /**
+     * Get the contact records associated with the gift.
+     *
+     * @return BelongsTo
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'gender_id');
+    }
+
+    /**
      * Get the name of the gender.
      *
      * @param  string  $value

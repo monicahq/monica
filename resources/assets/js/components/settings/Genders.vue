@@ -34,7 +34,7 @@
         </div>
         <div class="dtc tr">
           <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="edit(gender)"></i>
+            <i class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></i>
             <i class="fa fa-trash-o pointer" @click="showDelete(gender)"></i>
           </div>
         </div>
@@ -58,77 +58,42 @@
       </div>
     </sweet-modal>
 
-    <!-- Edit Contact field type -->
-    <div class="modal" id="modal-edit-contact-field-type" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <div class="alert alert-danger" v-if="editForm.errors.length > 0">
-              <p>{{ trans('app.error_title') }}</p>
-              <br>
-              <ul>
-                <li v-for="error in editForm.errors">
-                  {{ error[1] }}
-                </li>
-              </ul>
-            </div>
+    <!-- Edit gender type -->
+    <sweet-modal ref="updateModal" overlay-theme="dark" title="Update gender type">
+      <form>
+        <div class="mb4">
+          <p class="b mb2">How should this gender be renamed?</p>
+          <input type="text" v-model="updateForm.name" autofocus="autofocus" required="required" class="br3 b--black-40 ba pa3 w-100 f4">
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeUpdateModal()" class="btn">{{ trans('app.cancel') }}</a>
+            <a @click="update(updatedGender)" class="btn btn-primary">{{ trans('app.update') }}</a>
+        </span>
+      </div>
+    </sweet-modal>
 
-            <form class="form-horizontal" role="form" v-on:submit.prevent="update">
-              <div class="form-group">
-                <div class="form-group">
-                  <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
-                  <input type="text" class="form-control" name="name" id="name" required @keyup.enter="update" v-model="editForm.name">
-                </div>
-
-                <div class="form-group">
-                  <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
-                  <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" @keyup.enter="update" v-model="editForm.protocol">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
-                </div>
-
-                <div class="form-group">
-                  <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
-                  <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" @keyup.enter="update" v-model="editForm.icon">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_icon_help') }}</small>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-primary" @click.prevent="update">{{ trans('app.edit') }}</button>
+    <!-- Delete Gender type -->
+    <sweet-modal ref="deleteModal" overlay-theme="dark" title="Delete gender type">
+      <form>
+        <div class="mb4">
+          <p class="mb2">Are you sure to delete <strong>{{ deleteForm.name }}</strong>?</p>
+          <div v-if="numberOfContacts != 0">
+            <p>You currently have {{ numberOfContacts }} contacts who have this gender. If you delete this gender, what gender should those contacts have?</p>
+            <select v-model="deleteForm.newId">
+              <option v-bind:value="gender.id" v-for="gender in genders" v-if="gender.name != deleteForm.name" selected>{{ gender.name }}</option>
+            </select>
           </div>
         </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeDeleteModal()" class="btn">{{ trans('app.cancel') }}</a>
+            <a @click="trash()" class="btn btn-primary">{{ trans('app.delete') }}</a>
+        </span>
       </div>
-    </div>
-
-    <!-- Delete Contact field type -->
-    <div class="modal" id="modal-delete-contact-field-type" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>{{ trans('settings.personalization_contact_field_type_modal_delete_description') }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click.prevent="trash">{{ trans('app.delete') }}</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </sweet-modal>
 
   </div>
 </template>
@@ -143,20 +108,28 @@
         data() {
             return {
                 genders: [],
+                updatedGender: {
+                    id: '',
+                    name: ''
+                },
 
-                submitted: false,
-                edited: false,
-                deleted: false,
+                numberOfContacts: 0,
 
                 createForm: {
                     name: '',
                     errors: []
                 },
 
-                editForm: {
+                updateForm: {
                     id: '',
                     name: '',
                     errors: []
+                },
+
+                deleteForm: {
+                    id: '',
+                    name: '',
+                    newId: ''
                 },
             };
         },
@@ -186,14 +159,6 @@
              */
             prepareComponent() {
                 this.getGenders();
-
-                $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
-                    $('#name').focus();
-                });
-
-                $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
-                    $('#name').focus();
-                });
             },
 
             getGenders() {
@@ -201,6 +166,18 @@
                         .then(response => {
                             this.genders = response.data;
                         });
+            },
+
+            closeModal() {
+                this.$refs.createModal.close();
+            },
+
+            closeUpdateModal() {
+                this.$refs.updateModal.close();
+            },
+
+            closeDeleteModal() {
+                this.$refs.deleteModal.close();
             },
 
             showCreateModal() {
@@ -216,43 +193,38 @@
                       });
             },
 
-            edit(contactFieldType) {
-                this.editForm.id = contactFieldType.id;
-                this.editForm.name = contactFieldType.name;
-                this.editForm.protocol = contactFieldType.protocol;
-                this.editForm.icon = contactFieldType.fontawesome_icon;
+            showEdit(gender) {
+                this.updateForm.id = gender.id;
+                this.updateForm.name = gender.name;
+                this.updatedGender = gender;
 
-                $('#modal-edit-contact-field-type').modal('show');
+                this.$refs.updateModal.open();
             },
 
             update() {
-                this.persistClient(
-                    'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                    this.editForm, '#modal-edit-contact-field-type', this.edited
-                );
+                axios.put('/settings/personalization/genders/' + this.updateForm.id, this.updateForm)
+                      .then(response => {
+                          this.$refs.updateModal.close();
+                          this.updatedGender.name = this.updateForm.name;
+                          this.updateForm.name = '';
+                      });
+            },
 
-                this.$notify({
-                    group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_edit_success'),
-                    text: '',
-                    width: '500px',
-                    type: 'success'
-                });
+            showDelete(gender) {
+                this.deleteForm.name = gender.name;
+                this.deleteForm.id = gender.id;
+                this.numberOfContacts = gender.numberOfContacts;
+
+                this.$refs.deleteModal.open();
             },
 
             trash() {
-                this.persistClient(
-                    'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                    this.editForm, '#modal-delete-contact-field-type', this.deleted
-                );
+                axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
+                      .then(response => {
+                          this.$refs.deleteModal.close();
 
-                this.$notify({
-                    group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_delete_success'),
-                    text: '',
-                    width: '500px',
-                    type: 'success'
-                });
+                          this.getGenders();
+                      });
             },
         }
     }
