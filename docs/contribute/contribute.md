@@ -11,6 +11,7 @@
   * [Testing environment](#testing-environment)
     * [Setup](#setup)
     * [Run the test suite](#run-the-test-suite)
+    * [Run browser tests](#run-browser-tests)
   * [Backend](#backend)
     * [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
       * [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
@@ -104,9 +105,43 @@ To setup the test environment:
 
 ### Run the test suite
 
+The test suite uses Phpunit. It's mainly used to perform unit tests or quick, small functional tests.
+
 To run the test suite:
 
 * `phpunit` or `./vendor/bin/phpunit` in the root of the folder containing Monica's code from GitHub.
+
+### Run browser tests
+
+Browsers tests simulate user interactions in a live browser.
+
+To run browser tests, first you need to install some requirements
+
+* Install java:
+```
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt -y update
+sudo apt -y install oracle-java9-installer
+```
+* Install Google chrome:
+```
+curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add
+echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+sudo apt -y update
+sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
+```
+
+To run the test suite, you need to launch selenium first, then steward :
+* Run selenium:
+```
+vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
+export PATH="$(pwd)/vendor/bin:$PATH"
+xvfb-run -s "-ac -screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
+```
+* Run the test suite:
+```
+./vendor/bin/steward -vvv run local chrome
+```
 
 ## Backend
 
@@ -136,7 +171,8 @@ Emails are an important part of Monica. Emails are still the most significant me
 For development purposes, you have two choices to test emails:
 
 1. You can use [Mailtrap](https://mailtrap.io/). This is an amazing service that provides a free plan that is plenty enough to test all the emails that are sent.
-1. If you use Homestead to code on your local machine, you can use [mailhog](https://github.com/mailhog/MailHog) that is built-in. To use it, you first need to start mailhog (`sudo service mailhog restart`) inside your Vagrant. Then, head up to [http://localhost:8025](http://localhost:8025) in your local browser to load Mailhog's UI.
+1. You can use [mailhog](https://github.com/mailhog/MailHog) to test locally. On macOS, you can install via Homebrew (`brew install mailhog`). Then, run `mailhog` and point the browser to `http://127.0.0.1:8025` ([more complete instructions](https://github.com/maijs/homebrew-mailhog)).
+1. If you use [Homestead](https://laravel.com/docs/homestead), [mailhog](https://github.com/mailhog/MailHog) is actually built-in. To use it, you first need to start mailhog (`sudo service mailhog restart`) inside your Vagrant. Then, head up to [http://localhost:8025](http://localhost:8025) in your local browser to load Mailhog's UI.
 
 Note: if you want to use mailhog, you need the following settings in your `.env` file:
 
