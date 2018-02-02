@@ -6,6 +6,10 @@ php:
 
 services:
   - mysql
+  - postgresql
+env:
+  - DB=mysql
+  - DB=postgres
 
 jdk:
   - oraclejdk8
@@ -25,9 +29,11 @@ env:
 #    - SAUCELABS=1
 
 before_script:
-  - cp .env.travis .env
+  - sh -c "if [ '$DB' = 'postgres' ]; then cp .env.postgres.travis .env; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then cp .env.mysql.travis .env; fi"
+  - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'CREATE DATABASE monica;' -U postgres; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'CREATE DATABASE monica;'; fi"
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
-  - mysql -e 'create database monica;'
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
