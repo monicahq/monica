@@ -13,7 +13,13 @@ class ChangeGiftColumnStructure extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE gifts MODIFY about_object_id INTEGER;');
+        if (DB::connection()->getDriverName() == 'pgsql')
+        {
+            DB::statement('ALTER TABLE gifts ALTER COLUMN about_object_id TYPE INTEGER;');
+        }else
+        {
+            DB::statement('ALTER TABLE gifts MODIFY about_object_id INTEGER;');
+        }
 
         Schema::table('gifts', function ($table) {
             $table->dropColumn([
