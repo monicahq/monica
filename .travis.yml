@@ -2,7 +2,6 @@ sudo: required
 language: php
 
 php:
-  - 7.0
   - 7.1
   - 7.2
 
@@ -27,12 +26,9 @@ matrix:
   exclude:
     - php: 7.1
       env: DB=mysql
-    - php: 7.0
-      env: DB=postgres
     - php: 7.2
       env: DB=postgres
   allow_failures:
-    - php: 7.0
     - php: 7.2
   fast_finish: true
 
