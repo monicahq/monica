@@ -89,6 +89,9 @@ dist: results/$(DESTDIR).tar.xz .travis.deploy.json
 
 .travis.deploy.json: .travis.deploy.json.in
 	sed -s "s/\$$(version)/$(BUILD)/" $< | \
+		sed -s "s/\$$(description)/$(subst ",\\\\\",$(TRAVIS_COMMIT_MESSAGE))/" | \
+		sed -s "s/\$$(released)/$(shell date --iso-8601=date)/" | \
+		sed -s "s/\$$(travis_tag)/$(TRAVIS_TAG)/" | \
 		sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | \
 		sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > $@
 

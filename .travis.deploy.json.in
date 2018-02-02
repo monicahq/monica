@@ -17,6 +17,9 @@
     },
     "version": {
         "name": "$(version)",
+        "desc": "$(description)",
+        "released": "$(released)",
+        "vcs_tag": "$(travis_tag)",
         "attributes": [
             {"name": "gitcommit", "values" : ["$(travis_commit)"], "type": "string"},
             {"name": "date", "values" : ["$(date)"], "type": "date"}
