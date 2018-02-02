@@ -30,6 +30,7 @@ matrix:
       env: DB=postgres
   allow_failures:
     - php: 7.2
+    - env: DB=postgres
   fast_finish: true
 
 jdk:
