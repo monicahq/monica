@@ -6,7 +6,8 @@
 <a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://codecov.io/gh/monicahq/monica"><img src="https://codecov.io/gh/monicahq/monica/branch/master/graph/badge.svg" /></a>
-[![Gitter](https://img.shields.io/gitter/room/monicahq/monicahq.svg)](https://gitter.im/monicahq)
+<a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/badges/gate?key=monica&amp;template=FLAT" alt="Quality gate" /></a>
+<a href="https://gitter.im/monicahq"><img src="https://img.shields.io/gitter/room/monicahq/monicahq.svg" /></a>
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 </p>
 
