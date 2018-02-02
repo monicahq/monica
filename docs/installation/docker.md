@@ -22,6 +22,7 @@ Then open `.env` in an editor and update it for your own needs:
   have the `pwgen` utility installed, you could copy and paste the
   output of `pwgen -s 32 1`.
 - Edit the `MAIL_*` settings to point to your own mailserver.
+- Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
 
 Note for macOS: you will need to stop Apache if you wish to have Monica available on port 80.
 
