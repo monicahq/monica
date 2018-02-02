@@ -3,6 +3,7 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 services:
   - mysql
@@ -54,7 +55,7 @@ after_script:
   - cat selenium-node.log
   - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
   - bash <(curl -s https://codecov.io/bash)
-  - ./travis-sonar.sh
+  - if [[ "${TRAVIS_PHP_VERSION}" == "7.1" ]]; then ./travis-sonar.sh; fi
 
 cache:
   directories:
