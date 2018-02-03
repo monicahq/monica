@@ -1,29 +1,26 @@
 <style scoped>
-input {
+select {
   transition: all;
   transition-duration: 0.2s;
   border: 1px solid #c4cdd5;
 }
-input:focus {
+select:focus {
   border: 1px solid #5c6ac4;
 }
 </style>
 
 <template>
   <div>
-    <p class="b mb2">{{ title }}</p>
-    <select :name="id" :id="id" :value="value" required>
-        <option v-for="value in values" value="{{ value->id }}" >{{ value->name }}</option>
+    <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
+    <select
+        v-model="selectedOption"
+        @input="event => { $emit('input', event.target.value) }"
+        :id="id"
+        :name="id"
+        required
+        class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
+        <option v-for="option in options" :value="option.id" v-if="option.id != excludedId">{{ option.name }}</option>
     </select>
-
-    <input type="text"
-            :value="value"
-            @input="updateInput($event.target.value)"
-            ref="input"
-            autofocus
-            :name="id"
-            :id="id"
-            class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
   </div>
 </template>
 
@@ -34,26 +31,21 @@ input:focus {
          */
         data() {
             return {
+                selectedOption: null
             };
-        },
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
         },
 
         /**
          * Prepare the component (Vue 2.x).
          */
         mounted() {
-            this.prepareComponent();
+             this.selectedOption = this.value
         },
 
         props: {
-            value: {
-                type: String,
+            value: null,
+            options: {
+                type: Array,
             },
             title: {
                 type: String,
@@ -61,17 +53,17 @@ input:focus {
             id: {
                 type: String,
             },
+            excludedId: {
+                type: String,
+            },
+            required: {
+              type: Boolean,
+            },
         },
 
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-            },
-
-            updateInput(text) {
-                this.$emit('input', text)
+        watch: {
+            value: function (newValue) {
+                this.selectedOption = newValue
             }
         }
     }

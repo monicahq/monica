@@ -51,6 +51,7 @@
           <form-input
             v-model="createForm.name"
             v-bind:id="''"
+            v-bind:required="true"
             v-bind:title="'How should this new gender be called?'">
           </form-input>
         </div>
@@ -67,8 +68,12 @@
     <sweet-modal ref="updateModal" overlay-theme="dark" title="Update gender type">
       <form>
         <div class="mb4">
-          <p class="b mb2">How should this gender be renamed?</p>
-          <input type="text" v-model="updateForm.name" autofocus="autofocus" required="required" class="br3 b--black-40 ba pa3 w-100 f4">
+          <form-input
+            v-model="updateForm.name"
+            v-bind:id="''"
+            v-bind:required="true"
+            v-bind:title="'How should this new gender be renamed?'">
+          </form-input>
         </div>
       </form>
       <div class="relative">
@@ -91,9 +96,14 @@
           <p class="mb2">Are you sure you want to delete <strong>{{ deleteForm.name }}</strong>?</p>
           <div v-if="numberOfContacts != 0">
             <p>You currently have {{ numberOfContacts }} contacts who have this gender. If you delete this gender, what gender should those contacts have?</p>
-            <select v-model="deleteForm.newId" class="pa2">
-              <option v-bind:value="gender.id" v-for="gender in genders" v-if="gender.name != deleteForm.name" selected>{{ gender.name }}</option>
-            </select>
+            <form-select
+              v-model="deleteForm.newId"
+              :options="genders"
+              v-bind:id="'first_name'"
+              v-bind:required="true"
+              v-bind:title="''"
+              v-bind:excluded-id="deleteForm.id">
+            </form-select>
           </div>
         </div>
       </form>

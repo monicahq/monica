@@ -109,7 +109,11 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        return view('people.create');
+        $data = [
+            'genders' => auth()->user()->account->genders,
+        ];
+
+        return view('people.create', $data);
     }
 
     public function missing()
@@ -124,7 +128,7 @@ class ContactsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {dd($request->all());
+    {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
@@ -139,7 +143,7 @@ class ContactsController extends Controller
 
         $contact = new Contact;
         $contact->account_id = Auth::user()->account_id;
-        $contact->gender = $request->input('gender');
+        $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
