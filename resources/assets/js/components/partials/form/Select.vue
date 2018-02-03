@@ -12,7 +12,7 @@ input:focus {
 <template>
   <div>
     <p class="b mb2">{{ title }}</p>
-    <select :name="id" :id="id" v-model="" required>
+    <select :name="id" :id="id" :value="value" required>
         <option v-for="value in values" value="{{ value->id }}" >{{ value->name }}</option>
     </select>
 
