@@ -24,6 +24,16 @@ class Gender extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'account_id',
+    ];
+
+    /**
      * Get the account record associated with the gift.
      *
      * @return BelongsTo

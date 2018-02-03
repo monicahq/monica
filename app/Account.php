@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use App\Gender;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
@@ -435,6 +436,18 @@ class Account extends Model
                 }
             }
         }
+    }
+
+    /**
+     * Populates the default genders in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultGendersTable()
+    {
+        $gender = Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        $gender = Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        $gender = Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**

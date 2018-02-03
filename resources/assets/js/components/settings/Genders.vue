@@ -30,12 +30,13 @@
         <div class="dtc">
           <div class="pa2">
             {{ gender.name }}
+            <span class="i">({{ gender.numberOfContacts }} contacts)</span>
           </div>
         </div>
         <div class="dtc tr">
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></i>
-            <i class="fa fa-trash-o pointer" @click="showDelete(gender)"></i>
+            <i class="fa fa-trash-o pointer" @click="showDelete(gender)" v-if="genders.length > 1"></i>
           </div>
         </div>
       </div>
@@ -44,7 +45,7 @@
 
     <!-- Create Gender type -->
     <sweet-modal ref="createModal" overlay-theme="dark" title="Add gender type">
-      <form>
+      <form v-on:submit.prevent="store()">
         <div class="mb4">
           <p class="b mb2">How should this new gender be called?</p>
           <input type="text" v-model="createForm.name" autofocus="autofocus" required="required" class="br3 b--black-40 ba pa3 w-100 f4">
@@ -77,11 +78,16 @@
     <!-- Delete Gender type -->
     <sweet-modal ref="deleteModal" overlay-theme="dark" title="Delete gender type">
       <form>
+        <div class="form-error-message mb3" v-if="errorMessage != ''">
+          <div class="pa2">
+            <p class="mb0">{{ errorMessage }}</p>
+          </div>
+        </div>
         <div class="mb4">
-          <p class="mb2">Are you sure to delete <strong>{{ deleteForm.name }}</strong>?</p>
+          <p class="mb2">Are you sure you want to delete <strong>{{ deleteForm.name }}</strong>?</p>
           <div v-if="numberOfContacts != 0">
             <p>You currently have {{ numberOfContacts }} contacts who have this gender. If you delete this gender, what gender should those contacts have?</p>
-            <select v-model="deleteForm.newId">
+            <select v-model="deleteForm.newId" class="pa2">
               <option v-bind:value="gender.id" v-for="gender in genders" v-if="gender.name != deleteForm.name" selected>{{ gender.name }}</option>
             </select>
           </div>
@@ -90,7 +96,8 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteModal()" class="btn">{{ trans('app.cancel') }}</a>
-            <a @click="trash()" class="btn btn-primary">{{ trans('app.delete') }}</a>
+            <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts == 0">{{ trans('app.delete') }}</a>
+            <a @click="trashAndReplace()" class="btn btn-primary" v-if="numberOfContacts != 0">{{ trans('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -114,6 +121,7 @@
                 },
 
                 numberOfContacts: 0,
+                errorMessage: '',
 
                 createForm: {
                     name: '',
@@ -129,7 +137,7 @@
                 deleteForm: {
                     id: '',
                     name: '',
-                    newId: ''
+                    newId: 0
                 },
             };
         },
@@ -219,11 +227,22 @@
             },
 
             trash() {
-                axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
+                axios.delete('/settings/personalization/genders/' + this.deleteForm.id)
                       .then(response => {
                           this.$refs.deleteModal.close();
 
                           this.getGenders();
+                      });
+            },
+
+            trashAndReplace() {
+                axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
+                      .then(response => {
+                          this.$refs.deleteModal.close();
+                          this.getGenders();
+                      })
+                      .catch(error => {
+                          this.errorMessage = error.response.data.message;
                       });
             },
         }

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Settings;
 
+use Exception;
 use Validator;
 use App\Gender;
+use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\GendersRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GendersController extends Controller
 {
@@ -48,7 +51,11 @@ class GendersController extends Controller
             ]
         );
 
-        return $gender;
+        return [
+            'id' => $gender->id,
+            'name' => $gender->name,
+            'numberOfContacts' => $gender->contacts->count(),
+        ];
     }
 
     /**
@@ -84,44 +91,29 @@ class GendersController extends Controller
     /**
      * Destroy a gender type.
      */
-    public function destroyGender(GendersRequest $request, Gender $gender, Gender $otherGender)
+    public function destroyAndReplaceGender(GendersRequest $request, Gender $gender, $genderToReplaceWithId)
     {
-        dd($otherGender->name);
         try {
-            $gender = Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $genderId)
+            $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
+                ->where('id', $genderToReplaceWithId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'errors' => [
-                    'message' => trans('app.error_unauthorized'),
-                ],
-            ]);
+            throw new Exception('Please choose a valid gender from the list.');
         }
 
-        // Does the gender have contacts associated with it?
-        // If yes, we need to have a new gender associated with them, otherwise
-        // we raise an error.
-        $numberOfContacts = $gender->contacts->count();
-        if ($numberOfContacts > 0 && $request->input('newName') == '') {
-            return response()->json([
-                'errors' => [
-                    'message' => trans('app.error_unauthorized'),
-                ],
-            ]);
-        }
+        // We get the new gender to associate the contacts with.
+        Contact::where('account_id', auth()->user()->account->id)
+                    ->where('gender_id', $gender->id)
+                    ->update(['gender_id' => $genderToReplaceWith->id]);
 
-        if ($numberOfContacts > 0 && $request->input('newName') != '') {
-            // We get the new gender to associate the contacts with.
-            $genderToAssociate = Gender::where('account_id', auth()->user()->account_id)
-                                    ->where('name', $request->input('newName'))
-                                    ->firstOrFail();
+        $gender->delete();
+    }
 
-            App\Contact::where('account_id', auth()->user()->account->id)
-                        ->where('gender_id', $genderId)
-                        ->update(['gender_id' => $genderToAssociate->id]);
-        }
-
+    /**
+     * Destroy a gender type.
+     */
+    public function destroyGender(GendersRequest $request, Gender $gender)
+    {
         $gender->delete();
     }
 }
