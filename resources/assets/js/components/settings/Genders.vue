@@ -47,8 +47,12 @@
     <sweet-modal ref="createModal" overlay-theme="dark" title="Add gender type">
       <form v-on:submit.prevent="store()">
         <div class="mb4">
-          <p class="b mb2">How should this new gender be called?</p>
-          <input type="text" v-model="createForm.name" autofocus="autofocus" required="required" class="br3 b--black-40 ba pa3 w-100 f4">
+          <p class="b mb2"></p>
+          <form-input
+            v-model="createForm.name"
+            v-bind:input-id="''"
+            v-bind:input-title="'How should this new gender be called?'">
+          </form-input>
         </div>
       </form>
       <div class="relative">

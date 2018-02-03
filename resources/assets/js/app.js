@@ -48,6 +48,12 @@ Vue.component(
     require('./components/partials/Avatar.vue')
 );
 
+// Form elements
+Vue.component(
+    'form-input',
+    require('./components/partials/form/Input.vue')
+);
+
 // Dashboard
 Vue.component(
     'dashboard-log',

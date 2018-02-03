@@ -124,11 +124,11 @@ class ContactsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {dd($request->all());
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
-            'gender' => 'required',
+            'gender' => 'required|integer',
         ]);
 
         if ($validator->fails()) {

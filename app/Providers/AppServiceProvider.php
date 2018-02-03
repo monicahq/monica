@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
         View::composer(
             'partials.components.date-select', 'App\Http\ViewComposers\DateSelectViewComposer'
         );
+
+        View::composer(
+            'partials.components.gender-select', 'App\Http\ViewComposers\GenderSelectViewComposer'
+        );
     }
 
     /**
