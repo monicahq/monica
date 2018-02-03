@@ -64,7 +64,7 @@ script:
   - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - bash -c "if [[ \"$SELENIUM" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php &; fi"
+  - bash -c "if [[ \"$SELENIUM" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php; fi" &
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
 
   # Run browser tests
