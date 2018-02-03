@@ -200,7 +200,8 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         return view('people.edit')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -225,7 +226,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        $contact->gender = $request->input('gender');
+        $contact->gender_id = $request->input('gender');
         $contact->first_name = $request->input('firstname');
         $contact->last_name = $request->input('lastname');
 
