@@ -2,6 +2,10 @@ UNRELEASED CHANGES:
 
 * Add Annual plan for the .com site
 * Fix avatar being invalid in the Contact API call
+* DB_PREFIX is now blank in .env.example
+* Fix empty message after updating a gift
+
+RELEASED VERSIONS:
 
 v1.6.2 - 2018-01-25
 -------------------
@@ -22,8 +26,6 @@ v1.6.1 - 2018-01-14
 * Fix avatars not being displayed in an activity on the journal
 * Fix filtering of contacts by tags not taking into account the selected tag from the profile page
 
-RELEASED VERSIONS:
-
 v1.6.0 - 2018-01-09
 -------------------
 
@@ -37,8 +39,6 @@ v1.6.0 - 2018-01-09
 * Change the structure of the dashboard
 * Add two factor authentication ability
 * Add pet support to API
-
-RELEASED VERSIONS:
 
 v1.5.0 - 2018-01-02
 -------------------
