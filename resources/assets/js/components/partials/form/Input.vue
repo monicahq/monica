@@ -11,8 +11,15 @@ input:focus {
 
 <template>
   <div>
-    <p class="b mb2">{{ inputTitle }}</p>
-    <input type="text" :name="inputId" @input="updateValue()" ref="inputText" :id="inputId" v-model="inputMutatedValue" autofocus class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
+    <p class="b mb2">{{ title }}</p>
+    <input type="text"
+            :value="value"
+            @input="updateInput($event.target.value)"
+            ref="input"
+            autofocus
+            :name="id"
+            :id="id"
+            class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
   </div>
 </template>
 
@@ -23,7 +30,6 @@ input:focus {
          */
         data() {
             return {
-                inputMutatedValue: ''
             };
         },
 
@@ -45,20 +51,23 @@ input:focus {
             value: {
                 type: String,
             },
+            title: {
+                type: String,
+            },
+            id: {
+                type: String,
+            },
         },
-
-        props: ['value', 'inputId', 'inputValue', 'inputTitle'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
-                this.inputMutatedValue = this.inputValue;
             },
 
-            updateValue() {
-                this.$emit('change', this.value)
+            updateInput(text) {
+                this.$emit('input', text)
             }
         }
     }

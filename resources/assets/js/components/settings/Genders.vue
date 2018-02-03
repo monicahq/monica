@@ -50,8 +50,8 @@
           <p class="b mb2"></p>
           <form-input
             v-model="createForm.name"
-            v-bind:input-id="''"
-            v-bind:input-title="'How should this new gender be called?'">
+            v-bind:id="''"
+            v-bind:title="'How should this new gender be called?'">
           </form-input>
         </div>
       </form>

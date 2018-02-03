@@ -53,6 +53,10 @@ Vue.component(
     'form-input',
     require('./components/partials/form/Input.vue')
 );
+Vue.component(
+    'form-select',
+    require('./components/partials/form/Select.vue')
+);
 
 // Dashboard
 Vue.component(

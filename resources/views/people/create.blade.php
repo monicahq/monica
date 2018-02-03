@@ -27,28 +27,30 @@
 
     <div class="mb4">
       <form-input
-        v-bind:input-value="'{{ old('first_name') }}'"
-        v-bind:input-id="'first_name'"
-        v-bind:input-title="'{{ trans('people.people_add_firstname') }}'">
+        v-bind:id="'first_name'"
+        v-bind:title="'{{ trans('people.people_add_firstname') }}'">
       </form-input>
     </div>
     <div class="mb4">
       <form-input
-        v-bind:input-value="'{{ old('last_name') }}'"
-        v-bind:input-id="'last_name'"
-        v-bind:input-title="'{{ trans('people.people_add_lastname') }}'">
+        v-bind:id="'last_name'"
+        v-bind:title="'{{ trans('people.people_add_lastname') }}'">
       </form-input>
     </div>
 
     @else
 
     <div class="mb4">
-      <p class="b mb2">{{ trans('people.people_add_lastname') }}</p>
-      <input type="text" name="last_name" id="last_name" value="{{ old('last_name') }}" autofocus class="br3 b--black-40 ba pa3 w-100 f4">
+      <form-input
+        v-bind:id="'last_name'"
+        v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+      </form-input>
     </div>
     <div class="mb4">
-      <p class="b mb2">{{ trans('people.people_add_firstname') }}</p>
-      <input type="text" name="first_name" id="first_name" value="{{ old('first_name') }}" required class="br3 b--black-40 ba pa3 w-100 f4">
+      <form-input
+        v-bind:id="'first_name'"
+        v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+      </form-input>
     </div>
 
     @endif
