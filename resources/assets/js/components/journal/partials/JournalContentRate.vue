@@ -21,7 +21,7 @@
 
           <!-- Log content -->
           <div class="flex-auto flex items-center">
-            <p class="mb2">{{ trans('journal.journal_entry_rate') }}</p>
+            <p class="mb2">{{ $t('journal.journal_entry_rate') }}</p>
           </div>
 
           <div class="flex-none">
@@ -106,7 +106,7 @@
           <div class="flex-none w-90 mt2 pt0 pr3 pb2">
             <ul class="f7">
               <li class="di">
-                <a class="pointer" v-on:click="destroy()">{{ trans('app.delete') }}</a>
+                <a class="pointer" v-on:click="destroy()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>

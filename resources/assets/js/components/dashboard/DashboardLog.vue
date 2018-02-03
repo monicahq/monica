@@ -6,10 +6,10 @@
     <div class="pa3 bb b--gray-monica tc">
       <ul>
         <li @click.prevent="setActiveTab('calls')" v-bind:class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
-          {{ trans('dashboard.tab_recent_calls') }}
+          {{ $t('dashboard.tab_recent_calls') }}
         </li>
         <li @click.prevent="setActiveTab('notes')" v-bind:class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
-          {{ trans('dashboard.tab_favorite_notes') }}
+          {{ $t('dashboard.tab_favorite_notes') }}
         </li>
       </ul>
     </div>
@@ -35,7 +35,7 @@
 
         <!-- Calls: Blank state -->
         <div class="tc mt4 mb4" v-if="calls.length == 0">
-          <p>{{ trans('dashboard.tab_calls_blank') }}</p>
+          <p>{{ $t('dashboard.tab_calls_blank') }}</p>
         </div>
       </div>
 
@@ -81,7 +81,7 @@
 
         <!-- Notes: Blank state -->
         <div class="tc mt4 mb4" v-if="notes.length == 0">
-          <p>{{ trans('dashboard.notes_title') }}</p>
+          <p>{{ $t('dashboard.notes_title') }}</p>
         </div>
       </div>
     </div>

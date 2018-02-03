@@ -11,7 +11,7 @@
       <h3>
         Gifts
 
-        <a :href="'/people/' + contactId + '/gifts/add'" class="btn fr f6 pt2">{{ trans('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + contactId + '/gifts/add'" class="btn fr f6 pt2">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -19,13 +19,13 @@
     <div>
         <ul class="mb3">
             <li class="di">
-                <p @click.prevent="setActiveTab('ideas')" v-bind:class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ trans('people.gifts_ideas') }} ({{ ideas.length }})</p>
+                <p @click.prevent="setActiveTab('ideas')" v-bind:class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_ideas') }} ({{ ideas.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('offered')" v-bind:class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ trans('people.gifts_offered') }} ({{ offered.length }})</p>
+                <p @click.prevent="setActiveTab('offered')" v-bind:class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_offered') }} ({{ offered.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('received')" v-bind:class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ trans('people.gifts_received') }} ({{ received.length }})</p>
+                <p @click.prevent="setActiveTab('received')" v-bind:class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_received') }} ({{ received.length }})</p>
             </li>
         </ul>
 
@@ -41,7 +41,7 @@
 
                     <span v-if="gift.url">
                         <span class="mr1 black-50">•</span>
-                        <a :href="gift.url" target="_blank">{{ trans('people.gifts_link') }}</a>
+                        <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
                     </span>
                 </p>
                 <div class="f6 ph2 pv1 mb1">
@@ -49,10 +49,10 @@
                         {{ gift.value }}
                         <span class="ml1 mr1 black-50">•</span>
                     </span>
-                    <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ trans('people.gifts_view_comment') }}</a>
-                    <a @click="toggle(gift)" class="pointer mr1">{{ trans('people.gifts_mark_offered') }}</a>
-                    <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ trans('app.edit') }}</a>
-                    <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ trans('app.delete') }}</a>
+                    <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
+                    <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_mark_offered') }}</a>
+                    <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                    <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                     <div v-if="gift.show_comment" class="mb1 mt1">
                         {{ gift.comment }}
                     </div>
@@ -72,7 +72,7 @@
 
                 <span v-if="gift.url">
                     <span class="mr1 black-50">•</span>
-                    <a :href="gift.url" target="_blank">{{ trans('people.gifts_link') }}</a>
+                    <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
                 </span>
             </p>
             <div class="f6 ph2 pv1 mb1">
@@ -80,10 +80,10 @@
                     {{ gift.value }}
                     <span class="ml1 mr1 black-50">•</span>
                 </span>
-                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ trans('people.gifts_view_comment') }}</a>
+                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
                 <a @click="toggle(gift)" class="pointer mr1">Mark as an idea</a>
-                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ trans('app.edit') }}</a>
-                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ trans('app.delete') }}</a>
+                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
                     {{ gift.comment }}
                 </div>
@@ -101,7 +101,7 @@
 
                 <span v-if="gift.url">
                     <span class="mr1 black-50">•</span>
-                    <a :href="gift.url" target="_blank">{{ trans('people.gifts_link') }}</a>
+                    <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
                 </span>
             </p>
             <div class="f6 ph2 pv1 mb1">
@@ -109,9 +109,9 @@
                     {{ gift.value }}
                     <span class="ml1 mr1 black-50">•</span>
                 </span>
-                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ trans('people.gifts_view_comment') }}</a>
-                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ trans('app.edit') }}</a>
-                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ trans('app.delete') }}</a>
+                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
+                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
                     {{ gift.comment }}
                 </div>
@@ -122,13 +122,13 @@
     <sweet-modal ref="modal" overlay-theme="dark" title="Delete gift">
       <form>
         <div class="mb4">
-          {{ trans('people.gifts_delete_confirmation') }}
+          {{ $t('people.gifts_delete_confirmation') }}
         </div>
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="closeDeleteModal()" class="btn">{{ trans('app.cancel') }}</a>
-            <a @click="trash(giftToTrash)" class="btn">{{ trans('app.delete') }}</a>
+            <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="trash(giftToTrash)" class="btn">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>
