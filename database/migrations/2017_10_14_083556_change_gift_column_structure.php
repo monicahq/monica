@@ -13,7 +13,7 @@ class ChangeGiftColumnStructure extends Migration
      */
     public function up()
     {
-        Schema::table('gifts', function(Blueprint $table) {
+        Schema::table('gifts', function (Blueprint $table) {
             $table->integer('about_object_id')->change();
         });
 
