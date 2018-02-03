@@ -72,7 +72,7 @@ class GendersController extends Controller
                 ->where('id', $genderId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exception('Please choose a valid gender from the list.');
+            throw new Exception(trans('settings.personalization_genders_modal_error'));
         }
 
         $gender->update(
@@ -94,7 +94,7 @@ class GendersController extends Controller
                 ->where('id', $genderToReplaceWithId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exception('Please choose a valid gender from the list.');
+            throw new Exception(trans('settings.personalization_genders_modal_error'));
         }
 
         // We get the new gender to associate the contacts with.

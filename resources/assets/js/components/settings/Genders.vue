@@ -5,23 +5,23 @@
   <div>
     <notifications group="main" position="bottom right" />
 
-    <h3 class="with-actions">
-      {{ trans('settings.personnalization_genders_title') }}
-      <a class="btn fr nt2" @click="showCreateModal">{{ trans('settings.personnalization_genders_add') }}</a>
+    <h3 class="mb3">
+      {{ $t('settings.personalization_genders_title') }}
+      <a class="btn fr nt2" @click="showCreateModal">{{ $t('settings.personalization_genders_add') }}</a>
     </h3>
-    <p>{{ trans('settings.personnalization_genders_desc') }}</p>
+    <p>{{ $t('settings.personalization_genders_desc') }}</p>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
 
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
-            {{ trans('settings.personalization_contact_field_type_table_name') }}
+            {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
         <div class="dtc tr">
           <div class="pa2 b">
-            {{ trans('settings.personalization_contact_field_type_table_actions') }}
+            {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Create Gender type -->
-    <sweet-modal ref="createModal" overlay-theme="dark" :title="trans('settings.personnalization_genders_modal_add')">
+    <sweet-modal ref="createModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_add')">
       <form v-on:submit.prevent="store()">
         <div class="mb4">
           <p class="b mb2"></p>
@@ -52,40 +52,40 @@
             v-model="createForm.name"
             v-bind:id="''"
             v-bind:required="true"
-            v-bind:title="trans('settings.personnalization_genders_modal_question')">
+            v-bind:title="$t('settings.personalization_genders_modal_question')">
           </form-input>
         </div>
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="closeModal()" class="btn">{{ trans('app.cancel') }}</a>
-            <a @click="store()" class="btn btn-primary">{{ trans('app.save') }}</a>
+            <a @click="closeModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="store()" class="btn btn-primary">{{ $t('app.save') }}</a>
         </span>
       </div>
     </sweet-modal>
 
     <!-- Edit gender type -->
-    <sweet-modal ref="updateModal" overlay-theme="dark" :title="trans('personnalization_genders_modal_edit')">
+    <sweet-modal ref="updateModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_edit')">
       <form>
         <div class="mb4">
           <form-input
             v-model="updateForm.name"
             v-bind:id="''"
             v-bind:required="true"
-            v-bind:title="trans('settings.personnalization_genders_modal_question')">
+            v-bind:title="$t('settings.personalization_genders_modal_edit_question')">
           </form-input>
         </div>
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="closeUpdateModal()" class="btn">{{ trans('app.cancel') }}</a>
-            <a @click="update(updatedGender)" class="btn btn-primary">{{ trans('app.update') }}</a>
+            <a @click="closeUpdateModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="update(updatedGender)" class="btn btn-primary">{{ $t('app.update') }}</a>
         </span>
       </div>
     </sweet-modal>
 
     <!-- Delete Gender type -->
-    <sweet-modal ref="deleteModal" overlay-theme="dark" :title="trans('settings.personnalization_genders_modal_delete')">
+    <sweet-modal ref="deleteModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_delete')">
       <form>
         <div class="form-error-message mb3" v-if="errorMessage != ''">
           <div class="pa2">
@@ -93,9 +93,9 @@
           </div>
         </div>
         <div class="mb4">
-          <p class="mb2">Are you sure you want to delete <strong>{{ deleteForm.name }}</strong>?</p>
+          <p class="mb2">{{ $t('settings.personalization_genders_modal_delete_desc', {name: deleteForm.name}) }}</p>
           <div v-if="numberOfContacts != 0">
-            <p>{{ trans('settings.personnalization_genders_modal_question', {numberOfContacts: numberOfContacts}) }}</p>
+            <p>{{ $t('settings.personalization_genders_modal_delete_question', {numberOfContacts: numberOfContacts}) }}</p>
             <form-select
               v-model="deleteForm.newId"
               :options="genders"
@@ -109,9 +109,9 @@
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="closeDeleteModal()" class="btn">{{ trans('app.cancel') }}</a>
-            <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts == 0">{{ trans('app.delete') }}</a>
-            <a @click="trashAndReplace()" class="btn btn-primary" v-if="numberOfContacts != 0">{{ trans('app.delete') }}</a>
+            <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts == 0">{{ $t('app.delete') }}</a>
+            <a @click="trashAndReplace()" class="btn btn-primary" v-if="numberOfContacts != 0">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>

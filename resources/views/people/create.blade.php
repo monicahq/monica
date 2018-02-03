@@ -9,6 +9,7 @@
     <p class="import">{!! trans('people.people_add_import') !!}</p>
   @endif
 </div>
+
 <div class="mw7 center pa4 br3 ba b--gray-monica bg-white mb6">
 
   @if (session('status'))

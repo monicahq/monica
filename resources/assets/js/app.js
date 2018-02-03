@@ -133,11 +133,17 @@ Vue.component(
 );
 
 
-// This let us access the `trans` method for localization in Vue templates
-// ({{ trans('app.save') }})
-Vue.prototype.trans = (key) => {
-    return _.get(window.trans, key, key);
-};
+// i18n
+import VueInternalization from 'vue-i18n';
+import Locales from './vue-i18n-locales.generated.js';
+
+Vue.use(VueInternalization);
+
+Vue.config.lang = 'en';
+
+Object.keys(Locales).forEach(function (lang) {
+  Vue.locale(lang, Locales[lang])
+});
 
 const app = new Vue({
     el: '#app',

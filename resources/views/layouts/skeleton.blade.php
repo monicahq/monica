@@ -15,21 +15,6 @@
           'csrfToken' => csrf_token(),
       ]); ?>
     </script>
-
-    <!-- The script below puts all the translation keys in a JS file so we
-    can reuse it in Vue.js files -->
-    <script>
-      window.trans = <?php
-      // copy all translations from /resources/lang/CURRENT_LOCALE/* to global JS variable
-      $lang_files = File::files(resource_path() . '/lang/' . App::getLocale());
-      $trans = [];
-      foreach ($lang_files as $f) {
-          $filename = pathinfo($f)['filename'];
-          $trans[$filename] = trans($filename);
-      }
-      echo json_encode($trans);
-      ?>;
-    </script>
   </head>
   <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
 
