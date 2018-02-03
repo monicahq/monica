@@ -191,4 +191,15 @@ return [
     'personalization_contact_field_type_add_success' => 'The contact field type has been successfully added.',
     'personalization_contact_field_type_edit_success' => 'The contact field type has been successfully updated.',
 
+    'personnalization_genders_title' => 'Gender types',
+    'personnalization_genders_add' => 'Add new gender type',
+    'personnalization_genders_desc' => 'You can define as many genders as you need to. You need at least one gender type in your account.',
+    'personnalization_genders_modal_add' => 'Add gender type',
+    'personnalization_genders_modal_question' => 'How should this new gender be called?',
+    'personnalization_genders_modal_edit' => 'Update gender type',
+    'personnalization_genders_modal_question' => 'How should this new gender be renamed?',
+    'personnalization_genders_modal_delete' => 'Delete gender type',
+    'personnalization_genders_modal_question' => 'You currently have :numberOfContacts contacts who have this gender. If you delete this gender, what gender should those contacts have?',
+    'personnalization_genders_modal_add' => 'You can define as many genders as you need to. You need at least one gender type in your account.',
+
 ];

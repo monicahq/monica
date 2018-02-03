@@ -48,5 +48,9 @@ class AddCustomGender extends Migration
                 }
             }
         }
+
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropColumn('gender');
+        });
     }
 }

@@ -72,11 +72,7 @@ class GendersController extends Controller
                 ->where('id', $genderId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'errors' => [
-                    'message' => trans('app.error_unauthorized'),
-                ],
-            ]);
+            throw new Exception('Please choose a valid gender from the list.');
         }
 
         $gender->update(

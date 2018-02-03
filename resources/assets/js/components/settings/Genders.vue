@@ -6,10 +6,10 @@
     <notifications group="main" position="bottom right" />
 
     <h3 class="with-actions">
-      Gender types
-      <a class="btn fr nt2" @click="showCreateModal">Add new gender type</a>
+      {{ trans('settings.personnalization_genders_title') }}
+      <a class="btn fr nt2" @click="showCreateModal">{{ trans('settings.personnalization_genders_add') }}</a>
     </h3>
-    <p>You can define as many genders as you need to. You need at least one gender type in your account.</p>
+    <p>{{ trans('settings.personnalization_genders_desc') }}</p>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
 
@@ -44,7 +44,7 @@
     </div>
 
     <!-- Create Gender type -->
-    <sweet-modal ref="createModal" overlay-theme="dark" title="Add gender type">
+    <sweet-modal ref="createModal" overlay-theme="dark" :title="trans('settings.personnalization_genders_modal_add')">
       <form v-on:submit.prevent="store()">
         <div class="mb4">
           <p class="b mb2"></p>
@@ -52,7 +52,7 @@
             v-model="createForm.name"
             v-bind:id="''"
             v-bind:required="true"
-            v-bind:title="'How should this new gender be called?'">
+            v-bind:title="trans('settings.personnalization_genders_modal_question')">
           </form-input>
         </div>
       </form>
@@ -65,14 +65,14 @@
     </sweet-modal>
 
     <!-- Edit gender type -->
-    <sweet-modal ref="updateModal" overlay-theme="dark" title="Update gender type">
+    <sweet-modal ref="updateModal" overlay-theme="dark" :title="trans('personnalization_genders_modal_edit')">
       <form>
         <div class="mb4">
           <form-input
             v-model="updateForm.name"
             v-bind:id="''"
             v-bind:required="true"
-            v-bind:title="'How should this new gender be renamed?'">
+            v-bind:title="trans('settings.personnalization_genders_modal_question')">
           </form-input>
         </div>
       </form>
@@ -85,7 +85,7 @@
     </sweet-modal>
 
     <!-- Delete Gender type -->
-    <sweet-modal ref="deleteModal" overlay-theme="dark" title="Delete gender type">
+    <sweet-modal ref="deleteModal" overlay-theme="dark" :title="trans('settings.personnalization_genders_modal_delete')">
       <form>
         <div class="form-error-message mb3" v-if="errorMessage != ''">
           <div class="pa2">
@@ -95,7 +95,7 @@
         <div class="mb4">
           <p class="mb2">Are you sure you want to delete <strong>{{ deleteForm.name }}</strong>?</p>
           <div v-if="numberOfContacts != 0">
-            <p>You currently have {{ numberOfContacts }} contacts who have this gender. If you delete this gender, what gender should those contacts have?</p>
+            <p>{{ trans('settings.personnalization_genders_modal_question', {numberOfContacts: numberOfContacts}) }}</p>
             <form-select
               v-model="deleteForm.newId"
               :options="genders"
