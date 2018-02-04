@@ -41,7 +41,7 @@ class MultiFAController extends Controller
         $user = $request->user();
 
         //generate image for QR barcode
-        $imageDataUri = Google2FA::getQRCodeInline(
+        $imageDataUri = app('pragmarx.google2fa')->getQRCodeInline(
             $request->getHttpHost(),
             $user->email,
             $secret,
