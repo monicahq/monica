@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Settings;
 use Exception;
 use Validator;
 use App\Gender;
-use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\GendersRequest;

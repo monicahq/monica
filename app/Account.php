@@ -483,7 +483,7 @@ class Account extends Model
      *
      * @param  Gender $genderToDelete
      * @param  Gender $genderToReplaceWith
-     * @return boolean
+     * @return bool
      */
     public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
     {
