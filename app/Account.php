@@ -5,7 +5,6 @@ namespace App;
 use DB;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
