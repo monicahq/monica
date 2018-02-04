@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Gender;
 use App\Account;
 use App\Contact;
 use App\Country;

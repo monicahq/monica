@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use App\Gender;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;

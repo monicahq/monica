@@ -1,6 +1,5 @@
 <?php
 
-use App\Gender;
 use App\Account;
 use App\Contact;
 use GuzzleHttp\Client;

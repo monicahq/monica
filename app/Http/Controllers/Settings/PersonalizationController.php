@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Settings;
 
 use Validator;
-use App\Gender;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\GendersRequest;
 
 class PersonalizationController extends Controller
 {
