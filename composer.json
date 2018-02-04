@@ -1,38 +1,62 @@
 {
     "name": "djaiss/monica",
-    "description": "",
-    "license": "MIT",
+    "description": "Monica is a personal CRM.",
+    "license": "AGPL",
+    "keywords": ["prm", "crm", "social"],
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/asbiin/steward"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/asbiin/google2fa-laravel"
+        }
+    ],
     "require": {
-        "php": ">=7.0",
-        "laravel/framework": "5.4.*",
-        "barryvdh/laravel-debugbar": "^2.2",
-        "jenssegers/date": "^3.2",
+        "php": ">=7.0.0",
         "ext-intl": "*",
-        "martinjoiner/ordinal-number": "^0.2.0",
-        "predis/predis": "^1.1",
-        "guzzlehttp/guzzle": "^6.2",
-        "fzaninotto/faker": "^1.6",
+        "bacon/bacon-qr-code": "^1.0",
+        "barryvdh/laravel-debugbar": "^2.2",
         "doctrine/dbal": "^2.5",
-        "laravel/socialite": "^3.0",
-        "intervention/image": "^2.3",
-        "sabre/vobject": "^4.1",
         "erusev/parsedown": "~1.6",
+        "fzaninotto/faker": "^1.6",
+        "guzzlehttp/guzzle": "^6.2",
+        "intervention/image": "^2.3",
+        "jenssegers/date": "^3.2",
+        "jeroendesloovere/vcard": "^1.5",
         "laravel/cashier": "~7.0",
+        "laravel/framework": "5.5.*",
+        "laravel/passport": "^4.0",
+        "laravel/socialite": "^3.0",
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "paragonie/constant_time_encoding": "^2.2",
+        "pragmarx/google2fa": "^2.0",
+        "pragmarx/google2fa-laravel": "dev-create-authenticator-controller",
+        "pragmarx/recovery": "^0.1.0",
+        "predis/predis": "^1.1",
         "roave/security-advisories": "dev-master",
-        "laravel/dusk": "^1.1",
-        "sentry/sentry-laravel": "^0.7.0",
-        "league/flysystem-aws-s3-v3": "~1.0"
+        "sabre/vobject": "^4.1",
+        "sentry/sentry-laravel": "^0.7.0"
     },
     "require-dev": {
+        "enm1989/chromedriver": "^2.35",
+        "filp/whoops": "~2.0",
+        "khanamiryan/qrcode-detector-decoder": "^1.0",
+        "lmc/steward": "dev-update-dependencies",
+        "matthiasnoback/live-code-coverage": "^0.1.0",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpcov": "^4.0",
+        "phpunit/phpunit": "~6.0",
+        "se/selenium-server-standalone": "^3.8",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"
     },
     "autoload": {
         "classmap": [
-            "database"
+            "database/seeds",
+            "database/factories"
         ],
         "psr-4": {
             "App\\": "app/",
@@ -44,23 +68,27 @@
             "tests/TestCase.php"
         ]
     },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+            ]
+        }
+    },
     "scripts": {
         "post-root-package-install": [
-            "@php -r \"copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate"
         ],
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "@php artisan optimize"
-        ],
-        "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan optimize"
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
     }
 }

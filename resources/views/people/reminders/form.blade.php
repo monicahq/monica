@@ -2,7 +2,7 @@
     {{ method_field($method) }}
     {{ csrf_field() }}
 
-    <h2>{{ trans('people.reminders_add_title', ['name' => $contact->getFirstName()]) }}</h2>
+    <h2>{{ trans('people.reminders_add_title', ['name' => $contact->first_name]) }}</h2>
 
     @include('partials.errors')
 
@@ -74,7 +74,13 @@
     </div>
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.reminders_add_cta') }}</button>
+        <button type="submit" class="btn btn-primary">
+            @if($update_or_add == 'add')
+            {{ trans('people.reminders_add_cta') }}
+            @elseif ($update_or_add == 'edit')
+            {{ trans('people.reminders_edit_update_cta') }}
+            @endif
+        </button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>

@@ -36,6 +36,15 @@ class Account extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'has_access_to_paid_version_for_free' => 'boolean',
+    ];
+
+    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany
@@ -102,7 +111,7 @@ class Account extends Model
      */
     public function notes()
     {
-        return $this->hasMany(Note::class);
+        return $this->hasMany(Note::class)->orderBy('created_at', 'desc');
     }
 
     /**
@@ -206,13 +215,63 @@ class Account extends Model
     }
 
     /**
-     * Get the tags records associated with the contact.
+     * Get the tags records associated with the account.
      *
      * @return HasMany
      */
     public function tags()
     {
         return $this->hasMany('App\Tag')->orderBy('name', 'asc');
+    }
+
+    /**
+     * Get the calls records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function calls()
+    {
+        return $this->hasMany(Call::class)->orderBy('called_at', 'desc');
+    }
+
+    /**
+     * Get the Contact Field types records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function contactFieldTypes()
+    {
+        return $this->hasMany('App\ContactFieldType');
+    }
+
+    /**
+     * Get the Contact Field records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function contactFields()
+    {
+        return $this->hasMany('App\ContactField');
+    }
+
+    /**
+     * Get the Journal Entries records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function journalEntries()
+    {
+        return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the Days records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function days()
+    {
+        return $this->hasMany('App\Day');
     }
 
     /**
@@ -246,9 +305,17 @@ class Account extends Model
      */
     public function isSubscribed()
     {
+        if ($this->has_access_to_paid_version_for_free) {
+            return true;
+        }
+
         $isSubscribed = false;
 
-        if ($this->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
+            $isSubscribed = true;
+        }
+
+        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
             $isSubscribed = true;
         }
 
@@ -285,5 +352,121 @@ class Account extends Model
                             ->data[0]['current_period_end'];
 
         return \App\Helpers\DateHelper::getShortDate($timestamp);
+    }
+
+    /**
+     * Indicates whether the current account has limitations with her current
+     * plan.
+     *
+     * @return bool
+     */
+    public function hasLimitations()
+    {
+        if ($this->has_access_to_paid_version_for_free) {
+            return false;
+        }
+
+        if (! config('monica.requires_subscription')) {
+            return false;
+        }
+
+        if ($this->isSubscribed()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the timezone of the user. In case an account has multiple timezones,
+     * takes the first it finds.
+     * @return string
+     */
+    public function timezone()
+    {
+        $timezone = '';
+
+        foreach ($this->users as $user) {
+            $timezone = $user->timezone;
+            break;
+        }
+
+        return $timezone;
+    }
+
+    /**
+     * Populates the Contact Field Types table right after an account is
+     * created.
+     */
+    public function populateContactFieldTypeTable($ignoreMigratedTable = false)
+    {
+        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
+
+        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
+            if ($ignoreMigratedTable == false) {
+                $contactFieldType = ContactFieldType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultContactFieldType->name,
+                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                    'delible' => $defaultContactFieldType->delible,
+                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                ]);
+            } else {
+                if ($defaultContactFieldType->migrated == 0) {
+                    $contactFieldType = ContactFieldType::create([
+                        'account_id' => $this->id,
+                        'name' => $defaultContactFieldType->name,
+                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
+                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                        'delible' => $defaultContactFieldType->delible,
+                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the reminders for the month given in parameter.
+     * - 0 means current month
+     * - 1 means month+1
+     * - 2 means month+2...
+     * @param  int    $month
+     */
+    public function getRemindersForMonth(int $month)
+    {
+        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+        $reminders = auth()->user()->account->reminders()
+                            ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
+                            ->orderBy('next_expected_date', 'asc')
+                            ->get();
+
+        return $reminders;
+    }
+
+    /**
+     * Get the id of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanId()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->stripe_plan;
+    }
+
+    /**
+     * Get the friendly name of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanName()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->name;
     }
 }

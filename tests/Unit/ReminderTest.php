@@ -11,34 +11,56 @@ class ReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetTitleReturnsNullIfNotDefined()
+    public function test_it_belongs_to_an_account()
+    {
+        $account = factory('App\Account')->create([]);
+        $reminder = factory('App\Reminder')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($reminder->account()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact()
+    {
+        $contact = factory('App\Contact')->create([]);
+        $reminder = factory('App\Reminder')->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($reminder->contact()->exists());
+    }
+
+    public function test_title_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
 
-        $this->assertNull($reminder->getTitle());
+        $this->assertNull($reminder->title);
     }
 
-    public function testGetTitleReturnsStringIfDefined()
+    public function test_title_getter_returns_correct_string()
     {
         $reminder = new Reminder;
         $reminder->title = 'this is a test';
 
-        $this->assertInternalType('string', $reminder->getTitle());
+        $this->assertInternalType('string', $reminder->title);
+        $this->assertEquals('this is a test', $reminder->title);
     }
 
-    public function testGetDescriptionReturnsNullIfNotDefined()
+    public function test_description_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;
 
-        $this->assertNull($reminder->getDescription());
+        $this->assertNull($reminder->description);
     }
 
-    public function testGetDescriptionReturnsStringIfDefined()
+    public function test_description_getter_returns_correct_string()
     {
         $reminder = new Reminder;
         $reminder->description = 'this is a test';
 
-        $this->assertInternalType('string', $reminder->getDescription());
+        $this->assertInternalType('string', $reminder->description);
+        $this->assertEquals('this is a test', $reminder->description);
     }
 
     public function testGetNextExpectedDateReturnsString()
@@ -59,8 +81,14 @@ class ReminderTest extends TestCase
         $reminder->next_expected_date = '1980-01-01 10:10:10';
         $reminder->frequency_number = 1;
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        Carbon::setTestNow(Carbon::create(1980, 1, 1));
+        $reminder->frequency_type = 'week';
+        $this->assertEquals(
+            '1980-01-08',
+            $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
+        );
 
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
         // from 1980, incrementing one week will lead to Jan 03, 2017
         $reminder->frequency_type = 'week';
         $this->assertEquals(
@@ -97,32 +125,5 @@ class ReminderTest extends TestCase
             '2017-02-02',
             $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
         );
-    }
-
-    public function test_add_birthday_reminder()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $account = factory(\App\Account::class)->create();
-        $contact = factory(\App\Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user = factory(\App\User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $birthdate = '1980-01-01';
-
-        $reminder = Reminder::addBirthdayReminder(
-            $contact,
-            $birthdate
-        );
-
-        $this->assertDatabaseHas('reminders', [
-            'id' => $reminder->id,
-            'next_expected_date' => '2018-01-01 00:00:00',
-            'is_birthday' => 1,
-            'contact_id' => $contact->id,
-        ]);
     }
 }

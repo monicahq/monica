@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         if (env('APP_ENV') == 'testing') {
             $this->call(ActivityTypesTableSeeder::class);
             $this->call(CountriesSeederTable::class);
+            $this->call(FakeUserTableSeeder::class);
         }
 
         if (env('APP_ENV') == 'production') {

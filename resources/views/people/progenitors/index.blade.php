@@ -9,10 +9,12 @@
       @foreach($contact->getProgenitors() as $parent)
       <li>
 
-        <a href="/people/{{ $parent->id }}"><span class="name">{{ $parent->getCompleteName() }}</span></a>
+        <a href="/people/{{ $parent->id }}"><span class="name">{{ $parent->getCompleteName(auth()->user()->name_order) }}</span></a>
 
-        @if (! is_null($parent->getAge()))
-        ({{ $parent->getAge() }})
+        @if (! is_null($parent->birthday_special_date_id))
+          @if ($parent->birthdate->getAge())
+            ({{ $parent->birthdate->getAge() }})
+          @endif
         @endif
 
       </li>

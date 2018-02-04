@@ -22,12 +22,9 @@ Then open `.env` in an editor and update it for your own needs:
   have the `pwgen` utility installed, you could copy and paste the
   output of `pwgen -s 32 1`.
 - Edit the `MAIL_*` settings to point to your own mailserver.
+- Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
 
-Now select one of these methods to be up and running quickly:
-
-# Note for macOS
-
-You will need to stop Apache if you wish to have Monica available on port 80.
+Note for macOS: you will need to stop Apache if you wish to have Monica available on port 80.
 
 You can do this like so:
 
@@ -41,19 +38,42 @@ To start Apache up again use this command:
 $ sudo /usr/sbin/apachectl start
 ```
 
+Now select one of these methods to be up and running quickly:
+
 #### Use docker-compose to run a pre-built image
 
-This is the easiest and fastest way to try MonicaHQ! Use this process
+This is the easiest and fastest way to try Monica! Use this process
 if you want to download the newest image from Docker Hub and run it
 with a pre-packaged MySQL database.
 
+Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that allready.
+
+```sh
+$ curl https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
+$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+```
+
+Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
+
 Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
 the MySQL container).
+
+Start by downloading all the images and setup your new instance.
 
 ```shell
 $ docker-compose pull
 $ docker-compose up
 ```
+
+Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
+
+```shell
+$ docker-compose run monicahq shell
+$ php artisan setup:production
+$ exit
+```
+
+Start your instance again with `docker-compose up` and login.
 
 #### Use docker-compose to build and run your own image
 

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'update' => 'Update',
+    'update' => 'Ändern',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
@@ -9,9 +9,16 @@ return [
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
     'close' => 'Schließen',
+    'done' => 'Fertig',
+    'verify' => 'Überprüfe',
+    'for' => 'für',
+    'unknown' => 'Ich weiß das nicht',
+    'load_more' => 'Lade mehr',
+    'loading' => 'Lade mehr...',
+    'with' => 'mit',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
-    'markdown_link' => 'Read documentation',
+    'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
+    'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
     'header_logout_link' => 'Ausloggen',
@@ -34,7 +41,7 @@ return [
     'footer_new_version' => 'Es ist eine neue Version verfügbar',
 
     'footer_modal_version_whats_new' => 'Was gibt\'s neues',
-    'footer_modal_version_release_away' => 'Du bist 1 Release hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.|Du bist :number Releases hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.',
+    'footer_modal_version_release_away' => 'Du bist ein Release hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.|Du bist :number Releases hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.',
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Kontaktliste',
@@ -46,10 +53,17 @@ return [
     'breadcrumb_settings_subscriptions' => 'Abonnement',
     'breadcrumb_settings_import' => 'Import',
     'breadcrumb_settings_import_report' => 'Import-Bericht',
-    'breadcrumb_settings_import_upload' => 'Upload',
+    'breadcrumb_settings_import_upload' => 'Hochladen',
     'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_api' => 'API',
+    'breadcrumb_edit_introductions' => 'Wie habt ihr euch getroffen',
+    'breadcrumb_settings_security' => 'Sicherheit',
+    'breadcrumb_settings_security_2fa' => 'Zwei-Faktor-Authentifizierung',
 
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
     'gender_none' => 'Möchte ich nicht angeben',
+
+    'error_title' => 'Whoops! Da lief etwas falsch.',
+    'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
 ];

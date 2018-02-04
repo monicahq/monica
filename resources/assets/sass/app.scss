@@ -1,30 +1,39 @@
 @import "_custom_bootstrap";
-@import "../../vendor/hint.css/hint.min";
+@import "~hint.css/hint.min";
 
-@import "../../vendor/tachyons/css/tachyons.min";
+@import "~tachyons/css/tachyons.min";
 
 // Tags for a contact
-@import "../../vendor/jquery.tagsinput/dist/jquery.tagsinput.min";
+@import "~jQuery-Tags-Input/dist/jquery.tagsinput.min";
 
 // For the datatables
 @import "_datatable.min";
 
-$octicons-font-path: "../../fonts/octicons/";
-@import "../../vendor/octicons/build/font/_octicons";
-
-$fa-font-path: "../../fonts/fontawesome";
-@import "../../vendor/font-awesome/scss/font-awesome";
+// Icon fonts
+@import "~font-awesome/scss/font-awesome";
 
 $border-color: #dfdfdf;
 
 @import "buttons";
 @import "header";
-@import "dashboard";
 @import "people";
 @import "journal";
 @import "marketing";
 @import "settings";
 @import "modal";
+
+// Custom colors
+// Extending Tachyions
+.bg-gray-monica {
+  background-color: #f2f4f8;
+}
+
+.b--gray-monica {
+  border-color: #dde2e9;
+}
+.w-5 { width: 5%; }
+.w-95 { width: 95%; }
+
 
 // Utilities
 .border-bottom {
@@ -363,19 +372,6 @@ input:disabled {
 }
 
 footer {
-  margin-bottom: 30px;
-  margin-top: 60px;
-
-  ul {
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  li {
-    font-size: 12px;
-    margin-right: 15px;
-  }
-
   .badge-success {
     font-size: 12px;
     font-weight: 400;

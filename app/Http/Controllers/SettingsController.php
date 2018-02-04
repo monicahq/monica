@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\Tag;
 use App\User;
@@ -9,7 +10,6 @@ use App\ImportJob;
 use Carbon\Carbon;
 use App\Invitation;
 use Illuminate\Http\Request;
-use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
@@ -18,9 +18,36 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class SettingsController extends Controller
 {
+    protected $ignoredTables = [
+        'accounts',
+        'activity_type_groups',
+        'activity_types',
+        'api_usage',
+        'cache',
+        'countries',
+        'currencies',
+        'default_contact_field_types',
+        'failed_jobs',
+        'instances',
+        'jobs',
+        'migrations',
+        'oauth_access_tokens',
+        'oauth_auth_codes',
+        'oauth_clients',
+        'oauth_personal_access_clients',
+        'oauth_refresh_tokens',
+        'password_resets',
+        'pet_categories',
+        'sessions',
+        'statistics',
+        'subscriptions',
+        'users',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -41,6 +68,8 @@ class SettingsController extends Controller
     {
         $request->user()->update(
             $request->only([
+                'first_name',
+                'last_name',
                 'email',
                 'timezone',
                 'locale',
@@ -52,7 +81,7 @@ class SettingsController extends Controller
         );
 
         return redirect('settings')
-            ->with('status', trans('settings.settings_success'));
+            ->with('status', trans('settings.settings_success', [], $request['locale']));
     }
 
     /**
@@ -66,21 +95,25 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if ($account) {
-            $account->reminders->each->forceDelete();
-            $account->notes->each->forceDelete();
-            $account->tasks->each->forceDelete();
-            $account->activities->each->forceDelete();
-            $account->debts->each->forceDelete();
-            $account->events->each->forceDelete();
-            $account->contacts->each->forceDelete();
-            $account->invitations->each->forceDelete();
-            $account->importjobs->each->forceDelete();
-            $account->importjobreports->each->forceDelete();
-            $account->offpsrings->each->forceDelete();
-            $account->relationships->each->forceDelete();
-            $account->progenitors->each->forceDelete();
-            $account->forceDelete();
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+
+        // Looping over the tables
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            if (in_array($tableName, $this->ignoredTables)) {
+                continue;
+            }
+
+            DB::table($tableName)->where('account_id', $account->id)->delete();
+        }
+
+        DB::table('accounts')->where('id', $account->id)->delete();
+
+        $account = auth()->user()->account;
+
+        if ($account->isSubscribed()) {
+            $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 
         auth()->logout();
@@ -100,20 +133,17 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        if ($account) {
-            $account->reminders->each->forceDelete();
-            $account->notes->each->forceDelete();
-            $account->tasks->each->forceDelete();
-            $account->activities->each->forceDelete();
-            $account->debts->each->forceDelete();
-            $account->events->each->forceDelete();
-            $account->contacts->each->forceDelete();
-            $account->invitations->each->forceDelete();
-            $account->importjobs->each->forceDelete();
-            $account->importjobreports->each->forceDelete();
-            $account->offpsrings->each->forceDelete();
-            $account->relationships->each->forceDelete();
-            $account->progenitors->each->forceDelete();
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+
+        // Looping over the tables
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            if (in_array($tableName, $this->ignoredTables)) {
+                continue;
+            }
+
+            DB::table($tableName)->where('account_id', $account->id)->delete();
         }
 
         return redirect('/settings')
@@ -165,6 +195,10 @@ class SettingsController extends Controller
      */
     public function upload()
     {
+        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings/subscriptions');
+        }
+
         return view('settings.imports.upload');
     }
 
@@ -261,7 +295,7 @@ class SettingsController extends Controller
             + [
                 'invited_by_user_id' => auth()->user()->id,
                 'account_id' => auth()->user()->account_id,
-                'invitation_key' => RandomHelper::generateString(100),
+                'invitation_key' => str_random(100),
             ]
         );
 
@@ -393,5 +427,15 @@ class SettingsController extends Controller
 
         return redirect('/settings/tags')
                 ->with('success', trans('settings.tags_list_delete_success'));
+    }
+
+    public function api()
+    {
+        return view('settings.api.index');
+    }
+
+    public function security(Request $request)
+    {
+        return view('settings.security.index', ['is2FAActivated' => (new Authenticator($request))->isActivated()]);
     }
 }

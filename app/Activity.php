@@ -3,16 +3,21 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
+use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 /**
  * @property Account $account
  * @property Contact $contact
  * @property ActivityType $type
  */
-class Activity extends Model
+class Activity extends Model implements IsJournalableInterface
 {
+    use Journalable;
+
     /**
      * The table associated with the model.
      *
@@ -56,9 +61,9 @@ class Activity extends Model
      *
      * @return BelongsTo
      */
-    public function contact()
+    public function contacts()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsToMany(Contact::class);
     }
 
     /**
@@ -69,6 +74,14 @@ class Activity extends Model
     public function type()
     {
         return $this->belongsTo(ActivityType::class, 'activity_type_id');
+    }
+
+    /**
+     * Get all of the activities journal entries.
+     */
+    public function journalEntries()
+    {
+        return $this->morphMany('App\JournalEntry', 'journalable');
     }
 
     /**
@@ -124,5 +137,43 @@ class Activity extends Model
     public function getTitle()
     {
         return $this->type ? $this->type->key : null;
+    }
+
+    /**
+     * Get all the contacts this activity is associated with.
+     */
+    public function getContactsForAPI()
+    {
+        $attendees = collect([]);
+
+        foreach ($this->contacts as $contact) {
+            $attendee = Contact::find($contact->id);
+            $attendees->push(new ContactShortResource($attendee));
+        }
+
+        return $attendees;
+    }
+
+    /**
+     * Gets the information about the activity for the journal.
+     * @return array
+     */
+    public function getInfoForJournalEntry()
+    {
+        $data = [
+            'type' => 'activity',
+            'id' => $this->id,
+            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'summary' => $this->summary,
+            'description' => $this->description,
+            'day' => $this->date_it_happened->day,
+            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date_it_happened)),
+            'month' => $this->date_it_happened->month,
+            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date_it_happened)),
+            'year' => $this->date_it_happened->year,
+            'attendees' => $this->getContactsForAPI(),
+        ];
+
+        return $data;
     }
 }

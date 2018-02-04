@@ -15,7 +15,7 @@ class ChangeStringToBooleanForReminders extends Migration
     {
         // create new column
         Schema::table('reminders', function ($table) {
-            $table->boolean('is_a_birthday')->after('is_birthday')->nullable();
+            $table->boolean('is_a_birthday')->after('is_birthday');
         });
 
         $reminders = DB::table('reminders')->get();

@@ -3,11 +3,13 @@
 namespace App\Jobs;
 
 use App\User;
+use App\Address;
 use App\Contact;
 use App\Country;
-use App\Reminder;
 use App\ImportJob;
+use App\ContactField;
 use App\ImportJobReport;
+use App\ContactFieldType;
 use Sabre\VObject\Reader;
 use Illuminate\Bus\Queueable;
 use Sabre\VObject\Component\VCard;
@@ -83,30 +85,6 @@ class AddContactFromVCard implements ShouldQueue
                 }
 
                 $contact->gender = 'none';
-                $contact->is_birthdate_approximate = 'unknown';
-
-                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
-                    $contact->is_birthdate_approximate = 'exact';
-                    $contact->birthdate = new \DateTime((string) $vcard->BDAY);
-                }
-
-                $contact->email = $this->formatValue($vcard->EMAIL);
-                $contact->phone_number = $this->formatValue($vcard->TEL);
-
-                if ($vcard->ADR) {
-                    $contact->street = $this->formatValue($vcard->ADR->getParts()[2]);
-                    $contact->city = $this->formatValue($vcard->ADR->getParts()[3]);
-                    $contact->province = $this->formatValue($vcard->ADR->getParts()[4]);
-                    $contact->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-
-                    $country = Country::where('country', $vcard->ADR->getParts()[6])
-                        ->orWhere('iso', strtolower($vcard->ADR->getParts()[6]))
-                        ->first();
-
-                    if ($country) {
-                        $contact->country_id = $country->id;
-                    }
-                }
 
                 $contact->job = $this->formatValue($vcard->ORG);
 
@@ -114,20 +92,63 @@ class AddContactFromVCard implements ShouldQueue
 
                 $contact->save();
 
-                // if birthdate is known, we need to create reminders
-                if (! $contact->isBirthdateApproximate()) {
-                    $reminder = Reminder::addBirthdayReminder(
-                        $contact,
-                        trans(
-                            'people.people_add_birthday_reminder',
-                            ['name' => $contact->getCompleteName()]
-                        ),
-                        $contact->birthdate
-                    );
+                if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
+                    $birthdate = new \DateTime((string) $vcard->BDAY);
 
-                    $contact->update([
-                        'birthday_reminder_id' => $reminder->id,
-                    ]);
+                    $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
+                if ($vcard->ADR) {
+                    $address = new Address();
+                    $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
+                    $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
+                    $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
+                    $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
+
+                    $country = Country::where('country', $vcard->ADR->getParts()[6])
+                        ->orWhere('iso', strtolower($vcard->ADR->getParts()[6]))
+                        ->first();
+
+                    if ($country) {
+                        $address->country_id = $country->id;
+                    }
+
+                    $address->contact_id = $contact->id;
+                    $address->account_id = $contact->account_id;
+                    $address->save();
+                }
+
+                if (! is_null($this->formatValue($vcard->EMAIL))) {
+                    // Saves the email
+                    $contactFieldType = ContactFieldType::where('type', 'email')
+                                                        ->where('account_id', $contact->account_id)
+                                                        ->first();
+
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->EMAIL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
+                }
+
+                if (! is_null($this->formatValue($vcard->TEL))) {
+                    // Saves the phone number
+                    $contactFieldType = ContactFieldType::where('type', 'phone')
+                                                        ->where('account_id', $contact->account_id)
+                                                        ->first();
+
+                    if (! empty($contactFieldType)) {
+                        $contactField = new ContactField;
+                        $contactField->account_id = $contact->account_id;
+                        $contactField->contact_id = $contact->id;
+                        $contactField->data = $this->formatValue($vcard->TEL);
+                        $contactField->contact_field_type_id = $contactFieldType->id;
+                        $contactField->save();
+                    }
                 }
 
                 $this->importedContacts++;
@@ -189,12 +210,22 @@ class AddContactFromVCard implements ShouldQueue
     {
         $email = (string) $vcard->EMAIL;
 
-        $contact = Contact::where([
+        $contactFieldType = ContactFieldType::where([
             ['account_id', $account_id],
-            ['email', $email],
+            ['type', 'email'],
         ])->first();
 
-        return $email && $contact;
+        $contactField = null;
+
+        if ($contactFieldType) {
+            $contactField = ContactField::where([
+                ['account_id', $account_id],
+                ['data', $email],
+                ['contact_field_type_id', $contactFieldType->id],
+            ])->first();
+        }
+
+        return $email && $contactField;
     }
 
     private function fileImportJobReport(VCard $vcard, $status, $reason = null)

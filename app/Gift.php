@@ -27,7 +27,21 @@ class Gift extends Model
      *
      * @var array
      */
-    protected $dates = ['date_offered'];
+    protected $dates = [
+        'offered_at',
+        'received_at',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_an_idea' => 'boolean',
+        'has_been_offered' => 'boolean',
+        'has_been_received' => 'boolean',
+    ];
 
     /**
      * Get the account record associated with the gift.
@@ -56,7 +70,7 @@ class Gift extends Model
      */
     public function recipient()
     {
-        return $this->contact();
+        return $this->hasOne(Contact::class, 'id', 'is_for');
     }
 
     /**
@@ -67,7 +81,7 @@ class Gift extends Model
      */
     public function scopeOffered(Builder $query)
     {
-        return $query->where('has_been_offered', true);
+        return $query->where('has_been_offered', 1);
     }
 
     /**
@@ -78,7 +92,7 @@ class Gift extends Model
      */
     public function scopeIsIdea(Builder $query)
     {
-        return $query->where('is_an_idea', true);
+        return $query->where('is_an_idea', 1);
     }
 
     /**
@@ -89,22 +103,26 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->about_object_type !== null;
+        return $this->is_for !== null;
     }
 
     /**
      * Set the recipient for the gift.
      *
-     * @param string $recipient
-     * @return static
+     * @param int $value
+     * @return string
      */
-    public function forRecipient($recipient)
+    public function setIsForAttribute($value)
     {
-        $this->about_object_id = $recipient;
-
-        return $this;
+        $this->attributes['is_for'] = $value;
     }
 
+    /**
+     * Get the name of the recipient for this gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
     public function getRecipientNameAttribute()
     {
         if ($this->hasParticularRecipient()) {
@@ -112,28 +130,68 @@ class Gift extends Model
         }
     }
 
-    public function getName()
+    /**
+     * Get the gift name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
     {
-        return $this->name;
+        return $value;
     }
 
-    public function getUrl()
+    /**
+     * Get the URL of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getUrlAttribute($value)
     {
-        return $this->url;
+        return $value;
     }
 
-    public function getComment()
+    /**
+     * Get the comment of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCommentAttribute($value)
     {
-        return $this->comment;
+        return $value;
     }
 
-    public function getValue()
+    /**
+     * Get the value of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getValueAttribute($value)
     {
-        return $this->value_in_dollars;
+        return $value;
     }
 
-    public function getCreatedAt()
+    /**
+     * Toggle a gift between the idea and offered state.
+     * @return void
+     */
+    public function toggle()
     {
-        return $this->created_at;
+        $this->has_been_received = false;
+
+        if ($this->is_an_idea == 1) {
+            $this->is_an_idea = false;
+            $this->has_been_offered = true;
+            $this->save();
+
+            return;
+        }
+
+        $this->is_an_idea = true;
+        $this->has_been_offered = false;
+        $this->save();
     }
 }

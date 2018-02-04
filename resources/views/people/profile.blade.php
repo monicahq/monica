@@ -38,30 +38,34 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
             @include('people.dashboard.index')
+
+            <a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a>
           </div>
 
           <div class="col-xs-12 col-sm-9">
+            <div class="row section notes">
+              <div class="col-xs-12 section-title">
+                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+              </div>
+            </div>
+
             <div class="row section calls">
               @include('people.calls.index')
             </div>
 
-            <div class="row section notes">
-              @include('people.notes.index')
-            </div>
-
             <div class="row section activities">
-              @include('people.activities.index')
+              @include('activities.index')
             </div>
 
             <div class="row section reminders">
               @include('people.reminders.index')
             </div>
 
-            <div class="row section tasks">
+            <div class="row section">
               @include('people.tasks.index')
             </div>
 
-            <div class="row section gifts">
+            <div class="row section">
               @include('people.gifts.index')
             </div>
 

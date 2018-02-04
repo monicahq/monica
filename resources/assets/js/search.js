@@ -1,8 +1,8 @@
-function Search() {
+function Search(form, input, resultsContainer, showResults) {
     const search = {
-        form: $('.header-search > form'),
-        input: $('.header-search-input'),
-        resultsContainer: $('.header-search-results'),
+        form: form,
+        input: input,
+        resultsContainer: resultsContainer,
         timeoutId: undefined,
         accountId: $('body').attr("data-account-id")
     };
@@ -23,34 +23,16 @@ function Search() {
     /* -----------------------------------------------------------------------------------
      | Search-related functions.
      |---------------------------------------------------------------------------------- */
-    function showResults(results) {
-        let html = '';
-        results.forEach(function (result) {
-            // The span is styled to cover the whole <li>, providing a clickable area over the whole result.
-            html += `
-                <li class="header-search-result">
-                ${result.avatar}
-                <a href="${result.url}">${result.name}<span /></a>
-                </li>
-            `;
-        });
-        appendResults(html);
-    }
-
     function showNoResults(message) {
         let html = `<li class="header-search-result" style="padding: 10px">${message}</li>`;
         appendResults(html);
-    }
-
-    function appendResults(html) {
-        search.resultsContainer.empty();
-        search.resultsContainer.append(html);
     }
 
     function parseResults(data) {
         let results = [];
         data.forEach(function (contact) {
             let person = {};
+            person.id = contact.id;
             person.url = `/people/${contact.id}`;
 
             const middleName = contact.middle_name || '';
@@ -69,10 +51,14 @@ function Search() {
 
     function getAvatar(contact) {
         let avatar;
-        if ((contact.has_avatar === 'true')) {
+
+        if ((contact.has_avatar && contact.avatar_file_name !== null)) {
             avatar = `<img src="/storage/${contact.avatar_file_name}" class="avatar">`;
+            console.log("here");
         } else if (contact.gravatar_url !== null) {
             avatar = `<img src="${contact.gravatar_url}" class="avatar">`;
+        } else if (contact.avatar_external_url !== null ) {
+            avatar = `<img src="${contact.avatar_external_url}" class="avatar">`;
         } else {
             let initials = contact.first_name.substring(0, 1);
             initials += contact.middle_name ? contact.middle_name.substring(0, 1) : '';
@@ -94,6 +80,7 @@ function Search() {
 
     function searchInContacts() {
         const needle = getInputValue();
+
         if(needle === '') {
             return;
         }
@@ -110,7 +97,7 @@ function Search() {
                 return;
             }
             const results = parseResults(data);
-            showResults(results);
+            showResults(results, search);
         });
     }
 
@@ -143,9 +130,71 @@ function Search() {
             window.setTimeout(function () {
                 search.input.val('');
                 $('.header-search-result').remove();
-            }, 50);
+            }, 150);
         });
     }
 }
 
-const search = Search();
+const HeaderSearch = Search(
+    $('.header-search > form'),
+    $('.header-search-input'),
+    $('.header-search-results'),
+    function(results, search) {
+        let html = '';
+        results.forEach(function (result) {
+            // The span is styled to cover the whole <li>, providing a clickable area over the whole result.
+            html += `
+                <li class="header-search-result">
+                ${result.avatar}
+                <a href="${result.url}">${result.name}<span /></a>
+                </li>
+            `;
+        });
+        search.resultsContainer.empty();
+        search.resultsContainer.append(html);
+    }
+);
+
+const multiUserInput = $('.user-input');
+if (multiUserInput.length > 0) {
+    const UserInputSearch = Search(
+        $('.user-input > form'),
+        $('.user-input-search-input'),
+        $('.user-input-search-results'),
+        function (results, search) {
+            let html = '';
+            results.forEach(function (result) {
+                html += `
+                <li class="header-search-result" data-contact="${result.id}" data-name="${result.name}">
+                ${result.avatar}
+                ${result.name}
+                </li>
+            `;
+            });
+            search.resultsContainer.empty();
+            search.resultsContainer.append(html);
+        }
+    );
+}
+
+$('.user-input-search-results').on( "click", ".header-search-result", function() {
+    let t = $(this);
+
+    // Make sure this isn't a duplicate
+    if ($(`.contacts-list input[value="${t.data('contact')}"]`).length) {
+        return false;
+    }
+
+    // If it's not, append to our list
+    $('.contacts-list').append(`
+        <li class="pretty-tag"><a href="/people/${t.data('contact')}">${t.data('name')}</a></li>
+        <input type="hidden" name="contacts[]" value="${t.data('contact')}" />
+    `);
+});
+
+$('.contacts-list').on('click', 'li', function(e) {
+    e.preventDefault();
+    $(this).next('input').remove();
+    $(this).remove();
+    return false;
+});

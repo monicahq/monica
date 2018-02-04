@@ -7,7 +7,6 @@ use App\User;
 use Validator;
 use App\Account;
 use Carbon\Carbon;
-use App\Helpers\RandomHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -82,6 +81,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // create a new account
+        $account = new Account;
+        $account->api_key = str_random(30);
+        $account->created_at = Carbon::now();
+        $account->save();
+
         $user = new User;
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
@@ -89,16 +94,10 @@ class RegisterController extends Controller
         $user->password = bcrypt($data['password']);
         $user->timezone = config('app.timezone');
         $user->created_at = Carbon::now();
-        $user->save();
-
-        // create a new account
-        $account = new Account;
-        $account->api_key = RandomHelper::generateString(30);
-        $account->created_at = Carbon::now();
-        $account->save();
-
         $user->account_id = $account->id;
         $user->save();
+
+        $account->populateContactFieldTypeTable();
 
         // send me an alert
         dispatch(new SendNewUserAlert($user));

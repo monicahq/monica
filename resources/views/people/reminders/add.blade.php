@@ -34,7 +34,8 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             @include('people.reminders.form', [
               'method' => 'POST',
-              'action' => route('people.reminders.store', $contact)
+              'action' => route('people.reminders.store', $contact),
+              'update_or_add' =>'add'
             ])
           </div>
         </div>

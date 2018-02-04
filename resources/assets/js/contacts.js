@@ -31,3 +31,22 @@ $('a[href^="#logCallModal"]').click(function(e) {
   $('.log-call .exact-date').hide();
   e.preventDefault();
 });
+
+// On the contact sheet of a person, for the Deceased section
+$('#markPersonDeceased').click(function() {
+  $('#datePersonDeceased').toggle(this.checked);
+
+  if(document.getElementById('markPersonDeceased').checked) {
+  } else {
+    $('#checkboxDatePersonDeceased').prop('checked', false);
+    $('#addReminderDeceased').prop('checked', false);
+    $('#datesSelector').prop('checked', false);
+    $('#datesSelector').hide();
+    $('#reminderDeceased').hide();
+  }
+});
+
+$('#checkboxDatePersonDeceased').click(function() {
+  $('#reminderDeceased').toggle(this.checked);
+  $('#datesSelector').toggle(this.checked);
+});
