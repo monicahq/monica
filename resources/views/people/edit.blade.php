@@ -92,6 +92,7 @@
         </div>
 
         {{-- Birthdate --}}
+        <form-specialdate></form-specialdate>
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
             {{-- Don't know the birthdate --}}

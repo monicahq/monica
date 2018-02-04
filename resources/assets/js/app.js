@@ -26,6 +26,11 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
+// Calendar
+import VCalendar from 'v-calendar';
+import 'v-calendar/lib/v-calendar.min.css';
+Vue.use(VCalendar);
+
 // Custom components
 Vue.component(
     'passport-clients',

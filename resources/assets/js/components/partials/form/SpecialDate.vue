@@ -3,6 +3,35 @@
 
 <template>
   <div>
+    <div class="flex">
+      <div class="">
+        <input type="radio" id="" name="birthdate" class="" value="on">
+      </div>
+      <div class="">
+        I do not know this person’s age
+      </div>
+    </div>
+    <div class="flex">
+      <div class="">
+        <input type="radio" id="" name="birthdate" class="" value="on">
+      </div>
+      <div class="">
+        This person is probably…
+        <form-input></form-input>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="">
+        <input type="radio" id="" name="birthdate" class="" value="on">
+      </div>
+      <div class="">
+        I know the exact birthdate of this person…
+        <v-date-picker
+            mode='single'
+            v-model='selectedDate'>
+          </v-date-picker>
+      </div>
+    </div>
     <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
     <select
         v-model="selectedOption"
@@ -23,6 +52,7 @@
          */
         data() {
             return {
+                selectedDate: null,
                 selectedOption: null
             };
         },
