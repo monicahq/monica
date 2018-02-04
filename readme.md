@@ -23,6 +23,7 @@ Monica is a great open source personal relationship management system.
   * [What Monica isn't](#what-monica-isnt)
   * [Where does this tool come from?](#where-does-this-tool-come-from)
 * [Get started](#get-started)
+  * [Requirements](#requirements)
   * [Update your instance](#update-your-instance)
 * [Contribute](#contribute)
   * [As a community](#as-a-community)
@@ -72,6 +73,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Ability to indicate how the day went
 * Export and import of data
 * Export a contact as vCard
+* Ability to set custom genders
 * Multi users
 * Labels to organize contacts
 * Multi currencies
