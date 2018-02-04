@@ -214,6 +214,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'MoneyHelper' => App\Helpers\MoneyHelper::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Cdn' => Publiux\laravelcdn\Facades\CdnFacadeAccessor::class
     ],
 
 ];

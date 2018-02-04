@@ -36,6 +36,7 @@
         "pragmarx/google2fa-laravel": "dev-create-authenticator-controller",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
+        "publiux/laravelcdn": "^2.0",
         "roave/security-advisories": "dev-master",
         "sabre/vobject": "^4.1",
         "sentry/sentry-laravel": "^0.7.0"
