@@ -308,12 +308,12 @@ class AccountTest extends TestCase
 
         $this->assertDatabaseHas(
             'genders',
-            ['name' => 'Male']
+            ['name' => 'Man']
         );
 
         $this->assertDatabaseHas(
             'genders',
-            ['name' => 'Female']
+            ['name' => 'Woman']
         );
 
         $this->assertDatabaseHas(
