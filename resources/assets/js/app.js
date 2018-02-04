@@ -57,6 +57,10 @@ Vue.component(
     'form-select',
     require('./components/partials/form/Select.vue')
 );
+Vue.component(
+    'form-specialdate',
+    require('./components/partials/form/SpecialDate.vue')
+);
 
 // Dashboard
 Vue.component(
