@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Settings;
 use Exception;
 use Validator;
 use App\Gender;
-use App\Contact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\GendersRequest;
@@ -75,7 +74,7 @@ class GendersController extends Controller
     /**
      * Destroy a gender type.
      */
-    public function destroyAndReplaceGender(GendersRequest $request, Gender $gender, $genderToReplaceWithId)
+    public function destroyAndReplaceGender(GendersRequest $request, Gender $genderToDelete, $genderToReplaceWithId)
     {
         try {
             $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
@@ -86,11 +85,9 @@ class GendersController extends Controller
         }
 
         // We get the new gender to associate the contacts with.
-        Contact::where('account_id', auth()->user()->account->id)
-                    ->where('gender_id', $gender->id)
-                    ->update(['gender_id' => $genderToReplaceWith->id]);
+        auth()->user()->account->replaceGender($genderToDelete, $genderToReplaceWith);
 
-        $gender->delete();
+        $genderToDelete->delete();
     }
 
     /**
