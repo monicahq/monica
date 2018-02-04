@@ -14,7 +14,7 @@ env:
     - DB=mysql
     - DB=postgres
   global:
-#    - SAUCELABS=1
+    - SAUCELABS=1
 
 matrix:
   include:
@@ -42,10 +42,10 @@ git:
 addons:
   postgresql: "9.6"
   chrome: stable
-#  sauce_connect:
-#    username: "asbiin"
-#  jwt:
-#    secure: "niuYhwCsFVUHS6DU3j0xi24habQOSqKpzo7qUlGmlx1x31wZNDrl+wfifeTVv6nnjoShyr4s6svn3ULl1K8tQMdyHJlO247WKMg/PSnaSUyll5+luuP5SLpV+USP8g9a7HAjU+jQO5uE/GXKDDQcD+o5dV6gv9stmc9u/np45kwgVx55bj013ll0M5qlyflJZFgp3b/M+bvqkvIFDPN2U7iFs0dkhqxBI+6qbTAN4aTtxPSPrsYdt9W8Re1suzy2/CJEEQ2xKE4zm7WQ2dg6BrpbaU2bdG6wWZUw2toA8iCyxFgbJUlXmAjPEQ5Wr+gWEQ9bLcwCIoHxUMIRbqY/SNzve7KnGXOUEF0yttyAv3aq9STA58Mr+H15zXdA5ZAwpE/tNojfaacEya/bg9fwUWOCqrPXIhwFirhf8oD2y8n+SWD27rP0qD9um9HGqGkh6bqFefIZi2xVzLya1r/2kxqFskrj+0xPjjKYwMwJIM5s7HyrtIxR7QTpFEbgHpZjCmT31I65ds56ec34wbZ0W61bm4aQAxz7UIedCYsTrqtTzTYxUJEht3/1D5FH0PSBWQACJmdjSHvh0pP7zzG2cqzq2IhHCSZjnhh6LGUPQtgZh3kq1fSP0Zw74iSVrxQETsGoPwYA6R38e+V39vV8yUHjMUXNPIhgcQQZHiZcEWI="
+  sauce_connect:
+    username: "monicahq"
+  jwt:
+    secure: "Z6XcUlBrmiO085kmF/WBRA6dnhtIhdQG+olFHM5CmQXkIXKUTR7wwAMRg+ys5NtFKVspYPDPPtV9CdEl1zQ3Ii3aSWentsCwbXxGurPqvY+aQjP1U1CmURvPY55BGTMHabt5WcPnFVIJql3vCfD2BFWwIk/78cQ9QKuDJ7/2BxFzWE4AZG9wKYzbqYGbc4l4wdvEE0H0ClRzqGPDvyWpUw1RbZU0lVud0JVa9UXntmtsEFgKEZ7WTTSm2XgoFtVK9qVrXc8TEVve126FSoi5GIxQFdQ/ZWybq5AggVy/Dp5w+q9zCLu19J95itGKpj+GL+9YCJSo4lqHlyLtZ+Ddt41y2E6O4SXoHCjeiFK3wV00AKWIpLedHBovdT2fnQ4f62GrOFA6iw8hV0ftxiFgRwdxv/r+ee1PDy5tQeLl/A0UelIAGy0ZyCfYDgaoK3td45iXcnBUjnbveq8rFgUNkdCXwBCJF89veQS4F/QQFms1AWsodifmT6PgIaWgk6Nt0dPO5jAT6NZ2wlHlkXu80TZf6pJCVC+Pvmuwdlhs+clSizjVJOQ0wVBCETmz4VSKPXLTgdlySncfKrnO8VnfospfZ5KwMGm4JR0wtixH0qTPNDKRlv4X/OedTJFZeN9iqJmWJLTfYc7I16TFXhOpdhP5o+yQE+k7BFrTveGG5bw="
 
 before_script:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
@@ -68,8 +68,8 @@ script:
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
 
   # Run browser tests
-  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
-  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vvv; fi
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv; fi
 
 after_script:
   - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
