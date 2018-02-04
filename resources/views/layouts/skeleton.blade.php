@@ -13,6 +13,7 @@
     <script>
       window.Laravel = <?php echo json_encode([
           'csrfToken' => csrf_token(),
+          'locale' => (Auth::check() ? auth()->user()->locale : 'en')
       ]); ?>
     </script>
   </head>

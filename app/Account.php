@@ -8,20 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property User $user
- * @property Collection|Activity[] $activities
- * @property Collection|ActitivyStatistic[] $activityStatistics
- * @property Collection|Contact[] $contacts
- * @property Collection|Invitation[] $invitations
- * @property Collection|Debt[] $debts
- * @property Collection|Entry[] $entries
- * @property Collection|Gift[] $gifts
- * @property Collection|Event[] $events
- * @property Collection|Note[] $notes
- * @property Collection|Reminder[] $reminders
- * @property Collection|Task[] $tasks
- */
 class Account extends Model
 {
     use Billable;
@@ -444,9 +430,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        $gender = Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        $gender = Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        $gender = Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**

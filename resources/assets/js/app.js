@@ -139,7 +139,7 @@ import Locales from './vue-i18n-locales.generated.js';
 
 Vue.use(VueInternalization);
 
-Vue.config.lang = 'en';
+Vue.config.lang = window.Laravel.locale;
 
 Object.keys(Locales).forEach(function (lang) {
   Vue.locale(lang, Locales[lang])

@@ -138,7 +138,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('gender', function ($value, $route) {
+        Route::bind('gender', function ($value) {
             return Gender::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();

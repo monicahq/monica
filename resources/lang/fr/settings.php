@@ -189,7 +189,7 @@ return [
     'personalization_contact_field_type_add_success' => 'Le type de champ de contact a été ajouté avec succès.',
     'personalization_contact_field_type_edit_success' => 'Le type de champ de contact a été mis à jour avec succès.',
 
-    'personalization_genders_title' => 'Gender types',
+    'personalization_genders_title' => 'Types de genre',
     'personalization_genders_add' => 'Add new gender type',
     'personalization_genders_desc' => 'You can define as many genders as you need to. You need at least one gender type in your account.',
     'personalization_genders_modal_add' => 'Add gender type',
