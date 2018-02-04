@@ -6,6 +6,7 @@ use Validator;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PersonalizationController extends Controller
 {

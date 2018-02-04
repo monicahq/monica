@@ -8,6 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Intervention\Image\Facades\Image as Image;
 

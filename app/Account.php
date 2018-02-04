@@ -277,7 +277,7 @@ class Account extends Model
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return this
+     * @return $this
      */
     public function canDowngrade()
     {

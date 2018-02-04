@@ -6,6 +6,8 @@ use Validator;
 use App\Contact;
 use App\Activity;
 use App\ActivityType;
+use App\Note;
+use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

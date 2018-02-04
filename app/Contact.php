@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
@@ -497,7 +499,7 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastActivityDate()
     {

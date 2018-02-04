@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Google2FA;
+use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;

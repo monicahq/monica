@@ -134,7 +134,7 @@ class KidsController extends Controller
      *
      * @param KidsRequest $request
      * @param Contact $contact
-     * @param Kid $kid
+     * @param Contact $kid
      * @return \Illuminate\Http\Response
      */
     public function update(KidsRequest $request, Contact $contact, Contact $kid)
@@ -172,7 +172,7 @@ class KidsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Kid $kid
+     * @param Contact $kid
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Contact $kid)
