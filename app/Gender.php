@@ -50,7 +50,7 @@ class Gender extends Model
      */
     public function contacts()
     {
-        return $this->hasMany(Contact::class, 'gender_id');
+        return $this->hasMany(Contact::class);
     }
 
     /**

@@ -61,20 +61,8 @@ class GendersController extends Controller
     /**
      * Update the given gender.
      */
-    public function updateGender(Request $request, $genderId)
+    public function updateGender(GendersRequest $request, Gender $gender)
     {
-        Validator::make($request->all(), [
-            'name' => 'required|max:255',
-        ])->validate();
-
-        try {
-            $gender = Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $genderId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            throw new Exception(trans('settings.personalization_genders_modal_error'));
-        }
-
         $gender->update(
             $request->only([
                 'name',

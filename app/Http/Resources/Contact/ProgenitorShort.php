@@ -19,7 +19,7 @@ class ProgenitorShort extends Resource
             'object' => 'contact',
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'gender' => $this->gender,
+            'gender' => $this->gender->name,
             'information' => [
                 'birthdate' => [
                     'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),

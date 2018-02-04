@@ -19,13 +19,6 @@
 
         @include('partials.errors')
 
-        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <p>
-            {{ trans('people.people_delete_message') }}
-            <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
-          </p>
-        </div>
-
         {{-- Name --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}

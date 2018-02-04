@@ -21,7 +21,7 @@ class ContactShort extends Resource
             'last_name' => $this->last_name,
             'complete_name' => $this->getCompleteName(),
             'initials' => $this->getInitials(),
-            'gender' => $this->gender,
+            'gender' => 'dsfsad',
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'information' => [
