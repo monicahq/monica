@@ -321,4 +321,25 @@ class AccountTest extends TestCase
             ['name' => 'Rather not say']
         );
     }
+
+    public function test_it_replaces_gender_with_another_gender()
+    {
+        $account = factory(Account::class)->create([]);
+        $gender1 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+        $gender2 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
+
+        $account->replaceGender($gender1, $gender2);
+        $this->assertEquals(
+            3,
+            $gender2->contacts->count()
+        );
+    }
 }
