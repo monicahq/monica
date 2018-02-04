@@ -3,9 +3,35 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 services:
   - mysql
+  - postgresql
+
+env:
+  matrix:
+    - DB=mysql
+    - DB=postgres
+  global:
+#    - SAUCELABS=1
+
+matrix:
+  include:
+    - php: 7.1
+      env:
+        - DB=mysql
+        - SELENIUM=1
+        - COVERAGE=1
+  exclude:
+    - php: 7.1
+      env: DB=mysql
+    - php: 7.2
+      env: DB=postgres
+  allow_failures:
+    - php: 7.2
+    - env: DB=postgres
+  fast_finish: true
 
 jdk:
   - oraclejdk8
@@ -14,47 +40,45 @@ git:
   depth: false
 
 addons:
+  postgresql: "9.6"
   chrome: stable
 #  sauce_connect:
 #    username: "asbiin"
 #  jwt:
 #    secure: "niuYhwCsFVUHS6DU3j0xi24habQOSqKpzo7qUlGmlx1x31wZNDrl+wfifeTVv6nnjoShyr4s6svn3ULl1K8tQMdyHJlO247WKMg/PSnaSUyll5+luuP5SLpV+USP8g9a7HAjU+jQO5uE/GXKDDQcD+o5dV6gv9stmc9u/np45kwgVx55bj013ll0M5qlyflJZFgp3b/M+bvqkvIFDPN2U7iFs0dkhqxBI+6qbTAN4aTtxPSPrsYdt9W8Re1suzy2/CJEEQ2xKE4zm7WQ2dg6BrpbaU2bdG6wWZUw2toA8iCyxFgbJUlXmAjPEQ5Wr+gWEQ9bLcwCIoHxUMIRbqY/SNzve7KnGXOUEF0yttyAv3aq9STA58Mr+H15zXdA5ZAwpE/tNojfaacEya/bg9fwUWOCqrPXIhwFirhf8oD2y8n+SWD27rP0qD9um9HGqGkh6bqFefIZi2xVzLya1r/2kxqFskrj+0xPjjKYwMwJIM5s7HyrtIxR7QTpFEbgHpZjCmT31I65ds56ec34wbZ0W61bm4aQAxz7UIedCYsTrqtTzTYxUJEht3/1D5FH0PSBWQACJmdjSHvh0pP7zzG2cqzq2IhHCSZjnhh6LGUPQtgZh3kq1fSP0Zw74iSVrxQETsGoPwYA6R38e+V39vV8yUHjMUXNPIhgcQQZHiZcEWI="
 
-env:
-  global:
-#    - SAUCELABS=1
-
 before_script:
-  - cp .env.travis .env
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
-  - mysql -e 'create database monica;'
+  - cp .env.$DB.travis .env
+  - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
+  - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
   - composer self-update
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - if [ ! "$SAUCELABS" = "1" ]; then .ci/start-selenium.sh; fi
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" == "1" ]]; then .ci/start-selenium.sh; fi
 
 script:
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   
   # Run unit tests
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php &
-  - until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done;
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php; fi" &
+  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
 
   # Run browser tests
-  - if [ "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
-  - if [ ! "$SAUCELABS" = "1" ]; then vendor/bin/steward run travis chrome -vvv; fi
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vvv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vvv; fi
 
 after_script:
-  - vendor/bin/steward results -vvv
-  - .ci/travis-report.sh 2>/dev/null
-  - cat selenium-server.log
-  - cat selenium-node.log
-  - vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/
-  - bash <(curl -s https://codecov.io/bash)
-  - ./travis-sonar.sh
+  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
+  - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
+  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-server.log; fi
+  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-node.log; fi
+  - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
+  - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
+  - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi
 
 cache:
   directories:

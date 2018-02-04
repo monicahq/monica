@@ -13,7 +13,9 @@ class ChangeGiftColumnStructure extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE gifts MODIFY about_object_id INTEGER;');
+        Schema::table('gifts', function (Blueprint $table) {
+            $table->integer('about_object_id')->change();
+        });
 
         Schema::table('gifts', function ($table) {
             $table->dropColumn([

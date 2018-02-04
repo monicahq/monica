@@ -268,6 +268,7 @@ return [
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
+    'gifts_update_success' => 'The gift has been updated successfully',
 
     // debts
     'debt_delete_confirmation' => 'Rimuovere questo debito?',
