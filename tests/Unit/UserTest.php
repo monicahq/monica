@@ -114,4 +114,15 @@ class UserTest extends TestCase
             $user->getFluidLayout()
         );
     }
+
+    public function test_it_gets_the_locale()
+    {
+        $user = new User;
+        $user->locale = 'en';
+
+        $this->assertEquals(
+            'en',
+            $user->locale
+        );
+    }
 }

@@ -32,7 +32,8 @@ class RelationshipsController extends Controller
     {
         return view('people.relationship.add')
             ->withContact($contact)
-            ->withPartner(new Contact);
+            ->withPartner(new Contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -50,7 +51,7 @@ class RelationshipsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -65,7 +66,7 @@ class RelationshipsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -125,7 +126,8 @@ class RelationshipsController extends Controller
     {
         return view('people.relationship.edit')
             ->withContact($contact)
-            ->withPartner($partner);
+            ->withPartner($partner)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -142,7 +144,7 @@ class RelationshipsController extends Controller
             $request->only([
                 'first_name',
                 'last_name',
-                'gender',
+                'gender_id',
             ])
             + [
                 'account_id' => $contact->account_id,

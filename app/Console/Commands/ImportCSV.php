@@ -61,6 +61,14 @@ class ImportCSV extends Command
 
         $this->info("Importing CSV file $file to user {$user->id}");
 
+        // create special gender for this import
+        // we don't know which gender all the contacts are, so we need to create a special status for them, as we
+        // can't guess whether they are men, women or else.
+        $gender = new Gender;
+        $gender->account_id = $user->account_id;
+        $gender->name = 'vCard';
+        $gender->save();
+
         $row = 0;
         $imported = 0;
         if (($handle = fopen($file, 'r')) !== false) {
@@ -73,7 +81,7 @@ class ImportCSV extends Command
                 }
 
                 $contact = new Contact();
-                $contact->account_id = $user->id;
+                $contact->account_id = $user->account_id;
 
                 // if first & last name do not exist skip row
                 if (empty($data[1]) && empty($data[3])) {
@@ -122,6 +130,8 @@ class ImportCSV extends Command
                 if (empty($contact->email)) {
                     $contact->email = null;
                 }
+
+                $contact->gender_id = $gender->id;
 
                 $contact->save();
                 $contact->setAvatarColor();

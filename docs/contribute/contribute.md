@@ -27,6 +27,9 @@
     * [Watching and compiling assets](#watching-and-compiling-assets)
     * [CSS](#css)
     * [JS and Vue](#js-and-vue)
+    * [Localization \(i18n\)](#localization-i18n)
+      * [Application](#application)
+      * [VueJS](#vuejs)
 
 <!-- /MarkdownTOC -->
 
@@ -240,3 +243,17 @@ This means that we should add new CSS classes only if it's absolutely necessary.
 ### JS and Vue
 
 We are using [Vue.js](https://vuejs.org/) in some parts of the application, and we'll use it more and more over time. Vue is very simple to learn and use, and with [Vue Components](https://vuejs.org/v2/guide/components.html), we can easily create isolated, reusable components in the app. If you want to add a new feature, you don't need to use Vue.js - you can use plain HTML views served by the backend. But with Vue.js, it'll be a nicer experience.
+
+### Localization (i18n)
+
+#### Application
+
+Localization of the application is handled by the [default i18n helper provided by Laravel](https://laravel.com/docs/5.5/localization).
+
+#### VueJS
+
+For everything that is in VueJS though, things are a bit different. We have to use a special library to allow translated strings to be available in the javascript views. The helper in Vue is slightly different.
+
+Instead of the regular `trans('file.string')` definition, you need to write `$t('file.string')`.
+
+Moreover, everytime a string changes in a translation file, you need to regenerate all the strings so they can be made available in JS. To do this, use `php artisan vue-i18n:generate`.

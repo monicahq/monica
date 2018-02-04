@@ -16,22 +16,13 @@
   </div>
 
   {{-- Gender --}}
-  <label>{{ trans('people.people_add_gender') }}</label>
   <fieldset class="form-group">
-    <label class="form-check-inline" for="genderNone">
-      <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" @if(! in_array(old('gender'), ['male', 'female']) || ! in_array($kid->gender, ['male', 'female'])) checked @endif>
-      {{ trans('app.gender_none') }}
-    </label>
-
-    <label class="form-check-inline" for="genderMale">
-      <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" @if(old('gender') === 'male' || $kid->gender === 'male') checked @endif>
-      {{ trans('people.kids_add_boy') }}
-    </label>
-
-    <label class="form-check-inline" for="genderFemale">
-      <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female" @if(old('gender') === 'female' || $kid->gender === 'female') checked @endif>
-      {{ trans('people.kids_add_girl') }}
-    </label>
+    <form-select
+      :options="{{ $genders }}"
+      v-bind:required="true"
+      v-bind:title="'{{ trans('people.people_add_gender') }}'"
+      v-bind:id="'gender_id'">
+    </form-select>
   </fieldset>
 
   <fieldset class="form-group dates">

@@ -82,6 +82,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's locale.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getLocaleAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Get users's full name. The name is formatted according to the user's
      * preference, either "Firstname Lastname", or "Lastname Firstname".
      *

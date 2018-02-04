@@ -109,7 +109,11 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        return view('people.create');
+        $data = [
+            'genders' => auth()->user()->account->genders,
+        ];
+
+        return view('people.create', $data);
     }
 
     public function missing()
@@ -128,7 +132,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
-            'gender' => 'required',
+            'gender' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -139,7 +143,7 @@ class ContactsController extends Controller
 
         $contact = new Contact;
         $contact->account_id = Auth::user()->account_id;
-        $contact->gender = $request->input('gender');
+        $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
@@ -196,7 +200,8 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         return view('people.edit')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -221,7 +226,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        $contact->gender = $request->input('gender');
+        $contact->gender_id = $request->input('gender');
         $contact->first_name = $request->input('firstname');
         $contact->last_name = $request->input('lastname');
 

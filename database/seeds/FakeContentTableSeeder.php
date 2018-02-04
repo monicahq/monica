@@ -29,6 +29,7 @@ class FakeContentTableSeeder extends Seeder
 
         $account = Account::find($accountID);
         $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
 
         // populate user table
         $userId = DB::table('users')->insertGetId([
@@ -63,7 +64,7 @@ class FakeContentTableSeeder extends Seeder
 
             $this->contact = new Contact;
             $this->contact->account_id = $accountID;
-            $this->contact->gender = $gender;
+            $this->contact->gender_id = $this->getRandomGender()->id;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->has_avatar = false;
@@ -217,7 +218,7 @@ class FakeContentTableSeeder extends Seeder
 
                 $kid = new Contact;
                 $kid->account_id = $this->contact->account_id;
-                $kid->gender = $gender;
+                $kid->gender_id = $this->getRandomGender()->id;
                 $kid->first_name = $this->faker->firstName($gender);
                 $kid->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
                 $kid->save();
@@ -256,7 +257,7 @@ class FakeContentTableSeeder extends Seeder
 
                 $partner = new Contact;
                 $partner->account_id = $this->contact->account_id;
-                $partner->gender = $gender;
+                $partner->gender_id = $this->getRandomGender()->id;
                 $partner->first_name = $this->faker->firstName($gender);
                 $partner->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
                 $partner->save();
@@ -486,5 +487,12 @@ class FakeContentTableSeeder extends Seeder
                 'called_at' => $this->faker->dateTimeThisYear(),
             ]);
         }
+    }
+
+    public function getRandomGender()
+    {
+        $genders = $this->account->genders;
+
+        return $genders->random();
     }
 }

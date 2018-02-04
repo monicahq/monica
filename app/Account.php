@@ -5,23 +5,8 @@ namespace App;
 use DB;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property User $user
- * @property Collection|Activity[] $activities
- * @property Collection|ActitivyStatistic[] $activityStatistics
- * @property Collection|Contact[] $contacts
- * @property Collection|Invitation[] $invitations
- * @property Collection|Debt[] $debts
- * @property Collection|Entry[] $entries
- * @property Collection|Gift[] $gifts
- * @property Collection|Event[] $events
- * @property Collection|Note[] $notes
- * @property Collection|Reminder[] $reminders
- * @property Collection|Task[] $tasks
- */
 class Account extends Model
 {
     use Billable;
@@ -275,6 +260,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Genders records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function genders()
+    {
+        return $this->hasMany('App\Gender');
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
@@ -425,6 +420,18 @@ class Account extends Model
                 }
             }
         }
+    }
+
+    /**
+     * Populates the default genders in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultGendersTable()
+    {
+        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
