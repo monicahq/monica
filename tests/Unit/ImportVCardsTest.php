@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\Gender;
 use App\Account;
 use App\Contact;
 use App\Country;
@@ -110,6 +111,7 @@ class ImportVCardsTest extends TestCase
         $account->save();
 
         $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
 
         $user->account_id = $account->id;
         $user->save();
