@@ -106,10 +106,10 @@ deploy:
   user: asbin
   key: $BINTRAY_APIKEY
   on:
+    tags: true
     repo: monicahq/monica
-    branch:
-      - master
-      - features/800-remove-assets
+    php: '7.1'
+    condition: "$DB = mysql"
 
 after_deploy:
   - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io

@@ -21,7 +21,8 @@
         "released": "$(released)",
         "vcs_tag": "$(travis_tag)",
         "attributes": [
-            {"name": "gitcommit", "values" : ["$(travis_commit)"], "type": "string"},
+            {"name": "commit", "values" : ["$(travis_commit)"], "type": "string"},
+            {"name": "build", "values" : ["$(travis_build_number)"], "type": "integer"},
             {"name": "date", "values" : ["$(date)"], "type": "date"}
         ]
     },

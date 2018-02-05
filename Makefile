@@ -1,11 +1,18 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
-BUILD := $(GIT_TAG)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+GIT_COMMIT := $(shell git log --format="%h" -n 1)
+BUILD := $(GIT_TAG)
+ifeq ($(TRAVIS_TAG),)
+# If we are not on travis or it's not a TAG build, we add "-dev" to the name
+BUILD := $(BUILD)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
 ifneq ($(GIT_TAG),$(BUILD))
-ifneq ($(TRAVIS_BUILD_NUMBER),)
-BUILD := $(BUILD)-build$(TRAVIS_BUILD_NUMBER)
+ifneq ($(GIT_COMMIT),)
+BUILD := $(BUILD)-$(GIT_COMMIT)
 endif
 endif
+endif
+
 DESTDIR := monica-$(BUILD)
+ASSETS := monica-assets-$(BUILD)
 
 default: build
 
@@ -48,7 +55,7 @@ build-dev:
 	npm install
 	npm run dev
 
-prepare: $(DESTDIR)
+prepare: $(DESTDIR) $(ASSETS)
 	mkdir -p results
 
 $(DESTDIR):
@@ -85,32 +92,39 @@ $(DESTDIR):
 	mkdir -p $@/storage/framework/cache
 	mkdir -p $@/storage/framework/sessions
 
-dist: results/$(DESTDIR).tar.xz .travis.deploy.json
+$(ASSETS):
+	mkdir -p $@/public
+	ln -s ../../public/mix-manifest.json $@/public/
+	ln -s ../../public/js $@/public/
+	ln -s ../../public/css $@/public/
+	ln -s ../../public/fonts $@/public/
+
+dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .travis.deploy.json
 
 .travis.deploy.json: .travis.deploy.json.in
 	sed -s "s/\$$(version)/$(BUILD)/" $< | \
 		sed -s "s/\$$(description)/$(subst ",\\\\\",$(TRAVIS_COMMIT_MESSAGE))/" | \
 		sed -s "s/\$$(released)/$(shell date --iso-8601=date)/" | \
 		sed -s "s/\$$(travis_tag)/$(TRAVIS_TAG)/" | \
-		sed -s "s/\$$(travis_commit)/$(TRAVIS_COMMIT)/" | \
+		sed -s "s/\$$(travis_commit)/$(GIT_COMMIT)/" | \
+		sed -s "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" | \
 		sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > $@
 
-results/$(DESTDIR).tar.xz: prepare
-	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
+results/%.tar.xz: % prepare
+	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<
 
-results/$(DESTDIR).tar.bz2: prepare
-	tar chfj $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
+results/%.tar.bz2: % prepare
+	tar chfj $@ --exclude .gitignore --exclude .gitkeep $<
 
-results/$(DESTDIR).tar.gz: prepare
-	tar chfz $@ --exclude .gitignore --exclude .gitkeep $(DESTDIR)
+results/%.tar.gz: % prepare
+	tar chfz $@ --exclude .gitignore --exclude .gitkeep $<
 
-results/$(DESTDIR).zip: prepare
-	zip -rq9 $@ $(DESTDIR) --exclude "*.gitignore*" "*.gitkeep*"
+results/%.zip: % prepare
+	zip -rq9 $@ $< --exclude "*.gitignore*" "*.gitkeep*"
 
 clean:
-	rm -rf $(DESTDIR)
-	rm -f results/$(DESTDIR).*
-	rm -f .travis.deploy.json
+	rm -rf $(DESTDIR) $(ASSETS)
+	rm -f results/$(DESTDIR).* results/$(ASSETS).* .travis.deploy.json
 
 fullclean: clean
 	rm -rf vendor resources/vendor public/fonts/vendor node_modules
