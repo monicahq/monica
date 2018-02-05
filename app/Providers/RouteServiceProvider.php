@@ -9,6 +9,7 @@ use App\Debt;
 use App\Gift;
 use App\Note;
 use App\Task;
+use App\Gender;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
@@ -133,6 +134,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('pet', function ($value, $route) {
             return Pet::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('gender', function ($value) {
+            return Gender::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

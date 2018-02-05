@@ -30,12 +30,25 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 personalization">
+      <div class="col-xs-12 col-sm-9">
+
+        <div class="mb3">
+          <h3 class="f3 fw5">{{ trans('settings.personalization_tab_title') }}</h3>
+          <p>{{ trans('settings.personalization_title') }}</p>
+
+          @if (! auth()->user()->account->hasLimitations())
+            <p class="import">{!! trans('people.people_add_import') !!}</p>
+          @endif
+        </div>
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <p>{{ trans('settings.personalization_title') }}</p>
+            <genders></genders>
+          </div>
+        </div>
 
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
             <contact-field-types></contact-field-types>
           </div>
         </div>

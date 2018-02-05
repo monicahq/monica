@@ -163,6 +163,7 @@ return [
         Laravel\Cashier\CashierServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        MartinLindhe\VueInternationalizationGenerator\GeneratorProvider::class,
     ],
 
     /*

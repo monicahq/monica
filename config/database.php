@@ -67,15 +67,15 @@ $db = [
         ],
 
         'testing' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_TEST_HOST'),
-            'database'  => env('DB_TEST_DATABASE'),
-            'username'  => env('DB_TEST_USERNAME'),
-            'password'  => env('DB_TEST_PASSWORD'),
-            'charset'   => 'utf8',
+            'driver' => 'mysql',
+            'host' => env('DB_TEST_HOST'),
+            'database' => env('DB_TEST_DATABASE'),
+            'username' => env('DB_TEST_USERNAME'),
+            'password' => env('DB_TEST_PASSWORD'),
+            'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
+            'prefix' => '',
+            'strict' => false,
         ],
 
         'pgsql' => [
@@ -87,6 +87,19 @@ $db = [
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => env('DB_PREFIX', ''),
+            'schema' => 'public',
+        ],
+
+        'pgsqltesting' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_TEST_HOST'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_TEST_DATABASE'),
+            'username' => env('DB_TEST_USERNAME'),
+            'password' => env('DB_TEST_PASSWORD'),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
             'schema' => 'public',
         ],
 

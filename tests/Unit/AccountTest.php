@@ -13,6 +13,21 @@ class AccountTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_has_many_genders()
+    {
+        $account = factory('App\Account')->create([]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+            'name' => 'test',
+        ]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+            'name' => 'test',
+        ]);
+
+        $this->assertTrue($account->genders()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory(Account::class)->create();
@@ -272,6 +287,59 @@ class AccountTest extends TestCase
         $this->assertEquals(
             'fakePlan',
             $account->getSubscribedPlanName()
+        );
+    }
+
+    public function test_it_populates_the_account_with_three_default_genders()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultGendersTable();
+
+        $this->assertEquals(
+            3,
+            $account->genders->count()
+        );
+    }
+
+    public function test_it_populates_the_account_with_the_right_default_genders()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultGendersTable();
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Man']
+        );
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Woman']
+        );
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Rather not say']
+        );
+    }
+
+    public function test_it_replaces_gender_with_another_gender()
+    {
+        $account = factory(Account::class)->create([]);
+        $gender1 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+        $gender2 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
+
+        $account->replaceGender($gender1, $gender2);
+        $this->assertEquals(
+            3,
+            $gender2->contacts->count()
         );
     }
 }
