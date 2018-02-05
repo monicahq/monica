@@ -8,7 +8,7 @@
     <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
     <link rel="manifest" href="/manifest.webmanifest">
 
-    <link rel="stylesheet" href="{{ Cdn::mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
       window.Laravel = <?php echo json_encode([
@@ -30,7 +30,7 @@
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ Cdn::mix('js/app.js') }}"></script>
+      <script src="{{ mix('js/app.js') }}"></script>
     @endif
 
     {{-- Required only for the Upgrade account page --}}
@@ -39,8 +39,8 @@
       <script>
         var stripe = Stripe('{{config('services.stripe.key')}}');
       </script>
-      <script src="{{ Cdn::mix('js/stripe.js') }}"></script>
-      <link rel="stylesheet" href="{{ Cdn::mix('css/stripe.css') }}">
+      <script src="{{ mix('js/stripe.js') }}"></script>
+      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
     @endif
 
     {{-- TRACKING SHIT --}}

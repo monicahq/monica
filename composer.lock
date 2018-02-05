@@ -3218,76 +3218,6 @@
             "time": "2017-01-02T13:31:39+00:00"
         },
         {
-            "name": "publiux/laravelcdn",
-            "version": "2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/publiux/laravelcdn.git",
-                "reference": "1b1d6bff59b5ef783587003220cb214152987d58"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/publiux/laravelcdn/zipball/1b1d6bff59b5ef783587003220cb214152987d58",
-                "reference": "1b1d6bff59b5ef783587003220cb214152987d58",
-                "shasum": ""
-            },
-            "require": {
-                "aws/aws-sdk-php": "~3.0",
-                "illuminate/config": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
-                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
-                "php": ">=5.5.9",
-                "symfony/console": "2.*|3.*",
-                "symfony/finder": "2.*|3.*"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.3",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Publiux\\laravelcdn\\CdnServiceProvider"
-                    ],
-                    "aliases": {
-                        "CDN": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
-                    }
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "tests/TestCase.php",
-                    "src/Publiux/laravelcdn/Exceptions"
-                ],
-                "psr-0": {
-                    "Publiux\\laravelcdn\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Raul Ruiz",
-                    "email": "publiux@gmail.com"
-                }
-            ],
-            "description": "Content Delivery Network (CDN) Package for Laravel",
-            "keywords": [
-                "AWS S3",
-                "Assets Upload",
-                "amazon",
-                "aws",
-                "cdn",
-                "content delivery network",
-                "laravel",
-                "s3",
-                "upload"
-            ],
-            "time": "2017-10-30T12:08:00+00:00"
-        },
-        {
             "name": "ramsey/uuid",
             "version": "3.7.3",
             "source": {
@@ -3373,12 +3303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632"
+                "reference": "3df94834c80037130b533703df4672785b6ea112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/55ce2b8c0462a0b93710d5b6ed9147307a6be632",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3df94834c80037130b533703df4672785b6ea112",
+                "reference": "3df94834c80037130b533703df4672785b6ea112",
                 "shasum": ""
             },
             "conflict": {
@@ -3511,7 +3441,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-02-03T22:31:14+00:00"
+            "time": "2018-02-04T22:09:50+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
