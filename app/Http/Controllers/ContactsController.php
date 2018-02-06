@@ -201,6 +201,8 @@ class ContactsController extends Controller
     {
         return view('people.edit')
             ->withContact($contact)
+            ->withDays(\App\Helpers\DateHelper::getListOfDays())
+            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withGenders(auth()->user()->account->genders);
     }
 

@@ -98,7 +98,10 @@
         {{-- Birthdate --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
-            <form-specialdate></form-specialdate>
+            <form-specialdate
+              v-bind:months="{{ $months }}"
+              v-bind:days="{{ $days }}"
+            ></form-specialdate>
           </div>
         </div>
 
