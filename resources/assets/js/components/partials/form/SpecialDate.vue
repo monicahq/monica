@@ -1,47 +1,73 @@
 <style scoped>
+
 </style>
 
 <template>
   <div>
-    <div class="flex">
-      <div class="">
-        <input type="radio" id="" name="birthdate" class="" value="on">
+    <div class="flex mb3">
+      <div class="mr2">
+        <input type="radio" id="" v-model="selectedOption" name="birthdate" selected value="unknown">
       </div>
-      <div class="">
+      <div class="pointer" @click="selectedOption = 'unknown'">
         I do not know this person’s age
       </div>
     </div>
-    <div class="flex">
-      <div class="">
-        <input type="radio" id="" name="birthdate" class="" value="on">
+    <div class="flex mb3">
+      <div class="mr2">
+        <input type="radio" id="" v-model="selectedOption" name="birthdate" value="approximate">
       </div>
-      <div class="">
+      <div class="pointer" @click="selectedOption = 'approximate'">
         This person is probably…
-        <form-input></form-input>
+        <div v-if="selectedOption == 'approximate'">
+          <form-input
+            :value="age"
+            v-bind:input-type="'number'"
+            v-bind:id="'age'"
+            v-bind:width="100"
+            v-bind:required="true">
+          ></form-input>
+        </div>
       </div>
     </div>
-    <div class="flex">
-      <div class="">
-        <input type="radio" id="" name="birthdate" class="" value="on">
+    <div class="flex mb3">
+      <div class="mr2">
+        <input type="radio" id="" v-model="selectedOption" name="birthdate" value="almost">
       </div>
-      <div class="">
+      <div class="pointer" @click="selectedOption = 'almost'">
+        I know the day and month of the birthdate of this person, but not the year…
+        <div v-if="selectedOption == 'almost'" class="mt3">
+          <div class="flex">
+            <form-select
+              v-model="selectedMonth"
+              :options="genders"
+              v-bind:id="'month'"
+              v-bind:title="''" class="mr3">
+            </form-select>
+            <form-select
+              v-model="selectedDay"
+              :options="genders"
+              v-bind:id="'month'"
+              v-bind:title="''">
+            </form-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex mb3">
+      <div class="mr2">
+        <input type="radio" id="" v-model="selectedOption" name="birthdate" value="exact">
+      </div>
+      <div class="pointer" @click="selectedOption = 'exact'">
         I know the exact birthdate of this person…
-        <v-date-picker
-            mode='single'
-            v-model='selectedDate'>
+        <div v-if="selectedOption == 'exact'" class="mt3">
+          <v-date-picker
+              mode='single'
+              v-model='selectedDate'
+              :input-class="'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
           </v-date-picker>
+        </div>
       </div>
     </div>
-    <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
-    <select
-        v-model="selectedOption"
-        @input="event => { $emit('input', event.target.value) }"
-        :id="id"
-        :name="id"
-        required
-        class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
-        <option v-for="option in options" :value="option.id" v-if="option.id != excludedId">{{ option.name }}</option>
-    </select>
   </div>
 </template>
 
@@ -53,7 +79,10 @@
         data() {
             return {
                 selectedDate: null,
-                selectedOption: null
+                selectedOption: 'unknown',
+                selectedMonth: 0,
+                selectedDay: 0,
+                age: 0,
             };
         },
 

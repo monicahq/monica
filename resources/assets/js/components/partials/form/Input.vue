@@ -12,7 +12,7 @@ input:focus {
 <template>
   <div>
     <p class="mb2" v-bind:class="{ b: required }">{{ title }}</p>
-    <input type="text"
+    <input :type="inputType"
             :value="value"
             @input="updateInput($event.target.value)"
             ref="input"
@@ -20,7 +20,7 @@ input:focus {
             :required="required"
             :name="id"
             :id="id"
-            class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
+            class="br2 f5 w-100 ba b--black-40 pa2 outline-0" :style="'width:' + width + 'px'">
   </div>
 </template>
 
@@ -61,6 +61,12 @@ input:focus {
             required: {
                 type: Boolean,
             },
+            inputType: {
+                type: String,
+            },
+            width: {
+              type: Number,
+            }
         },
 
         methods: {

@@ -29,6 +29,7 @@
               <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->first_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
@@ -37,6 +38,7 @@
               <div class="dtc">
                 <form-input
                   value="{{ $contact->last_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
@@ -50,6 +52,7 @@
               <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->last_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
@@ -58,6 +61,7 @@
               <div class="dtc">
                 <form-input
                   value="{{ $contact->first_naem }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
@@ -92,7 +96,12 @@
         </div>
 
         {{-- Birthdate --}}
-        <form-specialdate></form-specialdate>
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <form-specialdate></form-specialdate>
+          </div>
+        </div>
+
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
             {{-- Don't know the birthdate --}}
