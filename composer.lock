@@ -3303,12 +3303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632"
+                "reference": "3df94834c80037130b533703df4672785b6ea112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/55ce2b8c0462a0b93710d5b6ed9147307a6be632",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3df94834c80037130b533703df4672785b6ea112",
+                "reference": "3df94834c80037130b533703df4672785b6ea112",
                 "shasum": ""
             },
             "conflict": {
@@ -3441,7 +3441,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-02-03T22:31:14+00:00"
+            "time": "2018-02-04T22:09:50+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
