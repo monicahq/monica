@@ -7,6 +7,7 @@ php:
 
 services:
   - mysql
+  - docker
   - postgresql
 
 env:
@@ -47,19 +48,32 @@ addons:
   jwt:
     secure: "Z6XcUlBrmiO085kmF/WBRA6dnhtIhdQG+olFHM5CmQXkIXKUTR7wwAMRg+ys5NtFKVspYPDPPtV9CdEl1zQ3Ii3aSWentsCwbXxGurPqvY+aQjP1U1CmURvPY55BGTMHabt5WcPnFVIJql3vCfD2BFWwIk/78cQ9QKuDJ7/2BxFzWE4AZG9wKYzbqYGbc4l4wdvEE0H0ClRzqGPDvyWpUw1RbZU0lVud0JVa9UXntmtsEFgKEZ7WTTSm2XgoFtVK9qVrXc8TEVve126FSoi5GIxQFdQ/ZWybq5AggVy/Dp5w+q9zCLu19J95itGKpj+GL+9YCJSo4lqHlyLtZ+Ddt41y2E6O4SXoHCjeiFK3wV00AKWIpLedHBovdT2fnQ4f62GrOFA6iw8hV0ftxiFgRwdxv/r+ee1PDy5tQeLl/A0UelIAGy0ZyCfYDgaoK3td45iXcnBUjnbveq8rFgUNkdCXwBCJF89veQS4F/QQFms1AWsodifmT6PgIaWgk6Nt0dPO5jAT6NZ2wlHlkXu80TZf6pJCVC+Pvmuwdlhs+clSizjVJOQ0wVBCETmz4VSKPXLTgdlySncfKrnO8VnfospfZ5KwMGm4JR0wtixH0qTPNDKRlv4X/OedTJFZeN9iqJmWJLTfYc7I16TFXhOpdhP5o+yQE+k7BFrTveGG5bw="
 
-before_script:
+before_install:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - cp .env.$DB.travis .env
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
   - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
   - composer self-update
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
-  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" == "1" ]]; then .ci/start-selenium.sh; fi
+  - docker-compose --version
 
-script:
+install:
+  # Get packages without require-dev
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --no-dev
+  # Build js and css assets
+  - npm install
+  - npm run production
+  # Create dist file before running composer install with dev dependencies
+  - make docker_build
+  - make dist
+  # Get packages with require-dev
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+before_script:
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" == "1" ]]; then .ci/start-selenium.sh; fi
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   
+script:
   # Run unit tests
   - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
@@ -82,6 +96,21 @@ after_script:
 
 cache:
   directories:
-    - $HOME/.sonar/cache
-    - $HOME/sonarscanner
-    - $HOME/sonarlauncher
+  - "$HOME/.sonar/cache"
+  - "$HOME/sonarscanner"
+  - "$HOME/sonarlauncher"
+
+deploy:
+  provider: bintray
+  file: .travis.deploy.json
+  user: asbin
+  key: $BINTRAY_APIKEY
+  on:
+    tags: true
+    repo: monicahq/monica
+    php: '7.1'
+    condition: "$DB = mysql"
+
+after_deploy:
+  - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+  - make docker_push_bintray

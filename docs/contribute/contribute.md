@@ -76,23 +76,31 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 
 Once the above softwares are installed (or if you've finished the installation of Homestead/Valet):
 
-1. `composer install` in the folder the repository has been cloned.
-1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. `npm install` to install all the front-end dependencies and tools needed to compile assets.
 1. Create a database called `monica` in your mySQL instance.
     1. From Homestead directory: `sudo scripts/create-mysql.sh monica` or `mysql -e "CREATE DATABASE 'monica'";` inside mySQL.
     1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
-1. `php artisan setup:test` to setup the database.
-    1. By default this command will also populate the database with fake data.
-    1. Use the `-- skipSeed` option to skip the process of adding fake data in your dev environment.
-1. Optional: `php artisan passport:install` to create the access tokens required for the API.
+1. Run `make install` in the folder the repository has been cloned. This will run :
+    1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+    1. `composer install` to install all packages.
+    1. `npm install` to install all the front-end dependencies and tools needed to compile assets.
+    1. `npm run dev` to compile js and css assets.
+    1. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+    1. `php artisan setup:test` to setup the database.
+       - By default this command will also populate the database with fake data.
+       - Use the `--skipSeed` option to skip the process of adding fake data in your dev environment.
+    1. `php artisan passport:install` to create the access tokens required for the API (Optional).
+1. Update `.env` to your specific needs.
 
 If you haven't skipped the seeding of fake data, two accounts are created by default:
 
 * First account is `admin@admin.com` with the password `admin`. This account contains a lot of fake data that will let you play with the product.
 * Second account is `blank@blank.com` with the password `blank`. This account does not contain any data and shall be used to check all the blank states.
+
+To update a current installation with the latest dependencies, just run `make update` to run
+  1. `composer install`
+  1. `npm install`
+  1. `npm run dev`
+  1. `php artisan migrate`
 
 ## Testing environment
 
