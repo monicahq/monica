@@ -216,7 +216,6 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
@@ -231,7 +230,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if ($contact->setName('', null, $request->input('lastname')) == false) {
+        if ($contact->setName($request->input('firstname'), null, $request->input('lastname')) == false) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -263,19 +262,38 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        // Saves birthdate if defined
-        // $contact->removeSpecialDate('birthdate');
-        // switch ($request->input('birthdate')) {
-        //     case 'unknown':
-        //         break;
-        //     case 'approximate':
-        //         $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
-        //         break;
-        //     case 'exact':
-        //         $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-        //         $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-        //         break;
-        // }
+        // Handling the case of the birthday
+        $contact->removeSpecialDate('birthdate');
+        switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
+            case 'approximate':
+                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+                break;
+            case 'almost':
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = new \Carbon\Carbon($birthdate);
+                $specialDate = $contact->setSpecialDate(
+                    'birthdate',
+                    0,
+                    $birthdate->month,
+                    $birthdate->day
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
+            case 'exact':
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = new \Carbon\Carbon($birthdate);
+                dd($birthdate);
+                $specialDate = $contact->setSpecialDate(
+                    'birthdate',
+                    $birthdate->year,
+                    $birthdate->month,
+                    $birthdate->day
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
+        }
 
         $contact->logEvent('contact', $contact->id, 'update');
 

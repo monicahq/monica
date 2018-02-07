@@ -66,6 +66,10 @@ Vue.component(
     'form-specialdate',
     require('./components/partials/form/SpecialDate.vue')
 );
+Vue.component(
+    'form-date',
+    require('./components/partials/form/Date.vue')
+);
 
 // Dashboard
 Vue.component(

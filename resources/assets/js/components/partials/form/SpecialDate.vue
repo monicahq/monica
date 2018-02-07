@@ -23,7 +23,7 @@
             :value="age"
             v-bind:input-type="'number'"
             v-bind:id="'age'"
-            v-bind:width="100"
+            v-bind:width="50"
             v-bind:required="true">
           ></form-input>
         </div>
@@ -60,12 +60,11 @@
       <div class="pointer" @click="selectedOption = 'exact'">
         I know the exact birthdate of this person…
         <div v-if="selectedOption == 'exact'" class="mt3">
-          <v-date-picker
-              mode='single'
-              v-model='selectedDate'
-              id="birthdate"
-              :input-class="'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
-          </v-date-picker>
+
+          <form-date
+            v-bind:id="'birthdayDate'">
+          </form-date>
+
           <div class="mt3 form-information-message br2">
             <div class="pa3 flex">
               <div class="mr3">
@@ -105,6 +104,9 @@
         },
 
         props: {
+            value: {
+                type: String,
+            },
             days: {
                 type: Array,
             },
@@ -112,11 +114,5 @@
                 type: Array,
             },
         },
-
-        watch: {
-            value: function (newValue) {
-                this.selectedOption = newValue
-            }
-        }
     }
 </script>

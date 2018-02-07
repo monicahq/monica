@@ -1308,7 +1308,7 @@ class Contact extends Model
      *
      * @return SpecialDate
      */
-    public function setSpecialDate($occasion, int $year, int $month, int $day)
+    public function setSpecialDate($occasion, int $year = 0, int $month, int $day)
     {
         if (is_null($occasion)) {
             return;
