@@ -130,9 +130,15 @@ fullclean: clean
 	rm -rf vendor resources/vendor public/fonts/vendor node_modules
 	rm -f public/css/* public/js/* public/mix-manifest.json public/storage bootstrap/cache/*
 
-install: build-dev
+install: .env build-dev
 	php artisan key:generate
 	php artisan setup:test
 	php artisan passport:install
 
-.PHONY: dist clean fullclean install build prepare build-prod build-dev
+update: .env build-dev
+	php artisan migrate
+
+.env:
+	cp .env.example .env
+
+.PHONY: dist clean fullclean install update build prepare build-prod build-dev
