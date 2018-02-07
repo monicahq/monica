@@ -46,14 +46,14 @@
             <form-select
               v-model="selectedDay"
               :options="days"
-              v-bind:id="'month'"
+              v-bind:id="'day'"
               v-bind:title="''">
             </form-select>
           </div>
         </div>
       </div>
     </div>
-    <div class="flex mb3">
+    <div class="flex">
       <div class="mr2">
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="exact">
       </div>
@@ -63,6 +63,7 @@
           <v-date-picker
               mode='single'
               v-model='selectedDate'
+              id="birthdate"
               :input-class="'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
           </v-date-picker>
           <div class="mt3 form-information-message br2">

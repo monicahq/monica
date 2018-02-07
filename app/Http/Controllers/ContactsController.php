@@ -203,6 +203,7 @@ class ContactsController extends Controller
             ->withContact($contact)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withBirthdayState($contact->getBirthdayState())
             ->withGenders(auth()->user()->account->genders);
     }
 
@@ -215,11 +216,13 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
+            'birthdate' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -228,9 +231,13 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
+        if ($contact->setName('', null, $request->input('lastname')) == false) {
+            return back()
+                ->withInput()
+                ->withErrors('There has been a problem with saving the name.');
+        }
+
         $contact->gender_id = $request->input('gender');
-        $contact->first_name = $request->input('firstname');
-        $contact->last_name = $request->input('lastname');
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = true;
@@ -257,18 +264,18 @@ class ContactsController extends Controller
         $contact->save();
 
         // Saves birthdate if defined
-        $contact->removeSpecialDate('birthdate');
-        switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
-            case 'approximate':
-                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
-                break;
-            case 'exact':
-                $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-                break;
-        }
+        // $contact->removeSpecialDate('birthdate');
+        // switch ($request->input('birthdate')) {
+        //     case 'unknown':
+        //         break;
+        //     case 'approximate':
+        //         $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
+        //         break;
+        //     case 'exact':
+        //         $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+        //         $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+        //         break;
+        // }
 
         $contact->logEvent('contact', $contact->id, 'update');
 
