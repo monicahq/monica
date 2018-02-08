@@ -23,7 +23,7 @@ RUN cp docker/000-default.conf /etc/apache2/conf.d \
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN docker/install-composer.sh && ./composer.phar install
+RUN docker/install-composer.sh && ./composer.phar install --no-interaction --prefer-dist --no-suggest --no-dev
 USER root
 
 # This is the command that the container will run by default
