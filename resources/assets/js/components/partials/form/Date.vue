@@ -21,7 +21,7 @@
          */
         data() {
             return {
-                selectedDate: new Date(),
+                selectedDate: new Date('2019-01-01'),
             };
         },
 

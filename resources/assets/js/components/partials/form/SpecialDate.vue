@@ -119,9 +119,6 @@
             age: {
                 type: String,
             },
-            defaultDate: {
-                type: Date,
-            }
         },
     }
 </script>
