@@ -13,6 +13,7 @@ env:
   matrix:
     - DB=mysql
     - DB=postgres
+    - DB=sqlite
   global:
     - SAUCELABS=1
 
@@ -28,9 +29,12 @@ matrix:
       env: DB=mysql
     - php: 7.2
       env: DB=postgres
+    - php: 7.2
+      env: DB=sqlite
   allow_failures:
     - php: 7.2
     - env: DB=postgres
+    - env: DB=sqlite
   fast_finish: true
 
 jdk:
