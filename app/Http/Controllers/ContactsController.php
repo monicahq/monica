@@ -199,11 +199,14 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $age = ! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0;
+
         return view('people.edit')
             ->withContact($contact)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
+            ->withAge($age)
             ->withGenders(auth()->user()->account->genders);
     }
 

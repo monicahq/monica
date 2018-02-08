@@ -113,6 +113,12 @@
             months: {
                 type: Array,
             },
+            defaultDate: {
+                type: Date,
+            },
+            age: {
+                type: Number,
+            }
         },
     }
 </script>

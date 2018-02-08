@@ -6,6 +6,7 @@
     <v-date-picker
         mode='single'
         v-model='selectedDate'
+        :value="Date.now()"
         id="birthdate"
         :input-read-only="true"
         :input-class="'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
@@ -37,9 +38,9 @@
             id: {
                 type: String,
             },
-            birthdayDate: {
-                type: String,
-            }
+            defaultDate: {
+                type: Date,
+            },
         }
     }
 </script>
