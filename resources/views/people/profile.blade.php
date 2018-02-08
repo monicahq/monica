@@ -39,7 +39,11 @@
           <div class="col-xs-12 col-sm-3 profile-sidebar">
             @include('people.dashboard.index')
 
-            <a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a>
+            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a></p>
+            <p>
+              {{ trans('people.people_delete_message') }}
+              <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
+            </p>
           </div>
 
           <div class="col-xs-12 col-sm-9">

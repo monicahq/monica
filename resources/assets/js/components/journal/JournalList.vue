@@ -15,7 +15,7 @@
         <transition name="fade" mode="out-in">
           <div class="flex items-center" v-if="hasRated == 'notYet'" key="rate">
             <div class="w-70 f3 pl2">
-              {{ trans('journal.journal_rate') }}
+              {{ $t('journal.journal_rate') }}
             </div>
             <div class="w-30">
               <div class="flex items-center h-100">
@@ -108,7 +108,7 @@
 
           <div class="flex items-center" v-if="hasRated == 'justNow'" key="comeback">
             <div class="w-70 f3 pl2">
-              {{ trans('journal.journal_come_back') }}
+              {{ $t('journal.journal_come_back') }}
             </div>
           </div>
         </transition>
@@ -123,18 +123,18 @@
         <journal-content-entry v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
       </div>
 
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="journalEntriesLength">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total">
         <p class="mb0 pointer" @click="loadMore()">
-          <span v-if="!loadingMore">{{ trans('app.load_more') }}</span>
-          <span class="black-50" v-if="loadingMore">{{ trans('app.loading') }}</span>
+          <span v-if="!loadingMore">{{ $t('app.load_more') }}</span>
+          <span class="black-50" v-if="loadingMore">{{ $t('app.loading') }}</span>
         </p>
       </div>
 
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="!journalEntriesLength">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="journalEntries.total == 0">
         <h3>
-          {{ trans('journal.journal_blank_cta') }}
+          {{ $t('journal.journal_blank_cta') }}
         </h3>
-        <p>{{ trans('journal.journal_blank_description') }}</p>
+        <p>{{ $t('journal.journal_blank_description') }}</p>
       </div>
 
     </div>
@@ -142,9 +142,9 @@
     <!-- Right sidebar -->
     <div class="fl w-30 pa2">
       <a href="/journal/add" class="btn btn-primary w-100 mb4">
-        {{ trans('journal.journal_add') }}
+        {{ $t('journal.journal_add') }}
       </a>
-      <p>{{ trans('journal.journal_description') }}</p>
+      <p>{{ $t('journal.journal_description') }}</p>
     </div>
   </div>
 </template>
@@ -171,8 +171,14 @@
         },
 
         computed: {
-            journalEntriesLength() {
-                return this.journalEntries.data.length;
+            hasMorePage: function() {
+                var total = this.journalEntries.per_page * this.journalEntries.current_page
+console.log('total ' + total)
+                if (total >= this.journalEntries.total) {
+                  return true
+                }
+
+                return false
             }
         },
 
@@ -203,6 +209,11 @@
                 axios.get('/journal/entries')
                         .then(response => {
                             this.journalEntries = response.data;
+                            this.journalEntries.current_page = response.data.current_page;
+                            this.journalEntries.next_page_url = response.data.next_page_url;
+                            this.journalEntries.per_page = response.data.per_page;
+                            this.journalEntries.prev_page_url = response.data.prev_page_url;
+                            this.journalEntries.total = response.data.total;
                         });
             },
 
@@ -261,21 +272,6 @@
 
                             this.loadingMore = false;
                         });
-            },
-
-            persistClient(method, uri, form) {
-                form.errors = {};
-
-                axios[method](uri, form)
-                    .then(response => {
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = ['Something went wrong. Please try again.'];
-                        }
-                    });
             },
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\User;
+use App\Gender;
 use App\Address;
 use App\Contact;
 use App\Country;
@@ -32,6 +33,7 @@ class AddContactFromVCard implements ShouldQueue
     protected $importJob;
     protected $importedContacts = 0;
     protected $skippedContacts = 0;
+    protected $gender;
 
     /**
      * Create a new job instance.
@@ -54,6 +56,14 @@ class AddContactFromVCard implements ShouldQueue
             $numberOfContactsInTheFile = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s', Storage::disk('public')->get($this->importJob->filename), $matches);
 
             $this->importJob->started_at = \Carbon\Carbon::now();
+
+            // create special gender for this import
+            // we don't know which gender all the contacts are, so we need to create a special status for them, as we
+            // can't guess whether they are men, women or else.
+            $this->gender = new Gender;
+            $this->gender->account_id = $this->importJob->account_id;
+            $this->gender->name = 'vCard';
+            $this->gender->save();
 
             collect($matches[0])->map(function ($vcard) {
                 return Reader::read($vcard);
@@ -84,7 +94,7 @@ class AddContactFromVCard implements ShouldQueue
                     $contact->first_name = $this->formatValue($vcard->NICKNAME);
                 }
 
-                $contact->gender = 'none';
+                $contact->gender_id = $this->gender->id;
 
                 $contact->job = $this->formatValue($vcard->ORG);
 

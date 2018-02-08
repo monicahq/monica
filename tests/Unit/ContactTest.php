@@ -12,6 +12,18 @@ class ContactTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_a_gender()
+    {
+        $account = factory('App\Account')->create([]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact = factory('App\Contact')->create(['gender_id' => $gender->id]);
+
+        $this->assertTrue($contact->gender()->exists());
+    }
+
     public function testGetFirstnameReturnsNullWhenUndefined()
     {
         $contact = new Contact;

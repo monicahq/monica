@@ -69,7 +69,7 @@ class PersonalizationController extends Controller
                 ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return $this->respond([
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
@@ -95,6 +95,9 @@ class PersonalizationController extends Controller
         return $contactFieldType;
     }
 
+    /**
+     * Destroy the contact field type.
+     */
     public function destroyContactFieldType(Request $request, $contactFieldTypeId)
     {
         try {
@@ -102,7 +105,7 @@ class PersonalizationController extends Controller
                 ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return $this->respond([
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
@@ -110,7 +113,7 @@ class PersonalizationController extends Controller
         }
 
         if ($contactFieldType->delible == false) {
-            return $this->respond([
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],

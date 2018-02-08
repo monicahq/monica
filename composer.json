@@ -31,6 +31,7 @@
         "laravel/passport": "^4.0",
         "laravel/socialite": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
+        "martinlindhe/laravel-vue-i18n-generator": "^0.1.21",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/google2fa": "^2.0",
         "pragmarx/google2fa-laravel": "dev-create-authenticator-controller",
