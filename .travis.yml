@@ -63,7 +63,7 @@ install:
   - npm install
   - npm run production
   # Create dist file before running composer install with dev dependencies
-  - make docker_build
+#  - make docker_build
   - make dist
   # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
@@ -112,5 +112,7 @@ deploy:
     condition: "$DB = mysql"
 
 after_deploy:
+  - make clean
+  - make docker_build
   - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
   - make docker_push_bintray
