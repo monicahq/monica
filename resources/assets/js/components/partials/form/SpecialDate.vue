@@ -62,7 +62,8 @@
         <div v-if="selectedOption == 'exact'" class="mt3">
 
           <form-date
-            v-bind:id="'birthdayDate'">
+            v-bind:id="'birthdayDate'"
+            v-bind:default-date="defaultDate">
           </form-date>
 
           <div class="mt3 form-information-message br2">
@@ -92,7 +93,6 @@
                 selectedOption: 'unknown',
                 selectedMonth: 0,
                 selectedDay: 0,
-                age: 0,
             };
         },
 
@@ -117,7 +117,10 @@
                 type: Date,
             },
             age: {
-                type: Number,
+                type: String,
+            },
+            defaultDate: {
+                type: Date,
             }
         },
     }

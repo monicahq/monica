@@ -199,13 +199,15 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        $age = ! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0;
+        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->timestamp : \Carbon\Carbon::now()->timestamp;
 
         return view('people.edit')
             ->withContact($contact)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
+            ->withBirthdate($birthdate)
             ->withAge($age)
             ->withGenders(auth()->user()->account->genders);
     }
@@ -287,7 +289,6 @@ class ContactsController extends Controller
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
                 $birthdate = new \Carbon\Carbon($birthdate);
-                dd($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
