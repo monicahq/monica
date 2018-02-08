@@ -145,3 +145,4 @@ update: .env build-dev
 	cp .env.example .env
 
 .PHONY: dist clean fullclean install update build prepare build-prod build-dev
+
