@@ -63,7 +63,6 @@ install:
   - npm install
   - npm run production
   # Create dist file before running composer install with dev dependencies
-#  - make docker_build
   - make dist
   # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
@@ -78,7 +77,7 @@ script:
   - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php; fi" &
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php >/dev/null; fi" &
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
 
   # Run browser tests
