@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangeNumberTasksContact extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -20,8 +23,8 @@ class ChangeNumberTasksContact extends Migration
         });
 
         Schema::table('contacts', function (Blueprint $table) {
-            $table->integer('number_of_tasks_in_progress')->after('number_of_gifts_offered');
-            $table->integer('number_of_tasks_completed')->after('number_of_tasks_in_progress');
+            $this->default($table->integer('number_of_tasks_in_progress'), 0)->after('number_of_gifts_offered');
+            $this->default($table->integer('number_of_tasks_completed'), 0)->after('number_of_tasks_in_progress');
         });
     }
 

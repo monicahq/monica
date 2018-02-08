@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangeStringToBooleanForReminders extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -15,7 +18,7 @@ class ChangeStringToBooleanForReminders extends Migration
     {
         // create new column
         Schema::table('reminders', function ($table) {
-            $table->boolean('is_a_birthday')->after('is_birthday');
+            $this->default($table->boolean('is_a_birthday'), 0)->after('is_birthday');
         });
 
         $reminders = DB::table('reminders')->get();

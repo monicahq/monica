@@ -1,11 +1,13 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangePeopleInEvents extends Migration
 {
+    use MigrationHelper;
     /**
      * Run the migrations.
      *
@@ -20,7 +22,7 @@ class ChangePeopleInEvents extends Migration
         });
 
         Schema::table('events', function (Blueprint $table) {
-            $table->integer('contact_id')->after('account_id');
+            $this->default($table->integer('contact_id'), 0)->after('account_id');
         });
     }
 

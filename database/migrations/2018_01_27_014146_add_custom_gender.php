@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddCustomGender extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -21,7 +24,7 @@ class AddCustomGender extends Migration
         });
 
         Schema::table('contacts', function (Blueprint $table) {
-            $table->integer('gender_id')->after('gender');
+            $this->default($table->integer('gender_id'), 0)->after('gender');
         });
 
         $accounts = DB::table('accounts')->select('id')->get();

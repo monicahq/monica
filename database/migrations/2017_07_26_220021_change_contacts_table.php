@@ -1,12 +1,15 @@
 <?php
 
 use App\Contact;
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangeContactsTable extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -17,13 +20,15 @@ class ChangeContactsTable extends Migration
         Schema::table('contacts', function ($table) {
             $table->boolean('is_significant_other')->after('gender')->default(0);
             $table->boolean('is_kid')->after('is_significant_other')->default(0);
+        });
+        Schema::table('contacts', function ($table) {
             $table->dropColumn(
                 'has_kids', 'number_of_kids', 'nature_of_relationship'
             );
         });
 
         Schema::table('significant_others', function ($table) {
-            $table->integer('temp_contact_id');
+            $this->default($table->integer('temp_contact_id'), 0);
         });
 
         $significantOthers = DB::table('significant_others')->get();

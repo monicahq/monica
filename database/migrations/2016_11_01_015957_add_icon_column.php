@@ -1,10 +1,13 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 
 class AddIconColumn extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -13,7 +16,7 @@ class AddIconColumn extends Migration
     public function up()
     {
         Schema::table('activity_types', function ($table) {
-            $table->string('icon')->after('key');
+            $this->default($table->string('icon'), '')->after('key');
         });
     }
 
