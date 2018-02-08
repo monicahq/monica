@@ -101,14 +101,17 @@ $(ASSETS):
 
 dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .travis.deploy.json
 
+COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
+
 .travis.deploy.json: .travis.deploy.json.in
-	sed -s "s/\$$(version)/$(BUILD)/" $< | \
-		sed -s "s/\$$(description)/$(subst ",\\\\\",$(TRAVIS_COMMIT_MESSAGE))/" | \
-		sed -s "s/\$$(released)/$(shell date --iso-8601=date)/" | \
-		sed -s "s/\$$(travis_tag)/$(TRAVIS_TAG)/" | \
-		sed -s "s/\$$(travis_commit)/$(GIT_COMMIT)/" | \
-		sed -s "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" | \
-		sed -s "s/\$$(date)/$(shell date --iso-8601=s)/" > $@
+	cp $< $@
+	sed -si "s/\$$(version)/$(BUILD)/" $@
+	sed -si "s/\$$(description)/$(COMMIT_MESSAGE)/" $@
+	sed -si "s/\$$(released)/$(shell date --iso-8601=date)/" $@
+	sed -si "s/\$$(travis_tag)/$(TRAVIS_TAG)/" $@
+	sed -si "s/\$$(travis_commit)/$(GIT_COMMIT)/" $@
+	sed -si "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" $@
+	sed -si "s/\$$(date)/$(shell date --iso-8601=s)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<
@@ -142,3 +145,4 @@ update: .env build-dev
 	cp .env.example .env
 
 .PHONY: dist clean fullclean install update build prepare build-prod build-dev
+
