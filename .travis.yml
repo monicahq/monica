@@ -78,14 +78,14 @@ script:
 
   # Start http server
   - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php 2>/dev/null; fi" &
-  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
+  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
 
   # Run browser tests
   - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
   - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv; fi
+  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
 
 after_script:
-  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
   - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
   - if [[ "$SELENIUM" == "1" ]]; then cat selenium-server.log; fi
   - if [[ "$SELENIUM" == "1" ]]; then cat selenium-node.log; fi
