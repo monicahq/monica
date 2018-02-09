@@ -63,7 +63,6 @@ install:
   - npm install
   - npm run production
   # Create dist file before running composer install with dev dependencies
-  - make docker_build
   - make dist
   # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
@@ -78,15 +77,15 @@ script:
   - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S 127.0.0.1:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php; fi" &
-  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for laravel server to start...; done; fi
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php 2>/dev/null; fi" &
+  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
 
   # Run browser tests
   - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
   - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv; fi
+  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
 
 after_script:
-  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
   - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
   - if [[ "$SELENIUM" == "1" ]]; then cat selenium-server.log; fi
   - if [[ "$SELENIUM" == "1" ]]; then cat selenium-node.log; fi
@@ -112,5 +111,7 @@ deploy:
     condition: "$DB = mysql"
 
 after_deploy:
+  - make clean
+  - make docker_build
   - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
   - make docker_push_bintray
