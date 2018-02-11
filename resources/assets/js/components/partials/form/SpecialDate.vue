@@ -9,7 +9,7 @@
         <input type="radio" id="" v-model="selectedOption" name="birthdate" selected value="unknown">
       </div>
       <div class="pointer" @click="selectedOption = 'unknown'">
-        I do not know this person’s age
+        {{ $t('people.information_edit_unknown') }}
       </div>
     </div>
     <div class="flex mb3">
@@ -17,7 +17,7 @@
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="approximate">
       </div>
       <div class="pointer" @click="selectedOption = 'approximate'">
-        This person is probably…
+        {{ $t('people.information_edit_probably') }}
         <div v-if="selectedOption == 'approximate'">
           <form-input
             :value="age"
@@ -58,7 +58,7 @@
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="exact">
       </div>
       <div class="pointer" @click="selectedOption = 'exact'">
-        I know the exact birthdate of this person…
+        {{ $t('people.information_edit_exact') }}
         <div v-if="selectedOption == 'exact'" class="mt3">
 
           <form-date
@@ -72,7 +72,7 @@
                 <svg viewBox="0 0 20 20"><g fill-rule="evenodd"><circle cx="10" cy="10" r="9" fill="currentColor"></circle><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0m0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8m1-5v-3a1 1 0 0 0-1-1H9a1 1 0 1 0 0 2v3a1 1 0 0 0 1 1h1a1 1 0 1 0 0-2m-1-5.9a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2"></path></g></svg>
               </div>
               <div class="">
-                If you indicate an exact birthdate for this person, we will create a new reminder for you - so you'll be notified every year when it's time to celebrate this person's birthdate.
+                {{ $t('people.information_edit_help') }}
               </div>
             </div>
           </div>
