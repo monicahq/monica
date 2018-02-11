@@ -38,6 +38,12 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
             @include('people.dashboard.index')
+
+            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a></p>
+            <p>
+              {{ trans('people.people_delete_message') }}
+              <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
+            </p>
           </div>
 
           <div class="col-xs-12 col-sm-9">
@@ -59,11 +65,11 @@
               @include('people.reminders.index')
             </div>
 
-            <div class="row section tasks">
+            <div class="row section">
               @include('people.tasks.index')
             </div>
 
-            <div class="row section gifts">
+            <div class="row section">
               @include('people.gifts.index')
             </div>
 

@@ -31,7 +31,8 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.add')
             ->withContact($contact)
-            ->withKid(new Contact);
+            ->withKid(new Contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -51,7 +52,7 @@ class KidsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -66,7 +67,7 @@ class KidsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -126,7 +127,8 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.edit')
             ->withContact($contact)
-            ->withKid($kid);
+            ->withKid($kid)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -143,7 +145,7 @@ class KidsController extends Controller
             $request->only([
                 'first_name',
                 'last_name',
-                'gender',
+                'gender_id',
             ])
             + [
                 'account_id' => $contact->account_id,

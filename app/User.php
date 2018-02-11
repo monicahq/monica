@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class User extends Authenticatable
 {
-    use Notifiable,HasApiTokens;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -79,6 +79,17 @@ class User extends Authenticatable
         } else {
             return 'C';
         }
+    }
+
+    /**
+     * Get the user's locale.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getLocaleAttribute($value)
+    {
+        return $value;
     }
 
     /**

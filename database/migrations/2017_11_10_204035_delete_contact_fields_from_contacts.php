@@ -14,7 +14,7 @@ class DeleteContactFieldsFromContacts extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->dropIndex('unique_for_each_account_email_pair');
+            $table->dropUnique('unique_for_each_account_email_pair');
             $table->dropColumn('email');
             $table->dropColumn('phone_number');
             $table->dropColumn('street');

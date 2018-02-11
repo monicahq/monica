@@ -81,7 +81,7 @@ class SettingsController extends Controller
         );
 
         return redirect('settings')
-            ->with('status', trans('settings.settings_success'));
+            ->with('status', trans('settings.settings_success', [], $request['locale']));
     }
 
     /**
@@ -110,8 +110,10 @@ class SettingsController extends Controller
 
         DB::table('accounts')->where('id', $account->id)->delete();
 
-        if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
-            auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancelNow();
+        $account = auth()->user()->account;
+
+        if ($account->isSubscribed()) {
+            $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 
         auth()->logout();

@@ -6,11 +6,11 @@
     <div>
       <img src="/img/people/tasks.svg" class="icon-section icon-tasks">
       <h3>
-        {{ trans('people.section_personal_tasks') }}
+        {{ $t('people.section_personal_tasks') }}
 
         <span class="fr f6 pt2" v-if="tasks.length != 0">
-          <a class="pointer" @click="editMode = true" v-if="!editMode">{{ trans('app.edit') }}</a>
-          <a class="pointer" @click="editMode = false" v-if="editMode">{{ trans('app.done') }}</a>
+          <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
+          <a class="pointer" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
         </span>
       </h3>
     </div>
@@ -19,8 +19,8 @@
 
       <!-- EMPTY STATE -->
       <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3">
-        <p>{{ trans('people.tasks_blank_title') }}</p>
-        <p><a class="pointer" @click="toggleAddMode">{{ trans('people.tasks_add_task') }}</a></p>
+        <p>{{ $t('people.tasks_blank_title') }}</p>
+        <p><a class="pointer" @click="toggleAddMode">{{ $t('people.tasks_add_task') }}</a></p>
       </div>
 
       <!-- LIST OF IN PROGRESS TASKS -->
@@ -38,19 +38,19 @@
           <form class="bg-near-white pa2 br2 mt3 mb3" v-show="task.edit">
             <div class="">
               <label class="db fw6 lh-copy f6">
-                {{ trans('people.tasks_form_title') }}
+                {{ $t('people.tasks_form_title') }}
               </label>
               <input class="pa2 db w-100" type="text" v-model="task.title" @keyup.esc="editMode = false">
             </div>
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                {{ trans('people.tasks_form_description') }}
+                {{ $t('people.tasks_form_description') }}
               </label>
               <textarea class="pa2 db w-100" type="text" v-model="task.description" @keyup.esc="editMode = false"></textarea>
             </div>
             <div class="lh-copy mt3">
-              <a @click.prevent="update(task)" class="btn btn-primary">{{ trans('app.update') }}</a>
-              <a class="btn" @click="toggleEditMode(task)">{{ trans('app.cancel') }}</a>
+              <a @click.prevent="update(task)" class="btn btn-primary">{{ $t('app.update') }}</a>
+              <a class="btn" @click="toggleEditMode(task)">{{ $t('app.cancel') }}</a>
             </div>
           </form>
         </li>
@@ -58,7 +58,7 @@
 
       <!-- ADD TASK TO ENTER ADD MODE -->
       <div v-if="!updateMode && !addMode && tasks.length != 0" class="bg-near-white pa2 br2 mt3 mb3">
-        <a class="pointer" @click="toggleAddMode">{{ trans('people.tasks_add_task') }}</a>
+        <a class="pointer" @click="toggleAddMode">{{ $t('people.tasks_add_task') }}</a>
       </div>
 
       <!-- ADD A TASK VIEW -->
@@ -66,19 +66,19 @@
         <form class="bg-near-white pa2 br2 mt3 mb3">
           <div class="">
             <label class="db fw6 lh-copy f6">
-              {{ trans('people.tasks_form_title') }}
+              {{ $t('people.tasks_form_title') }}
             </label>
             <input class="pa2 db w-100" type="text" v-model="createForm.title" @keyup.esc="addMode = false">
           </div>
           <div class="mt3">
             <label class="db fw6 lh-copy f6">
-              {{ trans('people.tasks_form_description') }}
+              {{ $t('people.tasks_form_description') }}
             </label>
             <textarea class="pa2 db w-100" type="text" v-model="createForm.description" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
-            <a @click.prevent="store" class="btn btn-primary">{{ trans('app.add') }}</a>
-            <a class="btn" @click="addMode = false">{{ trans('app.cancel') }}</a>
+            <a @click.prevent="store" class="btn btn-primary">{{ $t('app.add') }}</a>
+            <a class="btn" @click="addMode = false">{{ $t('app.cancel') }}</a>
           </div>
         </form>
       </div>

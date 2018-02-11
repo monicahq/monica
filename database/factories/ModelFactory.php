@@ -59,7 +59,6 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Contact::class, function (Faker\Generator $faker) {
     return [
-        'id' => 1,
         'account_id' => 1,
         'first_name' => 'John',
         'last_name' => 'Doe',
@@ -140,8 +139,82 @@ $factory->define(App\Address::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Gender::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Day::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Progenitor::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Tag::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\JournalEntry::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Pet::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\PetCategory::class, function (Faker\Generator $faker) {
+    return [];
+});
+
+$factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
+    return [
+        'id' => 1,
+        'account_id' => 1,
+        'name' => 'Email',
+        'protocol' => 'mailto:',
+        'type' => 'email',
+    ];
+});
+
+$factory->define(App\ContactField::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_field_type_id' => 1,
+        'data' => 'john@doe.com',
+    ];
+});
+
+$factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
+    static $account_id;
+    static $stripe_plan;
+    static $name;
+    static $stripe_id;
+
+    return [
+        'account_id' => $account_id,
+        'name' => $name ?: $faker->randomElement(['main']),
+        'stripe_id' => $stripe_id,
+        'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
+        'quantity' => 1,
+        'created_at' => \Carbon\Carbon::now(),
     ];
 });

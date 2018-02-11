@@ -26,6 +26,10 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
+// Calendar
+import Datepicker from 'vuejs-datepicker';
+Vue.use(Datepicker);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -46,6 +50,24 @@ Vue.component(
 Vue.component(
     'avatar',
     require('./components/partials/Avatar.vue')
+);
+
+// Form elements
+Vue.component(
+    'form-input',
+    require('./components/partials/form/Input.vue')
+);
+Vue.component(
+    'form-select',
+    require('./components/partials/form/Select.vue')
+);
+Vue.component(
+    'form-specialdate',
+    require('./components/partials/form/SpecialDate.vue')
+);
+Vue.component(
+    'form-date',
+    require('./components/partials/form/Date.vue')
 );
 
 // Dashboard
@@ -73,6 +95,11 @@ Vue.component(
 Vue.component(
     'contact-note',
     require('./components/people/Notes.vue')
+);
+
+Vue.component(
+    'contact-gift',
+    require('./components/people/Gifts.vue')
 );
 
 Vue.component(
@@ -112,12 +139,23 @@ Vue.component(
     require('./components/settings/ContactFieldTypes.vue')
 );
 
+Vue.component(
+    'genders',
+    require('./components/settings/Genders.vue')
+);
 
-// This let us access the `trans` method for localization in Vue templates
-// ({{ trans('app.save') }})
-Vue.prototype.trans = (key) => {
-    return _.get(window.trans, key, key);
-};
+
+// i18n
+import VueInternalization from 'vue-i18n';
+import Locales from './vue-i18n-locales.generated.js';
+
+Vue.use(VueInternalization);
+
+Vue.config.lang = window.Laravel.locale;
+
+Object.keys(Locales).forEach(function (lang) {
+  Vue.locale(lang, Locales[lang])
+});
 
 const app = new Vue({
     el: '#app',

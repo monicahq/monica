@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * A relationship defines relations between contacts.
+ * An offspring is the child of a contact.
  */
 class Offspring extends Model
 {

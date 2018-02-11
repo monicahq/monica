@@ -63,8 +63,6 @@ class DateHelper
         $locale = self::getLocale($locale);
         $format = 'M';
 
-        \Log::info($date);
-
         return $date->format($format);
     }
 
@@ -182,7 +180,8 @@ class DateHelper
     }
 
     /**
-     * Get the name of the month and year of the month given in parameter.
+     * Get the name of the month and year of a given date with a given number
+     * of months more.
      * @param  int    $month
      * @return string
      */
@@ -192,5 +191,60 @@ class DateHelper
         $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
 
         return $month.' '.$year;
+    }
+
+    /**
+     * Gets the next theoritical billing date.
+     * This is used on the Upgrade page to tell the user when the next billing
+     * date would be if he subscribed.
+     *
+     * @param  string
+     * @return Carbon
+     */
+    public static function getNextTheoriticalBillingDate(String $interval)
+    {
+        if ($interval == 'monthly') {
+            return Carbon::now()->addMonth();
+        }
+
+        return Carbon::now()->addYear();
+    }
+
+    /**
+     * Gets a list of all the months in a year.
+     *
+     * @return array
+     */
+    public static function getListOfMonths()
+    {
+        Carbon::setLocale(auth()->user()->locale);
+        $months = collect([]);
+        $currentDate = Carbon::now();
+        $currentDate->day = 1;
+
+        for ($month = 1; $month < 13; $month++) {
+            $currentDate->month = $month;
+            $months->push([
+                'id' => $month,
+                'name' => $currentDate->formatLocalized('%B'),
+            ]);
+        }
+
+        return $months;
+    }
+
+    /**
+     * Gets a list of all the days in a month.
+     *
+     * @return array
+     */
+    public static function getListOfDays()
+    {
+        $days = collect([]);
+        for ($day = 1; $day < 32; $day++) {
+            $days->push(['id' => $day, 'name' => $day]);
+        }
+
+        return $days;
     }
 }

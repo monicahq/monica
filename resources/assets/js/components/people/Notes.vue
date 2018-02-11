@@ -11,9 +11,9 @@
     <div>
       <div>
         <form class="bg-near-white pa2 br2 mb3">
-          <textarea class="w-100 br2 pa2 b--light-gray" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="trans('people.notes_add_cta')"></textarea>
-          <a class="pointer btn btn-primary" @click.prevent="store" v-if="addMode">{{ trans('app.add') }}</a>
-          <a class="pointer btn btn-secondary" @click="addMode = false" v-if="addMode">{{ trans('app.cancel') }}</a>
+          <textarea class="w-100 br2 pa2 b--light-gray" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="$t('people.notes_add_cta')"></textarea>
+          <a class="pointer btn btn-primary" @click.prevent="store" v-if="addMode">{{ $t('app.add') }}</a>
+          <a class="pointer btn btn-secondary" @click="addMode = false" v-if="addMode">{{ $t('app.cancel') }}</a>
         </form>
       </div>
 
@@ -27,14 +27,14 @@
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
                 <div class="f5 di mr1">
-                  <i @click="toggleFavorite(note)" class="pointer" v-bind:class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" v-tooltip.top="trans('people.notes_favorite')"></i>
+                  <i @click="toggleFavorite(note)" class="pointer" v-bind:class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" v-tooltip.top="$t('people.notes_favorite')"></i>
                 </div>
                 {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" @click="toggleEditMode(note)">{{ trans('app.edit') }}</a>
+                <a class="pointer" @click="toggleEditMode(note)">{{ $t('app.edit') }}</a>
                 |
-                <a class="pointer" @click.prevent="showDelete(note)">{{ trans('app.delete') }}</a>
+                <a class="pointer" @click.prevent="showDelete(note)">{{ $t('app.delete') }}</a>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
           <!-- EDIT MODE -->
           <form class="bg-near-white pa2 br2 mt3 mb3" v-show="note.edit">
             <textarea class="w-100 br2 pa2 b--light-gray" v-model="note.body" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" @click.prevent="update(note)">{{ trans('app.update') }}</a>
+            <a class="pointer btn btn-primary" @click.prevent="update(note)">{{ $t('app.update') }}</a>
           </form>
 
         </li>
@@ -55,17 +55,17 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ trans('people.notes_delete_title') }}</h5>
+            <h5 class="modal-title">{{ $t('people.notes_delete_title') }}</h5>
             <button type="button" class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>{{ trans('people.notes_delete_confirmation') }}</p>
+            <p>{{ $t('people.notes_delete_confirmation') }}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click.prevent="trash(note)">{{ trans('app.delete') }}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('app.cancel') }}</button>
+            <button type="button" class="btn btn-danger" @click.prevent="trash(note)">{{ $t('app.delete') }}</button>
           </div>
         </div>
       </div>

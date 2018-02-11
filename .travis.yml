@@ -3,56 +3,115 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 services:
   - mysql
+  - docker
+  - postgresql
+
+env:
+  matrix:
+    - DB=mysql
+    - DB=postgres
+  global:
+    - SAUCELABS=1
+
+matrix:
+  include:
+    - php: 7.1
+      env:
+        - DB=mysql
+        - SELENIUM=1
+        - COVERAGE=1
+  exclude:
+    - php: 7.1
+      env: DB=mysql
+    - php: 7.2
+      env: DB=postgres
+  allow_failures:
+    - php: 7.2
+    - env: DB=postgres
+  fast_finish: true
 
 jdk:
   - oraclejdk8
 
-addons:
-  chrome: stable
+git:
+  depth: false
 
-before_script:
-  - cp .env.travis .env
-  - mysql -e 'create database monica;'
+addons:
+  postgresql: "9.6"
+  chrome: stable
+  sauce_connect:
+    username: "monicahq"
+  jwt:
+    secure: "Z6XcUlBrmiO085kmF/WBRA6dnhtIhdQG+olFHM5CmQXkIXKUTR7wwAMRg+ys5NtFKVspYPDPPtV9CdEl1zQ3Ii3aSWentsCwbXxGurPqvY+aQjP1U1CmURvPY55BGTMHabt5WcPnFVIJql3vCfD2BFWwIk/78cQ9QKuDJ7/2BxFzWE4AZG9wKYzbqYGbc4l4wdvEE0H0ClRzqGPDvyWpUw1RbZU0lVud0JVa9UXntmtsEFgKEZ7WTTSm2XgoFtVK9qVrXc8TEVve126FSoi5GIxQFdQ/ZWybq5AggVy/Dp5w+q9zCLu19J95itGKpj+GL+9YCJSo4lqHlyLtZ+Ddt41y2E6O4SXoHCjeiFK3wV00AKWIpLedHBovdT2fnQ4f62GrOFA6iw8hV0ftxiFgRwdxv/r+ee1PDy5tQeLl/A0UelIAGy0ZyCfYDgaoK3td45iXcnBUjnbveq8rFgUNkdCXwBCJF89veQS4F/QQFms1AWsodifmT6PgIaWgk6Nt0dPO5jAT6NZ2wlHlkXu80TZf6pJCVC+Pvmuwdlhs+clSizjVJOQ0wVBCETmz4VSKPXLTgdlySncfKrnO8VnfospfZ5KwMGm4JR0wtixH0qTPNDKRlv4X/OedTJFZeN9iqJmWJLTfYc7I16TFXhOpdhP5o+yQE+k7BFrTveGG5bw="
+
+before_install:
+  - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
+  - cp .env.$DB.travis .env
+  - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
+  - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
   - composer self-update
+  - docker-compose --version
+
+install:
+  # Get packages without require-dev
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --no-dev
+  # Build js and css assets
+  - npm install
+  - npm run production
+  # Create dist file before running composer install with dev dependencies
+  - make dist
+  # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
-  # Start Xvfb
-  - "export DISPLAY=:99.0"
-  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24"
-
-  # Start selenium server
-  - vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
-  - until $(echo | nc localhost 4444); do sleep 1; echo Waiting for selenium hub to start...; done;
-
-  # Start selenium node for headless Chrome
-  - export PATH="$(pwd)/vendor/bin:$PATH"
-  - vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
-  - until $(echo | nc localhost  8910); do sleep 1; echo Waiting for selenium node to start...; done;
-
-script:
+before_script:
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" == "1" ]]; then .ci/start-selenium.sh; fi
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
-  - vendor/bin/phpunit
+  
+script:
+  # Run unit tests
+  - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - php artisan serve &
-  - until $(echo | nc localhost  8000); do sleep 1; echo Waiting for laravel server to start...; done;
-  - vendor/bin/steward run laravel chrome
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php 2>/dev/null; fi" &
+  - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
+
+  # Run browser tests
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
+  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv; fi
+  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
 
 after_script:
-  - vendor/bin/steward results -vvv
-  - cat selenium-server.log
-  - cat selenium-node.log
-  - ./travis-sonar.sh
-
-after_success:
-    - bash <(curl -s https://codecov.io/bash) -f results/clover.xml
+  - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
+  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-server.log; fi
+  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-node.log; fi
+  - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
+  - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
+  - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi
 
 cache:
   directories:
-    - $HOME/.sonar/cache
-    - $HOME/sonarscanner
-    - $HOME/sonarlauncher
+  - "$HOME/.sonar/cache"
+  - "$HOME/sonarscanner"
+  - "$HOME/sonarlauncher"
+
+deploy:
+  provider: bintray
+  file: .travis.deploy.json
+  user: asbin
+  key: $BINTRAY_APIKEY
+  on:
+    tags: true
+    repo: monicahq/monica
+    php: '7.1'
+    condition: "$DB = mysql"
+
+after_deploy:
+  - make clean
+  - make docker_build
+  - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+  - make docker_push_bintray

@@ -5,16 +5,16 @@
   <div class="br2 pa3 mb3 f6" v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
     <div class="w-100 dt">
       <div class="dtc">
-        <h3 class="f6 ttu normal">{{ trans('people.contact_info_title') }}</h3>
+        <h3 class="f6 ttu normal">{{ $t('people.contact_info_title') }}</h3>
       </div>
       <div class="dtc tr" v-if="contactInformationData.length > 0">
-        <a class="pointer" @click="editMode = true" v-if="!editMode">{{ trans('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ trans('app.done') }}</a>
+        <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
     </div>
 
     <p class="mb0" v-if="contactInformationData.length == 0 && !addMode">
-      <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
+      <a class="pointer" @click="toggleAdd">{{ $t('app.add') }}</a>
     </p>
 
     <ul v-if="contactInformationData.length > 0">
@@ -38,20 +38,20 @@
           <form class="measure center">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                {{ trans('people.contact_info_form_content') }}
+                {{ $t('people.contact_info_form_content') }}
               </label>
               <input class="pa2 db w-100" type="text" v-model="updateForm.data">
             </div>
             <div class="lh-copy mt3">
-              <a @click.prevent="update(contactInformation)" class="btn btn-primary">{{ trans('app.save') }}</a>
-              <a class="btn" @click="toggleEdit(contactInformation)">{{ trans('app.cancel') }}</a>
+              <a @click.prevent="update(contactInformation)" class="btn btn-primary">{{ $t('app.save') }}</a>
+              <a class="btn" @click="toggleEdit(contactInformation)">{{ $t('app.cancel') }}</a>
             </div>
           </form>
         </div>
 
       </li>
       <li v-if="editMode && !addMode">
-        <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
+        <a class="pointer" @click="toggleAdd">{{ $t('app.add') }}</a>
       </li>
     </ul>
 
@@ -59,7 +59,7 @@
       <form class="measure center">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            {{ trans('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ trans('people.contact_info_form_personalize') }}</a>
+            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ $t('people.contact_info_form_personalize') }}</a>
           </label>
           <select class="db w-100 h2" v-model="createForm.contact_field_type_id">
             <option v-for="contactFieldType in contactFieldTypes" v-bind:value="contactFieldType.id">
@@ -69,13 +69,13 @@
         </div>
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            {{ trans('people.contact_info_form_content') }}
+            {{ $t('people.contact_info_form_content') }}
           </label>
           <input class="pa2 db w-100" type="text" v-model="createForm.data">
         </div>
         <div class="lh-copy mt3">
-          <a @click.prevent="store" class="btn btn-primary">{{ trans('app.add') }}</a>
-          <a class="btn" @click="addMode = false">{{ trans('app.cancel') }}</a>
+          <a @click.prevent="store" class="btn btn-primary">{{ $t('app.add') }}</a>
+          <a class="btn" @click="addMode = false">{{ $t('app.cancel') }}</a>
         </div>
       </form>
     </div>

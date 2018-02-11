@@ -58,7 +58,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'gender',
+        'gender_id',
         'account_id',
         'is_partial',
         'job',
@@ -104,6 +104,16 @@ class Contact extends Model
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the gender of the contact.
+     *
+     * @return HasOne
+     */
+    public function gender()
+    {
+        return $this->belongsTo('App\Gender');
     }
 
     /**
@@ -525,6 +535,26 @@ class Contact extends Model
     }
 
     /**
+     * Get the job of the contact.
+     *
+     * @return string
+     */
+    public function getJobAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the company the contact works at.
+     *
+     * @return string
+     */
+    public function getCompanyAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
      * Get the current Significant Others, if they exists, or return null otherwise.
      *
      * @return Collection
@@ -675,14 +705,14 @@ class Contact extends Model
     }
 
     /**
-     * Update the name of the contact.
+     * Set the name of the contact.
      *
      * @param  string $firstName
      * @param  string $middleName
      * @param  string $lastName
      * @return bool
      */
-    public function updateName($firstName, $middleName, $lastName)
+    public function setName(String $firstName, String $middleName = null, String $lastName)
     {
         if ($firstName == '') {
             return false;
@@ -701,6 +731,31 @@ class Contact extends Model
         $this->save();
 
         return true;
+    }
+
+    /**
+     * Returns the state of the birthday.
+     * As it's a Special Date, the date can have several states. We need this
+     * info when we populate the Edit contact sheet.
+     *
+     * @return string
+     */
+    public function getBirthdayState()
+    {
+        if (! $this->birthday_special_date_id) {
+            return 'unknown';
+        }
+
+        if ($this->birthdate->is_age_based) {
+            return 'approximate';
+        }
+
+        // we know at least the day and month
+        if ($this->birthdate->is_year_unknown) {
+            return 'almost';
+        }
+
+        return 'exact';
     }
 
     /**
@@ -780,7 +835,7 @@ class Contact extends Model
      * @param  int $size
      * @return string
      */
-    public function getAvatarURL($size = 100)
+    public function getAvatarURL($size = 110)
     {
         // it either returns null or the gravatar url if it's defined
         if (! $this->has_avatar) {
@@ -796,7 +851,7 @@ class Contact extends Model
         $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
         $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
 
-        return Storage::disk($this->avatar_location)->url($resized_avatar);
+        return asset(Storage::disk($this->avatar_location)->url($resized_avatar));
     }
 
     /**

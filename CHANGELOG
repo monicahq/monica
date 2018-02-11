@@ -1,6 +1,21 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to create custom genders
+* Add Annual plan for the .com site
+* Fix avatar being invalid in the Contact API call
+* DB_PREFIX is now blank in .env.example
+* Fix empty message after updating a gift
+
+RELEASED VERSIONS:
+
+v1.6.2 - 2018-01-25
+-------------------
+
+* Add support for pets in the API
+* Add ability to export a contact to vCard
+* Add ability to mark a gift idea as being offered
+* Add translation for "preferences updated" message in the Settings page
+* Add a lot of unit tests
 
 v1.6.1 - 2018-01-14
 -------------------
@@ -10,8 +25,7 @@ v1.6.1 - 2018-01-14
 * Remove duplicated code in Addresses.vue file
 * Fix reminders not being sent in some cases
 * Fix avatars not being displayed in an activity on the journal
-
-RELEASED VERSIONS:
+* Fix filtering of contacts by tags not taking into account the selected tag from the profile page
 
 v1.6.0 - 2018-01-09
 -------------------
@@ -23,6 +37,9 @@ v1.6.0 - 2018-01-09
 * Fetch Countries in alphabetical order in "Add Address" form in People Profile page
 * Display missing page when loading a contact that does not exist
 * Add ability to filter contacts by more than one tag
+* Change the structure of the dashboard
+* Add two factor authentication ability
+* Add pet support to API
 
 v1.5.0 - 2018-01-02
 -------------------

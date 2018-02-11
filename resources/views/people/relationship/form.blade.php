@@ -16,22 +16,15 @@
     </div>
 
     {{-- Gender --}}
-    <label>{{ trans('people.people_add_gender') }}</label>
     <fieldset class="form-group">
-      <label class="form-check-inline" for="genderNone">
-        <input type="radio" class="form-check-input" name="gender" id="genderNone" value="none" @if(! in_array(old('gender'), ['male', 'female']) || ! in_array($partner->gender, ['male', 'female'])) checked @endif>
-        {{ trans('app.gender_none') }}
-      </label>
-
-      <label class="form-check-inline" for="genderMale">
-        <input type="radio" class="form-check-input" name="gender" id="genderMale" value="male" @if(old('gender') === 'male' || $partner->gender === 'male') checked @endif>
-        {{ trans('app.gender_male') }}
-      </label>
-
-      <label class="form-check-inline" for="genderFemale">
-        <input type="radio" class="form-check-input" name="gender" id="genderFemale" value="female" @if(old('gender') === 'female' || $partner->gender === 'female') checked @endif>
-        {{ trans('app.gender_female') }}
-      </label>
+      <div class="mb3 mb0-ns">
+        <form-select
+          :options="{{ $genders }}"
+          v-bind:required="true"
+          v-bind:title="'{{ trans('people.people_add_gender') }}'"
+          v-bind:id="'gender_id'">
+        </form-select>
+      </div>
     </fieldset>
 
     <fieldset class="form-group dates">
@@ -59,8 +52,6 @@
                     value="{{ (is_null($partner->birthdate)) ? 1 : $partner->birthdate->getAge() }}"
                     min="0"
                     max="120">
-
-            {{ trans('people.information_edit_probably_yo') }}
           </div>
         </label>
       </div>

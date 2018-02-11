@@ -92,7 +92,7 @@ class Address extends Model
         }
 
         if (! is_null($this->country_id)) {
-            $address .= ' '.$this->country->country;
+            $address .= ' '.$this->getCountryName();
         }
 
         if (is_null($address)) {
@@ -140,5 +140,55 @@ class Address extends Model
         $address = urlencode($address);
 
         return "https://www.google.ca/maps/place/{$address}";
+    }
+
+    /**
+     * Get the name of the address.
+     *
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the street of the address.
+     *
+     * @return string
+     */
+    public function getStreetAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the city of the address.
+     *
+     * @return string
+     */
+    public function getCityAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the province of the address.
+     *
+     * @return string
+     */
+    public function getProvinceAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the postal code of the address.
+     *
+     * @return string
+     */
+    public function getPostalCodeAttribute($value)
+    {
+        return $value;
     }
 }

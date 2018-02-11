@@ -9,6 +9,7 @@ use Validator;
 use App\Contact;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
+use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -108,7 +109,11 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        return view('people.create');
+        $data = [
+            'genders' => auth()->user()->account->genders,
+        ];
+
+        return view('people.create', $data);
     }
 
     public function missing()
@@ -127,7 +132,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
-            'gender' => 'required',
+            'gender' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -138,7 +143,7 @@ class ContactsController extends Controller
 
         $contact = new Contact;
         $contact->account_id = Auth::user()->account_id;
-        $contact->gender = $request->input('gender');
+        $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
@@ -194,8 +199,21 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
+
         return view('people.edit')
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withDays(\App\Helpers\DateHelper::getListOfDays())
+            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withBirthdayState($contact->getBirthdayState())
+            ->withBirthdate($birthdate)
+            ->withDay($day)
+            ->withMonth($month)
+            ->withAge($age)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -212,6 +230,7 @@ class ContactsController extends Controller
             'lastname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
+            'birthdate' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -220,9 +239,13 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        $contact->gender = $request->input('gender');
-        $contact->first_name = $request->input('firstname');
-        $contact->last_name = $request->input('lastname');
+        if ($contact->setName($request->input('firstname'), null, $request->input('lastname')) == false) {
+            return back()
+                ->withInput()
+                ->withErrors('There has been a problem with saving the name.');
+        }
+
+        $contact->gender_id = $request->input('gender');
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = true;
@@ -248,7 +271,7 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        // Saves birthdate if defined
+        // Handling the case of the birthday
         $contact->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
             case 'unknown':
@@ -256,8 +279,24 @@ class ContactsController extends Controller
             case 'approximate':
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
+            case 'almost':
+                $specialDate = $contact->setSpecialDate(
+                    'birthdate',
+                    0,
+                    $request->input('month'),
+                    $request->input('day')
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
             case 'exact':
-                $specialDate = $contact->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = new \Carbon\Carbon($birthdate);
+                $specialDate = $contact->setSpecialDate(
+                    'birthdate',
+                    $birthdate->year,
+                    $birthdate->month,
+                    $birthdate->day
+                );
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
         }
@@ -432,5 +471,21 @@ class ContactsController extends Controller
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
+    }
+
+    /**
+     * Download the contact as vCard.
+     * @param  Contact $contact
+     * @return
+     */
+    public function vCard(Contact $contact)
+    {
+        if (config('app.debug')) {
+            \Debugbar::disable();
+        }
+
+        $vcard = VCardHelper::prepareVCard($contact);
+
+        return  $vcard->download();
     }
 }

@@ -71,7 +71,6 @@
             },
 
             goToContact() {
-              console.log('tet');
                 window.location.href='/people/' + this.contact.id;
             }
         }
