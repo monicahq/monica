@@ -733,6 +733,13 @@ class Contact extends Model
         return true;
     }
 
+    /**
+     * Returns the state of the birthday.
+     * As it's a Special Date, the date can have several states. We need this
+     * info when we populate the Edit contact sheet.
+     *
+     * @return string
+     */
     public function getBirthdayState()
     {
         if (! $this->birthday_special_date_id) {

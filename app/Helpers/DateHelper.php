@@ -210,18 +210,13 @@ class DateHelper
         return Carbon::now()->addYear();
     }
 
+    /**
+     * Gets a list of all the months in a year.
+     *
+     * @return array
+     */
     public static function getListOfMonths()
     {
-        // Carbon::setLocale(auth()->user()->locale);
-        // $months = [];
-        // $currentDate = Carbon::now();
-        // $currentDate->day = 1;
-
-        // for ($month = 1; $month < 13; $month++) {
-        //     $currentDate->month = $month;
-        //     array_push($months, $currentDate->formatLocalized('%B'));
-        // }
-
         Carbon::setLocale(auth()->user()->locale);
         $months = collect([]);
         $currentDate = Carbon::now();
@@ -229,20 +224,22 @@ class DateHelper
 
         for ($month = 1; $month < 13; $month++) {
             $currentDate->month = $month;
-            $months->push(['id' => $month, 'name' => $currentDate->formatLocalized('%B')]);
+            $months->push([
+                'id' => $month,
+                'name' => $currentDate->formatLocalized('%B')
+            ]);
         }
 
         return $months;
     }
 
+    /**
+     * Gets a list of all the days in a month.
+     *
+     * @return array
+     */
     public static function getListOfDays()
     {
-        // $days = [];
-
-        // for ($day = 1; $day < 32; $day++) {
-        //     array_push($days, $day);
-        // }
-
         $days = collect([]);
         for ($day = 1; $day < 32; $day++) {
             $days->push(['id' => $day, 'name' => $day]);
