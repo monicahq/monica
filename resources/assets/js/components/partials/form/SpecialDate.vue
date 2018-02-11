@@ -34,7 +34,7 @@
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="almost">
       </div>
       <div class="pointer" @click="selectedOption = 'almost'">
-        I know the day and month of the birthdate of this person, but not the year…
+        {{ $t('people.information_edit_not_year') }}
         <div v-if="selectedOption == 'almost'" class="mt3">
           <div class="flex">
             <form-select
