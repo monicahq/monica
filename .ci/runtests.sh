@@ -18,5 +18,5 @@ if ! $(nc -z $HOST 8000); then
 fi
 
 pushd $ROOT
-$ROOT/vendor/bin/steward run laravel chrome -vvv
+$ROOT/vendor/bin/steward run laravel chrome -vv
 popd
