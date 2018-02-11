@@ -297,4 +297,27 @@ class DateHelperTest extends FeatureTestCase
             count(DateHelper::getListOfDays())
         );
     }
+
+    public function test_it_returns_a_list_with_twenty_four_hours()
+    {
+        $this->assertEquals(
+            24,
+            count(DateHelper::getListOfHours())
+        );
+    }
+
+    public function test_it_returns_a_list_of_hours()
+    {
+        $hours = DateHelper::getListOfHours();
+
+        $this->assertEquals(
+            '01.00AM',
+            $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['id']
+        );
+    }
 }

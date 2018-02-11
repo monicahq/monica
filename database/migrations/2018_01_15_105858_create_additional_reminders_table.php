@@ -13,44 +13,47 @@ class CreateAdditionalRemindersTable extends Migration
      */
     public function up()
     {
-        Schema::create('reminders_to_send', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->integer('reminder_id');
+            $table->integer('contact_id');
+            $table->integer('reminder_id')->nullable();
             $table->datetime('trigger_date');
-            $table->boolean('is_reminder_of_reminder')->default(false);
+            $table->boolean('has_been_sent')->default(false);
+            $table->integer('scheduled_number_days_before')->nullable();
             $table->timestamps();
         });
 
         Schema::create('reminders_sent', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->integer('reminder_id');
+            $table->integer('contact_id');
+            $table->integer('reminder_id')->nullable();
+            $table->mediumText('title');
+            $table->longText('description');
+            $table->longText('html_sent_content');
             $table->datetime('sent_date');
-            $table->boolean('is_reminder_of_reminder')->default(false);
-            $table->string('scheduled_number_days_before')->nullable();
-            $table->string('scheduled_time_to_send')->nullable();
+            $table->integer('scheduled_number_days_before')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('account_reminder_rules', function (Blueprint $table) {
+        Schema::create('reminder_rules', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('number_of_days_before');
-            $table->integer('time_to_send');
             $table->timestamps();
         });
-    }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('reminders_to_send');
-        Schema::dropIfExists('reminders_sent');
-        Schema::dropIfExists('account_reminder_rules');
+        Schema::table('accounts', function (Blueprint $table) {
+            $table->string('default_time_reminder_is_sent')->after('number_of_invitations_sent')->default('12:00');
+        });
+
+        $accounts = DB::table('accounts')->select('id')->get();
+        foreach ($accounts as $account) {
+            DB::table('reminder_rules')->insert([
+                ['account_id' => $account->id, 'number_of_days_before' => 7],
+                ['account_id' => $account->id, 'number_of_days_before' => 30],
+            ]);
+        }
     }
 }

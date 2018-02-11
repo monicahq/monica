@@ -17,7 +17,9 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent', 'api_key',
+        'number_of_invitations_sent',
+        'api_key',
+        'default_time_reminder_is_sent',
     ];
 
     /**
@@ -267,6 +269,28 @@ class Account extends Model
     public function genders()
     {
         return $this->hasMany('App\Gender');
+    }
+
+    /**
+     * Get the default time reminder is sent.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDefaultTimeReminderIsSentAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Set the default time a reminder is sent.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDefaultTimeReminderIsSentAttribute($value)
+    {
+        $this->attributes['default_time_reminder_is_sent'] = $value;
     }
 
     /**

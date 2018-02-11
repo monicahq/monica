@@ -55,7 +55,8 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return view('settings.index');
+        return view('settings.index')
+                ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }
 
     /**
@@ -79,6 +80,9 @@ class SettingsController extends Controller
                 'fluid_container' => $request->get('layout'),
             ]
         );
+
+        $request->user()->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $request->user()->account->save();
 
         return redirect('settings')
             ->with('status', trans('settings.settings_success', [], $request['locale']));

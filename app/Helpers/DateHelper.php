@@ -247,4 +247,22 @@ class DateHelper
 
         return $days;
     }
+
+    /**
+     * Gets a list of all the hours in a day.
+     *
+     * @return array
+     */
+    public static function getListOfHours()
+    {
+        $hours = collect([]);
+        for ($hour = 1; $hour <= 24; $hour++) {
+            $hours->push([
+                'id' => date("H:i", strtotime("$hour:00")),
+                'name' => date("h.iA", strtotime("$hour:00")),
+            ]);
+        }
+
+        return $hours;
+    }
 }

@@ -342,4 +342,25 @@ class AccountTest extends TestCase
             $gender2->contacts->count()
         );
     }
+
+    public function test_it_gets_default_time_reminder_is_sent_attribute()
+    {
+        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
+
+    public function test_it_sets_default_time_reminder_is_sent_attribute()
+    {
+        $account = new Account;
+        $account->default_time_reminder_is_sent = '14:00';
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
 }
