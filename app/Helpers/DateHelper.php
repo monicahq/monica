@@ -226,7 +226,7 @@ class DateHelper
             $currentDate->month = $month;
             $months->push([
                 'id' => $month,
-                'name' => $currentDate->formatLocalized('%B')
+                'name' => $currentDate->formatLocalized('%B'),
             ]);
         }
 

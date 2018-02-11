@@ -268,7 +268,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             12,
-            sizeof(DateHelper::getListOfMonths())
+            count(DateHelper::getListOfMonths())
         );
     }
 
@@ -294,7 +294,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             31,
-            sizeof(DateHelper::getListOfDays())
+            count(DateHelper::getListOfDays())
         );
     }
 }
