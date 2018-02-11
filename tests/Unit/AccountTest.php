@@ -363,4 +363,31 @@ class AccountTest extends TestCase
             $account->default_time_reminder_is_sent
         );
     }
+
+    public function test_it_populates_the_account_with_two_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertEquals(
+            2,
+            $account->reminderRules->count()
+        );
+    }
+
+    public function test_it_populates_the_account_with_the_right_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 7]
+        );
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 30]
+        );
+    }
 }

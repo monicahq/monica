@@ -111,6 +111,7 @@ class ImportVCardsTest extends TestCase
 
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
 
         $user->account_id = $account->id;
         $user->save();

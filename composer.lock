@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.2",
+            "version": "3.52.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "69ba4e07288a532fe7635f7cdd73cffa6509f538"
+                "reference": "c9af7657eddc0267cc7ac4f969c10d5c18459992"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69ba4e07288a532fe7635f7cdd73cffa6509f538",
-                "reference": "69ba4e07288a532fe7635f7cdd73cffa6509f538",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c9af7657eddc0267cc7ac4f969c10d5c18459992",
+                "reference": "c9af7657eddc0267cc7ac4f969c10d5c18459992",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-01-26T22:17:57+00:00"
+            "time": "2018-02-09T22:53:37+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1456,16 +1456,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "ef7880e665390f999f4def7c9f78133636f973cf"
+                "reference": "1de7c0aec13eadbdddc2d1ba4019b064b2c6b966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/ef7880e665390f999f4def7c9f78133636f973cf",
-                "reference": "ef7880e665390f999f4def7c9f78133636f973cf",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1de7c0aec13eadbdddc2d1ba4019b064b2c6b966",
+                "reference": "1de7c0aec13eadbdddc2d1ba4019b064b2c6b966",
                 "shasum": ""
             },
             "require": {
@@ -1586,7 +1586,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-01-30T15:06:13+00:00"
+            "time": "2018-02-06T15:36:55+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2091,21 +2091,21 @@
         },
         {
             "name": "martinlindhe/laravel-vue-i18n-generator",
-            "version": "0.1.21",
+            "version": "0.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/martinlindhe/laravel-vue-i18n-generator.git",
-                "reference": "84e1dcc2448d380443815b1dabdbc9ff34c532c4"
+                "reference": "4b192ff02e618455e048655106db70ed6c77aa80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/84e1dcc2448d380443815b1dabdbc9ff34c532c4",
-                "reference": "84e1dcc2448d380443815b1dabdbc9ff34c532c4",
+                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/4b192ff02e618455e048655106db70ed6c77aa80",
+                "reference": "4b192ff02e618455e048655106db70ed6c77aa80",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0",
-                "illuminate/support": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0",
+                "illuminate/console": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0|~5.6.0",
+                "illuminate/support": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0|~5.6.0",
                 "php": ">=5.5.0"
             },
             "require-dev": {
@@ -2140,7 +2140,7 @@
                 "laravel",
                 "vue-i18n"
             ],
-            "time": "2017-12-25T11:50:29+00:00"
+            "time": "2018-02-10T22:37:25+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -3303,12 +3303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632"
+                "reference": "3df94834c80037130b533703df4672785b6ea112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/55ce2b8c0462a0b93710d5b6ed9147307a6be632",
-                "reference": "55ce2b8c0462a0b93710d5b6ed9147307a6be632",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/3df94834c80037130b533703df4672785b6ea112",
+                "reference": "3df94834c80037130b533703df4672785b6ea112",
                 "shasum": ""
             },
             "conflict": {
@@ -3441,7 +3441,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-02-03T22:31:14+00:00"
+            "time": "2018-02-04T22:09:50+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -3637,16 +3637,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "054292959a1f2b64c10c9c7a03a816ba1872b8a3"
+                "reference": "22e96661458c55a2e532885922bf4a232186f6a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/054292959a1f2b64c10c9c7a03a816ba1872b8a3",
-                "reference": "054292959a1f2b64c10c9c7a03a816ba1872b8a3",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/22e96661458c55a2e532885922bf4a232186f6a1",
+                "reference": "22e96661458c55a2e532885922bf4a232186f6a1",
                 "shasum": ""
             },
             "require": {
@@ -3696,20 +3696,20 @@
                 "dom",
                 "xml"
             ],
-            "time": "2016-11-16T00:41:01+00:00"
+            "time": "2018-02-08T11:00:49+00:00"
         },
         {
             "name": "sentry/sentry",
-            "version": "1.8.2",
+            "version": "1.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "3241b135120c25d6522e46246386df0ab48e13c5"
+                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/3241b135120c25d6522e46246386df0ab48e13c5",
-                "reference": "3241b135120c25d6522e46246386df0ab48e13c5",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/512661046e403dc5eb5ae192d5a6cda10e068a95",
+                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95",
                 "shasum": ""
             },
             "require": {
@@ -3760,7 +3760,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-12-21T16:05:46+00:00"
+            "time": "2018-02-07T11:26:52+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
@@ -3818,16 +3818,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v5.9.0",
+            "version": "v5.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "d1978a7f20cdbd05c5c462ffa6728f279f03e0c9"
+                "reference": "026191d12241a76c957884dff75e4f3721b0e77f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d1978a7f20cdbd05c5c462ffa6728f279f03e0c9",
-                "reference": "d1978a7f20cdbd05c5c462ffa6728f279f03e0c9",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/026191d12241a76c957884dff75e4f3721b0e77f",
+                "reference": "026191d12241a76c957884dff75e4f3721b0e77f",
                 "shasum": ""
             },
             "require": {
@@ -3869,7 +3869,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2018-01-17T20:53:33+00:00"
+            "time": "2018-02-07T18:36:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6085,16 +6085,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v2.4.8",
+            "version": "v2.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "f1584033b5af945b470533b466b81a789d532034"
+                "reference": "1e08eb4c9d26ae5aedced8260e8b4ed951ee4aa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/f1584033b5af945b470533b466b81a789d532034",
-                "reference": "f1584033b5af945b470533b466b81a789d532034",
+                "url": "https://api.github.com/repos/nette/utils/zipball/1e08eb4c9d26ae5aedced8260e8b4ed951ee4aa6",
+                "reference": "1e08eb4c9d26ae5aedced8260e8b4ed951ee4aa6",
                 "shasum": ""
             },
             "require": {
@@ -6160,7 +6160,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2017-08-20T17:32:29+00:00"
+            "time": "2018-02-06T15:40:36+00:00"
         },
         {
             "name": "ondram/ci-detector",
@@ -6978,16 +6978,16 @@
         },
         {
             "name": "se/selenium-server-standalone",
-            "version": "3.8.1",
+            "version": "3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sveneisenschmidt/selenium-server-standalone.git",
-                "reference": "c051ad127c087c09f60d8258f26a4cf86d9d4bea"
+                "reference": "60b5d9502eafb268d05ad9459dff09464af666f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/c051ad127c087c09f60d8258f26a4cf86d9d4bea",
-                "reference": "c051ad127c087c09f60d8258f26a4cf86d9d4bea",
+                "url": "https://api.github.com/repos/sveneisenschmidt/selenium-server-standalone/zipball/60b5d9502eafb268d05ad9459dff09464af666f4",
+                "reference": "60b5d9502eafb268d05ad9459dff09464af666f4",
                 "shasum": ""
             },
             "require-dev": {
@@ -6999,7 +6999,7 @@
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -7017,7 +7017,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2017-12-03T16:20:28+00:00"
+            "time": "2018-02-07T20:19:47+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

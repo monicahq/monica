@@ -196,6 +196,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/settings/personalization/genders/{gender}/replaceby/{gender_id}', 'Settings\\GendersController@destroyAndReplaceGender');
         Route::delete('/settings/personalization/genders/{gender}', 'Settings\\GendersController@destroyGender');
 
+        Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
+        Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
+
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('.upload');

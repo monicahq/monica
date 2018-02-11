@@ -99,6 +99,7 @@ class RegisterController extends Controller
 
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
 
         // send me an alert
         dispatch(new SendNewUserAlert($user));

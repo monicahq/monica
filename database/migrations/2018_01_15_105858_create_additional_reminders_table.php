@@ -41,6 +41,7 @@ class CreateAdditionalRemindersTable extends Migration
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('number_of_days_before');
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
 

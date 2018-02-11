@@ -16,6 +16,7 @@ use App\Reminder;
 use App\Offspring;
 use App\ContactField;
 use App\Relationship;
+use App\ReminderRule;
 use Illuminate\Routing\Router;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -140,6 +141,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('gender', function ($value) {
             return Gender::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('reminderRule', function ($value) {
+            return ReminderRule::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

@@ -30,6 +30,7 @@ class FakeContentTableSeeder extends Seeder
         $account = Account::find($accountID);
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
 
         // populate user table
         $userId = DB::table('users')->insertGetId([
