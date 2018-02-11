@@ -3,14 +3,7 @@
 
 <template>
   <div>
-    <!-- <v-date-picker
-        mode='single'
-        v-model='selectedDate'
-        id="birthdate"
-        :input-read-only="true"
-        :input-class="'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
-    </v-date-picker> -->
-    <datepicker :value="defaultDate"
+    <datepicker :value="selectedDate"
                 :name="id"
                 :format="format"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'">
@@ -28,6 +21,7 @@
         data() {
             return {
                 format: 'yyyy-MM-dd',
+                selectedDate: ''
             };
         },
 
@@ -39,6 +33,10 @@
          * Prepare the component (Vue 2.x).
          */
         mounted() {
+            this.selectedDate = new Date()  // this creates a date object in the user's timezone
+            this.selectedDate.setYear(this.defaultDate.slice(0, 4))
+            this.selectedDate.setMonth(parseInt(this.defaultDate.slice(5, 7)) - 1)  // months a indexed at 0 in js
+            this.selectedDate.setDate(this.defaultDate.slice(8, 10))
         },
 
         props: {
