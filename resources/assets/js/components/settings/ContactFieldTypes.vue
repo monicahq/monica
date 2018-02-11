@@ -6,21 +6,21 @@
     <notifications group="main" position="bottom right" />
 
     <h3 class="with-actions">
-      {{ trans('settings.personalization_contact_field_type_title') }}
-      <a class="btn fr nt2" @click="add">{{ trans('settings.personalization_contact_field_type_add') }}</a>
+      {{ $t('settings.personalization_contact_field_type_title') }}
+      <a class="btn fr nt2" @click="add">{{ $t('settings.personalization_contact_field_type_add') }}</a>
     </h3>
-    <p>{{ trans('settings.personalization_contact_field_type_description') }}</p>
+    <p>{{ $t('settings.personalization_contact_field_type_description') }}</p>
 
     <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="submitted">
-      {{ trans('settings.personalization_contact_field_type_add_success') }}
+      {{ $t('settings.personalization_contact_field_type_add_success') }}
     </div>
 
     <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="edited">
-      {{ trans('settings.personalization_contact_field_type_edit_success') }}
+      {{ $t('settings.personalization_contact_field_type_edit_success') }}
     </div>
 
     <div class="pa2 ba b--yellow mb3 mt3 br2 bg-washed-yellow" v-if="deleted">
-      {{ trans('settings.personalization_contact_field_type_delete_success') }}
+      {{ $t('settings.personalization_contact_field_type_delete_success') }}
     </div>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
@@ -28,17 +28,17 @@
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
-            {{ trans('settings.personalization_contact_field_type_table_name') }}
+            {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
         <div class="dtc">
           <div class="pa2 b">
-            {{ trans('settings.personalization_contact_field_type_table_protocol') }}
+            {{ $t('settings.personalization_contact_field_type_table_protocol') }}
           </div>
         </div>
         <div class="dtc tr">
           <div class="pa2 b">
-            {{ trans('settings.personalization_contact_field_type_table_actions') }}
+            {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_title') }}</h5>
+            <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_title') }}</h5>
             <button type="button" class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -79,7 +79,7 @@
           <div class="modal-body">
             <!-- Form Errors -->
             <div class="alert alert-danger" v-if="createForm.errors.length > 0">
-              <p>{{ trans('app.error_title') }}</p>
+              <p>{{ $t('app.error_title') }}</p>
               <br>
               <ul>
                 <li v-for="error in createForm.errors">
@@ -91,27 +91,27 @@
             <form class="form-horizontal" role="form" v-on:submit.prevent="store">
               <div class="form-group">
                 <div class="form-group">
-                  <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
+                  <label for="name">{{ $t('settings.personalization_contact_field_type_modal_name') }}</label>
                   <input type="text" class="form-control" name="name" id="name" required @keyup.enter="store" v-model="createForm.name">
                 </div>
 
                 <div class="form-group">
-                  <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
+                  <label for="protocol">{{ $t('settings.personalization_contact_field_type_modal_protocol') }}</label>
                   <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" @keyup.enter="store" v-model="createForm.protocol">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
+                  <small class="form-text text-muted">{{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
                 </div>
 
                 <div class="form-group">
-                  <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
+                  <label for="icon">{{ $t('settings.personalization_contact_field_type_modal_icon') }}</label>
                   <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" @keyup.enter="store" v-model="createForm.icon">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_icon_help') }}</small>
+                  <small class="form-text text-muted">{{ $t('settings.personalization_contact_field_type_modal_icon_help') }}</small>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-primary" @click.prevent="store">{{ trans('app.save') }}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('app.cancel') }}</button>
+            <button type="button" class="btn btn-primary" @click.prevent="store">{{ $t('app.save') }}</button>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
+            <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
             <button type="button" class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -130,7 +130,7 @@
           <div class="modal-body">
             <!-- Form Errors -->
             <div class="alert alert-danger" v-if="editForm.errors.length > 0">
-              <p>{{ trans('app.error_title') }}</p>
+              <p>{{ $t('app.error_title') }}</p>
               <br>
               <ul>
                 <li v-for="error in editForm.errors">
@@ -142,27 +142,27 @@
             <form class="form-horizontal" role="form" v-on:submit.prevent="update">
               <div class="form-group">
                 <div class="form-group">
-                  <label for="name">{{ trans('settings.personalization_contact_field_type_modal_name') }}</label>
+                  <label for="name">{{ $t('settings.personalization_contact_field_type_modal_name') }}</label>
                   <input type="text" class="form-control" name="name" id="name" required @keyup.enter="update" v-model="editForm.name">
                 </div>
 
                 <div class="form-group">
-                  <label for="protocol">{{ trans('settings.personalization_contact_field_type_modal_protocol') }}</label>
+                  <label for="protocol">{{ $t('settings.personalization_contact_field_type_modal_protocol') }}</label>
                   <input type="text" class="form-control" name="protocol" id="protocol" placeholder="mailto:" @keyup.enter="update" v-model="editForm.protocol">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
+                  <small class="form-text text-muted">{{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}</small>
                 </div>
 
                 <div class="form-group">
-                  <label for="icon">{{ trans('settings.personalization_contact_field_type_modal_icon') }}</label>
+                  <label for="icon">{{ $t('settings.personalization_contact_field_type_modal_icon') }}</label>
                   <input type="text" class="form-control" name="icon" id="icon" placeholder="fa fa-address-book-o" @keyup.enter="update" v-model="editForm.icon">
-                  <small class="form-text text-muted">{{ trans('settings.personalization_contact_field_type_modal_icon_help') }}</small>
+                  <small class="form-text text-muted">{{ $t('settings.personalization_contact_field_type_modal_icon_help') }}</small>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-primary" @click.prevent="update">{{ trans('app.edit') }}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('app.cancel') }}</button>
+            <button type="button" class="btn btn-primary" @click.prevent="update">{{ $t('app.edit') }}</button>
           </div>
         </div>
       </div>
@@ -173,17 +173,17 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ trans('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
+            <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
             <button type="button" class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>{{ trans('settings.personalization_contact_field_type_modal_delete_description') }}</p>
+            <p>{{ $t('settings.personalization_contact_field_type_modal_delete_description') }}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click.prevent="trash">{{ trans('app.delete') }}</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('app.cancel') }}</button>
+            <button type="button" class="btn btn-danger" @click.prevent="trash">{{ $t('app.delete') }}</button>
           </div>
         </div>
       </div>

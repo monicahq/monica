@@ -35,17 +35,6 @@
     }
   }
 
-  h3 {
-    border-bottom: 1px solid $border-color;
-    font-size: 20px;
-    font-weight: 400;
-    margin-bottom: 20px;
-
-    &:not(:first-child) {
-      margin-top: 30px;
-    }
-  }
-
   .settings-reset,
   .settings-delete {
     border: 1px solid;

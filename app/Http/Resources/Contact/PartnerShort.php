@@ -19,7 +19,7 @@ class PartnerShort extends Resource
             'object' => 'contact',
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'gender' => $this->gender,
+            'gender' => $this->gender->name,
             'is_partial' => (bool) $this->is_partial,
             'information' => [
                 'birthdate' => [

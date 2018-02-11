@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\User;
+use App\Gender;
 use App\Address;
 use App\Contact;
 use App\Country;
@@ -28,6 +29,7 @@ class ImportVCards extends Command
      * @var string
      */
     protected $description = 'Imports contacts from vCard files for a specific user';
+    protected $gender;
 
     /**
      * Create a new command instance.
@@ -74,6 +76,14 @@ class ImportVCards extends Command
 
             $skippedContacts = 0;
 
+            // create special gender for this import
+            // we don't know which gender all the contacts are, so we need to create a special status for them, as we
+            // can't guess whether they are men, women or else.
+            $this->gender = new Gender;
+            $this->gender->account_id = $user->account_id;
+            $this->gender->name = 'vCard';
+            $this->gender->save();
+
             collect($matches[0])->map(function ($vcard) {
                 return Reader::read($vcard);
             })->each(function (VCard $vcard) use ($user, $skippedContacts) {
@@ -103,7 +113,7 @@ class ImportVCards extends Command
                     $contact->first_name = $this->formatValue($vcard->NICKNAME);
                 }
 
-                $contact->gender = 'none';
+                $contact->gender_id = $this->gender->id;
                 $contact->job = $this->formatValue($vcard->ORG);
 
                 $contact->setAvatarColor();

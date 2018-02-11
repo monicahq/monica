@@ -21,7 +21,7 @@
           <!-- Log content -->
           <div class="flex-auto">
             <p class="mb1">
-              <span class="pr2 f6 avenir">{{ trans('journal.journal_entry_type_journal') }}</span>
+              <span class="pr2 f6 avenir">{{ $t('journal.journal_entry_type_journal') }}</span>
             </p>
             <h3 class="mb1">{{ entry.title }}</h3>
 

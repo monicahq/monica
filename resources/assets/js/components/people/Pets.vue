@@ -8,17 +8,17 @@
 
     <div class="w-100 dt">
       <div class="dtc">
-        <h3 class="f6 ttu normal">{{ trans('people.pets_title') }}</h3>
+        <h3 class="f6 ttu normal">{{ $t('people.pets_title') }}</h3>
       </div>
       <div class="dtc tr" v-if="pets.length > 0">
-        <a class="pointer" @click="editMode = true" v-if="!editMode">{{ trans('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ trans('app.done') }}</a>
+        <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
     </div>
 
     <!-- Add button when box is empty -->
     <p class="mb0" v-if="pets.length == 0 && !addMode">
-      <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
+      <a class="pointer" @click="toggleAdd">{{ $t('app.add') }}</a>
     </p>
 
     <!-- List of pets -->
@@ -27,7 +27,7 @@
 
         <div class="w-100 dt" v-show="!pet.edit">
           <div class="dtc">
-            {{ trans('people.pets_' + pet.category_name) }}
+            {{ $t('people.pets_' + pet.category_name) }}
             <span v-if="pet.name">- {{ pet.name }}</span>
           </div>
           <div class="dtc tr" v-if="editMode">
@@ -41,30 +41,30 @@
           <form class="measure center">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                {{ trans('people.pets_kind') }}
+                {{ $t('people.pets_kind') }}
               </label>
               <select class="db w-100 h2" v-model="updateForm.pet_category_id">
                 <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
-                  {{ trans('people.pets_' + petCategory.name) }}
+                  {{ $t('people.pets_' + petCategory.name) }}
                 </option>
               </select>
             </div>
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
-                {{ trans('people.pets_name') }}
+                {{ $t('people.pets_name') }}
               </label>
               <input class="pa2 db w-100" @keyup.enter="update(pet)" type="text" v-model="updateForm.name">
             </div>
             <div class="lh-copy mt3">
-              <a @click.prevent="update(pet)" class="btn btn-primary">{{ trans('app.save') }}</a>
-              <a class="btn" @click="toggleEdit(pet)">{{ trans('app.cancel') }}</a>
+              <a @click.prevent="update(pet)" class="btn btn-primary">{{ $t('app.save') }}</a>
+              <a class="btn" @click="toggleEdit(pet)">{{ $t('app.cancel') }}</a>
             </div>
           </form>
         </div>
 
       </li>
       <li v-if="editMode && !addMode">
-        <a class="pointer" @click="toggleAdd">{{ trans('app.add') }}</a>
+        <a class="pointer" @click="toggleAdd">{{ $t('app.add') }}</a>
       </li>
     </ul>
 
@@ -73,23 +73,23 @@
       <form class="measure center">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            {{ trans('people.pets_kind') }}
+            {{ $t('people.pets_kind') }}
           </label>
           <select class="db w-100 h2" v-model="createForm.pet_category_id">
             <option v-for="petCategory in petCategories" v-bind:value="petCategory.id">
-              {{ trans('people.pets_' + petCategory.name) }}
+              {{ $t('people.pets_' + petCategory.name) }}
             </option>
           </select>
         </div>
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
-            {{ trans('people.pets_name') }}
+            {{ $t('people.pets_name') }}
           </label>
           <input class="pa2 db w-100" type="text" @keyup.enter="store" @keyup.esc="addMode = false" v-model="createForm.name">
         </div>
         <div class="lh-copy mt3">
-          <a @click.prevent="store" class="btn btn-primary">{{ trans('app.add') }}</a>
-          <a class="btn" @click="addMode = false">{{ trans('app.cancel') }}</a>
+          <a @click.prevent="store" class="btn btn-primary">{{ $t('app.add') }}</a>
+          <a class="btn" @click="addMode = false">{{ $t('app.cancel') }}</a>
         </div>
       </form>
     </div>

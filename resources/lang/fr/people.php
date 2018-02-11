@@ -279,6 +279,7 @@ return [
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
+    'gifts_update_success' => 'Le cadeau a été mis à jour avec succès.',
 
     // debts
     'debt_delete_confirmation' => 'Etes-vous sûr de vouloir effacer cette dette ?',

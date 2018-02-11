@@ -34,6 +34,11 @@ $border-color: #dfdfdf;
 .w-5 { width: 5%; }
 .w-95 { width: 95%; }
 
+.form-error-message {
+  border-top: 1px solid #ed6246;
+  background-color: #fbeae5;
+  box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+}
 
 // Utilities
 .border-bottom {

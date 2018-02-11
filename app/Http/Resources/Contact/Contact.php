@@ -20,7 +20,7 @@ class Contact extends Resource
             'object' => 'contact',
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'gender' => $this->gender,
+            'gender' => $this->gender->name,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),

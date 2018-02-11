@@ -60,7 +60,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'gender',
+        'gender_id',
         'account_id',
         'is_partial',
         'job',
@@ -106,6 +106,16 @@ class Contact extends Model
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the gender of the contact.
+     *
+     * @return HasOne
+     */
+    public function gender()
+    {
+        return $this->belongsTo('App\Gender');
     }
 
     /**
