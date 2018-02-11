@@ -27,9 +27,11 @@ import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
 // Calendar
-import VCalendar from 'v-calendar';
-import 'v-calendar/lib/v-calendar.min.css';
-Vue.use(VCalendar);
+// import VCalendar from 'v-calendar';
+// import 'v-calendar/lib/v-calendar.min.css';
+// Vue.use(VCalendar);
+import Datepicker from 'vuejs-datepicker';
+Vue.use(Datepicker);
 
 // Custom components
 Vue.component(

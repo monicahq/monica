@@ -102,7 +102,7 @@
               v-bind:months="{{ $months }}"
               v-bind:days="{{ $days }}"
               v-bind:age="'{{ $age }}'"
-              v-bind:default-date="{{ $birthdate }}"
+              v-bind:default-date="'{{ $birthdate }}'"
               :value="'{{ $birthdayState }}'"
             ></form-specialdate>
           </div>

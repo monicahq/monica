@@ -200,7 +200,7 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->timestamp : \Carbon\Carbon::now()->timestamp;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
 
         return view('people.edit')
             ->withContact($contact)
@@ -276,13 +276,11 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'almost':
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     0,
-                    $birthdate->month,
-                    $birthdate->day
+                    $request->input('month'),
+                    $request->input('day')
                 );
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;

@@ -114,7 +114,7 @@
                 type: Array,
             },
             defaultDate: {
-                type: Date,
+                type: String,
             },
             age: {
                 type: String,
