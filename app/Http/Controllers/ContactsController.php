@@ -201,6 +201,8 @@ class ContactsController extends Controller
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
 
         return view('people.edit')
             ->withContact($contact)
@@ -208,6 +210,8 @@ class ContactsController extends Controller
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withDay($day)
+            ->withMonth($month)
             ->withAge($age)
             ->withGenders(auth()->user()->account->genders);
     }

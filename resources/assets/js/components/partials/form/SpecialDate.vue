@@ -101,6 +101,8 @@
          */
         mounted() {
              this.selectedOption = this.value
+             this.selectedMonth = this.month
+             this.selectedDay = this.day
         },
 
         props: {
@@ -112,6 +114,12 @@
             },
             months: {
                 type: Array,
+            },
+            day: {
+                type: Number,
+            },
+            month: {
+                type: Number,
             },
             defaultDate: {
                 type: String,

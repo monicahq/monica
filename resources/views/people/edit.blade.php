@@ -101,6 +101,8 @@
             <form-specialdate
               v-bind:months="{{ $months }}"
               v-bind:days="{{ $days }}"
+              v-bind:month="{{ $month }}"
+              v-bind:day="{{ $day }}"
               v-bind:age="'{{ $age }}'"
               v-bind:default-date="'{{ $birthdate }}'"
               :value="'{{ $birthdayState }}'"
