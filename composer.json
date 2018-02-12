@@ -45,6 +45,7 @@
         "enm1989/chromedriver": "^2.35",
         "filp/whoops": "~2.0",
         "khanamiryan/qrcode-detector-decoder": "^1.0",
+        "laravel/dusk": "^2.0",
         "lmc/steward": "dev-update-dependencies",
         "matthiasnoback/live-code-coverage": "^0.1.0",
         "mockery/mockery": "0.9.*",

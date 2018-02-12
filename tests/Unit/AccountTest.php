@@ -6,10 +6,10 @@ use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AccountTest extends TestCase
+class AccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
