@@ -36,7 +36,7 @@ class SettingsSecurity2faDisable extends Page
     {
         return [
             'verify' => 'verify',
-            'otp' => '#one_time_password'
+            'otp' => '#one_time_password',
         ];
     }
 }

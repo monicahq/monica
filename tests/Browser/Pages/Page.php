@@ -15,7 +15,7 @@ abstract class Page extends BasePage
     {
         return [
             '@link' => "a[@href='link']",
-            'alert' => '.alert'
+            'alert' => '.alert',
         ];
     }
 }

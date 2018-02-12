@@ -2,11 +2,11 @@
 
 namespace Tests;
 
+use Tests\Traits\SignIn;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Tests\Traits\SignIn;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -35,6 +35,7 @@ abstract class DuskTestCase extends BaseTestCase
         $capabilities = DesiredCapabilities::chrome();
         if (env('SAUCELABS') == '1') {
             $capabilities->setCapability('tunnel-identifier', env('TRAVIS_JOB_NUMBER'));
+
             return RemoteWebDriver::create(
                 'http://'.env('SAUCE_USERNAME').':'.env('SAUCE_ACCESS_KEY').'@localhost:4445/wd/hub', $capabilities
             );

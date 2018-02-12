@@ -38,7 +38,7 @@ class SettingsSecurity2faEnable extends Page
             'barcode' => '#barcode',
             'secretkey' => '#secretkey',
             'verify' => 'verify',
-            'otp' => '#one_time_password'
+            'otp' => '#one_time_password',
         ];
     }
 }

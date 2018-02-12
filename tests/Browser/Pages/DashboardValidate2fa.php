@@ -36,7 +36,7 @@ class DashboardValidate2fa extends Page
     {
         return [
             'verify' => 'verify',
-            'otp' => '#one_time_password'
+            'otp' => '#one_time_password',
         ];
     }
 }

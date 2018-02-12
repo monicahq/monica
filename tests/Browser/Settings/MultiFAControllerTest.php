@@ -6,10 +6,9 @@ use App\User;
 use QrReader;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\Browser\Pages\SettingsSecurity;
-use Tests\Browser\Pages\SettingsSecurity2faEnable;
 use Tests\Browser\Pages\DashboardValidate2fa;
+use Tests\Browser\Pages\SettingsSecurity2faEnable;
 use Tests\Browser\Pages\SettingsSecurity2faDisable;
 
 class MultiFAControllerTest extends DuskTestCase
@@ -66,7 +65,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -79,7 +78,7 @@ class MultiFAControllerTest extends DuskTestCase
             $key = $this->unparseBarcode($imgsrc);
             $this->assertEquals(32, strlen($key));
 
-            $this->assertEquals($browser->text('secretkey'), $key);    
+            $this->assertEquals($browser->text('secretkey'), $key);
         });
     }
 
@@ -114,7 +113,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -138,7 +137,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -182,7 +181,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -190,7 +189,7 @@ class MultiFAControllerTest extends DuskTestCase
 
             $secretkey = $this->enable2fa($browser);
 
-            $browser = 
+            $browser =
             $browser->clickLink('Logout')
                     ->loginAs($user)
                     ->visit(new DashboardValidate2fa)
@@ -214,7 +213,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -224,7 +223,7 @@ class MultiFAControllerTest extends DuskTestCase
             $google2fa = new \PragmaRX\Google2FA\Google2FA();
             $one_time_password = $google2fa->getCurrentOtp($secretkey);
 
-            $browser = 
+            $browser =
             $browser->clickLink('Logout')
                     ->loginAs($user)
                     ->visit(new DashboardValidate2fa)
@@ -246,7 +245,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -256,7 +255,7 @@ class MultiFAControllerTest extends DuskTestCase
             $google2fa = new \PragmaRX\Google2FA\Google2FA();
             $one_time_password = $google2fa->getCurrentOtp($secretkey);
 
-            $browser = 
+            $browser =
             $browser->visit(new SettingsSecurity2faDisable)
                     ->assertVisible('otp')
                     ->type('otp', $one_time_password)
@@ -278,7 +277,7 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
 
         $this->browse(function (Browser $browser) use ($user) {
-            $browser = 
+            $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->clickLink('Enable Two Factor Authentication')
@@ -286,7 +285,7 @@ class MultiFAControllerTest extends DuskTestCase
 
             $this->enable2fa($browser);
 
-            $browser = 
+            $browser =
             $browser->visit(new SettingsSecurity2faDisable)
                     ->assertVisible('otp')
                     ->type('otp', '000000')
