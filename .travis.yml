@@ -68,7 +68,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 before_script:
-  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" == "1" ]]; then .ci/start-selenium.sh; fi
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
   
@@ -81,14 +81,10 @@ script:
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
 
   # Run browser tests
-  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv --server-url=http://$SAUCE_USERNAME:$SAUCE_ACCESS_KEY@localhost:4445 --capability="tunnel-identifier:'${TRAVIS_JOB_NUMBER}'"; fi
-  - if [[ "$SELENIUM" == "1" && ! "$SAUCELABS" = "1" ]]; then vendor/bin/steward run travis chrome -vv; fi
-  - if [[ "$SELENIUM" == "1" ]]; then vendor/bin/steward results -vvv; fi
+  - if [[ "$SELENIUM" == "1" ]]; then php artisan dusk; fi
 
 after_script:
   - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
-  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-server.log; fi
-  - if [[ "$SELENIUM" == "1" ]]; then cat selenium-node.log; fi
   - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
   - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
   - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi

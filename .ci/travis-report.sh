@@ -57,7 +57,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
 
   done
 
-  for file in $(ls logs/*.png); do
+  for file in $(ls tests/Browser/screenshots/*.png); do
     echo Upload img and comment for $file
     img=$(uploadimg $file)
     success=$(echo $img | jq -r ".success")
