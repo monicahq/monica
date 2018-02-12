@@ -50,6 +50,7 @@
           <p class="b mb2"></p>
           <form-input
             v-model="createForm.name"
+            v-bind:input-type="'text'"
             v-bind:id="''"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_genders_modal_question')">
@@ -70,6 +71,7 @@
         <div class="mb4">
           <form-input
             v-model="updateForm.name"
+            v-bind:input-type="'text'"
             v-bind:id="''"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_genders_modal_edit_question')">

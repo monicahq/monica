@@ -259,4 +259,42 @@ class DateHelperTest extends FeatureTestCase
             DateHelper::getNextTheoriticalBillingDate('yearly')->format('Y-m-d')
         );
     }
+
+    public function test_it_returns_a_list_with_twelve_months()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertEquals(
+            12,
+            count(DateHelper::getListOfMonths())
+        );
+    }
+
+    public function test_it_returns_a_list_of_months_in_english()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $months = DateHelper::getListOfMonths();
+
+        $this->assertEquals(
+            'January',
+            $months[0]['name']
+        );
+    }
+
+    public function test_it_returns_a_list_with_thirty_one_days()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertEquals(
+            31,
+            count(DateHelper::getListOfDays())
+        );
+    }
 }

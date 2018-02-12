@@ -29,6 +29,7 @@
               <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->first_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
@@ -37,6 +38,7 @@
               <div class="dtc">
                 <form-input
                   value="{{ $contact->last_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
@@ -50,6 +52,7 @@
               <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->last_name }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
@@ -58,6 +61,7 @@
               <div class="dtc">
                 <form-input
                   value="{{ $contact->first_naem }}"
+                  v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
@@ -94,37 +98,15 @@
         {{-- Birthdate --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
-            {{-- Don't know the birthdate --}}
-            <div class="flex items-center mb2">
-              <input type="radio" class="mr2" name="birthdate" id="birthdateApproximate_unknown" value="unknown" {{ is_null($contact->birthday_special_date_id) ? 'checked' : '' }}>
-              <label for="birthdateApproximate_unknown" class="lh-copy">{{ trans('people.significant_other_add_unknown') }}</label>
-            </div>
-
-            {{-- Approximate birthdate --}}
-            <div class="flex items-center mb2">
-              <input type="radio" class="mr2" name="birthdate" id="birthdateApproximate_approximate" value="approximate" {{ is_null($contact->birthday_special_date_id) ? '' : ($contact->birthdate->is_age_based == true ? 'checked' : '') }}>
-              <div class="form-inline">
-                {{ trans('people.information_edit_probably') }}
-
-                <input type="number" class="form-control" name="age" id="age"
-                value="{{ (is_null($contact->birthdate)) ? 1 : $contact->birthdate->getAge() }}"
-                min="0"
-                max="120">
-
-                {{ trans('people.information_edit_probably_yo') }}
-              </div>
-            </div>
-
-            {{-- Exact birthdate --}}
-            <div class="flex items-center mb2">
-              <input type="radio" class="mr2" name="birthdate" id="birthdateApproximate_exact" value="exact" {{ is_null($contact->birthday_special_date_id) ? '' : ($contact->birthdate->is_age_based == true ? '' : 'checked') }}>
-              <div class="form-inline">
-                {{ trans('people.information_edit_exact') }}
-
-                @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->birthdate, 'class' => 'birthdate'])
-                <p class="help">{{ trans('people.information_edit_help') }}</p>
-              </div>
-            </div>
+            <form-specialdate
+              v-bind:months="{{ $months }}"
+              v-bind:days="{{ $days }}"
+              v-bind:month="{{ $month }}"
+              v-bind:day="{{ $day }}"
+              v-bind:age="'{{ $age }}'"
+              v-bind:default-date="'{{ $birthdate }}'"
+              :value="'{{ $birthdayState }}'"
+            ></form-specialdate>
           </div>
         </div>
 
@@ -162,7 +144,7 @@
               <a href="{{ url('/people/'.$contact->id) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('people.people_add_cta') }}</button>
+              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>
             </div>
           </div>
         </div>

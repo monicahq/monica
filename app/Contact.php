@@ -705,14 +705,14 @@ class Contact extends Model
     }
 
     /**
-     * Update the name of the contact.
+     * Set the name of the contact.
      *
      * @param  string $firstName
      * @param  string $middleName
      * @param  string $lastName
      * @return bool
      */
-    public function updateName($firstName, $middleName, $lastName)
+    public function setName(String $firstName, String $middleName = null, String $lastName)
     {
         if ($firstName == '') {
             return false;
@@ -731,6 +731,31 @@ class Contact extends Model
         $this->save();
 
         return true;
+    }
+
+    /**
+     * Returns the state of the birthday.
+     * As it's a Special Date, the date can have several states. We need this
+     * info when we populate the Edit contact sheet.
+     *
+     * @return string
+     */
+    public function getBirthdayState()
+    {
+        if (! $this->birthday_special_date_id) {
+            return 'unknown';
+        }
+
+        if ($this->birthdate->is_age_based) {
+            return 'approximate';
+        }
+
+        // we know at least the day and month
+        if ($this->birthdate->is_year_unknown) {
+            return 'almost';
+        }
+
+        return 'exact';
     }
 
     /**

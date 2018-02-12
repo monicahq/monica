@@ -26,6 +26,10 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
+// Calendar
+import Datepicker from 'vuejs-datepicker';
+Vue.use(Datepicker);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -56,6 +60,14 @@ Vue.component(
 Vue.component(
     'form-select',
     require('./components/partials/form/Select.vue')
+);
+Vue.component(
+    'form-specialdate',
+    require('./components/partials/form/SpecialDate.vue')
+);
+Vue.component(
+    'form-date',
+    require('./components/partials/form/Date.vue')
 );
 
 // Dashboard
