@@ -31,6 +31,22 @@ class ReminderTest extends TestCase
         $this->assertTrue($reminder->contact()->exists());
     }
 
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'reminder_id' => $reminder->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'reminder_id' => $reminder->id,
+        ]);
+
+        $this->assertTrue($reminder->notifications()->exists());
+    }
+
     public function test_title_getter_returns_null_if_undefined()
     {
         $reminder = new Reminder;

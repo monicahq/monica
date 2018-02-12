@@ -105,6 +105,7 @@ class SpecialDate extends Model
     /**
      * Sets a reminder for this date. If a reminder is already defined for this
      * date, it will delete it first and recreate one.
+     *
      * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
      * @param int $frequencyNumber
      * @return Reminder

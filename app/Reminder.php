@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use Carbon\Carbon;
+use App\Notification;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -55,6 +56,16 @@ class Reminder extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
     }
 
     /**
@@ -139,5 +150,33 @@ class Reminder extends Model
         $this->next_expected_date = $date;
 
         return $this;
+    }
+
+    public function setNotifications()
+    {
+        if ($this->frequency_type == 'week') {
+            return;
+        }
+
+        $reminderRules = $this->account->reminderRules->where('active', true)->get();
+
+        dd($reminderRules);
+
+        foreach ($reminderRules as $reminderRule) {
+            $this->addNotification($reminderRule->number_of_days_before);
+        }
+    }
+
+    public function addNotification(int $numberOfDaysBefore)
+    {
+        $date = DateHelper::getDateMinusGivenNumberOfDays($numberOfDaysBefore);
+
+        $notification = new Notification;
+        $notification->account_id = $this->account_id;
+        $notification->contact_id = $this->contact->id;
+        $notification->reminder_id = $this->id;
+        $notification->trigger_date = $date;
+        $notification->scheduled_number_days_before = $numberOfDaysBefore;
+        $notification->save();
     }
 }

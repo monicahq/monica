@@ -11,6 +11,14 @@ class ReminderRuleTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_an_account()
+    {
+        $account = factory(Account::class)->create([]);
+        $reminderRule = factory('App\ReminderRule')->create(['account_id' => $account->id]);
+
+        $this->assertTrue($reminderRule->account()->exists());
+    }
+
     public function test_it_gets_number_of_days_before_attribute()
     {
         $reminderRule = factory('App\ReminderRule')->create(['number_of_days_before' => '14']);

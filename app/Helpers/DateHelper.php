@@ -265,4 +265,12 @@ class DateHelper
 
         return $hours;
     }
+
+    public static function getDateMinusGivenNumberOfDays(int $number)
+    {
+        $now = Carbon::now();
+        $date = $now->subDays($numberOfDaysBefore);
+
+        return $date;
+    }
 }

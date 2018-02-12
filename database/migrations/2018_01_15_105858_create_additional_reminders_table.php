@@ -19,7 +19,6 @@ class CreateAdditionalRemindersTable extends Migration
             $table->integer('contact_id');
             $table->integer('reminder_id')->nullable();
             $table->datetime('trigger_date');
-            $table->boolean('has_been_sent')->default(false);
             $table->integer('scheduled_number_days_before')->nullable();
             $table->timestamps();
         });

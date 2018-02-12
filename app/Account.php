@@ -282,6 +282,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value

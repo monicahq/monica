@@ -28,6 +28,19 @@ class AccountTest extends TestCase
         $this->assertTrue($account->genders()->exists());
     }
 
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->notifications()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory(Account::class)->create();
