@@ -126,33 +126,15 @@ To run the test suite:
 
 Browsers tests simulate user interactions in a live browser.
 
-To run browser tests, first you need to install some requirements
-
-* Install java:
-```
-sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt -y update
-sudo apt -y install oracle-java9-installer
-```
-* Install Google chrome:
+* To run browser tests, first you need to install chrome
 ```
 curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add
 echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
 sudo apt -y update
 sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
-
-To run the test suite, you need to launch selenium first, then steward :
-* Run selenium:
-```
-vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
-export PATH="$(pwd)/vendor/bin:$PATH"
-xvfb-run -s "-ac -screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
-```
-* Run the test suite:
-```
-./vendor/bin/steward -vvv run local chrome
-```
+* Then you can run the test suite:
+`php artisan dusk`
 
 ## Backend
 
