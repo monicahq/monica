@@ -146,9 +146,11 @@ class ReminderTest extends TestCase
 
     public function test_scheduling_a_notification_returns_a_notification_object()
     {
-        $reminder = factory('App\Reminder')->create([]);
+        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-07-01']);
 
-        $this->assertInstanceOf(Notification::class, $reminder->scheduleSingleNotification(3));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $this->assertInstanceOf('App\Notification', $reminder->scheduleSingleNotification(30));
     }
 
     public function test_scheduling_a_notification_creates_a_notification_in_db()
@@ -167,6 +169,15 @@ class ReminderTest extends TestCase
         ]);
     }
 
+    public function test_it_doesnt_schedule_a_notification_if_planned_date_is_prior_current_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-01-25']);
+
+        $this->assertNull($reminder->scheduleSingleNotification(30));
+    }
+
     public function test_it_cant_schedule_a_notification_for_a_weekly_reminder()
     {
         $reminder = new Reminder;
@@ -177,6 +188,8 @@ class ReminderTest extends TestCase
 
     public function test_it_schedules_notifications_based_on_active_reminder_rules()
     {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
         $account = factory('App\Account')->create();
         $reminderRule = factory('App\ReminderRule')->create([
             'account_id' => $account->id,
@@ -194,7 +207,7 @@ class ReminderTest extends TestCase
             'active' => 1,
         ]);
 
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-02-01']);
+        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
 
         $reminder->scheduleNotifications();
 
