@@ -266,11 +266,17 @@ class DateHelper
         return $hours;
     }
 
-    public static function getDateMinusGivenNumberOfDays(int $number)
+    /**
+     * Removes a given number of days of a date given in parameter.
+     *
+     * @param  Carbon  $date
+     * @param  int    $numberOfDaysBefore
+     * @return Carbon
+     */
+    public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
     {
-        $now = Carbon::now();
-        $date = $now->subDays($numberOfDaysBefore);
+        $olderDate = $date->subDays($numberOfDaysBefore);
 
-        return $date;
+        return $olderDate;
     }
 }

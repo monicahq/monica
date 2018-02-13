@@ -152,31 +152,46 @@ class Reminder extends Model
         return $this;
     }
 
-    public function setNotifications()
+    /**
+     * Schedules the notifications for the given reminder.
+     *
+     * @return void
+     */
+    public function scheduleNotifications()
     {
         if ($this->frequency_type == 'week') {
             return;
         }
 
-        $reminderRules = $this->account->reminderRules->where('active', true)->get();
-
-        dd($reminderRules);
+        $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
         foreach ($reminderRules as $reminderRule) {
-            $this->addNotification($reminderRule->number_of_days_before);
+            $this->scheduleSingleNotification($reminderRule->number_of_days_before);
         }
     }
 
-    public function addNotification(int $numberOfDaysBefore)
+    /**
+     * Schedules a notification for the given reminder.
+     *
+     * @param  int    $numberOfDaysBefore
+     * @return Notification
+     */
+    public function scheduleSingleNotification(int $numberOfDaysBefore)
     {
-        $date = DateHelper::getDateMinusGivenNumberOfDays($numberOfDaysBefore);
+        $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
+
+        if ($date->lte(Carbon::now())) {
+            return;
+        }
 
         $notification = new Notification;
         $notification->account_id = $this->account_id;
-        $notification->contact_id = $this->contact->id;
+        $notification->contact_id = $this->contact_id;
         $notification->reminder_id = $this->id;
         $notification->trigger_date = $date;
         $notification->scheduled_number_days_before = $numberOfDaysBefore;
         $notification->save();
+
+        return $notification;
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends TestCase
@@ -140,6 +141,66 @@ class ReminderTest extends TestCase
         $this->assertEquals(
             '2017-02-02',
             $reminder->calculateNextExpectedDate($timezone)->next_expected_date->toDateString()
+        );
+    }
+
+    public function test_scheduling_a_notification_returns_a_notification_object()
+    {
+        $reminder = factory('App\Reminder')->create([]);
+
+        $this->assertInstanceOf(Notification::class, $reminder->scheduleSingleNotification(3));
+    }
+
+    public function test_scheduling_a_notification_creates_a_notification_in_db()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-02-01']);
+
+        $notification = $reminder->scheduleSingleNotification(3);
+
+        $this->assertDatabaseHas('notifications',[
+            'account_id' => 1,
+            'contact_id' => 1,
+            'reminder_id' => $reminder->id,
+            'trigger_date' => '2017-01-29 00:00:00',
+        ]);
+    }
+
+    public function test_it_cant_schedule_a_notification_for_a_weekly_reminder()
+    {
+        $reminder = new Reminder;
+        $reminder->frequency_type = 'week';
+
+        $this->assertNull($reminder->scheduleNotifications());
+    }
+
+    public function test_it_schedules_notifications_based_on_active_reminder_rules()
+    {
+        $account = factory('App\Account')->create();
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 3,
+            'active' => 0,
+        ]);
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 7,
+            'active' => 1,
+        ]);
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 30,
+            'active' => 1,
+        ]);
+
+        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-02-01']);
+
+        $reminder->scheduleNotifications();
+
+        $this->assertEquals(
+            2,
+            $reminder->notifications()->count()
         );
     }
 }

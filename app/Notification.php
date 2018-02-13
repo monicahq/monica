@@ -5,6 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * A notification is an email that is sent some days before a reminder is
+ * actually sent. Those days are defined by reminder rules.
+ */
 class Notification extends Model
 {
     /**
