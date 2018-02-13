@@ -163,6 +163,7 @@ class Reminder extends Model
             return;
         }
 
+        // Only schedule notifications for active reminder rules
         $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
         foreach ($reminderRules as $reminderRule) {
