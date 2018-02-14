@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Account;
 use Illuminate\Console\Command;
 
 class SetupProduction extends Command
@@ -63,7 +63,7 @@ class SetupProduction extends Command
         $email = $this->ask('Account creation: what should be your email address to login?');
         $password = $this->secret('Please choose a password:');
 
-        User::create('John', 'Doe', $email, $password);
+        Account::create('John', 'Doe', $email, $password);
 
         $this->line('');
         $this->line('-----------------------------');
