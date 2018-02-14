@@ -459,8 +459,6 @@ class FakeContentTableSeeder extends Seeder
 
     public function getRandomGender()
     {
-        $genders = Account::find($this->account->id)->genders;
-
-        return $genders->random();
+        return $this->account->genders->random();
     }
 }
