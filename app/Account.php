@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use DB;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,32 @@ class Account extends Model
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
     ];
+
+    /**
+     * Create a new account and associate a new User.
+     * 
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function create($first_name, $last_name, $email, $password)
+    {
+        // create new account
+        $account = new Account;
+        $account->api_key = str_random(30);
+        $account->created_at = Carbon::now();
+        $account->save();
+
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+
+        // create the first user for this account
+        User::create($account->id, $first_name, $last_name, $email, $password);
+
+        return $account;
+    }
 
     /**
      * Get the activity records associated with the account.
