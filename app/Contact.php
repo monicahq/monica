@@ -47,6 +47,8 @@ class Contact extends Model
         'gravatar_url',
         'avatar_external_url',
         'default_avatar_color',
+        'gender_id',
+        'account_id',
     ];
 
     /**
