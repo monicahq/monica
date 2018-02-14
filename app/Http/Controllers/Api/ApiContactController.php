@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use DB;
 use Validator;
 use App\Contact;
-use App\ContactField;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
