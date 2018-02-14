@@ -6,7 +6,6 @@ use Auth;
 use App\User;
 use Validator;
 use App\Account;
-use Carbon\Carbon;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -83,7 +82,7 @@ class RegisterController extends Controller
     {
         $account = Account::create($data['first_name'], $data['last_name'], $data['email'], $data['password']);
         $user = $account->users()->first();
-        
+
         // send me an alert
         dispatch(new SendNewUserAlert($user));
 

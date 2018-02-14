@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use DB;
+use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -32,7 +32,7 @@ class Account extends Model
 
     /**
      * Create a new account and associate a new User.
-     * 
+     *
      * @param string $first_name
      * @param string $last_name
      * @param string $email
@@ -42,7 +42,7 @@ class Account extends Model
     public static function create($first_name, $last_name, $email, $password)
     {
         // create new account
-        $account = new Account;
+        $account = new self;
         $account->api_key = str_random(30);
         $account->created_at = Carbon::now();
         $account->save();

@@ -38,7 +38,7 @@ class User extends Authenticatable
 
     /**
      * Create a new User.
-     * 
+     *
      * @param int $account_id
      * @param string $first_name
      * @param string $last_name
@@ -49,7 +49,7 @@ class User extends Authenticatable
     public static function create($account_id, $first_name, $last_name, $email, $password)
     {
         // create the user
-        $user = new User;
+        $user = new self;
         $user->account_id = $account_id;
         $user->first_name = $first_name;
         $user->last_name = $last_name;

@@ -1,7 +1,7 @@
 <?php
 
-use App\Contact;
 use App\Account;
+use App\Contact;
 use GuzzleHttp\Client;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
@@ -22,7 +22,7 @@ class FakeContentTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->account = Account::create('John', 'Doe', 'admin@admin.com','admin');
+        $this->account = Account::create('John', 'Doe', 'admin@admin.com', 'admin');
 
         $this->faker = Faker::create();
 
@@ -87,7 +87,7 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        Account::create('Blank', 'State', 'blank@blank.com','blank');
+        Account::create('Blank', 'State', 'blank@blank.com', 'blank');
     }
 
     public function populateFoodPreferencies()

@@ -7,7 +7,6 @@ use Auth;
 use App\Tag;
 use App\User;
 use App\ImportJob;
-use Carbon\Carbon;
 use App\Invitation;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
@@ -360,7 +359,7 @@ class SettingsController extends Controller
         }
 
         $user = User::create($invitation->account_id,
-                    $request->input('first_name'), 
+                    $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),
                     $request->input('password'));
