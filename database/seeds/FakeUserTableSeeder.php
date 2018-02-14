@@ -1,5 +1,6 @@
 <?php
 
+use App\Account;
 use Illuminate\Database\Seeder;
 
 class FakeUserTableSeeder extends Seeder
