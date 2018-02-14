@@ -33,3 +33,4 @@ travis-sonar.sh.sig
 .travis.yml
 .travis.yml.sig
 yarn.lock
+vendor/
