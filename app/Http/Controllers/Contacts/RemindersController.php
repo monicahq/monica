@@ -54,6 +54,8 @@ class RemindersController extends Controller
             + ['account_id' => $contact->account_id]
         );
 
+        $reminder->scheduleNotifications();
+
         $contact->logEvent('reminder', $reminder->id, 'create');
 
         return redirect('/people/'.$contact->id)

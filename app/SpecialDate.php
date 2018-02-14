@@ -129,6 +129,8 @@ class SpecialDate extends Model
         $this->reminder_id = $reminder->id;
         $this->save();
 
+        $reminder->scheduleNotifications();
+
         return $reminder;
     }
 
