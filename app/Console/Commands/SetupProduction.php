@@ -38,7 +38,7 @@ class SetupProduction extends Command
      */
     public function handle()
     {
-        if ((! $this->option('force')) && (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
+        if ((! $this->option('force')) &&  (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
             return;
         }
 
