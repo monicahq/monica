@@ -425,7 +425,7 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (!$ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
+            if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
                 $contactFieldType = ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,

@@ -100,6 +100,7 @@ class ImportVCardsTest extends TestCase
     private function getUser()
     {
         $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret');
+
         return $account->users()->first();
     }
 }
