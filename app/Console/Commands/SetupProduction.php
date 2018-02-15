@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use DB;
+use App\Account;
 use Illuminate\Console\Command;
 
 class SetupProduction extends Command
@@ -63,21 +63,7 @@ class SetupProduction extends Command
         $email = $this->ask('Account creation: what should be your email address to login?');
         $password = $this->secret('Please choose a password:');
 
-        // populate account table
-        $accountID = DB::table('accounts')->insertGetId([
-            'api_key' => str_random(30),
-        ]);
-
-        // populate user table
-        $userId = DB::table('users')->insertGetId([
-            'account_id' => $accountID,
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => $email,
-            'password' => bcrypt($password),
-            'timezone' => config('app.timezone'),
-            'remember_token' => str_random(10),
-        ]);
+        Account::createDefault('John', 'Doe', $email, $password);
 
         $this->line('');
         $this->line('-----------------------------');
