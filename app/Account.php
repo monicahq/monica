@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,6 +29,32 @@ class Account extends Model
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
     ];
+
+    /**
+     * Create a new account and associate a new User.
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function createDefault($first_name, $last_name, $email, $password)
+    {
+        // create new account
+        $account = new self;
+        $account->api_key = str_random(30);
+        $account->created_at = Carbon::now();
+        $account->save();
+
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+
+        // create the first user for this account
+        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+
+        return $account;
+    }
 
     /**
      * Get the activity records associated with the account.
@@ -398,7 +425,7 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if ($ignoreMigratedTable == false) {
+            if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
                 $contactFieldType = ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
@@ -407,17 +434,6 @@ class Account extends Model
                     'delible' => $defaultContactFieldType->delible,
                     'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                 ]);
-            } else {
-                if ($defaultContactFieldType->migrated == 0) {
-                    $contactFieldType = ContactFieldType::create([
-                        'account_id' => $this->id,
-                        'name' => $defaultContactFieldType->name,
-                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                        'delible' => $defaultContactFieldType->delible,
-                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                    ]);
-                }
             }
         }
     }

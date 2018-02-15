@@ -22,26 +22,7 @@ class FakeContentTableSeeder extends Seeder
      */
     public function run()
     {
-        // populate account table
-        $accountID = DB::table('accounts')->insertGetId([
-            'api_key' => str_random(30),
-        ]);
-
-        $account = Account::find($accountID);
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-
-        // populate user table
-        $userId = DB::table('users')->insertGetId([
-            'account_id' => $accountID,
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('admin'),
-            'timezone' => config('app.timezone'),
-        ]);
-
-        $this->account = $account;
+        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         $this->faker = Faker::create();
 
@@ -63,7 +44,7 @@ class FakeContentTableSeeder extends Seeder
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
             $this->contact = new Contact;
-            $this->contact->account_id = $accountID;
+            $this->contact->account_id = $this->account->id;
             $this->contact->gender_id = $this->getRandomGender()->id;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
@@ -106,20 +87,7 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        $accountID = DB::table('accounts')->insertGetId([
-            'api_key' => str_random(30),
-        ]);
-
-        // populate user table
-        $userId = DB::table('users')->insertGetId([
-            'account_id' => $accountID,
-            'first_name' => 'Blank',
-            'last_name' => 'State',
-            'email' => 'blank@blank.com',
-            'password' => bcrypt('blank'),
-            'timezone' => config('app.timezone'),
-            'remember_token' => str_random(10),
-        ]);
+        Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
     }
 
     public function populateFoodPreferencies()
@@ -295,7 +263,7 @@ class FakeContentTableSeeder extends Seeder
                 $note = $this->contact->notes()->create([
                     'body' => $this->faker->realText(rand(40, 500)),
                     'account_id' => $this->contact->account_id,
-                    'is_favorited' => (rand(1, 3) == 1 ? true : false),
+                    'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
 
@@ -491,8 +459,6 @@ class FakeContentTableSeeder extends Seeder
 
     public function getRandomGender()
     {
-        $genders = $this->account->genders;
-
-        return $genders->random();
+        return $this->account->genders->random();
     }
 }
