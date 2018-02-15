@@ -109,6 +109,9 @@ class RemindersController extends Controller
             + ['account_id' => $contact->account_id]
         );
 
+        $reminder->purgeNotifications();
+        $reminder->scheduleNotifications();
+
         $contact->logEvent('reminder', $reminder->id, 'update');
 
         return redirect('/people/'.$contact->id)
@@ -129,6 +132,7 @@ class RemindersController extends Controller
             return redirect('/people/');
         }
 
+        $reminder->purgeNotifications();
         $reminder->delete();
 
         $contact->events()->forObject($reminder)->get()->each->delete();

@@ -174,7 +174,7 @@ class Reminder extends Model
     /**
      * Schedules a notification for the given reminder.
      *
-     * @param  int    $numberOfDaysBefore
+     * @param  int  $numberOfDaysBefore
      * @return Notification
      */
     public function scheduleSingleNotification(int $numberOfDaysBefore)
@@ -194,5 +194,15 @@ class Reminder extends Model
         $notification->save();
 
         return $notification;
+    }
+
+    /**
+     * Purge all the existing notifications for a reminder.
+     *
+     * @return void
+     */
+    public function purgeNotifications()
+    {
+        $this->notifications->each->delete();
     }
 }

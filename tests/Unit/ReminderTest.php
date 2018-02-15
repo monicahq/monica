@@ -216,4 +216,18 @@ class ReminderTest extends TestCase
             $reminder->notifications()->count()
         );
     }
+
+    public function test_it_purge_existing_notifications()
+    {
+        $reminder = factory('App\Reminder')->create(['account_id' => 3]);
+        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
+        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
+
+        $reminder->purgeNotifications();
+
+        $this->assertEquals(
+            0,
+            $reminder->notifications()->count()
+        );
+    }
 }

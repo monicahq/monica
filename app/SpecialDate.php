@@ -144,7 +144,13 @@ class SpecialDate extends Model
             return;
         }
 
-        return Reminder::destroy($this->reminder_id);
+        if (! $this->reminder) {
+            return;
+        }
+
+        $this->reminder->purgeNotifications();
+
+        return $this->reminder->delete();
     }
 
     /**
