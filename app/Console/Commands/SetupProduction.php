@@ -63,7 +63,7 @@ class SetupProduction extends Command
         $email = $this->ask('Account creation: what should be your email address to login?');
         $password = $this->secret('Please choose a password:');
 
-        Account::create('John', 'Doe', $email, $password);
+        Account::createDefault('John', 'Doe', $email, $password);
 
         $this->line('');
         $this->line('-----------------------------');

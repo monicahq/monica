@@ -22,7 +22,7 @@ class FakeContentTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->account = Account::create('John', 'Doe', 'admin@admin.com', 'admin');
+        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         $this->faker = Faker::create();
 
@@ -87,7 +87,7 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        Account::create('Blank', 'State', 'blank@blank.com', 'blank');
+        Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
     }
 
     public function populateFoodPreferencies()
@@ -374,7 +374,7 @@ class FakeContentTableSeeder extends Seeder
                 $contactField = $this->contact->contactFields()->create([
                     'contact_field_type_id' => rand(1, 6),
                     'data' => $this->faker->url,
-                    'account_id' => $this->contact->account_id,
+                    'account_id' => $this->contact->account->id,
                 ]);
             }
         }

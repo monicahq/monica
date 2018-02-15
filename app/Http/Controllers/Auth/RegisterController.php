@@ -80,7 +80,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $account = Account::create($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
         $user = $account->users()->first();
 
         // send me an alert

@@ -39,7 +39,7 @@ class Account extends Model
      * @param string $password
      * @return this
      */
-    public static function create($first_name, $last_name, $email, $password)
+    public static function createDefault($first_name, $last_name, $email, $password)
     {
         // create new account
         $account = new self;
@@ -51,7 +51,7 @@ class Account extends Model
         $account->populateDefaultGendersTable();
 
         // create the first user for this account
-        User::create($account->id, $first_name, $last_name, $email, $password);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password);
 
         return $account;
     }
@@ -425,7 +425,7 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if ($ignoreMigratedTable == false) {
+            if (!$ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
                 $contactFieldType = ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
@@ -434,17 +434,6 @@ class Account extends Model
                     'delible' => $defaultContactFieldType->delible,
                     'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                 ]);
-            } else {
-                if ($defaultContactFieldType->migrated == 0) {
-                    $contactFieldType = ContactFieldType::create([
-                        'account_id' => $this->id,
-                        'name' => $defaultContactFieldType->name,
-                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                        'delible' => $defaultContactFieldType->delible,
-                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                    ]);
-                }
             }
         }
     }

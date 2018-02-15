@@ -46,7 +46,7 @@ class User extends Authenticatable
      * @param string $password
      * @return this
      */
-    public static function create($account_id, $first_name, $last_name, $email, $password)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password)
     {
         // create the user
         $user = new self;

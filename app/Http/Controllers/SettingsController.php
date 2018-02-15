@@ -358,7 +358,7 @@ class SettingsController extends Controller
             return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
         }
 
-        $user = User::create($invitation->account_id,
+        $user = User::createDefault($invitation->account_id,
                     $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),

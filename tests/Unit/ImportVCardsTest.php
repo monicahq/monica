@@ -99,22 +99,7 @@ class ImportVCardsTest extends TestCase
 
     private function getUser()
     {
-        $user = new User();
-        $user->first_name = 'John';
-        $user->last_name = 'Doe';
-        $user->email = 'johndoe@example.com';
-        $user->password = bcrypt('secret');
-
-        $account = new Account();
-        $account->api_key = str_random(30);
-        $account->save();
-
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-
-        $user->account_id = $account->id;
-        $user->save();
-
-        return $user;
+        $account = Account::createDefault('John', 'Doe', 'johndoe@example.com', 'secret');
+        return $account->users()->first();
     }
 }
