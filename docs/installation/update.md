@@ -23,7 +23,7 @@ to check for breaking changes.
 1. Then, run the following command at the root of the project:
 
 ```
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-suggest --no-dev
+composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev
 php artisan migrate --force
 ```
 
