@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -181,5 +182,34 @@ class User extends Authenticatable
         }
 
         return decrypt($value);
+    }
+
+    /**
+     * Indicate whether the user should be reminded about a reminder or notification.
+     * The user should be reminded only if the date of the reminder matches the
+     * current date, and the current hour matches the hour the account owner
+     * wants to be reminded.
+     *
+     * @param Carbon $date
+     * @return boolean
+     */
+    public function shouldBeReminded(Carbon $date)
+    {
+        $dateOfReminder = $date->hour(0)->minute(0)->second(0)->toDateString();
+
+        $currentDateOnUserTimezone = Carbon::now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
+        $currentHourOnUserTimezone = Carbon::now($this->timezone)->format('H:00');
+
+        $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
+
+        if ($dateOfReminder != $currentDateOnUserTimezone) {
+            return false;
+        }
+
+        if ($hourEmailShouldBeSent != $currentHourOnUserTimezone) {
+            return false;
+        }
+
+        return true;
     }
 }

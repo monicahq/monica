@@ -2,7 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\User;
+use App\Account;
+use App\Reminder;
+use Carbon\Carbon;
+use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
+use App\Jobs\SetNextReminderDate;
 
 class SendReminders extends Command
 {
@@ -18,7 +24,7 @@ class SendReminders extends Command
      *
      * @var string
      */
-    protected $description = 'Send reminders about contacts';
+    protected $description = 'Send reminders that are scheduled for the contacts';
 
     /**
      * Create a new command instance.
@@ -53,35 +59,23 @@ class SendReminders extends Command
             }
 
             $account = $reminder->contact->account;
-            $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
-            $sendEmailToUser = false;
-            $userTimezone = null;
+            $numberOfUsersInAccount = $account->users->count();
+            $counter = 1;
 
-            // Check if one of the user of the account has the reminder on this
-            // day
             foreach ($account->users as $user) {
-                $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-                $hourCurrentDate = Carbon::now($user->timezone)->format('H:00');
-                $accountHour = $account->default_time_reminder_is_sent;
+                if ($user->shouldBeReminded($reminder->next_expected_date)) {
 
-                if ($reminderDate === $userCurrentDate) {
-                    // We only warn if this is the right hour to send the email,
-                    // according to the account's setting.
-                    if ($hourCurrentDate == $accountHour) {
-                        $sendEmailToUser = true;
-                        $userTimezone = $user->timezone;
-                    }
-                }
-            }
-
-            if ($sendEmailToUser == true) {
-                if (! $account->hasLimitations()) {
-                    foreach ($account->users as $user) {
+                    if (! $account->hasLimitations()) {
                         dispatch(new SendReminderEmail($reminder, $user));
                     }
-                }
 
-                dispatch(new SetNextReminderDate($reminder, $userTimezone));
+                    if ($counter == $numberOfUsersInAccount) {
+                        // We should only do this when we are sure that this is
+                        // the last user who should be warned in this account.
+                        dispatch(new SetNextReminderDate($reminder, $user->timezone));
+                    }
+                }
+                $counter++;
             }
         }
     }

@@ -43,6 +43,9 @@ class SetNextReminderDate implements ShouldQueue
                 $this->reminder->last_triggered = $this->reminder->next_expected_date;
                 $this->reminder->calculateNextExpectedDate($this->timezone);
                 $this->reminder->save();
+
+                $this->reminder->purgeNotifications();
+                $this->reminder->scheduleNotifications();
                 break;
         }
     }
