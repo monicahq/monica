@@ -46,7 +46,7 @@ This is the easiest and fastest way to try Monica! Use this process
 if you want to download the newest image from Docker Hub and run it
 with a pre-packaged MySQL database.
 
-Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that allready.
+Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that already.
 
 ```sh
 $ curl https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
