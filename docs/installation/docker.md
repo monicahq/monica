@@ -10,11 +10,15 @@ quickly with a known working environment.
 Before you start, you need to get and edit a `.env` file. If you've already
 cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
 
-`$ cp .env.example .env`
+```sh
+cp .env.example .env
+```
 
 to create it. If not, you can fetch it from GitHub like:
 
-`$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env`
+```sh
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+```
 
 Then open `.env` in an editor and update it for your own needs:
 
@@ -29,13 +33,13 @@ Note for macOS: you will need to stop Apache if you wish to have Monica availabl
 You can do this like so:
 
 ```sh
-$ sudo /usr/sbin/apachectl stop
+sudo /usr/sbin/apachectl stop
 ```
 
 To start Apache up again use this command:
 
 ```sh
-$ sudo /usr/sbin/apachectl start
+sudo /usr/sbin/apachectl start
 ```
 
 Now select one of these methods to be up and running quickly:
@@ -49,8 +53,8 @@ with a pre-packaged MySQL database.
 Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that allready.
 
 ```sh
-$ curl https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
-$ curl https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
 ```
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
