@@ -14,9 +14,9 @@ ${ARTISAN} db:seed --class CountriesSeederTable --force
 chown -R monica:apache /var/www/monica/storage/app/public/
 chmod -R g+rw /var/www/monica/storage/app/public/
 
-# Run apache2
-rm -f /run/apache2/httpd.pid
-httpd -DFOREGROUND &
-
 # Run cron
 crond -b &
+
+# Run apache2
+rm -f /run/apache2/httpd.pid
+httpd -DFOREGROUND
