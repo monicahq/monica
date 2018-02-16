@@ -59,22 +59,21 @@ curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example >
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
 
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
+Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL container).
 
 Start by downloading all the images and setup your new instance.
 
-```shell
-$ docker-compose pull
-$ docker-compose up
+```sh
+docker-compose pull
+docker-compose up
 ```
 
 Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
 
-```shell
-$ docker-compose run monicahq shell
-$ php artisan setup:production
-$ exit
+```sh
+docker-compose run monicahq shell
+php artisan setup:production
+exit
 ```
 
 Start your instance again with `docker-compose up` and login.
@@ -84,14 +83,13 @@ Start your instance again with `docker-compose up` and login.
 Use this process if you want to modify Monica source code and build
 your image to run.
 
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of
-the MySQL container).
+Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL container).
 
 Then run:
 
-```shell
-$ docker-compose build
-$ docker-compose up
+```sh
+docker-compose build
+docker-compose up
 ```
 
 #### Use Docker directly to run with your own database
@@ -99,14 +97,13 @@ $ docker-compose up
 Use this process if you're a developer and want complete control over
 your Monica container.
 
-Edit `.env` again to set the `DB_*` variables to match your
-database. Then run:
+Edit `.env` again to set the `DB_*` variables to match your database. Then run:
 
-```shell
-$ docker build -t monicahq/monicahq .
-$ docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
+```sh
+docker build -t monicahq/monicahq .
+docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
 # ...or...
-$ docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
+docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
 ```
 
 Note that uploaded files, like avatars, will disappear when you

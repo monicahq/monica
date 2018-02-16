@@ -13,7 +13,7 @@ to check for breaking changes.
     1. Consider check out a tagged version of Monica since `master` branch may not always be stable.
        Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
     ```sh
-    // Clone the desired version
+    # Clone the desired version
     git checkout tags/v1.6.2
     ```
     1. Or check out `master`

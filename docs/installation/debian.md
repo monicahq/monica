@@ -18,7 +18,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
 ```sh
 cd /var/www/monica
-// Clone the desired version
+# Clone the desired version
 sudo git checkout tags/v1.6.2
 ```
 
@@ -31,8 +31,8 @@ sudo chown -R www-data:www-data /var/www/monica
 #### 4. Install nodejs (this is needed for npm)
 
 ```sh
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install -y nodejs
+curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+sudo apt install -y nodejs
 ```
 
 #### 5. Install composer
@@ -56,13 +56,12 @@ Next log in with the root account to configure the database.
 sudo mysql -uroot -p
 ```
 
-Create a database called 'monica'
+Create a database called 'monica'.
 ```sql
 CREATE DATABASE monica;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
-
 ```sql
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
@@ -83,13 +82,13 @@ exit
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Run `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader` to install all packages.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+1. Run `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --ignore-platform-reqs` to install all packages.
 1. Run `npm install` to install all the front-end dependencies and tools needed to compile assets.
 1. Run `npm run production` to compile js and css assets.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
 1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
 
 #### 8. Configure cron job
 
@@ -101,7 +100,6 @@ sudo crontab -e
 ```
 
 And then add this line to the bottom of the window that opens.
-
 ```
 * * * * * sudo -u www-data php /var/www/monica/artisan schedule:run
 ```
@@ -109,42 +107,28 @@ And then add this line to the bottom of the window that opens.
 #### 9. Configure Apache webserver
 
 We need to enable the rewrite module of the Apache webserver:
-
 ```sh
 sudo a2enmod rewrite
 ```
 
-Now look for this section in the `/etc/apache2/apache2.conf` file.
+Edit `/etc/apache2/sites-enabled/000-default.conf` file.
 
-```
-<Directory /var/www>
-        Options Indexes FollowSymLinks
-        AllowOverride None
-        Require all granted
-</Directory>
-```
-
-and change it to:
-
-```
-<Directory /var/www/monica>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-</Directory>
-```
-
-Save the apache2.conf file and open `/etc/apache2/sites-enabled/000-default.conf` and look for this line:
-
-```
-DocumentRoot /var/www/html
-```
-and change it to:
+* Update `DocumentRoot` property to:
 ```
 DocumentRoot /var/www/monica/public
 ```
+* and add a new `Directory` directive:
+```
+<Directory /var/www/monica/public>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+```
 
-After you save the 000-default.conf file you can finally restart Apache and are up and running.
+Finally restart Apache.
+```sh
+sudo systemctl restart apache2
 ```
-sudo service apache2 restart
-```
+
+Monica will be up and running to `http://localhost`.

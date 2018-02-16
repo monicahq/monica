@@ -32,7 +32,7 @@ You should check out a tagged version of Monica since `master` branch may not al
 Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
 ```sh
 cd ~/monica
-// Clone the desired version
+# Clone the desired version
 git checkout tags/v1.6.2
 ```
 
@@ -43,13 +43,12 @@ Log in with the root account to configure the database.
 mysql -uroot -p
 ```
 
-Create a database called 'monica'
+Create a database called 'monica'.
 ```sql
 CREATE DATABASE monica;
 ```
 
 Create a user called 'monica' and its password 'strongpassword'.
-
 ```sql
 CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
 ```
@@ -70,11 +69,11 @@ exit
 `cd ~/monica` then run these steps:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
 1. Run `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
 1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
 1. Finally, Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and triggers the following command `php artisan schedule:run`.
 
 ### 4. **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
