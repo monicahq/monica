@@ -12,7 +12,9 @@ class SetupProduction extends Command
      *
      * @var string
      */
-    protected $signature = 'setup:production {--force}';
+    protected $signature = 'setup:production {--force}
+                            {--email= login email for the first account}
+                            {--password= password to set for the first account}';
 
     /**
      * The console command description.
@@ -36,7 +38,7 @@ class SetupProduction extends Command
      */
     public function handle()
     {
-        if (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?')) {
+        if ((! $this->option('force')) &&  (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
             return;
         }
 
@@ -60,8 +62,15 @@ class SetupProduction extends Command
         $this->callSilent('storage:link');
         $this->info('✓ Symlinked the storage folder for the avatars');
 
-        $email = $this->ask('Account creation: what should be your email address to login?');
-        $password = $this->secret('Please choose a password:');
+        $email = $this->option('email');
+        if (! $email) {
+            $email = $this->ask('Account creation: what should be your email address to login?');
+        }
+
+        $password = $this->option('password');
+        if (! $password) {
+            $password = $this->secret('Please choose a password:');
+        }
 
         Account::createDefault('John', 'Doe', $email, $password);
 
