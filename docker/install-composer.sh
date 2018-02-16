@@ -14,9 +14,8 @@ then
     exit 1
 fi
 
-php $SETUP --quiet
+php $SETUP --quiet --install-dir=/usr/local/bin --filename=composer
 RESULT=$?
-mv composer.phar /usr/local/bin/composer
 rm $SETUP
 
 exit $RESULT
