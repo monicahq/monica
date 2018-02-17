@@ -27,7 +27,7 @@ RUN cp .env.example .env; \
     chmod -R g+w bootstrap/cache storage; \
     cp docker/000-default.conf /etc/apache2/conf.d; \
     docker/install-composer.sh; \
-    echo '* * * * * sudo -u monica /usr/bin/php /var/www/monica/artisan schedule:run 2>/proc/self/fd/2 >/proc/self/fd/1' | crontab -u monica -
+    echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
