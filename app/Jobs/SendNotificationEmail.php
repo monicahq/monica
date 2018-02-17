@@ -18,6 +18,7 @@ class SendNotificationEmail implements ShouldQueue
 
     protected $reminder;
     protected $user;
+    protected $notification;
 
     /**
      * Create a new job instance.
@@ -38,6 +39,6 @@ class SendNotificationEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new NotificationEmail($this->reminder, $this->user));
+        Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
     }
 }

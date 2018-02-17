@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\User;
 use App\Contact;
 use App\Reminder;
+use App\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -14,6 +15,7 @@ class NotificationEmail extends Mailable
     use Queueable, SerializesModels;
 
     protected $reminder;
+    protected $notification;
     protected $user;
 
     /**
@@ -21,9 +23,10 @@ class NotificationEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(Reminder $reminder, User $user)
+    public function __construct(Notification $notification, User $user)
     {
-        $this->reminder = $reminder;
+        $this->reminder = $notification->reminder;
+        $this->notification = $notification;
         $this->user = $user;
     }
 
@@ -38,11 +41,12 @@ class NotificationEmail extends Mailable
 
         \App::setLocale($this->user->locale);
 
-        return $this->text('emails.reminder.reminder')
-                    ->subject(trans('mail.subject_line', ['contact' => $contact->getCompleteName($this->user->name_order)]))
+        return $this->text('emails.reminder.notification')
+                    ->subject(trans('mail.notification_subject_line'))
                     ->with([
                         'contact' => $contact,
                         'reminder' => $this->reminder,
+                        'notification' => $this->notification,
                         'user' => $this->user,
                     ]);
     }
