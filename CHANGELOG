@@ -4,6 +4,11 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v1.7.1 - 2018-02-17
+-------------------
+
+* Fix a bug that occured when running setup:production command
+
 v1.7.0 - 2018-02-16
 -------------------
 
