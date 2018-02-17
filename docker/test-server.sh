@@ -11,8 +11,15 @@ ${ARTISAN} migrate --force
 ${ARTISAN} storage:link
 ${ARTISAN} db:seed --class ActivityTypesTableSeeder --force
 ${ARTISAN} db:seed --class CountriesSeederTable --force
-chown -R monica:apache /var/www/monica/storage/app/public/
-chmod -R g+rw /var/www/monica/storage/app/public/
+
+# Ensure storage directories are present
+mkdir -p storage/logs
+mkdir -p storage/app/public
+mkdir -p storage/framework/views
+mkdir -p storage/framework/cache
+mkdir -p storage/framework/sessions
+chown -R monica:apache storage
+chmod -R g+rw storage
 
 # Run cron
 crond -b &
