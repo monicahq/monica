@@ -1,12 +1,17 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v1.7.0 - 2018-02-16
+-------------------
+
 * Add ability to create custom genders
 * Add Annual plan for the .com site
 * Fix avatar being invalid in the Contact API call
 * DB_PREFIX is now blank in .env.example
 * Fix empty message after updating a gift
-
-RELEASED VERSIONS:
 
 v1.6.2 - 2018-01-25
 -------------------
