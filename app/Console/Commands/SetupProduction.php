@@ -13,8 +13,8 @@ class SetupProduction extends Command
      * @var string
      */
     protected $signature = 'setup:production {--force}
-                            {--email= login email for the first account}
-                            {--password= password to set for the first account}';
+                            {--email= : Login email for the first account}
+                            {--password= : Password to set for the first account}';
 
     /**
      * The console command description.
@@ -38,7 +38,7 @@ class SetupProduction extends Command
      */
     public function handle()
     {
-        if ((! $this->option('force')) &&  (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
+        if ((! $this->option('force')) && (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
             return;
         }
 
