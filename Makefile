@@ -46,12 +46,12 @@ docker_push_bintray:
 build: build-dev
 
 build-prod:
-	composer install --no-interaction --prefer-dist --no-suggest --no-dev
+	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev
 	npm install
 	npm run production
 
 build-dev:
-	composer install --no-interaction --prefer-dist --no-suggest
+	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader
 	npm install
 	npm run dev
 
