@@ -15,7 +15,7 @@ class SendNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:sendnotifications';
+    protected $signature = 'send:notifications';
 
     /**
      * The console command description.
@@ -46,10 +46,13 @@ class SendNotifications extends Command
 
         foreach ($notifications as $notification) {
             if (! $notification->contact) {
+                $notification->delete();
                 continue;
             }
 
             $account = $notification->contact->account;
+            $numberOfUsersInAccount = $account->users->count();
+            $counter = 1;
 
             foreach ($account->users as $user) {
                 if ($user->shouldBeReminded($notification->trigger_date)) {
@@ -59,7 +62,12 @@ class SendNotifications extends Command
                             dispatch(new SendNotificationEmail($notification, $user));
                         }
                     }
+
+                    if ($counter == $numberOfUsersInAccount) {
+                        $notification->delete();
+                    }
                 }
+                $counter++;
             }
         }
     }

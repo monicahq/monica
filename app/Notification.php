@@ -21,6 +21,13 @@ class Notification extends Model
     protected $table = 'notifications';
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['trigger_date'];
+
+    /**
      * Get the account record associated with the notification.
      *
      * @return BelongsTo

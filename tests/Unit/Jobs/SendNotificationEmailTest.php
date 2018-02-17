@@ -4,12 +4,12 @@ namespace Tests\Unit\Jobs;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Mail\UserRemindedMail;
-use App\Jobs\SendReminderEmail;
+use App\Mail\NotificationEmail;
+use App\Jobs\SendNotificationEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class SendReminderEmailTest extends TestCase
+class SendNotificationEmailTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -32,14 +32,19 @@ class SendReminderEmailTest extends TestCase
             'contact_id' => $contact->id,
             'next_expected_date' => '2017-01-01',
         ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'reminder_id' => $reminder->id,
+        ]);
 
-        dispatch(new SendReminderEmail($reminder, $user));
+        dispatch(new SendNotificationEmail($notification, $user));
 
-        Mail::assertSent(UserRemindedMail::class, function ($mail) {
+        Mail::assertSent(NotificationEmail::class, function ($mail) {
             return $mail->hasTo('john@doe.com');
         });
 
-        Mail::assertNotSent(UserRemindedMail::class, function ($mail) {
+        Mail::assertNotSent(NotificationEmail::class, function ($mail) {
             return $mail->hasTo('jane@doe.com');
         });
     }

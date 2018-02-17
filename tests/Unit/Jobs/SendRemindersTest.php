@@ -66,7 +66,7 @@ class SendRemindersTest extends TestCase
         ]);
     }
 
-    function test_it_schedules_multiple_emails_but_only_one_set_next_reminder_job()
+    function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
     {
         Bus::fake();
 
