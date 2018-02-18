@@ -4,7 +4,7 @@
 .gitignore
 **/.gitignore
 **/.gitkeep
-.ci/
+bootstrap/cache/*
 .env
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
@@ -17,7 +17,7 @@ Homestead.yaml
 node_modules/
 npm-debug.log*
 persist/
-phpunit.xml
+phpunit*
 Procfile
 public/storage/
 resources/vendor/
@@ -27,6 +27,13 @@ scripts/tests
 scripts/vagrant
 server.php
 sonar-project.properties
+storage/app/public/*
+storage/debugbar/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
 .styleci.yml
 tests/
 .travis.yml*
+vendor/
