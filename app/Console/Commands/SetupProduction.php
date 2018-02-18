@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use DB;
+use App\Account;
 use Illuminate\Console\Command;
 
 class SetupProduction extends Command
@@ -12,7 +12,9 @@ class SetupProduction extends Command
      *
      * @var string
      */
-    protected $signature = 'setup:production {--force}';
+    protected $signature = 'setup:production {--force}
+                            {--email= : Login email for the first account}
+                            {--password= : Password to set for the first account}';
 
     /**
      * The console command description.
@@ -36,7 +38,7 @@ class SetupProduction extends Command
      */
     public function handle()
     {
-        if (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?')) {
+        if ((! $this->option('force')) && (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
             return;
         }
 
@@ -60,24 +62,17 @@ class SetupProduction extends Command
         $this->callSilent('storage:link');
         $this->info('✓ Symlinked the storage folder for the avatars');
 
-        $email = $this->ask('Account creation: what should be your email address to login?');
-        $password = $this->secret('Please choose a password:');
+        $email = $this->option('email');
+        if (! $email) {
+            $email = $this->ask('Account creation: what should be your email address to login?');
+        }
 
-        // populate account table
-        $accountID = DB::table('accounts')->insertGetId([
-            'api_key' => str_random(30),
-        ]);
+        $password = $this->option('password');
+        if (! $password) {
+            $password = $this->secret('Please choose a password:');
+        }
 
-        // populate user table
-        $userId = DB::table('users')->insertGetId([
-            'account_id' => $accountID,
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => $email,
-            'password' => bcrypt($password),
-            'timezone' => config('app.timezone'),
-            'remember_token' => str_random(10),
-        ]);
+        Account::createDefault('John', 'Doe', $email, $password);
 
         $this->line('');
         $this->line('-----------------------------');

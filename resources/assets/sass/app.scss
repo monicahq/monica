@@ -40,6 +40,18 @@ $border-color: #dfdfdf;
   box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
 }
 
+.form-information-message {
+  border-top: 1px solid #46C1BF;
+  background-color: #E0F5F5;
+  box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+
+  svg {
+    width: 20px;
+    fill: #00848e;
+    color: #fff;
+  }
+}
+
 // Utilities
 .border-bottom {
   border-bottom: 1px solid $border-color;

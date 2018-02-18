@@ -7,10 +7,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/asbiin/steward"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/asbiin/google2fa-laravel"
         }
     ],
@@ -42,15 +38,13 @@
         "sentry/sentry-laravel": "^0.7.0"
     },
     "require-dev": {
-        "enm1989/chromedriver": "^2.35",
         "filp/whoops": "~2.0",
         "khanamiryan/qrcode-detector-decoder": "^1.0",
-        "lmc/steward": "dev-update-dependencies",
+        "laravel/dusk": "^2.0",
         "matthiasnoback/live-code-coverage": "^0.1.0",
         "mockery/mockery": "0.9.*",
         "phpunit/phpcov": "^4.0",
         "phpunit/phpunit": "~6.0",
-        "se/selenium-server-standalone": "^3.8",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"
     },
