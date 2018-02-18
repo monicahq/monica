@@ -55,7 +55,8 @@ RUN cp .env.example .env; \
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev
+RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev; \
+    composer clear-cache
 USER root
 
 # This is the command that the container will run by default

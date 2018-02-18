@@ -18,9 +18,9 @@ Homestead.*
 node_modules/
 npm-debug.log*
 persist/
-phpunit.xml
+phpunit*
 Procfile
-public/storage/
+public/storage
 resources/vendor/
 results/
 .sass-lint.yml
