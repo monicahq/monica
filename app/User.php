@@ -37,6 +37,32 @@ class User extends Authenticatable
     ];
 
     /**
+     * Create a new User.
+     *
+     * @param int $account_id
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password)
+    {
+        // create the user
+        $user = new self;
+        $user->account_id = $account_id;
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->email = $email;
+        $user->password = bcrypt($password);
+        $user->timezone = config('app.timezone');
+        $user->created_at = Carbon::now();
+        $user->save();
+
+        return $user;
+    }
+
+    /**
      * Get the account record associated with the user.
      *
      * @return BelongsTo

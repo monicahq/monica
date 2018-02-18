@@ -10,6 +10,9 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    // Search for a contact
+    Route::post('/contacts/search', 'Api\\ApiContactController@search');
+
     // Set a partner to the contact
     Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
     Route::post('/contacts/{contact}/partners/unset', 'Api\\ApiContactController@unsetPartners');

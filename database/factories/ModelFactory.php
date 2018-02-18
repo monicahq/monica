@@ -187,7 +187,6 @@ $factory->define(App\PetCategory::class, function (Faker\Generator $faker) {
 
 $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
     return [
-        'id' => 1,
         'account_id' => 1,
         'name' => 'Email',
         'protocol' => 'mailto:',

@@ -20,18 +20,63 @@ The official Monica installation uses mySQL as the database system and **this is
 
 Once the softwares above are installed:
 
-1. Create a database called `monica` in your mySQL instance. This will let you store your data.
-1. Clone the repository: `git clone https://github.com/monicahq/monica` in the folder you want to install the software to.
-1. Run `cd monica` to go to the root of the newly created folder containing Monica's code.
-1. Run `composer install` at the root of the folder Monica has been cloned.
-1. Run `cp .env.example .env`. This will create the `.env` file that contains all the settings about Monica.
-1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
-1. Open the file `.env` to set the different variables needed by the project. The file comes with predefined values - you won't have to change most of them.
-1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
-1. Finally, Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and triggers the following command `php artisan schedule:run`.
-1. (optional) If you want to use the API, you need to run `php artisan passport:install`. This command will create the encryption keys needed to generate secure access tokens.
+### 1. Clone the repository
 
-**Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
+You may install Monica by simply closing the repository. Consider cloning the repository into any folder, example here in your 'home' directory:
+```sh
+cd ~
+git clone https://github.com/monicahq/monica.git
+```
+
+You should check out a tagged version of Monica since `master` branch may not always be stable.
+Find the latest official version on the [release page](https://github.com/monicahq/monica/releases).
+```sh
+cd ~/monica
+# Clone the desired version
+git checkout tags/v1.6.2
+```
+
+### 2. Setup the database
+
+Log in with the root account to configure the database.
+```sh
+mysql -uroot -p
+```
+
+Create a database called 'monica'.
+```sql
+CREATE DATABASE monica;
+```
+
+Create a user called 'monica' and its password 'strongpassword'.
+```sql
+CREATE USER 'monica'@'localhost' IDENTIFIED BY 'strongpassword';
+```
+
+We have to authorize the new user on the monica db so that he is allowed to change the database.
+```sql
+GRANT ALL ON monica.* TO 'monica'@'localhost';
+```
+
+And finally we apply the changes and exit the database.
+```sql
+FLUSH PRIVILEGES;
+exit
+```
+
+### 3. Configure Monica
+
+`cd ~/monica` then run these steps:
+
+1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+1. Run `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev` to install all packages.
+1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
+1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
+1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
+1. Finally, Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33). To do this, setup a cron that runs every minute and triggers the following command `php artisan schedule:run`.
+
+### 4. **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
 
 Monica can work with a queue mechanism to handle different events, so we don't block the main thread while processing stuff that can be run asynchronously, like sending emails. By default, Monica does not use a queue mechanism but can be setup to do so.
 
@@ -49,4 +94,4 @@ There are several choices for the queue mechanism:
 
 The simplest queue is the database driver. To set it up, simply change in your `.env` file the following `QUEUE_DRIVER=sync` by `QUEUE_DRIVER=database`.
 
-To configure the other queues, refer to the [official Laravel documentation](https://laravel.com/docs/5.4/queues#driver-prerequisites) on the topic.
+To configure the other queues, refer to the [official Laravel documentation](https://laravel.com/docs/master/queues#driver-prerequisites) on the topic.

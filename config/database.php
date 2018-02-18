@@ -161,6 +161,7 @@ if (env('HEROKU')) {
         'password' => $url['pass'],
         'charset' => 'utf8',
         'prefix' => '',
+        'strict' => false,
         'schema' => 'public',
     ];
 }

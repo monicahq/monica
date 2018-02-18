@@ -4,11 +4,23 @@ If you want a quick and easy way to get a Monica development/test environment up
 
 1. Download and install [Vagrant](https://www.vagrantup.com/) for your operating system
 2. Create a folder to put the vagrant configuration files
-3. Download the `Vagrantfile` and the `provision.sh` script from [this repository](https://github.com/dp87/vagrantfiles/tree/master/Monica)
-4. Put both of these files inside the Vagrant folder you have created in step 2
-5. Open a terminal and `cd` to this folder
-6. Initialize a virtual machine based on Ubuntu 16.04: `vagrant init ubuntu/xenial64`
-7. Launch the virtual machine with `vagrant up`
+```sh
+mkdir ~/monica
+cd ~/monica
+```
+3. Download the `Vagrantfile` and the `provision.sh` script
+```sh
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagrant/Vagrantfile -o Vagrantfile
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/scripts/vagrant/provision.sh -o provision.sh
+```
+4. Initialize a virtual machine based on Ubuntu 16.04:
+```sh
+vagrant box add ubuntu/xenial64
+```
+5. Launch the virtual machine with
+```sh
+vagrant up
+```
 
 The virtual machine will be first created and then provisioned using the `provision.sh` script, which will take care of installing Monica for you.
 
@@ -19,11 +31,11 @@ Once the installation process is complete (you will see all of the output in you
 ### Database users
 
 * Root database user
-* * Username: `root`
-* * Password: `changeme`
+   - Username: `root`
+   - Password: `changeme`
 * Monica database user
-* * Username: `monica`
-* * Password: `changeme`
+   - Username: `monica`
+   - Password: `changeme`
 
 ### Apache configuration
 
