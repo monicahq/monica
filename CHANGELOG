@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to define the hour the reminder should be sent
+* Add notifications for reminders (30 and 7 days before an event happens)
 
 RELEASED VERSIONS:
 
