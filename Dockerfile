@@ -3,12 +3,35 @@ FROM alpine:3.6
 EXPOSE 80:80
 
 RUN apk update && apk upgrade; \
-    apk add apache2 curl git make netcat-openbsd openssl \
-        php7 php7-apache2 php7-ctype php7-dom php7-fileinfo php7-gd \
-        php7-iconv php7-intl php7-json php7-mbstring php7-mysqli php7-openssl \
-        php7-pdo_mysql php7-phar php7-session php7-simplexml php7-tokenizer \
-        php7-xml php7-xmlreader php7-xmlwriter php7-zip php7-zlib php7-pgsql \
-        php7-pdo_pgsql php7-curl
+    apk add --virtual .build-deps \
+        curl openssl; \
+    apk add apache2 make netcat-openbsd \
+        #- base
+        php7 php7-apache2 php7-intl php7-openssl php7-ctype \
+        php7-zip php7-zlib \
+        php7-redis \
+        #- Authentication Guards
+        php7-session php7-tokenizer \
+        #- laravel/cashier sabre/vobject sabre/xml
+        php7-dom \
+        #- intervention/image
+        php7-fileinfo \
+        #- laravel/cashier
+        php7-gd \
+        #- composer
+        php7-phar php7-json php7-iconv \
+        #- laravel/framework sabre/vobject
+        php7-mbstring \
+        #- league/flysystem-aws-s3-v3 
+        php7-simplexml \
+        #- sabre/vobject sabre/xml
+        php7-xml php7-xmlreader php7-xmlwriter \
+        #- mysql
+        php7-mysqli php7-pdo_mysql \
+        #- pgsql
+        php7-pgsql php7-pdo_pgsql \
+        #- sentry/sentry
+        php7-curl 
 
 RUN mkdir -p /run/apache2
 
@@ -25,9 +48,10 @@ RUN cp .env.example .env; \
     chown -R monica:monica .; \
     chgrp -R apache bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage; \
-    cp docker/000-default.conf /etc/apache2/conf.d; \
-    docker/install-composer.sh; \
-    echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -
+    cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
+    scripts/docker/install-composer.sh; \
+    echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -; \
+    apk del .build-deps
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
@@ -35,4 +59,4 @@ RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-auto
 USER root
 
 # This is the command that the container will run by default
-ENTRYPOINT ["make", "-f", "/var/www/monica/docker/Makefile"]
+ENTRYPOINT ["make", "-f", "/var/www/monica/scripts/docker/Makefile"]

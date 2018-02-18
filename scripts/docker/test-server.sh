@@ -1,6 +1,7 @@
 #!/bin/sh
 
-ARTISAN="php /var/www/monica/artisan"
+MONICADIR=/var/www/monica
+ARTISAN="php ${MONICADIR}/artisan"
 
 if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; then
   ${ARTISAN} key:generate --no-interaction
@@ -13,13 +14,13 @@ ${ARTISAN} db:seed --class ActivityTypesTableSeeder --force
 ${ARTISAN} db:seed --class CountriesSeederTable --force
 
 # Ensure storage directories are present
-mkdir -p storage/logs
-mkdir -p storage/app/public
-mkdir -p storage/framework/views
-mkdir -p storage/framework/cache
-mkdir -p storage/framework/sessions
-chown -R monica:apache storage
-chmod -R g+rw storage
+mkdir -p ${MONICADIR}/storage/logs
+mkdir -p ${MONICADIR}/storage/app/public
+mkdir -p ${MONICADIR}/storage/framework/views
+mkdir -p ${MONICADIR}/storage/framework/cache
+mkdir -p ${MONICADIR}/storage/framework/sessions
+chown -R monica:apache ${MONICADIR}/storage
+chmod -R g+rw ${MONICADIR}/storage
 
 # Run cron
 crond -b &
