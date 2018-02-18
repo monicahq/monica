@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends TestCase
@@ -161,7 +160,7 @@ class ReminderTest extends TestCase
 
         $notification = $reminder->scheduleSingleNotification(3);
 
-        $this->assertDatabaseHas('notifications',[
+        $this->assertDatabaseHas('notifications', [
             'account_id' => 1,
             'contact_id' => 1,
             'reminder_id' => $reminder->id,

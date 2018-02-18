@@ -13,7 +13,7 @@ class SendReminderEmailTest extends TestCase
 {
     use DatabaseTransactions;
 
-    function test_it_sends_a_reminder_email()
+    public function test_it_sends_a_reminder_email()
     {
         Mail::fake();
 

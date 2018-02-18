@@ -7,14 +7,13 @@ use Tests\TestCase;
 use App\Jobs\SendNotificationEmail;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;
-use App\Console\Commands\SendNotifications;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendNotificationsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    function test_it_schedules_a_notification_email_job()
+    public function test_it_schedules_a_notification_email_job()
     {
         Bus::fake();
 
@@ -43,7 +42,7 @@ class SendNotificationsTest extends TestCase
         Bus::assertDispatched(SendNotificationEmail::class);
     }
 
-    function test_it_deletes_the_notification_if_contact_does_not_exist()
+    public function test_it_deletes_the_notification_if_contact_does_not_exist()
     {
         Bus::fake();
 

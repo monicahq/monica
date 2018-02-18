@@ -64,7 +64,6 @@ class SendReminders extends Command
 
             foreach ($account->users as $user) {
                 if ($user->shouldBeReminded($reminder->next_expected_date)) {
-
                     if (! $account->hasLimitations()) {
                         dispatch(new SendReminderEmail($reminder, $user));
                     }

@@ -344,7 +344,7 @@ class Account extends Model
      */
     public function isSubscribed()
     {
-        if ($this->has_access_to_paid_version_for_free == 1) {
+        if ($this->has_access_to_paid_version_for_free) {
             return true;
         }
 
@@ -401,7 +401,7 @@ class Account extends Model
      */
     public function hasLimitations()
     {
-        if ($this->has_access_to_paid_version_for_free == 0) {
+        if (! $this->has_access_to_paid_version_for_free) {
             return false;
         }
 

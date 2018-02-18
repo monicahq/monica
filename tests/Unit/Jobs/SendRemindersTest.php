@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Jobs\SendReminderEmail;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Support\Facades\Bus;
-use App\Console\Commands\SendReminders;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -15,7 +14,7 @@ class SendRemindersTest extends TestCase
 {
     use DatabaseTransactions;
 
-    function test_it_schedules_a_reminder_email_job_and_a_set_next_expected_date_job()
+    public function test_it_schedules_a_reminder_email_job_and_a_set_next_expected_date_job()
     {
         Bus::fake();
 
@@ -39,7 +38,7 @@ class SendRemindersTest extends TestCase
         Bus::assertDispatched(SetNextReminderDate::class);
     }
 
-    function test_it_deletes_the_reminder_if_contact_doesnt_exist()
+    public function test_it_deletes_the_reminder_if_contact_doesnt_exist()
     {
         Bus::fake();
 
@@ -66,7 +65,7 @@ class SendRemindersTest extends TestCase
         ]);
     }
 
-    function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
+    public function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
     {
         Bus::fake();
 
@@ -91,7 +90,7 @@ class SendRemindersTest extends TestCase
         Bus::assertDispatched(SetNextReminderDate::class, 1);
     }
 
-    function test_it_doesnt_schedule_email_if_on_unpaid_plan()
+    public function test_it_doesnt_schedule_email_if_on_unpaid_plan()
     {
         Bus::fake();
 

@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Account;
 use Tests\TestCase;
-use App\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderRuleTest extends TestCase

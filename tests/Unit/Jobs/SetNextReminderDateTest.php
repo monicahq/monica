@@ -5,14 +5,13 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Jobs\SetNextReminderDate;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SetNextReminderDateTest extends TestCase
 {
     use DatabaseTransactions;
 
-    function test_it_sets_the_date_of_the_next_reminder()
+    public function test_it_sets_the_date_of_the_next_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -45,7 +44,7 @@ class SetNextReminderDateTest extends TestCase
         dispatch(new SetNextReminderDate($reminder, $user->timezone));
 
         $this->assertDatabaseHas('reminders', [
-            'next_expected_date' => '2017-02-01 00:00:00'
+            'next_expected_date' => '2017-02-01 00:00:00',
         ]);
 
         // Also check if two notifications have been created
@@ -55,7 +54,7 @@ class SetNextReminderDateTest extends TestCase
         );
     }
 
-     function test_it_deletes_the_remindeer()
+     public function test_it_deletes_the_remindeer()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -75,13 +74,13 @@ class SetNextReminderDateTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('reminders', [
-            'id' => $reminder->id
+            'id' => $reminder->id,
         ]);
 
         dispatch(new SetNextReminderDate($reminder, $user->timezone));
 
         $this->assertDatabaseMissing('reminders', [
-            'id' => $reminder->id
+            'id' => $reminder->id,
         ]);
     }
 }

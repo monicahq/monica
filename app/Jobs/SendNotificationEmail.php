@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\User;
-use App\Reminder;
 use App\Notification;
 use Illuminate\Bus\Queueable;
 use App\Mail\NotificationEmail;

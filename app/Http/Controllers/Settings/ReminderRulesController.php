@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Exception;
-use Validator;
 use App\ReminderRule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ReminderRulesController extends Controller
 {
@@ -33,7 +30,7 @@ class ReminderRulesController extends Controller
 
     public function toggle(Request $request, ReminderRule $reminderRule)
     {
-        $reminderRule->active = !$reminderRule->active;
+        $reminderRule->active = ! $reminderRule->active;
         $reminderRule->save();
 
         return trans('settings.personalization_reminder_rule_save');

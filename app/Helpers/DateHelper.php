@@ -258,8 +258,8 @@ class DateHelper
         $hours = collect([]);
         for ($hour = 1; $hour <= 24; $hour++) {
             $hours->push([
-                'id' => date("H:i", strtotime("$hour:00")),
-                'name' => date("h.iA", strtotime("$hour:00")),
+                'id' => date('H:i', strtotime("$hour:00")),
+                'name' => date('h.iA', strtotime("$hour:00")),
             ]);
         }
 

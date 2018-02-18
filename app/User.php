@@ -191,14 +191,16 @@ class User extends Authenticatable
      * wants to be reminded.
      *
      * @param Carbon $date
-     * @return boolean
+     * @return bool
      */
     public function shouldBeReminded(Carbon $date)
     {
         $dateOfReminder = $date->hour(0)->minute(0)->second(0)->toDateString();
 
-        $currentDateOnUserTimezone = Carbon::now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = Carbon::now($this->timezone)->format('H:00');
+        $currentDate = Carbon::now($this->timezone);
+
+        $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
+        $currentHourOnUserTimezone = $currentDate->format('H:00');
 
         $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
 

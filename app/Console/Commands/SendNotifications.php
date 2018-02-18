@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Account;
 use Carbon\Carbon;
 use App\Notification;
 use Illuminate\Console\Command;

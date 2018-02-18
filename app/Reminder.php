@@ -4,7 +4,6 @@ namespace App;
 
 use Auth;
 use Carbon\Carbon;
-use App\Notification;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
