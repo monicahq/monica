@@ -204,4 +204,6 @@ return [
     'personalization_reminder_rule_title' => 'Reminder rules',
     'personalization_reminder_rule_line' => ':count days before',
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+
+    'reminder_time_to_send' => 'Time of the day reminders should be sent',
 ];
