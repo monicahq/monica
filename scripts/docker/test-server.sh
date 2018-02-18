@@ -14,13 +14,10 @@ ${ARTISAN} db:seed --class ActivityTypesTableSeeder --force
 ${ARTISAN} db:seed --class CountriesSeederTable --force
 
 # Ensure storage directories are present
-mkdir -p ${MONICADIR}/storage/logs
-mkdir -p ${MONICADIR}/storage/app/public
-mkdir -p ${MONICADIR}/storage/framework/views
-mkdir -p ${MONICADIR}/storage/framework/cache
-mkdir -p ${MONICADIR}/storage/framework/sessions
-chown -R monica:apache ${MONICADIR}/storage
-chmod -R g+rw ${MONICADIR}/storage
+STORAGE=${MONICADIR}/storage
+mkdir -p ${STORAGE}/{logs,app/public,framework/views,framework/cache,framework/sessions}
+chown -R monica:apache ${STORAGE}
+chmod -R g+rw ${STORAGE}
 
 # Run cron
 crond -b &
