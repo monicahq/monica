@@ -8,6 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 class ChangeNotesToContact extends Migration
 {
     use MigrationHelper;
+
     /**
      * Run the migrations.
      *

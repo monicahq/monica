@@ -18,6 +18,7 @@ trait MigrationHelper
         if ($this->getDriverName() == 'sqlite') {
             return $fluent->default($value);
         }
+
         return $fluent;
     }
 

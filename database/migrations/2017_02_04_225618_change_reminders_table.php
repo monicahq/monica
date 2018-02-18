@@ -8,7 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 class ChangeRemindersTable extends Migration
 {
     use MigrationHelper;
-    
+
     /**
      * Run the migrations.
      *

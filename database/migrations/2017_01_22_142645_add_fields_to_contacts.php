@@ -20,7 +20,7 @@ class AddFieldsToContacts extends Migration
             $this->default($table->string('has_kids'), 'false')->after('gender');
             $this->default($table->integer('number_of_kids'), 0)->after('has_kids');
             $table->date('last_talked_to')->nullable()->after('number_of_kids');
-            $this->default($table->integer('number_of_reminders') ,0)->after('last_talked_to');
+            $this->default($table->integer('number_of_reminders'), 0)->after('last_talked_to');
         });
 
         Schema::table('contacts', function (Blueprint $table) {

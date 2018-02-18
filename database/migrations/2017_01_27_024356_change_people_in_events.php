@@ -8,6 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 class ChangePeopleInEvents extends Migration
 {
     use MigrationHelper;
+
     /**
      * Run the migrations.
      *
