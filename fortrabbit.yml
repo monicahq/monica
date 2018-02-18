@@ -1,0 +1,4 @@
+# optional Composer settings
+composer:
+    # Resolves to the --no-dev parameter
+    no-dev: true
