@@ -31,9 +31,9 @@ RUN apk update && apk upgrade; \
         #- pgsql
         php7-pgsql php7-pdo_pgsql \
         #- sentry/sentry
-        php7-curl 
-
-RUN mkdir -p /run/apache2
+        php7-curl; \
+    # Create apache2 dir needed for httpd
+    mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -45,17 +45,21 @@ WORKDIR /var/www/monica
 # correctly
 ADD . .
 RUN cp .env.example .env; \
-    chown -R monica:monica .; \
-    chgrp -R apache bootstrap/cache storage; \
-    chmod -R g+w bootstrap/cache storage; \
+    chown -R monica:monica . && \
+    chgrp -R apache bootstrap/cache storage && \
+    chmod -R g+w bootstrap/cache storage && \
+    # Apache2 conf
     cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
+    # Composer installation
     scripts/docker/install-composer.sh; \
+    # Set crontab for schedules
     echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -; \
-    apk del .build-deps
+    # Cleanup
+    apk del .build-deps && rm -rf /var/cache/apk/*
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev; \
+RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev && \
     composer clear-cache
 USER root
 
