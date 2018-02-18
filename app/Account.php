@@ -428,7 +428,7 @@ class Account extends Model
      */
     public function hasLimitations()
     {
-        if (! $this->has_access_to_paid_version_for_free) {
+        if ($this->has_access_to_paid_version_for_free) {
             return false;
         }
 

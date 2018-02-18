@@ -15,7 +15,6 @@ class SendNotificationEmail implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $reminder;
     protected $user;
     protected $notification;
 
@@ -26,7 +25,6 @@ class SendNotificationEmail implements ShouldQueue
      */
     public function __construct(Notification $notification, User $user)
     {
-        $this->reminder = $notification->reminder;
         $this->notification = $notification;
         $this->user = $user;
     }
