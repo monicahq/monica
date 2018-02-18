@@ -23,13 +23,10 @@ public/storage/
 resources/vendor/
 results/
 .sass-lint.yml
+scripts/tests
+scripts/vagrant
 server.php
 sonar-project.properties
-steward.yml
 .styleci.yml
 tests/
-travis-sonar.sh
-travis-sonar.sh.sig
-.travis.yml
-.travis.yml.sig
-yarn.lock
+.travis.yml*
