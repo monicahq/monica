@@ -54,7 +54,7 @@ class SetNextReminderDateTest extends TestCase
         );
     }
 
-     public function test_it_deletes_the_remindeer()
+    public function test_it_deletes_the_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 

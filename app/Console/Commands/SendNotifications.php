@@ -55,7 +55,6 @@ class SendNotifications extends Command
 
             foreach ($account->users as $user) {
                 if ($user->shouldBeReminded($notification->trigger_date)) {
-
                     if (! $account->hasLimitations()) {
                         foreach ($account->users as $user) {
                             dispatch(new SendNotificationEmail($notification, $user));
