@@ -1,5 +1,6 @@
 <?php
 
+use App\Reminder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -54,6 +55,13 @@ class CreateAdditionalRemindersTable extends Migration
                 ['account_id' => $account->id, 'number_of_days_before' => 7],
                 ['account_id' => $account->id, 'number_of_days_before' => 30],
             ]);
+        }
+
+        // Create notifications for existing reminders
+        // Only create notifications for reminders that are not weekly based
+        $reminders = Reminder::where('frequency_type', !=, 'week')->get();
+        foreach ($reminders as $reminder) {
+            $reminder->scheduleNotifications();
         }
     }
 }

@@ -51,6 +51,7 @@ class Account extends Model
 
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password);
@@ -501,8 +502,8 @@ class Account extends Model
      */
     public function populateDefaultReminderRulesTable()
     {
-        ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id]);
-        ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id]);
+        ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id, 'active' => 1]);
+        ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id, 'active' => 1]);
     }
 
     /**
