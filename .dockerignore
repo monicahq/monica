@@ -14,6 +14,7 @@ docker-compose.yml
 Dockerfile
 .dockerignore
 docs/
+fortrabbit.yml
 Homestead.*
 node_modules/
 npm-debug.log*
@@ -24,9 +25,9 @@ public/storage
 resources/vendor/
 results/
 .sass-lint.yml
+scripts/vagrant/
 server.php
 sonar-project.properties
-steward.yml
 .styleci.yml
 storage/app/public/*
 storage/debugbar/*
@@ -37,5 +38,4 @@ storage/logs/*
 tests/
 travis-sonar.sh*
 .travis.yml*
-yarn.lock
 vendor/
