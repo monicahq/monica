@@ -253,7 +253,7 @@
             },
 
             getContactFieldTypes() {
-                axios.get('/settings/personalization/contactfieldtypes/')
+                axios.get('/settings/personalization/contactfieldtypes')
                         .then(response => {
                             this.contactFieldTypes = response.data;
                         });
