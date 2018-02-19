@@ -32,11 +32,11 @@ matrix:
     - env: DB=postgres
   fast_finish: true
 
-jdk:
-  - oraclejdk8
-
-git:
-  depth: false
+# Run branches build on master and tagged version
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
 addons:
   postgresql: "9.6"
@@ -48,7 +48,7 @@ addons:
 
 before_install:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
-  - cp .env.$DB.travis .env
+  - cp scripts/tests/.env.$DB.travis .env
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
   - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
   - composer self-update
@@ -57,11 +57,14 @@ before_install:
 install:
   # Get packages without require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+
   # Build js and css assets
   - npm install
   - npm run production
+
   # Create dist file before running composer install with dev dependencies
   - make dist
+
   # Get packages with require-dev
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
 
@@ -75,14 +78,14 @@ script:
   - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/.ci/server-cc.php 2>/dev/null; fi" &
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/scripts/tests/server-cc.php 2>/dev/null; fi" &
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
 
   # Run browser tests
   - if [[ "$SELENIUM" == "1" ]]; then php artisan dusk; fi
 
 after_script:
-  - if [[ "$SELENIUM" == "1" ]]; then .ci/travis-report.sh 2>/dev/null; fi
+  - if [[ "$SELENIUM" == "1" ]]; then scripts/tests/travis-report.sh 2>/dev/null; fi
   - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
   - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
   - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi
