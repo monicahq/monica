@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.8",
+            "version": "3.52.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "fbbbf393a84306c52f964bbd177f163fbfee835f"
+                "reference": "4baba19877e363b971a4600a4bc3b3fa94fdfbba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/fbbbf393a84306c52f964bbd177f163fbfee835f",
-                "reference": "fbbbf393a84306c52f964bbd177f163fbfee835f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4baba19877e363b971a4600a4bc3b3fa94fdfbba",
+                "reference": "4baba19877e363b971a4600a4bc3b3fa94fdfbba",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-02-13T22:16:05+00:00"
+            "time": "2018-02-16T20:40:39+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -5327,16 +5327,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v2.0.12",
+            "version": "v2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "fcd441f1dab962d9def79d9038055c7fa9df38c0"
+                "reference": "6f3ded51db2913a6172f2b9380f5d44ffc02a764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/fcd441f1dab962d9def79d9038055c7fa9df38c0",
-                "reference": "fcd441f1dab962d9def79d9038055c7fa9df38c0",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/6f3ded51db2913a6172f2b9380f5d44ffc02a764",
+                "reference": "6f3ded51db2913a6172f2b9380f5d44ffc02a764",
                 "shasum": ""
             },
             "require": {
@@ -5384,7 +5384,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-02-05T15:10:23+00:00"
+            "time": "2018-02-14T15:16:53+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",

@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <div>
+  <div class="reminder-rules">
     <notifications group="main" position="bottom right" />
 
     <h3 class="mb3">
@@ -35,7 +35,7 @@
         </div>
         <div class="dtc tr">
           <div class="pa2">
-            <toggle-button :value="reminderRule.active" :sync="true" :labels="true" v-on:change="toggle(reminderRule)" />
+            <toggle-button :class="'reminder-rule-' + reminderRule.number_of_days_before" :value="reminderRule.active" :sync="true" :labels="true" v-on:change="toggle(reminderRule)" />
           </div>
         </div>
       </div>
