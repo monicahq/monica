@@ -80,7 +80,7 @@ after_script:
   - if [[ "$SELENIUM" == "1" ]]; then scripts/tests/travis-report.sh 2>/dev/null; fi
   - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
   - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
-  - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi
+  - if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
 
 cache:
   directories:
