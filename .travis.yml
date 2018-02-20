@@ -121,7 +121,6 @@ jobs:
       before_install:
         - cp .env.travis .env
         - composer self-update
-        - docker-compose --version
 
       install:
         # Get packages without require-dev
@@ -133,8 +132,6 @@ jobs:
       before_script: skip
 
       script:
-        - make docker_build
-        # Create dist file before running composer install with dev dependencies
         - make dist
 
       after_script: skip
@@ -147,15 +144,19 @@ jobs:
         file: .travis.deploy.json
         user: asbin
         key: $BINTRAY_APIKEY
-        on:
-          tags: true
-          repo: monicahq/monica
-          php: '7.1'
-          condition: "$DB = mysql"
-          branch:
-            - master
-            - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
-      after_deploy:
+    - stage: Deploy
+      if: tag IS present
+      before_install:
+        - cp .env.travis .env
+        - docker-compose --version
+
+      install: skip
+      before_script: skip
+
+      script:
+        - make docker_build
         - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
         - make docker_push_bintray
+
+      after_script: skip
