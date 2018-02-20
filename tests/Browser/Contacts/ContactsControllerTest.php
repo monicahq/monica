@@ -6,7 +6,6 @@ use App\User;
 use App\Contact;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\Contacts\Profile;
 
 class ContactsControllerTest extends DuskTestCase
 {
