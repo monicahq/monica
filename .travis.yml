@@ -28,7 +28,6 @@ matrix:
     - php: 7.1
       env: DB=postgres
   allow_failures:
-    - php: 7.2
     - env: DB=postgres
   fast_finish: true
 
@@ -52,21 +51,14 @@ before_install:
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
   - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
   - composer self-update
-  - docker-compose --version
 
 install:
-  # Get packages without require-dev
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+  # Get packages
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
   - npm install
   - npm run production
-
-  # Create dist file before running composer install with dev dependencies
-  - make dist
-
-  # Get packages with require-dev
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
 
 before_script:
   - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
@@ -88,27 +80,83 @@ after_script:
   - if [[ "$SELENIUM" == "1" ]]; then scripts/tests/travis-report.sh 2>/dev/null; fi
   - if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
   - if [[ "$COVERAGE" == "1" ]]; then bash <(curl -s https://codecov.io/bash); fi
-  - if [[ "$COVERAGE" == "1" ]]; then ./travis-sonar.sh; fi
+  - if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
 
 cache:
   directories:
-  - "$HOME/.sonar/cache"
-  - "$HOME/sonarscanner"
-  - "$HOME/sonarlauncher"
+    - $HOME/.composer/cache/files
+    - node_modules
+    - $HOME/.sonar/cache
+    - $HOME/sonarscanner
+    - $HOME/sonarlauncher
 
-deploy:
-  provider: bintray
-  file: .travis.deploy.json
-  user: asbin
-  key: $BINTRAY_APIKEY
-  on:
-    tags: true
-    repo: monicahq/monica
-    php: '7.1'
-    condition: "$DB = mysql"
+jobs:
+  include:
+    - stage: Tests
+      php: 7.1
+      env:
+        - DB=mysql
+        - SELENIUM=1
+        - COVERAGE=1
 
-after_deploy:
-  - make clean
-  - make docker_build
-  - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
-  - make docker_push_bintray
+    - stage: Tests
+      php: 7.0
+      env:
+        - DB=mysql
+        - SELENIUM=1
+
+    - stage: Tests
+      php: 7.2
+      env:
+        - DB=mysql
+        - SELENIUM=1
+
+    - stage: Tests
+      allow_failure: true 
+      php: 7.1
+      env: DB=postgres
+
+    - stage: Deploy
+      if: tag IS present
+      before_install:
+        - cp .env.travis .env
+        - composer self-update
+
+      install:
+        # Get packages without require-dev
+        - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+        # Build js and css assets
+        - npm install
+        - npm run production
+
+      before_script: skip
+
+      script:
+        - make dist
+
+      after_script: skip
+
+      before_deploy:
+        - make .travis.deploy.json
+
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        user: asbin
+        key: $BINTRAY_APIKEY
+
+    - stage: Deploy
+      if: tag IS present
+      before_install:
+        - cp .env.travis .env
+        - docker-compose --version
+
+      install: skip
+      before_script: skip
+
+      script:
+        - make docker_build
+        - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+        - make docker_push_bintray
+
+      after_script: skip
