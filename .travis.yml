@@ -92,21 +92,6 @@ cache:
 
 jobs:
   include:
-    - stage: Prepare cache
-      before_install:
-        - cp .env.travis .env
-        - composer self-update
-      install:
-        # Get packages without require-dev
-        - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
-        # Get npm modules
-        - npm install
-      before_install: skip
-      install: skip
-      before_script: skip
-      script: skip
-      after_script: skip
-
     - stage: Tests
       php: 7.1
       env:
@@ -129,8 +114,7 @@ jobs:
     - stage: Tests
       allow_failure: true 
       php: 7.1
-      env:
-        - DB=postgres
+      env: DB=postgres
 
     - stage: Deploy
       if: tag IS present
