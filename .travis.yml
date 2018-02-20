@@ -109,10 +109,11 @@ jobs:
         - DB=mysql
         - SELENIUM=1
 
-    - stage: Tests (allowed failures)
+    - stage: Tests
       allow_failure: true 
       php: 7.1
-      env: DB=postgres
+      env:
+        - DB=postgres
 
     - stage: Deploy
       if: tag IS present
