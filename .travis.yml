@@ -84,11 +84,11 @@ after_script:
 
 cache:
   directories:
-  - $HOME/.composer/cache/files
-  - node_modules
-  - $HOME/.sonar/cache
-  - $HOME/sonarscanner
-  - $HOME/sonarlauncher
+    - $HOME/.composer/cache/files
+    - node_modules
+    - $HOME/.sonar/cache
+    - $HOME/sonarscanner
+    - $HOME/sonarlauncher
 
 jobs:
   include:
