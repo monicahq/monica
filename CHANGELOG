@@ -1,8 +1,14 @@
 UNRELEASED CHANGES:
 
-* Fix a bug preventing to delete a contact
+*
 
 RELEASED VERSIONS:
+
+v1.7.2 - 2018-02-20
+-------------------
+
+* Fix a bug where POST requests were not working with Apache
+* Fix a bug preventing to delete a contact
 
 v1.7.1 - 2018-02-17
 -------------------
