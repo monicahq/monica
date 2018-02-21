@@ -212,7 +212,7 @@ class JournalController extends Controller
         $period = new DatePeriod($start, new DateInterval($dateIntervalValue), Carbon::now());
         foreach ($period as $date) {
             $dateString = $date->format('Y-m-d');
-            $rating = DB::table('days')->whereDate('date', $dateString)->pluck('rate')->first();
+            $rating = auth()->user()->account->days()->whereDate('date', $dateString)->pluck('rate')->first();
             $results['data'][] = ['date' => $dateString, 'rating' => $rating];
         }
 
