@@ -2,14 +2,16 @@
 
 namespace Tests\Unit;
 
+use App\Tag;
 use App\Call;
 use App\Debt;
+use App\Account;
 use App\Contact;
-use Tests\TestCase;
 use App\SpecialDate;
+use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactTest extends TestCase
+class ContactTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -23,6 +25,22 @@ class ContactTest extends TestCase
         $contact = factory('App\Contact')->create(['gender_id' => $gender->id]);
 
         $this->assertTrue($contact->gender()->exists());
+    }
+
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->notifications()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
@@ -647,6 +665,47 @@ class ContactTest extends TestCase
                 'last_name' => 'Doe',
                 'middle_name' => 'Jr',
             ]
+        );
+    }
+
+    public function test_it_creates_a_tag_and_sets_it_to_a_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+    }
+
+    public function test_it_uses_an_existing_tag_to_associate_it_with_the_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+
+        $newTag = $contact->setTag('friend');
+
+        $this->assertEquals(
+            $tag->id,
+            $newTag->id
         );
     }
 }

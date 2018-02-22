@@ -329,6 +329,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
@@ -1439,5 +1449,25 @@ class Contact extends Model
         if ($relatedContact) {
             return self::find($relatedContact->is_the_child_of);
         }
+    }
+
+    /**
+     * Sets a tag to the contact.
+     *
+     * @param string $tag
+     * @return Tag
+     */
+    public function setTag(string $name)
+    {
+        $tag = auth()->user()->account->tags()->firstOrCreate([
+            'name' => $name,
+        ]);
+
+        $tag->name_slug = str_slug($tag->name);
+        $tag->save();
+
+        $this->tags()->sync($tag->id);
+
+        return $tag;
     }
 }

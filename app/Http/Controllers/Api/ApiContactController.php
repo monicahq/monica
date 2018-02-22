@@ -587,4 +587,30 @@ class ApiContactController extends ApiController
             return ['noResults' => trans('people.people_search_no_results')];
         }
     }
+
+    public function setTags(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'tags' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        $tags = $request->get('tags');
+        foreach ($tags as $tag) {
+            $contact->setTag($tag);
+        }
+    }
 }
