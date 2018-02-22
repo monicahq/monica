@@ -40,6 +40,7 @@ docker_push:
 docker_push_bintray:
 	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
