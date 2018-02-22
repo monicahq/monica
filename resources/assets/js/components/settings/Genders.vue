@@ -186,7 +186,7 @@
             },
 
             getGenders() {
-                axios.get('/settings/personalization/genders/')
+                axios.get('/settings/personalization/genders')
                         .then(response => {
                             this.genders = response.data;
                         });
@@ -209,7 +209,7 @@
             },
 
             store() {
-                axios.post('/settings/personalization/genders/', this.createForm)
+                axios.post('/settings/personalization/genders', this.createForm)
                       .then(response => {
                           this.$refs.createModal.close();
                           this.genders.push(response.data);

@@ -99,11 +99,11 @@ $(ASSETS):
 	ln -s ../../public/css $@/public/
 	ln -s ../../public/fonts $@/public/
 
-dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .travis.deploy.json
+dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2
 
 COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
-.travis.deploy.json: .travis.deploy.json.in
+.travis.deploy.json: scripts/tests/.travis.deploy.json.in
 	cp $< $@
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(COMMIT_MESSAGE)/" $@
