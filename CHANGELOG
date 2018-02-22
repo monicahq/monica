@@ -1,6 +1,9 @@
 UNRELEASED CHANGES:
 
-*
+* Docker image: use cron to run schedule tasks
+* Docker image: reduce size of image
+* Docker image: create storage subdirectory in case they not exist
+* Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
 
 RELEASED VERSIONS:
 
