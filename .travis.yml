@@ -1,5 +1,6 @@
 sudo: required
 language: php
+php: 7.1
 
 services:
   - mysql
@@ -31,7 +32,7 @@ matrix:
     - env: DB=postgres
   fast_finish: true
 
-# Run branches build on master and tagged version
+# Run pushed branches build on master and tagged version
 branches:
   only:
   - master
@@ -119,7 +120,7 @@ jobs:
     - stage: Deploy
       if: tag IS present
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - composer self-update
 
       install:
@@ -148,7 +149,7 @@ jobs:
     - stage: Deploy
       if: tag IS present
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
 
       install: skip
