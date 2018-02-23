@@ -52,8 +52,6 @@
                     value="{{ (is_null($partner->birthdate)) ? 1 : $partner->birthdate->getAge() }}"
                     min="0"
                     max="120">
-
-            {{ trans('people.information_edit_probably_yo') }}
           </div>
         </label>
       </div>

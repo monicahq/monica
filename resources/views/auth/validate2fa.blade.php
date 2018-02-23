@@ -41,7 +41,7 @@
               <div class="row">
                   <div class="col-xs-12 col-md-6">
                     <div class="form-group actions">
-                      <button type="submit" class="btn btn-primary">{{ trans('app.verify') }}</button>
+                      <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>
                     </div>
                   </div>
                   <div class="col-xs-12 col-md-6">

@@ -72,6 +72,7 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 * [Node](https://nodejs.org/en/)
 * PHP 7.0+
 * [Composer](https://getcomposer.org/)
+* GNU Make
 
 **Steps to install Monica**
 
@@ -82,7 +83,7 @@ Once the above softwares are installed (or if you've finished the installation o
     1. If you use Homestead (which uses Vagrant under the hood), `vagrant ssh` will let you login as root inside your VM.
 1. Run `make install` in the folder the repository has been cloned. This will run :
     1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-    1. `composer install` to install all packages.
+    1. `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader` to install all packages.
     1. `npm install` to install all the front-end dependencies and tools needed to compile assets.
     1. `npm run dev` to compile js and css assets.
     1. `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
@@ -98,7 +99,7 @@ If you haven't skipped the seeding of fake data, two accounts are created by def
 * Second account is `blank@blank.com` with the password `blank`. This account does not contain any data and shall be used to check all the blank states.
 
 To update a current installation with the latest dependencies, just run `make update` to run
-  1. `composer install`
+  1. `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader`
   1. `npm install`
   1. `npm run dev`
   1. `php artisan migrate`
@@ -127,33 +128,15 @@ To run the test suite:
 
 Browsers tests simulate user interactions in a live browser.
 
-To run browser tests, first you need to install some requirements
-
-* Install java:
-```
-sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt -y update
-sudo apt -y install oracle-java9-installer
-```
-* Install Google chrome:
+* To run browser tests, first you need to install chrome
 ```
 curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add
 echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
 sudo apt -y update
 sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
-
-To run the test suite, you need to launch selenium first, then steward :
-* Run selenium:
-```
-vendor/bin/selenium-server-standalone -role hub -log selenium-server.log -enablePassThrough false &
-export PATH="$(pwd)/vendor/bin:$PATH"
-xvfb-run -s "-ac -screen 0 1280x1024x24" vendor/bin/selenium-server-standalone -role node -port 8910 -log selenium-node.log -enablePassThrough false &
-```
-* Run the test suite:
-```
-./vendor/bin/steward -vvv run local chrome
-```
+* Then you can run the test suite:
+`php artisan dusk`
 
 ## Backend
 

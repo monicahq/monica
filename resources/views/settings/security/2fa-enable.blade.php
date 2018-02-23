@@ -61,7 +61,7 @@
                 <input type="number" class="form-control" id="one_time_password" name="one_time_password" />
               </div>
 
-              <button type="submit" class="btn btn-primary">{{ trans('app.verify') }}</button>
+              <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>
               <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
             </form>
           </div>

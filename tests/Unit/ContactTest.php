@@ -6,6 +6,7 @@ use App\Call;
 use App\Debt;
 use App\Contact;
 use Tests\TestCase;
+use App\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends TestCase
@@ -556,5 +557,96 @@ class ContactTest extends TestCase
 
         $contact->first_met_additional_info = 'data';
         $this->assertTrue($contact->hasFirstMetInformation());
+    }
+
+    public function test_it_returns_an_unknown_birthday_state()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertEquals(
+            'unknown',
+            $contact->getBirthdayState()
+        );
+    }
+
+    public function test_it_returns_an_approximate_birthday_state()
+    {
+        $contact = factory(Contact::class)->create([
+            'account_id' => 1,
+        ]);
+        $specialDate = factory(SpecialDate::class)->create([
+            'is_age_based' => 1,
+        ]);
+        $contact->birthday_special_date_id = $specialDate->id;
+        $contact->save();
+
+        $specialDate->contact_id = $specialDate->id;
+        $specialDate->save();
+
+        $this->assertEquals(
+            'approximate',
+            $contact->getBirthdayState()
+        );
+    }
+
+    public function test_it_returns_an_almost_birthday_state()
+    {
+        $contact = factory(Contact::class)->create([
+            'account_id' => 1,
+        ]);
+        $specialDate = factory(SpecialDate::class)->create([
+            'is_age_based' => 0,
+            'is_year_unknown' => 1,
+        ]);
+        $contact->birthday_special_date_id = $specialDate->id;
+        $contact->save();
+
+        $specialDate->contact_id = $specialDate->id;
+        $specialDate->save();
+
+        $this->assertEquals(
+            'almost',
+            $contact->getBirthdayState()
+        );
+    }
+
+    public function test_it_returns_an_exact_birthday_state()
+    {
+        $contact = factory(Contact::class)->create([
+            'account_id' => 1,
+        ]);
+        $specialDate = factory(SpecialDate::class)->create();
+        $contact->birthday_special_date_id = $specialDate->id;
+        $contact->save();
+
+        $specialDate->contact_id = $specialDate->id;
+        $specialDate->save();
+
+        $this->assertEquals(
+            'exact',
+            $contact->getBirthdayState()
+        );
+    }
+
+    public function test_set_name_returns_false_if_given_an_empty_firstname()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $this->assertFalse($contact->setName('', 'Test', 'Test'));
+    }
+
+    public function test_set_name_returns_true()
+    {
+        $contact = factory(Contact::class)->create();
+        $contact->setName('John', 'Jr', 'Doe');
+
+        $this->assertDatabaseHas(
+            'contacts',
+            [
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'middle_name' => 'Jr',
+            ]
+        );
     }
 }

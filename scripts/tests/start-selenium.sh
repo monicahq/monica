@@ -16,7 +16,7 @@ realpath ()
 set -evuo pipefail
 
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
-ROOT=$(realpath $SELF_PATH/..)
+ROOT=$(realpath $SELF_PATH/../..)
 
 if [ -z "${DISPLAY:-}" ]; then
     echo Start Xvfb;
