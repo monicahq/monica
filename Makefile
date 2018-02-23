@@ -37,9 +37,10 @@ docker_push:
 	docker push monicahq/monicahq:$(GIT_TAG)
 	docker push monicahq/monicahq:latest
 
-docker_push_bintray:
+docker_push_bintray: .travis.deploy.json
 	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
@@ -107,11 +108,10 @@ COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\
 	cp $< $@
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(COMMIT_MESSAGE)/" $@
-	sed -si "s/\$$(released)/$(shell date --iso-8601=date)/" $@
+	sed -si "s/\$$(released)/$(shell date --iso-8601=s)/" $@
 	sed -si "s/\$$(travis_tag)/$(TRAVIS_TAG)/" $@
 	sed -si "s/\$$(travis_commit)/$(GIT_COMMIT)/" $@
 	sed -si "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" $@
-	sed -si "s/\$$(date)/$(shell date --iso-8601=s)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<
