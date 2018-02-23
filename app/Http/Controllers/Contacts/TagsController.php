@@ -26,7 +26,7 @@ class TagsController extends Controller
 
         // if we receive an empty string, that means all tags have been removed.
         if ($request->input('tags') == '') {
-            $contact->tags()->detach();
+            $contact->unsetTags();
 
             return response()->json(['status' => 'no', 'tags' => '']);
         }

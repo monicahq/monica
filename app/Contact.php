@@ -1459,15 +1459,33 @@ class Contact extends Model
      */
     public function setTag(string $name)
     {
-        $tag = auth()->user()->account->tags()->firstOrCreate([
+        $tag = $this->account->tags()->firstOrCreate([
             'name' => $name,
         ]);
 
         $tag->name_slug = str_slug($tag->name);
         $tag->save();
 
-        $this->tags()->sync($tag->id);
+        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account->id]]);
 
         return $tag;
+    }
+
+    /**
+     * Unset all the tags associated with the contact.
+     * @return bool
+     */
+    public function unsetTags()
+    {
+        $this->tags()->detach();
+    }
+
+    /**
+     * Unset all the tags associated with the contact.
+     * @return bool
+     */
+    public function unsetTag(Tag $tag)
+    {
+        $this->tags()->detach($tag->id);
     }
 }
