@@ -143,7 +143,7 @@ jobs:
       deploy:
         provider: bintray
         file: .travis.deploy.json
-        user: asbin
+        user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
 
     - stage: Deploy
@@ -157,7 +157,7 @@ jobs:
 
       script:
         - make docker_build
-        - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+        - echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
         - make docker_push_bintray
 
       after_script: skip
