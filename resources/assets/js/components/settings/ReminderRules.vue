@@ -85,7 +85,7 @@
             },
 
             getReminderRules() {
-                axios.get('/settings/personalization/reminderrules/')
+                axios.get('/settings/personalization/reminderrules')
                         .then(response => {
                             this.reminderRules = response.data;
                         });
