@@ -4,6 +4,7 @@ UNRELEASED CHANGES:
 * Docker image: reduce size of image
 * Docker image: create storage subdirectory in case they not exist
 * Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
+* Remove trailing slash from routes
 
 RELEASED VERSIONS:
 
