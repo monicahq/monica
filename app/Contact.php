@@ -1481,7 +1481,7 @@ class Contact extends Model
     }
 
     /**
-     * Unset all the tags associated with the contact.
+     * Unset one tag associated with the contact.
      * @return bool
      */
     public function unsetTag(Tag $tag)
