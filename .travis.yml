@@ -1,5 +1,6 @@
 sudo: required
 language: php
+php: 7.1
 
 services:
   - mysql
@@ -31,7 +32,7 @@ matrix:
     - env: DB=postgres
   fast_finish: true
 
-# Run branches build on master and tagged version
+# Run pushed branches build on master and tagged version
 branches:
   only:
   - master
@@ -119,7 +120,7 @@ jobs:
     - stage: Deploy
       if: tag IS present
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - composer self-update
 
       install:
@@ -142,13 +143,13 @@ jobs:
       deploy:
         provider: bintray
         file: .travis.deploy.json
-        user: asbin
+        user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
 
     - stage: Deploy
       if: tag IS present
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
 
       install: skip
@@ -156,7 +157,7 @@ jobs:
 
       script:
         - make docker_build
-        - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+        - echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
         - make docker_push_bintray
 
       after_script: skip

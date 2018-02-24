@@ -2,6 +2,10 @@ UNRELEASED CHANGES:
 
 * Add ability to define the hour the reminder should be sent
 * Add notifications for reminders (30 and 7 days before an event happens)
+* Docker image: use cron to run schedule tasks
+* Docker image: reduce size of image
+* Docker image: create storage subdirectory in case they not exist
+* Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
 
 RELEASED VERSIONS:
 
