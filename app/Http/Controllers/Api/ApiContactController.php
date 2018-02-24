@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use DB;
-use App\Tag;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;

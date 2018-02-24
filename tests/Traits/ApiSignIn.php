@@ -16,7 +16,7 @@ trait ApiSignIn
      */
     public function signIn()
     {
-        $user =factory(User::class)->create();
+        $user = factory(User::class)->create();
         Passport::actingAs($user);
 
         return $user;

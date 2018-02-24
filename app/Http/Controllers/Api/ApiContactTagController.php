@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
 use App\Tag;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class ApiContactTagController extends ApiController
 {
