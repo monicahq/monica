@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
-    Route::post('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
+    Route::get('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
 
     // Set a partner to the contact

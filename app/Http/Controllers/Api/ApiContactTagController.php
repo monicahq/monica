@@ -67,7 +67,7 @@ class ApiContactTagController extends ApiController
     }
 
     /**
-     * Remove a specific tag associated with the contact.
+     * Remove one or more specific tags associated with the contact.
      * @param Request $request
      * @param int  $contactId
      */
