@@ -2,6 +2,9 @@
 
 namespace Tests\Traits;
 
+use App\User;
+use Laravel\Passport\Passport;
+
 trait ApiSignIn
 {
     /**
@@ -11,13 +14,10 @@ trait ApiSignIn
      * @param null $user
      * @return mixed
      */
-    public function signIn($user = null)
+    public function signIn()
     {
-        if (is_null($user)) {
-            $user = factory('App\User')->create();
-        }
-
-        $this->actingAs($user, 'api');
+        $user =factory(User::class)->create();
+        Passport::actingAs($user);
 
         return $user;
     }
