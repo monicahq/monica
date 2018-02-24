@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Api;
 
-use Laravel\Passport\Passport;
-use App\Contact;
 use App\User;
+use App\Contact;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiContactControllerTest extends ApiTestCase
+class ApiContactTagControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 

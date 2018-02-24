@@ -14,9 +14,9 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::post('/contacts/search', 'Api\\ApiContactController@search');
 
     // Sets tags
-    Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactController@setTags');
-    Route::post('/contacts/{contact}/unsetTags', 'Api\\ApiContactController@unsetTags');
-    Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactController@unsetTag');
+    Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
+    Route::post('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
+    Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
 
     // Set a partner to the contact
     Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
