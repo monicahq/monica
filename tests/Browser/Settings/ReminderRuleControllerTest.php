@@ -9,10 +9,6 @@ use Tests\Browser\Pages\Settings\SettingsPersonnalization;
 
 class ReminderRuleControllerTest extends DuskTestCase
 {
-    /**
-     * Test if the user has 2fa Enable Link in Security Page.
-     * @group multifa
-     */
     public function test_it_displays_reminder_rules()
     {
         $user = factory(User::class)->create();
@@ -25,7 +21,9 @@ class ReminderRuleControllerTest extends DuskTestCase
                     ->waitForText('7 days before')
                     ->waitForText('30 days before')
                     ->click('.reminder-rule-7')
+                    ->pause(2000)
                     ->visit(new SettingsPersonnalization)
+                    ->waitFor('.reminder-rules')
                     ->assertSeeIn('@reminder-rule-label', 'off');
         });
     }
