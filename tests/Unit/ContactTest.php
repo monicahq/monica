@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\Call;
 use App\Debt;
 use App\Contact;
+use App\Offspring;
+use App\Relationship;
 use Tests\TestCase;
 use App\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -649,4 +651,28 @@ class ContactTest extends TestCase
             ]
         );
     }
+
+    public function test_get_family_members()
+    {
+        $contact = factory(Contact::class)->create();
+
+        // Creating relationships pointing to the contact himself
+        factory(Relationship::class, 3)->create([
+            'with_contact_id' => $contact->id,
+            'contact_id' => $contact->id
+        ]);
+
+        // Creating offsprings point to the contact himself
+        factory(Offspring::class, 4)->create([
+            'contact_id' => $contact->id,
+            'is_the_child_of' => $contact->id
+        ]);
+
+        // Collecting all family members.
+        $members = $contact->getFamilyMembers();
+
+        // Asserting number of family member contacts.
+        $this->assertEquals(7, count($members));
+    }
+
 }
