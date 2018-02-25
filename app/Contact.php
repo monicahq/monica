@@ -49,6 +49,8 @@ class Contact extends Model
         'default_avatar_color',
         'gender_id',
         'account_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
