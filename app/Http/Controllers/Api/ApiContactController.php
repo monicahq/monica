@@ -30,8 +30,9 @@ class ApiContactController extends ApiController
                     'query' => $needle,
                 ]]);
         }
-
+dd($this->sort.' '.$this->sortDirection);
         $contacts = auth()->user()->account->contacts()->real()
+                                        ->orderBy($this->sort, $this->sortDirection)
                                         ->paginate($this->getLimitPerPage());
 
         return ContactResource::collection($contacts);
