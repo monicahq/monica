@@ -1241,7 +1241,7 @@ class Contact extends Model
      */
     public function isOwedMoney()
     {
-        return totalOutstandingDebtAmount() > 0;
+        return $this->totalOutstandingDebtAmount() > 0;
     }
 
     /**
