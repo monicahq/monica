@@ -6,6 +6,7 @@ use DB;
 use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
+use App\Helpers\SearchHelper;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
@@ -22,8 +23,18 @@ class ApiContactController extends ApiController
      */
     public function index(Request $request)
     {
-        $contacts = auth()->user()->account->contacts()->real()
+        if ($request->get('query')) {
+            $needle = $request->get('query');
+
+            if ($needle == null) {
+                return $this->respondNotFound();
+            }
+
+            $contacts = SearchHelper::search($needle, $this->getLimitPerPage());
+        } else {
+            $contacts = auth()->user()->account->contacts()->real()
                                             ->paginate($this->getLimitPerPage());
+        }
 
         return ContactResource::collection($contacts);
     }
@@ -554,32 +565,16 @@ class ApiContactController extends ApiController
         return new ContactResource($contact);
     }
 
+    /**
+     * Search contacts.
+     * @param  Request $request
+     * @return ContactShortResource
+     */
     public function search(Request $request)
     {
         $needle = $request->get('query');
-        $accountId = auth()->user()->account->id;
 
-        if ($needle == null) {
-            return $this->respondNotFound();
-        }
-
-        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
-            $search_field = $matches[1];
-            $search_term = $matches[2];
-
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
-
-            $field_id = $field->id;
-
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
-                $query->where([
-                    ['data', 'like', "$search_term%"],
-                    ['contact_field_type_id', $field_id],
-                ]);
-            })->get();
-        } else {
-            $results = Contact::search($needle, $accountId);
-        }
+        $results = SearchHelper::search($needle);
 
         if (count($results) !== 0) {
             return ContactShortResource::collection($results);
