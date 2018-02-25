@@ -21,7 +21,7 @@ class ApiController extends Controller
     /**
      * @var int
      */
-    protected $limitPerPage = 10;
+    protected $limitPerPage = 0;
 
     public function __construct()
     {

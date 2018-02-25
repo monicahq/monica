@@ -46,7 +46,7 @@ class ApiControllerTest extends TestCase
         $apiController = new ApiController;
 
         $this->assertEquals(
-            10,
+            0,
             $apiController->getLimitPerPage()
         );
 
