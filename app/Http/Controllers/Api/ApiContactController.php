@@ -138,16 +138,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('birthdate'));
 
-            if ($request->get('birthdate_is_year_unknown') == true) {
+            if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('birthdate_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
-            }
+        } else if ($request->get('birthdate_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
         }
 
         // first met date
@@ -156,16 +154,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('first_met_date'));
 
-            if ($request->get('first_met_date_is_year_unknown') == true) {
+            if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('first_met_date_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
-            }
+        } else if ($request->get('first_met_date_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
         }
 
         // deceased date
@@ -174,16 +170,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('deceased_date'));
 
-            if ($request->get('deceased_date_is_year_unknown') == true) {
+            if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('deceased_date_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
-            }
+        } else if ($request->get('deceased_date_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
 
         $contact->setAvatarColor();
@@ -274,16 +268,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('birthdate'));
 
-            if ($request->get('birthdate_is_year_unknown') == true) {
+            if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('birthdate_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
-            }
+        } else if ($request->get('birthdate_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
         }
 
         // first met date
@@ -293,16 +285,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('first_met_date'));
 
-            if ($request->get('first_met_date_is_year_unknown') == true) {
+            if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('first_met_date_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
-            }
+        } else if ($request->get('first_met_date_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
         }
 
         // deceased date
@@ -312,16 +302,14 @@ class ApiContactController extends ApiController
             // in this case, we know the month and day, but not necessarily the year
             $date = \Carbon\Carbon::parse($request->get('deceased_date'));
 
-            if ($request->get('deceased_date_is_year_unknown') == true) {
+            if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } else {
-            if ($request->get('deceased_date_is_age_based') == true) {
-                $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
-            }
+        } else if ($request->get('deceased_date_is_age_based')) {
+            $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
 
         $contact->logEvent('contact', $contact->id, 'update');
@@ -358,7 +346,7 @@ class ApiContactController extends ApiController
                 }
             }
 
-            if ($contactIdRowExists == true) {
+            if ($contactIdRowExists) {
                 DB::table($tableName)->where('contact_id', $contact->id)->delete();
             }
         }

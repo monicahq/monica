@@ -123,7 +123,7 @@ class ExportAccountAsSQL
                     array_push($tableValues, $value);
                 }
 
-                if ($skipLine == false) {
+                if (!$skipLine) {
                     $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
                 }

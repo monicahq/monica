@@ -1220,9 +1220,7 @@ class Contact extends Model
         $offspring = Offspring::where('contact_id', $this->id)
                         ->first();
 
-        $progenitor = self::findOrFail($offspring->is_the_child_of);
-
-        return $progenitor;
+        return self::findOrFail($offspring->is_the_child_of);
     }
 
     /**
@@ -1234,9 +1232,7 @@ class Contact extends Model
         $relationship = Relationship::where('with_contact_id', $this->id)
                         ->first();
 
-        $relationship = self::findOrFail($relationship->contact_id);
-
-        return $relationship;
+        return self::findOrFail($relationship->contact_id);
     }
 
     /**
@@ -1245,14 +1241,7 @@ class Contact extends Model
      */
     public function isOwedMoney()
     {
-        return $this
-            ->debts()
-            ->where('status', '=', 'inprogress')
-            ->getResults()
-            ->sum(function ($d) {
-                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
-            })
-            > 0;
+        return totalOutstandingDebtAmount() > 0;
     }
 
     /**
