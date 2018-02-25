@@ -26,6 +26,22 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->gender()->exists());
     }
 
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->notifications()->exists());
+    }
+
     public function testGetFirstnameReturnsNullWhenUndefined()
     {
         $contact = new Contact;

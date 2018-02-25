@@ -199,4 +199,11 @@ return [
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete :name?',
     'personalization_genders_modal_delete_question' => 'You currently have :numberOfContacts contacts who have this gender. If you delete this gender, what gender should those contacts have?',
     'personalization_genders_modal_error' => 'Please choose a valid gender from the list.',
+
+    'personalization_reminder_rule_save' => 'The change has been saved',
+    'personalization_reminder_rule_title' => 'Reminder rules',
+    'personalization_reminder_rule_line' => ':count days before',
+    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+
+    'reminder_time_to_send' => 'Time of the day reminders should be sent',
 ];

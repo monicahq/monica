@@ -18,7 +18,9 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent', 'api_key',
+        'number_of_invitations_sent',
+        'api_key',
+        'default_time_reminder_is_sent',
     ];
 
     /**
@@ -49,6 +51,7 @@ class Account extends Model
 
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password);
@@ -297,6 +300,48 @@ class Account extends Model
     }
 
     /**
+     * Get the Reminder Rules records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderRules()
+    {
+        return $this->hasMany('App\ReminderRule');
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
+     * Get the default time reminder is sent.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDefaultTimeReminderIsSentAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Set the default time a reminder is sent.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDefaultTimeReminderIsSentAttribute($value)
+    {
+        $this->attributes['default_time_reminder_is_sent'] = $value;
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return this
@@ -448,6 +493,17 @@ class Account extends Model
         Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
         Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
         Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+    }
+
+    /**
+     * Populates the default reminder rules in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultReminderRulesTable()
+    {
+        ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id, 'active' => 1]);
+        ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id, 'active' => 1]);
     }
 
     /**

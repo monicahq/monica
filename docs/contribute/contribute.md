@@ -181,7 +181,8 @@ MAIL_ENCRYPTION=
 
 ### Email reminders
 
-Reminders are generated and sent using an Artisan command `monica:sendnotifications`. This command is scheduled to be triggered every hour in `app/console/Kernel.php`.
+Monica sends two types of emails: reminders, and notifications. Notifications are sent 7 and 30 days before an event happens, while reminders are sent the day the event happens.
+Reminders are generated and sent using an Artisan command `send:reminders`. Notifications are sent using `send:notifications`. Those commands are scheduled to be triggered every hour in `app/console/Kernel.php`.
 
 ### Statistics
 

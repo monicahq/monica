@@ -624,7 +624,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "{attribute} musí být přijat.",
@@ -1325,7 +1330,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "{attribute} muss akzeptiert werden.",
@@ -1543,7 +1553,9 @@ export default {
             "greetings": "Hi {username}",
             "want_reminded_of": "YOU WANTED TO BE REMINDED OF",
             "for": "FOR:",
-            "footer_contact_info": "Add, view, complete, and change information about this contact:"
+            "footer_contact_info": "Add, view, complete, and change information about this contact:",
+            "notification_subject_line": "You have an upcoming event",
+            "notification_description": "In {count} days (on {date}), the following event will happen:"
         },
         "pagination": {
             "previous": "&laquo; Previous",
@@ -1632,8 +1644,8 @@ export default {
             "information_edit_lastname": "Last name (Optional)",
             "information_edit_linkedin": "LinkedIn profile (optional)",
             "information_edit_unknown": "I do not know this person's age",
-            "information_edit_probably": "This person is probably",
-            "information_edit_probably_yo": "years old",
+            "information_edit_probably": "This person is probably...",
+            "information_edit_not_year": "I know the day and month of the birthdate of this person, but not the year…",
             "information_edit_exact": "I know the exact birthdate of this person...",
             "information_edit_help": "If you indicate an exact birthdate for this person, we will create a new reminder for you - so you'll be notified every year when it's time to celebrate this person's birthdate.",
             "information_no_linkedin_defined": "No LinkedIn defined",
@@ -2068,7 +2080,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "The {attribute} must be accepted.",
@@ -2769,7 +2786,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "Le champ {attribute} doit être accepté.",
@@ -3499,7 +3521,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "{attribute} dev'essere accettato.",
@@ -4201,7 +4228,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "O campo {attribute} deve ser aceito.",
@@ -4940,7 +4972,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "validation": {
             "accepted": "Вы должны принять {attribute}.",

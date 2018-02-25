@@ -3,29 +3,29 @@
 namespace App\Jobs;
 
 use App\User;
-use App\Reminder;
+use App\Notification;
 use Illuminate\Bus\Queueable;
-use App\Mail\UserRemindedMail;
+use App\Mail\NotificationEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendReminderEmail implements ShouldQueue
+class SendNotificationEmail implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $reminder;
     protected $user;
+    protected $notification;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Reminder $reminder, User $user)
+    public function __construct(Notification $notification, User $user)
     {
-        $this->reminder = $reminder;
+        $this->notification = $notification;
         $this->user = $user;
     }
 
@@ -36,6 +36,6 @@ class SendReminderEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new UserRemindedMail($this->reminder, $this->user));
+        Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
     }
 }
