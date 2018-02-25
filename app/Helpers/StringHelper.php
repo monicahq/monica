@@ -7,10 +7,10 @@ class StringHelper
     /**
      * Build a query based on the array that contains column names.
      *
-     * @param  Array  $array
+     * @param  array  $array
      * @return string
      */
-    public static function buildQuery(Array $array, string $searchTerm)
+    public static function buildQuery(array $array, string $searchTerm)
     {
         $count = count($array);
         $counter = 1;

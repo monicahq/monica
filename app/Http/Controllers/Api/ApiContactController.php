@@ -10,7 +10,6 @@ use App\Helpers\SearchHelper;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class ApiContactController extends ApiController
 {

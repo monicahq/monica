@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use Auth;
 use App\Contact;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class SearchHelper
 {
