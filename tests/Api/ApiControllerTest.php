@@ -127,4 +127,33 @@ class ApiControllerTest extends ApiTestCase
             'error_code' => 39,
         ]);
     }
+
+    public function test_it_sets_the_order_by_parameters()
+    {
+        $apiController = new ApiController;
+
+        $apiController->setSortCriteria('created_at');
+
+        $this->assertEquals(
+            'created_at',
+            $apiController->getSortCriteria()
+        );
+
+        $this->assertEquals(
+            'asc',
+            $apiController->getSortDirection()
+        );
+
+        $apiController->setSortCriteria('-created_at');
+
+        $this->assertEquals(
+            'created_at',
+            $apiController->getSortCriteria()
+        );
+
+        $this->assertEquals(
+            'desc',
+            $apiController->getSortDirection()
+        );
+    }
 }

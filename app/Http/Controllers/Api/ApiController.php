@@ -39,7 +39,7 @@ class ApiController extends Controller
             $apiUsage = (new ApiUsage)->log($request);
 
             if ($request->has('sort')) {
-                $sort = $this->setSortCriteria($request->get('sort'));
+                $this->setSortCriteria($request->get('sort'));
 
                 // It has a sort criteria, but is it a valid one?
                 if (is_null($this->getSortCriteria())) {
@@ -144,6 +144,15 @@ class ApiController extends Controller
     }
 
     /**
+     * Get the sort direction parameter
+     * @return string
+     */
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    /**
      * @return string
      */
     public function getSortCriteria()
@@ -165,7 +174,7 @@ class ApiController extends Controller
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
-            $this->getSQLOrderByQuery();
+            $this->setSQLOrderByQuery($criteria);
 
             return $this;
         }
@@ -177,13 +186,13 @@ class ApiController extends Controller
     /**
      * Generates a SQL representation of the sort criteria given in the request
      */
-    public function getSQLOrderByQuery()
+    public function setSQLOrderByQuery($criteria)
     {
         $this->sortDirection = 'asc';
-        $this->sort = $this->getSortCriteria();
+        $this->sort = $criteria;
 
         $firstCharacter = $this->getSortCriteria()[0];
-dd($firstCharacter);
+
         if ($firstCharacter == '-') {
             $this->sort = substr($this->getSortCriteria(), 1);
             $this->sortDirection = 'desc';
