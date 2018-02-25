@@ -149,6 +149,19 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
     {
+        // Account has limitations
+        config(['monica.requires_subscription' => true]);
+
+        $account = factory(Account::class)->make([
+            'has_access_to_paid_version_for_free' => false,
+        ]);
+
+        $this->assertEquals(
+            true,
+            $account->hasLimitations()
+        );
+
+        // No limitations if has access to paid version
         $account = factory(Account::class)->make([
             'has_access_to_paid_version_for_free' => true,
         ]);
@@ -164,6 +177,13 @@ class AccountTest extends FeatureTestCase
         ]);
 
         config(['monica.requires_subscription' => false]);
+
+        $this->assertEquals(
+            false,
+            $account->hasLimitations()
+        );
+
+        config(['monica.paid_plan_monthly_friendly_name' => false]);
 
         $this->assertEquals(
             false,
