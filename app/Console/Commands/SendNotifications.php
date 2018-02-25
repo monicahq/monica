@@ -27,6 +27,15 @@ class SendNotifications extends Command
     protected $description = 'Send notifications about reminders';
 
     /**
+     * Dispatched commands container.
+     *
+     * @var array
+     */
+    public $dispatched = [];
+
+    public $mocked = false;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -71,12 +80,20 @@ class SendNotifications extends Command
             if ($sendEmailToUser == true) {
                 if (! $account->hasLimitations()) {
                     foreach ($account->users as $user) {
-                        dispatch(new SendReminderEmail($reminder, $user));
+                        $this->dispatch(new SendReminderEmail($reminder, $user));
                     }
                 }
 
-                dispatch(new SetNextReminderDate($reminder, $userTimezone));
+                $this->dispatch(new SetNextReminderDate($reminder, $userTimezone));
             }
+        }
+    }
+
+    private function dispatch($job) {
+        if ($this->mocked) {
+            array_push($this->dispatched, $job);
+        } else {
+            $this->dispatch($job);
         }
     }
 }
