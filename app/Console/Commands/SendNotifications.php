@@ -68,7 +68,7 @@ class SendNotifications extends Command
                 }
             }
 
-            if ($sendEmailToUser == true) {
+            if ($sendEmailToUser) {
                 if (! $account->hasLimitations()) {
                     foreach ($account->users as $user) {
                         dispatch(new SendReminderEmail($reminder, $user));

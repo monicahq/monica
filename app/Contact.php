@@ -991,7 +991,7 @@ class Contact extends Model
                                     ->where('is_the_parent_of', $this->id)
                                     ->count();
 
-            if ($relationship != 0 or $offspring != 0 or $progenitor != 0) {
+            if ($relationship != 0 || $offspring != 0 || $progenitor != 0) {
                 $partners->forget($counter);
             }
             $counter++;
@@ -1053,7 +1053,7 @@ class Contact extends Model
      */
     public function setRelationshipWith(self $partner, $bilateral = false)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1063,7 +1063,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $relationship = Relationship::create(
+            Relationship::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $partner->id,
@@ -1082,7 +1082,7 @@ class Contact extends Model
      */
     public function updateRelationshipWith(self $partner)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $partner->id,
@@ -1101,7 +1101,7 @@ class Contact extends Model
      */
     public function isTheOffspringOf(self $parent, $bilateral = false)
     {
-        $offspring = Offspring::create(
+        Offspring::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1110,7 +1110,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $progenitor = Progenitor::create(
+            Progenitor::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $parent->id,
@@ -1173,15 +1173,15 @@ class Contact extends Model
      */
     public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
     {
-        $events = Event::where('contact_id', $this->id)
-                        ->where('object_id', $contact->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $this->id)
+                ->where('object_id', $contact->id)
+                ->where('object_type', $type)
+                ->delete();
 
-        $events = Event::where('contact_id', $contact->id)
-                        ->where('object_id', $this->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $contact->id)
+                ->where('object_id', $this->id)
+                ->where('object_type', $type)
+                ->delete();
     }
 
     /**
@@ -1297,7 +1297,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) or ! is_null($this->firstMetDate) or ! is_null($this->first_met_through_contact_id);
+        return ! is_null($this->first_met_additional_info) || ! is_null($this->firstMetDate) || ! is_null($this->first_met_through_contact_id);
     }
 
     /**
