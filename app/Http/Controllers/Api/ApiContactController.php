@@ -24,7 +24,12 @@ class ApiContactController extends ApiController
     {
         if ($request->get('query')) {
             $needle = $request->get('query');
-            $contacts = SearchHelper::searchContacts($needle, $this->getLimitPerPage());
+
+            $contacts = SearchHelper::searchContacts(
+                $needle,
+                $this->getLimitPerPage(),
+                $this->sort.' '.$this->sortDirection
+            );
 
             return ContactResource::collection($contacts)->additional(['meta' => [
                     'query' => $needle,
@@ -32,6 +37,7 @@ class ApiContactController extends ApiController
         }
 
         $contacts = auth()->user()->account->contacts()->real()
+                                        ->orderBy($this->sort, $this->sortDirection)
                                         ->paginate($this->getLimitPerPage());
 
         return ContactResource::collection($contacts);

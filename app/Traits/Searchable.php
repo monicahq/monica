@@ -17,7 +17,7 @@ trait Searchable
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage)
+    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $sortOrder)
     {
         if ($this->searchable_columns == null) {
             return;
@@ -26,6 +26,7 @@ trait Searchable
         $queryString = StringHelper::buildQuery($this->searchable_columns, $needle);
 
         $builder->whereRaw('account_id = '.$accountId.' and ('.$queryString.')');
+        $builder->orderByRaw($sortOrder);
         $builder->select($this->return_from_search);
 
         return $builder->paginate($limitPerPage);

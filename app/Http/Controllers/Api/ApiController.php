@@ -23,10 +23,31 @@ class ApiController extends Controller
      */
     protected $limitPerPage = 0;
 
+    /**
+     * @var string
+     */
+    protected $sort = 'created_at';
+
+    /**
+     * @var string
+     */
+    protected $sortDirection = 'asc';
+
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
             $apiUsage = (new ApiUsage)->log($request);
+
+            if ($request->has('sort')) {
+                $this->setSortCriteria($request->get('sort'));
+
+                // It has a sort criteria, but is it a valid one?
+                if (is_null($this->getSortCriteria())) {
+                    return $this->setHTTPStatusCode(400)
+                              ->setErrorCode(39)
+                              ->respondWithError(config('api.error_codes.39'));
+                }
+            }
 
             if ($request->has('limit')) {
                 if ($request->get('limit') > config('api.max_limit_per_page')) {
@@ -120,6 +141,63 @@ class ApiController extends Controller
         $this->limitPerPage = $limit;
 
         return $this;
+    }
+
+    /**
+     * Get the sort direction parameter.
+     * @return string
+     */
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortCriteria()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param string $criteria
+     * @return $this
+     */
+    public function setSortCriteria($criteria)
+    {
+        $acceptedCriteria = [
+            'created_at',
+            'updated_at',
+            '-created_at',
+            '-updated_at',
+        ];
+
+        if (in_array($criteria, $acceptedCriteria)) {
+            $this->setSQLOrderByQuery($criteria);
+
+            return $this;
+        }
+
+        $this->sort = null;
+
+        return $this;
+    }
+
+    /**
+     * Set both the column and order necessary to perform an orderBy.
+     */
+    public function setSQLOrderByQuery($criteria)
+    {
+        $this->sortDirection = 'asc';
+        $this->sort = $criteria;
+
+        $firstCharacter = $this->getSortCriteria()[0];
+
+        if ($firstCharacter == '-') {
+            $this->sort = substr($this->getSortCriteria(), 1);
+            $this->sortDirection = 'desc';
+        }
     }
 
     /**
