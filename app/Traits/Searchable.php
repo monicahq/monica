@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Helpers\StringHelper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Searchable
@@ -22,17 +23,7 @@ trait Searchable
             return;
         }
 
-        // building the query. there is probably a way to make this more elegant.
-        $count = count($this->searchable_columns);
-        $counter = 1;
-        $queryString = '';
-        foreach ($this->searchable_columns as $column) {
-            $queryString .= $column.' LIKE \'%'.$needle.'%\'';
-            if ($counter != $count) {
-                $queryString .= ' or ';
-            }
-            $counter++;
-        }
+        $queryString = StringHelper::buildQuery($this->searchable_columns, $needle);
 
         $builder->whereRaw('account_id = '.$accountId.' and ('.$queryString.')');
         $builder->select($this->return_from_search);

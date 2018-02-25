@@ -10,11 +10,12 @@ class SearchHelper
 {
     /**
      * Search contacts by the given query.
+     *
      * @param  string $query
      * @param  int $limitPerPage
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function search($query, $limitPerPage)
+    public static function searchContacts($query, $limitPerPage)
     {
         $needle = $query;
         $accountId = auth()->user()->account->id;
@@ -37,10 +38,6 @@ class SearchHelper
             $results = Contact::search($needle, $accountId, $limitPerPage);
         }
 
-        if (count($results) !== 0) {
-            return $results;
-        } else {
-            return ['noResults' => trans('people.people_search_no_results')];
-        }
+        return $results;
     }
 }

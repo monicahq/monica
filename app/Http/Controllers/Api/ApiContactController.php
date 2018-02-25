@@ -25,12 +25,7 @@ class ApiContactController extends ApiController
     {
         if ($request->get('query')) {
             $needle = $request->get('query');
-
-            if ($needle == null) {
-                return $this->respondNotFound();
-            }
-
-            $contacts = SearchHelper::search($needle, $this->getLimitPerPage());
+            $contacts = SearchHelper::searchContacts($needle, $this->getLimitPerPage());
         } else {
             $contacts = auth()->user()->account->contacts()->real()
                                             ->paginate($this->getLimitPerPage());
@@ -563,23 +558,5 @@ class ApiContactController extends ApiController
         }
 
         return new ContactResource($contact);
-    }
-
-    /**
-     * Search contacts.
-     * @param  Request $request
-     * @return ContactShortResource
-     */
-    public function search(Request $request)
-    {
-        $needle = $request->get('query');
-
-        $results = SearchHelper::search($needle);
-
-        if (count($results) !== 0) {
-            return ContactShortResource::collection($results);
-        } else {
-            return ['noResults' => trans('people.people_search_no_results')];
-        }
     }
 }
