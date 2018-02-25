@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api;
+namespace Tests\Api\Contact;
 
 use App\Contact;
 use Tests\ApiTestCase;
