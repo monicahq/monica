@@ -6,6 +6,7 @@ use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
+use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -341,5 +342,17 @@ class AccountTest extends FeatureTestCase
             3,
             $gender2->contacts->count()
         );
+    }
+
+    public function test_get_next_billing_date() {
+        $testDate = Carbon::now();
+        $account = factory(Account::class)->create();
+        $account->fake(['next_billing_date' => $testDate]);
+
+        // The timestamp returned by getNextBillingDate is locale specific, so we convert to a
+        // Carbon instance and retrieve the date string from it.
+        $timestamp = (new Carbon($account->getNextBillingDate()))->toDateString();
+
+        $this->assertEquals($testDate->toDateString(), $timestamp);
     }
 }
