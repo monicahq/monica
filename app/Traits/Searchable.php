@@ -16,7 +16,7 @@ trait Searchable
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage = null)
+    public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage)
     {
         if ($this->searchable_columns == null) {
             return;
@@ -38,7 +38,5 @@ trait Searchable
         $builder->select($this->return_from_search);
 
         return $builder->paginate($limitPerPage);
-
-        //return $builder->get();
     }
 }

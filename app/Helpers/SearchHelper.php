@@ -38,7 +38,7 @@ class SearchHelper
         }
 
         if (count($results) !== 0) {
-            return ContactShortResource::collection($results);
+            return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
