@@ -63,6 +63,9 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'has_avatar' => false,
+        'gender_id' => function () {
+            return factory(App\Gender::class)->create()->id;
+        },
     ];
 });
 

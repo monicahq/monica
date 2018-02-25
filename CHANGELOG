@@ -1,10 +1,12 @@
 UNRELEASED CHANGES:
 
+* Support mysql unix socket
+* Add API calls to associate and remove tags to a contact
 * Docker image: use cron to run schedule tasks
 * Docker image: reduce size of image
 * Docker image: create storage subdirectory in case they not exist
 * Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
-* Support mysql unix socket
+* Remove trailing slash from routes
 
 RELEASED VERSIONS:
 

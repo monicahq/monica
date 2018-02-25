@@ -132,7 +132,7 @@ Do you want to help? That's awesome. Here are simple things you can do.
 
 * Unlike Fight Club, the best way to help is **to actually talk about the project** as much as you can (blog post, articles, Twitter, Facebook).
 * You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
-* You can support financially the project [on Patreon](https://github.com/monicahq/monica/issues) or [by subscribing to an account](https://monicahq.com/pricing).
+* You can support financially the project [on Patreon](https://www.patreon.com/monicahq) or [by subscribing to an account](https://monicahq.com/pricing).
 
 ## Contribute as a developer
 
