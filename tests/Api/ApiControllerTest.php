@@ -100,7 +100,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $insaneLimit = config('api.max_limit_per_page')*100;
+        $insaneLimit = config('api.max_limit_per_page') * 100;
 
         $response = $this->json('GET', "/api/contacts?limit={$insaneLimit}");
 

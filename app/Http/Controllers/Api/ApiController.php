@@ -144,7 +144,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Get the sort direction parameter
+     * Get the sort direction parameter.
      * @return string
      */
     public function getSortDirection()
@@ -184,7 +184,7 @@ class ApiController extends Controller
     }
 
     /**
-     * Generates a SQL representation of the sort criteria given in the request
+     * Set both the column and order necessary to perform an orderBy.
      */
     public function setSQLOrderByQuery($criteria)
     {
