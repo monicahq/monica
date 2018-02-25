@@ -461,6 +461,7 @@ class Account extends Model
     {
         $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
         $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+
         return auth()->user()->account->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
                      ->orderBy('next_expected_date', 'asc')

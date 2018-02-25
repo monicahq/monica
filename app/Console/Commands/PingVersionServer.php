@@ -40,7 +40,7 @@ class PingVersionServer extends Command
      */
     public function handle()
     {
-        if (!config('monica.check_version')) {
+        if (! config('monica.check_version')) {
             return false;
         }
 
@@ -83,7 +83,7 @@ class PingVersionServer extends Command
         }
 
         // make sure the JSON has all the fields we need
-        if (!isset($json['latest_version']) || !isset($json['new_version']) || !isset($json['number_of_versions_since_user_version'])) {
+        if (! isset($json['latest_version']) || ! isset($json['new_version']) || ! isset($json['number_of_versions_since_user_version'])) {
             return;
         }
 
