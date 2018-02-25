@@ -49,6 +49,8 @@ class Contact extends Model
         'default_avatar_color',
         'gender_id',
         'account_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -326,6 +328,16 @@ class Contact extends Model
     public function firstMetDate()
     {
         return $this->hasOne('App\SpecialDate', 'id', 'first_met_special_date_id');
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
     }
 
     /**
@@ -1439,5 +1451,43 @@ class Contact extends Model
         if ($relatedContact) {
             return self::find($relatedContact->is_the_child_of);
         }
+    }
+
+    /**
+     * Sets a tag to the contact.
+     *
+     * @param string $tag
+     * @return Tag
+     */
+    public function setTag(string $name)
+    {
+        $tag = $this->account->tags()->firstOrCreate([
+            'name' => $name,
+        ]);
+
+        $tag->name_slug = str_slug($tag->name);
+        $tag->save();
+
+        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account->id]]);
+
+        return $tag;
+    }
+
+    /**
+     * Unset all the tags associated with the contact.
+     * @return bool
+     */
+    public function unsetTags()
+    {
+        $this->tags()->detach();
+    }
+
+    /**
+     * Unset one tag associated with the contact.
+     * @return bool
+     */
+    public function unsetTag(Tag $tag)
+    {
+        $this->tags()->detach($tag->id);
     }
 }

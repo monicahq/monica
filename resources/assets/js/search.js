@@ -96,7 +96,7 @@ function Search(form, input, resultsContainer, showResults) {
                 showNoResults(data.noResults);
                 return;
             }
-            const results = parseResults(data);
+            const results = parseResults(data.data);
             showResults(results, search);
         });
     }

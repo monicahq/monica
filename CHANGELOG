@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add API calls to associate and remove tags to a contact
 * Docker image: use cron to run schedule tasks
 * Docker image: reduce size of image
 * Docker image: create storage subdirectory in case they not exist
