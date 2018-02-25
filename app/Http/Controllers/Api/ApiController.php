@@ -180,6 +180,7 @@ class ApiController extends Controller
         }
 
         $this->sort = null;
+
         return $this;
     }
 
