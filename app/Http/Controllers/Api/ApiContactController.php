@@ -25,10 +25,14 @@ class ApiContactController extends ApiController
         if ($request->get('query')) {
             $needle = $request->get('query');
             $contacts = SearchHelper::searchContacts($needle, $this->getLimitPerPage());
-        } else {
-            $contacts = auth()->user()->account->contacts()->real()
-                                            ->paginate($this->getLimitPerPage());
+
+            return ContactResource::collection($contacts)->additional(['meta' => [
+                    'query' => $needle,
+                ]]);
         }
+
+        $contacts = auth()->user()->account->contacts()->real()
+                                        ->paginate($this->getLimitPerPage());
 
         return ContactResource::collection($contacts);
     }

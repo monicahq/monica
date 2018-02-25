@@ -71,7 +71,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_for_specific_contact()
+    public function test_it_is_possible_to_search_for_a_specific_contact()
     {
         $user = $this->signin();
 
@@ -93,6 +93,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'first_name' => 'roger',
             'total' => 1,
+            'query' => 'ro',
         ]);
     }
 }
