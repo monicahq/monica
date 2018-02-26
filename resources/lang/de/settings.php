@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'Kontoeinstellungen',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Daten exportieren',
     'sidebar_settings_users' => 'Benutzer',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Daten importieren',
     'sidebar_settings_tags' => 'Tags bearbeiten',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Sicherheit',
 
     'export_title' => 'Exportiere die Daten deines Kontos',
@@ -168,6 +170,8 @@ return [
     'api_oauth_clients_desc' => 'Hier kannst du deine eigenen OAuth Clients registrieren.',
     'api_authorized_clients' => 'Liste der authorisierten Clients',
     'api_authorized_clients_desc' => 'Diese Liste zeigt dir alle Clients, denen du Zugriff gewährt hast. Du kannst die Authorisierungen jederzeit widerrufen.',
+
+    'personalization_tab_title' => 'Personalize your account',
 
     'personalization_title' => 'Hier kannst du verschiedene Einstellungen für dein Konto vornehmen um Monica maximal an deine Bedürfnisse anzupassen.',
     'personalization_contact_field_type_title' => 'Kontakt Felder',
