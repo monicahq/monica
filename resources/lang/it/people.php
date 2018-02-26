@@ -22,8 +22,8 @@ return [
     'people_search' => 'Cerca nei tuoi contatti...',
     'people_search_no_results' => 'Nessun contatto trovato :(',
     'people_list_account_usage' => 'Utilizzo account: :current/:limit contatti',
-    'people_list_account_upgrade_title' => "Effettua l'upgrade del tuo account per poter usufruire delle sue piene funzionalitá.",
-    'people_list_account_upgrade_cta' => "Effettua l'upgrade ora",
+    'people_list_account_upgrade_title' => 'Effettua l\'upgrade del tuo account per poter usufruire delle sue piene funzionalitá.',
+    'people_list_account_upgrade_cta' => 'Effettua l\'upgrade ora',
 
     // people add
     'people_add_title' => 'Aggiungi una persona',
@@ -32,7 +32,7 @@ return [
     'people_add_middlename' => 'Secondo nome (facoltativo)',
     'people_add_lastname' => 'Cognome (facoltativo)',
     'people_add_cta' => 'Aggiungi questa persona',
-    'people_save_and_add_another_cta' => "Salva e aggiungi un'altra persona",
+    'people_save_and_add_another_cta' => 'Salva e aggiungi un\'altra persona',
     'people_add_success' => 'Contatto creato con successo',
     'people_add_gender' => 'Sesso',
     'people_delete_success' => 'Il contatto è stato rimosso',
@@ -41,6 +41,7 @@ return [
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
     'people_add_import' => 'Vuoi <a href="/settings/import">importare i tuoi contatti</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_contact_information' => 'Informazioni sul contatto',
@@ -90,8 +91,9 @@ return [
     'information_edit_firstname' => 'Nome',
     'information_edit_lastname' => 'Cognome (facoltativo)',
     'information_edit_linkedin' => 'Profilo LinkedIn (facoltativo)',
+    'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Questa persona probabilmente ha',
-    'information_edit_probably_yo' => 'anni',
+    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
     'information_edit_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te - ti verrà notificato l\'arrivo del suo compleanno annualmente.',
     'information_no_linkedin_defined' => 'Nessun profilo LinkedIn',
@@ -117,8 +119,6 @@ return [
     'reminders_blank_add_activity' => 'Aggiungi un promemoria',
     'reminders_add_title' => 'Cosa vorresti ricordare a proposito di :name?',
     'reminders_add_description' => 'Ricordami per piacere di...',
-    'reminders_add_predefined' => 'Promemoria predefinito',
-    'reminders_add_custom' => 'Promemoria personalizzato',
     'reminders_add_next_time' => 'Quando vorresti ti fosse ricordato?',
     'reminders_add_once' => 'Ricordamelo una sola volta',
     'reminders_add_recurrent' => 'Ricordamelo ogni',
@@ -130,6 +130,7 @@ return [
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
     'reminders_update_success' => 'The reminder has been updated successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
     'reminder_frequency_month' => 'ogni mese|ogni :number mesi',
     'reminder_frequency_year' => 'ogni anno|ogni :number anni',
@@ -143,7 +144,8 @@ return [
     'reminders_type_week' => 'settimana',
     'reminders_type_month' => 'mese',
     'reminders_type_year' => 'anno',
-    'reminders_free_plan_warning' => "Nella versione gratuita di Monica non vengono inviate email. Per ricevere promemoria via email, effettua l'upgrade.",
+    'reminders_birthday' => 'Birthday of :name',
+    'reminders_free_plan_warning' => 'Nella versione gratuita di Monica non vengono inviate email. Per ricevere promemoria via email, effettua l\'upgrade.',
 
     // significant other
     'significant_other_sidebar_title' => 'Partner',
@@ -158,10 +160,17 @@ return [
     'significant_other_add_cta' => 'Aggiungi partner',
     'significant_other_edit_cta' => 'Modifica partner',
     'significant_other_delete_confirmation' => 'Rimuovere il partner di questo contatto? Questo cambio è permanente.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
     'significant_other_add_success' => 'Partner aggiunto',
     'significant_other_edit_success' => 'Partner modificato',
     'significant_other_delete_success' => 'Partner rimosso',
     'significant_other_add_birthday_reminder' => 'Fai gli auguri di buon compleanno a :name, partner di :contact_firstname',
+    'significant_other_add_person' => 'Add a new person',
+    'significant_other_link_existing_contact' => 'Link existing contact',
+    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
+    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
+    'contact_add_also_create_contact' => 'Create a Contact entry for this person.',
+    'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
     'kids_sidebar_title' => 'Figli',
@@ -237,7 +246,6 @@ return [
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
     'activities_activity' => 'Activity Category',
-
     // notes
     'notes_create_success' => 'Nota creata',
     'notes_update_success' => 'Nota aggiornata',
@@ -302,7 +310,7 @@ return [
     'introductions_no_first_met_date' => 'Non ricordo la data in cui ci siamo conosciuti',
     'introductions_first_met_date_known' => 'Questo é il giorno in cui si siamo conosciuti',
     'introductions_add_reminder' => 'Aggiungi un promemoria per celebrare questo incontro nel suo anniversario',
-    'introductions_update_success' => "Hai aggiornato con successo le informazioni sull'incontro con questa persona",
+    'introductions_update_success' => 'Hai aggiornato con successo le informazioni sull\'incontro con questa persona',
     'introductions_met_through' => 'Conosciuto/a attraverso <a href="/people/:id">:name</a>',
     'introductions_met_date' => 'Incontrato/a il :date',
     'introductions_reminder_title' => 'Anniversario del giorno in cui vi siete conosciuti',

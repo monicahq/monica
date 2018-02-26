@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'failed' => 'Имя пользователя и пароль не совпадают.',
-    'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
-    'not_authorized' => 'Вам не разрешено выполнять это действие.',
-    'signup_disabled' => 'Регистрация сейчас выключена.',
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'not_authorized' => 'You are not authorized to execute this action',
+    'signup_disabled' => 'Registration is currently disabled',
     'back_homepage' => 'Back to homepage',
     '2fa_title' => 'Two Factor Authentication',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',

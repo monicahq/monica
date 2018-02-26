@@ -58,8 +58,11 @@ return [
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Ajouter un partenaire',
     'breadcrumb_edit_significant_other' => 'Mettre à jour un partenaire',
+    'breadcrumb_add_note' => 'Add a note',
+    'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'Comment vous vous êtes rencontrés',
+    'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 

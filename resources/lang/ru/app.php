@@ -58,8 +58,11 @@ return [
     'breadcrumb_settings_tags' => 'Тэги',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
+    'breadcrumb_add_note' => 'Add a note',
+    'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'How did you meet',
+    'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
 
