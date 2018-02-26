@@ -9,20 +9,18 @@ return [
     |
     | The following language lines contain the default error messages used by
     | the validator class. Some of these rules have multiple versions such
-    | such as the size rules. Feel free to tweak each of these messages.
+    | as the size rules. Feel free to tweak each of these messages here.
     |
     */
 
     'accepted'             => 'O campo :attribute deve ser aceito.',
     'active_url'           => 'O campo :attribute deve conter uma URL válida.',
     'after'                => 'O campo :attribute deve conter uma data posterior a :date.',
-    'after_or_equal'       => 'O campo :attribute deve conter uma data superior ou igual a :date.',
     'alpha'                => 'O campo :attribute deve conter apenas letras.',
     'alpha_dash'           => 'O campo :attribute deve conter apenas letras, números e traços.',
     'alpha_num'            => 'O campo :attribute deve conter apenas letras e números .',
     'array'                => 'O campo :attribute deve conter um array.',
     'before'               => 'O campo :attribute deve conter uma data anterior a :date.',
-    'before_or_equal'      => 'O campo :attribute deve conter uma data inferior ou igual a :date.',
     'between'              => [
         'numeric' => 'O campo :attribute deve conter um número entre :min e :max.',
         'file'    => 'O campo :attribute deve conter um arquivo de :min a :max kilobytes.',
@@ -36,19 +34,15 @@ return [
     'different'            => 'Os campos :attribute e :other devem conter valores diferentes.',
     'digits'               => 'O campo :attribute deve conter :digits dígitos.',
     'digits_between'       => 'O campo :attribute deve conter entre :min a :max dígitos.',
-    'dimensions'           => 'O valor informado para o campo :attribute não é uma dimensão de imagem válida.',
     'distinct'             => 'O campo :attribute contém um valor duplicado.',
     'email'                => 'O campo :attribute não contém um endereço de email válido.',
     'exists'               => 'O valor selecionado para o campo :attribute é inválido.',
-    'file'                 => 'O campo :attribute deve conter um arquivo.',
     'filled'               => 'O campo :attribute é obrigatório.',
     'image'                => 'O campo :attribute deve conter uma imagem.',
     'in'                   => 'O campo :attribute não contém um valor válido.',
     'in_array'             => 'O campo :attribute não existe em :other.',
     'integer'              => 'O campo :attribute deve conter um número inteiro.',
     'ip'                   => 'O campo :attribute deve conter um IP válido.',
-    'ipv4'                 => 'The :attribute must be a valid IPv4 address.',
-    'ipv6'                 => 'The :attribute must be a valid IPv6 address.',
     'json'                 => 'O campo :attribute deve conter uma string JSON válida.',
     'max'                  => [
         'numeric' => 'O campo :attribute não pode conter um valor superior a :max.',
@@ -57,7 +51,6 @@ return [
         'array'   => 'O campo :attribute deve conter no máximo :max itens.',
     ],
     'mimes'                => 'O campo :attribute deve conter um arquivo do tipo: :values.',
-    'mimetypes'            => 'O campo :attribute deve conter um arquivo do tipo: :values.',
     'min'                  => [
         'numeric' => 'O campo :attribute deve conter um número superior ou igual a :min.',
         'file'    => 'O campo :attribute deve conter um arquivo com no mínimo :min kilobytes.',
@@ -85,7 +78,6 @@ return [
     'string'               => 'O campo :attribute deve ser uma string.',
     'timezone'             => 'O campo :attribute deve conter um fuso horário válido.',
     'unique'               => 'O valor informado para o campo :attribute já está em uso.',
-    'uploaded'             => 'Falha no Upload do arquivo :attribute.',
     'url'                  => 'O formato da URL informada para o campo :attribute é inválido.',
 
     /*
@@ -99,7 +91,7 @@ return [
     |
     */
 
-    'custom'               => [
+    'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
@@ -116,36 +108,6 @@ return [
     |
     */
 
-    'attributes'           => [
-        'address'               => 'endereço',
-        'age'                   => 'idade',
-        'body'                  => 'conteúdo',
-        'city'                  => 'cidade',
-        'country'               => 'país',
-        'date'                  => 'data',
-        'day'                   => 'dia',
-        'description'           => 'descrição',
-        'excerpt'               => 'resumo',
-        'first_name'            => 'primeiro nome',
-        'gender'                => 'gênero',
-        'hour'                  => 'hora',
-        'last_name'             => 'sobrenome',
-        'message'               => 'mensagem',
-        'minute'                => 'minuto',
-        'mobile'                => 'celular',
-        'month'                 => 'mês',
-        'name'                  => 'nome',
-        'password_confirmation' => 'confirmação da senha',
-        'password'              => 'senha',
-        'phone'                 => 'telefone',
-        'second'                => 'segundo',
-        'sex'                   => 'sexo',
-        'state'                 => 'estado',
-        'subject'               => 'assunto',
-        'time'                  => 'hora',
-        'title'                 => 'título',
-        'username'              => 'usuário',
-        'year'                  => 'ano',
-    ],
+    'attributes' => [],
 
 ];
