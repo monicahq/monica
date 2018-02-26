@@ -42,8 +42,8 @@ return [
     'locale' => 'Idioma usado no aplicativo',
     'locale_en' => 'Inglês',
     'locale_fr' => 'Francês',
-    'locale_pt-br' => 'Português',
-    'locale_cz' => 'Checo',
+    'locale_pt' => 'Português',
+    'locale_cs' => 'Checo',
     'locale_it' => 'Italiano',
     'locale_de' => 'Alemão',
 

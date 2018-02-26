@@ -44,9 +44,9 @@ return [
     'locale' => 'Language used in the app',
     'locale_en' => 'English',
     'locale_fr' => 'French',
-    'locale_pt-br' => 'Portuguese',
+    'locale_pt' => 'Portuguese',
     'locale_ru' => 'Russian',
-    'locale_cz' => 'Czech',
+    'locale_cs' => 'Czech',
     'locale_it' => 'Italian',
     'locale_de' => 'German',
 

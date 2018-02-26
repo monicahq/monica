@@ -38,7 +38,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y';
                 break;
@@ -98,7 +98,7 @@ class DateHelper
             case 'en':
                 $format = 'M d';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M';
                 break;
@@ -126,7 +126,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y H:i';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y H:i';
                 break;
