@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'Kontoeinstellungen',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Daten exportieren',
     'sidebar_settings_users' => 'Benutzer',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Daten importieren',
     'sidebar_settings_tags' => 'Tags bearbeiten',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Sicherheit',
 
     'export_title' => 'Exportiere die Daten deines Kontos',
@@ -42,9 +44,9 @@ return [
     'locale' => 'Sprache der Anwendung',
     'locale_en' => 'Englisch',
     'locale_fr' => 'Französisch',
-    'locale_pt-br' => 'Portugiesisch',
+    'locale_pt' => 'Portugiesisch',
     'locale_ru' => 'Russisch',
-    'locale_cz' => 'Tschechisch',
+    'locale_cs' => 'Tschechisch',
     'locale_it' => 'Italienisch',
     'locale_de' => 'Deutsch',
 
@@ -169,6 +171,8 @@ return [
     'api_authorized_clients' => 'Liste der authorisierten Clients',
     'api_authorized_clients_desc' => 'Diese Liste zeigt dir alle Clients, denen du Zugriff gewährt hast. Du kannst die Authorisierungen jederzeit widerrufen.',
 
+    'personalization_tab_title' => 'Personalize your account',
+
     'personalization_title' => 'Hier kannst du verschiedene Einstellungen für dein Konto vornehmen um Monica maximal an deine Bedürfnisse anzupassen.',
     'personalization_contact_field_type_title' => 'Kontakt Felder',
     'personalization_contact_field_type_add' => 'Neues Feld hinzufügen',
@@ -200,4 +204,12 @@ return [
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete :name?',
     'personalization_genders_modal_delete_question' => 'You currently have :numberOfContacts contacts who have this gender. If you delete this gender, what gender should those contacts have?',
     'personalization_genders_modal_error' => 'Please choose a valid gender from the list.',
+
+    'personalization_reminder_rule_save' => 'The change has been saved',
+    'personalization_reminder_rule_title' => 'Reminder rules',
+    'personalization_reminder_rule_line' => ':count days before',
+    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+
+    'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'test_for_crowdin' => 'Test for Crowdin',
 ];

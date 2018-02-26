@@ -8,8 +8,8 @@ return [
     'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
-    'people_list_stats' => ':count contacts',
     'people_list_sort' => 'Sort',
+    'people_list_stats' => ':count contacts',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
@@ -41,6 +41,7 @@ return [
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -90,8 +91,9 @@ return [
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
     'information_edit_linkedin' => 'LinkedIn profile (optional)',
+    'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Esta pessoa é provavelmente',
-    'information_edit_probably_yo' => 'anos de idade',
+    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
     'information_edit_help' => 'Se você indicar uma data de nascimento exata para essa pessoa, criaremos um novo lembrete para você - então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta pessoa.',
     'information_no_linkedin_defined' => 'No LinkedIn defined',
@@ -128,6 +130,7 @@ return [
     'reminders_delete_success' => 'O lembrete foi excluído com sucesso',
     'reminders_update_success' => 'The reminder has been updated successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'toda semana|cada :number semanas',
     'reminder_frequency_month' => 'todo month|cada :number mêses',
     'reminder_frequency_year' => 'todo year|cada :number anos',
@@ -243,7 +246,6 @@ return [
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
     'activities_who_was_involved' => 'Quem estava envolvido?',
     'activities_activity' => 'Activity Category',
-
     // notes
     'notes_create_success' => 'A nota foi adicionada com sucesso',
     'notes_update_success' => 'The note has been saved successfully',

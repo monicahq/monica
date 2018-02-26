@@ -21,12 +21,33 @@ class ApiController extends Controller
     /**
      * @var int
      */
-    protected $limitPerPage = 10;
+    protected $limitPerPage = 0;
+
+    /**
+     * @var string
+     */
+    protected $sort = 'created_at';
+
+    /**
+     * @var string
+     */
+    protected $sortDirection = 'asc';
 
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $apiUsage = (new ApiUsage)->log($request);
+            (new ApiUsage)->log($request);
+
+            if ($request->has('sort')) {
+                $this->setSortCriteria($request->get('sort'));
+
+                // It has a sort criteria, but is it a valid one?
+                if (is_null($this->getSortCriteria())) {
+                    return $this->setHTTPStatusCode(400)
+                              ->setErrorCode(39)
+                              ->respondWithError(config('api.error_codes.39'));
+                }
+            }
 
             if ($request->has('limit')) {
                 if ($request->get('limit') > config('api.max_limit_per_page')) {
@@ -40,12 +61,11 @@ class ApiController extends Controller
 
             // make sure the JSON is well formatted if the given call sends a JSON
             // TODO: there is probably a much better way to do that
-            if ($request->method() != 'GET' and $request->method() != 'DELETE') {
-                if (is_null(json_decode($request->getContent()))) {
-                    return $this->setHTTPStatusCode(400)
-                              ->setErrorCode(37)
-                              ->respondWithError(config('api.error_codes.37'));
-                }
+            if ($request->method() != 'GET' && $request->method() != 'DELETE'
+                && is_null(json_decode($request->getContent()))) {
+                return $this->setHTTPStatusCode(400)
+                            ->setErrorCode(37)
+                            ->respondWithError(config('api.error_codes.37'));
             }
 
             return $next($request);
@@ -120,6 +140,63 @@ class ApiController extends Controller
         $this->limitPerPage = $limit;
 
         return $this;
+    }
+
+    /**
+     * Get the sort direction parameter.
+     * @return string
+     */
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortCriteria()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param string $criteria
+     * @return $this
+     */
+    public function setSortCriteria($criteria)
+    {
+        $acceptedCriteria = [
+            'created_at',
+            'updated_at',
+            '-created_at',
+            '-updated_at',
+        ];
+
+        if (in_array($criteria, $acceptedCriteria)) {
+            $this->setSQLOrderByQuery($criteria);
+
+            return $this;
+        }
+
+        $this->sort = null;
+
+        return $this;
+    }
+
+    /**
+     * Set both the column and order necessary to perform an orderBy.
+     */
+    public function setSQLOrderByQuery($criteria)
+    {
+        $this->sortDirection = 'asc';
+        $this->sort = $criteria;
+
+        $firstCharacter = $this->getSortCriteria()[0];
+
+        if ($firstCharacter == '-') {
+            $this->sort = substr($this->getSortCriteria(), 1);
+            $this->sortDirection = 'desc';
+        }
     }
 
     /**

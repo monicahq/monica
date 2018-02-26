@@ -14,9 +14,9 @@ return [
     'langs' => [
         'en',
         'fr',
-        'pt-br',
+        'pt',
         'ru',
-        'cz',
+        'cs',
         'it',
         'de',
     ],
