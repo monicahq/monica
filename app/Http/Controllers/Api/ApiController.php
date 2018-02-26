@@ -36,7 +36,7 @@ class ApiController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $apiUsage = (new ApiUsage)->log($request);
+            (new ApiUsage)->log($request);
 
             if ($request->has('sort')) {
                 $this->setSortCriteria($request->get('sort'));
@@ -61,12 +61,11 @@ class ApiController extends Controller
 
             // make sure the JSON is well formatted if the given call sends a JSON
             // TODO: there is probably a much better way to do that
-            if ($request->method() != 'GET' and $request->method() != 'DELETE') {
-                if (is_null(json_decode($request->getContent()))) {
-                    return $this->setHTTPStatusCode(400)
-                              ->setErrorCode(37)
-                              ->respondWithError(config('api.error_codes.37'));
-                }
+            if ($request->method() != 'GET' && $request->method() != 'DELETE'
+                && is_null(json_decode($request->getContent()))) {
+                return $this->setHTTPStatusCode(400)
+                            ->setErrorCode(37)
+                            ->respondWithError(config('api.error_codes.37'));
             }
 
             return $next($request);

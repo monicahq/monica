@@ -164,7 +164,7 @@ class SpecialDate extends Model
             return;
         }
 
-        if ($this->is_year_unknown == true) {
+        if ($this->is_year_unknown) {
             return;
         }
 
