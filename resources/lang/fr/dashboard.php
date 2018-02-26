@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_title' => 'Bienvenue chez vous !',
+    'dashboard_blank_description' => 'Monica est l\'endroit pour organiser toutes les interactions que vous avez avec ceux qui vous sont chers.',
     'dashboard_blank_cta' => 'Ajoutez votre premier contact',
 
     'notes_title' => 'Vous n\'avez encore aucune note.',
