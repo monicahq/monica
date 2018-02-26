@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'Nastavení účtu',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Exportovat data',
     'sidebar_settings_users' => 'Uživatelé',
     'sidebar_settings_subscriptions' => 'Odběry',
     'sidebar_settings_import' => 'Importovat data',
     'sidebar_settings_tags' => 'Správa tagů',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Exportovat data účtu',
@@ -42,9 +44,10 @@ return [
     'locale' => 'Jazyk použitý v aplikaci',
     'locale_en' => 'Angličtina',
     'locale_fr' => 'Francouzština',
-    'locale_pt-br' => 'Portugalština',
+    'locale_pt' => 'Portuguese',
     'locale_ru' => 'Ruština',
-    'locale_cz' => 'Čeština',
+    'locale_cs' => 'Czech',
+    'locale_it' => 'Italian',
     'locale_de' => 'Němčina',
 
     'security_title' => 'Security',
@@ -168,6 +171,8 @@ return [
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
 
+    'personalization_tab_title' => 'Personalize your account',
+
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for "power users" who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
     'personalization_contact_field_type_add' => 'Add new field type',
@@ -206,4 +211,5 @@ return [
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'test_for_crowdin' => 'Test na Crowdin',
 ];

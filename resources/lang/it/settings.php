@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'Impostazioni accounto',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Esporta dati',
     'sidebar_settings_users' => 'Utenti',
     'sidebar_settings_subscriptions' => 'Sottoscrizioni',
     'sidebar_settings_import' => 'Importa dati',
     'sidebar_settings_tags' => 'Gestione etichette',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Esporta i dati del tuo account',
@@ -160,14 +162,16 @@ return [
     'tags_blank_title' => 'Le etichette sono un buon modo di organizzare i tuoi contatti.',
     'tags_blank_description' => 'Le etichette funzionano come delle cartelle, ma puoi aggiungere più di un\'etichetta a ogni contatto. Entra nella pagina di un contatto ed etichettalo come amico, giusto sotto al nome. Quando un contatto è stato etichettato, puoi tornare qui per gestire tutte le tue etichette.',
 
-    'api_title' => "Accesso all'API",
-    'api_description' => "L'API puó essere usata per manipolare le informazioni in Monica da un'applicazione esterna, ad esempio da un'applicazione per smartphone.",
+    'api_title' => 'Accesso all\'API',
+    'api_description' => 'L\'API puó essere usata per manipolare le informazioni in Monica da un\'applicazione esterna, ad esempio da un\'applicazione per smartphone.',
     'api_personal_access_tokens' => 'Personal access token',
     'api_pao_description' => 'Assicurati di dare questo token a fonti fidate, giá che danno accesso a tutti i tuoi dati.',
     'api_oauth_clients' => 'I tuoi client Oauth',
     'api_oauth_clients_desc' => 'Questa sezione ti permette di registrare i tuoi client OAuth.',
     'api_authorized_clients' => 'Lista di client autorizzati',
-    'api_authorized_clients_desc' => "Questa sezione elenca tutti i client che hai autorizzato ad accedere all'applicazione. Puoi revocare questa autorizzazione in qualsiasi momento.",
+    'api_authorized_clients_desc' => 'Questa sezione elenca tutti i client che hai autorizzato ad accedere all\'applicazione. Puoi revocare questa autorizzazione in qualsiasi momento.',
+
+    'personalization_tab_title' => 'Personalize your account',
 
     'personalization_title' => 'Qui puoi trovare varie impostazioni per configurare il tuo accout. Queste funzioni sono per utenti avanzati, coloro che vogliono il massimo controllo su Monica.',
     'personalization_contact_field_type_title' => 'Forme di contatto',
@@ -184,7 +188,7 @@ return [
     'personalization_contact_field_type_modal_protocol' => 'Protocollo (facoltativo)',
     'personalization_contact_field_type_modal_protocol_help' => 'Si puó cliccare su ogni forma di contatto. Se é impostato un protocollo, useremo quello.',
     'personalization_contact_field_type_modal_icon' => 'Icona (facoltativa)',
-    'personalization_contact_field_type_modal_icon_help' => "Puoi associare un'icona a questa forma di contatto. Dev'essere un'icona di Font Awesome.",
+    'personalization_contact_field_type_modal_icon_help' => 'Puoi associare un\'icona a questa forma di contatto. Dev\'essere un\'icona di Font Awesome.',
     'personalization_contact_field_type_delete_success' => 'Forma di contatto rimossa.',
     'personalization_contact_field_type_add_success' => 'Forma di contatto aggiunta.',
     'personalization_contact_field_type_edit_success' => 'Forma di contatto aggiornata.',
@@ -207,4 +211,5 @@ return [
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'test_for_crowdin' => 'Test for Crowdin',
 ];

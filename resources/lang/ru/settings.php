@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'настройки аккаунта',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Экспортировать данные',
     'sidebar_settings_users' => 'Пользователи',
     'sidebar_settings_subscriptions' => 'Подписка',
     'sidebar_settings_import' => 'Импортировать данные',
     'sidebar_settings_tags' => 'Управление тегами',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Экспортировать данные вашего аккаунта',
@@ -38,11 +40,13 @@ return [
     'reset_success' => 'Your account has been reset successfully',
     'delete_notice' => 'Вы уверены что хотите удалить свой аккаунт? Пути назад нет.',
     'delete_cta' => 'Удалить аккаунт',
+    'settings_success' => 'Preferences updated!',
     'locale' => 'Язык',
     'locale_en' => 'Английский',
     'locale_fr' => 'Французкий',
+    'locale_pt' => 'Portuguese',
     'locale_ru' => 'Русский',
-    'locale_cz' => 'Чешский',
+    'locale_cs' => 'Czech',
     'locale_it' => 'итальянский',
     'locale_de' => 'немецкий',
 
@@ -97,12 +101,12 @@ return [
     'subscriptions_account_paid_plan' => 'You are on the :name plan. It costs $:price every month.',
     'subscriptions_account_next_billing' => 'Your subscription will auto-renew on <strong>:date</strong>. You can <a href=":url">cancel subscription</a> anytime.',
     'subscriptions_account_free_plan' => 'You are on the free plan.',
-    'subscriptions_account_upgrade' => 'Upgrade your account',
     'subscriptions_account_free_plan_upgrade' => 'You can upgrade your account to the :name plan, which costs $:price per month. Here are the advantages:',
     'subscriptions_account_free_plan_benefits_users' => 'Unlimited number of users',
     'subscriptions_account_free_plan_benefits_reminders' => 'Reminders by email',
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Import your contacts with vCard',
     'subscriptions_account_free_plan_benefits_support' => 'Support the project on the long run, so we can introduce more great features.',
+    'subscriptions_account_upgrade' => 'Upgrade your account',
     'subscriptions_account_invoices' => 'Invoices',
     'subscriptions_account_invoices_download' => 'Download',
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',
@@ -167,6 +171,8 @@ return [
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
 
+    'personalization_tab_title' => 'Personalize your account',
+
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for "power users" who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contact field types',
     'personalization_contact_field_type_add' => 'Add new field type',
@@ -205,4 +211,5 @@ return [
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'test_for_crowdin' => 'Test for Crowdin',
 ];
