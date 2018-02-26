@@ -2,11 +2,13 @@
 
 return [
     'sidebar_settings' => 'Paramètres du compte',
+    'sidebar_personalization' => 'Personalization',
     'sidebar_settings_export' => 'Exporter les données',
     'sidebar_settings_users' => 'Utilisateurs',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Importation de données',
     'sidebar_settings_tags' => 'Gestion des tags',
+    'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Exporter les données de votre compte',
@@ -169,6 +171,8 @@ return [
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access votre application. You can revoke this authorization at anytime.',
 
+    'personalization_tab_title' => 'Personalize your account',
+
     'personalization_title' => 'Ici vous pouvez configurer les différents paramètres de votre compte. Ces fonctionnalités sont pour les utilisateurs avancés qui veulent un contrôle maximal sur Monica.',
     'personalization_contact_field_type_title' => 'Types de champs de contact',
     'personalization_contact_field_type_add' => 'Ajouter un nouveau type de champ',
@@ -207,4 +211,5 @@ return [
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'test_for_crowdin' => 'Test for Crowdin',
 ];
