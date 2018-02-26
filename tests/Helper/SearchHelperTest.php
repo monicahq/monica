@@ -15,7 +15,7 @@ class SearchHelperTest extends FeatureTestCase
         $user = $this->signin();
 
         $contact = factory('App\Contact')->make();
-        $searchResults = SearchHelper::searchContacts($contact->first_name, 1);
+        $searchResults = SearchHelper::searchContacts($contact->first_name, 1, 'created_at');
 
         $this->assertInstanceOf('Illuminate\Pagination\LengthAwarePaginator', $searchResults);
     }

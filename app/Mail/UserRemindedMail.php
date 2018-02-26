@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UserReminded extends Mailable
+class UserRemindedMail extends Mailable
 {
     use Queueable, SerializesModels;
 

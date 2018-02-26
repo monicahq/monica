@@ -14,7 +14,7 @@ class SearchHelper
      * @param  int $limitPerPage
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function searchContacts($query, $limitPerPage)
+    public static function searchContacts($query, $limitPerPage, $order)
     {
         $needle = $query;
         $accountId = auth()->user()->account->id;
@@ -34,7 +34,7 @@ class SearchHelper
                 ]);
             })->paginate($limitPerPage);
         } else {
-            $results = Contact::search($needle, $accountId, $limitPerPage);
+            $results = Contact::search($needle, $accountId, $limitPerPage, $order);
         }
 
         return $results;

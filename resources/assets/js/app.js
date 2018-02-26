@@ -26,6 +26,10 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
+// Toggle Buttons
+import ToggleButton from 'vue-js-toggle-button';
+Vue.use(ToggleButton);
+
 // Calendar
 import Datepicker from 'vuejs-datepicker';
 Vue.use(Datepicker);
@@ -144,6 +148,10 @@ Vue.component(
     require('./components/settings/Genders.vue')
 );
 
+Vue.component(
+    'reminder-rules',
+    require('./components/settings/ReminderRules.vue')
+);
 
 // i18n
 import VueInternalization from 'vue-i18n';

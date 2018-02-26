@@ -13,5 +13,6 @@ return [
 
     'statistics_contacts' => 'Contatti',
     'statistics_activities' => 'Attività',
+    'statistics_gifts' => 'Gifts',
 
 ];

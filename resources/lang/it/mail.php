@@ -8,4 +8,7 @@ return [
     'for' => 'PER:',
     'footer_contact_info' => 'Aggiungi, consulta, completa e cambia le informazioni di questo contatto:',
 
+    'notification_subject_line' => 'You have an upcoming event',
+    'notification_description' => 'In :count days (on :date), the following event will happen:',
+
 ];

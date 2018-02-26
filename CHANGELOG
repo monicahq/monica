@@ -1,5 +1,8 @@
 UNRELEASED CHANGES:
 
+* Add ability to search and sort in the API
+* Add ability to define the hour the reminder should be sent
+* Add notifications for reminders (30 and 7 days before an event happens)
 * Add API calls to associate and remove tags to a contact
 * Docker image: use cron to run schedule tasks
 * Docker image: reduce size of image

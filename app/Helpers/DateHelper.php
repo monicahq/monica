@@ -36,7 +36,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y';
                 break;
@@ -96,7 +96,7 @@ class DateHelper
             case 'en':
                 $format = 'M d';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M';
                 break;
@@ -124,7 +124,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y H:i';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y H:i';
                 break;
@@ -244,5 +244,37 @@ class DateHelper
         }
 
         return $days;
+    }
+
+    /**
+     * Gets a list of all the hours in a day.
+     *
+     * @return array
+     */
+    public static function getListOfHours()
+    {
+        $hours = collect([]);
+        for ($hour = 1; $hour <= 24; $hour++) {
+            $hours->push([
+                'id' => date('H:i', strtotime("$hour:00")),
+                'name' => date('h.iA', strtotime("$hour:00")),
+            ]);
+        }
+
+        return $hours;
+    }
+
+    /**
+     * Removes a given number of days of a date given in parameter.
+     *
+     * @param  Carbon  $date
+     * @param  int    $numberOfDaysBefore
+     * @return Carbon
+     */
+    public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
+    {
+        $olderDate = $date->subDays($numberOfDaysBefore);
+
+        return $olderDate;
     }
 }

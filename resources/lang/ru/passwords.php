@@ -4,19 +4,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Языковые ресурсы напоминания пароля
+    | Password Reset Language Lines
     |--------------------------------------------------------------------------
     |
-    | Последующие языковые строки возвращаются брокером паролей на неудачные
-    | попытки обновления пароля в таких случаях, как ошибочный код сброса
-    | пароля или неверный новый пароль.
+    | The following language lines are the default lines which match reasons
+    | that are given by the password broker for a password update attempt
+    | has failed, such as for an invalid token or invalid new password.
     |
     */
+
     'password' => 'Пароль должен быть не менее шести символов и совпадать с подтверждением.',
-    'reset'    => 'Ваш пароль был сброшен!',
-    'sent'     => 'Ссылка на сброс пароля была отправлена!',
-    'token'    => 'Ошибочный код сброса пароля.',
-    'user'     => 'Ссылка на сброс пароля была отправлена!',
+    'reset' => 'Ваш пароль был сброшен!',
+    'sent' => 'Ссылка на сброс пароля была отправлена!',
+    'token' => 'Ошибочный код сброса пароля.',
+    'user' => 'Ссылка на сброс пароля была отправлена!',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 

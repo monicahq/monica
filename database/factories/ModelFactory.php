@@ -205,6 +205,18 @@ $factory->define(App\ContactField::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\ReminderRule::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Notification::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;

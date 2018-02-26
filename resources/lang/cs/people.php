@@ -19,11 +19,11 @@ return [
     'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '{0} 0 kontaktů|{1,1} 1 kontakt|{2,*} :count kontaktů',
+    'people_search' => 'Prohledat kontakty...',
+    'people_search_no_results' => 'Nebyly nalezeny žádné odpovídající kontakty :(',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
-    'people_search' => 'Prohledat kontakty...',
-    'people_search_no_results' => 'Nebyly nalezeny žádné odpovídající kontakty :(',
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
@@ -41,6 +41,7 @@ return [
     'people_delete_confirmation' => 'Opravdu chcete smazat tento kontakt? Smazání je trvalé.',
     'people_add_birthday_reminder' => 'Popřát k narozeninám :name',
     'people_add_import' => 'Chcete <a href="/settings/import">importovat své kontakty</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -90,8 +91,9 @@ return [
     'information_edit_firstname' => 'Jméno',
     'information_edit_lastname' => 'Příjmení (volitelné)',
     'information_edit_linkedin' => 'LinkedIn profil (volitelné)',
+    'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Tato osoba je přibližně',
-    'information_edit_probably_yo' => 'let stará',
+    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
     'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění - takže budete každoročně upozorněni na oslavu narozenin.',
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
@@ -128,6 +130,7 @@ return [
     'reminders_delete_success' => 'Upozornění bylo úspěšně smazáno',
     'reminders_update_success' => 'The reminder has been updated successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'každý týden|každé :number týdny',
     'reminder_frequency_month' => 'každý měsíc|každé :number měsíce',
     'reminder_frequency_year' => 'každý rok|každé :number roky',
@@ -141,8 +144,8 @@ return [
     'reminders_type_week' => 'týdně',
     'reminders_type_month' => 'měsíčně',
     'reminders_type_year' => 'ročně',
-    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
     'reminders_birthday' => 'Narozeniny má :name',
+    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
     // significant other
     'significant_other_sidebar_title' => 'Drahá polovička',
@@ -243,13 +246,13 @@ return [
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',
     'activities_activity' => 'Activity Category',
-
     // notes
     'notes_create_success' => 'Poznámka byla úspěšně vytvořena',
     'notes_update_success' => 'Poznámka byla úspěšně uložena',
     'notes_delete_success' => 'Poznámka byla úspěšně smazána',
     'notes_add_cta' => 'Přidat poznámku',
     'notes_favorite' => 'Add/remove from favorites',
+    'notes_delete_title' => 'Delete a note',
     'notes_delete_confirmation' => 'Opravdu chcete smazat tuto poznámku? Smazání je trvalé.',
 
     // gifts
@@ -259,17 +262,17 @@ return [
     'gifts_add_gift' => 'Přidat dárek',
     'gifts_link' => 'Odkaz',
     'gifts_delete_cta' => 'Smazat',
-    'gifts_offered' => 'darováno',
     'gifts_add_title' => 'Správa dárků pro :name',
     'gifts_add_gift_idea' => 'Nápad na dárek',
     'gifts_add_gift_already_offered' => 'Dárek již darován',
+    'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'Co je tento dárek zač?',
     'gifts_add_link' => 'Odkaz na webovou stránku (volitelné)',
     'gifts_add_value' => 'Hodnota (volitelné)',
     'gifts_add_comment' => 'Komentář (volitelné)',
     'gifts_add_someone' => 'Tento dárek je pro někoho konkrétního z rodiny od :name',
     'gifts_ideas' => 'Gift ideas',
-    'gifts_offered' => 'Gifts offered',
+    'gifts_offered' => 'darováno',
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
