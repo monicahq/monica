@@ -457,7 +457,7 @@ class ContactsController extends Controller
                 ]);
             })->get();
         } else {
-            $results = Contact::search($needle, $accountId, 20);
+            $results = Contact::search($needle, $accountId, 20, 'created_at');
         }
 
         if (count($results) !== 0) {
