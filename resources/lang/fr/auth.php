@@ -17,10 +17,10 @@ return [
     'throttle' => 'Trop de tentatives de connexion. Veuillez essayer de nouveau dans :seconds secondes.',
     'not_authorized' => 'Vous n\'êtes pas autorisé à exécuter cette action',
     'signup_disabled' => 'L\'inscription est actuellement désactivée',
-    'back_homepage' => 'Back to homepage',
-    '2fa_title' => 'Two Factor Authentication',
-    '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Authentication code',
-    '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    'back_homepage' => 'Retour à la page d’accueil',
+    '2fa_title' => 'Authentification à deux facteurs',
+    '2fa_wrong_validation' => 'L\'authentification à 2 facteurs a échoué.',
+    '2fa_one_time_password' => 'Code d\'authentification',
+    '2fa_recuperation_code' => 'Entrez le code de récupération de deux facteurs',
 
 ];
