@@ -42,9 +42,9 @@ return [
     'locale' => 'Sprache der Anwendung',
     'locale_en' => 'Englisch',
     'locale_fr' => 'Französisch',
-    'locale_pt-br' => 'Portugiesisch',
+    'locale_pt' => 'Portugiesisch',
     'locale_ru' => 'Russisch',
-    'locale_cz' => 'Tschechisch',
+    'locale_cs' => 'Tschechisch',
     'locale_it' => 'Italienisch',
     'locale_de' => 'Deutsch',
 
