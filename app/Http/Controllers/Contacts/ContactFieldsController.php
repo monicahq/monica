@@ -85,7 +85,7 @@ class ContactFieldsController extends Controller
     public function destroyContactField(Contact $contact, ContactField $contactField)
     {
         $contactField->delete();
-        
+
         $contact->updateGravatar();
     }
 }
