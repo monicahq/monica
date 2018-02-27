@@ -1,6 +1,13 @@
 UNRELEASED CHANGES:
 
 * Support mysql unix socket
+
+RELEASED VERSIONS:
+
+v1.8.0 - 2018-02-26
+-------------------
+
+>>>>>>> origin/master
 * Add ability to search and sort in the API
 * Add ability to define the hour the reminder should be sent
 * Add notifications for reminders (30 and 7 days before an event happens)
@@ -10,8 +17,6 @@ UNRELEASED CHANGES:
 * Docker image: create storage subdirectory in case they not exist
 * Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
 * Remove trailing slash from routes
-
-RELEASED VERSIONS:
 
 v1.7.2 - 2018-02-20
 -------------------
