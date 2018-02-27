@@ -7,7 +7,6 @@ RELEASED VERSIONS:
 v1.8.0 - 2018-02-26
 -------------------
 
->>>>>>> origin/master
 * Add ability to search and sort in the API
 * Add ability to define the hour the reminder should be sent
 * Add notifications for reminders (30 and 7 days before an event happens)
