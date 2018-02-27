@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix Gravatar support
+* Support mysql unix socket
 
 RELEASED VERSIONS:
 
