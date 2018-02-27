@@ -145,6 +145,8 @@ jobs:
         file: .travis.deploy.json
         user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
+        on:
+          all_branches: true
 
     - stage: Deploy
       if: tag IS present
