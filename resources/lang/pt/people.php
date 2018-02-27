@@ -4,12 +4,12 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 crianças|{1,1} 1 criança|{2,*} :count crianças',
-    'people_list_last_updated' => 'Last consulted:',
+    'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
-    'people_list_sort' => 'Sort',
-    'people_list_stats' => ':count contacts',
+    'people_list_sort' => 'Ordenar',
+    'people_list_stats' => ':count contatos',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
