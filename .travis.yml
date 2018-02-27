@@ -58,7 +58,7 @@ before_script:
   - php artisan db:seed --env=testing --no-interaction -vvv
 
   # Start Xvfb
-￼  - export DISPLAY=:99.0
+￼  - "export DISPLAY=:99.0"
 #￼  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24; fi
 ￼  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
 
