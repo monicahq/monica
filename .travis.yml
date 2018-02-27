@@ -54,9 +54,17 @@ install:
   - npm run production
 
 before_script:
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
+
+  # Start Xvfb
+￼  - export DISPLAY=:99.0
+#￼  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x24; fi
+￼  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
+
+  # Start chromedriver
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/laravel/dusk/bin/chromedriver-linux; fi" &
+#  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   
 script:
   # Run unit tests
