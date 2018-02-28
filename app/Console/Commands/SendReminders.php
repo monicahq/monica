@@ -6,6 +6,7 @@ use App\User;
 use App\Account;
 use App\Reminder;
 use Carbon\Carbon;
+use App\Jobs\LogReminderSent;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
 use App\Jobs\SetNextReminderDate;
@@ -69,6 +70,12 @@ class SendReminders extends Command
                     }
 
                     if ($counter == $numberOfUsersInAccount) {
+                        // Create an entry in the reminders_sent table
+                        // We need to run this job before the other one, as once
+                        // `SetNextReminderDate` is run, the reminder that was
+                        // sent will be altered
+                        dispatch(new LogReminderSent($reminder));
+
                         // We should only do this when we are sure that this is
                         // the last user who should be warned in this account.
                         dispatch(new SetNextReminderDate($reminder, $user->timezone));
