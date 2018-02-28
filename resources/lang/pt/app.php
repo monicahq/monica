@@ -36,7 +36,7 @@ return [
     'footer_send_email' => 'Mande-me um email',
     'footer_privacy' => 'Política de Privacidade',
     'footer_release' => 'Notas de versão',
-    'footer_newsletter' => 'Newsletter',
+    'footer_newsletter' => 'Boletim informativo',
     'footer_source_code' => 'Contribuir',
     'footer_version' => 'Versão: :version',
     'footer_new_version' => 'Está disponível uma nova versão',
