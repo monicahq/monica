@@ -5,7 +5,7 @@ EXPOSE 80:80
 RUN apk update && apk upgrade; \
     apk add --virtual .build-deps \
         curl openssl; \
-    apk add apache2 make netcat-openbsd \
+    apk add apache2 git make netcat-openbsd \
         #- base
         php7 php7-apache2 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
