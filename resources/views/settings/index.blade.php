@@ -249,6 +249,16 @@
                 </select>
               </div>
 
+              {{-- Layout --}}
+              <div class="form-group">
+                <form-select
+                  :value="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
+                  :options="{{ $hours }}"
+                  v-bind:id="'reminder_time'"
+                  v-bind:title="'{{ trans('settings.reminder_time_to_send') }}'">
+                </form-select>
+              </div>
+
               <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>
             </form>
           </div>

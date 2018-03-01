@@ -1,8 +1,27 @@
 UNRELEASED CHANGES:
 
-*
+* Support mysql unix socket
 
 RELEASED VERSIONS:
+
+v1.8.0 - 2018-02-26
+-------------------
+
+* Add ability to search and sort in the API
+* Add ability to define the hour the reminder should be sent
+* Add notifications for reminders (30 and 7 days before an event happens)
+* Add API calls to associate and remove tags to a contact
+* Docker image: use cron to run schedule tasks
+* Docker image: reduce size of image
+* Docker image: create storage subdirectory in case they not exist
+* Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
+* Remove trailing slash from routes
+
+v1.7.2 - 2018-02-20
+-------------------
+
+* Fix a bug where POST requests were not working with Apache
+* Fix a bug preventing to delete a contact
 
 v1.7.1 - 2018-02-17
 -------------------

@@ -108,36 +108,6 @@ return [
     |
     */
 
-    'attributes'           => [
-        'name'                  => 'Name',
-        'username'              => 'Benutzername',
-        'email'                 => 'E-Mail-Adresse',
-        'first_name'            => 'Vorname',
-        'last_name'             => 'Nachname',
-        'password'              => 'Passwort',
-        'password_confirmation' => 'Passwort bestätigung',
-        'city'                  => 'Stadt',
-        'country'               => 'Land',
-        'address'               => 'Adresse',
-        'phone'                 => 'Telefon',
-        'mobile'                => 'Handy',
-        'age'                   => 'Alter',
-        'sex'                   => 'Geschlecht',
-        'gender'                => 'Geschlecht',
-        'day'                   => 'Tag',
-        'month'                 => 'Monat',
-        'year'                  => 'Jahr',
-        'hour'                  => 'Stunde',
-        'minute'                => 'Minute',
-        'second'                => 'Sekunde',
-        'title'                 => 'Titel',
-        'content'               => 'Inhalt',
-        'description'           => 'Beschreibung',
-        'excerpt'               => 'Auszug',
-        'date'                  => 'Datum',
-        'time'                  => 'Zeit',
-        'available'             => 'Verfügbar',
-        'size'                  => 'Größe',
-    ],
+    'attributes' => [],
 
 ];

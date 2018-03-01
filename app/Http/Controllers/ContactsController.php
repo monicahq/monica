@@ -11,6 +11,7 @@ use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
@@ -239,7 +240,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if ($contact->setName($request->input('firstname'), null, $request->input('lastname')) == false) {
+        if (! $contact->setName($request->input('firstname'), null, $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -336,22 +337,15 @@ class ContactsController extends Controller
         // this because I'll add more objects related to contacts in the future
         // and I don't want to have to think of deleting a row that matches a
         // contact.
+        //
         $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
         foreach ($tables as $table) {
             $tableName = $table->table_name;
-            $tableData = DB::table($tableName)->get();
 
-            $contactIdRowExists = false;
-            foreach ($tableData as $data) {
-                foreach ($data as $columnName => $value) {
-                    if ($columnName == 'contact_id') {
-                        $contactIdRowExists = true;
-                    }
-                }
-            }
-
-            if ($contactIdRowExists == true) {
+            try {
                 DB::table($tableName)->where('contact_id', $contact->id)->delete();
+            } catch (QueryException $e) {
+                continue;
             }
         }
 
@@ -463,7 +457,7 @@ class ContactsController extends Controller
                 ]);
             })->get();
         } else {
-            $results = Contact::search($needle, $accountId);
+            $results = Contact::search($needle, $accountId, 20, 'created_at');
         }
 
         if (count($results) !== 0) {
