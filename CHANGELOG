@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Redirect to registration page if there is no account
 * Support mysql unix socket
 
 RELEASED VERSIONS:
