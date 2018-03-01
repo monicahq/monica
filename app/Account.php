@@ -5,6 +5,7 @@ namespace App;
 use DB;
 use Carbon\Carbon;
 use Laravel\Cashier\Billable;
+use App\Jobs\SendNotificationEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -563,5 +564,24 @@ class Account extends Model
                     ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    public function dispatchNotification(Notification $notification)
+    {
+        $numberOfUsersInAccount = $this->users->count();
+        $counter = 1;
+
+        foreach ($this->users as $user) {
+            if ($user->shouldBeReminded($notification->trigger_date)) {
+                if (! $this->hasLimitations()) {
+                    dispatch(new SendNotificationEmail($notification, $user));
+                }
+
+                if ($counter == $numberOfUsersInAccount) {
+                    $notification->scheduleForDeletion($numberOfUsersInAccount);
+                }
+            }
+            $counter++;
+        }
     }
 }

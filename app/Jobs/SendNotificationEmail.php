@@ -37,5 +37,6 @@ class SendNotificationEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
+        $this->notification->checkIfCanBeDeletedAndProceedToDeletion();
     }
 }

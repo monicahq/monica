@@ -56,4 +56,23 @@ class Notification extends Model
     {
         return $this->belongsTo(Reminder::class);
     }
+
+    public function scheduleForDeletion($number)
+    {
+        $this->delete_after_number_of_emails_sent = $number;
+        $this->save();
+    }
+
+    public function checkIfCanBeDeletedAndProceedToDeletion()
+    {
+        // first, increment the counter of number of emails sent
+        $this->number_of_emails_sent = $this->number_of_emails_sent + 1;
+        $this->save();
+
+        // then, if we've reached the number of emails required to delete
+        // the notification, proceed to deletion
+        if ($this->number_of_emails_sent == $this->number_of_emails_sent) {
+            $this->delete();
+        }
+    }
 }
