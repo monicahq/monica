@@ -60,6 +60,16 @@ class Account extends Model
     }
 
     /**
+     * Get if any account exists on the database.
+     * 
+     * @return bool
+     */
+    public static function hasAny()
+    {
+        return DB::table('accounts')->count() > 0;
+    }
+
+    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany

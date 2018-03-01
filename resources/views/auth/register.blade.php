@@ -8,8 +8,12 @@
 
           <div class="signup-box">
             <img class="logo" src="/img/small-logo.png" alt="">
-            <h2>Create your Monica account</h2>
-            <h3><a href="/login">Log in</a> if you already have an account.</h3>
+            @if($first)
+              <h2>Create the first Monica account</h2>
+            @else
+              <h2>Create your Monica account</h2>
+              <h3><a href="/login">Log in</a> if you already have an account.</h3>
+            @endif
 
             @include ('partials.errors')
 
