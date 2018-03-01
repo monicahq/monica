@@ -83,7 +83,7 @@ exit
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
-1. Run `composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev --ignore-platform-reqs` to install all packages.
+1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
 1. Run `npm install` to install all the front-end dependencies and tools needed to compile assets.
 1. Run `npm run production` to compile js and css assets.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.

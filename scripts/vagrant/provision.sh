@@ -72,7 +72,7 @@ FLUSH PRIVILEGES;"
 echo "Installing Monica"
 git clone https://github.com/monicahq/monica.git $DESTDIR
 cd $DESTDIR
-composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev --no-progress
+composer install --no-interaction --no-suggest --no-dev --no-progress
 
 echo "Configuring Monica"
 cp .env.example .env

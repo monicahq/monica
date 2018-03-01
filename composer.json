@@ -28,6 +28,7 @@
         "laravel/socialite": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.21",
+        "nesbot/carbon": "1.22.*",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/google2fa": "^2.0",
         "pragmarx/google2fa-laravel": "dev-create-authenticator-controller",
@@ -47,6 +48,9 @@
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"
+    },
+    "suggest": {
+        "ext-apcu": "*"
     },
     "autoload": {
         "classmap": [
@@ -82,6 +86,7 @@
         ]
     },
     "config": {
+        "apcu-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
