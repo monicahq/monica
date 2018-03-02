@@ -56,4 +56,39 @@ class Notification extends Model
     {
         return $this->belongsTo(Reminder::class);
     }
+
+    /**
+     * Indicates the number of emails should be sent before a notification
+     * has to be deleted. This is required as a notification can be sent to
+     * multiple users in the same account. The number of of emails will match
+     * the number of users in the account.
+     *
+     * @param  int $number
+     * @return void
+     */
+    public function setNumberOfEmailsNeededForDeletion($number)
+    {
+        $this->delete_after_number_of_emails_sent = $number;
+        $this->save();
+    }
+
+    /**
+     * Check if a notification can be deleted. A notification can be sent to
+     * multiple users in the same account, so we need to check that all emails
+     * have been sent before deleting the notification.
+     *
+     * @return void
+     */
+    public function incrementNumberOfEmailsSentAndCheckDeletioNStatus()
+    {
+        // first, increment the counter of number of emails sent
+        $this->number_of_emails_sent = $this->number_of_emails_sent + 1;
+        $this->save();
+
+        // then, if we've reached the number of emails required to delete
+        // the notification, proceed to deletion
+        if ($this->delete_after_number_of_emails_sent == $this->number_of_emails_sent) {
+            $this->delete();
+        }
+    }
 }

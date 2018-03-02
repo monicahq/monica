@@ -4,9 +4,9 @@ namespace Tests\Unit\Jobs;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Jobs\SendNotificationEmail;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;
+use App\Jobs\Notification\ScheduleNotification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendNotificationsTest extends TestCase
@@ -39,7 +39,7 @@ class SendNotificationsTest extends TestCase
 
         $exitCode = Artisan::call('send:notifications', []);
 
-        Bus::assertDispatched(SendNotificationEmail::class);
+        Bus::assertDispatched(ScheduleNotification::class);
     }
 
     public function test_it_deletes_the_notification_if_contact_does_not_exist()

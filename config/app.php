@@ -164,6 +164,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         MartinLindhe\VueInternationalizationGenerator\GeneratorProvider::class,
+        Creativeorange\Gravatar\GravatarServiceProvider::class,
     ],
 
     /*
@@ -215,6 +216,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'MoneyHelper' => App\Helpers\MoneyHelper::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
+        'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
     ],
 
 ];
