@@ -365,6 +365,22 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_set_emailcontact()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test@test.com',
+        ]);
+
+        $email = $contact->getFirstEmail();
+        $this->assertEquals($email, 'test@test.com');
+    }
+
     public function test_get_avatar_returns_gravatar()
     {
         $contact = new Contact;
@@ -374,6 +390,81 @@ class ContactTest extends FeatureTestCase
             'https://gravatar.com/url',
             $contact->getAvatarURL()
         );
+    }
+
+    public function test_gravatar_set_noemail()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
+    public function test_gravatar_set_emailnotexists()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'verybademailthatwillneverexistbecauseitstoolong204827494@x.com',
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
+    public function test_gravatar_set_emailreal()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'alexis@saettler.org',
+        ]);
+
+        $contact->updateGravatar();
+
+        $url = $contact->getAvatarURL();
+        $this->assertNotNull($url);
+        $this->assertContains('s=250&d=mm&r=g', $url);
+        $this->assertContains('http://www.gravatar.com', $url);
+    }
+
+    public function test_gravatar_set_emailreal_secure()
+    {
+        config(['app.env' => 'production']);
+
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'alexis@saettler.org',
+        ]);
+
+        $contact->updateGravatar();
+
+        $url = $contact->getAvatarURL();
+        $this->assertNotNull($url);
+        $this->assertContains('s=250&d=mm&r=g', $url);
+        $this->assertContains('https://secure.gravatar.com', $url);
     }
 
     public function test_get_avatar_returns_external_url()

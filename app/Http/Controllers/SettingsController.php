@@ -149,6 +149,8 @@ class SettingsController extends Controller
             DB::table($tableName)->where('account_id', $account->id)->delete();
         }
 
+        $account->populateDefaultFields($account);
+
         return redirect('/settings')
                     ->with('status', trans('settings.reset_success'));
     }
