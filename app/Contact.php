@@ -911,16 +911,8 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        $contact_email = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->first();
-        if (is_null($contact_email)) {
-            return false;
-        }
+        $email = $this->getFirstEmail();
 
-        $email = $contact_email->data;
         if (is_null($email) || empty($email)) {
             return false;
         }
@@ -929,7 +921,25 @@ class Contact extends Model
             return false;
         }
 
-        return app('gravatar')->get($email, ['size' => $size]);
+        return app('gravatar')->get($email, [
+            'size' => $size,
+            'secure' => config('app.env') === 'production',
+        ]);
+    }
+
+    public function getFirstEmail()
+    {
+        $contact_email = $this->contactFields()
+            ->whereHas('contactFieldType', function ($query) {
+                $query->where('type', '=', 'email');
+            })
+            ->first();
+
+        if (is_null($contact_email)) {
+            return null;
+        }
+
+        return $contact_email->data;
     }
 
     /**
