@@ -933,7 +933,7 @@ class Contact extends Model
             ->first();
 
         if (is_null($contact_email)) {
-            return null;
+            return;
         }
 
         return $contact_email->data;

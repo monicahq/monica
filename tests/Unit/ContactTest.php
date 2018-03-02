@@ -374,7 +374,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'test@test.com'
+            'data' => 'test@test.com',
         ]);
 
         $email = $contact->getFirstEmail();
@@ -417,7 +417,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'verybademailthatwillneverexistbecauseitstoolong204827494@x.com'
+            'data' => 'verybademailthatwillneverexistbecauseitstoolong204827494@x.com',
         ]);
 
         $contact->updateGravatar();
@@ -434,7 +434,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'alexis@saettler.org'
+            'data' => 'alexis@saettler.org',
         ]);
 
         $contact->updateGravatar();
@@ -456,7 +456,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'alexis@saettler.org'
+            'data' => 'alexis@saettler.org',
         ]);
 
         $contact->updateGravatar();
