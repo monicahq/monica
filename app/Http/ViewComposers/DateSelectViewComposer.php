@@ -2,7 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
-use Carbon\Carbon;
+use Jenssegers\Date\Date;
 use Illuminate\View\View;
 
 class DateSelectViewComposer
@@ -20,20 +20,20 @@ class DateSelectViewComposer
     public function compose(View $view)
     {
         // Months
-        Carbon::setLocale(auth()->user()->locale);
+        Date::setLocale(auth()->user()->locale);
         $months = [];
-        $currentDate = Carbon::now();
+        $currentDate = Date::now();
         $currentDate->day = 1;
 
         for ($month = 1; $month < 13; $month++) {
             $currentDate->month = $month;
-            array_push($months, $currentDate->formatLocalized('%B'));
+            array_push($months, mb_convert_case($currentDate->format('F'), MB_CASE_TITLE, 'UTF-8'));
         }
 
         // Years
         $years = [];
-        $maxYear = Carbon::now(auth()->user()->timezone)->year;
-        $minYear = Carbon::now(auth()->user()->timezone)->subYears(120)->format('Y');
+        $maxYear = Date::now(auth()->user()->timezone)->year;
+        $minYear = Date::now(auth()->user()->timezone)->subYears(120)->format('Y');
 
         for ($year = $maxYear; $year >= $minYear; $year--) {
             array_push($years, $year);
