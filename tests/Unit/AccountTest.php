@@ -6,10 +6,10 @@ use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AccountTest extends TestCase
+class AccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -26,6 +26,19 @@ class AccountTest extends TestCase
         ]);
 
         $this->assertTrue($account->genders()->exists());
+    }
+
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->notifications()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
@@ -340,6 +353,54 @@ class AccountTest extends TestCase
         $this->assertEquals(
             3,
             $gender2->contacts->count()
+        );
+    }
+
+    public function test_it_gets_default_time_reminder_is_sent_attribute()
+    {
+        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
+
+    public function test_it_sets_default_time_reminder_is_sent_attribute()
+    {
+        $account = new Account;
+        $account->default_time_reminder_is_sent = '14:00';
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
+
+    public function test_it_populates_the_account_with_two_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertEquals(
+            2,
+            $account->reminderRules->count()
+        );
+    }
+
+    public function test_it_populates_the_account_with_the_right_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 7]
+        );
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 30]
         );
     }
 }

@@ -130,9 +130,9 @@ export default {
             "locale": "Lingua",
             "locale_en": "Inglese",
             "locale_fr": "Francese",
-            "locale_pt-br": "Portoghese",
+            "locale_pt": "Portoghese",
             "locale_ru": "Russo",
-            "locale_cz": "Ceco",
+            "locale_cs": "Ceco",
             "locale_it": "Italiano",
             "locale_de": "Tedesco",
             "security_title": "Security",
@@ -279,7 +279,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Augura buon compleanno a",
@@ -693,7 +698,7 @@ export default {
             "pets_other": "Other"
         }
     },
-    "cz": {
+    "cs": {
         "passwords": {
             "password": "Hesla musí obsahovat alespoň šest znaků a oba zápisy se musí shodovat.",
             "reset": "Heslo bylo resetováno!",
@@ -978,7 +983,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Popřát k narozeninám",
@@ -1676,7 +1686,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Поздравить с днём рождения",
@@ -2104,7 +2119,7 @@ export default {
             "pets_other": "Other"
         }
     },
-    "pt-br": {
+    "pt": {
         "passwords": {
             "password": "A senha deve possuir no mínimo 6 caracteres e ser igual a confirmação.",
             "reset": "Sua senha foi redefinida!",
@@ -2238,8 +2253,8 @@ export default {
             "locale": "Idioma usado no aplicativo",
             "locale_en": "Inglês",
             "locale_fr": "Francês",
-            "locale_pt-br": "Português",
-            "locale_cz": "Checo",
+            "locale_pt": "Português",
+            "locale_cs": "Checo",
             "locale_it": "Italiano",
             "locale_de": "Alemão",
             "security_title": "Security",
@@ -2386,7 +2401,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Desejar feliz aniversário para",
@@ -2976,9 +2996,9 @@ export default {
             "locale": "Sprache der Anwendung",
             "locale_en": "Englisch",
             "locale_fr": "Französisch",
-            "locale_pt-br": "Portugiesisch",
+            "locale_pt": "Portugiesisch",
             "locale_ru": "Russisch",
-            "locale_cz": "Tschechisch",
+            "locale_cs": "Tschechisch",
             "locale_it": "Italienisch",
             "locale_de": "Deutsch",
             "security_title": "Sicherheit",
@@ -3125,7 +3145,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Gratuliere",
@@ -3709,9 +3734,9 @@ export default {
             "locale": "Langue",
             "locale_en": "Anglais",
             "locale_fr": "Francais",
-            "locale_pt-br": "Portugais",
+            "locale_pt": "Portugais",
             "locale_ru": "Russe",
-            "locale_cz": "Tchèque",
+            "locale_cs": "Tchèque",
             "locale_it": "Italien",
             "locale_de": "Allemand",
             "security_title": "Security",
@@ -3858,7 +3883,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Souhait d'anniversaire pour",
@@ -4452,9 +4482,9 @@ export default {
             "locale": "Language used in the app",
             "locale_en": "English",
             "locale_fr": "French",
-            "locale_pt-br": "Portuguese",
+            "locale_pt": "Portuguese",
             "locale_ru": "Russian",
-            "locale_cz": "Czech",
+            "locale_cs": "Czech",
             "locale_it": "Italian",
             "locale_de": "German",
             "security_title": "Security",
@@ -4602,7 +4632,12 @@ export default {
             "personalization_genders_modal_delete": "Delete gender type",
             "personalization_genders_modal_delete_desc": "Are you sure you want to delete {name}?",
             "personalization_genders_modal_delete_question": "You currently have {numberOfContacts} contacts who have this gender. If you delete this gender, what gender should those contacts have?",
-            "personalization_genders_modal_error": "Please choose a valid gender from the list."
+            "personalization_genders_modal_error": "Please choose a valid gender from the list.",
+            "personalization_reminder_rule_save": "The change has been saved",
+            "personalization_reminder_rule_title": "Reminder rules",
+            "personalization_reminder_rule_line": "{count} days before",
+            "personalization_reminder_rule_desc": "For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.",
+            "reminder_time_to_send": "Time of the day reminders should be sent"
         },
         "reminder": {
             "type_birthday": "Wish happy birthday to",
@@ -4617,7 +4652,9 @@ export default {
             "greetings": "Hi {username}",
             "want_reminded_of": "YOU WANTED TO BE REMINDED OF",
             "for": "FOR:",
-            "footer_contact_info": "Add, view, complete, and change information about this contact:"
+            "footer_contact_info": "Add, view, complete, and change information about this contact:",
+            "notification_subject_line": "You have an upcoming event",
+            "notification_description": "In {count} days (on {date}), the following event will happen:"
         },
         "pagination": {
             "previous": "&laquo; Previous",
@@ -4787,9 +4824,10 @@ export default {
             "information_edit_firstname": "First name",
             "information_edit_lastname": "Last name (Optional)",
             "information_edit_linkedin": "LinkedIn profile (optional)",
-            "information_edit_probably": "This person is probably",
-            "information_edit_probably_yo": "years old",
-            "information_edit_exact": "I know the exact birthdate of this person, which is",
+            "information_edit_unknown": "I do not know this person's age",
+            "information_edit_probably": "This person is probably...",
+            "information_edit_not_year": "I know the day and month of the birthdate of this person, but not the year…",
+            "information_edit_exact": "I know the exact birthdate of this person...",
             "information_edit_help": "If you indicate an exact birthdate for this person, we will create a new reminder for you - so you'll be notified every year when it's time to celebrate this person's birthdate.",
             "information_no_linkedin_defined": "No LinkedIn defined",
             "information_no_work_defined": "No work information defined",

@@ -7,7 +7,6 @@ use Auth;
 use App\Tag;
 use App\User;
 use App\ImportJob;
-use Carbon\Carbon;
 use App\Invitation;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
@@ -55,7 +54,8 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return view('settings.index');
+        return view('settings.index')
+                ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }
 
     /**
@@ -79,6 +79,9 @@ class SettingsController extends Controller
                 'fluid_container' => $request->get('layout'),
             ]
         );
+
+        $request->user()->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $request->user()->account->save();
 
         return redirect('settings')
             ->with('status', trans('settings.settings_success', [], $request['locale']));
@@ -359,15 +362,11 @@ class SettingsController extends Controller
             return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
         }
 
-        $user = new User;
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
-        $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
-        $user->timezone = config('app.timezone');
-        $user->created_at = Carbon::now();
-        $user->account_id = $invitation->account_id;
-        $user->save();
+        $user = User::createDefault($invitation->account_id,
+                    $request->input('first_name'),
+                    $request->input('last_name'),
+                    $request->input('email'),
+                    $request->input('password'));
 
         $invitation->delete();
 

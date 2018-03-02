@@ -22,6 +22,7 @@ class VCardHelperTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
@@ -80,6 +81,7 @@ class VCardHelperTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $vCard = VCardHelper::addContactFieldEntriesInVCard($contact, $vCard, 'email');
@@ -180,6 +182,7 @@ class VCardHelperTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $vCard = VCardHelper::prepareVCard($contact);

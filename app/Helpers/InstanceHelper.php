@@ -13,9 +13,7 @@ class InstanceHelper
      */
     public static function getNumberOfPaidSubscribers()
     {
-        $paidAccounts = Account::where('stripe_id', '!=', null)->count();
-
-        return $paidAccounts;
+        return Account::where('stripe_id', '!=', null)->count();
     }
 
     /**
@@ -30,14 +28,12 @@ class InstanceHelper
             return;
         }
 
-        $planInformation = [
+        return [
             'type' => $timePeriod,
             'name' => config('monica.paid_plan_'.$timePeriod.'_friendly_name'),
             'id' => config('monica.paid_plan_'.$timePeriod.'_id'),
             'price' => config('monica.paid_plan_'.$timePeriod.'_price'),
             'friendlyPrice' => config('monica.paid_plan_'.$timePeriod.'_price') / 100,
         ];
-
-        return $planInformation;
     }
 }

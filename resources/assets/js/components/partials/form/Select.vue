@@ -1,5 +1,6 @@
 <style scoped>
 select {
+  height: 34px;
   transition: all;
   transition-duration: 0.2s;
   border: 1px solid #c4cdd5;

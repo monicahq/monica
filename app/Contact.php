@@ -49,6 +49,10 @@ class Contact extends Model
         'gravatar_url',
         'avatar_external_url',
         'default_avatar_color',
+        'gender_id',
+        'account_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -326,6 +330,16 @@ class Contact extends Model
     public function firstMetDate()
     {
         return $this->hasOne('App\SpecialDate', 'id', 'first_met_special_date_id');
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
     }
 
     /**
@@ -707,14 +721,14 @@ class Contact extends Model
     }
 
     /**
-     * Update the name of the contact.
+     * Set the name of the contact.
      *
      * @param  string $firstName
      * @param  string $middleName
      * @param  string $lastName
      * @return bool
      */
-    public function updateName($firstName, $middleName, $lastName)
+    public function setName(String $firstName, String $middleName = null, String $lastName)
     {
         if ($firstName == '') {
             return false;
@@ -733,6 +747,31 @@ class Contact extends Model
         $this->save();
 
         return true;
+    }
+
+    /**
+     * Returns the state of the birthday.
+     * As it's a Special Date, the date can have several states. We need this
+     * info when we populate the Edit contact sheet.
+     *
+     * @return string
+     */
+    public function getBirthdayState()
+    {
+        if (! $this->birthday_special_date_id) {
+            return 'unknown';
+        }
+
+        if ($this->birthdate->is_age_based) {
+            return 'approximate';
+        }
+
+        // we know at least the day and month
+        if ($this->birthdate->is_year_unknown) {
+            return 'almost';
+        }
+
+        return 'exact';
     }
 
     /**
@@ -956,7 +995,7 @@ class Contact extends Model
                                     ->where('is_the_parent_of', $this->id)
                                     ->count();
 
-            if ($relationship != 0 or $offspring != 0 or $progenitor != 0) {
+            if ($relationship != 0 || $offspring != 0 || $progenitor != 0) {
                 $partners->forget($counter);
             }
             $counter++;
@@ -1018,7 +1057,7 @@ class Contact extends Model
      */
     public function setRelationshipWith(self $partner, $bilateral = false)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1028,7 +1067,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $relationship = Relationship::create(
+            Relationship::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $partner->id,
@@ -1047,7 +1086,7 @@ class Contact extends Model
      */
     public function updateRelationshipWith(self $partner)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $partner->id,
@@ -1066,7 +1105,7 @@ class Contact extends Model
      */
     public function isTheOffspringOf(self $parent, $bilateral = false)
     {
-        $offspring = Offspring::create(
+        Offspring::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1075,7 +1114,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $progenitor = Progenitor::create(
+            Progenitor::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $parent->id,
@@ -1138,15 +1177,15 @@ class Contact extends Model
      */
     public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
     {
-        $events = Event::where('contact_id', $this->id)
-                        ->where('object_id', $contact->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $this->id)
+                ->where('object_id', $contact->id)
+                ->where('object_type', $type)
+                ->delete();
 
-        $events = Event::where('contact_id', $contact->id)
-                        ->where('object_id', $this->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $contact->id)
+                ->where('object_id', $this->id)
+                ->where('object_type', $type)
+                ->delete();
     }
 
     /**
@@ -1185,9 +1224,7 @@ class Contact extends Model
         $offspring = Offspring::where('contact_id', $this->id)
                         ->first();
 
-        $progenitor = self::findOrFail($offspring->is_the_child_of);
-
-        return $progenitor;
+        return self::findOrFail($offspring->is_the_child_of);
     }
 
     /**
@@ -1199,9 +1236,7 @@ class Contact extends Model
         $relationship = Relationship::where('with_contact_id', $this->id)
                         ->first();
 
-        $relationship = self::findOrFail($relationship->contact_id);
-
-        return $relationship;
+        return self::findOrFail($relationship->contact_id);
     }
 
     /**
@@ -1210,14 +1245,7 @@ class Contact extends Model
      */
     public function isOwedMoney()
     {
-        return $this
-            ->debts()
-            ->where('status', '=', 'inprogress')
-            ->getResults()
-            ->sum(function ($d) {
-                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
-            })
-            > 0;
+        return $this->totalOutstandingDebtAmount() > 0;
     }
 
     /**
@@ -1262,7 +1290,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) or ! is_null($this->firstMetDate) or ! is_null($this->first_met_through_contact_id);
+        return ! is_null($this->first_met_additional_info) || ! is_null($this->firstMetDate) || ! is_null($this->first_met_through_contact_id);
     }
 
     /**
@@ -1414,5 +1442,43 @@ class Contact extends Model
         if ($relatedContact) {
             return self::find($relatedContact->is_the_child_of);
         }
+    }
+
+    /**
+     * Sets a tag to the contact.
+     *
+     * @param string $tag
+     * @return Tag
+     */
+    public function setTag(string $name)
+    {
+        $tag = $this->account->tags()->firstOrCreate([
+            'name' => $name,
+        ]);
+
+        $tag->name_slug = str_slug($tag->name);
+        $tag->save();
+
+        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account->id]]);
+
+        return $tag;
+    }
+
+    /**
+     * Unset all the tags associated with the contact.
+     * @return bool
+     */
+    public function unsetTags()
+    {
+        $this->tags()->detach();
+    }
+
+    /**
+     * Unset one tag associated with the contact.
+     * @return bool
+     */
+    public function unsetTag(Tag $tag)
+    {
+        $this->tags()->detach($tag->id);
     }
 }

@@ -56,6 +56,7 @@ $db = [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
@@ -69,6 +70,7 @@ $db = [
         'testing' => [
             'driver' => 'mysql',
             'host' => env('DB_TEST_HOST'),
+            'unix_socket' => env('DB_TEST_UNIX_SOCKET', ''),
             'database' => env('DB_TEST_DATABASE'),
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
@@ -161,6 +163,7 @@ if (env('HEROKU')) {
         'password' => $url['pass'],
         'charset' => 'utf8',
         'prefix' => '',
+        'strict' => false,
         'schema' => 'public',
     ];
 }

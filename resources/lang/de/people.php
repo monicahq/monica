@@ -41,6 +41,7 @@ return [
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href="/settings/import">importieren</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
@@ -90,8 +91,9 @@ return [
     'information_edit_firstname' => 'Vorname',
     'information_edit_lastname' => 'Nachname (Optional)',
     'information_edit_linkedin' => 'LinkedIn-Profile (optional)',
+    'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
-    'information_edit_probably_yo' => 'Jahre alt',
+    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Ich kenne den Geburstag der Person',
     'information_edit_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst dieser Person zu gratulieren.',
     'information_no_linkedin_defined' => 'LinkedIn nicht angegeben',
@@ -117,8 +119,6 @@ return [
     'reminders_blank_add_activity' => 'Erinnerung hinzufügen',
     'reminders_add_title' => 'Woran würdest du gerne über :name erinnert werden?',
     'reminders_add_description' => 'Erinnere mich daran...',
-    'reminders_add_predefined' => 'Voreingestellte Erinnerung',
-    'reminders_add_custom' => 'Benutzerdefinierte Erinnerung',
     'reminders_add_next_time' => 'Wann möchtest du das nächste mal daran erinnert werden?',
     'reminders_add_once' => 'Erinnere mich daran nur einmal',
     'reminders_add_recurrent' => 'Erinnere mich daran jeden',
@@ -130,6 +130,7 @@ return [
     'reminders_delete_success' => 'Die Erinnerung wurde erfolgreich gelöscht',
     'reminders_update_success' => 'Die Erinnerung wurde erfolgreich geändert',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'jede Woche|alle :number Wochen',
     'reminder_frequency_month' => 'jeden Monat|alle :number Monate',
     'reminder_frequency_year' => 'jedes jahr|alle :number Jahre',
@@ -143,6 +144,7 @@ return [
     'reminders_type_week' => 'Woche',
     'reminders_type_month' => 'Monat',
     'reminders_type_year' => 'Jahr',
+    'reminders_birthday' => 'Birthday of :name',
     'reminders_free_plan_warning' => 'Du befindest dich im freiem Angebot. Hier werden keine Emails versendet. Um die Erinnerungs Emails zu erhalten upgrade deinen Account.',
 
     // significant other
@@ -244,7 +246,6 @@ return [
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
     'activities_who_was_involved' => 'Wer war beteiligt?',
     'activities_activity' => 'Kategorie',
-
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',
     'notes_update_success' => 'Die Notiz wurde erfolgreich aktualisiert',

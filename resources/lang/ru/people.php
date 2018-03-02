@@ -8,8 +8,8 @@ return [
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
-    'people_list_stats' => ':count contacts',
     'people_list_sort' => 'Сортировка',
+    'people_list_stats' => ':count contacts',
     'people_list_firstnameAZ' => 'Сортировать по имени А → Я',
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
@@ -41,6 +41,7 @@ return [
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
     'people_add_birthday_reminder' => 'Поздравить :name с днём рождения',
     'people_add_import' => 'Вы хотите <a href="/settings/import">импортировать ваши контакты</a>?',
+    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -90,8 +91,9 @@ return [
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_linkedin' => 'LinkedIn (не обяз.)',
+    'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Этому человеку примерно',
-    'information_edit_probably_yo' => 'лет',
+    'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
     'information_edit_help' => 'Если вы укажите точную дату рождения для этого человека, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения',
     'information_no_linkedin_defined' => 'LinkedIn не указан',
@@ -128,6 +130,7 @@ return [
     'reminders_delete_success' => 'Напоминание было удалено',
     'reminders_update_success' => 'The reminder has been updated successfully',
 
+    'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
     'reminder_frequency_month' => 'каждый :number месяц|каждые :number месяца|каждые :number месяцев',
     'reminder_frequency_year' => 'каждый :number год|каждые :number года|каждые :number лет',
@@ -243,7 +246,6 @@ return [
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',
     'activities_activity' => 'Activity Category',
-
     // notes
     'notes_create_success' => 'Заметка была добавлена',
     'notes_update_success' => 'The note has been saved successfully',

@@ -17,9 +17,7 @@ class DateHelper
      */
     public static function createDateFromFormat($date, $timezone)
     {
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
-
-        return $date;
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
     }
 
     /**
@@ -38,7 +36,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y';
                 break;
@@ -98,7 +96,7 @@ class DateHelper
             case 'en':
                 $format = 'M d';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M';
                 break;
@@ -126,7 +124,7 @@ class DateHelper
             case 'en':
                 $format = 'M d, Y H:i';
                 break;
-            case 'pt-br':
+            case 'pt':
             case 'fr':
                 $format = 'd M Y H:i';
                 break;
@@ -208,5 +206,75 @@ class DateHelper
         }
 
         return Carbon::now()->addYear();
+    }
+
+    /**
+     * Gets a list of all the months in a year.
+     *
+     * @return array
+     */
+    public static function getListOfMonths()
+    {
+        Carbon::setLocale(auth()->user()->locale);
+        $months = collect([]);
+        $currentDate = Carbon::now();
+        $currentDate->day = 1;
+
+        for ($month = 1; $month < 13; $month++) {
+            $currentDate->month = $month;
+            $months->push([
+                'id' => $month,
+                'name' => $currentDate->formatLocalized('%B'),
+            ]);
+        }
+
+        return $months;
+    }
+
+    /**
+     * Gets a list of all the days in a month.
+     *
+     * @return array
+     */
+    public static function getListOfDays()
+    {
+        $days = collect([]);
+        for ($day = 1; $day < 32; $day++) {
+            $days->push(['id' => $day, 'name' => $day]);
+        }
+
+        return $days;
+    }
+
+    /**
+     * Gets a list of all the hours in a day.
+     *
+     * @return array
+     */
+    public static function getListOfHours()
+    {
+        $hours = collect([]);
+        for ($hour = 1; $hour <= 24; $hour++) {
+            $hours->push([
+                'id' => date('H:i', strtotime("$hour:00")),
+                'name' => date('h.iA', strtotime("$hour:00")),
+            ]);
+        }
+
+        return $hours;
+    }
+
+    /**
+     * Removes a given number of days of a date given in parameter.
+     *
+     * @param  Carbon  $date
+     * @param  int    $numberOfDaysBefore
+     * @return Carbon
+     */
+    public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
+    {
+        $olderDate = $date->subDays($numberOfDaysBefore);
+
+        return $olderDate;
     }
 }

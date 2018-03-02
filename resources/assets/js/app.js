@@ -26,6 +26,14 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 Vue.use(Tooltip);
 
+// Toggle Buttons
+import ToggleButton from 'vue-js-toggle-button';
+Vue.use(ToggleButton);
+
+// Calendar
+import Datepicker from 'vuejs-datepicker';
+Vue.use(Datepicker);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -56,6 +64,14 @@ Vue.component(
 Vue.component(
     'form-select',
     require('./components/partials/form/Select.vue')
+);
+Vue.component(
+    'form-specialdate',
+    require('./components/partials/form/SpecialDate.vue')
+);
+Vue.component(
+    'form-date',
+    require('./components/partials/form/Date.vue')
 );
 
 // Dashboard
@@ -132,6 +148,10 @@ Vue.component(
     require('./components/settings/Genders.vue')
 );
 
+Vue.component(
+    'reminder-rules',
+    require('./components/settings/ReminderRules.vue')
+);
 
 // i18n
 import VueInternalization from 'vue-i18n';

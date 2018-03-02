@@ -41,7 +41,7 @@ class PersonalizationController extends Controller
             'protocol' => 'max:255|nullable',
         ])->validate();
 
-        $contactFieldType = auth()->user()->account->contactFieldTypes()->create(
+        return auth()->user()->account->contactFieldTypes()->create(
             $request->only([
                 'name',
                 'protocol',
@@ -51,8 +51,6 @@ class PersonalizationController extends Controller
                 'account_id' => auth()->user()->account->id,
             ]
         );
-
-        return $contactFieldType;
     }
 
     /**
@@ -112,7 +110,7 @@ class PersonalizationController extends Controller
             ]);
         }
 
-        if ($contactFieldType->delible == false) {
+        if (! $contactFieldType->delible) {
             return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
