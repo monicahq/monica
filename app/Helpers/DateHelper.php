@@ -17,9 +17,7 @@ class DateHelper
      */
     public static function createDateFromFormat($date, $timezone)
     {
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
-
-        return $date;
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
     }
 
     /**

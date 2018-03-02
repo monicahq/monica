@@ -109,11 +109,9 @@ class ExportAccountAsSQL
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
-                    if ($columnName == 'account_id') {
-                        if ($value !== $account->id) {
-                            $skipLine = true;
-                            break;
-                        }
+                    if ($columnName == 'account_id' && $value !== $account->id) {
+                        $skipLine = true;
+                        break;
                     }
 
                     if (is_null($value)) {
@@ -125,7 +123,7 @@ class ExportAccountAsSQL
                     array_push($tableValues, $value);
                 }
 
-                if ($skipLine == false) {
+                if (! $skipLine) {
                     $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
                 }
