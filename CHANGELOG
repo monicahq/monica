@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix notifications not working with aysnchronous queue
 * Support mysql unix socket
 
 RELEASED VERSIONS:
