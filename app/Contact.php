@@ -2,20 +2,20 @@
 
 namespace App;
 
-use App\Http\Resources\Address\AddressShort as AddressShortResource;
-use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
-use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
-use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
-use App\Http\Resources\Tag\Tag as TagResource;
 use App\Traits\Searchable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\AddressShort as AddressShortResource;
+use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
+use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
+use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 
 class Contact extends Model
 {
