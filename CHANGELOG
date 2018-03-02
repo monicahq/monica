@@ -1,5 +1,8 @@
 UNRELEASED CHANGES:
 
+* Remove partial contacts from search results returned by the API
+* Fix reset account deleting default account values
+* Fix notifications not working with aysnchronous queue
 * Support mysql unix socket
 
 RELEASED VERSIONS:

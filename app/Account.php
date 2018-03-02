@@ -49,14 +49,23 @@ class Account extends Model
         $account->created_at = Carbon::now();
         $account->save();
 
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-        $account->populateDefaultReminderRulesTable();
+        $account->populateDefaultFields($account);
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password);
 
         return $account;
+    }
+
+    /**
+     * Populates all the default column that should be there when a new account
+     * is created or reset.
+     */
+    public static function populateDefaultFields($account)
+    {
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
     }
 
     /**
