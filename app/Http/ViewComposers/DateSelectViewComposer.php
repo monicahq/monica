@@ -22,10 +22,6 @@ class DateSelectViewComposer
     {
         // Months
         $months = DateHelper::getListOfMonths();
-//        foreach (DateHelper::getListOfMonths() as $month)
-//        {
-//            array_push($months, $month['name']);
-//        }
 
         // Years
         $years = [];
