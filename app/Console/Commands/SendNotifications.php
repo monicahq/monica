@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use App\Notification;
 use Illuminate\Console\Command;
+use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command
 {
@@ -49,7 +50,8 @@ class SendNotifications extends Command
             }
 
             $account = $notification->contact->account;
-            $account->dispatchNotification($notification);
+
+            ScheduleNotification::dispatch($notification);
         }
     }
 }

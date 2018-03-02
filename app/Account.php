@@ -565,23 +565,4 @@ class Account extends Model
 
         return true;
     }
-
-    public function dispatchNotification(Notification $notification)
-    {
-        $numberOfUsersInAccount = $this->users->count();
-        $counter = 1;
-
-        foreach ($this->users as $user) {
-            if ($user->shouldBeReminded($notification->trigger_date)) {
-                if (! $this->hasLimitations()) {
-                    dispatch(new SendNotificationEmail($notification, $user));
-                }
-
-                if ($counter == $numberOfUsersInAccount) {
-                    $notification->scheduleForDeletion($numberOfUsersInAccount);
-                }
-            }
-            $counter++;
-        }
-    }
 }

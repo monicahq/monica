@@ -5,15 +5,15 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Mail\NotificationEmail;
-use App\Jobs\SendNotificationEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\Notification\SendNotificationEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendNotificationEmailTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sends_a_reminder_email()
+    public function test_it_sends_a_reminder_email_and_delete_the_notification()
     {
         Mail::fake();
 
@@ -36,6 +36,7 @@ class SendNotificationEmailTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'reminder_id' => $reminder->id,
+            'delete_after_number_of_emails_sent' => 1,
         ]);
 
         dispatch(new SendNotificationEmail($notification, $user));
@@ -44,8 +45,8 @@ class SendNotificationEmailTest extends TestCase
             return $mail->hasTo('john@doe.com');
         });
 
-        Mail::assertNotSent(NotificationEmail::class, function ($mail) {
-            return $mail->hasTo('jane@doe.com');
-        });
+        $this->assertDatabaseMissing('notifications', [
+            'id' => $notification->id,
+        ]);
     }
 }
