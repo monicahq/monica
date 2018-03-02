@@ -42,7 +42,7 @@ return [
     'footer_new_version' => 'Está disponível uma nova versão',
 
     'footer_modal_version_whats_new' => 'O que há de novo',
-    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
+    'footer_modal_version_release_away' => 'A sua instalação encontra-se 1 versão atrás da versão mais recente disponível. É recomendado atualizar a sua instalação.|A sua instalação encontra-se :number versões atrás da versão mais recente disponível. É recomendado atualizar a sua instalação.',
 
     'breadcrumb_dashboard' => 'Painel',
     'breadcrumb_list_contacts' => 'Lista de contatos',
