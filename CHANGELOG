@@ -1,5 +1,8 @@
 UNRELEASED CHANGES:
 
+* Fix message in contact edit page
+* Fix months list for non english languages  in contact edit page
+* Fix birthdate calendar for non english languages in contact edit page
 * Fix Gravatar support
 * Remove partial contacts from search results returned by the API
 * Fix reset account deleting default account values
