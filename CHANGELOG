@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix Gravatar support
 * Remove partial contacts from search results returned by the API
 * Fix reset account deleting default account values
 * Fix notifications not working with aysnchronous queue

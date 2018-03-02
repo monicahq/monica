@@ -882,6 +882,25 @@ class Contact extends Model
     }
 
     /**
+     * Update the gravatar, using the firt email found.
+     */
+    public function updateGravatar()
+    {
+        // for performance reasons, we check if a gravatar exists for this email
+        // address. if it does, we store the gravatar url in the database.
+        // while this is not ideal because the gravatar can change, at least we
+        // won't make constant call to gravatar to load the avatar on every
+        // page load.
+        $response = $this->getGravatar(250);
+        if ($response != false and is_string($response)) {
+            $this->gravatar_url = $response;
+        } else {
+            $this->gravatar_url = null;
+        }
+        $this->save();
+    }
+
+    /**
      * Get the gravatar, if it exits.
      *
      * @param  int $size
@@ -889,17 +908,35 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        if (empty($this->email)) {
-            return false;
-        }
-        $gravatar_url = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
-        // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
-        $gravatarHeaders = get_headers($gravatar_url.'?d=404');
-        if ($gravatarHeaders[0] == 'HTTP/1.1 404 Not Found') {
+        $email = $this->getFirstEmail();
+
+        if (is_null($email) || empty($email)) {
             return false;
         }
 
-        return $gravatar_url.'?s='.$size;
+        if (! app('gravatar')->exists($email)) {
+            return false;
+        }
+
+        return app('gravatar')->get($email, [
+            'size' => $size,
+            'secure' => config('app.env') === 'production',
+        ]);
+    }
+
+    public function getFirstEmail()
+    {
+        $contact_email = $this->contactFields()
+            ->whereHas('contactFieldType', function ($query) {
+                $query->where('type', '=', 'email');
+            })
+            ->first();
+
+        if (is_null($contact_email)) {
+            return;
+        }
+
+        return $contact_email->data;
     }
 
     /**
