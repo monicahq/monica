@@ -8,7 +8,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Jobs\Notification\SendNotificationEmail;
 
 /**
  * Check if a user can be sent a notification and if that's the case,

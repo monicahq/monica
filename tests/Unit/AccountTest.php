@@ -5,11 +5,8 @@ namespace Tests\Unit;
 use App\User;
 use App\Account;
 use App\Reminder;
-use Carbon\Carbon;
 use App\Invitation;
 use Tests\FeatureTestCase;
-use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase
