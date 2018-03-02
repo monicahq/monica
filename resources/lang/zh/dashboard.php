@@ -2,7 +2,7 @@
 
 return [
     'dashboard_blank_title' => '欢迎登录账号',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_description' => 'Monica是一个记录你所有关心的人及与其交互信息的地方',
     'dashboard_blank_cta' => '添加您的第一个联系人',
 
     'notes_title' => '你还没有任何便签。',
