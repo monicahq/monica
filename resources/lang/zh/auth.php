@@ -22,4 +22,5 @@ return [
     '2fa_wrong_validation' => '双重验证失败。',
     '2fa_one_time_password' => '验证码',
     '2fa_recuperation_code' => '输入双重验证恢复码',
+
 ];
