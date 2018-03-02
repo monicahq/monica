@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add bullet points to lists in call log
 * Fix Gravatar support
 * Remove partial contacts from search results returned by the API
 * Fix reset account deleting default account values
