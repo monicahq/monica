@@ -68,8 +68,8 @@ return [
 
     'gender_male' => '男',
     'gender_female' => '女',
-    'gender_none' => 'Rather not say',
+    'gender_none' => '保密',
 
-    'error_title' => 'Whoops! Something went wrong.',
-    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
+    'error_title' => '糟糕! 出错了。',
+    'error_unauthorized' => '你没有权限编辑此页',
 ];
