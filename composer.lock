@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8be5981316ff7baa9a3b4c716394237c",
+    "content-hash": "0e667d9069e120333d096d00bfe52e84",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1432,6 +1432,51 @@
                 "vCard"
             ],
             "time": "2018-01-04T13:34:32+00:00"
+        },
+        {
+            "name": "lahaxearnaud/laravel-u2f",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
+                "reference": "4bc804bcca368ce92a8ac27137266c4b0efa9c0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/4bc804bcca368ce92a8ac27137266c4b0efa9c0d",
+                "reference": "4bc804bcca368ce92a8ac27137266c4b0efa9c0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "yubico/u2flib-server": "0.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lahaxearnaud\\U2f\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LAHAXE Arnaud",
+                    "email": "lahaxe.arnaud@gmail.com",
+                    "homepage": "http://lahaxe.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "U2F support for laravel 5",
+            "homepage": "https://github.com/lahaxearnaud/laravel-u2f",
+            "keywords": [
+                "otp",
+                "security",
+                "u2f"
+            ],
+            "time": "2017-10-04T13:31:35+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -5056,6 +5101,37 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "yubico/u2flib-server",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Yubico/php-u2flib-server.git",
+                "reference": "71ad5f0b7c796966da356eecd5b583ac852e92a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Yubico/php-u2flib-server/zipball/71ad5f0b7c796966da356eecd5b583ac852e92a1",
+                "reference": "71ad5f0b7c796966da356eecd5b583ac852e92a1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "Library for U2F implementation",
+            "homepage": "https://developers.yubico.com/php-u2flib-server",
+            "time": "2015-03-03T08:05:16+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",

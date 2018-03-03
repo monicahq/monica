@@ -23,6 +23,7 @@
         "intervention/image": "^2.3",
         "jenssegers/date": "^3.2",
         "jeroendesloovere/vcard": "^1.5",
+        "lahaxearnaud/laravel-u2f": "^1.0",
         "laravel/cashier": "~7.0",
         "laravel/framework": "5.5.*",
         "laravel/passport": "^4.0",

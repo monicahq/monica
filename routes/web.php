@@ -27,7 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::middleware(['auth', '2fa'])->group(function () {
+Route::middleware(['auth', 'u2f'])->group(function () {
+    Route::middleware(['auth', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -232,5 +233,6 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
         Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('.security.2fa-disable');
         Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
+    });
     });
 });
