@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v1.8.1 - 2018-03-02
+-------------------
+
 * Fix message in contact edit page
 * Fix months list for non english languages  in contact edit page
 * Fix birthdate calendar for non english languages in contact edit page
@@ -8,8 +15,6 @@ UNRELEASED CHANGES:
 * Fix reset account deleting default account values
 * Fix notifications not working with aysnchronous queue
 * Support mysql unix socket
-
-RELEASED VERSIONS:
 
 v1.8.0 - 2018-02-26
 -------------------
