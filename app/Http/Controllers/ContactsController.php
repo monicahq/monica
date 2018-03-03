@@ -306,19 +306,7 @@ class ContactsController extends Controller
 
         dispatch(new ResizeAvatars($contact));
 
-        // for performance reasons, we check if a gravatar exists for this email
-        // address. if it does, we store the gravatar url in the database.
-        // while this is not ideal because the gravatar can change, at least we
-        // won't make constant call to gravatar to load the avatar on every
-        // page load.
-        $response = $contact->getGravatar(250);
-        if ($response != false and is_string($response)) {
-            $contact->gravatar_url = $response;
-            $contact->save();
-        } else {
-            $contact->gravatar_url = null;
-            $contact->save();
-        }
+        $contact->updateGravatar();
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.information_edit_success'));

@@ -169,6 +169,8 @@ class ImportVCards extends Command
                     $contactField->save();
                 }
 
+                $contact->updateGravatar();
+
                 $contact->logEvent('contact', $contact->id, 'create');
 
                 $this->output->progressAdvance();

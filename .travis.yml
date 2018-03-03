@@ -7,10 +7,6 @@ services:
   - docker
   - postgresql
 
-env:
-  global:
-    - SAUCELABS=1
-
 matrix:
   include:
     - php: 7.1
@@ -41,10 +37,6 @@ branches:
 addons:
   postgresql: "9.6"
   chrome: stable
-  sauce_connect:
-    username: "monicahq"
-  jwt:
-    secure: "Z6XcUlBrmiO085kmF/WBRA6dnhtIhdQG+olFHM5CmQXkIXKUTR7wwAMRg+ys5NtFKVspYPDPPtV9CdEl1zQ3Ii3aSWentsCwbXxGurPqvY+aQjP1U1CmURvPY55BGTMHabt5WcPnFVIJql3vCfD2BFWwIk/78cQ9QKuDJ7/2BxFzWE4AZG9wKYzbqYGbc4l4wdvEE0H0ClRzqGPDvyWpUw1RbZU0lVud0JVa9UXntmtsEFgKEZ7WTTSm2XgoFtVK9qVrXc8TEVve126FSoi5GIxQFdQ/ZWybq5AggVy/Dp5w+q9zCLu19J95itGKpj+GL+9YCJSo4lqHlyLtZ+Ddt41y2E6O4SXoHCjeiFK3wV00AKWIpLedHBovdT2fnQ4f62GrOFA6iw8hV0ftxiFgRwdxv/r+ee1PDy5tQeLl/A0UelIAGy0ZyCfYDgaoK3td45iXcnBUjnbveq8rFgUNkdCXwBCJF89veQS4F/QQFms1AWsodifmT6PgIaWgk6Nt0dPO5jAT6NZ2wlHlkXu80TZf6pJCVC+Pvmuwdlhs+clSizjVJOQ0wVBCETmz4VSKPXLTgdlySncfKrnO8VnfospfZ5KwMGm4JR0wtixH0qTPNDKRlv4X/OedTJFZeN9iqJmWJLTfYc7I16TFXhOpdhP5o+yQE+k7BFrTveGG5bw="
 
 before_install:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
@@ -62,9 +54,15 @@ install:
   - npm run production
 
 before_script:
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
+
+  # Start Xvfb
+  - "export DISPLAY=:99.0"
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
+
+  # Start chromedriver
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/laravel/dusk/bin/chromedriver-linux; fi" &
   
 script:
   # Run unit tests
