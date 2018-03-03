@@ -3,11 +3,11 @@
 <div class="mt2">
 
   <select id="{{ $class }}_month" name="{{ $class }}_month" class="mr2">
-    @foreach($months as $month => $value)
-      <option value="{{ $month + 1 }}"
-        {{ ($specialDate == null) ? '' : (($specialDate->date->month == ($month + 1)) ? 'selected="selected"': '') }}
+    @foreach($months as $month)
+      <option value="{{ $month['id'] }}"
+        {{ ($specialDate == null) ? '' : (($specialDate->date->month == $month['id']) ? 'selected="selected"': '') }}
       >
-        {{ $value }}
+        {{ $month['name'] }}
       </option>
     @endforeach
   </select>
