@@ -2,7 +2,9 @@
 set -evuo pipefail
 
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
+source $SELF_PATH/realpath.sh
 ROOT=$(realpath $SELF_PATH/../..)
+
 HOST=localhost
 
 $SELF_PATH/start-selenium.sh
