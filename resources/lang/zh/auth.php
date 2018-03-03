@@ -13,14 +13,14 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to execute this action',
-    'signup_disabled' => 'Registration is currently disabled',
-    'back_homepage' => 'Back to homepage',
-    '2fa_title' => 'Two Factor Authentication',
-    '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Authentication code',
-    '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    'failed' => '您输入的信息与我们的记录不匹配。',
+    'throttle' => '登录失败次数太多。请 :seconds 后再试。',
+    'not_authorized' => '您无权执行此操作',
+    'signup_disabled' => '注册当前已停用',
+    'back_homepage' => '回到主页',
+    '2fa_title' => '双重验证',
+    '2fa_wrong_validation' => '双重验证失败。',
+    '2fa_one_time_password' => '验证码',
+    '2fa_recuperation_code' => '输入双重验证恢复码',
 
 ];
