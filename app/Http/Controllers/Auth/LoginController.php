@@ -44,6 +44,7 @@ class LoginController extends Controller
         if ($first) {
             return redirect('/register');
         }
+
         return showLoginForm();
     }
 }

@@ -61,7 +61,7 @@ class Account extends Model
 
     /**
      * Get if any account exists on the database.
-     * 
+     *
      * @return bool
      */
     public static function hasAny()
