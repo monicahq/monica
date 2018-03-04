@@ -105,6 +105,7 @@
               v-bind:day="{{ $day }}"
               v-bind:age="'{{ $age }}'"
               v-bind:default-date="'{{ $birthdate }}'"
+              v-bind:locale="'{{ auth()->user()->locale }}'"
               :value="'{{ $birthdayState }}'"
             ></form-specialdate>
           </div>

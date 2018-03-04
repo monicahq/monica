@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Notification;
 
 use App\User;
 use App\Notification;
@@ -37,5 +37,6 @@ class SendNotificationEmail implements ShouldQueue
     public function handle()
     {
         Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
+        $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
     }
 }

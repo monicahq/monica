@@ -104,11 +104,15 @@ dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2
 
 COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
-.travis.deploy.json: scripts/tests/.travis.deploy.json.in
+ifeq (,$(DEPLOY_TEMPLATE))
+DEPLOY_TEMPLATE := scripts/tests/.travis.deploy.json.in
+endif
+
+.travis.deploy.json: $(DEPLOY_TEMPLATE)
 	cp $< $@
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(COMMIT_MESSAGE)/" $@
-	sed -si "s/\$$(released)/$(shell date --iso-8601=s)/" $@
+	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
 	sed -si "s/\$$(travis_tag)/$(TRAVIS_TAG)/" $@
 	sed -si "s/\$$(travis_commit)/$(GIT_COMMIT)/" $@
 	sed -si "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" $@
@@ -145,4 +149,7 @@ update: .env build-dev
 	cp .env.example .env
 
 .PHONY: dist clean fullclean install update build prepare build-prod build-dev
+
+vagrant_build:
+	make -C scripts/vagrant/build package
 
