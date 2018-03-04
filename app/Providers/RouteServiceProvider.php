@@ -92,17 +92,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('significant_other', function ($value, $route) {
-            $contact = Contact::findOrFail($route->parameter('contact')->id);
-
-            $relationShip = Relationship::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('with_contact_id', $value)
-                ->firstOrFail();
-
-            return Contact::findOrFail($value);
-        });
-
         Route::bind('kid', function ($value, $route) {
             $contact = Contact::findOrFail($route->parameter('contact')->id);
 

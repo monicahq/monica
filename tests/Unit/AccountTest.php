@@ -41,6 +41,19 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->notifications()->exists());
     }
 
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+        ]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->relationshipTypes()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory(Account::class)->create();

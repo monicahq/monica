@@ -34,6 +34,10 @@ Vue.use(ToggleButton);
 import Datepicker from 'vuejs-datepicker';
 Vue.use(Datepicker);
 
+// Radio buttons
+import PrettyCheckbox from 'pretty-checkbox-vue';
+Vue.use(PrettyCheckbox);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -72,6 +76,10 @@ Vue.component(
 Vue.component(
     'form-date',
     require('./components/partials/form/Date.vue')
+);
+Vue.component(
+    'form-radio',
+    require('./components/partials/form/Radio.vue')
 );
 
 // Dashboard
@@ -172,7 +180,8 @@ const app = new Vue({
       activities_description_show: false,
       reminders_frequency: 'once',
       accept_invite_user: false,
-      date_met_the_contact: 'known'
+      date_met_the_contact: 'known',
+      relationship_form_new_contact: true,
     },
     methods: {
     },

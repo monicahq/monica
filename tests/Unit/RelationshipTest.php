@@ -13,10 +13,20 @@ class RelationshipTest extends TestCase
     {
         $contact = factory('App\Contact')->create([]);
         $relationship = factory('App\Relationship')->create([
-            'contact_id' => $contact->id,
+            'contact_id_main' => $contact->id,
         ]);
 
         $this->assertTrue($relationship->contact()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact()
+    {
+        $contact = factory('App\Contact')->create([]);
+        $relationship = factory('App\Relationship')->create([
+            'contact_id_secondary' => $contact->id,
+        ]);
+
+        $this->assertTrue($relationship->with_contact()->exists());
     }
 
     public function test_it_belongs_to_a_contact_through_with_contact_field()

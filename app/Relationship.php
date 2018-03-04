@@ -21,13 +21,18 @@ class Relationship extends Model
         'is_active',
     ];
 
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
     public function contact()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Contact::class, 'contact_id_main');
     }
 
     public function with_contact()
     {
-        return $this->belongsTo(Contact::class, 'with_contact_id');
+        return $this->belongsTo(Contact::class, 'contact_id_secondary');
     }
 }

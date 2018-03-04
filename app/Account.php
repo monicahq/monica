@@ -319,6 +319,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Reminder Rules records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function relationshipTypes()
+    {
+        return $this->hasMany('App\RelationshipType');
+    }
+
+    /**
      * Get the Notifications records associated with the account.
      *
      * @return HasMany

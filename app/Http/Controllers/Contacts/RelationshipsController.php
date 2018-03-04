@@ -11,18 +11,6 @@ use App\Http\Requests\People\ExistingRelationshipsRequest;
 class RelationshipsController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Contact $contact)
-    {
-        return view('people.relationship.index')
-            ->withContact($contact);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
@@ -34,6 +22,27 @@ class RelationshipsController extends Controller
             ->withContact($contact)
             ->withPartner(new Contact)
             ->withGenders(auth()->user()->account->genders);
+    }
+
+    public function new(Contact $contact)
+    {
+        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
+
+        return view('people.relationship.new')
+            ->withContact($contact)
+            ->withPartner(new Contact)
+            ->withGenders(auth()->user()->account->genders)
+            ->withRelationshipTypes(auth()->user()->account->relationshipTypes)
+            ->withDays(\App\Helpers\DateHelper::getListOfDays())
+            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withBirthdayState($contact->getBirthdayState())
+            ->withBirthdate($birthdate)
+            ->withDay($day)
+            ->withMonth($month)
+            ->withAge($age);
     }
 
     /**
