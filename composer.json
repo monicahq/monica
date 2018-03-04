@@ -15,6 +15,7 @@
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
         "barryvdh/laravel-debugbar": "^2.2",
+        "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.6",
         "fzaninotto/faker": "^1.6",

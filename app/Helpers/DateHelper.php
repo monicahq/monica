@@ -215,16 +215,16 @@ class DateHelper
      */
     public static function getListOfMonths()
     {
-        Carbon::setLocale(auth()->user()->locale);
+        Date::setLocale(auth()->user()->locale);
         $months = collect([]);
-        $currentDate = Carbon::now();
+        $currentDate = Date::now();
         $currentDate->day = 1;
 
         for ($month = 1; $month < 13; $month++) {
             $currentDate->month = $month;
             $months->push([
                 'id' => $month,
-                'name' => $currentDate->formatLocalized('%B'),
+                'name' => mb_convert_case($currentDate->format('F'), MB_CASE_TITLE, 'UTF-8'),
             ]);
         }
 
