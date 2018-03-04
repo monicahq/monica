@@ -200,6 +200,7 @@ $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) 
 $factory->define(App\ContactField::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
+        'contact_id' => 1,
         'contact_field_type_id' => 1,
         'data' => 'john@doe.com',
     ];
