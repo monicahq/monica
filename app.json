@@ -13,6 +13,9 @@
   "addons": [
     {
       "plan": "cleardb:ignite"
+    },
+    {
+      "plan": "scheduler:standard"
     }
   ],
   "scripts": {
