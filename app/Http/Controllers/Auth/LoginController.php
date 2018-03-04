@@ -45,6 +45,6 @@ class LoginController extends Controller
             return redirect('/register');
         }
 
-        return showLoginForm();
+        return $this->showLoginForm();
     }
 }
