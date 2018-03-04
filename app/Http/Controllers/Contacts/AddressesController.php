@@ -25,7 +25,6 @@ class AddressesController extends Controller
                 'googleMapAddress' => $address->getGoogleMapAddress(),
                 'address' => $address->getFullAddress(),
                 'country_id' => $address->country_id,
-                'name' => $address->name,
                 'street' => $address->street,
                 'city' => $address->city,
                 'province' => $address->province,

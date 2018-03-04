@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Gift;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\IntroductionsRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IntroductionsController extends Controller
 {

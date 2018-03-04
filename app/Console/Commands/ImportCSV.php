@@ -137,7 +137,7 @@ class ImportCSV extends Command
                 $contact->setAvatarColor();
 
                 if (! empty($data[14])) {
-                    $birthdate = date('Y-m-d', strtotime($data[14]));
+                    $birthdate = new \DateTime(strtotime($data[14]));
 
                     $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
                     $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));

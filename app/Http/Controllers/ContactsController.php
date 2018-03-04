@@ -32,6 +32,7 @@ class ContactsController extends Controller
         }
 
         $date_flag = false;
+        $date_sort = null;
 
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
@@ -463,7 +464,7 @@ class ContactsController extends Controller
     public function vCard(Contact $contact)
     {
         if (config('app.debug')) {
-            \Debugbar::disable();
+            \Barryvdh\Debugbar\Facade::disable();
         }
 
         $vcard = VCardHelper::prepareVCard($contact);
