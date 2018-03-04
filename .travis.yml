@@ -175,6 +175,7 @@ jobs:
 
       script:
         - make vagrant_build
+      after_script: skip
 
       before_deploy:
         - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
