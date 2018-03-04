@@ -31,6 +31,18 @@ class RelationshipsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
 
+        dd(auth()->user()->account->contacts()
+                                        ->real()
+                                        ->select(['id', 'first_name', 'last_name'])
+                                        ->sortedBy('name')
+                                        ->get()
+                                        ->mapWithKeys(function ($item) {
+                                            return [[
+                                                'id' => $item['id'],
+                                                'name' => $item['first_name'].' '.$item['last_name'],
+                                            ]];
+                                        }));
+
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
@@ -42,7 +54,8 @@ class RelationshipsController extends Controller
             ->withBirthdate($birthdate)
             ->withDay($day)
             ->withMonth($month)
-            ->withAge($age);
+            ->withAge($age)
+            ->withExistingContacts('sfs');
     }
 
     /**

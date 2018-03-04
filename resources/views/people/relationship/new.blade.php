@@ -39,23 +39,17 @@
         <p class="mb2 b">Who's the relationship with?</p>
         <div class="dt dt--fixed">
           <div class="dtc pr2">
-            <input type="radio" id="" name="birthdate" value="approximate" @click="relationship_form_new_contact = true">
-            <form-radio
-              v-bind:label="'Add a new contact'"
-              v-bind:name="'type'" @click="relationship_form_new_contact = true">
-            </form-radio>
+            <input type="radio" id="new" name="relationship_type" value="new" @click="global_relationship_form_new_contact = true">
+            <label for="new" class="pointer">Create a new contact</label>
           </div>
           <div class="dtc">
-            <input type="radio" id="" name="birthdate" value="approximate" @click="relationship_form_new_contact = false">
-            <form-radio
-              v-bind:label="'Link existing contact'"
-              v-bind:name="'type'" @click="relationship_form_new_contact = false">
-            </form-radio>
+            <input type="radio" id="existing" name="relationship_type" value="existing" @click="global_relationship_form_new_contact = false">
+            <label for="existing" class="pointer">Link existing contact</label>
           </div>
         </div>
       </div>
 
-      <div v-if="relationship_form_new_contact">
+      <div v-if="global_relationship_form_new_contact">
         {{-- Name --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
@@ -117,6 +111,17 @@
             v-bind:required="true"
             v-bind:title="'{{ trans('people.people_add_gender') }}'"
             v-bind:id="'gender'">
+          </form-select>
+        </div>
+      </div>
+
+      <div v-if="!global_relationship_form_new_contact">
+        <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+          <form-select
+            :options="{{ $existingContacts }}"
+            v-bind:required="true"
+            v-bind:title="'Select an existing contact from the dropdown below'"
+            v-bind:id="'existing_contact_id'">
           </form-select>
         </div>
       </div>
