@@ -47,33 +47,6 @@ class SearchableTest extends TestCase
     }
 
     /** @test */
-    public function testSearchContactsThroughFoodPreferencesAndResultContainsContact()
-    {
-        $contact = factory(\App\Contact::class)->create(['food_preferencies' => 'Food Preference']);
-        $searchResults = $contact->search($contact->food_preferencies, $contact->account_id, 10, 'created_at desc');
-
-        $this->assertTrue($searchResults->contains($contact));
-    }
-
-    /** @test */
-    public function testSearchContactsThroughJobAndResultContainsContact()
-    {
-        $contact = factory(\App\Contact::class)->create(['job' => 'Job']);
-        $searchResults = $contact->search($contact->job, $contact->account_id, 10, 'created_at desc');
-
-        $this->assertTrue($searchResults->contains($contact));
-    }
-
-    /** @test */
-    public function testSearchContactsThroughCompanyAndResultContainsContact()
-    {
-        $contact = factory(\App\Contact::class)->create(['company' => 'Company']);
-        $searchResults = $contact->search($contact->company, $contact->account_id, 10, 'created_at desc');
-
-        $this->assertTrue($searchResults->contains($contact));
-    }
-
-    /** @test */
     public function testFailingSearchContacts()
     {
         $contact = factory(\App\Contact::class)->create(['first_name' => 'TestShouldFail']);

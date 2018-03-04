@@ -117,6 +117,7 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
+      skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
         - composer self-update
@@ -148,6 +149,7 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
+      skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
@@ -161,3 +163,26 @@ jobs:
         - make docker_push_bintray
 
       after_script: skip
+
+    - stage: Deploy
+      if: tag IS present
+      skip_cleanup: true
+      before_install:
+        - scripts/vagrant/install-vagrant.sh
+
+      install: skip
+      before_script: skip
+
+      script:
+        - make vagrant_build
+      after_script: skip
+
+      before_deploy:
+        - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        user: $BINTRAY_USER
+        key: $BINTRAY_APIKEY
+        on:
+          all_branches: true
