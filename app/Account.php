@@ -70,7 +70,7 @@ class Account extends Model
     /**
      *  Populates all the default column that should be there when a new account
      *  is created or reset.
-￼     */
+     */
     public static function populateDefaultFields($account)
     {
         $account->populateContactFieldTypeTable();
