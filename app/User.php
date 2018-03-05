@@ -199,7 +199,7 @@ class User extends Authenticatable
      * Decrypt the user's google_2fa secret.
      *
      * @param  string  $value
-     * @return string
+     * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)
     {

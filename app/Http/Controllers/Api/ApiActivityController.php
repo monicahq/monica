@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Note;
 use Validator;
 use App\Contact;
 use App\Activity;
 use App\ActivityType;
+use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
