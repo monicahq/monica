@@ -47,12 +47,12 @@ docker_push_bintray: .travis.deploy.json
 build: build-dev
 
 build-prod:
-	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev
+	composer install --no-interaction --no-suggest --no-dev
 	npm install
 	npm run production
 
 build-dev:
-	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader
+	composer install --no-interaction --no-suggest
 	npm install
 	npm run dev
 

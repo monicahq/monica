@@ -21,7 +21,7 @@
         "fzaninotto/faker": "^1.6",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "jenssegers/date": "^3.2",
+        "jenssegers/date": "^3.3",
         "jeroendesloovere/vcard": "^1.5",
         "laravel/cashier": "~7.0",
         "laravel/framework": "5.5.*",
@@ -36,7 +36,8 @@
         "predis/predis": "^1.1",
         "roave/security-advisories": "dev-master",
         "sabre/vobject": "^4.1",
-        "sentry/sentry-laravel": "^0.7.0"
+        "sentry/sentry-laravel": "^0.7.0",
+        "symfony/translation": "3.4.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -48,6 +49,9 @@
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"
+    },
+    "suggest": {
+        "ext-apcu": "*"
     },
     "autoload": {
         "classmap": [
@@ -83,6 +87,7 @@
         ]
     },
     "config": {
+        "apcu-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
