@@ -14,7 +14,6 @@
         "php": ">=7.0.0",
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
-        "barryvdh/laravel-debugbar": "^2.2",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.6",
@@ -40,6 +39,7 @@
         "symfony/translation": "3.4.*"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3",
         "filp/whoops": "~2.0",
         "khanamiryan/qrcode-detector-decoder": "^1.0",
         "laravel/dusk": "^2.0",
