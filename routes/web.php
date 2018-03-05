@@ -98,7 +98,6 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         // Relationships
         Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new')->name('.relationships.new');
-        Route::get('/people/{contact}/relationships/add', 'Contacts\\RelationshipsController@create')->name('.relationships.add');
         Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('.relationships.store');
         Route::post('/people/{contact}/relationships/storeExistingContact', 'Contacts\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
         Route::get('/people/{contact}/relationships/{partner}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');

@@ -10,20 +10,6 @@ use App\Http\Requests\People\ExistingRelationshipsRequest;
 
 class RelationshipsController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Contact $contact)
-    {
-        return view('people.relationship.add')
-            ->withContact($contact)
-            ->withPartner(new Contact)
-            ->withGenders(auth()->user()->account->genders);
-    }
-
     public function new(Contact $contact)
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
@@ -31,17 +17,23 @@ class RelationshipsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
 
-        dd(auth()->user()->account->contacts()
+        // getting the list of existing contacts
+        $existingContacts = auth()->user()->account->contacts()
                                         ->real()
                                         ->select(['id', 'first_name', 'last_name'])
                                         ->sortedBy('name')
-                                        ->get()
-                                        ->mapWithKeys(function ($item) {
-                                            return [[
-                                                'id' => $item['id'],
-                                                'name' => $item['first_name'].' '.$item['last_name'],
-                                            ]];
-                                        }));
+                                        ->get();
+
+        $arrayContacts = collect();
+        foreach ($existingContacts as $existingContact) {
+            if ($existingContact->id == $contact->id) {
+                continue;
+            }
+            $arrayContacts->push([
+                'id' => $existingContact->id,
+                'name' => $existingContact->getCompleteName(),
+            ]);
+        }
 
         return view('people.relationship.new')
             ->withContact($contact)
@@ -55,7 +47,7 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
-            ->withExistingContacts('sfs');
+            ->withExistingContacts($arrayContacts);
     }
 
     /**
@@ -67,6 +59,7 @@ class RelationshipsController extends Controller
      */
     public function store(RelationshipsRequest $request, Contact $contact)
     {
+        dd($request->all());
         // this is a real contact, not just a significant other
         if ($request->get('realContact')) {
             $partner = Contact::create(

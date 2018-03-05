@@ -27,7 +27,6 @@ class RelationshipsRequest extends FormRequest
             'first_name' => 'required|string|max:50',
             'last_name' => 'string|nullable|max:100',
             'gender_id' => 'integer|required',
-            'status' => 'in:active,past|nullable',
             'birthdate' => 'required|in:unknown,approximate,exact',
             'birthdate_year' => 'int|nullable',
             'birthdate_month' => 'int|nullable',

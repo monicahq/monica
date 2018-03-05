@@ -29,7 +29,7 @@
         <form-select
           :options="{{ $relationshipTypes }}"
           v-bind:required="true"
-          v-bind:title="'Type of relationship'"
+          v-bind:title="'This person is {{ $contact->getCompleteName() }}\'s...'"
           v-bind:id="'relationship_type_id'">
         </form-select>
       </div>
@@ -44,7 +44,7 @@
           </div>
           <div class="dtc">
             <input type="radio" id="existing" name="relationship_type" value="existing" @click="global_relationship_form_new_contact = false">
-            <label for="existing" class="pointer">Link existing contact</label>
+            <label for="existing" class="pointer">An existing contact</label>
           </div>
         </div>
       </div>
@@ -113,6 +113,22 @@
             v-bind:id="'gender'">
           </form-select>
         </div>
+
+        {{-- Birthdate --}}
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <form-specialdate
+              v-bind:months="{{ $months }}"
+              v-bind:days="{{ $days }}"
+              v-bind:month="{{ $month }}"
+              v-bind:day="{{ $day }}"
+              v-bind:age="'{{ $age }}'"
+              v-bind:default-date="'{{ $birthdate }}'"
+              v-bind:locale="'{{ auth()->user()->locale }}'"
+              :value="'{{ $birthdayState }}'"
+            ></form-specialdate>
+          </div>
+        </div>
       </div>
 
       <div v-if="!global_relationship_form_new_contact">
@@ -126,22 +142,6 @@
         </div>
       </div>
 
-      {{-- Birthdate --}}
-      <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-        <div class="mb3 mb0-ns">
-          <form-specialdate
-            v-bind:months="{{ $months }}"
-            v-bind:days="{{ $days }}"
-            v-bind:month="{{ $month }}"
-            v-bind:day="{{ $day }}"
-            v-bind:age="'{{ $age }}'"
-            v-bind:default-date="'{{ $birthdate }}'"
-            v-bind:locale="'{{ auth()->user()->locale }}'"
-            :value="'{{ $birthdayState }}'"
-          ></form-specialdate>
-        </div>
-      </div>
-
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
@@ -149,7 +149,6 @@
             <a href="/people" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
-            <button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('people.people_add_cta') }}</button>
           </div>
         </div>
