@@ -42,7 +42,6 @@
                   <li>{!! trans('settings.import_upload_rule_format') !!}</li>
                   <li>{{ trans('settings.import_upload_rule_vcard') }}</li>
                   <li>{!! trans('settings.import_upload_rule_instructions') !!}</li>
-                  <li>{{ trans('settings.import_upload_rule_multiple') }}</li>
                   <li>{{ trans('settings.import_upload_rule_limit') }}</li>
                   <li>{{ trans('settings.import_upload_rule_time') }}</li>
                   <li>{{ trans('settings.import_upload_rule_cant_revert') }}</li>
@@ -58,6 +57,15 @@
                     <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>
                     <input type="file" class="form-control-file" name="vcard" id="vcard">
                     <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="behaviour">{!! trans('settings.import_upload_behaviour') !!}</label>
+                    <select class="form-control" name="behaviour" id="behaviour">
+                        <option value="{{ \App\Jobs\AddContactFromVCard::BEHAVIOUR_ADD }}" selected>{!! trans('settings.import_upload_behaviour_add') !!}</option>
+                        <option value="{{ \App\Jobs\AddContactFromVCard::BEHAVIOUR_REPLACE }}">{!! trans('settings.import_upload_behaviour_replace') !!}</option>
+                    </select>
+                    <small id="behaviourHelp" class="form-text text-muted">{{ trans('settings.import_upload_behaviour_help') }}</small>
                 </div>
 
                 <div class="form-group actions">
