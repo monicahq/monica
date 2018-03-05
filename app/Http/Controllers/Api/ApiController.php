@@ -74,7 +74,7 @@ class ApiController extends Controller
 
     /**
      * Default request to the API.
-     * @return json
+     * @return \Illuminate\Http\JsonResponse
      */
     public function success()
     {
@@ -203,7 +203,7 @@ class ApiController extends Controller
      * Sends a JSON to the consumer.
      * @param  array $data
      * @param  array  $headers [description]
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function respond($data, $headers = [])
     {
