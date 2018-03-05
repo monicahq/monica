@@ -11,9 +11,9 @@ class TagsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param GiftsRequest $request
+     * @param TagsRequest $request
      * @param Contact $contact
-     * @param Gift $gift
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(TagsRequest $request, Contact $contact)
