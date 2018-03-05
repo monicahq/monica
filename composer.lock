@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "557480c9fa8e1bbdfe3be880026b2f75",
+    "content-hash": "bf7960ddc38bda41b7b5638ba4c86928",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2135,16 +2135,16 @@
         },
         {
             "name": "martinlindhe/laravel-vue-i18n-generator",
-            "version": "0.1.26",
+            "version": "0.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/martinlindhe/laravel-vue-i18n-generator.git",
-                "reference": "47d15154b122ffc1e3ed5af9e97c42831078ec29"
+                "reference": "4b192ff02e618455e048655106db70ed6c77aa80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/47d15154b122ffc1e3ed5af9e97c42831078ec29",
-                "reference": "47d15154b122ffc1e3ed5af9e97c42831078ec29",
+                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/4b192ff02e618455e048655106db70ed6c77aa80",
+                "reference": "4b192ff02e618455e048655106db70ed6c77aa80",
                 "shasum": ""
             },
             "require": {
@@ -2184,7 +2184,7 @@
                 "laravel",
                 "vue-i18n"
             ],
-            "time": "2018-03-05T21:32:18+00:00"
+            "time": "2018-02-10T22:37:25+00:00"
         },
         {
             "name": "maximebf/debugbar",
