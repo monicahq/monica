@@ -24,7 +24,7 @@ abstract class DuskTestCase extends BaseTestCase
             static::startChromeDriver();
         }
 
-        /**
+        /*
          * Macro scrollTo to scroll down/up, until the selector is visible
          */
         Browser::macro('scrollTo', function ($selector) {
