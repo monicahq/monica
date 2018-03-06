@@ -30,10 +30,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->environment('local', 'testing')) {
-            if (class_exists('Laravel\\Dusk\\Browser')) {
-                $this->app->register(DuskBrowserServiceProvider::class);
-            }
-        }
     }
 }

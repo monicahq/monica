@@ -23,6 +23,15 @@ abstract class DuskTestCase extends BaseTestCase
         if (env('SAUCELABS') != '1') {
             static::startChromeDriver();
         }
+
+        /**
+         * Macro scrollTo to scroll down/up, until the selector is visible
+         */
+        Browser::macro('scrollTo', function ($selector) {
+            $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selector\").offset().top}, 0);");
+
+            return $this;
+        });
     }
 
     /**
