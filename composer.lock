@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf7960ddc38bda41b7b5638ba4c86928",
+    "content-hash": "8d233a211d2365ff3ec2903b1620e09d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2135,16 +2135,16 @@
         },
         {
             "name": "martinlindhe/laravel-vue-i18n-generator",
-            "version": "0.1.23",
+            "version": "0.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/martinlindhe/laravel-vue-i18n-generator.git",
-                "reference": "4b192ff02e618455e048655106db70ed6c77aa80"
+                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/4b192ff02e618455e048655106db70ed6c77aa80",
-                "reference": "4b192ff02e618455e048655106db70ed6c77aa80",
+                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
+                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
                 "shasum": ""
             },
             "require": {
@@ -2184,7 +2184,7 @@
                 "laravel",
                 "vue-i18n"
             ],
-            "time": "2018-02-10T22:37:25+00:00"
+            "time": "2018-03-06T08:38:31+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -3345,12 +3345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0a373baba09d0d125d69f0e7a27a8dae2d068796"
+                "reference": "efecacb8182814c1476c7b38c1053ef78823e127"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0a373baba09d0d125d69f0e7a27a8dae2d068796",
-                "reference": "0a373baba09d0d125d69f0e7a27a8dae2d068796",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/efecacb8182814c1476c7b38c1053ef78823e127",
+                "reference": "efecacb8182814c1476c7b38c1053ef78823e127",
                 "shasum": ""
             },
             "conflict": {
@@ -3418,7 +3418,7 @@
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
                 "silverstripe/framework": ">=3,<3.3",
                 "silverstripe/userforms": "<3",
-                "simplesamlphp/saml2": "<1.10.4|>=2,<2.3.5|>=3,<3.1.1",
+                "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
                 "simplesamlphp/simplesamlphp": "<1.15.2",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
@@ -3443,7 +3443,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
@@ -3493,7 +3493,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-05T15:57:14+00:00"
+            "time": "2018-03-06T15:15:10+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -4158,7 +4158,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.0.5",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
