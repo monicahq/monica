@@ -61,6 +61,7 @@ class UploadVCardTest extends DuskTestCase
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', 'tests/stubs/single_vcard_stub.vcard')
+                  ->scrollTo('#upload')
                   ->press('Upload')
                   ->assertSee('1 imported');
         });
@@ -80,6 +81,7 @@ class UploadVCardTest extends DuskTestCase
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', 'tests/stubs/broken_vcard_stub.vcard')
+                  ->scrollTo('#upload')
                   ->press('Upload')
                   ->assertSee('The vcard must be a file of type: vcf, vcard.');
         });
