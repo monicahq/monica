@@ -4,12 +4,6 @@
     "license": "AGPL",
     "keywords": ["prm", "crm", "social"],
     "type": "project",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/asbiin/google2fa-laravel"
-        }
-    ],
     "require": {
         "php": ">=7.0.0",
         "ext-intl": "*",
@@ -27,10 +21,10 @@
         "laravel/passport": "^4.0",
         "laravel/socialite": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
-        "martinlindhe/laravel-vue-i18n-generator": "^0.1.21",
+        "martinlindhe/laravel-vue-i18n-generator": "^0.1.23",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/google2fa": "^2.0",
-        "pragmarx/google2fa-laravel": "dev-create-authenticator-controller",
+        "pragmarx/google2fa-laravel": "dev-master",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
         "roave/security-advisories": "dev-master",
