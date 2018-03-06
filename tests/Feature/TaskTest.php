@@ -31,8 +31,8 @@ class TaskTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $taskTitle = $this->$faker->realText();
-        $taskDescription = $this->$faker->realText();
+        $taskTitle = $this->faker->realText();
+        $taskDescription = $this->faker->realText();
 
         $params = [
             'title' => $taskTitle,
