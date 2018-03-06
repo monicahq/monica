@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Contact;
 use Tests\FeatureTestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
 {
