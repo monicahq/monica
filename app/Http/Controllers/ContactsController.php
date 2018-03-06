@@ -286,7 +286,7 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -297,7 +297,7 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
             case 'unknown':
             default:

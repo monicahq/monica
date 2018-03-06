@@ -173,7 +173,7 @@ class ApiContactController extends ApiController
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
         } elseif ($request->get('first_met_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
@@ -189,7 +189,7 @@ class ApiContactController extends ApiController
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
         } elseif ($request->get('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
@@ -304,7 +304,7 @@ class ApiContactController extends ApiController
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
         } elseif ($request->get('first_met_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
@@ -321,7 +321,7 @@ class ApiContactController extends ApiController
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
         } elseif ($request->get('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
