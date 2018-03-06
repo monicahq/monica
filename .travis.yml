@@ -47,7 +47,7 @@ before_install:
 
 install:
   # Get packages
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
+  - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
   - npm install
@@ -124,7 +124,7 @@ jobs:
 
       install:
         # Get packages without require-dev
-        - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+        - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
         # Build js and css assets
         - npm install
         - npm run production

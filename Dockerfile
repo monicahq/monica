@@ -59,7 +59,7 @@ RUN cp .env.example .env; \
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev && \
+RUN composer install --no-interaction --no-suggest --no-dev && \
     composer clear-cache
 USER root
 

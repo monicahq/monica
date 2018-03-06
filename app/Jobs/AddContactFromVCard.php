@@ -173,7 +173,7 @@ class AddContactFromVCard implements ShouldQueue
             $this->importJob->contacts_imported = $this->importedContacts;
             $this->importJob->ended_at = \Carbon\Carbon::now();
             $this->importJob->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->importJob->contacts_found = $numberOfContactsInTheFile;
             $this->importJob->failed = 1;
             $this->importJob->failed_reason = $e->getMessage();
