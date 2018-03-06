@@ -266,7 +266,7 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
         }
@@ -276,8 +276,6 @@ class ContactsController extends Controller
         // Handling the case of the birthday
         $contact->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
@@ -300,6 +298,9 @@ class ContactsController extends Controller
                     $birthdate->day
                 );
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 

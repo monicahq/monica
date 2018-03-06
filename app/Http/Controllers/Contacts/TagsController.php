@@ -31,7 +31,6 @@ class TagsController extends Controller
             return response()->json(['status' => 'no', 'tags' => '']);
         }
 
-        $tagsIDs = [];
         $tagsWithIdAndSlug = [];
         foreach ($tags as $tag) {
             $tag = $contact->setTag($tag);

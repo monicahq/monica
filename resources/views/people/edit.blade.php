@@ -117,11 +117,11 @@
             <div class="form-check">
               <label class="form-check-label">
                 <input class="form-check-input" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
-                {{ ($contact->is_dead == true) ? 'checked' : '' }}>
+                {{ $contact->is_dead ? 'checked' : '' }}>
                 {{ trans('people.deceased_mark_person_deceased') }}
               </label>
             </div>
-            <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
+            <div class="form-check {{ ! $contact->is_dead ? 'hidden' : '' }}" id="datePersonDeceased">
             <label class="form-check-label">
               <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
               {{ trans('people.deceased_know_date') }}

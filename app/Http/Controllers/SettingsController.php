@@ -340,8 +340,8 @@ class SettingsController extends Controller
             return redirect('/');
         }
 
-        $invitation = Invitation::where('invitation_key', $key)
-                                ->firstOrFail();
+        Invitation::where('invitation_key', $key)
+            ->firstOrFail();
 
         return view('settings.users.accept', compact('key'));
     }

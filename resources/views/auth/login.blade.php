@@ -38,7 +38,7 @@
               <div class="form-group links">
                 <ul>
                   <li>Forget your password? <a href="/password/reset">Reset your password</a></li>
-                  @if(config('monica.disable_signup') == false)
+                  @if(! config('monica.disable_signup'))
                     <li>Don't have an account? <a href="/register">Sign up</a></li>
                   @endif
                 </ul>
