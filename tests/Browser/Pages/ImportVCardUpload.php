@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class SettingsSecurity2faEnable extends Page
+class ImportVCardUpload extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,7 +13,7 @@ class SettingsSecurity2faEnable extends Page
      */
     public function url()
     {
-        return '/settings/security/2fa-enable';
+        return '/settings/import/upload';
     }
 
     /**
@@ -35,10 +35,7 @@ class SettingsSecurity2faEnable extends Page
     public function elements()
     {
         return [
-            'barcode' => '#barcode',
-            'secretkey' => '#secretkey',
-            'verify' => "button[name='verify']",
-            'otp' => '#one_time_password',
+            'upload' => '#upload',
         ];
     }
 }

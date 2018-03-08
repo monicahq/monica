@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="form-group actions">
-                    <button type="submit" class="btn btn-primary">{{ trans('app.upload') }}</button>
+                    <button id="upload" type="submit" class="btn btn-primary">{{ trans('app.upload') }}</button>
                     <a href="/settings/import" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                 </div> <!-- .form-group -->
             </form>
