@@ -59,10 +59,10 @@ before_script:
 
   # Start Xvfb
   - "export DISPLAY=:99.0"
-  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16; fi
 
   # Start chromedriver
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/laravel/dusk/bin/chromedriver-linux; fi" &
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/bin/chromedriver; fi" &
   
 script:
   # Run unit tests

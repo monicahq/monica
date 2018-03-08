@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb22c53b6fb4f9eea1a24c6945804eb3",
+    "content-hash": "74e17fee44f68bce4bfbfb96d516b600",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.20",
+            "version": "3.52.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "299ac47ff5171d6a25f788dc333c0a3c8db40f69"
+                "reference": "f42076f6347590dfbf4de7befc19bb660be0ea22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/299ac47ff5171d6a25f788dc333c0a3c8db40f69",
-                "reference": "299ac47ff5171d6a25f788dc333c0a3c8db40f69",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f42076f6347590dfbf4de7befc19bb660be0ea22",
+                "reference": "f42076f6347590dfbf4de7befc19bb660be0ea22",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-01T20:18:42+00:00"
+            "time": "2018-03-07T22:55:58+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -929,19 +929,20 @@
         },
         {
             "name": "erusev/parsedown",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erusev/parsedown.git",
-                "reference": "6678d59be48c4be64eaca6ce70bea48a09488cc2"
+                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erusev/parsedown/zipball/6678d59be48c4be64eaca6ce70bea48a09488cc2",
-                "reference": "6678d59be48c4be64eaca6ce70bea48a09488cc2",
+                "url": "https://api.github.com/repos/erusev/parsedown/zipball/92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
+                "reference": "92e9c27ba0e74b8b028b111d1b6f956a15c01fc1",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "php": ">=5.3.0"
             },
             "require-dev": {
@@ -970,24 +971,27 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2018-02-28T11:41:37+00:00"
+            "time": "2018-03-08T01:11:30+00:00"
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v4.0.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
-                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
+                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": " 4.8.35"
             },
             "type": "library",
             "autoload": {
@@ -1013,7 +1017,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2016-07-18T04:51:16+00:00"
+            "time": "2017-06-27T22:17:23+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -1497,16 +1501,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.6.7",
+            "version": "v5.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "18402cd4b83fd1d944f3baa0d8cc26d7dfcce333"
+                "reference": "98fdbb098cf52a74441fe949be121c18e3dbbe6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/18402cd4b83fd1d944f3baa0d8cc26d7dfcce333",
-                "reference": "18402cd4b83fd1d944f3baa0d8cc26d7dfcce333",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/98fdbb098cf52a74441fe949be121c18e3dbbe6a",
+                "reference": "98fdbb098cf52a74441fe949be121c18e3dbbe6a",
                 "shasum": ""
             },
             "require": {
@@ -1533,6 +1537,9 @@
                 "symfony/var-dumper": "~4.0",
                 "tijsverkoyen/css-to-inline-styles": "^2.2.1",
                 "vlucas/phpdotenv": "~2.2"
+            },
+            "conflict": {
+                "tightenco/collect": "<5.5.33"
             },
             "replace": {
                 "illuminate/auth": "self.version",
@@ -1562,8 +1569,7 @@
                 "illuminate/support": "self.version",
                 "illuminate/translation": "self.version",
                 "illuminate/validation": "self.version",
-                "illuminate/view": "self.version",
-                "tightenco/collect": "<5.5.33"
+                "illuminate/view": "self.version"
             },
             "require-dev": {
                 "aws/aws-sdk-php": "~3.0",
@@ -1629,24 +1635,24 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-02-28T14:50:53+00:00"
+            "time": "2018-03-07T14:04:49+00:00"
         },
         {
             "name": "laravel/passport",
-            "version": "v5.0.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "a04b9193054a8a7c50c26ff4f0519d3f7b5f5a30"
+                "reference": "7239e8cdbca9d7f24be40461fe2abc26583adaa2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/a04b9193054a8a7c50c26ff4f0519d3f7b5f5a30",
-                "reference": "a04b9193054a8a7c50c26ff4f0519d3f7b5f5a30",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/7239e8cdbca9d7f24be40461fe2abc26583adaa2",
+                "reference": "7239e8cdbca9d7f24be40461fe2abc26583adaa2",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~3.0|~4.0",
+                "firebase/php-jwt": "~3.0|~4.0|~5.0",
                 "guzzlehttp/guzzle": "~6.0",
                 "illuminate/auth": "~5.6",
                 "illuminate/console": "~5.6",
@@ -1698,7 +1704,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2018-01-29T14:30:22+00:00"
+            "time": "2018-03-06T14:21:38+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -2134,16 +2140,16 @@
         },
         {
             "name": "martinlindhe/laravel-vue-i18n-generator",
-            "version": "0.1.23",
+            "version": "0.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/martinlindhe/laravel-vue-i18n-generator.git",
-                "reference": "4b192ff02e618455e048655106db70ed6c77aa80"
+                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/4b192ff02e618455e048655106db70ed6c77aa80",
-                "reference": "4b192ff02e618455e048655106db70ed6c77aa80",
+                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
+                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
                 "shasum": ""
             },
             "require": {
@@ -2183,7 +2189,7 @@
                 "laravel",
                 "vue-i18n"
             ],
-            "time": "2018-02-10T22:37:25+00:00"
+            "time": "2018-03-06T08:38:31+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2652,16 +2658,16 @@
         },
         {
             "name": "pragmarx/google2fa",
-            "version": "v2.0.7",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa.git",
-                "reference": "5a818bda62fab0c0a79060b06d50d50b5525d631"
+                "reference": "2dcc3245cb17b28bfcb03d40879a6c06840ccf7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/5a818bda62fab0c0a79060b06d50d50b5525d631",
-                "reference": "5a818bda62fab0c0a79060b06d50d50b5525d631",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/2dcc3245cb17b28bfcb03d40879a6c06840ccf7e",
+                "reference": "2dcc3245cb17b28bfcb03d40879a6c06840ccf7e",
                 "shasum": ""
             },
             "require": {
@@ -2709,30 +2715,30 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2018-01-06T16:21:07+00:00"
+            "time": "2018-03-07T19:10:22+00:00"
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "dev-create-authenticator-controller",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/asbiin/google2fa-laravel.git",
-                "reference": "8ac00145615458ca3d019def267ae57d96932948"
+                "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
+                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/google2fa-laravel/zipball/8ac00145615458ca3d019def267ae57d96932948",
-                "reference": "8ac00145615458ca3d019def267ae57d96932948",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
+                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": ">=5.2",
                 "php": ">=5.4",
-                "pragmarx/google2fa": "~2.0"
+                "pragmarx/google2fa": "~3.0"
             },
             "require-dev": {
-                "benconstable/phpspec-laravel": "~3.0",
-                "phpspec/phpspec": "~3"
+                "orchestra/testbench-browser-kit": "~3.4|~3.5|~3.6",
+                "phpunit/phpunit": "~5|~6|~7"
             },
             "suggest": {
                 "bacon/bacon-qr-code": "Required to generate inline QR Codes.",
@@ -2745,7 +2751,7 @@
                     "Laravel"
                 ],
                 "branch-alias": {
-                    "dev-master": "0.1-dev"
+                    "dev-master": "0.2-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2759,9 +2765,10 @@
             "autoload": {
                 "psr-4": {
                     "PragmaRX\\Google2FALaravel\\": "src/",
-                    "spec\\PragmaRX\\Google2FALaravel\\": "tests/spec/"
+                    "PragmaRX\\Google2FALaravel\\Tests\\": "tests/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -2774,15 +2781,12 @@
             ],
             "description": "A One Time Password Authentication package, compatible with Google Authenticator.",
             "keywords": [
-                "authentication",
+                "Authentication",
+                "Two Factor Authentication",
                 "google2fa",
-                "laravel",
-                "two factor authentication"
+                "laravel"
             ],
-            "support": {
-                "source": "https://github.com/asbiin/google2fa-laravel/tree/create-authenticator-controller"
-            },
-            "time": "2017-12-27T12:15:03+00:00"
+            "time": "2018-03-08T04:29:45+00:00"
         },
         {
             "name": "pragmarx/random",
@@ -4975,6 +4979,44 @@
             "time": "2017-07-22T11:58:36+00:00"
         },
         {
+            "name": "enm1989/chromedriver",
+            "version": "2.36",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ENM1989/chromedriver.git",
+                "reference": "6af6ee96f78cecff036be73d61f526f4c5b21e7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/6af6ee96f78cecff036be73d61f526f4c5b21e7a",
+                "reference": "6af6ee96f78cecff036be73d61f526f4c5b21e7a",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/chromedriver"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nico Müller",
+                    "email": "nico.mueller.1989@googlemail.com"
+                }
+            ],
+            "description": "Composer distribution of Chromedriver. Adds a executable to your composer bin directory.",
+            "homepage": "https://github.com/ENM1989/chromedriver",
+            "keywords": [
+                "Chromedriver",
+                "chrome",
+                "selenium",
+                "webdriver"
+            ],
+            "time": "2018-03-06T20:49:24+00:00"
+        },
+        {
             "name": "facebook/webdriver",
             "version": "1.5.0",
             "source": {
@@ -5190,16 +5232,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v3.0.3",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "558771932216d5b9fef4ce27ca3a4b106a811633"
+                "reference": "df287183e521d761141352b59ec106a45a87f1b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/558771932216d5b9fef4ce27ca3a4b106a811633",
-                "reference": "558771932216d5b9fef4ce27ca3a4b106a811633",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/df287183e521d761141352b59ec106a45a87f1b0",
+                "reference": "df287183e521d761141352b59ec106a45a87f1b0",
                 "shasum": ""
             },
             "require": {
@@ -5247,7 +5289,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-02-28T13:53:00+00:00"
+            "time": "2018-03-07T16:24:19+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
@@ -6221,12 +6263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0a373baba09d0d125d69f0e7a27a8dae2d068796"
+                "reference": "664836e89c7ecad3dbaabc1572ea752c0d532d80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0a373baba09d0d125d69f0e7a27a8dae2d068796",
-                "reference": "0a373baba09d0d125d69f0e7a27a8dae2d068796",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/664836e89c7ecad3dbaabc1572ea752c0d532d80",
+                "reference": "664836e89c7ecad3dbaabc1572ea752c0d532d80",
                 "shasum": ""
             },
             "conflict": {
@@ -6294,7 +6336,7 @@
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
                 "silverstripe/framework": ">=3,<3.3",
                 "silverstripe/userforms": "<3",
-                "simplesamlphp/saml2": "<1.10.4|>=2,<2.3.5|>=3,<3.1.1",
+                "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
                 "simplesamlphp/simplesamlphp": "<1.15.2",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
@@ -6369,7 +6411,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-05T15:57:14+00:00"
+            "time": "2018-03-07T15:45:44+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
