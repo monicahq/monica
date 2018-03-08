@@ -894,7 +894,7 @@ class Contact extends Model
         // won't make constant call to gravatar to load the avatar on every
         // page load.
         $response = $this->getGravatar(250);
-        if ($response != false and is_string($response)) {
+        if ($response !== false && is_string($response)) {
             $this->gravatar_url = $response;
         } else {
             $this->gravatar_url = null;

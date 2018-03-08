@@ -480,7 +480,7 @@ class Account extends Model
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
             if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
-                $contactFieldType = ContactFieldType::create([
+                ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
