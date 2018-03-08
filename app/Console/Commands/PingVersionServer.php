@@ -44,9 +44,9 @@ class PingVersionServer extends Command
             return false;
         }
 
-        if (env('APP_ENV') != 'production') {
-            return false;
-        }
+       if (env('APP_ENV') != 'production') {
+           return false;
+      }
 
         $instance = Instance::first();
 
