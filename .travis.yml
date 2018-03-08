@@ -61,8 +61,8 @@ before_script:
   - "export DISPLAY=:99.0"
   - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
 
-  # Start chromedriver
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/laravel/dusk/bin/chromedriver-linux; fi" &
+  # Start chrome
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   
 script:
   # Run unit tests
