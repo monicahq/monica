@@ -48,6 +48,7 @@ class MultiFAControllerTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable)
                     ->assertVisible('barcode')
@@ -68,6 +69,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -116,9 +118,11 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable)
                     ->type('one_time_password', '000000')
+                    ->scrollTo('verify')
                     ->press('verify');
 
             $this->assertTrue($this->hasDivAlert($browser));
@@ -140,6 +144,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -149,15 +154,17 @@ class MultiFAControllerTest extends DuskTestCase
 
     private function enable2fa(Browser $browser)
     {
+        $browser->on(new SettingsSecurity2faEnable);
+
         $secretkey = $browser->text('secretkey');
 
         $google2fa = new \PragmaRX\Google2FA\Google2FA();
         $one_time_password = $google2fa->getCurrentOtp($secretkey);
         $browser->type('otp', $one_time_password);
 
-        $browser =
-        $browser->press('verify')
-                ->on(new SettingsSecurity);
+        $browser = $browser->scrollTo('verify')
+            ->press('verify')
+            ->on(new SettingsSecurity);
 
         $this->assertTrue($this->hasDivAlert($browser));
         $divalert = $this->getDivAlert($browser);
@@ -184,6 +191,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -216,6 +224,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -248,6 +257,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -259,6 +269,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->visit(new SettingsSecurity2faDisable)
                     ->assertVisible('otp')
                     ->type('otp', $one_time_password)
+                    ->scrollTo('verify')
                     ->press('verify');
 
             $this->assertTrue($this->hasDivAlert($browser));
@@ -280,6 +291,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser =
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
                     ->clickLink('Enable Two Factor Authentication')
                     ->on(new SettingsSecurity2faEnable);
 
@@ -289,6 +301,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->visit(new SettingsSecurity2faDisable)
                     ->assertVisible('otp')
                     ->type('otp', '000000')
+                    ->scrollTo('verify')
                     ->press('verify');
 
             $this->assertTrue($this->hasDivAlert($browser));
