@@ -35,7 +35,7 @@ class ImportVCardUpload extends Page
     public function elements()
     {
         return [
-            'upload' => "#upload"
+            'upload' => '#upload',
         ];
     }
 }

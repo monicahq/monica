@@ -5,7 +5,6 @@ namespace Tests;
 use Tests\Traits\SignIn;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
-use Facebook\WebDriver\Interactions\WebDriverActions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 
@@ -40,7 +39,7 @@ abstract class DuskTestCase extends BaseTestCase
 
             $selectorby = $this->resolver->format($selector);
             $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selectorby\").offset().top}, 0);");
-            
+
             return $this;
         });
     }
