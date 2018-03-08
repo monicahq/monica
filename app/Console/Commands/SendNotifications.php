@@ -49,8 +49,6 @@ class SendNotifications extends Command
                 continue;
             }
 
-            $account = $notification->contact->account;
-
             ScheduleNotification::dispatch($notification);
         }
     }

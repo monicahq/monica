@@ -35,6 +35,7 @@ class SettingsSecurity extends Page
     public function elements()
     {
         return [
+            'two_factor_link' => "a:contains('Enable Two Factor Authentication')",
         ];
     }
 }

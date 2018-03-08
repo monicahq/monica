@@ -25,14 +25,14 @@
     <select id="{{ $class }}_year" name="{{ $class }}_year">
 
       @if ($specialDate)
-        <option value="0" {{ ($specialDate->is_year_unknown == false) ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
+        <option value="0" {{ ! $specialDate->is_year_unknown ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
       @else
         <option value="0">{{ trans('app.unknown') }}</option>
       @endif
 
       @foreach($years as $year => $value)
         @if ($specialDate)
-          <option value="{{ $value }}" {{ ($specialDate->is_year_unknown == true) ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '') }}>
+          <option value="{{ $value }}" {{ $specialDate->is_year_unknown ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '') }}>
             {{ $value }}
           </option>
         @else
