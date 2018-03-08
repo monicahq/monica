@@ -3,13 +3,15 @@
 use App\Account;
 use App\Contact;
 use GuzzleHttp\Client;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class FakeContentTableSeeder extends Seeder
 {
+    use WithFaker;
+
     private $numberOfContacts;
     private $contact;
     private $faker;
@@ -23,8 +25,6 @@ class FakeContentTableSeeder extends Seeder
     public function run()
     {
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
-
-        $this->faker = Faker::create();
 
         // create a random number of contacts
         $this->numberOfContacts = rand(60, 100);
