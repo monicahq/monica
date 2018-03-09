@@ -208,8 +208,8 @@ return [
     'personalization_reminder_rule_save' => 'Die Änderung wurde gespeichert',
     'personalization_reminder_rule_title' => 'Erinnerungs Regeln',
     'personalization_reminder_rule_line' => ':count Tage vorher',
-    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+    'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
-    'test_for_crowdin' => 'Test for Crowdin',
+    'test_for_crowdin' => 'Test für Crowdin',
 ];
