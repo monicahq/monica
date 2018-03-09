@@ -24,16 +24,6 @@ class PingVersionServer extends Command
     protected $description = 'Ping version.monicahq.com to know if a new version is available';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
