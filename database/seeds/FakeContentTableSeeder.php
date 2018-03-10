@@ -14,7 +14,6 @@ class FakeContentTableSeeder extends Seeder
 
     private $numberOfContacts;
     private $contact;
-    private $faker;
     private $account;
 
     /**
@@ -24,6 +23,7 @@ class FakeContentTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->setUpFaker();
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         // create a random number of contacts
