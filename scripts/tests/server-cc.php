@@ -25,9 +25,12 @@ if ($uri !== '/' && file_exists($root.'/public'.$uri)) {
  */
 require $root.'/vendor/autoload.php';
 
-\LiveCodeCoverage\LiveCodeCoverage::bootstrap(
+$shutDownCodeCoverage = \LiveCodeCoverage\LiveCodeCoverage::bootstrap(
+    function () { return true; },
     $root.STORAGE,
     $root.'/phpunit.xml'
 );
 
 require_once $root.'/public/index.php';
+
+$shutDownCodeCoverage();
