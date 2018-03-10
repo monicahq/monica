@@ -174,7 +174,7 @@ class User extends Authenticatable
     public function hasAlreadyRatedToday()
     {
         try {
-            $day = Day::where('account_id', $this->account_id)
+            Day::where('account_id', $this->account_id)
                 ->where('date', \Carbon\Carbon::now($this->timezone)->format('Y-m-d'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {

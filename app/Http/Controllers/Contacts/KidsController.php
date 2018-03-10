@@ -44,8 +44,6 @@ class KidsController extends Controller
      */
     public function store(KidsRequest $request, Contact $contact)
     {
-        $contactToSaveTheReminderTo = $contact;
-
         // this is a real contact, not just a significant other
         if ($request->get('realContact')) {
             $kid = Contact::create(
@@ -83,14 +81,15 @@ class KidsController extends Controller
         // birthdate
         $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 
@@ -155,14 +154,15 @@ class KidsController extends Controller
         // birthdate
         $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 

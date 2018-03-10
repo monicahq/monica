@@ -29,7 +29,7 @@ class GiftsController extends Controller
                 'comment' => $gift->comment,
                 'url' => $gift->url,
                 'value' => MoneyHelper::format($gift->value),
-                'does_value_exist' => $gift->value ? true : false,
+                'does_value_exist' => (bool) $gift->value,
                 'is_an_idea' => $gift->is_an_idea,
                 'has_been_offered' => $gift->has_been_offered,
                 'has_been_received' => $gift->has_been_received,

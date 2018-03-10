@@ -51,7 +51,7 @@ class ApiContactFieldController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -59,7 +59,7 @@ class ApiContactFieldController extends ApiController
         }
 
         try {
-            $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
+            ContactFieldType::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_field_type_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -109,7 +109,7 @@ class ApiContactFieldController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
