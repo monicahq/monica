@@ -18,6 +18,8 @@ trait VCardImporter
 {
     protected $skippedContacts = 0;
     protected $importedContacts = 0;
+    private $contactFieldEmailId;
+    private $contactFieldPhoneId;
 
     public function work($account_id, $subject)
     {
@@ -30,10 +32,13 @@ trait VCardImporter
         // create special gender for this import
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we
         // can't guess whether they are men, women or else.
-        $gender = new Gender;
-        $gender->account_id = $account_id;
-        $gender->name = 'vCard';
-        $gender->save();
+        $gender = Gender::where('name', 'vCard')->first();
+        if (! $gender) {
+            $gender = new Gender;
+            $gender->account_id = $account_id;
+            $gender->name = 'vCard';
+            $gender->save();
+        }
 
         collect($matches[0])->map(function ($vcard) {
             return Reader::read($vcard);
@@ -48,81 +53,12 @@ trait VCardImporter
             // Skip contact if there isn't a first name or a nickname
             if (! $this->contactHasName($vcard)) {
                 $this->workContactNoFirstname($vcard);
-                $skippedContacts++;
+                $this->$skippedContacts++;
 
                 return;
             }
 
-            $contact = new Contact();
-            $contact->account_id = $account_id;
-
-            if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
-                $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
-                $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
-                $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
-            } else {
-                $contact->first_name = $this->formatValue($vcard->NICKNAME);
-            }
-
-            $contact->gender_id = $gender->id;
-            $contact->job = $this->formatValue($vcard->ORG);
-
-            $contact->setAvatarColor();
-
-            $contact->save();
-
-            if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
-                $birthdate = new \DateTime((string) $vcard->BDAY);
-
-                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-            }
-
-            if ($vcard->ADR) {
-                $address = new Address();
-                $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
-                $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
-                $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
-                $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-
-                $country = Country::where('country', $vcard->ADR->getParts()[6])
-                    ->orWhere('iso', strtolower($vcard->ADR->getParts()[6]))
-                    ->first();
-
-                if ($country) {
-                    $address->country_id = $country->id;
-                }
-
-                $address->contact_id = $contact->id;
-                $address->account_id = $contact->account_id;
-                $address->save();
-            }
-
-            if (! is_null($this->formatValue($vcard->EMAIL))) {
-                // Saves the email
-                $contactFieldType = ContactFieldType::where('type', 'email')->first();
-                $contactField = new ContactField;
-                $contactField->account_id = $contact->account_id;
-                $contactField->contact_id = $contact->id;
-                $contactField->data = $this->formatValue($vcard->EMAIL);
-                $contactField->contact_field_type_id = $contactFieldType->id;
-                $contactField->save();
-            }
-
-            if (! is_null($this->formatValue($vcard->TEL))) {
-                // Saves the phone number
-                $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-                $contactField = new ContactField;
-                $contactField->account_id = $contact->account_id;
-                $contactField->contact_id = $contact->id;
-                $contactField->data = $this->formatValue($vcard->TEL);
-                $contactField->contact_field_type_id = $contactFieldType->id;
-                $contactField->save();
-            }
-
-            $contact->updateGravatar();
-
-            $contact->logEvent('contact', $contact->id, 'create');
+            $this->vCardToContact($vcard, $account_id, $gender->id);
 
             $this->importedContacts++;
 
@@ -130,6 +66,98 @@ trait VCardImporter
         });
 
         $this->workEnd($matchCount, $this->skippedContacts, $this->importedContacts);
+    }
+
+    private function vCardToContact($vcard, $account_id, $gender_id)
+    {
+        $contact = new Contact();
+        $contact->account_id = $account_id;
+        $contact->gender_id = $gender_id;
+
+        if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
+            $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
+            $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
+            $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
+        } else {
+            $contact->first_name = $this->formatValue($vcard->NICKNAME);
+        }
+
+        $contact->job = $this->formatValue($vcard->ORG);
+
+        $contact->setAvatarColor();
+
+        $contact->save();
+
+        if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
+            $birthdate = new \DateTime((string) $vcard->BDAY);
+
+            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+        }
+
+        if ($vcard->ADR) {
+            $address = new Address();
+            $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
+            $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
+            $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
+            $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
+
+            $country = Country::where('country', $vcard->ADR->getParts()[6])
+                ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
+                ->first();
+
+            if ($country) {
+                $address->country_id = $country->id;
+            }
+
+            $address->contact_id = $contact->id;
+            $address->account_id = $contact->account_id;
+            $address->save();
+        }
+
+        if (! is_null($this->formatValue($vcard->EMAIL))) {
+            // Saves the email
+            $contactField = new ContactField;
+            $contactField->contact_id = $contact->id;
+            $contactField->account_id = $contact->account_id;
+            $contactField->data = $this->formatValue($vcard->EMAIL);
+            $contactField->contact_field_type_id = $this->contactFieldEmailId();
+            $contactField->save();
+        }
+
+        if (! is_null($this->formatValue($vcard->TEL))) {
+            // Saves the phone number
+            $contactField = new ContactField;
+            $contactField->contact_id = $contact->id;
+            $contactField->account_id = $contact->account_id;
+            $contactField->data = $this->formatValue($vcard->TEL);
+            $contactField->contact_field_type_id = $this->contactFieldPhoneId();
+            $contactField->save();
+        }
+
+        $contact->updateGravatar();
+
+        $contact->logEvent('contact', $contact->id, 'create');
+    }
+
+    private function contactFieldEmailId()
+    {
+        if (! $this->contactFieldEmailId)
+        {
+            $contactFieldType = ContactFieldType::where('type', 'email')->first();
+            $this->contactFieldEmailId = $contactFieldType->id;
+        }
+        return $this->contactFieldEmailId;
+    }
+
+    private function contactFieldPhoneId()
+    {
+        if (! $this->contactFieldPhoneId)
+        {
+            $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+            $this->contactFieldPhoneId = $contactFieldType->id;
+        }
+        return $this->contactFieldPhoneId;
     }
 
     protected function workInit($matchCount) {
