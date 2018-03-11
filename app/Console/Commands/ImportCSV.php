@@ -54,10 +54,13 @@ class ImportCSV extends Command
         // create special gender for this import
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we
         // can't guess whether they are men, women or else.
-        $gender = new Gender;
-        $gender->account_id = $user->account_id;
-        $gender->name = 'vCard';
-        $gender->save();
+        $gender = Gender::where('name', 'vCard')->first();
+        if (! $gender) {
+            $gender = new Gender;
+            $gender->account_id = $account_id;
+            $gender->name = 'vCard';
+            $gender->save();
+        }
 
         $first = true;
         $imported = 0;
@@ -66,11 +69,10 @@ class ImportCSV extends Command
                 while (($data = fgetcsv($handle)) !== false) {
                     // don't import the columns
                     if ($first) {
-                        continue;
-                    } else {
                         $first = false;
+                        continue;
                     }
-
+    
                     if ($this->handleOneLine($data, $gender)) {
                         $imported++;
                     }
@@ -101,6 +103,11 @@ class ImportCSV extends Command
 
         $this->handleDatas($data, $contact);
 
+        // can't have empty email
+        if (empty($contact->email)) {
+            $contact->email = null;
+        }
+
         $contact->save();
         $contact->setAvatarColor();
 
@@ -110,6 +117,10 @@ class ImportCSV extends Command
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
             $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
         }
+
+        $contact->updateGravatar();
+
+        $contact->logEvent('contact', $contact->id, 'create');
 
         return true;
     }
@@ -157,11 +168,6 @@ class ImportCSV extends Command
         }
         if (! empty($data[66])) {
             $contact->job = $data[66];          // organization 1 name 66
-        }
-
-        // can't have empty email
-        if (empty($contact->email)) {
-            $contact->email = null;
         }
     }
 }
