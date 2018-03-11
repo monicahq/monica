@@ -2,17 +2,9 @@
 
 namespace App\Jobs;
 
-use App\User;
-use App\Gender;
-use App\Address;
-use App\Contact;
-use App\Country;
 use App\ImportJob;
-use App\ContactField;
 use App\ImportJobReport;
-use App\ContactFieldType;
 use App\Traits\VCardImporter;
-use Sabre\VObject\Reader;
 use Illuminate\Bus\Queueable;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Queue\SerializesModels;
@@ -63,25 +55,31 @@ class AddContactFromVCard implements ShouldQueue
         }
     }
 
-    protected function workInit($matchCount) {
+    protected function workInit($matchCount)
+    {
         $this->matchCount = $matchCount;
         $this->importJob->started_at = \Carbon\Carbon::now();
+
         return true;
     }
 
-    protected function workContactExists($vcard) {
+    protected function workContactExists($vcard)
+    {
         $this->fileImportJobReport($vcard, self::VCARD_SKIPPED, self::ERROR_CONTACT_EXIST);
     }
 
-    protected function workContactNoFirstname($vcard) {
+    protected function workContactNoFirstname($vcard)
+    {
         $this->fileImportJobReport($vcard, self::VCARD_SKIPPED, self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
     }
 
-    protected function workNext($vcard) {
+    protected function workNext($vcard)
+    {
         $this->fileImportJobReport($vcard, self::VCARD_IMPORTED);
     }
 
-    protected function workEnd($numberOfContactsInTheFile, $skippedContacts, $importedContacts) {
+    protected function workEnd($numberOfContactsInTheFile, $skippedContacts, $importedContacts)
+    {
         $this->importJob->contacts_found = $numberOfContactsInTheFile;
         $this->importJob->contacts_skipped = $skippedContacts;
         $this->importJob->contacts_imported = $importedContacts;

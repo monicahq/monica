@@ -3,14 +3,7 @@
 namespace App\Console\Commands;
 
 use App\User;
-use App\Gender;
-use App\Address;
-use App\Contact;
-use App\Country;
-use App\ContactField;
-use App\ContactFieldType;
 use App\Traits\VCardImporter;
-use Sabre\VObject\Reader;
 use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Filesystem\Filesystem;
@@ -62,7 +55,8 @@ class ImportVCards extends Command
         $this->work($user->account_id, $filesystem->get($this->path));
     }
 
-    protected function workInit($matchCount) {
+    protected function workInit($matchCount)
+    {
         $this->info("We found {$matchCount} contacts in {$this->path}.");
 
         if (! $this->confirm('Would you like to import them?', true)) {
@@ -75,19 +69,23 @@ class ImportVCards extends Command
         return true;
     }
 
-    protected function workContactExists($vcard) {
+    protected function workContactExists($vcard)
+    {
         $this->output->progressAdvance();
     }
 
-    protected function workContactNoFirstname($vcard) {
+    protected function workContactNoFirstname($vcard)
+    {
         $this->output->progressAdvance();
     }
 
-    protected function workNext($vcard) {
+    protected function workNext($vcard)
+    {
         $this->output->progressAdvance();
     }
 
-    protected function workEnd($numberOfContactsInTheFile, $skippedContacts, $importedContacts) {
+    protected function workEnd($numberOfContactsInTheFile, $skippedContacts, $importedContacts)
+    {
         $this->output->progressFinish();
 
         $this->info("Successfully imported {$importedContacts} contacts and skipped {$skippedContacts}.");

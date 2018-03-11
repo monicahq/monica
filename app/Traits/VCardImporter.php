@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use App\User;
 use App\Gender;
 use App\Address;
 use App\Contact;
@@ -10,9 +9,7 @@ use App\Country;
 use App\ContactField;
 use App\ContactFieldType;
 use Sabre\VObject\Reader;
-use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;
-use Illuminate\Filesystem\Filesystem;
 
 trait VCardImporter
 {
@@ -142,40 +139,45 @@ trait VCardImporter
 
     private function contactFieldEmailId()
     {
-        if (! $this->contactFieldEmailId)
-        {
+        if (! $this->contactFieldEmailId) {
             $contactFieldType = ContactFieldType::where('type', 'email')->first();
             $this->contactFieldEmailId = $contactFieldType->id;
         }
+
         return $this->contactFieldEmailId;
     }
 
     private function contactFieldPhoneId()
     {
-        if (! $this->contactFieldPhoneId)
-        {
+        if (! $this->contactFieldPhoneId) {
             $contactFieldType = ContactFieldType::where('type', 'phone')->first();
             $this->contactFieldPhoneId = $contactFieldType->id;
         }
+
         return $this->contactFieldPhoneId;
     }
 
-    protected function workInit($matchCount) {
+    protected function workInit($matchCount)
+    {
         return true;
     }
 
-    protected function workContactExists($vcard) {
+    protected function workContactExists($vcard)
+    {
     }
 
-    protected function workContactNoFirstname($vcard) {
+    protected function workContactNoFirstname($vcard)
+    {
     }
 
-    protected function workNext($vcard) {
+    protected function workNext($vcard)
+    {
     }
 
-    protected function workEnd($matchCount, $skippedContacts, $importedContacts) {
+    protected function workEnd($matchCount, $skippedContacts, $importedContacts)
+    {
     }
-    
+
     /**
      * Formats and returns a string for the contact.
      *
