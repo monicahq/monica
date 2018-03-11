@@ -57,7 +57,7 @@ class ImportCSV extends Command
         $gender = Gender::where('name', 'vCard')->first();
         if (! $gender) {
             $gender = new Gender;
-            $gender->account_id = $account_id;
+            $gender->account_id = $user->account_id;
             $gender->name = 'vCard';
             $gender->save();
         }
@@ -73,9 +73,14 @@ class ImportCSV extends Command
                         continue;
                     }
 
-                    if ($this->handleOneLine($data, $gender)) {
-                        $imported++;
+                    // if first & last name do not exist skip row
+                    if (empty($data[1]) && empty($data[3])) {
+                        continue;
                     }
+
+                    $this->csvToContact($data, $user->account_id, $gender->id);
+
+                    $imported++;
                 }
             } finally {
                 fclose($handle);
@@ -86,52 +91,14 @@ class ImportCSV extends Command
     }
 
     /**
-     * Handle one line.
-     *
-     * @return mixed
+     * Create contact.
      */
-    public function handleOneLine($data, $gender)
+    private function csvToContact($data, $account_id, $gender_id)
     {
-        // if first & last name do not exist skip row
-        if (empty($data[1]) && empty($data[3])) {
-            return false;
-        }
-
         $contact = new Contact();
-        $contact->account_id = $user->account_id;
-        $contact->gender_id = $gender->id;
+        $contact->account_id = $account_id;
+        $contact->gender_id = $gender_id;
 
-        $this->handleDatas($data, $contact);
-
-        // can't have empty email
-        if (empty($contact->email)) {
-            $contact->email = null;
-        }
-
-        $contact->save();
-        $contact->setAvatarColor();
-
-        if (! empty($data[14])) {
-            $birthdate = new \DateTime(strtotime($data[14]));
-
-            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-        }
-
-        $contact->updateGravatar();
-
-        $contact->logEvent('contact', $contact->id, 'create');
-
-        return true;
-    }
-
-    /**
-     * Handle datas.
-     *
-     * @return mixed
-     */
-    public function handleDatas($data, $contact)
-    {
         if (! empty($data[1])) {
             $contact->first_name = $data[1];    // Given Name
         }
@@ -169,5 +136,24 @@ class ImportCSV extends Command
         if (! empty($data[66])) {
             $contact->job = $data[66];          // organization 1 name 66
         }
+
+        // can't have empty email
+        if (empty($contact->email)) {
+            $contact->email = null;
+        }
+
+        $contact->save();
+        $contact->setAvatarColor();
+
+        if (! empty($data[14])) {
+            $birthdate = new \DateTime(strtotime($data[14]));
+
+            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+        }
+
+        $contact->updateGravatar();
+
+        $contact->logEvent('contact', $contact->id, 'create');
     }
 }
