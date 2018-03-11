@@ -14,7 +14,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:update {--force}';
+    protected $signature = 'monica:update {--force} {--update-composer}';
 
     /**
      * The console command description.
@@ -32,20 +32,24 @@ class Update extends Command
     {
         if ($this->confirmToProceed()) {
             $this->artisan('✓ Resetting config cache','config:cache');
-            $this->artisan('✓ Maintenance mode on', 'down', [
-                '--message' => 'Upgrading Monica v'.config('monica.app_version'),
-                '--retry' => '60'
-                ]);
+            try {
+                $this->artisan('✓ Maintenance mode on', 'down', [
+                    '--message' => 'Upgrading Monica v'.config('monica.app_version'),
+                    '--retry' => '10'
+                    ]);
 
-            $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --no-dev');
+                if ($this->option('update-composer') === true) {
+                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --no-dev');
+                }
 
-            $this->artisan('✓ Performing migrations', 'migrate', ['--force' => true]);
+                $this->artisan('✓ Performing migrations', 'migrate', ['--force' => true]);
 
-            $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => true]);
-            $this->artisan('✓ Filling the Countries table', 'db:seed', ['--class' => 'CountriesSeederTable', '--force' => true]);
-            $this->artisan('✓ Symlink the storage folder', 'storage:link');
-            
-            $this->artisan('✓ Maintenance mode off', 'up');
+                $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => true]);
+                $this->artisan('✓ Filling the Countries table', 'db:seed', ['--class' => 'CountriesSeederTable', '--force' => true]);
+                $this->artisan('✓ Symlink the storage folder', 'storage:link');
+            } finally {
+                $this->artisan('✓ Maintenance mode off', 'up');
+            }
 
             $this->line('Monica v'.config('monica.app_version').' is set up, enjoy.');
         }
@@ -56,7 +60,9 @@ class Update extends Command
         $this->info($message);
         $this->line($command);
         exec($command, $output);
-        $this->line(join('\n', $output));
+        foreach ($output as $line) {
+            $this->line($line);
+        }
         $this->line('');
     }
 
