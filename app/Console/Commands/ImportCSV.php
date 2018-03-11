@@ -65,28 +65,34 @@ class ImportCSV extends Command
         $first = true;
         $imported = 0;
         if (($handle = fopen($file, 'r')) !== false) {
-            while (($data = fgetcsv($handle)) !== false) {
-                // don't import the columns
-                if ($first) {
-                    $first = false;
-                    continue;
+            try {
+                while (($data = fgetcsv($handle)) !== false) {
+                    // don't import the columns
+                    if ($first) {
+                        $first = false;
+                        continue;
+                    }
+
+                    // if first & last name do not exist skip row
+                    if (empty($data[1]) && empty($data[3])) {
+                        continue;
+                    }
+
+                    $this->csvToContact($data, $user->account_id, $gender->id);
+
+                    $imported++;
                 }
-
-                // if first & last name do not exist skip row
-                if (empty($data[1]) && empty($data[3])) {
-                    continue;
-                }
-
-                $this->csvToContact($data, $user->account_id, $gender->id);
-
-                $imported++;
+            } finally {
+                fclose($handle);
             }
-            fclose($handle);
         }
 
         $this->info("Imported {$imported} Contacts");
     }
 
+    /**
+     * Create contact.
+     */
     private function csvToContact($data, $account_id, $gender_id)
     {
         $contact = new Contact();
