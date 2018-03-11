@@ -72,7 +72,7 @@ class ImportCSV extends Command
                         $first = false;
                         continue;
                     }
-    
+
                     if ($this->handleOneLine($data, $gender)) {
                         $imported++;
                     }
