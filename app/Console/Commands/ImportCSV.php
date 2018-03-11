@@ -57,7 +57,7 @@ class ImportCSV extends Command
         $gender = Gender::where('name', 'vCard')->first();
         if (! $gender) {
             $gender = new Gender;
-            $gender->account_id = $account_id;
+            $gender->account_id = $user->account_id;
             $gender->name = 'vCard';
             $gender->save();
         }
@@ -77,7 +77,7 @@ class ImportCSV extends Command
                     continue;
                 }
 
-                $this->csvToContact($vcard, $user->account_id, $gender->id);
+                $this->csvToContact($data, $user->account_id, $gender->id);
 
                 $imported++;
             }
@@ -87,7 +87,7 @@ class ImportCSV extends Command
         $this->info("Imported {$imported} Contacts");
     }
 
-    private function csvToContact($vcard, $account_id, $gender_id)
+    private function csvToContact($data, $account_id, $gender_id)
     {
         $contact = new Contact();
         $contact->account_id = $account_id;
