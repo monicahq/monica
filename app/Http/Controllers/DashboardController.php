@@ -6,6 +6,7 @@ use Auth;
 use App\Debt;
 use App\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {

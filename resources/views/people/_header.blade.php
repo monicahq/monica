@@ -7,7 +7,7 @@
 
         <div class="people-profile-information">
 
-          @if ($contact->has_avatar == true)
+          @if ($contact->has_avatar)
             <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
             @if (! is_null($contact->gravatar_url))

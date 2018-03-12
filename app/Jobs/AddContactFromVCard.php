@@ -106,7 +106,7 @@ class AddContactFromVCard implements ShouldQueue
                     $birthdate = new \DateTime((string) $vcard->BDAY);
 
                     $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
                 if ($vcard->ADR) {
@@ -173,7 +173,7 @@ class AddContactFromVCard implements ShouldQueue
             $this->importJob->contacts_imported = $this->importedContacts;
             $this->importJob->ended_at = \Carbon\Carbon::now();
             $this->importJob->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->importJob->contacts_found = $numberOfContactsInTheFile;
             $this->importJob->failed = 1;
             $this->importJob->failed_reason = $e->getMessage();

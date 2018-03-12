@@ -18,7 +18,9 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent', 'api_key',
+        'number_of_invitations_sent',
+        'api_key',
+        'default_time_reminder_is_sent',
     ];
 
     /**
@@ -47,13 +49,23 @@ class Account extends Model
         $account->created_at = Carbon::now();
         $account->save();
 
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
+        $account->populateDefaultFields($account);
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password);
 
         return $account;
+    }
+
+    /**
+     * Populates all the default column that should be there when a new account
+     * is created or reset.
+     */
+    public static function populateDefaultFields($account)
+    {
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
     }
 
     /**
@@ -297,9 +309,51 @@ class Account extends Model
     }
 
     /**
+     * Get the Reminder Rules records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderRules()
+    {
+        return $this->hasMany('App\ReminderRule');
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
+     * Get the default time reminder is sent.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDefaultTimeReminderIsSentAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Set the default time a reminder is sent.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDefaultTimeReminderIsSentAttribute($value)
+    {
+        $this->attributes['default_time_reminder_is_sent'] = $value;
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return this
+     * @return $this
      */
     public function canDowngrade()
     {
@@ -426,7 +480,7 @@ class Account extends Model
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
             if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
-                $contactFieldType = ContactFieldType::create([
+                ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
@@ -451,6 +505,17 @@ class Account extends Model
     }
 
     /**
+     * Populates the default reminder rules in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultReminderRulesTable()
+    {
+        ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id, 'active' => 1]);
+        ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id, 'active' => 1]);
+    }
+
+    /**
      * Get the reminders for the month given in parameter.
      * - 0 means current month
      * - 1 means month+1
@@ -461,12 +526,11 @@ class Account extends Model
     {
         $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
         $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
-        $reminders = auth()->user()->account->reminders()
-                            ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
-                            ->orderBy('next_expected_date', 'asc')
-                            ->get();
 
-        return $reminders;
+        return auth()->user()->account->reminders()
+                     ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
+                     ->orderBy('next_expected_date', 'asc')
+                     ->get();
     }
 
     /**

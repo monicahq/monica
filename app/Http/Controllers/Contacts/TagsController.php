@@ -11,9 +11,9 @@ class TagsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param GiftsRequest $request
+     * @param TagsRequest $request
      * @param Contact $contact
-     * @param Gift $gift
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(TagsRequest $request, Contact $contact)
@@ -26,22 +26,14 @@ class TagsController extends Controller
 
         // if we receive an empty string, that means all tags have been removed.
         if ($request->input('tags') == '') {
-            $contact->tags()->detach();
+            $contact->unsetTags();
 
             return response()->json(['status' => 'no', 'tags' => '']);
         }
 
-        $tagsIDs = [];
         $tagsWithIdAndSlug = [];
         foreach ($tags as $tag) {
-            $tag = auth()->user()->account->tags()->firstOrCreate([
-                'name' => $tag,
-            ]);
-
-            $tag->name_slug = str_slug($tag->name);
-            $tag->save();
-
-            $tagsIDs[$tag->id] = ['account_id' => auth()->user()->account_id];
+            $tag = $contact->setTag($tag);
 
             // this is passed back in json to JS
             array_push($tagsWithIdAndSlug, [
@@ -49,8 +41,6 @@ class TagsController extends Controller
               'slug' => $tag->name_slug,
             ]);
         }
-
-        $contact->tags()->sync($tagsIDs);
 
         $response = [
           'status' => 'yes',

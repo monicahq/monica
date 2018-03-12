@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Note;
 use Validator;
 use App\Contact;
 use App\Activity;
 use App\ActivityType;
+use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -94,7 +96,7 @@ class ApiActivityController extends ApiController
         }
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($activity);
+        (new JournalEntry)->add($activity);
 
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
@@ -167,7 +169,7 @@ class ApiActivityController extends ApiController
 
         // Log a journal entry but need to delete the previous one first
         $activity->deleteJournalEntry();
-        $journalEntry = (new JournalEntry)->add($activity);
+        (new JournalEntry)->add($activity);
 
         // Get the attendees
         $attendees = $request->get('contacts');

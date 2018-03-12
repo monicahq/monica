@@ -15,7 +15,11 @@ ${ARTISAN} db:seed --class CountriesSeederTable --force
 
 # Ensure storage directories are present
 STORAGE=${MONICADIR}/storage
-mkdir -p ${STORAGE}/{logs,app/public,framework/views,framework/cache,framework/sessions}
+mkdir -p ${STORAGE}/logs
+mkdir -p ${STORAGE}/app/public
+mkdir -p ${STORAGE}/framework/views
+mkdir -p ${STORAGE}/framework/cache
+mkdir -p ${STORAGE}/framework/sessions
 chown -R monica:apache ${STORAGE}
 chmod -R g+rw ${STORAGE}
 

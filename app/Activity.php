@@ -162,7 +162,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
-        $data = [
+        return [
             'type' => 'activity',
             'id' => $this->id,
             'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
@@ -175,7 +175,5 @@ class Activity extends Model implements IsJournalableInterface
             'year' => $this->date_it_happened->year,
             'attendees' => $this->getContactsForAPI(),
         ];
-
-        return $data;
     }
 }

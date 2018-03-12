@@ -63,6 +63,9 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
         'first_name' => 'John',
         'last_name' => 'Doe',
         'has_avatar' => false,
+        'gender_id' => function () {
+            return factory(App\Gender::class)->create()->id;
+        },
     ];
 });
 
@@ -204,8 +207,21 @@ $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) 
 $factory->define(App\ContactField::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
+        'contact_id' => 1,
         'contact_field_type_id' => 1,
         'data' => 'john@doe.com',
+    ];
+});
+
+$factory->define(App\ReminderRule::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Notification::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
     ];
 });
 

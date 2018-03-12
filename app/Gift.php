@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property Account $account
  * @property Contact $contact
- * @property Contact|Kid|SignificantOther $recipient
+ * @property Contact $recipient
  * @method static Builder offered()
  * @method static Builder isIdea()
  */

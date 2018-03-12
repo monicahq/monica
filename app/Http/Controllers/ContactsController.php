@@ -32,6 +32,7 @@ class ContactsController extends Controller
         }
 
         $date_flag = false;
+        $date_sort = null;
 
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
@@ -240,7 +241,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if ($contact->setName($request->input('firstname'), null, $request->input('lastname')) == false) {
+        if (! $contact->setName($request->input('firstname'), null, $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -265,7 +266,7 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
         }
@@ -275,8 +276,6 @@ class ContactsController extends Controller
         // Handling the case of the birthday
         $contact->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
@@ -287,7 +286,7 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -298,7 +297,10 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 
@@ -306,19 +308,7 @@ class ContactsController extends Controller
 
         dispatch(new ResizeAvatars($contact));
 
-        // for performance reasons, we check if a gravatar exists for this email
-        // address. if it does, we store the gravatar url in the database.
-        // while this is not ideal because the gravatar can change, at least we
-        // won't make constant call to gravatar to load the avatar on every
-        // page load.
-        $response = $contact->getGravatar(250);
-        if ($response != false and is_string($response)) {
-            $contact->gravatar_url = $response;
-            $contact->save();
-        } else {
-            $contact->gravatar_url = null;
-            $contact->save();
-        }
+        $contact->updateGravatar();
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.information_edit_success'));
@@ -457,7 +447,7 @@ class ContactsController extends Controller
                 ]);
             })->get();
         } else {
-            $results = Contact::search($needle, $accountId);
+            $results = Contact::search($needle, $accountId, 20, 'created_at');
         }
 
         if (count($results) !== 0) {
@@ -475,7 +465,7 @@ class ContactsController extends Controller
     public function vCard(Contact $contact)
     {
         if (config('app.debug')) {
-            \Debugbar::disable();
+            \Barryvdh\Debugbar\Facade::disable();
         }
 
         $vcard = VCardHelper::prepareVCard($contact);

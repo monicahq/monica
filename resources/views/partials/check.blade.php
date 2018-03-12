@@ -1,6 +1,6 @@
 {{-- Version check --}}
 
-@if (config('monica.check_version') == true)
+@if (config('monica.check_version'))
 
     @if (\App\Instance::first()->latest_version != config('monica.app_version'))
     <li>

@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Intervention\Image\Facades\Image as Image;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ResizeAvatars implements ShouldQueue
 {
@@ -34,7 +35,7 @@ class ResizeAvatars implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->contact->has_avatar == true) {
+        if ($this->contact->has_avatar) {
             try {
                 $avatar_file = Storage::disk($this->contact->avatar_location)->get($this->contact->avatar_file_name);
                 $avatar_path = Storage::disk($this->contact->avatar_location)->url($this->contact->avatar_file_name);

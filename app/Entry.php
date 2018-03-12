@@ -65,7 +65,7 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
-        $data = [
+        return [
             'type' => 'activity',
             'id' => $this->id,
             'title' => $this->title,
@@ -76,7 +76,5 @@ class Entry extends Model implements IsJournalableInterface
             'month_name' => \App\Helpers\DateHelper::getShortMonth($this->created_at),
             'year' => $this->created_at->year,
         ];
-
-        return $data;
     }
 }

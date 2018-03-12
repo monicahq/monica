@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         // Commands\Inspire::class,
         'App\Console\Commands\SendNotifications',
+        'App\Console\Commands\SendReminders',
         'App\Console\Commands\CalculateStatistics',
         'App\Console\Commands\ImportCSV',
         'App\Console\Commands\SetupProduction',
@@ -33,7 +34,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('monica:sendnotifications')->hourly();
+        $schedule->command('send:notifications')->hourly();
+        $schedule->command('send:reminders')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
         $schedule->command('monica:ping')->daily();
     }
