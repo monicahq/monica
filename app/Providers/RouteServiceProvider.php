@@ -116,7 +116,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('kid', function ($value, $route) {
             Contact::findOrFail($route->parameter('contact')->id);
-          
+
             $value = $ID_hasher->decodeId($value);
 
             Offspring::where('account_id', auth()->user()->account_id)
