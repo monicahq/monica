@@ -23,6 +23,7 @@ class GiftsController extends Controller
 
         foreach ($gifts as $gift) {
             $data = [
+                'contact_hash' => $contact->hashID(),
                 'id' => $gift->id,
                 'name' => $gift->name,
                 'is_for' => $gift->recipient_name,

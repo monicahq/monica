@@ -80,7 +80,7 @@
 
           <ul class="horizontal quick-actions">
             <li>
-              <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+              <a href="/people/{{ $contact->hashID() }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
             </li>
           </ul>
         </div>

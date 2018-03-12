@@ -11,7 +11,7 @@
 <pet v-bind:contact-id="{!! $contact->id !!}"></pet>
 
 {{-- Contact information --}}
-<contact-information v-bind:contact-id="{!! $contact->id !!}"></contact-information>
+<contact-information hash={!! $contact->hashID() !!} v-bind:contact-id="{!! $contact->id !!}"></contact-information>
 
 {{-- Address --}}
 <contact-address v-bind:contact-id="{!! $contact->id !!}"></contact-address>

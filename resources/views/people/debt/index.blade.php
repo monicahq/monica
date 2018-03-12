@@ -4,7 +4,7 @@
     {{ trans('people.debt_title') }}
 
     <span class="fr">
-      <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.debts_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
 

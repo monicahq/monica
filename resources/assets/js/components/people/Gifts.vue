@@ -11,7 +11,7 @@
       <h3>
         Gifts
 
-        <a :href="'/people/' + contactId + '/gifts/add'" class="btn fr f6 pt2">{{ $t('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + hash + '/gifts/add'" class="btn fr f6 pt2">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -51,7 +51,7 @@
                     </span>
                     <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
                     <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_mark_offered') }}</a>
-                    <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                    <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
                     <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                     <div v-if="gift.show_comment" class="mb1 mt1">
                         {{ gift.comment }}
@@ -82,7 +82,7 @@
                 </span>
                 <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
                 <a @click="toggle(gift)" class="pointer mr1">Mark as an idea</a>
-                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
                 <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
                     {{ gift.comment }}
@@ -110,7 +110,7 @@
                     <span class="ml1 mr1 black-50">•</span>
                 </span>
                 <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
-                <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
                 <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
                     {{ gift.comment }}
@@ -171,7 +171,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId', 'giftsActiveTab'],
+        props: ['hash', 'contactId', 'giftsActiveTab'],
 
         computed: {
             ideas: function () {
@@ -218,7 +218,7 @@
             },
 
             toggle(gift) {
-                axios.post('/people/' + this.contactId + '/gifts/' + gift.id + '/toggle')
+                axios.post('/people/' + this.hash + '/gifts/' + gift.id + '/toggle')
                         .then(response => {
                             Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
                             Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
@@ -231,7 +231,7 @@
             },
 
             trash(gift) {
-                axios.delete('/people/' + this.contactId + '/gifts/' + gift.id)
+                axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
                       .then(response => {
                           this.gifts.splice(this.gifts.indexOf(gift), 1);
                           this.$refs.modal.close();
