@@ -10,7 +10,7 @@
             <img class="logo" src="/img/small-logo.png" alt="">
             @if($first)
               <h1>Welcome to your newly installed Monica instance</h1>
-              <h2>You need to create a Monica account</h2>
+              <h2>You need to create an account to use Monica</h2>
             @else
               <h2>Create your Monica account</h2>
               <h3><a href="/login">Log in</a> if you already have an account.</h3>

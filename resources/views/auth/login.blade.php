@@ -41,7 +41,7 @@
                   @if(! config('monica.disable_signup'))
                     <li>Don't have an account? <a href="/register">Sign up</a></li>
                   @elseif(! \App\Account::hasAny())
-                    <li>Create the first account by <a href="/register">Sign up</a></li>
+                    <li>Create the first account by <a href="/register">signing up</a></li>
                   @endif
                 </ul>
               </div>
