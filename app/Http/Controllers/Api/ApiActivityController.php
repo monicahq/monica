@@ -162,6 +162,12 @@ class ApiActivityController extends ApiController
         return new ActivityResource($activity);
     }
 
+    /**
+     * Validate the request for update
+     * 
+     * @param  Request $request
+     * @return mixed
+     */
     private function validateUpdate($request)
     {
         // Validates basic fields to create the entry
