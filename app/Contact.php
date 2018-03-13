@@ -1418,44 +1418,39 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null($occasion)) {
+        if (is_null ($occasion)) {
             return;
         }
 
-        if ($occasion == 'birthdate') {
-            if (! $this->birthday_special_date_id) {
-                return;
-            }
+        switch($occasion)
+        {
+            case 'birthdate':
+                if ($this->birthday_special_date_id) {
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
 
-            $this->birthdate->deleteReminder();
-            $this->birthdate->delete();
+                    $this->birthday_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'deceased_date':
+                if ($this->deceased_special_date_id) {
+                    $this->deceasedDate->deleteReminder();
+                    $this->deceasedDate->delete();
 
-            $this->birthday_special_date_id = null;
-            $this->save();
-        }
+                    $this->deceased_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'first_met':
+                if ($this->first_met_special_date_id) {
+                    $this->firstMetDate->deleteReminder();
+                    $this->firstMetDate->delete();
 
-        if ($occasion == 'deceased_date') {
-            if (! $this->deceased_special_date_id) {
-                return;
-            }
-
-            $this->deceasedDate->deleteReminder();
-            $this->deceasedDate->delete();
-
-            $this->deceased_special_date_id = null;
-            $this->save();
-        }
-
-        if ($occasion == 'first_met') {
-            if (! $this->first_met_special_date_id) {
-                return;
-            }
-
-            $this->firstMetDate->deleteReminder();
-            $this->firstMetDate->delete();
-
-            $this->first_met_special_date_id = null;
-            $this->save();
+                    $this->first_met_special_date_id = null;
+                    $this->save();
+                }
+            break;
         }
     }
 
