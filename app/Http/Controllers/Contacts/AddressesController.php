@@ -50,7 +50,7 @@ class AddressesController extends Controller
      */
     public function store(AddressesRequest $request, Contact $contact)
     {
-        $address = $contact->addresses()->create([
+        return $contact->addresses()->create([
             'account_id' => auth()->user()->account->id,
             'country_id' => ($request->get('country_id') == 0 ? null : $request->get('country_id')),
             'name' => ($request->get('name') == '' ? null : $request->get('name')),
@@ -59,8 +59,6 @@ class AddressesController extends Controller
             'province' => ($request->get('province') == '' ? null : $request->get('province')),
             'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
         ]);
-
-        return $address;
     }
 
     /**

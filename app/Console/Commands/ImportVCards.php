@@ -124,7 +124,7 @@ class ImportVCards extends Command
                     $birthdate = new \DateTime((string) $vcard->BDAY);
 
                     $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
                 if ($vcard->ADR) {

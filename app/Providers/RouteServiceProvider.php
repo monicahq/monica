@@ -93,9 +93,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('significant_other', function ($value, $route) {
-            $contact = Contact::findOrFail($route->parameter('contact')->id);
+            Contact::findOrFail($route->parameter('contact')->id);
 
-            $relationShip = Relationship::where('account_id', auth()->user()->account_id)
+            Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('with_contact_id', $value)
                 ->firstOrFail();
@@ -104,9 +104,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('kid', function ($value, $route) {
-            $contact = Contact::findOrFail($route->parameter('contact')->id);
+            Contact::findOrFail($route->parameter('contact')->id);
 
-            $offspring = Offspring::where('account_id', auth()->user()->account_id)
+            Offspring::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $value)
                 ->where('is_the_child_of', $route->parameter('contact')->id)
                 ->firstOrFail();

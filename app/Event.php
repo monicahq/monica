@@ -50,20 +50,4 @@ class Event extends Model
         return $query->where('object_type', $key)
             ->where('object_id', $object->id);
     }
-
-    public function getDescription()
-    {
-        if ($this->nature_of_operation == 'create') {
-            $description = 'You added ';
-        }
-
-        if ($this->nature_of_operation == 'update') {
-            $description = 'You updated ';
-        }
-
-        // You added a reminder about John Doe
-        if ($this->object_type == 'reminder') {
-            $reminder = Reminder::findOrFail($this->object_id);
-        }
-    }
 }
