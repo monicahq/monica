@@ -24,14 +24,6 @@ class SetupProduction extends Command
     protected $description = 'Perform setup of Monica.';
 
     /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

@@ -78,7 +78,7 @@ class ApiGiftController extends ApiController
 
         if (! is_null($request->input('is_for'))) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
+                Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('is_for'))
                     ->firstOrFail();
             } catch (ModelNotFoundException $e) {
@@ -142,7 +142,7 @@ class ApiGiftController extends ApiController
 
         if (! is_null($request->input('is_for'))) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
+                Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('is_for'))
                     ->firstOrFail();
             } catch (ModelNotFoundException $e) {
