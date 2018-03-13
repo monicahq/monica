@@ -725,7 +725,7 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $middleName = null, String $lastName)
+    public function setName(String $firstName, String $lastName, String $middleName = null)
     {
         if ($firstName == '') {
             return false;
