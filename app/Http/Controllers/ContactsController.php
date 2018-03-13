@@ -451,6 +451,13 @@ class ContactsController extends Controller
         }
 
         if (count($results) !== 0) {
+
+            foreach ($results as $key => $result) {
+
+                $results[$key]->hash = $result->hashID();
+
+            }
+
             return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
