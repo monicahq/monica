@@ -94,7 +94,7 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_add_success'));
     }
 
@@ -112,7 +112,7 @@ class RelationshipsController extends Controller
         $partner = Contact::findOrFail($request->get('existingPartner'));
         $contact->setRelationshipWith($partner, true);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_add_success'));
     }
 
@@ -176,7 +176,7 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_edit_success'));
     }
 
@@ -206,7 +206,7 @@ class RelationshipsController extends Controller
         $partner->specialDates->each->delete();
         $partner->delete();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_delete_success'));
     }
 
@@ -229,7 +229,7 @@ class RelationshipsController extends Controller
 
         $contact->unsetRelationshipWith($partner, true);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_delete_success'));
     }
 }

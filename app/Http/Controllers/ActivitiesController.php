@@ -153,7 +153,7 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.activities_update_success'));
     }
 

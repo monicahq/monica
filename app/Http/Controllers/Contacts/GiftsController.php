@@ -152,7 +152,7 @@ class GiftsController extends Controller
 
         $contact->logEvent('gift', $gift->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_update_success'));
     }
 

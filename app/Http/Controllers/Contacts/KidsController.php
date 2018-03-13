@@ -93,7 +93,7 @@ class KidsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.kids_add_success'));
     }
 
@@ -111,7 +111,7 @@ class KidsController extends Controller
         $kid = Contact::findOrFail($request->get('existingKid'));
         $kid->isTheOffspringOf($contact, true);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_add_success'));
     }
 
@@ -166,7 +166,7 @@ class KidsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.kids_update_success'));
     }
 
@@ -196,7 +196,7 @@ class KidsController extends Controller
         $kid->specialDates->each->delete();
         $kid->delete();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.kids_delete_success'));
     }
 
@@ -219,7 +219,7 @@ class KidsController extends Controller
 
         $contact->unsetOffspring($kid, true);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_delete_success'));
     }
 }
