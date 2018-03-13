@@ -31,11 +31,11 @@ class Update extends Command
     public function handle()
     {
         if ($this->confirmToProceed()) {
-            $this->artisan('✓ Resetting config cache','config:cache');
+            $this->artisan('✓ Resetting config cache', 'config:cache');
             try {
                 $this->artisan('✓ Maintenance mode on', 'down', [
                     '--message' => 'Upgrading Monica v'.config('monica.app_version'),
-                    '--retry' => '10'
+                    '--retry' => '10',
                     ]);
 
                 if ($this->option('update-composer') === true) {

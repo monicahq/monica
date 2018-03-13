@@ -37,7 +37,7 @@ class SetupTest extends Command
         $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         $this->artisan('✓ Filling the Countries table', 'db:seed', ['--class' => 'CountriesSeederTable']);
         $this->artisan('✓ Symlink the storage folder', 'storage:link');
-    
+
         if (! $this->option('skipSeed')) {
             $this->artisan('✓ Filling  database with fake data', 'db:seed', ['--class' => 'FakeContentTableSeeder']);
         }
@@ -62,7 +62,7 @@ class SetupTest extends Command
         $this->info($message);
         $this->line($command);
         exec($command, $output);
-        $this->line(join('\n', $output));
+        $this->line(implode('\n', $output));
         $this->line('');
     }
 
