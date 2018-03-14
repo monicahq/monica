@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Contact;
 use App\Relationship;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\People\RelationshipsRequest;
 use App\Http\Requests\People\ExistingRelationshipsRequest;
 
@@ -57,7 +58,7 @@ class RelationshipsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(RelationshipsRequest $request, Contact $contact)
+    public function store(Request $request, Contact $contact)
     {
         dd($request->all());
         // this is a real contact, not just a significant other

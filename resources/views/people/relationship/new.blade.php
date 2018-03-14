@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="/people" method="POST">
+    <form action="/people/{{ $contact->id }}/relationships/store" method="POST">
       {{ csrf_field() }}
 
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
@@ -39,7 +39,7 @@
         <p class="mb2 b">Who's the relationship with?</p>
         <div class="dt dt--fixed">
           <div class="dtc pr2">
-            <input type="radio" id="new" name="relationship_type" value="new" @click="global_relationship_form_new_contact = true">
+            <input type="radio" id="new" name="relationship_type" value="new" @click="global_relationship_form_new_contact = true" checked>
             <label for="new" class="pointer">Create a new contact</label>
           </div>
           <div class="dtc">
@@ -61,7 +61,7 @@
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
-                  v-bind:id="'firstname'"
+                  v-bind:id="'first_name'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
@@ -70,7 +70,7 @@
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
-                  v-bind:id="'lastname'"
+                  v-bind:id="'last_name'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
@@ -110,7 +110,7 @@
             :options="{{ $genders }}"
             v-bind:required="true"
             v-bind:title="'{{ trans('people.people_add_gender') }}'"
-            v-bind:id="'gender'">
+            v-bind:id="'gender_id'">
           </form-select>
         </div>
 
