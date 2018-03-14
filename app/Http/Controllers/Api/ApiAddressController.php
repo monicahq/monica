@@ -92,7 +92,7 @@ class ApiAddressController extends ApiController
      * @param  Request $request
      * @return mixed
      */
-    private function validateUpdate($request)
+    private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
