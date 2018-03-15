@@ -47,7 +47,7 @@ before_install:
 
 install:
   # Get packages
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
+  - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
   - npm install
@@ -59,10 +59,10 @@ before_script:
 
   # Start Xvfb
   - "export DISPLAY=:99.0"
-  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then sh -e /etc/init.d/xvfb start; fi
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16; fi
 
   # Start chromedriver
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/laravel/dusk/bin/chromedriver-linux; fi" &
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/bin/chromedriver; fi" &
   
 script:
   # Run unit tests
@@ -117,13 +117,14 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
+      skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
         - composer self-update
 
       install:
         # Get packages without require-dev
-        - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+        - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
         # Build js and css assets
         - npm install
         - npm run production
@@ -148,6 +149,7 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
+      skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
@@ -161,3 +163,26 @@ jobs:
         - make docker_push_bintray
 
       after_script: skip
+
+    - stage: Deploy
+      if: tag IS present
+      skip_cleanup: true
+      before_install:
+        - scripts/vagrant/install-vagrant.sh
+
+      install: skip
+      before_script: skip
+
+      script:
+        - make vagrant_build
+      after_script: skip
+
+      before_deploy:
+        - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        user: $BINTRAY_USER
+        key: $BINTRAY_APIKEY
+        on:
+          all_branches: true

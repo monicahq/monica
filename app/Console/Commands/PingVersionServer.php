@@ -24,16 +24,6 @@ class PingVersionServer extends Command
     protected $description = 'Ping version.monicahq.com to know if a new version is available';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -44,7 +34,7 @@ class PingVersionServer extends Command
             return false;
         }
 
-        if (env('APP_ENV') != 'production') {
+        if (! \App::environment('production')) {
             return false;
         }
 
@@ -57,9 +47,11 @@ class PingVersionServer extends Command
             'contacts' => Contact::count(),
         ];
 
-        $data['uuid'] = $instance->uuid;
-        $data['version'] = $instance->current_version;
-        $data['contacts'] = Contact::all()->count();
+        $data = [
+            'uuid' => $instance->uuid,
+            'version' => $instance->current_version,
+            'contacts' => Contact::all()->count(),
+        ];
 
         // Send the JSON
         try {

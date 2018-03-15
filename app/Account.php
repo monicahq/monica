@@ -58,6 +58,16 @@ class Account extends Model
     }
 
     /**
+     * Get if any account exists on the database.
+     *
+     * @return bool
+     */
+    public static function hasAny()
+    {
+        return DB::table('accounts')->count() > 0;
+    }
+
+    /**
      * Populates all the default column that should be there when a new account
      * is created or reset.
      */
@@ -353,7 +363,7 @@ class Account extends Model
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return this
+     * @return $this
      */
     public function canDowngrade()
     {
@@ -480,7 +490,7 @@ class Account extends Model
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
             if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
-                $contactFieldType = ContactFieldType::create([
+                ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),

@@ -4,6 +4,7 @@ namespace Tests\BrowserFeature;
 
 use App\User;
 use Tests\DuskTestCase;
+use Tests\Browser\Pages\ImportVCardUpload;
 
 class UploadVCardTest extends DuskTestCase
 {
@@ -61,6 +62,8 @@ class UploadVCardTest extends DuskTestCase
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', 'tests/stubs/single_vcard_stub.vcard')
+                  ->on(new ImportVCardUpload)
+                  ->scrollTo('upload')
                   ->press('Upload')
                   ->assertSee('1 imported');
         });
@@ -80,6 +83,8 @@ class UploadVCardTest extends DuskTestCase
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
                   ->attach('vcard', 'tests/stubs/broken_vcard_stub.vcard')
+                  ->on(new ImportVCardUpload)
+                  ->scrollTo('upload')
                   ->press('Upload')
                   ->assertSee('The vcard must be a file of type: vcf, vcard.');
         });

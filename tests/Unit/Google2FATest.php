@@ -7,7 +7,6 @@ use Tests\TestCase;
 use Illuminate\Session\Store;
 use App\Http\Requests\Request;
 use Illuminate\Session\NullSessionHandler;
-use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class Google2FATest extends TestCase
 {
@@ -22,9 +21,7 @@ class Google2FATest extends TestCase
 
         $secret = $google2fa->generateSecretKey(32);
 
-        $authenticator = new Authenticator(request());
-
-        $result = $authenticator->verifyGoogle2FA($secret, 'aaaaaa');
+        $result = $google2fa->verifyGoogle2FA($secret, 'aaaaaa');
 
         $this->assertEquals(false, $result);
     }
@@ -41,9 +38,7 @@ class Google2FATest extends TestCase
         $secret = $google2fa->generateSecretKey(32);
         $one_time_password = $google2fa->getCurrentOtp($secret);
 
-        $authenticator = new Authenticator(request());
-
-        $result = $authenticator->verifyGoogle2FA($secret, $one_time_password);
+        $result = $google2fa->verifyGoogle2FA($secret, $one_time_password);
 
         $this->assertEquals(true, $result);
     }
@@ -69,14 +64,14 @@ class Google2FATest extends TestCase
         $request->setLaravelSession(new Store('test', new NullSessionHandler));
         $request->getSession()->start();
 
-        $authenticator = new Authenticator($request);
+        $authenticator = new \PragmaRX\Google2FALaravel\Support\Authenticator($request);
 
-        $this->assertEquals(false, $authenticator->canPassWithoutCheckingOTP());
+        $this->assertEquals(false, $authenticator->isAuthenticated());
 
-        $this->assertEquals(true, $authenticator->isActivated());
+        $this->assertEquals(true, $google2fa->isActivated());
 
-        $authenticator->login();
+        $google2fa->login();
 
-        $this->assertEquals(true, $authenticator->canPassWithoutCheckingOTP());
+        $this->assertEquals(true, $authenticator->isAuthenticated());
     }
 }
