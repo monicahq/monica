@@ -27,7 +27,7 @@ return [
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
-    'people_add_missing' => 'No Person Found Add New One Now',
+    'people_add_missing' => 'Nenhuma pessoa encontrada adicionar uma nova agora',
     'people_add_firstname' => 'Primeiro nome',
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
@@ -41,10 +41,10 @@ return [
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
     'people_add_birthday_reminder' => 'Desejar feliz aniversário a :name',
     'people_add_import' => 'Deseja <a href="/settings/import">importar os seus contatos</a>?',
-    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
+    'people_edit_email_error' => 'Já existe um contacto na sua conta com este endereço de e-mail. Por favor escolha outro.',
 
     // show
-    'section_contact_information' => 'Contact information',
+    'section_contact_information' => 'Informações de contacto',
     'section_personal_activities' => 'Atividades',
     'section_personal_reminders' => 'Lembretes',
     'section_personal_tasks' => 'Tarefas',
@@ -64,8 +64,8 @@ return [
     'modal_call_change' => 'Alterar',
     'modal_call_exact_date' => 'O telefonema aconteceu em',
     'calls_add_success' => 'O telefonema foi guardado.',
-    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
-    'call_delete_success' => 'The call has been deleted successfully',
+    'call_delete_confirmation' => 'Tem certeza que deseja eliminar esta chamada?',
+    'call_delete_success' => 'A chamada foi eliminada com sucesso',
     'call_title' => 'Chamadas telefónicas',
     'call_empty_comment' => 'Sem detalhes',
     'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
@@ -86,11 +86,11 @@ return [
     // additional information
     'information_edit_success' => 'O perfil foi atualizado com sucesso',
     'information_edit_title' => 'Editar informações pessoais para :name',
-    'information_edit_avatar' => 'Photo/avatar of the contact',
-    'information_edit_max_size' => 'Max :size Mb.',
+    'information_edit_avatar' => 'Foto/avatar do contacto',
+    'information_edit_max_size' => 'Máx. :size Mb.',
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
-    'information_edit_linkedin' => 'LinkedIn profile (optional)',
+    'information_edit_linkedin' => 'Perfil do LinkedIn (opcional)',
     'information_edit_unknown' => 'I do not know this person\'s age',
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
