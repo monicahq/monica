@@ -41,7 +41,7 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->notifications()->exists());
     }
 
-    public function test_it_has_many_notifications()
+    public function test_it_has_many_relationship_types()
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([

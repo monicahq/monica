@@ -25,7 +25,7 @@ class CreateRelationshipTypeTable extends Migration
         Schema::create('custom_relationships', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->string('relationship_type_id');
+            $table->integer('relationship_type_id');
             $table->integer('contact_id_main');
             $table->string('relationship_type_name');
             $table->integer('contact_id_secondary');

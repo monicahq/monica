@@ -19,7 +19,7 @@ class RelationshipTest extends TestCase
         $this->assertTrue($relationship->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    public function test_it_belongs_to_a_relationship()
     {
         $contact = factory('App\Contact')->create([]);
         $relationship = factory('App\Relationship')->create([

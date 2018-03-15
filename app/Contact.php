@@ -1081,51 +1081,32 @@ class Contact extends Model
     }
 
     /**
-     * Set a relationship between the two contacts. Has the option to set a
-     * bilateral relationship if the partner is a real contact.
+     * Set a relationship between two contacts.
      *
      * @param Contact $partner
-     * @param  bool $bilateral
+     * @param int $relationshipTypeId
      */
-    public function setRelationshipWith(self $partner, $bilateral = false)
+    public function setRelationshipWith(self $partner, $relationshipTypeId)
     {
-        Relationship::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $this->id,
-                'with_contact_id' => $partner->id,
-                'is_active' => 1,
-            ]
-        );
+        $relationshipType = RelationshipType::find($relationshipTypeId);
 
-        if ($bilateral) {
-            Relationship::create(
-                [
-                    'account_id' => $this->account_id,
-                    'contact_id' => $partner->id,
-                    'with_contact_id' => $this->id,
-                    'is_active' => 1,
-                ]
-            );
-        }
-    }
+        // Contact A is linked to Contact B
+        $relationship = new Relationship;
+        $relationship->account_id = $this->account_id;
+        $relationship->relationship_type_id = $relationshipType->id;
+        $relationship->contact_id_main = $this->id;
+        $relationship->relationship_type_name = $relationshipType->name;
+        $relationship->contact_id_secondary = $partner->id;
+        $relationship->save();
 
-    /**
-     * Set a unilateral relationship to a bilateral one between the two contacts.
-     *
-     * @param Contact $partner
-     * @param  bool $bilateral
-     */
-    public function updateRelationshipWith(self $partner)
-    {
-        Relationship::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $partner->id,
-                'with_contact_id' => $this->id,
-                'is_active' => 1,
-            ]
-        );
+        // Contact B is linked to Contact A
+        $relationship = new Relationship;
+        $relationship->account_id = $this->account_id;
+        $relationship->relationship_type_id = $relationshipType->id;
+        $relationship->contact_id_main = $partner->id;
+        $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
+        $relationship->contact_id_secondary = $this->id;
+        $relationship->save();
     }
 
     /**
@@ -1228,6 +1209,7 @@ class Contact extends Model
      */
     public function getRemindersAboutRelatives()
     {
+        // @todo: remove this method entirely
         $reminders = $this->reminders;
 
         $partners = $this->getPartialPartners();

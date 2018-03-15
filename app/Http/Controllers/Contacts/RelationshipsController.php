@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Validator;
 use App\Contact;
 use App\Relationship;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\People\RelationshipsRequest;
 use App\Http\Requests\People\ExistingRelationshipsRequest;
 
 class RelationshipsController extends Controller
 {
+    /**
+     * Display the Create relationship page
+     *
+     * @param  Contact $contact
+     * @return \Illuminate\Http\Response
+     */
     public function new(Contact $contact)
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
@@ -54,48 +61,50 @@ class RelationshipsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param RelationshipsRequest $request
+     * @param Request $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Contact $contact)
     {
-        dd($request->all());
-        // this is a real contact, not just a significant other
-        if ($request->get('realContact')) {
-            $partner = Contact::create(
-                $request->only([
-                    'first_name',
-                    'last_name',
-                    'gender_id',
-                ])
-                + [
-                    'account_id' => $contact->account_id,
-                ]
-            );
+        // case of linking to an existing contact
+        if ($request->get('relationship_type') == 'existing') {
+            $partner = Contact::findOrFail($request->get('existing_contact_id'));
+            $contact->setRelationshipWith($partner, $request->get('relationship_type_id'));
 
-            $partner->logEvent('contact', $partner->id, 'create');
-
-            $contact->setRelationshipWith($partner, true);
-        } else {
-            $partner = Contact::create(
-                $request->only([
-                    'first_name',
-                    'last_name',
-                    'gender_id',
-                ])
-                + [
-                    'account_id' => $contact->account_id,
-                    'is_partial' => 1,
-                ]
-            );
-
-            $contact->setRelationshipWith($partner);
+            return redirect('/people/'.$contact->id)
+                ->with('success', trans('people.significant_other_add_success'));
         }
 
-        $partner->setAvatarColor();
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:50',
+            'last_name' => 'max:100',
+            'gender_id' => 'required',
+        ]);
 
-        // birthdate
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        // case of creating a new contact
+        // set the name of the contact
+        $partner = new Contact;
+        $partner->account_id = $contact->account->id;
+
+        if (! $partner->setName($request->input('first_name'), null, $request->input('last_name'))) {
+            return back()
+                ->withInput()
+                ->withErrors('There has been a problem with saving the name.');
+        }
+
+        // set gender
+        $partner->gender_id = $request->input('gender_id');
+
+        $partner->save();
+
+        // Handling the case of the birthday
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
             case 'unknown':
@@ -103,11 +112,33 @@ class RelationshipsController extends Controller
             case 'approximate':
                 $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
+            case 'almost':
+                $specialDate = $partner->setSpecialDate(
+                    'birthdate',
+                    0,
+                    $request->input('month'),
+                    $request->input('day')
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                break;
             case 'exact':
-                $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = new \Carbon\Carbon($birthdate);
+                $specialDate = $partner->setSpecialDate(
+                    'birthdate',
+                    $birthdate->year,
+                    $birthdate->month,
+                    $birthdate->day
+                );
                 $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
                 break;
         }
+
+        // set avatar color
+        $partner->setAvatarColor();
+
+        // create the relationship
+        $contact->setRelationshipWith($partner, $request->get('relationship_type_id'));
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));

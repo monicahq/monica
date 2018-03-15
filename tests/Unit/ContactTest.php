@@ -7,6 +7,7 @@ use App\Call;
 use App\Debt;
 use App\Contact;
 use App\SpecialDate;
+use App\RelationshipType;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -864,6 +865,31 @@ class ContactTest extends FeatureTestCase
         $this->assertEquals(
             2,
             $contact->tags()->count()
+        );
+    }
+
+    public function test_it_sets_a_relationship_between_two_contacts()
+    {
+        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $partner = factory(Contact::class)->create(['account_id' => 1]);
+        $relationshipType = factory(RelationshipType::class)->create(['account_id' => 1]);
+
+        $contact->setRelationshipWith($partner, $relationshipType->id);
+
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_id_main' => $contact->id,
+                'contact_id_secondary' => $partner->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_id_main' => $partner->id,
+                'contact_id_secondary' => $contact->id,
+            ]
         );
     }
 }

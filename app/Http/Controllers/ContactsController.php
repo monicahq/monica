@@ -182,14 +182,11 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $reminders = $contact->getRemindersAboutRelatives();
-
         $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
         $contact->save();
 
         return view('people.profile')
-            ->withContact($contact)
-            ->withReminders($reminders);
+            ->withContact($contact);
     }
 
     /**
