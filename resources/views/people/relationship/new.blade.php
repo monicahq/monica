@@ -25,6 +25,7 @@
     <form action="/people/{{ $contact->id }}/relationships/store" method="POST">
       {{ csrf_field() }}
 
+      {{-- Nature of relationship --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $relationshipTypes }}"
