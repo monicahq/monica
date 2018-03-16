@@ -19,7 +19,7 @@
     }
   ],
   "scripts": {
-    "postdeploy": "php artisan setup:production --force --email=admin@admin.com --password=admin"
+    "postdeploy": "php artisan setup:production --force"
   },
   "env": {
     "APP_KEY": {
