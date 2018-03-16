@@ -37,7 +37,7 @@ class SettingsSecurity2faEnable extends Page
         return [
             'barcode' => '#barcode',
             'secretkey' => '#secretkey',
-            'verify' => 'verify',
+            'verify' => "button[name='verify']",
             'otp' => '#one_time_password',
         ];
     }
