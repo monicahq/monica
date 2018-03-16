@@ -18,13 +18,8 @@ class RelationshipsController extends Controller
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function new(Contact $contact)
+    public function new(Request $request, Contact $contact)
     {
-        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
-
         // getting the list of existing contacts
         $existingContacts = auth()->user()->account->contacts()
                                         ->real()
@@ -32,6 +27,8 @@ class RelationshipsController extends Controller
                                         ->sortedBy('name')
                                         ->get();
 
+        // Building the list of contacts specifically for the dropdown which asks
+        // for an id and a name. Also filter out the current contact.
         $arrayContacts = collect();
         foreach ($existingContacts as $existingContact) {
             if ($existingContact->id == $contact->id) {
@@ -43,19 +40,26 @@ class RelationshipsController extends Controller
             ]);
         }
 
+        // Building the list of relationship types specifically for the dropdown which asks
+        // for an id and a name.
+        $arrayRelationshipTypes = collect();
+        foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
+            $arrayRelationshipTypes->push([
+                'id' => $relationshipType->id,
+                'name' => $relationshipType->getLocalizedName(),
+            ]);
+        }
+
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
             ->withGenders(auth()->user()->account->genders)
-            ->withRelationshipTypes(auth()->user()->account->relationshipTypes)
+            ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
-            ->withBirthdate($birthdate)
-            ->withDay($day)
-            ->withMonth($month)
-            ->withAge($age)
-            ->withExistingContacts($arrayContacts);
+            ->withExistingContacts($arrayContacts)
+            ->withType($request->get('type'));
     }
 
     /**
@@ -101,7 +105,6 @@ class RelationshipsController extends Controller
 
         // set gender
         $partner->gender_id = $request->input('gender_id');
-
         $partner->save();
 
         // Handling the case of the birthday
@@ -140,23 +143,11 @@ class RelationshipsController extends Controller
         // create the relationship
         $contact->setRelationshipWith($partner, $request->get('relationship_type_id'));
 
-        return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_add_success'));
-    }
-
-    /**
-     * Store an existing contact as a significant other. When we add this kind of
-     * relationship, we need to create two Relationship records, to match with
-     * the bidirectional nature of the relationship.
-     *
-     * @param ExistingRelationshipsRequest $request
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function storeExistingContact(ExistingRelationshipsRequest $request, Contact $contact)
-    {
-        $partner = Contact::findOrFail($request->get('existingPartner'));
-        $contact->setRelationshipWith($partner, true);
+        // check if the contact is partial
+        if ($request->get('realContact')) {
+            $partner->is_partial = false;
+            $partner->save();
+        }
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.significant_other_add_success'));

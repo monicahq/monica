@@ -87,19 +87,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('.food');
         Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('.food.update');
 
-        // Kid
-        Route::get('/people/{contact}/kids/add', 'Contacts\\KidsController@create')->name('.kids.add');
-        Route::post('/people/{contact}/kids/store', 'Contacts\\KidsController@store')->name('.kids.store');
-        Route::post('/people/{contact}/kids/storeExistingContact', 'Contacts\\KidsController@storeExistingContact')->name('.kids.storeexisting');
-        Route::get('/people/{contact}/kids/{kid}/edit', 'Contacts\\KidsController@edit')->name('.kids.edit');
-        Route::put('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@update')->name('.kids.update');
-        Route::delete('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@destroy')->name('.kids.delete');
-        Route::post('/people/{contact}/kids/{kid}/unlink', 'Contacts\\KidsController@unlink')->name('.kids.unlink');
-
         // Relationships
-        Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new')->name('.relationships.new');
+        Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new');
         Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('.relationships.store');
-        Route::post('/people/{contact}/relationships/storeExistingContact', 'Contacts\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
         Route::get('/people/{contact}/relationships/{partner}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');
         Route::put('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
         Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');

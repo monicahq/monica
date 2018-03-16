@@ -232,9 +232,9 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function activeRelationships()
+    public function relationships()
     {
-        return $this->hasMany('App\Relationship', 'contact_id')->where('is_active', 1);
+        return $this->hasMany('App\Relationship', 'contact_id_main');
     }
 
     /**

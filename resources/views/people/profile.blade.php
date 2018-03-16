@@ -65,9 +65,9 @@
               @include('activities.index')
             </div>
 
-            <div class="row section reminders">
+            {{-- <div class="row section reminders">
               @include('people.reminders.index')
-            </div>
+            </div> --}}
 
             <div class="row section">
               @include('people.tasks.index')

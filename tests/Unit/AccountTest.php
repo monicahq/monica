@@ -416,4 +416,31 @@ class AccountTest extends FeatureTestCase
             ['number_of_days_before' => 30]
         );
     }
+
+    public function test_it_populates_the_account_with_the_right_default_relationship_types()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultRelationshipTypesTable();
+
+        $this->assertEquals(
+            1,
+            $account->relationshipTypes->count()
+        );
+
+        $this->assertDatabaseHas(
+            'relationship_types',
+            ['name' => 'partner']
+        );
+    }
+
+    public function test_it_gets_the_relationship_type_object_matching_a_given_type()
+    {
+        $account = factory('App\Account')->create([]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'name' => 'partner',
+        ]);
+
+        $this->assertInstanceOf('App\RelationshipType', $account->getRelationshipTypeByType('partner'));
+    }
 }

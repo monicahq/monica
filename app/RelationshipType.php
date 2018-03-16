@@ -34,4 +34,14 @@ class RelationshipType extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
+    /**
+     * Get the i18n version of the name attribute.
+     *
+     * @return string
+     */
+    public function getLocalizedName()
+    {
+        return trans('people.relationship_type_'.$this->name);
+    }
 }

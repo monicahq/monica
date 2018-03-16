@@ -33,42 +33,6 @@ class Account extends Model
     ];
 
     /**
-     * Create a new account and associate a new User.
-     *
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     * @return this
-     */
-    public static function createDefault($first_name, $last_name, $email, $password)
-    {
-        // create new account
-        $account = new self;
-        $account->api_key = str_random(30);
-        $account->created_at = Carbon::now();
-        $account->save();
-
-        $account->populateDefaultFields($account);
-
-        // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
-
-        return $account;
-    }
-
-    /**
-     * Populates all the default column that should be there when a new account
-     * is created or reset.
-     */
-    public static function populateDefaultFields($account)
-    {
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-        $account->populateDefaultReminderRulesTable();
-    }
-
-    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany
@@ -526,6 +490,21 @@ class Account extends Model
     }
 
     /**
+     * Populates the default relationship types in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultRelationshipTypesTable()
+    {
+        RelationshipType::create([
+            'name' => 'partner',
+            'account_id' => $this->id,
+            'name_reverse_relationship' => 'partner',
+            'delible' => 0,
+        ]);
+    }
+
+    /**
      * Get the reminders for the month given in parameter.
      * - 0 means current month
      * - 1 means month+1
@@ -582,5 +561,53 @@ class Account extends Model
                     ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    /**
+     * Create a new account and associate a new User.
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function createDefault($first_name, $last_name, $email, $password)
+    {
+        // create new account
+        $account = new self;
+        $account->api_key = str_random(30);
+        $account->created_at = Carbon::now();
+        $account->save();
+
+        $account->populateDefaultFields($account);
+
+        // create the first user for this account
+        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+
+        return $account;
+    }
+
+    /**
+     * Populates all the default column that should be there when a new account
+     * is created or reset.
+     */
+    public static function populateDefaultFields($account)
+    {
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
+        $account->populateDefaultRelationshipTypesTable();
+    }
+
+    /**
+     * Gets the RelationshipType object matching the given type.
+     *
+     * @param  string $type
+     * @return RelationshipType
+     */
+    public function getRelationshipTypeByType($type)
+    {
+        return $this->relationshipTypes->where('name', $type)->first();
     }
 }

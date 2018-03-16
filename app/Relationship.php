@@ -31,7 +31,7 @@ class Relationship extends Model
         return $this->belongsTo(Contact::class, 'contact_id_main');
     }
 
-    public function with_contact()
+    public function withContact()
     {
         return $this->belongsTo(Contact::class, 'contact_id_secondary');
     }

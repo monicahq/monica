@@ -36,7 +36,7 @@ class RelationshipTest extends TestCase
             'with_contact_id' => $contact->id,
         ]);
 
-        $this->assertTrue($relationship->with_contact()->exists());
+        $this->assertTrue($relationship->withContact()->exists());
     }
 
     public function test_get_potential_partners_does_not_return_contacts_who_are_already_partner_with_the_contact()
