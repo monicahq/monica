@@ -19,7 +19,7 @@
     "hint.css": "^2.3.2",
     "jQuery-Tags-Input": "git://github.com/xoxco/jQuery-Tags-Input.git#v1.3.6",
     "jquery": "^3.3.1",
-    "laravel-mix": "^1.7.2",
+    "laravel-mix": "^2.1.0",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
     "marked": "^0.3.12",
