@@ -25,7 +25,7 @@
     "marked": "^0.3.12",
     "tachyons": "^4.9.1",
     "typeahead.js": "^0.11.1",
-    "vue": "^2.5.16",
+    "vue": "^2.5.13",
     "vue-checkbox-radio": "^0.6.0",
     "vue-directive-tooltip": "^1.4.2",
     "vue-i18n": "^7.6.0",
