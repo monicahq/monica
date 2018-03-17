@@ -47,25 +47,29 @@ class SendReminders extends Command
                 $reminder->delete();
                 continue;
             }
+            $this->handleReminder($reminder);
+        }
+    }
 
-            $account = $reminder->contact->account;
-            $numberOfUsersInAccount = $account->users->count();
-            $counter = 1;
+    private function handleReminder($reminder)
+    {
+        $account = $reminder->contact->account;
+        $numberOfUsersInAccount = $account->users->count();
+        $counter = 1;
 
-            foreach ($account->users as $user) {
-                if ($user->shouldBeReminded($reminder->next_expected_date)) {
-                    if (! $account->hasLimitations()) {
-                        dispatch(new SendReminderEmail($reminder, $user));
-                    }
-
-                    if ($counter == $numberOfUsersInAccount) {
-                        // We should only do this when we are sure that this is
-                        // the last user who should be warned in this account.
-                        dispatch(new SetNextReminderDate($reminder, $user->timezone));
-                    }
+        foreach ($account->users as $user) {
+            if ($user->shouldBeReminded($reminder->next_expected_date)) {
+                if (! $account->hasLimitations()) {
+                    dispatch(new SendReminderEmail($reminder, $user));
                 }
-                $counter++;
+
+                if ($counter == $numberOfUsersInAccount) {
+                    // We should only do this when we are sure that this is
+                    // the last user who should be warned in this account.
+                    dispatch(new SetNextReminderDate($reminder, $user->timezone));
+                }
             }
+            $counter++;
         }
     }
 }

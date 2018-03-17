@@ -50,40 +50,9 @@ class ApiGiftController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'is_for' => 'integer|nullable',
-            'name' => 'required|string|max:255',
-            'comment' => 'string|max:1000000|nullable',
-            'url' => 'string|max:1000000|nullable',
-            'value' => 'string|max:255',
-            'is_an_idea' => 'boolean',
-            'has_been_offered' => 'boolean',
-            'date_offered' => 'date|nullable',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        if (! is_null($request->input('is_for'))) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->input('is_for'))
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -114,6 +83,33 @@ class ApiGiftController extends ApiController
             return $this->respondNotFound();
         }
 
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $gift->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        if (is_null($request->input('is_for'))) {
+            $gift->is_for = null;
+            $gift->save();
+        }
+
+        return new GiftResource($gift);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'is_for' => 'integer|nullable',
@@ -150,18 +146,7 @@ class ApiGiftController extends ApiController
             }
         }
 
-        try {
-            $gift->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
-        }
-
-        if (is_null($request->input('is_for'))) {
-            $gift->is_for = null;
-            $gift->save();
-        }
-
-        return new GiftResource($gift);
+        return true;
     }
 
     /**
