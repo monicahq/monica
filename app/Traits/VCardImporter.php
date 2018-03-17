@@ -50,7 +50,7 @@ trait VCardImporter
             // Skip contact if there isn't a first name or a nickname
             if (! $this->contactHasName($vcard)) {
                 $this->workContactNoFirstname($vcard);
-                $this->$skippedContacts++;
+                $this->skippedContacts++;
 
                 return;
             }
