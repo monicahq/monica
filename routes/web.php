@@ -91,7 +91,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new');
         Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('.relationships.store');
         Route::get('/people/{contact}/relationships/{partner}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');
-        Route::put('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
+        Route::post('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
         Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
         Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
 

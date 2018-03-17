@@ -7,8 +7,6 @@ use App\Contact;
 use App\Relationship;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\RelationshipsRequest;
-use App\Http\Requests\People\ExistingRelationshipsRequest;
 
 class RelationshipsController extends Controller
 {
@@ -80,6 +78,7 @@ class RelationshipsController extends Controller
                 ->with('success', trans('people.significant_other_add_success'));
         }
 
+        // case of creating a new contact
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
@@ -92,7 +91,6 @@ class RelationshipsController extends Controller
                 ->withErrors($validator);
         }
 
-        // case of creating a new contact
         // set the name of the contact
         $partner = new Contact;
         $partner->account_id = $contact->account->id;
@@ -105,6 +103,7 @@ class RelationshipsController extends Controller
 
         // set gender
         $partner->gender_id = $request->input('gender_id');
+        $partner->is_partial = true;
         $partner->save();
 
         // Handling the case of the birthday
@@ -162,10 +161,37 @@ class RelationshipsController extends Controller
      */
     public function edit(Contact $contact, Contact $partner)
     {
+        $age = (string) (! is_null($partner->birthdate) ? $partner->birthdate->getAge() : 0);
+        $birthdate = ! is_null($partner->birthdate) ? $partner->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
+        $day = ! is_null($partner->birthdate) ? $partner->birthdate->date->day : \Carbon\Carbon::now()->day;
+        $month = ! is_null($partner->birthdate) ? $partner->birthdate->date->month : \Carbon\Carbon::now()->month;
+
+        // Building the list of relationship types specifically for the dropdown which asks
+        // for an id and a name.
+        $arrayRelationshipTypes = collect();
+        foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
+            $arrayRelationshipTypes->push([
+                'id' => $relationshipType->id,
+                'name' => $relationshipType->getLocalizedName(),
+            ]);
+        }
+
+        // Get the nature of the current relationship
+        $type = $contact->getRelationshipNatureWith($partner);
+
         return view('people.relationship.edit')
             ->withContact($contact)
             ->withPartner($partner)
-            ->withGenders(auth()->user()->account->genders);
+            ->withDays(\App\Helpers\DateHelper::getListOfDays())
+            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withBirthdayState($partner->getBirthdayState())
+            ->withBirthdate($birthdate)
+            ->withDay($day)
+            ->withMonth($month)
+            ->withAge($age)
+            ->withGenders(auth()->user()->account->genders)
+            ->withRelationshipTypes($arrayRelationshipTypes)
+            ->withType($type->relationship_type_id);
     }
 
     /**
@@ -176,45 +202,72 @@ class RelationshipsController extends Controller
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response
      */
-    public function update(RelationshipsRequest $request, Contact $contact, Contact $partner)
+    public function update(Request $request, Contact $contact, Contact $partner)
     {
-        $partner->update(
-            $request->only([
-                'first_name',
-                'last_name',
-                'gender_id',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-            ]
-        );
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:50',
+            'last_name' => 'max:100',
+            'gender_id' => 'required',
+        ]);
 
-        if ($request->get('realContact')) {
-            $partner->update([
-                'is_partial' => 0,
-                ]
-            );
-
-            $contact->updateRelationshipWith($partner);
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
         }
 
-        // birthdate
+        // set the name of the contact
+        if (! $partner->setName($request->input('first_name'), null, $request->input('last_name'))) {
+            return back()
+                ->withInput()
+                ->withErrors('There has been a problem with saving the name.');
+        }
+
+        // set gender
+        $partner->gender_id = $request->input('gender_id');
+        $partner->save();
+
+        // Handling the case of the birthday
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
             case 'approximate':
                 $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
-            case 'exact':
-                $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+            case 'almost':
+                $specialDate = $partner->setSpecialDate(
+                    'birthdate',
+                    0,
+                    $request->input('month'),
+                    $request->input('day')
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
                 break;
-            case 'unknown':
-            default:
+            case 'exact':
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = new \Carbon\Carbon($birthdate);
+                $specialDate = $partner->setSpecialDate(
+                    'birthdate',
+                    $birthdate->year,
+                    $birthdate->month,
+                    $birthdate->day
+                );
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
                 break;
         }
 
+        // create the relationship
+        $contact->updateRelationshipWith($partner, $request->get('relationship_type_id'));
+
+        // check if the contact is partial
+        if ($request->get('realContact')) {
+            $partner->is_partial = false;
+            $partner->save();
+        }
+
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_edit_success'));
+            ->with('success', trans('people.significant_other_add_success'));
     }
 
     /**

@@ -1085,10 +1085,10 @@ class Contact extends Model
     /**
      * Set a relationship between two contacts.
      *
-     * @param Contact $partner
+     * @param Contact $otherContact
      * @param int $relationshipTypeId
      */
-    public function setRelationshipWith(self $partner, $relationshipTypeId)
+    public function setRelationshipWith(self $otherContact, $relationshipTypeId)
     {
         $relationshipType = RelationshipType::find($relationshipTypeId);
 
@@ -1098,17 +1098,35 @@ class Contact extends Model
         $relationship->relationship_type_id = $relationshipType->id;
         $relationship->contact_id_main = $this->id;
         $relationship->relationship_type_name = $relationshipType->name;
-        $relationship->contact_id_secondary = $partner->id;
+        $relationship->contact_id_secondary = $otherContact->id;
         $relationship->save();
 
         // Contact B is linked to Contact A
         $relationship = new Relationship;
         $relationship->account_id = $this->account_id;
         $relationship->relationship_type_id = $relationshipType->id;
-        $relationship->contact_id_main = $partner->id;
+        $relationship->contact_id_main = $otherContact->id;
         $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
         $relationship->contact_id_secondary = $this->id;
         $relationship->save();
+    }
+
+    /**
+     * Update the relationship between two contacts.
+     *
+     * @param Contact $otherContact
+     * @param int $relationshipTypeId
+     */
+    public function updateRelationshipWith(self $otherContact, $relationshipTypeId)
+    {
+        $this->deleteRelationshipWith($otherContact);
+
+        $this->setRelationshipWith($otherContact, $relationshipTypeId);
+    }
+
+    public function deleteRelationshipWith(self $otherContact)
+    {
+
     }
 
     /**
@@ -1496,5 +1514,20 @@ class Contact extends Model
     public function unsetTag(Tag $tag)
     {
         $this->tags()->detach($tag->id);
+    }
+
+    /**
+     * Get the Relationship object representing the relation between two contacts.
+     *
+     * @param  Contact $otherContact
+     * @return Relationship|null
+     */
+    public function getRelationshipNatureWith(Contact $otherContact)
+    {
+        $relationship = Relationship::where('contact_id_main', $this->id)
+                                    ->where('contact_id_secondary', $otherContact->id)
+                                    ->first();
+
+        return $relationship;
     }
 }
