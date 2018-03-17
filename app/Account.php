@@ -453,7 +453,7 @@ class Account extends Model
         }
 
         if (! config('monica.requires_subscription')) {
-                return false;
+            return false;
         }
 
         if ($this->isSubscribed()) {
