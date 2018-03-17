@@ -448,9 +448,15 @@ class Account extends Model
      */
     public function hasLimitations()
     {
-        if ($this->has_access_to_paid_version_for_free
-            || ! config('monica.requires_subscription')
-            || $this->isSubscribed()) {
+        if ($this->has_access_to_paid_version_for_free) {
+            return false;
+        }
+
+        if (! config('monica.requires_subscription')) {
+                return false;
+        }
+
+        if ($this->isSubscribed()) {
             return false;
         }
 
