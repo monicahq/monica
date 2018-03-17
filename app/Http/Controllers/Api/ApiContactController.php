@@ -253,8 +253,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Validate the request for update
-     * 
+     * Validate the request for update.
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -392,8 +392,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Validate the request for update Partners
-     * 
+     * Validate the request for update Partners.
+     *
      * @param  Request $request
      * @param  int $contactId
      * @return mixed
@@ -481,8 +481,8 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Validate the request for update kids
-     * 
+     * Validate the request for update kids.
+     *
      * @param  Request $request
      * @param  int $contactId
      * @return mixed

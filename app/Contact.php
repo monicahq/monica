@@ -1418,12 +1418,11 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null ($occasion)) {
+        if (is_null($occasion)) {
             return;
         }
 
-        switch($occasion)
-        {
+        switch ($occasion) {
             case 'birthdate':
                 if ($this->birthday_special_date_id) {
                     $this->birthdate->deleteReminder();

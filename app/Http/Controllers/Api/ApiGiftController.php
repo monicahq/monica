@@ -103,8 +103,8 @@ class ApiGiftController extends ApiController
     }
 
     /**
-     * Validate the request for update
-     * 
+     * Validate the request for update.
+     *
      * @param  Request $request
      * @return mixed
      */

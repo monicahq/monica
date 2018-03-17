@@ -163,8 +163,8 @@ class ApiActivityController extends ApiController
     }
 
     /**
-     * Validate the request for update
-     * 
+     * Validate the request for update.
+     *
      * @param  Request $request
      * @return mixed
      */
@@ -178,12 +178,12 @@ class ApiActivityController extends ApiController
             'activity_type_id' => 'integer',
             'contacts' => 'required|array',
         ]);
-        
+
         if ($validator->fails()) {
             return $this->setErrorCode(32)
                 ->respondWithError($validator->errors()->all());
         }
-        
+
         // Make sure each contact exists and has the right to be associated with
         // this account
         $attendeesID = $request->get('contacts');

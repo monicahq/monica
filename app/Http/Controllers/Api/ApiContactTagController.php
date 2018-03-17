@@ -81,8 +81,8 @@ class ApiContactTagController extends ApiController
     }
 
     /**
-     * Validate the request for update tag
-     * 
+     * Validate the request for update tag.
+     *
      * @param  Request $request
      * @param  int $contactId
      * @return mixed

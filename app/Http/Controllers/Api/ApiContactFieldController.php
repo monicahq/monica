@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Validator;
 use App\Contact;
 use App\ContactField;
-use App\ContactFieldType;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -80,8 +79,8 @@ class ApiContactFieldController extends ApiController
     }
 
     /**
-     * Validate the request for update
-     * 
+     * Validate the request for update.
+     *
      * @param  Request $request
      * @param  int $contactFieldId
      * @return mixed
