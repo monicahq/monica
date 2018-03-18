@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RelationshipType extends Model
+class RelationshipTypeGroup extends Model
 {
     /**
      * The attributes that aren't mass assignable.
@@ -14,7 +14,7 @@ class RelationshipType extends Model
      */
     protected $guarded = ['id'];
 
-    protected $table = 'relationship_types';
+    protected $table = 'relationship_type_groups';
 
     /**
      * The attributes that should be cast to native types.
@@ -33,15 +33,5 @@ class RelationshipType extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    /**
-     * Get the i18n version of the name attribute.
-     *
-     * @return string
-     */
-    public function getLocalizedName()
-    {
-        return trans('app.relationship_type_'.$this->name);
     }
 }

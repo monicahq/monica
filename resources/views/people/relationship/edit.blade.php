@@ -24,6 +24,7 @@
 
     <form action="/people/{{ $contact->id }}/relationships/{{ $partner->id }}" method="POST">
       {{ csrf_field() }}
+      <input type="hidden" name="type" value="{{ $type }}">
 
       {{-- Nature of relationship --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">

@@ -147,8 +147,7 @@ return [
     'reminders_birthday' => 'Birthday of :name',
     'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
 
-    // relationship types
-    'relationship_type_partner' => 'Partner',
+    // relationships
     'relationship_form_add' => 'Add a new relationship',
     'relationship_form_is_with' => 'This person is related to :name as...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
@@ -158,29 +157,12 @@ return [
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
     'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don\'t have any contacts who can be related to :name at the moment.',
+    'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
+    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted - only the relationship between the two.',
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
     'significant_other_cta' => 'Add significant other',
-    'significant_other_add_title' => 'Who is :name\'s significant other?',
-    'significant_other_add_firstname' => 'First name',
-    'significant_other_add_unknown' => 'I do not know this person\'s age',
-    'significant_other_add_probably' => 'This person is probably',
-    'significant_other_add_probably_yo' => 'years old',
-    'significant_other_add_exact' => 'I know the exact birthdate of this person, which is',
-    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you - so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
-    'significant_other_add_cta' => 'Add significant other',
-    'significant_other_edit_cta' => 'Edit significant other',
-    'significant_other_delete_confirmation' => 'Are you sure you want to delete this significant other? Deletion is permanent',
-    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
-    'significant_other_add_success' => 'The significant other has been added successfully',
-    'significant_other_edit_success' => 'The significant other has been updated successfully',
-    'significant_other_delete_success' => 'The significant other has been deleted successfully',
-    'significant_other_add_birthday_reminder' => 'Wish happy birthday to :name, :contact_firstname\'s significant other',
-    'significant_other_add_person' => 'Add a new person',
-    'significant_other_link_existing_contact' => 'Link existing contact',
-    'significant_other_add_no_existing_contact' => 'You don\'t have any contacts who can be :name\'s significant others at the moment.',
-    'significant_other_add_existing_contact' => 'Select an existing contact as the significant other for :name',
 
     // tasks
     'tasks_blank_title' => 'You don\'t have any tasks yet.',

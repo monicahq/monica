@@ -72,4 +72,20 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don\'t have the right to edit this resource.',
+
+    // Relationship types
+    'relationship_type_partner' => 'Significant other',
+    'relationships_type_partner_female' => 'Significant other',
+    'relationship_type_partner_reverse' => 'Significant other',
+    'relationships_type_partner_reverse_female' => 'Significant other',
+
+    'relationship_type_parent' => 'Father',
+    'relationships_type_parent_female' => 'Mother',
+    'relationship_type_parent_reverse' => 'Son',
+    'relationships_type_parent_reverse_female' => 'Daughter',
+
+    'relationship_type_child' => 'Son',
+    'relationships_type_child_female' => 'Daughter',
+    'relationship_type_child_reverse' => 'Father',
+    'relationships_type_child_reverse_female' => 'Mother',
 ];

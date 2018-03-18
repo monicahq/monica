@@ -233,10 +233,10 @@ class FakeContentTableSeeder extends Seeder
                 // is real contact?
                 if (rand(1, 2) == 1) {
                     $partner->is_partial = true;
-                    $this->contact->setRelationshipWith($partner);
+                    $this->contact->setRelationship($partner);
                 } else {
                     $partner->is_partial = false;
-                    $this->contact->setRelationshipWith($partner, true);
+                    $this->contact->setRelationship($partner, true);
                 }
                 $partner->save();
 

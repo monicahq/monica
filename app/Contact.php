@@ -2,8 +2,10 @@
 
 namespace App;
 
+use DB;
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -1088,7 +1090,7 @@ class Contact extends Model
      * @param Contact $otherContact
      * @param int $relationshipTypeId
      */
-    public function setRelationshipWith(self $otherContact, $relationshipTypeId)
+    public function setRelationship(self $otherContact, $relationshipTypeId)
     {
         $relationshipType = RelationshipType::find($relationshipTypeId);
 
@@ -1117,90 +1119,36 @@ class Contact extends Model
      * @param Contact $otherContact
      * @param int $relationshipTypeId
      */
-    public function updateRelationshipWith(self $otherContact, $relationshipTypeId)
+    public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
     {
-        $this->deleteRelationshipWith($otherContact);
+        $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
 
-        $this->setRelationshipWith($otherContact, $relationshipTypeId);
-    }
-
-    public function deleteRelationshipWith(self $otherContact)
-    {
-
+        $this->setRelationship($otherContact, $newRelationshipTypeId);
     }
 
     /**
-     * Set a relationship between the two contacts. Has the option to set a
-     * bilateral relationship if the kid is a real contact.
+     * Delete a relationship between two contacts.
      *
-     * @param Contact $parent
-     * @param  bool $bilateral
+     * @param  self   $otherContact
      */
-    public function isTheOffspringOf(self $parent, $bilateral = false)
+    public function deleteRelationship(self $otherContact, $relationshipTypeId)
     {
-        Offspring::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $this->id,
-                'is_the_child_of' => $parent->id,
-            ]
-        );
+        // Each relationship between two contacts has two Relationship objects.
+        // We need to delete both.
 
-        if ($bilateral) {
-            Progenitor::create(
-                [
-                    'account_id' => $this->account_id,
-                    'contact_id' => $parent->id,
-                    'is_the_parent_of' => $this->id,
-                ]
-            );
-        }
-    }
-
-    /**
-     * Unset a relationship between the two contacts.
-     *
-     * @param  Contact $partner
-     * @param  bool $bilateral
-     */
-    public function unsetRelationshipWith(self $partner, $bilateral = false)
-    {
-        $relationship = Relationship::where('contact_id', $this->id)
-                        ->where('with_contact_id', $partner->id)
-                        ->first();
+        $relationship = Relationship::where('contact_id_main', $this->id)
+                                    ->where('contact_id_secondary', $otherContact->id)
+                                    ->where('relationship_type_id', $relationshipTypeId)
+                                    ->first();
 
         $relationship->delete();
 
-        if ($bilateral) {
-            $relationship = Relationship::where('contact_id', $partner->id)
-                        ->where('with_contact_id', $this->id)
-                        ->first();
+        $relationship = Relationship::where('contact_id_main', $otherContact->id)
+                                    ->where('contact_id_secondary', $this->id)
+                                    ->where('relationship_type_id', $relationshipTypeId)
+                                    ->first();
 
-            $relationship->delete();
-        }
-    }
-
-    /**
-     * Unset a parenting relationship between the two contacts.
-     *
-     * @param  Contact $kid
-     * @param  bool $bilateral
-     */
-    public function unsetOffspring(self $kid, $bilateral = false)
-    {
-        $offspring = Offspring::where('contact_id', $kid->id)
-                        ->where('is_the_child_of', $this->id)
-                        ->first();
-
-        $offspring->delete();
-
-        if ($bilateral) {
-            $progenitor = Progenitor::where('contact_id', $this->id)
-                        ->where('is_the_parent_of', $kid->id)
-                        ->first();
-
-            $progenitor->delete();
-        }
+        $relationship->delete();
     }
 
     /**
@@ -1529,5 +1477,31 @@ class Contact extends Model
                                     ->first();
 
         return $relationship;
+    }
+
+    /**
+     * Delete the contact and all the related object.
+     *
+     * @return boolean
+     */
+    public function deleteEverything()
+    {
+        // I know: this is a really brutal way of deleting objects. I'm doing
+        // this because I'll add more objects related to contacts in the future
+        // and I don't want to have to think of deleting a row that matches a
+        // contact.
+        //
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            try {
+                DB::table($tableName)->where('contact_id', $this->id)->delete();
+            } catch (QueryException $e) {
+                continue;
+            }
+        }
+
+        return true;
     }
 }

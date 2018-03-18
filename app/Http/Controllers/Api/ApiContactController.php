@@ -410,9 +410,9 @@ class ApiContactController extends ApiController
         }
 
         if ($partner->is_partial) {
-            $contact->setRelationshipWith($partner);
+            $contact->setRelationship($partner);
         } else {
-            $contact->setRelationshipWith($partner, true);
+            $contact->setRelationship($partner, true);
             $partner->logEvent('contact', $partner->id, 'create');
         }
 
@@ -455,10 +455,10 @@ class ApiContactController extends ApiController
                 $partner->reminders()->get()->each->delete();
             }
 
-            $contact->unsetRelationshipWith($partner);
+            $contact->unsetRelationship($partner);
             $partner->delete();
         } else {
-            $contact->unsetRelationshipWith($partner, true);
+            $contact->unsetRelationship($partner, true);
         }
 
         return new ContactResource($contact);

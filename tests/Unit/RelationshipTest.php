@@ -85,7 +85,7 @@ class RelationshipTest extends TestCase
             'id' => 2,
         ]);
 
-        $john->setRelationshipWith($roger);
+        $john->setRelationship($roger);
 
         $this->assertDatabaseHas('relationships', [
             'contact_id' => $john->id,
@@ -97,7 +97,7 @@ class RelationshipTest extends TestCase
             'with_contact_id' => $john->id,
         ]);
 
-        $john->unsetRelationshipWith($roger);
+        $john->unsetRelationship($roger);
 
         $this->assertDatabaseMissing('relationships', [
             'contact_id' => $john->id,
@@ -113,7 +113,7 @@ class RelationshipTest extends TestCase
             'id' => 4,
         ]);
 
-        $marie->setRelationshipWith($stephanie, true);
+        $marie->setRelationship($stephanie, true);
 
         $this->assertDatabaseHas('relationships', [
             'contact_id' => $marie->id,
@@ -125,7 +125,7 @@ class RelationshipTest extends TestCase
             'with_contact_id' => $marie->id,
         ]);
 
-        $marie->unsetRelationshipWith($stephanie, true);
+        $marie->unsetRelationship($stephanie, true);
 
         $this->assertDatabaseMissing('relationships', [
             'contact_id' => $marie->id,

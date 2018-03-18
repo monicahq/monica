@@ -494,14 +494,34 @@ class Account extends Model
      *
      * @return void
      */
-    public function populateDefaultRelationshipTypesTable()
+    public function populateRelationshipTypesTable($ignoreMigratedTable = false)
     {
-        RelationshipType::create([
-            'name' => 'partner',
-            'account_id' => $this->id,
-            'name_reverse_relationship' => 'partner',
-            'delible' => 0,
-        ]);
+        $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
+        foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
+            if (! $ignoreMigratedTable || $defaultRelationshipTypeGroups->migrated == 0) {
+                $id = DB::table('relationship_type_groups')->insertGetId([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipTypeGroup->name,
+                    'delible' => $defaultRelationshipTypeGroup->delible,
+                ]);
+
+                $defaultRelationshipTypes = DB::table('default_relationship_types')
+                                            ->where('relationship_type_group_id', $defaultRelationshipTypeGroup->id)
+                                            ->get();
+
+                foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
+                    if (! $ignoreMigratedTable || $defaultRelationshipType->migrated == 0) {
+                        RelationshipType::create([
+                            'account_id' => $this->id,
+                            'name' => $defaultRelationshipType->name,
+                            'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                            'relationship_type_group_id' => RelationshipType::where('account_id', $this->id)->where(''),
+                            'delible' => $defaultRelationshipType->delible,
+                        ]);
+                    }
+                }
+            }
+        }
     }
 
     /**

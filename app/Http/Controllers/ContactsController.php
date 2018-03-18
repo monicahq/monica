@@ -328,23 +328,7 @@ class ContactsController extends Controller
      */
     public function delete(Request $request, Contact $contact)
     {
-        // I know: this is a really brutal way of deleting objects. I'm doing
-        // this because I'll add more objects related to contacts in the future
-        // and I don't want to have to think of deleting a row that matches a
-        // contact.
-        //
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            try {
-                DB::table($tableName)->where('contact_id', $contact->id)->delete();
-            } catch (QueryException $e) {
-                continue;
-            }
-        }
-
-        $contact->delete();
+        $contact->deleteEverything();
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
