@@ -352,10 +352,11 @@ class ApiContactController extends ApiController
      */
     public function partners(Request $request, $contactId)
     {
-        $partner = $this->validatePartners($request, $contactId);
-        if (! $partner instanceof Contact) {
-            return $partner;
+        $validate = $this->validatePartners($request, $contactId);
+        if (! is_array($validate)) {
+            return $validate;
         }
+        list($contact, $partner) = $validate;
 
         if ($partner->is_partial) {
             $contact->setRelationshipWith($partner);
@@ -372,10 +373,11 @@ class ApiContactController extends ApiController
      */
     public function unsetPartners(Request $request, $contactId)
     {
-        $partner = $this->validatePartners($request, $contactId);
-        if (! $partner instanceof Contact) {
-            return $partner;
+        $validate = $this->validatePartners($request, $contactId);
+        if (! is_array($validate)) {
+            return $validate;
         }
+        list($contact, $partner) = $validate;
 
         if ($partner->is_partial) {
             if ($partner->reminders) {
@@ -433,7 +435,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        return $partner;
+        return [$contact, $partner];
     }
 
     /**
@@ -441,10 +443,11 @@ class ApiContactController extends ApiController
      */
     public function kids(Request $request, $contactId)
     {
-        $kid = $this->validateKids($request, $contactId);
-        if (! $kid instanceof Contact) {
-            return $kid;
+        $validate = $this->validatePartners($request, $contactId);
+        if (! is_array($validate)) {
+            return $validate;
         }
+        list($contact, $kid) = $validate;
 
         if ($kid->is_partial) {
             $kid->isTheOffspringOf($contact);
@@ -461,10 +464,11 @@ class ApiContactController extends ApiController
      */
     public function unsetKids(Request $request, $contactId)
     {
-        $kid = $this->validateKids($request, $contactId);
-        if (! $kid instanceof Contact) {
-            return $kid;
+        $validate = $this->validatePartners($request, $contactId);
+        if (! is_array($validate)) {
+            return $validate;
         }
+        list($contact, $kid) = $validate;
 
         if ($kid->is_partial) {
             if ($kid->reminders) {
@@ -515,6 +519,6 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        return $kid;
+        return [$contact, $kid];
     }
 }

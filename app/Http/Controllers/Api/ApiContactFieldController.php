@@ -37,9 +37,9 @@ class ApiContactFieldController extends ApiController
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request, $request->input('contact_field_type_id'));
-        if ($isvalid !== true) {
-            return $isvalid;
+        $contactField = $this->validateUpdate($request, $request->input('contact_field_type_id'));
+        if (! $contactField instanceof ContactField) {
+            return $contactField;
         }
 
         try {
@@ -64,9 +64,9 @@ class ApiContactFieldController extends ApiController
      */
     public function update(Request $request, $contactFieldId)
     {
-        $isvalid = $this->validateUpdate($request, $contactFieldId);
-        if ($isvalid !== true) {
-            return $isvalid;
+        $contactField = $this->validateUpdate($request, $contactFieldId);
+        if (! $contactField instanceof ContactField) {
+            return $contactField;
         }
 
         try {
@@ -115,7 +115,7 @@ class ApiContactFieldController extends ApiController
             return $this->respondNotFound();
         }
 
-        return true;
+        return $contactField;
     }
 
     /**
