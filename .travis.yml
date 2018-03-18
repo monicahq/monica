@@ -118,6 +118,11 @@ jobs:
       php: 7.1
       env: DB=postgres
 
+    - stage: Tests
+      allow_failure: true 
+      php: 7.2
+      env: DB=sqlite
+
     - stage: Deploy
       if: tag IS present
       skip_cleanup: true
