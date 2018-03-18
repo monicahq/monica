@@ -1,0 +1,30 @@
+<?php
+
+use App\Account;
+use App\RelationshipType;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class PopulateRelationshipTypeTablesWithDefaultValues extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Account::chunk(200, function ($accounts) {
+            foreach ($accounts as $account) {
+                $account->populateRelationshipTypesTable();
+            }
+        });
+
+        DB::table('default_relationship_types')
+            ->update(['migrated' => 1]);
+
+        DB::table('default_relationship_type_groups')
+            ->update(['migrated' => 1]);
+    }
+}

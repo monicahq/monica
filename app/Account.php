@@ -515,7 +515,7 @@ class Account extends Model
                             'account_id' => $this->id,
                             'name' => $defaultRelationshipType->name,
                             'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                            'relationship_type_group_id' => RelationshipType::where('account_id', $this->id)->where(''),
+                            'relationship_type_group_id' => $id,
                             'delible' => $defaultRelationshipType->delible,
                         ]);
                     }
@@ -617,7 +617,7 @@ class Account extends Model
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
         $account->populateDefaultReminderRulesTable();
-        $account->populateDefaultRelationshipTypesTable();
+        $account->populateRelationshipTypesTable();
     }
 
     /**
