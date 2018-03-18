@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Facades\Auth;
 
 class DateHelper
 {

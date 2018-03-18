@@ -45,7 +45,7 @@ class User extends Authenticatable
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password)
     {
@@ -208,7 +208,7 @@ class User extends Authenticatable
     /**
      * Decrypt the user's google_2fa secret.
      *
-     * @param  string  $value
+     * @param  string|null  $value
      * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)

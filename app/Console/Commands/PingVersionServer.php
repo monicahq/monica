@@ -6,6 +6,7 @@ use App\Contact;
 use App\Instance;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 

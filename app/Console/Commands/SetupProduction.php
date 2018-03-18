@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Account;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SetupProduction extends Command
 {

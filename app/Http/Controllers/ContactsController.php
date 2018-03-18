@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Tag;
-use Validator;
 use App\Contact;
 use App\Relationship;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {

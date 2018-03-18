@@ -2,9 +2,9 @@
 
 namespace App;
 
-use DB;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 

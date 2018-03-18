@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
