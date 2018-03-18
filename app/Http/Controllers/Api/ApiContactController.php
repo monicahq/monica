@@ -435,7 +435,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        return array($contact, $partner);
+        return [$contact, $partner];
     }
 
     /**
@@ -519,6 +519,6 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        return array($contact, $kid);
+        return [$contact, $kid];
     }
 }
