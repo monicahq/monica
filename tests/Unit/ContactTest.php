@@ -2,14 +2,15 @@
 
 namespace Tests\Unit;
 
+use App\Tag;
 use App\Call;
 use App\Debt;
 use App\Contact;
-use Tests\TestCase;
 use App\SpecialDate;
+use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactTest extends TestCase
+class ContactTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -23,6 +24,22 @@ class ContactTest extends TestCase
         $contact = factory('App\Contact')->create(['gender_id' => $gender->id]);
 
         $this->assertTrue($contact->gender()->exists());
+    }
+
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->notifications()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
@@ -348,6 +365,22 @@ class ContactTest extends TestCase
         );
     }
 
+    public function test_set_emailcontact()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test@test.com',
+        ]);
+
+        $email = $contact->getFirstEmail();
+        $this->assertEquals($email, 'test@test.com');
+    }
+
     public function test_get_avatar_returns_gravatar()
     {
         $contact = new Contact;
@@ -357,6 +390,81 @@ class ContactTest extends TestCase
             'https://gravatar.com/url',
             $contact->getAvatarURL()
         );
+    }
+
+    public function test_gravatar_set_noemail()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
+    public function test_gravatar_set_emailnotexists()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'verybademailthatwillneverexistbecauseitstoolong204827494@x.com',
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
+    public function test_gravatar_set_emailreal()
+    {
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'alexis@saettler.org',
+        ]);
+
+        $contact->updateGravatar();
+
+        $url = $contact->getAvatarURL();
+        $this->assertNotNull($url);
+        $this->assertContains('s=250&d=mm&r=g', $url);
+        $this->assertContains('http://www.gravatar.com', $url);
+    }
+
+    public function test_gravatar_set_emailreal_secure()
+    {
+        config(['app.env' => 'production']);
+
+        $account = factory(\App\Account::class)->create();
+        $contact = factory(\App\Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'alexis@saettler.org',
+        ]);
+
+        $contact->updateGravatar();
+
+        $url = $contact->getAvatarURL();
+        $this->assertNotNull($url);
+        $this->assertContains('s=250&d=mm&r=g', $url);
+        $this->assertContains('https://secure.gravatar.com', $url);
     }
 
     public function test_get_avatar_returns_external_url()
@@ -638,7 +746,7 @@ class ContactTest extends TestCase
     public function test_set_name_returns_true()
     {
         $contact = factory(Contact::class)->create();
-        $contact->setName('John', 'Jr', 'Doe');
+        $contact->setName('John', 'Doe', 'Jr');
 
         $this->assertDatabaseHas(
             'contacts',
@@ -647,6 +755,115 @@ class ContactTest extends TestCase
                 'last_name' => 'Doe',
                 'middle_name' => 'Jr',
             ]
+        );
+    }
+
+    public function test_it_creates_a_tag_and_sets_it_to_a_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+    }
+
+    public function test_it_uses_an_existing_tag_to_associate_it_with_the_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+
+        $newTag = $contact->setTag('friend');
+
+        $this->assertEquals(
+            $tag->id,
+            $newTag->id
+        );
+    }
+
+    public function test_it_unsets_all_the_tags()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag1 = $contact->setTag('friend');
+        $tag2 = $contact->setTag('family');
+        $tag3 = $contact->setTag('world');
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag3->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertEquals(
+            3,
+            $contact->tags()->count()
+        );
+
+        $contact->unsetTags();
+
+        $this->assertDatabaseMissing(
+            'contact_tag',
+            [
+                'tag_id' => $tag3->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->tags()->count()
+        );
+    }
+
+    public function it_unsets_a_particular_tag()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag1 = $contact->setTag('friend');
+        $tag2 = $contact->setTag('family');
+        $tag3 = $contact->setTag('world');
+
+        $this->assertEquals(
+            3,
+            $contact->tags()->count()
+        );
+
+        $contact->unsetTag($tag3->id);
+
+        $this->assertDatabaseMissing(
+            'contact_tag',
+            [
+                'tag_id' => $tag3->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertEquals(
+            2,
+            $contact->tags()->count()
         );
     }
 }

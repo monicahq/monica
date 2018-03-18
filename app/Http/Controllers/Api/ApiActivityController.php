@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Note;
 use Validator;
 use App\Contact;
 use App\Activity;
 use App\ActivityType;
+use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -52,31 +54,9 @@ class ApiActivityController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'summary' => 'required|max:100000',
-            'description' => 'required|max:1000000',
-            'date_it_happened' => 'required|date',
-            'activity_type_id' => 'integer',
-            'contacts' => 'required|array',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        // Make sure each contact exists and has the right to be associated with
-        // this account
-        $attendeesID = $request->get('contacts');
-        foreach ($attendeesID as $attendeeID) {
-            try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $attendeeID)
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
+        $contact = $this->validateUpdate($request);
+        if (! $contact instanceof Contact) {
+            return $contact;
         }
 
         try {
@@ -94,7 +74,7 @@ class ApiActivityController extends ApiController
         }
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($activity);
+        (new JournalEntry)->add($activity);
 
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
@@ -124,31 +104,9 @@ class ApiActivityController extends ApiController
             return $this->respondNotFound();
         }
 
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'summary' => 'required|max:100000',
-            'description' => 'required|max:1000000',
-            'date_it_happened' => 'required|date',
-            'activity_type_id' => 'integer',
-            'contacts' => 'required|array',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        // Make sure each contact exists and has the right to be associated with
-        // this account
-        $attendeesID = $request->get('contacts');
-        foreach ($attendeesID as $attendeeID) {
-            try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $attendeeID)
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         // Update the activity itself
@@ -167,7 +125,7 @@ class ApiActivityController extends ApiController
 
         // Log a journal entry but need to delete the previous one first
         $activity->deleteJournalEntry();
-        $journalEntry = (new JournalEntry)->add($activity);
+        (new JournalEntry)->add($activity);
 
         // Get the attendees
         $attendees = $request->get('contacts');
@@ -202,6 +160,44 @@ class ApiActivityController extends ApiController
         }
 
         return new ActivityResource($activity);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'summary' => 'required|max:100000',
+            'description' => 'required|max:1000000',
+            'date_it_happened' => 'required|date',
+            'activity_type_id' => 'integer',
+            'contacts' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->setErrorCode(32)
+                ->respondWithError($validator->errors()->all());
+        }
+
+        // Make sure each contact exists and has the right to be associated with
+        // this account
+        $attendeesID = $request->get('contacts');
+        foreach ($attendeesID as $attendeeID) {
+            try {
+                $contact = Contact::where('account_id', auth()->user()->account_id)
+                    ->where('id', $attendeeID)
+                    ->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
+        return true;
     }
 
     /**

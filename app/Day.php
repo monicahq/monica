@@ -65,7 +65,7 @@ class Day extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
-        $data = [
+        return [
             'type' => 'day',
             'id' => $this->id,
             'rate' => $this->rate,
@@ -77,7 +77,5 @@ class Day extends Model implements IsJournalableInterface
             'year' => $this->date->year,
             'happens_today' => $this->date->isToday(),
         ];
-
-        return $data;
     }
 }

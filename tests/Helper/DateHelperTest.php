@@ -297,4 +297,44 @@ class DateHelperTest extends FeatureTestCase
             count(DateHelper::getListOfDays())
         );
     }
+
+    public function test_it_returns_a_list_with_twenty_four_hours()
+    {
+        $this->assertEquals(
+            24,
+            count(DateHelper::getListOfHours())
+        );
+    }
+
+    public function test_it_returns_a_list_of_hours()
+    {
+        $hours = DateHelper::getListOfHours();
+
+        $this->assertEquals(
+            '01.00AM',
+            $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['id']
+        );
+    }
+
+    public function test_it_returns_a_date_minus_a_number_of_days()
+    {
+        $date = Carbon::create(2017, 1, 1);
+
+        $this->assertEquals(
+            '2016-12-25',
+            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->format('Y-m-d')
+        );
+    }
+
+    public function test_it_returns_a_carbon_instance()
+    {
+        $date = Carbon::create(2017, 1, 1);
+
+        $this->assertInstanceOf(Carbon::class, DateHelper::getDateMinusGivenNumberOfDays($date, 7));
+    }
 }

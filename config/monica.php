@@ -14,9 +14,9 @@ return [
     'langs' => [
         'en',
         'fr',
-        'pt-br',
+        'pt',
         'ru',
-        'cz',
+        'cs',
         'it',
         'de',
     ],
@@ -117,5 +117,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '1.7.1',
+    'app_version' => '1.8.1',
 ];

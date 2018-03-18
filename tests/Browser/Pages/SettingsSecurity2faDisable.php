@@ -35,7 +35,7 @@ class SettingsSecurity2faDisable extends Page
     public function elements()
     {
         return [
-            'verify' => 'verify',
+            'verify' => "button[name='verify']",
             'otp' => '#one_time_password',
         ];
     }

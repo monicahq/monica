@@ -63,7 +63,8 @@
 
           <form-date
             v-bind:id="'birthdayDate'"
-            v-bind:default-date="defaultDate">
+            v-bind:default-date="defaultDate"
+            v-bind:locale="locale">
           </form-date>
 
           <div class="mt3 form-information-message br2">
@@ -125,6 +126,9 @@
                 type: String,
             },
             age: {
+                type: String,
+            },
+            locale: {
                 type: String,
             },
         },

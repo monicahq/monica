@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
@@ -31,9 +33,6 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'food_preferencies',
-        'job',
-        'company',
     ];
 
     // The list of columns we want the Searchable trait to select.
@@ -49,6 +48,8 @@ class Contact extends Model
         'default_avatar_color',
         'gender_id',
         'account_id',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -329,6 +330,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
@@ -509,7 +520,7 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastActivityDate()
     {
@@ -714,7 +725,7 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $middleName = null, String $lastName)
+    public function setName(String $firstName, String $lastName, String $middleName = null)
     {
         if ($firstName == '') {
             return false;
@@ -873,6 +884,25 @@ class Contact extends Model
     }
 
     /**
+     * Update the gravatar, using the firt email found.
+     */
+    public function updateGravatar()
+    {
+        // for performance reasons, we check if a gravatar exists for this email
+        // address. if it does, we store the gravatar url in the database.
+        // while this is not ideal because the gravatar can change, at least we
+        // won't make constant call to gravatar to load the avatar on every
+        // page load.
+        $response = $this->getGravatar(250);
+        if ($response !== false && is_string($response)) {
+            $this->gravatar_url = $response;
+        } else {
+            $this->gravatar_url = null;
+        }
+        $this->save();
+    }
+
+    /**
      * Get the gravatar, if it exits.
      *
      * @param  int $size
@@ -880,17 +910,35 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        if (empty($this->email)) {
-            return false;
-        }
-        $gravatar_url = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email)));
-        // check if gravatar exists by appending ?d=404, returns 404 response if does not exist
-        $gravatarHeaders = get_headers($gravatar_url.'?d=404');
-        if ($gravatarHeaders[0] == 'HTTP/1.1 404 Not Found') {
+        $email = $this->getFirstEmail();
+
+        if (is_null($email) || empty($email)) {
             return false;
         }
 
-        return $gravatar_url.'?s='.$size;
+        if (! app('gravatar')->exists($email)) {
+            return false;
+        }
+
+        return app('gravatar')->get($email, [
+            'size' => $size,
+            'secure' => config('app.env') === 'production',
+        ]);
+    }
+
+    public function getFirstEmail()
+    {
+        $contact_email = $this->contactFields()
+            ->whereHas('contactFieldType', function ($query) {
+                $query->where('type', '=', 'email');
+            })
+            ->first();
+
+        if (is_null($contact_email)) {
+            return;
+        }
+
+        return $contact_email->data;
     }
 
     /**
@@ -981,7 +1029,7 @@ class Contact extends Model
                                     ->where('is_the_parent_of', $this->id)
                                     ->count();
 
-            if ($relationship != 0 or $offspring != 0 or $progenitor != 0) {
+            if ($relationship != 0 || $offspring != 0 || $progenitor != 0) {
                 $partners->forget($counter);
             }
             $counter++;
@@ -1043,7 +1091,7 @@ class Contact extends Model
      */
     public function setRelationshipWith(self $partner, $bilateral = false)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1053,7 +1101,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $relationship = Relationship::create(
+            Relationship::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $partner->id,
@@ -1072,7 +1120,7 @@ class Contact extends Model
      */
     public function updateRelationshipWith(self $partner)
     {
-        $relationship = Relationship::create(
+        Relationship::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $partner->id,
@@ -1091,7 +1139,7 @@ class Contact extends Model
      */
     public function isTheOffspringOf(self $parent, $bilateral = false)
     {
-        $offspring = Offspring::create(
+        Offspring::create(
             [
                 'account_id' => $this->account_id,
                 'contact_id' => $this->id,
@@ -1100,7 +1148,7 @@ class Contact extends Model
         );
 
         if ($bilateral) {
-            $progenitor = Progenitor::create(
+            Progenitor::create(
                 [
                     'account_id' => $this->account_id,
                     'contact_id' => $parent->id,
@@ -1163,15 +1211,15 @@ class Contact extends Model
      */
     public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
     {
-        $events = Event::where('contact_id', $this->id)
-                        ->where('object_id', $contact->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $this->id)
+                ->where('object_id', $contact->id)
+                ->where('object_type', $type)
+                ->delete();
 
-        $events = Event::where('contact_id', $contact->id)
-                        ->where('object_id', $this->id)
-                        ->where('object_type', $type)
-                        ->delete();
+        Event::where('contact_id', $contact->id)
+                ->where('object_id', $this->id)
+                ->where('object_type', $type)
+                ->delete();
     }
 
     /**
@@ -1210,9 +1258,7 @@ class Contact extends Model
         $offspring = Offspring::where('contact_id', $this->id)
                         ->first();
 
-        $progenitor = self::findOrFail($offspring->is_the_child_of);
-
-        return $progenitor;
+        return self::findOrFail($offspring->is_the_child_of);
     }
 
     /**
@@ -1224,9 +1270,7 @@ class Contact extends Model
         $relationship = Relationship::where('with_contact_id', $this->id)
                         ->first();
 
-        $relationship = self::findOrFail($relationship->contact_id);
-
-        return $relationship;
+        return self::findOrFail($relationship->contact_id);
     }
 
     /**
@@ -1235,14 +1279,7 @@ class Contact extends Model
      */
     public function isOwedMoney()
     {
-        return $this
-            ->debts()
-            ->where('status', '=', 'inprogress')
-            ->getResults()
-            ->sum(function ($d) {
-                return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
-            })
-            > 0;
+        return $this->totalOutstandingDebtAmount() > 0;
     }
 
     /**
@@ -1287,7 +1324,7 @@ class Contact extends Model
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) or ! is_null($this->firstMetDate) or ! is_null($this->first_met_through_contact_id);
+        return ! is_null($this->first_met_additional_info) || ! is_null($this->firstMetDate) || ! is_null($this->first_met_through_contact_id);
     }
 
     /**
@@ -1385,40 +1422,34 @@ class Contact extends Model
             return;
         }
 
-        if ($occasion == 'birthdate') {
-            if (! $this->birthday_special_date_id) {
-                return;
-            }
+        switch ($occasion) {
+            case 'birthdate':
+                if ($this->birthday_special_date_id) {
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
 
-            $this->birthdate->deleteReminder();
-            $this->birthdate->delete();
+                    $this->birthday_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'deceased_date':
+                if ($this->deceased_special_date_id) {
+                    $this->deceasedDate->deleteReminder();
+                    $this->deceasedDate->delete();
 
-            $this->birthday_special_date_id = null;
-            $this->save();
-        }
+                    $this->deceased_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'first_met':
+                if ($this->first_met_special_date_id) {
+                    $this->firstMetDate->deleteReminder();
+                    $this->firstMetDate->delete();
 
-        if ($occasion == 'deceased_date') {
-            if (! $this->deceased_special_date_id) {
-                return;
-            }
-
-            $this->deceasedDate->deleteReminder();
-            $this->deceasedDate->delete();
-
-            $this->deceased_special_date_id = null;
-            $this->save();
-        }
-
-        if ($occasion == 'first_met') {
-            if (! $this->first_met_special_date_id) {
-                return;
-            }
-
-            $this->firstMetDate->deleteReminder();
-            $this->firstMetDate->delete();
-
-            $this->first_met_special_date_id = null;
-            $this->save();
+                    $this->first_met_special_date_id = null;
+                    $this->save();
+                }
+            break;
         }
     }
 
@@ -1439,5 +1470,43 @@ class Contact extends Model
         if ($relatedContact) {
             return self::find($relatedContact->is_the_child_of);
         }
+    }
+
+    /**
+     * Sets a tag to the contact.
+     *
+     * @param string $tag
+     * @return Tag
+     */
+    public function setTag(string $name)
+    {
+        $tag = $this->account->tags()->firstOrCreate([
+            'name' => $name,
+        ]);
+
+        $tag->name_slug = str_slug($tag->name);
+        $tag->save();
+
+        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account->id]]);
+
+        return $tag;
+    }
+
+    /**
+     * Unset all the tags associated with the contact.
+     * @return bool
+     */
+    public function unsetTags()
+    {
+        $this->tags()->detach();
+    }
+
+    /**
+     * Unset one tag associated with the contact.
+     * @return bool
+     */
+    public function unsetTag(Tag $tag)
+    {
+        $this->tags()->detach($tag->id);
     }
 }

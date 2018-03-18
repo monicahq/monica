@@ -14,7 +14,7 @@ if (App::environment('production')) {
     URL::forceScheme('https');
 }
 
-Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes();
 
@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
-        Route::get('/dashboard/', 'DashboardController@index')->name('.index');
+        Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
@@ -37,10 +37,10 @@ Route::middleware(['auth', '2fa'])->group(function () {
     Route::post('/validate2fa', 'DashboardController@index');
 
     Route::group(['as' => 'people'], function () {
-        Route::get('/people/', 'ContactsController@index')->name('.index');
+        Route::get('/people', 'ContactsController@index')->name('.index');
         Route::get('/people/add', 'ContactsController@create')->name('.create');
         Route::get('/people/notfound', 'ContactsController@missing')->name('.missing');
-        Route::post('/people/', 'ContactsController@store')->name('.store');
+        Route::post('/people', 'ContactsController@store')->name('.store');
 
         // Dashboard
         Route::get('/people/{contact}', 'ContactsController@show')->name('.show');
@@ -195,6 +195,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::put('/settings/personalization/genders/{gender}', 'Settings\\GendersController@updateGender');
         Route::delete('/settings/personalization/genders/{gender}/replaceby/{gender_id}', 'Settings\\GendersController@destroyAndReplaceGender');
         Route::delete('/settings/personalization/genders/{gender}', 'Settings\\GendersController@destroyGender');
+
+        Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
+        Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');
