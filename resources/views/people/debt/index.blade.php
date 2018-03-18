@@ -31,12 +31,12 @@
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')
             {{ trans('people.debt_you_owe', [
-                'amount' => MoneyHelper::format($debt->amount)
+                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
             ]) }}
           @else
             {{ trans('people.debt_they_owe', [
                 'name' => $contact->first_name,
-                'amount' => MoneyHelper::format($debt->amount)
+                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
             ]) }}
           @endif
         </div>
@@ -67,11 +67,11 @@
             @if ($contact->isOwedMoney())
               {{ trans('people.debt_they_owe', [
                   'name' => $contact->first_name,
-                  'amount' => MoneyHelper::format($contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format($contact->totalOutstandingDebtAmount())
               ]) }}
             @else
               {{ trans('people.debt_you_owe', [
-                  'amount' => MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
               ]) }}
             @endif
           </strong>
