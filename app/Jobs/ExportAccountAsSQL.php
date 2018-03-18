@@ -58,7 +58,7 @@ class ExportAccountAsSQL
     public function __construct($file = null, $path = null)
     {
         $this->path = $path ?? 'exports/';
-        $this->file = rand().'.sql';
+        $this->file = $file ?? rand().'.sql';
     }
 
     /**

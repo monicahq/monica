@@ -43,10 +43,9 @@ class ScheduleNotification implements ShouldQueue
         $this->notification->setNumberOfEmailsNeededForDeletion($numberOfUsersInAccount);
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($this->notification->trigger_date)) {
-                if (! $account->hasLimitations()) {
-                    dispatch(new SendNotificationEmail($this->notification, $user));
-                }
+            if ($user->shouldBeReminded($this->notification->trigger_date)
+                && ! $account->hasLimitations()) {
+                dispatch(new SendNotificationEmail($this->notification, $user));
             }
         }
     }

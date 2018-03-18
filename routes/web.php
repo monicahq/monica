@@ -14,7 +14,7 @@ if (App::environment('production')) {
     URL::forceScheme('https');
 }
 
-Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes();
 

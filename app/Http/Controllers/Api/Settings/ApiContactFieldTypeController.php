@@ -50,18 +50,9 @@ class ApiContactFieldTypeController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'fontawesome_icon' => 'nullable|max:255',
-            'protocol' => 'nullable|max:255',
-            'delible' => 'integer',
-            'type' => 'nullable|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -92,18 +83,9 @@ class ApiContactFieldTypeController extends ApiController
             return $this->respondNotFound();
         }
 
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'fontawesome_icon' => 'nullable|max:255',
-            'protocol' => 'nullable|max:255',
-            'delible' => 'integer',
-            'type' => 'nullable|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         // Update the contactfieldtype itself
@@ -122,6 +104,31 @@ class ApiContactFieldTypeController extends ApiController
         }
 
         return new ContactFieldTypeResource($contactFieldType);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'fontawesome_icon' => 'nullable|max:255',
+            'protocol' => 'nullable|max:255',
+            'delible' => 'integer',
+            'type' => 'nullable|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        return true;
     }
 
     /**

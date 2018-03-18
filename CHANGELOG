@@ -1,6 +1,8 @@
 UNRELEASED CHANGES:
 
-*
+* Redirect to registration page if there is no account
+* Improve heroku integration
+* Add bullet points to lists in call log
 
 RELEASED VERSIONS:
 

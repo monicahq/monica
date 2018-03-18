@@ -22,16 +22,6 @@ class SetupTest extends Command
     protected $description = 'Create the test environment with optional fake data for testing purposes.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

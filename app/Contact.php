@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
@@ -518,7 +520,7 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastActivityDate()
     {
@@ -723,7 +725,7 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $middleName = null, String $lastName)
+    public function setName(String $firstName, String $lastName, String $middleName = null)
     {
         if ($firstName == '') {
             return false;
@@ -892,7 +894,7 @@ class Contact extends Model
         // won't make constant call to gravatar to load the avatar on every
         // page load.
         $response = $this->getGravatar(250);
-        if ($response != false and is_string($response)) {
+        if ($response !== false && is_string($response)) {
             $this->gravatar_url = $response;
         } else {
             $this->gravatar_url = null;
@@ -1420,40 +1422,34 @@ class Contact extends Model
             return;
         }
 
-        if ($occasion == 'birthdate') {
-            if (! $this->birthday_special_date_id) {
-                return;
-            }
+        switch ($occasion) {
+            case 'birthdate':
+                if ($this->birthday_special_date_id) {
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
 
-            $this->birthdate->deleteReminder();
-            $this->birthdate->delete();
+                    $this->birthday_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'deceased_date':
+                if ($this->deceased_special_date_id) {
+                    $this->deceasedDate->deleteReminder();
+                    $this->deceasedDate->delete();
 
-            $this->birthday_special_date_id = null;
-            $this->save();
-        }
+                    $this->deceased_special_date_id = null;
+                    $this->save();
+                }
+            break;
+            case 'first_met':
+                if ($this->first_met_special_date_id) {
+                    $this->firstMetDate->deleteReminder();
+                    $this->firstMetDate->delete();
 
-        if ($occasion == 'deceased_date') {
-            if (! $this->deceased_special_date_id) {
-                return;
-            }
-
-            $this->deceasedDate->deleteReminder();
-            $this->deceasedDate->delete();
-
-            $this->deceased_special_date_id = null;
-            $this->save();
-        }
-
-        if ($occasion == 'first_met') {
-            if (! $this->first_met_special_date_id) {
-                return;
-            }
-
-            $this->firstMetDate->deleteReminder();
-            $this->firstMetDate->delete();
-
-            $this->first_met_special_date_id = null;
-            $this->save();
+                    $this->first_met_special_date_id = null;
+                    $this->save();
+                }
+            break;
         }
     }
 
