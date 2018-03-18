@@ -46,6 +46,7 @@ before_install:
   - cp scripts/tests/.env.$DB.travis .env
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
   - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
+  - if [[ "$DB" == "sqlite" ]]; then touch database/database.sqlite; fi
   - composer self-update
 
 install:
