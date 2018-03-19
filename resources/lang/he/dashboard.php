@@ -2,7 +2,7 @@
 
 return [
     'dashboard_blank_title' => 'ברוך בואך לחשבון שלך!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
+    'dashboard_blank_description' => 'מוניקה הוא המקום לארגן את כל המגע החברתי שלך עם אלו שאכפת לך מהם.',
     'dashboard_blank_cta' => 'נא להוסיף את איש הקשר הראשון שלך',
 
     'notes_title' => 'אין לך הערות שסימנת בכוכב עדיין.',
