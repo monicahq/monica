@@ -45,46 +45,46 @@ return [
 
     // show
     'section_contact_information' => 'Contact information',
-    'section_personal_activities' => 'Activities',
-    'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tasks',
-    'section_personal_gifts' => 'Gifts',
+    'section_personal_activities' => 'פעילויות',
+    'section_personal_reminders' => 'תזכורות',
+    'section_personal_tasks' => 'משימות',
+    'section_personal_gifts' => 'מתנות',
 
     //
-    'link_to_list' => 'List of people',
+    'link_to_list' => 'רשימת אנשים',
 
     // Header
-    'edit_contact_information' => 'Edit contact information',
-    'call_button' => 'Log a call',
+    'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
+    'call_button' => 'תיעוד שיחה',
 
     // Calls
-    'modal_call_title' => 'Log a call',
-    'modal_call_comment' => 'What did you talk about? (optional)',
-    'modal_call_date' => 'The phone call happened earlier today.',
-    'modal_call_change' => 'Change',
-    'modal_call_exact_date' => 'The phone call happened on',
-    'calls_add_success' => 'The phone call has been saved.',
-    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
-    'call_delete_success' => 'The call has been deleted successfully',
-    'call_title' => 'Phone calls',
-    'call_empty_comment' => 'No details',
-    'call_blank_title' => 'Keep track of the phone calls you\'ve done with :name',
-    'call_blank_desc' => 'You called :name',
+    'modal_call_title' => 'תיעוד שיחה',
+    'modal_call_comment' => 'על מה דיברתם? (רשות)',
+    'modal_call_date' => 'שיחת הטלפון התקיימה מוקדם יותר היום.',
+    'modal_call_change' => 'שינוי',
+    'modal_call_exact_date' => 'שיחת הטלפון התקיימה ב־',
+    'calls_add_success' => 'שיחת הטלפון נשמרה.',
+    'call_delete_confirmation' => 'למחוק את השיחה הזאת?',
+    'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
+    'call_title' => 'שיחות טלפון',
+    'call_empty_comment' => 'אין פרטים',
+    'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם :name',
+    'call_blank_desc' => 'התקשרת אל :name',
 
     // age - birthday
-    'birthdate_not_set' => 'Birthdate is not set',
-    'age_approximate_in_years' => 'around :age years old',
+    'birthdate_not_set' => 'תאריך הלידה לא הוגדר',
+    'age_approximate_in_years' => 'הגיל הוא בערך :age',
     'age_exact_in_years' => ':age years old',
     'age_exact_birthdate' => 'born :date',
 
     // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_called' => 'שיחת הטלפון האחרונה: :date',
+    'last_called_empty' => 'שיחת הטלפון האחרונה: לא ידוע',
+    'last_activity_date' => 'פעילות אחרונה יחד: :date',
+    'last_activity_date_empty' => 'פעילות אחרונה יחד: לא ידוע',
 
     // additional information
-    'information_edit_success' => 'The profile has been updated successfully',
+    'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'Edit :name\'s personal information',
     'information_edit_avatar' => 'Photo/avatar of the contact',
     'information_edit_max_size' => 'Max :size Mb.',
