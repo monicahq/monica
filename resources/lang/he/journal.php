@@ -15,5 +15,5 @@ return [
     'journal_add_cta' => 'Save',
     'journal_blank_cta' => 'Add your first journal entry',
     'journal_blank_description' => 'The journal lets you write events that happened to you, and remember them.',
-    'delete_confirmation' => 'Are you sure you want to delete this journal entry?',
+    'delete_confirmation' => 'למחוק את הרשומה הזאת ביומן?',
 ];
