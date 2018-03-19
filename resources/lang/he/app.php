@@ -18,7 +18,7 @@ return [
     'loading' => 'בטעינה…',
     'with' => 'עם',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_description' => 'רוצה להוסיף קצת עניין לטקסט שלך? במערכת זו קיימת תמיכה ב־Markdown כדי להוסיף הדגשה, הטיה, רשימות ועוד.',
     'markdown_link' => 'קריאת התיעוד',
 
     'header_settings_link' => 'הגדרות',
@@ -42,7 +42,7 @@ return [
     'footer_new_version' => 'גרסה חדשה זמינה',
 
     'footer_modal_version_whats_new' => 'מה חדש',
-    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
+    'footer_modal_version_release_away' => 'גרסה זו יצאה לאור גרסה אחת לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.|גרסה זו יצאה לאור :number גרסאות לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.',
 
     'breadcrumb_dashboard' => 'לוח מחוונים',
     'breadcrumb_list_contacts' => 'רשימת אנשים',
@@ -56,20 +56,20 @@ return [
     'breadcrumb_settings_import_report' => 'דוח יבוא',
     'breadcrumb_settings_import_upload' => 'העלאה',
     'breadcrumb_settings_tags' => 'תגיות',
-    'breadcrumb_add_significant_other' => 'Add significant other',
-    'breadcrumb_edit_significant_other' => 'Edit significant other',
-    'breadcrumb_add_note' => 'Add a note',
-    'breadcrumb_edit_note' => 'Edit a note',
+    'breadcrumb_add_significant_other' => 'הוספת קשר זוגי',
+    'breadcrumb_edit_significant_other' => 'עריכת קשר זוגי',
+    'breadcrumb_add_note' => 'הוספת הערה',
+    'breadcrumb_edit_note' => 'עריכת הערה',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'איך הכרתם',
-    'breadcrumb_settings_personalization' => 'Personalization',
-    'breadcrumb_settings_security' => 'Security',
-    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
+    'breadcrumb_settings_personalization' => 'התאמה אישית',
+    'breadcrumb_settings_security' => 'אבטחה',
+    'breadcrumb_settings_security_2fa' => 'אימות דו־שלבי',
 
-    'gender_male' => 'Man',
-    'gender_female' => 'Woman',
-    'gender_none' => 'Rather not say',
+    'gender_male' => 'גבר',
+    'gender_female' => 'אישה',
+    'gender_none' => 'שמור במערכת',
 
-    'error_title' => 'Whoops! Something went wrong.',
-    'error_unauthorized' => 'You don\'t have the right to edit this resource.',
+    'error_title' => 'אופס! משהו השתבש.',
+    'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
 ];
