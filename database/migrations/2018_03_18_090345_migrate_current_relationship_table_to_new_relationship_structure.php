@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use App\Account;
 use Illuminate\Support\Facades\Schema;
@@ -17,11 +17,22 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
                 $relationship_type_id = $account->getRelationshipTypeByType('partner');
-
-// @TODO le probleme : pour une relation bilaterale, il cree 4 enregistrements et non deux. Bug à fixer.
-
                 $relationships = DB::table('relationships')->where('account_id', '=', $account->id)->get();
+
                 foreach ($relationships as $relationship) {
+                    // is this a bilateral relationship?
+                    $bilateralRow = DB::table('relationships')
+                                            ->where('account_id', '=', $account->id)
+                                            ->where('contact_id', '=', $relationship->with_contact_id)
+                                            ->where('with_contact_id', '=', $relationship->contact_id)
+                                            ->get();
+
+                    // if we find such a relationship, we need to delete it - otherwise we will
+                    // create a duplicate entry in the relationship table
+                    if (! is_null($bilateralRow)) {
+                        DB::table('relationships')->where('id', '=', $bilateralRow->id)->delete();
+                    }
+
                     DB::table('temp_relationships_table')->insertGetId([
                         'account_id' => $account->id,
                         'contact_id_main' => $relationship->contact_id,
