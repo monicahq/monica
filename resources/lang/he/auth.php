@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'פרטי הזהות האלה אינם תואמים את רישומינו.',
+    'throttle' => 'בוצעו יותר מדי ניסיונות כניסה כושלים. נא לנסות שוב בעוד :seconds שניות.',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
     'back_homepage' => 'Back to homepage',
