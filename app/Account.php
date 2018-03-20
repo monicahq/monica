@@ -584,6 +584,16 @@ class Account extends Model
     }
 
     /**
+     * Get if any account exists on the database.
+     *
+     * @return bool
+     */
+    public static function hasAny()
+    {
+        return DB::table('accounts')->count() > 0;
+    }
+
+    /**
      * Create a new account and associate a new User.
      *
      * @param string $first_name
