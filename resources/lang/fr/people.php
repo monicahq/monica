@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Trier par date de dernière activité (récent à vieux)',
     'people_list_lastactivitydateOldtoNew' => 'Trier par date de dernière activité (vieux à récent)',
-    'people_list_filter_tag' => 'Affichge des contacts avec le tag ',
+    'people_list_filter_tag' => 'Affichage des contacts avec l\'étiquette ',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Recherchez dans vos contacts...',
