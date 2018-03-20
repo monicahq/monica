@@ -149,7 +149,7 @@ return [
 
     // relationships
     'relationship_form_add' => 'Add a new relationship',
-    'relationship_form_is_with' => 'This person is related to :name as...',
+    'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',

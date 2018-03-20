@@ -27,27 +27,23 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'name_reverse_relationship' => 'partner',
             'relationship_type_group_id' => $id,
             'migrated' => true,
-        ]);
-
-        DB::table('default_relationship_types')->insertGetId([
+        ],
+        [
             'name' => 'spouse',
             'name_reverse_relationship' => 'spouse',
             'relationship_type_group_id' => $id,
-        ]);
-
-        DB::table('default_relationship_types')->insertGetId([
+        ],
+        [
             'name' => 'date',
             'name_reverse_relationship' => 'date',
             'relationship_type_group_id' => $id,
-        ]);
-
-        DB::table('default_relationship_types')->insertGetId([
+        ],
+        [
             'name' => 'lover',
             'name_reverse_relationship' => 'lover',
             'relationship_type_group_id' => $id,
-        ]);
-
-        DB::table('default_relationship_types')->insertGetId([
+        ],
+        [
             'name' => 'inlovewith',
             'name_reverse_relationship' => 'inlovewith',
             'relationship_type_group_id' => $id,

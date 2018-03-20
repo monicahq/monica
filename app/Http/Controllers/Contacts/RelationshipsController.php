@@ -44,7 +44,7 @@ class RelationshipsController extends Controller
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
                 'id' => $relationshipType->id,
-                'name' => $relationshipType->getLocalizedName(),
+                'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
 
@@ -55,7 +55,6 @@ class RelationshipsController extends Controller
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
-            ->withBirthdayState($contact->getBirthdayState())
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }

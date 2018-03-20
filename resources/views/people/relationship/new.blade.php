@@ -25,17 +25,6 @@
     <form action="/people/{{ $contact->id }}/relationships/store" method="POST">
       {{ csrf_field() }}
 
-      {{-- Nature of relationship --}}
-      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-        <form-select
-          :options="{{ $relationshipTypes }}"
-          value="{{ $type }}"
-          v-bind:required="true"
-          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->getCompleteName()]) }}'"
-          v-bind:id="'relationship_type_id'">
-        </form-select>
-      </div>
-
       {{-- New contact / link existing --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <p class="mb2 b">{{ trans('people.relationship_form_add_choice') }}</p>
@@ -123,7 +112,6 @@
               v-bind:months="{{ $months }}"
               v-bind:days="{{ $days }}"
               v-bind:locale="'{{ auth()->user()->locale }}'"
-              :value="'{{ $birthdayState }}'"
             ></form-specialdate>
           </div>
         </div>
@@ -153,6 +141,17 @@
             </form-select>
           @endif
         </div>
+      </div>
+
+      {{-- Nature of relationship --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-select
+          :options="{{ $relationshipTypes }}"
+          value="{{ $type }}"
+          v-bind:required="true"
+          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->getCompleteName()]) }}'"
+          v-bind:id="'relationship_type_id'">
+        </form-select>
       </div>
 
       {{-- Form actions --}}

@@ -36,12 +36,41 @@ class RelationshipType extends Model
     }
 
     /**
-     * Get the i18n version of the name attribute.
+     * Get the i18n version of the name attribute, like "Significant other".
      *
      * @return string
      */
-    public function getLocalizedName()
+    public function getLocalizedName(Contact $contact = null, bool $includeReverse = false)
     {
+        // include the reverse of the relation in the string (masculine/feminine)
+        if (! is_null($contact) && $includeReverse) {
+            // in some language, masculine and feminine version of a relationship type is the same.
+            // we need to keep just one version in that case.
+            $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
+
+            // `Regis Freyd's significant other`
+            if (strtolower($femaleVersion) == strtolower($this->getLocalizedName())) {
+                return trans('app.relationship_type_'.$this->name.'_with_name', ["name" => $contact->getCompleteName()]);
+            }
+
+            // `Regis Freyd's uncle/aunt`
+            return trans(
+                'app.relationship_type_'.$this->name.'_with_name',
+                ["name" => $contact->getCompleteName()]
+            ).'/'.$femaleVersion;
+        }
+
+        // `Regis Freyd's uncle`
+        if (! is_null($contact)) {
+            return trans('app.relationship_type_'.$this->name.'_with_name', ["name" => $contact->getCompleteName()]);
+        }
+
+        // `uncle`
         return trans('app.relationship_type_'.$this->name);
+    }
+
+    public function getReverse()
+    {
+        return $this->account->getRelationshipTypeByType($this->name);
     }
 }
