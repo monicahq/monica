@@ -55,7 +55,7 @@ return [
     'breadcrumb_settings_import' => 'Importer',
     'breadcrumb_settings_import_report' => 'Rapport d\'import',
     'breadcrumb_settings_import_upload' => 'Téléversez',
-    'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_settings_tags' => 'Étiquettes',
     'breadcrumb_add_significant_other' => 'Ajouter un partenaire',
     'breadcrumb_edit_significant_other' => 'Mettre à jour un partenaire',
     'breadcrumb_add_note' => 'Ajouter une note',
