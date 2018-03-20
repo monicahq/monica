@@ -5,7 +5,7 @@ return [
     'dashboard_blank_description' => 'Monica est l\'endroit pour organiser toutes les interactions que vous avez avec ceux qui vous sont chers.',
     'dashboard_blank_cta' => 'Ajoutez votre premier contact',
 
-    'notes_title' => 'Vous n\'avez encore aucune note.',
+    'notes_title' => 'Vous n\'avez pas encore de note favorite.',
 
     'tab_recent_calls' => 'Appels récents',
     'tab_favorite_notes' => 'Notes favorites',
