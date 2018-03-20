@@ -7,7 +7,7 @@ return [
     'sidebar_settings_users' => 'Utilisateurs',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Importation de données',
-    'sidebar_settings_tags' => 'Gestion des tags',
+    'sidebar_settings_tags' => 'Gestion des étiquettes',
     'sidebar_settings_api' => 'API',
     'sidebar_settings_security' => 'Sécurité',
 
@@ -154,13 +154,13 @@ return [
     'import_blank_description' => 'Nous pouvons importer les fichiers vCard que vous avez dans votre Google Contacts ou votre gestionnaire de contacts.',
     'import_blank_cta' => 'Importer une vCard',
 
-    'tags_list_title' => 'Tags',
-    'tags_list_description' => 'Vous pouvez organiser vos contact avec des tags. Les tags sont comme des dossiers, mais vous pouvez avoir autant de tags que vous le souhaitez par contact.',
+    'tags_list_title' => 'Étiquettes',
+    'tags_list_description' => 'Vous pouvez organiser vos contact avec des étiquettes. Les étiquettes sont comme des dossiers, mais vous pouvez avoir autant d\'étiquettes que vous le souhaitez par contact.',
     'tags_list_contact_number' => ':count contacts',
-    'tags_list_delete_success' => 'Le tag a été supprimé avec succès',
-    'tags_list_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce tag ? Aucun contact ne sera supprimé, seulement le tag.',
-    'tags_blank_title' => 'Les tags sont une excellente manière de catégoriser vos contacts.',
-    'tags_blank_description' => 'Les tags sont comme des dossiers, mais vous pouvez avoir autant de tags que vous le souhaitez par contact.',
+    'tags_list_delete_success' => 'L\'étiquette a été supprimée avec succès',
+    'tags_list_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer cette étiquette ? Aucun contact ne sera supprimé, seulement l\'étiquette.',
+    'tags_blank_title' => 'Les étiquettes sont une excellente manière de catégoriser vos contacts.',
+    'tags_blank_description' => 'Les étiquettes sont comme des dossiers, mais vous pouvez avoir autant d\'étiquette que vous le souhaitez par contact.',
 
     'api_title' => 'Accès avec l\'API',
     'api_description' => 'L\'API peut être utilisée pour manipuler les données de Monica depuis une application externe, comme une application mobile par exemple.',
