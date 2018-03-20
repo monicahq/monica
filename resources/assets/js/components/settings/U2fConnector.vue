@@ -77,30 +77,26 @@
              * Prepare the component.
              */
             prepareComponent() {
-                var me = this;
-                switch(me.method) {
+                var self = this;
+                switch(this.method) {
                     case 'register':
                         setTimeout(function () {
-                            u2f.register(null, [me.registerdata], me.currentkeys,
-                                function (data) {
-                                    me.u2fRegisterCallback(data);
-                                }
+                            u2f.register(
+                                null,
+                                [self.registerdata],
+                                self.currentkeys,
+                                function (data) { self.u2fRegisterCallback(data); }
                             );
                         }, 1000);
                     break;
                     case 'login':
                         setTimeout(function () {
+                            var registeredKey = self.authdatas[0];
                             u2f.sign(
-                                //me.authdatas[0].appId,
-                                'http://monicalocal.test/u2f/auth',
-                                me.authdatas[0].challenge,
-                                {
-                                    version: me.authdatas[0].version,
-                                    keyHandle: me.authdatas[0].keyHandle
-                                },
-                                function (data) {
-                                    me.u2fLoginCallback(data);
-                                }
+                                registeredKey.appId,
+                                registeredKey.challenge,
+                                [registeredKey],
+                                function (data) { self.u2fLoginCallback(data); }
                             );
                         }, 1000);
                     break;
@@ -113,18 +109,19 @@
                     return;
                 }
 
+                var self = this;
                 axios.post('/u2f/register', {
                     register: JSON.stringify(data)
                 }).then(response => {
-                    this.success = true;
-                    this.$notify({
+                    self.success = true;
+                    self.$notify({
                         group: 'main',
-                        title: this.$t('settings.u2f_success'),
+                        title: self.$t('settings.u2f_success'),
                         text: '',
                         type: 'success'
                     });
                 }).catch(error => {
-                    this.errorMessage = error.response.data.message;
+                    self.errorMessage = error.response.data.message;
                 });
             },
 
@@ -134,18 +131,19 @@
                     return;
                 }
 
+                var self = this;
                 axios.post('/u2f/auth', {
                     authentication: JSON.stringify(data)
                 }).then(response => {
-                    this.success = true;
-                    this.$notify({
+                    self.success = true;
+                    self.$notify({
                         group: 'main',
-                        title: this.$t('settings.u2f_success'),
+                        title: self.$t('settings.u2f_success'),
                         text: '',
                         type: 'success'
                     });
                 }).catch(error => {
-                    this.errorMessage = error.response.data.message;
+                    self.errorMessage = error.response.data.message;
                 });
             },
 
