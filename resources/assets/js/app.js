@@ -142,15 +142,17 @@ Vue.component(
     'contact-field-types',
     require('./components/settings/ContactFieldTypes.vue')
 );
-
 Vue.component(
     'genders',
     require('./components/settings/Genders.vue')
 );
-
 Vue.component(
     'reminder-rules',
     require('./components/settings/ReminderRules.vue')
+);
+Vue.component(
+    'u2f-connector',
+    require('./components/settings/U2fConnector.vue')
 );
 
 // i18n

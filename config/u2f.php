@@ -1,11 +1,4 @@
 <?php
-/**
-     * User: LAHAXE Arnaud
-     * Date: 18/05/2015
-     * Time: 17:49
-     * FileName : u2f.php
-     * Project : laravel-u2f
-     */
 
 return [
     /*
@@ -30,7 +23,7 @@ return [
         /*
          * the template to load for the registration page
          */
-        'view' => 'u2f::register',
+        'view' => 'settings.security.u2f-enable',
 
         /*
          * the route to redirect after a successful key registration (default /)
@@ -43,12 +36,12 @@ return [
         /*
          * the template to load for the authentication page
          */
-        'view' => 'u2f::authentication',
+        'view' => 'auth.validateu2f',
 
         /*
          * the route to redirect after a successful key authentication (default /)
          */
-        'postSuccessRedirectRoute' => '',
+        'postSuccessRedirectRoute' => '/dashboard',
     ],
 
     /*
