@@ -49,6 +49,8 @@ return [
     'locale_cs' => '捷克文',
     'locale_it' => '意大利文',
     'locale_de' => '德文',
+    'locale_zh' => 'Chinese Simplified',
+    'locale_he' => 'Hebrew',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
