@@ -6,5 +6,6 @@
     "/css/app.css.map": "/css/app.css.map?id=a1585d15bdf5306642f7",
     "/css/stripe.css.map": "/css/stripe.css.map?id=80d7af9d49b0922d35e6",
     "/js/stripe.js": "/js/stripe.js?id=55d823b61fc4f7e8b1ab",
-    "/js/stripe.js.map": "/js/stripe.js.map?id=0d28a357766cdbd00915"
+    "/js/stripe.js.map": "/js/stripe.js.map?id=0d28a357766cdbd00915",
+    "/js/u2f-api.js": "/js/u2f-api.js?id=66b668d045941931c9ed"
 }

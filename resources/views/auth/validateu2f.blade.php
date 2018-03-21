@@ -1,7 +1,7 @@
 @extends('layouts.skeleton')
 
 @section('content')
-<script src="/vendor/u2f/u2f-api.js" type="text/javascript"></script>
+<script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
 <body class="marketing register">
     <div class="container">
           <div class="row">
