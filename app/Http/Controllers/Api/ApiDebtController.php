@@ -20,8 +20,13 @@ class ApiDebtController extends ApiController
      */
     public function index(Request $request)
     {
-        $debts = auth()->user()->account->debts()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $debts = auth()->user()->account->debts()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return DebtResource::collection($debts);
     }

@@ -19,8 +19,13 @@ class ApiCallController extends ApiController
      */
     public function index(Request $request)
     {
-        $calls = auth()->user()->account->calls()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $calls = auth()->user()->account->calls()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return CallResource::collection($calls);
     }

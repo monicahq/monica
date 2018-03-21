@@ -18,8 +18,13 @@ class ApiJournalController extends ApiController
      */
     public function index(Request $request)
     {
-        $entries = auth()->user()->account->entries()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $entries = auth()->user()->account->entries()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return JournalResource::collection($entries);
     }

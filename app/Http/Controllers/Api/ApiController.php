@@ -172,6 +172,12 @@ class ApiController extends Controller
             '-updated_at',
             'completed_at',
             '-completed_at',
+            'called_at',
+            '-called_at',
+            'favorited_at',
+            '-favorited_at',
+            'next_expected_date',
+            '-next_expected_date',
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
