@@ -49,8 +49,8 @@ return [
     'locale_cs' => 'Tschechisch',
     'locale_it' => 'Italienisch',
     'locale_de' => 'Deutsch',
-    'locale_zh' => 'Chinese Simplified',
-    'locale_he' => 'Hebrew',
+    'locale_zh' => 'Vereinfachtes Chinesisch',
+    'locale_he' => 'Hebräisch',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
@@ -212,6 +212,6 @@ return [
     'personalization_reminder_rule_line' => ':count Tage vorher',
     'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
 
-    'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
     'test_for_crowdin' => 'Test für Crowdin',
 ];
