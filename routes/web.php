@@ -27,11 +27,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::middleware(['auth', 'u2f'])->group(function () {
-    Route::middleware(['auth', '2fa'])->group(function () {
-        Route::group(['as' => 'dashboard'], function () {
-            Route::get('/dashboard', 'DashboardController@index')->name('.index');
-            Route::get('/dashboard/calls', 'DashboardController@calls');
+Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
+    Route::group(['as' => 'dashboard'], function () {
+        Route::get('/dashboard', 'DashboardController@index')->name('.index');
+        Route::get('/dashboard/calls', 'DashboardController@calls');
             Route::get('/dashboard/notes', 'DashboardController@notes');
             Route::post('/dashboard/setTab', 'DashboardController@setTab');
         });
@@ -235,4 +234,3 @@ Route::middleware(['auth', 'u2f'])->group(function () {
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
         });
     });
-});
