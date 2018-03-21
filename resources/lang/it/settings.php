@@ -49,6 +49,8 @@ return [
     'locale_cs' => 'Ceco',
     'locale_it' => 'Italiano',
     'locale_de' => 'Tedesco',
+    'locale_zh' => 'Chinese Simplified',
+    'locale_he' => 'Hebrew',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
