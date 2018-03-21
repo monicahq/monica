@@ -22,16 +22,6 @@ class Deactivate2FA extends Command
     protected $description = 'Deactivate 2FA for this user';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed

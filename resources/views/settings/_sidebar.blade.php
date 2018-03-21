@@ -61,7 +61,7 @@
     </li>
     @endif
 
-    @if (config('monica.requires_subscription') && auth()->user()->account->has_access_to_paid_version_for_free == false)
+    @if (config('monica.requires_subscription') && ! auth()->user()->account->has_access_to_paid_version_for_free)
       @if (Route::currentRouteName() == 'settings.subscriptions.index')
       <li class="selected">
         <i class="fa fa-money" aria-hidden="true"></i>

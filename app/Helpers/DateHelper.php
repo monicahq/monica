@@ -273,8 +273,6 @@ class DateHelper
      */
     public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
     {
-        $olderDate = $date->subDays($numberOfDaysBefore);
-
-        return $olderDate;
+        return $date->subDays($numberOfDaysBefore);
     }
 }

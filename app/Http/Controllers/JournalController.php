@@ -138,7 +138,7 @@ class JournalController extends Controller
      * Saves the journal entry.
      *
      * @param  Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {

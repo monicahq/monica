@@ -20,9 +20,28 @@ abstract class DuskTestCase extends BaseTestCase
      */
     public static function prepare()
     {
+        static::useChromedriver(__DIR__.'/../vendor/bin/chromedriver');
         if (env('SAUCELABS') != '1') {
             static::startChromeDriver();
         }
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        /*
+         * Macro scrollTo to scroll down/up, until the selector is visible
+         */
+        Browser::macro('scrollTo', function ($selector) {
+            //$element = $this->element($selector);
+            //$this->driver->executeScript("arguments[0].scrollIntoView(true);",[$element]);
+
+            $selectorby = $this->resolver->format($selector);
+            $this->driver->executeScript("$(\"html, body\").animate({scrollTop: $(\"$selectorby\").offset().top}, 0);");
+
+            return $this;
+        });
     }
 
     /**

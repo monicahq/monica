@@ -74,7 +74,7 @@ class ApiController extends Controller
 
     /**
      * Default request to the API.
-     * @return json
+     * @return \Illuminate\Http\JsonResponse
      */
     public function success()
     {
@@ -170,6 +170,14 @@ class ApiController extends Controller
             'updated_at',
             '-created_at',
             '-updated_at',
+            'completed_at',
+            '-completed_at',
+            'called_at',
+            '-called_at',
+            'favorited_at',
+            '-favorited_at',
+            'next_expected_date',
+            '-next_expected_date',
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
@@ -203,7 +211,7 @@ class ApiController extends Controller
      * Sends a JSON to the consumer.
      * @param  array $data
      * @param  array  $headers [description]
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function respond($data, $headers = [])
     {
@@ -219,6 +227,17 @@ class ApiController extends Controller
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
                     ->respondWithError($message);
+    }
+
+    /**
+     * Sends a response invalid query to the request.
+     * @param string $message
+     */
+    public function respondInvalidQuery($message = 'Invalid query')
+    {
+        return $this->setHTTPStatusCode(500)
+            ->setErrorCode(40)
+            ->respondWithError($message);
     }
 
     /**

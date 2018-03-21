@@ -271,7 +271,7 @@
 
                 this.$notify({
                     group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_add_success'),
+                    title: this.$t('settings.personalization_contact_field_type_add_success'),
                     text: '',
                     width: '500px',
                     type: 'success'
@@ -295,7 +295,7 @@
 
                 this.$notify({
                     group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_edit_success'),
+                    title: this.$t('settings.personalization_contact_field_type_edit_success'),
                     text: '',
                     width: '500px',
                     type: 'success'
@@ -316,7 +316,7 @@
 
                 this.$notify({
                     group: 'main',
-                    title: _.get(window.trans, 'settings.personalization_contact_field_type_delete_success'),
+                    title: this.$t('settings.personalization_contact_field_type_delete_success'),
                     text: '',
                     width: '500px',
                     type: 'success'
