@@ -49,6 +49,8 @@ return [
     'locale_cs' => 'Tschechisch',
     'locale_it' => 'Italienisch',
     'locale_de' => 'Deutsch',
+    'locale_zh' => 'Chinese Simplified',
+    'locale_he' => 'Hebrew',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
