@@ -19,8 +19,13 @@ class ApiTaskController extends ApiController
      */
     public function index(Request $request)
     {
-        $tasks = auth()->user()->account->tasks()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $tasks = auth()->user()->account->tasks()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return TaskResource::collection($tasks);
     }
