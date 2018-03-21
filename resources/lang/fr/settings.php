@@ -50,7 +50,7 @@ return [
     'locale_it' => 'Italien',
     'locale_de' => 'Allemand',
     'locale_zh' => 'Chinois Simplifié',
-    'locale_he' => 'Hebrew',
+    'locale_he' => 'Hébreu',
 
     'security_title' => 'Sécurité',
     'security_help' => 'Changer les questions de sécurité pour votre compte.',
