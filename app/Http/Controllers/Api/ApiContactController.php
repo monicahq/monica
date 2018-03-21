@@ -29,7 +29,7 @@ class ApiContactController extends ApiController
                 $contacts = SearchHelper::searchContacts(
                     $needle,
                     $this->getLimitPerPage(),
-                    $this->sort . ' ' . $this->sortDirection
+                    $this->sort .' '. $this->sortDirection
                 );
             } catch (QueryException $e) {
                 return $this->respondInvalidQuery();
