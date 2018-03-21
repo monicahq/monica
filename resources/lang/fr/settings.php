@@ -49,7 +49,7 @@ return [
     'locale_cs' => 'Tchèque',
     'locale_it' => 'Italien',
     'locale_de' => 'Allemand',
-    'locale_zh' => 'Chinese Simplified',
+    'locale_zh' => 'Chinois Simplifié',
     'locale_he' => 'Hebrew',
 
     'security_title' => 'Sécurité',
