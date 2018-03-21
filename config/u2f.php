@@ -48,5 +48,5 @@ return [
      * The authenticate middleware. If the request is valid for this middleware we
      * can get the current uer by Auth::user()
      */
-    'authMiddlewareName' => 'web' // web needs to come first, then auth, for sessions to work properly.
+    'authMiddlewareName' => 'web', // web needs to come first, then auth, for sessions to work properly.
 ];

@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateU2fKeyTable
+ * Class CreateU2fKeyTable.
  *
  *
  *
@@ -12,7 +12,6 @@ use Illuminate\Database\Schema\Blueprint;
  */
 class CreateU2fKeyTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -20,7 +19,7 @@ class CreateU2fKeyTable extends Migration
      */
     public function up()
     {
-        Schema::create('u2f_key', function(Blueprint $table) {
+        Schema::create('u2f_key', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('keyHandle');
@@ -30,8 +29,7 @@ class CreateU2fKeyTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('u2f_key', function(Blueprint $table)
-        {
+        Schema::table('u2f_key', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
     }
