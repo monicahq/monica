@@ -1,5 +1,5 @@
-<p align="center"><img src="https://app.monicahq.com/img/small-logo.png"></p>
-<h1 align="center">Monica</h1>
+<p align="center"><img src="https://user-images.githubusercontent.com/61099/37693034-5783b3d6-2c93-11e8-80ea-bd78438dcd51.png"></p>
+<h1 align="center">Personal Relationship Manager</h1>
 
 <p align="center">
 <a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>

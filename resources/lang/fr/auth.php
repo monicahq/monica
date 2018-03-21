@@ -19,7 +19,7 @@ return [
     'signup_disabled' => 'L\'inscription est actuellement désactivée',
     'back_homepage' => 'Retour à la page d’accueil',
     '2fa_title' => 'Authentification à deux facteurs',
-    '2fa_wrong_validation' => 'L\'authentification à 2 facteurs a échoué.',
+    '2fa_wrong_validation' => 'L\'authentification à deux facteurs a échoué.',
     '2fa_one_time_password' => 'Code d\'authentification',
     '2fa_recuperation_code' => 'Entrez le code de récupération de deux facteurs',
 

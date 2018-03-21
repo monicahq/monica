@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'type_birthday' => 'Wish happy birthday to',
-    'type_phone_call' => 'Call',
-    'type_lunch' => 'Lunch with',
-    'type_hangout' => 'Hangout with',
+    'type_birthday' => '祝生日快乐给',
+    'type_phone_call' => '呼叫',
+    'type_lunch' => '午饭与',
+    'type_hangout' => '约会与',
     'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the kid of',
+    'type_birthday_kid' => '祝生日快乐给小孩，向',
 
 ];

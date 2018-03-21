@@ -170,6 +170,14 @@ class ApiController extends Controller
             'updated_at',
             '-created_at',
             '-updated_at',
+            'completed_at',
+            '-completed_at',
+            'called_at',
+            '-called_at',
+            'favorited_at',
+            '-favorited_at',
+            'next_expected_date',
+            '-next_expected_date',
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
@@ -219,6 +227,17 @@ class ApiController extends Controller
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
                     ->respondWithError($message);
+    }
+
+    /**
+     * Sends a response invalid query to the request.
+     * @param string $message
+     */
+    public function respondInvalidQuery($message = 'Invalid query')
+    {
+        return $this->setHTTPStatusCode(500)
+            ->setErrorCode(40)
+            ->respondWithError($message);
     }
 
     /**

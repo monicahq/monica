@@ -25,20 +25,28 @@ class ApiContactController extends ApiController
         if ($request->get('query')) {
             $needle = $request->get('query');
 
-            $contacts = SearchHelper::searchContacts(
-                $needle,
-                $this->getLimitPerPage(),
-                $this->sort.' '.$this->sortDirection
-            );
+            try {
+                $contacts = SearchHelper::searchContacts(
+                    $needle,
+                    $this->getLimitPerPage(),
+                    $this->sort.' '.$this->sortDirection
+                );
+            } catch (QueryException $e) {
+                return $this->respondInvalidQuery();
+            }
 
             return ContactResource::collection($contacts)->additional(['meta' => [
                     'query' => $needle,
                 ]]);
         }
 
-        $contacts = auth()->user()->account->contacts()->real()
-                                        ->orderBy($this->sort, $this->sortDirection)
-                                        ->paginate($this->getLimitPerPage());
+        try {
+            $contacts = auth()->user()->account->contacts()->real()
+                            ->orderBy($this->sort, $this->sortDirection)
+                            ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return ContactResource::collection($contacts);
     }

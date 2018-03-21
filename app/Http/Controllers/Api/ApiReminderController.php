@@ -20,8 +20,13 @@ class ApiReminderController extends ApiController
      */
     public function index(Request $request)
     {
-        $reminders = auth()->user()->account->reminders()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $reminders = auth()->user()->account->reminders()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return ReminderResource::collection($reminders);
     }
