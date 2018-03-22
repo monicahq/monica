@@ -35,4 +35,9 @@ class Relationship extends Model
     {
         return $this->belongsTo(Contact::class, 'contact_id_secondary');
     }
+
+    public function relationshipType()
+    {
+        return $this->belongsTo('App\RelationshipType');
+    }
 }

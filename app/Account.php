@@ -283,13 +283,23 @@ class Account extends Model
     }
 
     /**
-     * Get the Reminder Rules records associated with the account.
+     * Get the relationship types records associated with the account.
      *
      * @return HasMany
      */
     public function relationshipTypes()
     {
         return $this->hasMany('App\RelationshipType');
+    }
+
+    /**
+     * Get the relationship type groups records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function relationshipTypeGroups()
+    {
+        return $this->hasMany('App\RelationshipTypeGroup');
     }
 
     /**
@@ -633,11 +643,22 @@ class Account extends Model
     /**
      * Gets the RelationshipType object matching the given type.
      *
-     * @param  string $type
+     * @param  string $relationshipTypeName
      * @return RelationshipType
      */
-    public function getRelationshipTypeByType($type)
+    public function getRelationshipTypeByType(string $relationshipTypeName)
     {
-        return $this->relationshipTypes->where('name', $type)->first();
+        return $this->relationshipTypes->where('name', $relationshipTypeName)->first();
+    }
+
+    /**
+     * Gets the RelationshipType object matching the given type.
+     *
+     * @param  string $relationshipTypeGroupName
+     * @return RelationshipTypeGroup
+     */
+    public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
+    {
+        return $this->relationshipTypeGroups->where('name', $relationshipTypeGroupName)->first();
     }
 }

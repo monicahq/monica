@@ -36,6 +36,16 @@ class RelationshipType extends Model
     }
 
     /**
+     * Get the account record associated with the reminder.
+     *
+     * @return BelongsTo
+     */
+    public function relationshipTypeGroup()
+    {
+        return $this->belongsTo('App\RelationshipTypeGroup');
+    }
+
+    /**
      * Get the i18n version of the name attribute, like "Significant other".
      *
      * @return string

@@ -260,6 +260,15 @@ return [
     'relationship_type_boss_reverse_with_name' => ':name&#39;s subordinate',
     'relationship_type_boss_reverse_female_with_name' => ':name&#39;s subordinate',
 
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_reverse' => 'boss',
+    'relationship_type_subordinate_reverse_female' => 'boss',
+    'relationship_type_subordinate_with_name' => ':name&#39;s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name&#39;s subordinate',
+    'relationship_type_subordinate_reverse_with_name' => ':name&#39;s boss',
+    'relationship_type_subordinate_reverse_female_with_name' => ':name&#39;s boss',
+
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
     'relationship_type_mentor_reverse' => 'protege',

@@ -54,6 +54,19 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->relationshipTypes()->exists());
     }
 
+    public function test_it_has_many_relationship_type_groups()
+    {
+        $account = factory('App\Account')->create([]);
+        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+            'account_id' => $account->id,
+        ]);
+        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->relationshipTypeGroups()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory(Account::class)->create();
@@ -433,7 +446,7 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_the_relationship_type_object_matching_a_given_type()
+    public function test_it_gets_the_relationship_type_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
@@ -442,5 +455,16 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertInstanceOf('App\RelationshipType', $account->getRelationshipTypeByType('partner'));
+    }
+
+    public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()
+    {
+        $account = factory('App\Account')->create([]);
+        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+            'account_id' => $account->id,
+            'name' => 'love',
+        ]);
+
+        $this->assertInstanceOf('App\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
     }
 }

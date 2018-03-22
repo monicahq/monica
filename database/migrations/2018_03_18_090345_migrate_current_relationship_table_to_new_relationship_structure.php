@@ -17,7 +17,7 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
     {
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
-                $relationshipTypeId = $account->getRelationshipTypeByType('partner');
+                $relationshipTypeId = $account->getRelationshipTypeByType('partner')->id;
                 $itemsToDelete = [];
 
                 // we have to clean the table if it contains bilateral relationships
@@ -48,9 +48,9 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
                     DB::table('relationships')->where('id', '=', $id)->delete();
                 }
 
-                Relationship::where('account_id', $account->id)->chunk(200, function ($relationships) use ($itemsToDelete, $account, $relationshipTypeId) {
+                Relationship::where('account_id', $account->id)->chunk(200, function ($relationships) use ($account, $relationshipTypeId) {
                     foreach ($relationships as $relationship) {
-                        DB::table('temp_relationships_table')->insertGetId([
+                        DB::table('temp_relationships_table')->insert([
                             'account_id' => $account->id,
                             'contact_id_main' => $relationship->contact_id,
                             'contact_id_secondary' => $relationship->with_contact_id,

@@ -188,13 +188,13 @@ class ContactsController extends Controller
 
         $relationships = $contact->relationships;
 
-        // get partners
-        $partners = $relationships->filter(function ($item) {
-            return $item->relationship_type_name == 'partner';
+        // get love relationship type
+        $loveRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'love';
         });
 
         return view('people.profile')
-            ->withPartnerRelationships($partners)
+            ->withLoveRelationships($loveRelationships)
             ->withContact($contact);
     }
 
