@@ -51,18 +51,20 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
                 Relationship::where('account_id', $account->id)->chunk(200, function ($relationships) use ($account, $relationshipTypeId) {
                     foreach ($relationships as $relationship) {
                         DB::table('temp_relationships_table')->insert([
-                            'account_id' => $account->id,
-                            'contact_id_main' => $relationship->contact_id,
-                            'contact_id_secondary' => $relationship->with_contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
-                            'relationship_type_name' => 'partner',
-                        ],
-                        [
-                            'account_id' => $account->id,
-                            'contact_id_main' => $relationship->with_contact_id,
-                            'contact_id_secondary' => $relationship->contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
-                            'relationship_type_name' => 'partner',
+                            [
+                                'account_id' => $account->id,
+                                'contact_id_main' => $relationship->contact_id,
+                                'contact_id_secondary' => $relationship->with_contact_id,
+                                'relationship_type_id' => $relationshipTypeId,
+                                'relationship_type_name' => 'partner',
+                            ],
+                            [
+                                'account_id' => $account->id,
+                                'contact_id_main' => $relationship->with_contact_id,
+                                'contact_id_secondary' => $relationship->contact_id,
+                                'relationship_type_id' => $relationshipTypeId,
+                                'relationship_type_name' => 'partner',
+                            ]
                         ]);
                     }
                 });
