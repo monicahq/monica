@@ -49,6 +49,12 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'relationship_type_group_id' => $id,
         ]);
 
+        DB::table('default_relationship_types')->insertGetId([
+            'name' => 'ex',
+            'name_reverse_relationship' => 'ex',
+            'relationship_type_group_id' => $id,
+        ]); 
+
         // Family type
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'family',
@@ -125,6 +131,12 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'relationship_type_group_id' => $id,
         ]);
 
+        DB::table('default_relationship_types')->insertGetId([
+            'name' => 'bestfriend',
+            'name_reverse_relationship' => 'bestfriend',
+            'relationship_type_group_id' => $id,
+        ]);
+
         // Work
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'work',
@@ -138,7 +150,25 @@ class PopulateDefaultRelationshipTypeTables extends Migration
 
         DB::table('default_relationship_types')->insertGetId([
             'name' => 'boss',
+            'name_reverse_relationship' => 'subordinate',
+            'relationship_type_group_id' => $id,
+        ]);
+
+        DB::table('default_relationship_types')->insertGetId([
+            'name' => 'subordinate',
             'name_reverse_relationship' => 'boss',
+            'relationship_type_group_id' => $id,
+        ]);
+
+        DB::table('default_relationship_types')->insertGetId([
+            'name' => 'mentor',
+            'name_reverse_relationship' => 'protege',
+            'relationship_type_group_id' => $id,
+        ]);
+
+        DB::table('default_relationship_types')->insertGetId([
+            'name' => 'protege',
+            'name_reverse_relationship' => 'mentor',
             'relationship_type_group_id' => $id,
         ]);
     }
