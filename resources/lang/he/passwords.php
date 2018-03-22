@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => "If the email you entered exists in our records, you've been sent a password reset link.",
-    'token' => 'This password reset token is invalid.',
-    'user' => "If the email you entered exists in our records, you've been sent a password reset link.",
-    'changed' => 'Password changed successfuly.',
-    'invalid' => 'Current password you entered is not correct.',
+    'password' => 'על הססמאות להיות באורך של 6 תווים לפחות ולהתאים לאילוצי האימות.',
+    'reset' => 'הססמה שלך אופסה!',
+    'sent' => 'אם כתובת הדוא״ל שהזנת קיימת ברישומים שלנו, נשלח אליך קישור לאיפוס הססמה.',
+    'token' => 'אסימון איפוס הססמה הזאת שגוי.',
+    'user' => 'אם כתובת הדוא״ל שהזנת קיימת ברישומים שלנו, נשלח אליך קישור לאיפוס הססמה.',
+    'changed' => 'הססמה הוחלפה בהצלחה.',
+    'invalid' => 'הססמה הנוכחית שהקלדת שגויה.',
 
 ];

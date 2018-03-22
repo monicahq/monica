@@ -154,20 +154,17 @@ Vue.component(
 );
 
 // i18n
-import VueInternalization from 'vue-i18n';
-import Locales from './vue-i18n-locales.generated.js';
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
 
-Vue.use(VueInternalization);
-
-Vue.config.lang = window.Laravel.locale;
-
-Object.keys(Locales).forEach(function (lang) {
-  Vue.locale(lang, Locales[lang])
+import messages from './vue-i18n-locales.generated.js';
+const i18n = new VueI18n({
+    locale: window.Laravel.locale,
+    messages
 });
 
 const app = new Vue({
-    el: '#app',
-
+    i18n,
     data: {
       activities_description_show: false,
       reminders_frequency: 'once',
@@ -176,7 +173,8 @@ const app = new Vue({
     },
     methods: {
     },
-});
+}).$mount('#app');
+
 require('./tags');
 require('./search');
 require('./contacts');

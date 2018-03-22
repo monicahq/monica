@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This is the list of locales that we will use to localize the application.
-    | Each locale is defined in `resources/lang/` in their respective folder.
+    | Each locale is defined in `resources/lang/` in its respective folder.
     |
     */
     'langs' => [
@@ -19,6 +19,8 @@ return [
         'cs',
         'it',
         'de',
+        'zh',
+        'he',
     ],
 
    /*
@@ -117,5 +119,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '1.8.1',
+    'app_version' => '1.8.2',
 ];
