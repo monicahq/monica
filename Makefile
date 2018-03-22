@@ -47,12 +47,14 @@ docker_push_bintray: .travis.deploy.json
 build: build-dev
 
 build-prod:
-	composer install --no-interaction --no-suggest --no-dev
+	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+	php artisan vue-i18n:generate
 	npm install
 	npm run production
 
 build-dev:
-	composer install --no-interaction --no-suggest
+	composer install --no-interaction --no-suggest --ignore-platform-reqs
+	php artisan vue-i18n:generate
 	npm install
 	npm run dev
 
