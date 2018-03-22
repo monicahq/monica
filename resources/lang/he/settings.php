@@ -49,8 +49,8 @@ return [
     'locale_cs' => 'צ׳כית',
     'locale_it' => 'איטלקית',
     'locale_de' => 'גרמנית',
-    'locale_zh' => 'Chinese Simplified',
-    'locale_he' => 'Hebrew',
+    'locale_zh' => 'סינית מפושטת',
+    'locale_he' => 'עברית',
 
     'security_title' => 'אבטחה',
     'security_help' => 'שינוי נדבכי האבטחה של החשבון שלך.',
