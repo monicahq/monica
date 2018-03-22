@@ -4867,16 +4867,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.1.3",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "664fa434e26febf04d60df0368303cf0fe14f63a"
+                "reference": "7a91480cc6e597caed5117a3c5d685f06d35c5a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/664fa434e26febf04d60df0368303cf0fe14f63a",
-                "reference": "664fa434e26febf04d60df0368303cf0fe14f63a",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/7a91480cc6e597caed5117a3c5d685f06d35c5a1",
+                "reference": "7a91480cc6e597caed5117a3c5d685f06d35c5a1",
                 "shasum": ""
             },
             "require": {
@@ -4931,7 +4931,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2018-02-25T13:31:58+00:00"
+            "time": "2018-03-06T08:35:31+00:00"
         },
         {
             "name": "doctrine/instantiator",
