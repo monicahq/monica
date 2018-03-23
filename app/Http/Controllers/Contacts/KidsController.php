@@ -112,7 +112,7 @@ class KidsController extends Controller
         $kid->isTheOffspringOf($contact, true);
 
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_add_success'));
+            ->with('success', trans('people.kids_add_success'));
     }
 
     /**
