@@ -193,8 +193,26 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'love';
         });
 
+        // get family relationship type
+        $familyRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'family';
+        });
+
+        // get friend relationship type
+        $friendRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'friend';
+        });
+
+         // get work relationship type
+        $workRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'work';
+        });
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
+            ->withFamilyRelationships($familyRelationships)
+            ->withFriendRelationships($friendRelationships)
+            ->withWorkRelationships($workRelationships)
             ->withContact($contact);
     }
 

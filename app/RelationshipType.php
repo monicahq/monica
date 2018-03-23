@@ -50,7 +50,7 @@ class RelationshipType extends Model
      *
      * @return string
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeReverse = false)
+    public function getLocalizedName(Contact $contact = null, bool $includeReverse = false, string $gender = 'man')
     {
         // include the reverse of the relation in the string (masculine/feminine)
         if (! is_null($contact) && $includeReverse) {
@@ -72,10 +72,18 @@ class RelationshipType extends Model
 
         // `Regis Freyd's uncle`
         if (! is_null($contact)) {
+            if (strtolower($gender) == 'woman') {
+                return trans('app.relationship_type_'.$this->name.'_female_with_name', ["name" => $contact->getCompleteName()]);
+            }
+
             return trans('app.relationship_type_'.$this->name.'_with_name', ["name" => $contact->getCompleteName()]);
         }
 
         // `uncle`
+        if (strtolower($gender) == 'woman') {
+            return trans('app.relationship_type_'.$this->name.'_female');
+        }
+
         return trans('app.relationship_type_'.$this->name);
     }
 

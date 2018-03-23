@@ -39,7 +39,7 @@
           <div class="col-xs-12 col-sm-3 profile-sidebar">
 
             {{-- Significant Other --}}
-            @include('people.relationship.love')
+            @include('people.relationship.index')
 
             @include('people.dashboard.index')
 

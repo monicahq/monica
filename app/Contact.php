@@ -1103,10 +1103,13 @@ class Contact extends Model
         $relationship->contact_id_secondary = $otherContact->id;
         $relationship->save();
 
+        // Get the reverse relationship
+        $reverseRelationshipType =  $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
+
         // Contact B is linked to Contact A
         $relationship = new Relationship;
         $relationship->account_id = $this->account_id;
-        $relationship->relationship_type_id = $relationshipType->id;
+        $relationship->relationship_type_id = $reverseRelationshipType->id;
         $relationship->contact_id_main = $otherContact->id;
         $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
         $relationship->contact_id_secondary = $this->id;
@@ -1143,9 +1146,12 @@ class Contact extends Model
 
         $relationship->delete();
 
+        $relationshipType = RelationshipType::find($relationshipTypeId);
+        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
+
         $relationship = Relationship::where('contact_id_main', $otherContact->id)
                                     ->where('contact_id_secondary', $this->id)
-                                    ->where('relationship_type_id', $relationshipTypeId)
+                                    ->where('relationship_type_id', $reverseRelationshipType->id)
                                     ->first();
 
         $relationship->delete();

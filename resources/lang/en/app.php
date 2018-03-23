@@ -80,6 +80,12 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
+    'relationship_type_group_love' => 'Love relationships',
+    'relationship_type_group_family' => 'Family relationships',
+    'relationship_type_group_friend' => 'Friend relationships',
+    'relationship_type_group_work' => 'Work relationships',
+    'relationship_type_group_other' => 'Other kind of relationships',
+
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
     'relationship_type_partner_reverse' => 'significant other',
