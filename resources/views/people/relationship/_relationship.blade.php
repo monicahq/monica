@@ -1,6 +1,6 @@
 @foreach ($relationships as $relationship)
   <div>
-    <span class="silver fw3">[{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->withContact->gender->name) }}]</span>
+    <span class="silver fw3 ba br2 ph1">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->withContact->gender->name) }}</span>
 
     {{-- NAME --}}
     @if ($relationship->withContact->is_partial)
