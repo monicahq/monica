@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.0.0",
         "ext-intl": "*",
+        "ext-bcmath": "*",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
