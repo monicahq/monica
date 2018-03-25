@@ -607,7 +607,7 @@ class Account extends Model
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }
@@ -642,7 +642,7 @@ class Account extends Model
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }

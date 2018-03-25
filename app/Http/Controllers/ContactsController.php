@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use DB;
 use Auth;
 use App\Tag;
-use App\Call;
 use Validator;
 use App\Contact;
 use App\ContactFieldType;
