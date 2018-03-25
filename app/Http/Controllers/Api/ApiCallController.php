@@ -27,7 +27,9 @@ class ApiCallController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return CallResource::collection($calls);
+        return CallResource::collection($calls)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+        ]]);
     }
 
     /**
@@ -169,8 +171,11 @@ class ApiCallController extends ApiController
         }
 
         $calls = $contact->calls()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
-        return CallResource::collection($calls);
+        return CallResource::collection($calls)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+        ]]);
     }
 }
