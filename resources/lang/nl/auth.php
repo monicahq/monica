@@ -13,14 +13,14 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to execute this action',
-    'signup_disabled' => 'Registration is currently disabled',
-    'back_homepage' => 'Back to homepage',
-    '2fa_title' => 'Two Factor Authentication',
-    '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Authentication code',
-    '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    'failed' => 'Deze gegevens zijn niet correct.',
+    'throttle' => 'Te veel inlogpogingen. Probeer opnieuw in :seconds seconden.',
+    'not_authorized' => 'Je bent niet gemachtigd om dit te doen',
+    'signup_disabled' => 'Registratie is momenteel uitgeschakeld',
+    'back_homepage' => 'Terug naar homepage',
+    '2fa_title' => 'Tweestapsverificatie',
+    '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
+    '2fa_one_time_password' => 'Authenticatie code',
+    '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
 
 ];
