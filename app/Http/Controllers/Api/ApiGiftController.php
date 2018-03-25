@@ -190,6 +190,7 @@ class ApiGiftController extends ApiController
         }
 
         $gifts = $contact->gifts()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return GiftResource::collection($gifts);

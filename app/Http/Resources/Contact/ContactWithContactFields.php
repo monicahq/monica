@@ -5,7 +5,7 @@ namespace App\Http\Resources\Contact;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class Contact extends Resource
+class ContactWithContactFields extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -84,6 +84,7 @@ class Contact extends Resource
                 'number_of_gifts' => $this->gifts->count(),
                 'number_of_debts' => $this->debts->count(),
             ]),
+            'contactFields' => $this->when(! $this->is_partial, $this->getContactFieldsForAPI()),
             'account' => [
                 'id' => $this->account->id,
             ],

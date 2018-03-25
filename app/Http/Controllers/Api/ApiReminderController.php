@@ -182,6 +182,7 @@ class ApiReminderController extends ApiController
         }
 
         $reminders = $contact->reminders()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return ReminderResource::collection($reminders);
