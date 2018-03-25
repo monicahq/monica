@@ -1348,16 +1348,16 @@
         },
         {
             "name": "jeroendesloovere/vcard",
-            "version": "1.5.2",
+            "version": "1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeroendesloovere/vcard.git",
-                "reference": "cfe295329af1ae7e8f374cb2b8c8e170f7500c09"
+                "reference": "2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/cfe295329af1ae7e8f374cb2b8c8e170f7500c09",
-                "reference": "cfe295329af1ae7e8f374cb2b8c8e170f7500c09",
+                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727",
+                "reference": "2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727",
                 "shasum": ""
             },
             "require": {
@@ -1393,7 +1393,7 @@
                 "php",
                 "vCard"
             ],
-            "time": "2018-01-04T13:34:32+00:00"
+            "time": "2018-03-12T15:09:51+00:00"
         },
         {
             "name": "laravel/cashier",
