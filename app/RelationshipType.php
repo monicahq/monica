@@ -50,10 +50,12 @@ class RelationshipType extends Model
      *
      * @return string
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeReverse = false, string $gender = 'man')
+    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = 'man')
     {
         // include the reverse of the relation in the string (masculine/feminine)
-        if (! is_null($contact) && $includeReverse) {
+        // this is used in the dropdown of the relationship types when creating
+        // or deleting a relationship.
+        if (! is_null($contact) && $includeOpposite) {
             // in some language, masculine and feminine version of a relationship type is the same.
             // we need to keep just one version in that case.
             $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
@@ -63,7 +65,7 @@ class RelationshipType extends Model
                 return trans('app.relationship_type_'.$this->name.'_with_name', ["name" => $contact->getCompleteName()]);
             }
 
-            // `Regis Freyd's uncle/aunt`
+            // otherwise `Regis Freyd's uncle/aunt`
             return trans(
                 'app.relationship_type_'.$this->name.'_with_name',
                 ["name" => $contact->getCompleteName()]
@@ -79,16 +81,12 @@ class RelationshipType extends Model
             return trans('app.relationship_type_'.$this->name.'_with_name', ["name" => $contact->getCompleteName()]);
         }
 
-        // `uncle`
+        // `aunt`
         if (strtolower($gender) == 'woman') {
             return trans('app.relationship_type_'.$this->name.'_female');
         }
 
+        // `uncle`
         return trans('app.relationship_type_'.$this->name);
-    }
-
-    public function getReverse()
-    {
-        return $this->account->getRelationshipTypeByType($this->name);
     }
 }

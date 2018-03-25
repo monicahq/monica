@@ -171,7 +171,7 @@ class RelationshipsController extends Controller
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
                 'id' => $relationshipType->id,
-                'name' => $relationshipType->getLocalizedName(),
+                'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
 

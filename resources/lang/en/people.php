@@ -149,6 +149,7 @@ return [
 
     // relationships
     'relationship_form_add' => 'Add a new relationship',
+    'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
@@ -159,10 +160,6 @@ return [
     'relationship_form_add_no_existing_contact' => 'You don\'t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
     'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted - only the relationship between the two.',
-
-    // significant other
-    'significant_other_sidebar_title' => 'Significant other',
-    'significant_other_cta' => 'Add significant other',
 
     // tasks
     'tasks_blank_title' => 'You don\'t have any tasks yet.',

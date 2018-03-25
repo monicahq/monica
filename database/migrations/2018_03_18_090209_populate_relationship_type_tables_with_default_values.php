@@ -17,6 +17,7 @@ class PopulateRelationshipTypeTablesWithDefaultValues extends Migration
     {
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
+                $account->populateRelationshipTypeGroupsTable();
                 $account->populateRelationshipTypesTable();
             }
         });

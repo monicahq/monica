@@ -1,5 +1,5 @@
 @foreach ($relationships as $relationship)
-  <div>
+  <div class="sidebar-box-paragraph">
     <span class="silver fw3 ba br2 ph1">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->withContact->gender->name) }}</span>
 
     {{-- NAME --}}

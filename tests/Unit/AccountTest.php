@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use DB;
 use App\User;
 use App\Account;
 use App\Reminder;
@@ -430,22 +431,6 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_the_account_with_the_right_default_relationship_types()
-    {
-        $account = factory(Account::class)->create([]);
-        $account->populateDefaultRelationshipTypesTable();
-
-        $this->assertEquals(
-            1,
-            $account->relationshipTypes->count()
-        );
-
-        $this->assertDatabaseHas(
-            'relationship_types',
-            ['name' => 'partner']
-        );
-    }
-
     public function test_it_gets_the_relationship_type_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create([]);
@@ -466,5 +451,77 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertInstanceOf('App\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
+    }
+
+    public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
+    {
+        $account = factory('App\Account')->create([]);
+
+        // Love type
+        $id = DB::table('default_relationship_type_groups')->insertGetId([
+            'name' => 'friend_and_family',
+        ]);
+
+        $account->populateRelationshipTypeGroupsTable();
+
+        $this->assertDatabaseHas('relationship_type_groups', [
+            'name' => 'friend_and_family',
+        ]);
+    }
+
+    public function test_it_skips_default_relationship_type_groups_table_for_types_already_migrated()
+    {
+        $account = factory('App\Account')->create([]);
+        $id = DB::table('default_relationship_type_groups')->insertGetId([
+            'name' => 'friend_and_family',
+            'migrated' => 1,
+        ]);
+
+        $account->populateRelationshipTypeGroupsTable(true);
+
+        $this->assertDatabaseMissing('relationship_type_groups', [
+            'name' => 'friend_and_family',
+        ]);
+    }
+
+    public function test_it_populates_default_relationship_types_table_if_tables_havent_been_migrated_yet()
+    {
+        $account = factory('App\Account')->create([]);
+        $id = DB::table('default_relationship_type_groups')->insertGetId([
+            'name' => 'friend_and_family',
+        ]);
+
+        DB::table('default_relationship_types')->insert([
+            'name' => 'fuckfriend',
+            'relationship_type_group_id' => $id,
+        ]);
+
+        $account->populateRelationshipTypeGroupsTable();
+        $account->populateRelationshipTypesTable();
+
+        $this->assertDatabaseHas('relationship_types', [
+            'name' => 'fuckfriend',
+        ]);
+    }
+
+    public function test_it_skips_default_relationship_types_table_for_types_already_migrated()
+    {
+        $account = factory('App\Account')->create([]);
+        $id = DB::table('default_relationship_type_groups')->insertGetId([
+            'name' => 'friend_and_family',
+        ]);
+
+        DB::table('default_relationship_types')->insert([
+            'name' => 'fuckfriend',
+            'relationship_type_group_id' => $id,
+            'migrated' => 1,
+        ]);
+
+        $account->populateRelationshipTypeGroupsTable();
+        $account->populateRelationshipTypesTable(true);
+
+        $this->assertDatabaseMissing('relationship_types', [
+            'name' => 'fuckfriend',
+        ]);
     }
 }

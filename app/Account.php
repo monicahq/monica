@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Carbon\Carbon;
+use App\RelationshipType;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -458,12 +459,12 @@ class Account extends Model
      * Populates the Contact Field Types table right after an account is
      * created.
      */
-    public function populateContactFieldTypeTable($ignoreMigratedTable = false)
+    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
     {
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
                 ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
@@ -504,32 +505,46 @@ class Account extends Model
      *
      * @return void
      */
-    public function populateRelationshipTypesTable($ignoreMigratedTable = false)
+    public function populateRelationshipTypeGroupsTable($ignoreTableAlreadyMigrated = false)
     {
         $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
         foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
-            if (! $ignoreMigratedTable || $defaultRelationshipTypeGroups->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
                 $id = DB::table('relationship_type_groups')->insertGetId([
                     'account_id' => $this->id,
                     'name' => $defaultRelationshipTypeGroup->name,
                     'delible' => $defaultRelationshipTypeGroup->delible,
                 ]);
+            }
+        }
+    }
 
-                $defaultRelationshipTypes = DB::table('default_relationship_types')
-                                            ->where('relationship_type_group_id', $defaultRelationshipTypeGroup->id)
-                                            ->get();
+    /**
+     * Populate the relationship types table based on the default ones.
+     *
+     * @param  bool $ignoreTableAlreadyMigrated
+     * @return void
+     */
+    public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
+    {
+        $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
 
-                foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-                    if (! $ignoreMigratedTable || $defaultRelationshipType->migrated == 0) {
-                        RelationshipType::create([
-                            'account_id' => $this->id,
-                            'name' => $defaultRelationshipType->name,
-                            'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                            'relationship_type_group_id' => $id,
-                            'delible' => $defaultRelationshipType->delible,
-                        ]);
-                    }
-                }
+        foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
+
+            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
+                $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
+                                        ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                                        ->first();
+
+                $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
+
+                RelationshipType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipType->name,
+                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                    'relationship_type_group_id' => $relationshipTypeGroup->id,
+                    'delible' => $defaultRelationshipType->delible,
+                ]);
             }
         }
     }
@@ -637,6 +652,7 @@ class Account extends Model
         $account->populateContactFieldTypeTable();
         $account->populateDefaultGendersTable();
         $account->populateDefaultReminderRulesTable();
+        $account->populateRelationshipTypeGroupsTable();
         $account->populateRelationshipTypesTable();
     }
 
