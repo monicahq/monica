@@ -171,6 +171,7 @@ class ApiTaskController extends ApiController
         }
 
         $tasks = $contact->tasks()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return TaskResource::collection($tasks);
