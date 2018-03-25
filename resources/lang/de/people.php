@@ -41,7 +41,7 @@ return [
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href="/settings/import">importieren</a>?',
-    'people_edit_email_error' => 'Es gibt bereits ein Kontakt in Ihrem Konto mit dieser e-Mail-Adresse. Bitte wählen Sie einen anderen.',
+    'people_edit_email_error' => 'Es gibt bereits ein Kontakt in deinem Konto mit dieser e-Mail-Adresse. Bitte wähle eine anderen.',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
