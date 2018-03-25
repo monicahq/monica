@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,7 +45,7 @@ class Account extends Model
         // create new account
         $account = new self;
         $account->api_key = str_random(30);
-        $account->created_at = Carbon::now();
+        $account->created_at = now();
         $account->save();
 
         $account->populateDefaultFields($account);

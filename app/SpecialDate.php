@@ -168,7 +168,7 @@ class SpecialDate extends Model
             return;
         }
 
-        return $this->date->diffInYears(Carbon::now());
+        return $this->date->diffInYears(now());
     }
 
     /**
