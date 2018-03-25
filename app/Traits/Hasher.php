@@ -2,20 +2,20 @@
 
 namespace App\Traits;
 
-use App\Helpers\idHasher;
+use App\Helpers\IdHasher;
 
 trait Hasher
 {
     public function getRouteKey()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         return $ID_hasher->encodeId(parent::getRouteKey());
     }
 
     public function resolveRouteBinding($value)
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $value = $ID_hasher->encodeId($value);
 
@@ -24,7 +24,7 @@ trait Hasher
 
     public function hashID()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         return $ID_hasher->encodeId($this->id);
     }

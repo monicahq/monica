@@ -17,7 +17,7 @@ use App\Offspring;
 use App\ContactField;
 use App\Relationship;
 use App\ReminderRule;
-use App\Helpers\idHasher;
+use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         Route::bind('contact', function ($value) use ($ID_hasher) {
             try {

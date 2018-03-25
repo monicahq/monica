@@ -7,7 +7,7 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use Tests\TestCase;
-use App\Helpers\idHasher;
+use App\Helpers\IdHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ID_hasherTest extends TestCase
@@ -16,7 +16,7 @@ class ID_hasherTest extends TestCase
 
     public function testPrependH()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $test_id = rand();
 
@@ -29,7 +29,7 @@ class ID_hasherTest extends TestCase
 
     public function testGetIDback()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $test_id = rand();
 
@@ -46,7 +46,7 @@ class ID_hasherTest extends TestCase
 
     public function testHashIDContact()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $contact = factory(Contact::class)->create();
 
@@ -59,7 +59,7 @@ class ID_hasherTest extends TestCase
 
     public function testHashIDActivity()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $activity = factory(Activity::class)->create();
 
@@ -72,7 +72,7 @@ class ID_hasherTest extends TestCase
 
     public function testHashIDDebt()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $debt = factory(Debt::class)->create();
 
@@ -85,7 +85,7 @@ class ID_hasherTest extends TestCase
 
     public function testHashIDReminder()
     {
-        $ID_hasher = new idHasher();
+        $ID_hasher = new IdHasher();
 
         $reminder = factory(Reminder::class)->create();
 

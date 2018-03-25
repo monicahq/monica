@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Vinkla\Hashids\Facades\Hashids;
 
-class idHasher
+class IdHasher
 {
     public function encodeId($id)
     {
