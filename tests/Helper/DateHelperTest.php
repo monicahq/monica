@@ -266,9 +266,9 @@ class DateHelperTest extends FeatureTestCase
         $user->locale = 'en';
         $user->save();
 
-        $this->assertEquals(
+        $this->assertCount(
             12,
-            count(DateHelper::getListOfMonths())
+            DateHelper::getListOfMonths()
         );
     }
 
@@ -292,17 +292,17 @@ class DateHelperTest extends FeatureTestCase
         $user->locale = 'en';
         $user->save();
 
-        $this->assertEquals(
+        $this->assertCount(
             31,
-            count(DateHelper::getListOfDays())
+            DateHelper::getListOfDays()
         );
     }
 
     public function test_it_returns_a_list_with_twenty_four_hours()
     {
-        $this->assertEquals(
+        $this->assertCount(
             24,
-            count(DateHelper::getListOfHours())
+            DateHelper::getListOfHours()
         );
     }
 
