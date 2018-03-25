@@ -294,7 +294,7 @@ return [
     'debt_add_add_cta' => 'Schulden hinzufügen',
     'debt_edit_update_cta' => 'Schulden bearbeiten',
     'debt_edit_success' => 'Die Schulden wurden erfolgreich aktualisiert',
-    'debts_blank_title' => 'Verwalte die Schulden, die du :name schuldest oder:name dir schuldet',
+    'debts_blank_title' => 'Verwalte die Schulden, die du :name schuldest oder :name dir schuldet',
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
