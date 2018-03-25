@@ -9,6 +9,16 @@ class RelationshipTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_belongs_to_an_account()
+    {
+        $account = factory(Account::class)->create([]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($relationship->account()->exists());
+    }
+
     public function test_it_belongs_to_a_contact()
     {
         $contact = factory('App\Contact')->create([]);
@@ -27,6 +37,20 @@ class RelationshipTest extends TestCase
         ]);
 
         $this->assertTrue($relationship->with_contact()->exists());
+    }
+
+    public function test_it_belongs_to_a_relationship()
+    {
+        $account = factory('App\Account')->create([]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+        ]);
+        $relationship = factory('App\Relationship', 3)->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipType->id,
+        ]);
+
+        $this->assertTrue($relationship->relationshipType()->exists());
     }
 
     public function test_it_belongs_to_a_contact_through_with_contact_field()
