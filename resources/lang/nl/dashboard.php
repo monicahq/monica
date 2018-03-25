@@ -1,18 +1,18 @@
 <?php
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
+    'dashboard_blank_title' => 'Welkom bij jouw account!',
+    'dashboard_blank_description' => 'Monica is de plaats om alle interacties met de mensen waar je om geeft te organiseren.',
+    'dashboard_blank_cta' => 'Voeg je eerste contact toe',
 
-    'notes_title' => 'You don\'t have any starred notes yet.',
+    'notes_title' => 'Je hebt nog geen notities met een ster.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven\'t logged a call yet.',
+    'tab_recent_calls' => 'Recente oproepen',
+    'tab_favorite_notes' => 'Favoriete notities',
+    'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_contacts' => 'Contacten',
+    'statistics_activities' => 'Activiteiten',
+    'statistics_gifts' => 'Cadeaus',
 
 ];
