@@ -31,7 +31,9 @@ class ApiActivityController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return ActivityResource::collection($activities);
+        return ActivityResource::collection($activities)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+        ]]);
     }
 
     /**

@@ -27,7 +27,9 @@ class ApiCallController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return CallResource::collection($calls);
+        return CallResource::collection($calls)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+        ]]);
     }
 
     /**
