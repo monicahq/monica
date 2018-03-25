@@ -43,7 +43,7 @@
         "phpunit/phpunit": "~6.0",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "symfony/dom-crawler": "^4.0.6"
     },
     "suggest": {
         "ext-apcu": "*"
