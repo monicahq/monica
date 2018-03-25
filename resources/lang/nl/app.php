@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'update' => 'Update',
-    'save' => 'Save',
-    'add' => 'Add',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'edit' => 'Edit',
-    'upload' => 'Upload',
+    'update' => 'Bijwerken',
+    'save' => 'Opslaan',
+    'add' => 'Toevoegen',
+    'cancel' => 'Annuleren',
+    'delete' => 'Verwijderen',
+    'edit' => 'Bewerken',
+    'upload' => 'Uploaden',
     'close' => 'Close',
     'remove' => 'Remove',
     'done' => 'Done',
