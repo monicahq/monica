@@ -187,8 +187,6 @@ class ContactsController extends Controller
         $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
         $contact->save();
 
-        dd($contact->account->getYearlyCallStatistics());
-
         return view('people.profile')
             ->withContact($contact)
             ->withReminders($reminders);
