@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 
 class Contact extends Model
@@ -981,6 +982,14 @@ class Contact extends Model
     public function getAddressesForAPI()
     {
         return AddressShortResource::collection($this->addresses);
+    }
+
+    /**
+     * Get the list of contact fields for this contact.
+     */
+    public function getContactFieldsForAPI()
+    {
+        return ContactFieldResource::collection($this->contactFields);
     }
 
     /**

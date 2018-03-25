@@ -10,6 +10,7 @@ use App\Helpers\SearchHelper;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
 {
@@ -64,6 +65,10 @@ class ApiContactController extends ApiController
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        }
+
+        if ($this->getWithParameter() == 'contactfields') {
+            return new ContactWithContactFieldsResource($contact);
         }
 
         return new ContactResource($contact);
