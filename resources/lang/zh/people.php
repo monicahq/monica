@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 个孩子|{1,1} 1 个孩子|{2,*} :count 个孩子',
+    'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => '上次咨询:',
-    'people_list_number_reminders' => '{0} 0 个提醒 |{1,1} 1 提醒 |{2, *}:count 提醒',
+    'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => '您还没有任何联系人',
     'people_list_blank_cta' => '添加某人',
     'people_list_sort' => '排序',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => '以最后活动日期从远到近排序',
     'people_list_filter_tag' => '显示所有联系人标签 ',
     'people_list_clear_filter' => '清除筛选',
-    'people_list_contacts_per_tags' => '{0} 0 个联系人|{1,1} 1 个联系人|{2,*} :count 个联系人',
+    'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => '搜索联系人...',
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
@@ -42,6 +42,7 @@ return [
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href="/settings/import">导入您的联系人</a>？',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
-    'information_edit_help' => '如果您为此人指明了确切的出生日期,，我们将为您创建一个新的提醒，从而您将在每年该庆祝此人生日时通知您。',
+    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'information_no_linkedin_defined' => '没有定义LinkedIn',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => '更新:name的工作信息',
     'work_edit_job' => '职位名称 (可选)',
     'work_edit_company' => '公司 (可选)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => '食品偏好已被保存',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => '此人可能是',
     'significant_other_add_probably_yo' => '岁',
     'significant_other_add_exact' => '我知道这个人的确切出生日期, 是',
-    'significant_other_add_help' => '如果您为此人指明了确切的出生日期, 我们将为您创建一个新的提醒。因此, 系统将在每年庆祝此人生日的时间通知您。',
+    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'significant_other_add_cta' => '添加重要他人',
     'significant_other_edit_cta' => '编辑重要他人',
     'significant_other_delete_confirmation' => '是否确实要删除此重要他人项？删除是永久性的',
-    'significant_other_unlink_confirmation' => '确实要删除此关系吗？这一重要他人项将不会被删除，删除的只有两者之间的关系。',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => '重要他人已成功添加',
     'significant_other_edit_success' => '重要他人已成功添加',
     'significant_other_delete_success' => '重要他人已成功添加',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => '这将让你像其他联系人一样来对待这个重要他人。',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => '孩子',
     'kids_sidebar_cta' => '添加其他孩子',
     'kids_blank_cta' => '添加孩子',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => '这个孩子可能是',
     'kids_add_probably_yo' => '岁',
     'kids_add_exact' => '我知道这个孩子的确切出生日期, 是',
-    'kids_add_help' => '如果您为这个孩子指明了确切的出生日期,，我们将为您创建一个新的提醒，从而您将在每年该庆祝这个孩子生日时通知您。',
+    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate',
     'kids_add_cta' => '添加孩子',
     'kids_edit_title' => '编辑有关:name的信息',
     'kids_delete_confirmation' => '确实要删除这个孩子吗？删除是永久性的',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => '孩子信息添加成功',
     'kids_delete_success' => '孩子信息删除成功',
     'kids_add_birthday_reminder' => '祝:contact_firstname的孩子:name的生日快乐',
-    'kids_unlink_confirmation' => '确实要删除此关系吗？这个孩子不会被删除，只删除两者之间的关系。',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
 
     // tasks
     'tasks_blank_title' => '你还没有任务呢。',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => '这个礼物是针对给:name的家庭的',
     'gifts_ideas' => '礼品创意',
     'gifts_offered' => '提供的礼品',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => '收到的礼物',
     'gifts_view_comment' => '查看评论',
     'gifts_mark_offered' => '标记为提供',
