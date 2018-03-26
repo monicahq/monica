@@ -122,7 +122,7 @@
           <p class="mb4">{{ trans('settings.subscriptions_help_limits_plan') }}</p>
 
           <h4>{{ trans('settings.subscriptions_help_discounts_title') }}</h4>
-          <p class="mb4">{{ trans('settings.subscriptions_help_discounts_desc', ['support' => 'mailto:regis@monicahq.com']) }}</p>
+          <p class="mb4">{!! trans('settings.subscriptions_help_discounts_desc', ['support' => 'mailto:regis@monicahq.com']) !!}</p>
 
           <h4>{{ trans('settings.subscriptions_help_change_title') }}</h4>
           <p class="mb4">{{ trans('settings.subscriptions_help_change_desc') }}</p>

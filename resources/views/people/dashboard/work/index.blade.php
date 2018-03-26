@@ -1,7 +1,7 @@
 <div class="sidebar-box">
 
   <p class="sidebar-box-title">
-    <strong>Work information</strong>
+    <strong>{{ trans('people.work_information') }}</strong>
   </p>
 
   <div class="work">
