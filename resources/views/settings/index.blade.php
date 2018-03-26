@@ -67,8 +67,8 @@
               <div class="form-group">
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
-                  @foreach(config('monica.langs') as $lang)
-                    <option value="{{ $lang }}" {{ (auth()->user()->locale == $lang)?'selected':'' }}>{{ trans('settings.locale_'.$lang) }}</option>
+                  @foreach($locales as $locale)
+                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
                   @endforeach
                 </select>
               </div>
