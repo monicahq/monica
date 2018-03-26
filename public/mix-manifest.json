@@ -1,17 +1,6 @@
 {
-<<<<<<< HEAD
-    "/js/app.js": "/js/app.js?id=2dbb6a75e1190c9f2f00",
-    "/css/app.css": "/css/app.css?id=67f2d775d545422b125e",
-    "/css/stripe.css": "/css/stripe.css?id=b5558190ef4a3ff3c475",
-    "/js/stripe.js": "/js/stripe.js?id=e3229003519708c6f828"
-=======
-    "/js/app.js": "/js/app.js?id=60a9453f0d4d480ce5fe",
-    "/css/app.css": "/css/app.css?id=2984556e5f69d69788e7",
-    "/css/stripe.css": "/css/stripe.css?id=956554a2e96db30fafa3",
-    "/js/app.js.map": "/js/app.js.map?id=7ddf240b0d44c4c67647",
-    "/css/app.css.map": "/css/app.css.map?id=a1585d15bdf5306642f7",
-    "/css/stripe.css.map": "/css/stripe.css.map?id=80d7af9d49b0922d35e6",
-    "/js/stripe.js": "/js/stripe.js?id=55d823b61fc4f7e8b1ab",
-    "/js/stripe.js.map": "/js/stripe.js.map?id=24771ea90ec93c0f1d81"
->>>>>>> master
+    "/js/app.js": "/js/app.js?id=6f95034589c23bfedb9e",
+    "/css/app.css": "/css/app.css?id=0badcaf16d1d8153eada",
+    "/css/stripe.css": "/css/stripe.css?id=c16ddc73ba6af94a5bfa",
+    "/js/stripe.js": "/js/stripe.js?id=b3b3f79ea16865ee5107"
 }
