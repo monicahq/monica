@@ -9,7 +9,9 @@ return [
     'edit' => 'Editar',
     'upload' => 'Subir',
     'close' => 'Cerrar',
+    'create' => 'Create',
     'remove' => 'Remover',
+    'revoke' => 'Revoke',
     'done' => 'Done',
     'verify' => 'Verify',
     'for' => 'for',
@@ -17,6 +19,10 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => '¿Desea dar formato a su texto de una manera agradable? Soportamos el uso de Markdown para añadir negrita, cursiva, listas y más.',
     'markdown_link' => 'Leer documentación',
