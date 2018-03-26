@@ -183,12 +183,20 @@ class DateHelper
      * @param  int    $month
      * @return string
      */
-    public static function getMonthAndYear(int $month)
+    public static function getMonthAndYear(int $month, $locale = null)
     {
-        $month = Carbon::now()->addMonthsNoOverflow($month)->format('M');
-        $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
+        $date = Date::now()->addMonthsNoOverflow($month);
+        $locale = self::getLocale($locale);
 
-        return $month.' '.$year;
+        switch ($locale) {
+            case 'en':
+                $format = 'M Y';
+                break;
+            default:
+                $format = 'M Y';
+        }
+
+        return $date->format($format);
     }
 
     /**
@@ -202,10 +210,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return Carbon::now()->addMonth();
+            return Date::now()->addMonth();
         }
 
-        return Carbon::now()->addYear();
+        return Date::now()->addYear();
     }
 
     /**
@@ -215,7 +223,7 @@ class DateHelper
      */
     public static function getListOfMonths()
     {
-        Date::setLocale(auth()->user()->locale);
+        self::getLocale();
         $months = collect([]);
         $currentDate = Date::now();
         $currentDate->day = 1;
