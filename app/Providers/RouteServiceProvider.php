@@ -13,7 +13,6 @@ use App\Gender;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
-use App\Offspring;
 use App\ContactField;
 use App\Relationship;
 use App\ReminderRule;

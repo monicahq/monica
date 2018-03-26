@@ -1,9 +1,5 @@
 <?php
 
-use App\Account;
-use App\RelationshipType;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class PopulateDefaultRelationshipTypeTables extends Migration
@@ -47,7 +43,7 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'name' => 'inlovewith',
             'name_reverse_relationship' => 'inlovewith',
             'relationship_type_group_id' => $id,
-        ]]);
+        ], ]);
 
         DB::table('default_relationship_types')->insertGetId([
             'name' => 'ex',
@@ -110,7 +106,7 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'name' => 'godson',
             'name_reverse_relationship' => 'godfather',
             'relationship_type_group_id' => $id,
-        ]]);
+        ], ]);
 
         // Friend
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -127,7 +123,7 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'name' => 'bestfriend',
             'name_reverse_relationship' => 'bestfriend',
             'relationship_type_group_id' => $id,
-        ]]);
+        ], ]);
 
         // Work
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -159,6 +155,6 @@ class PopulateDefaultRelationshipTypeTables extends Migration
             'name' => 'protege',
             'name_reverse_relationship' => 'mentor',
             'relationship_type_group_id' => $id,
-        ]]);
+        ], ]);
     }
 }

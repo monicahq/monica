@@ -5,8 +5,8 @@ namespace App;
 use DB;
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
@@ -1030,7 +1030,7 @@ class Contact extends Model
         $relationship->save();
 
         // Get the reverse relationship
-        $reverseRelationshipType =  $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
+        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
         // Contact B is linked to Contact A
         $relationship = new Relationship;
@@ -1396,7 +1396,7 @@ class Contact extends Model
      * @param  Contact $otherContact
      * @return Relationship|null
      */
-    public function getRelationshipNatureWith(Contact $otherContact)
+    public function getRelationshipNatureWith(selft $otherContact)
     {
         $relationship = Relationship::where('contact_id_main', $this->id)
                                     ->where('contact_id_secondary', $otherContact->id)
@@ -1408,7 +1408,7 @@ class Contact extends Model
     /**
      * Delete the contact and all the related object.
      *
-     * @return boolean
+     * @return bool
      */
     public function deleteEverything()
     {

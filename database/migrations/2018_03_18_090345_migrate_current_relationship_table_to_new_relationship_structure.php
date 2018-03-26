@@ -3,7 +3,6 @@
 use App\Account;
 use App\Relationship;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migration
@@ -22,7 +21,7 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
 
                 $relationships = Relationship::where('account_id', $account->id)->get()->keyBy('id');
 
-                foreach($relationships as $relationship) {
+                foreach ($relationships as $relationship) {
                     foreach ($relationships as $bilateralRelationship) {
                         if ($relationship->contact_id == $bilateralRelationship->with_contact_id
                             && $relationship->with_contact_id == $bilateralRelationship->contact_id) {
@@ -44,7 +43,7 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
                             'contact_id_secondary' => $relationship->contact_id,
                             'relationship_type_id' => $relationshipTypeId,
                             'relationship_type_name' => 'partner',
-                        ]
+                        ],
                     ]);
                 }
             }

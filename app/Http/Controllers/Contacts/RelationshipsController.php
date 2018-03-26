@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class RelationshipsController extends Controller
 {
     /**
-     * Display the Create relationship page
+     * Display the Create relationship page.
      *
      * @param  Contact $contact
      * @return \Illuminate\Http\Response

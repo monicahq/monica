@@ -897,7 +897,7 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $reverseRelationshipType =  $account->getRelationshipTypeByType($newRelationshipType->name_reverse_relationship);
+        $reverseRelationshipType = $account->getRelationshipTypeByType($newRelationshipType->name_reverse_relationship);
 
         $this->assertDatabaseHas(
             'relationships',

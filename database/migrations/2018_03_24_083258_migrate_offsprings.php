@@ -1,7 +1,6 @@
 <?php
 
 use App\Account;
-use App\Offspring;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,7 +20,7 @@ class MigrateOffsprings extends Migration
                 $relationshipParentTypeId = $account->getRelationshipTypeByType('parent')->id;
                 $offsprings = DB::table('offsprings')->where('account_id', $account->id)->get();
 
-                foreach($offsprings as $offspring) {
+                foreach ($offsprings as $offspring) {
                     DB::table('relationships')->insert([
                         [
                             'account_id' => $account->id,
@@ -36,7 +35,7 @@ class MigrateOffsprings extends Migration
                             'contact_id_secondary' => $offspring->is_the_child_of,
                             'relationship_type_id' => $relationshipParentTypeId,
                             'relationship_type_name' => 'parent',
-                        ]
+                        ],
                     ]);
                 }
             }

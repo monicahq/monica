@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Auth;
 use App\Tag;
 use Validator;
@@ -11,7 +10,6 @@ use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
@@ -202,7 +200,7 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'friend';
         });
 
-         // get work relationship type
+        // get work relationship type
         $workRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });

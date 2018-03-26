@@ -4,7 +4,6 @@ namespace App;
 
 use DB;
 use Carbon\Carbon;
-use App\RelationshipType;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -675,7 +674,7 @@ class Account extends Model
         return $this->relationshipTypeGroups->where('name', $relationshipTypeGroupName)->first();
     }
 
-     /**
+    /**
      * Get the statistics of the number of calls grouped by year.
      *
      * @return json
