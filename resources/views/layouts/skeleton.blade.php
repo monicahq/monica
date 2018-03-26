@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ Auth::check() ? auth()->user()->locale : config('app.locale') }}">
+<html lang="{{ \App::getLocale() }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <title>@yield('title', 'Monica - a CRM for your friends and family')</title>
+    <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="/manifest.webmanifest">
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
@@ -13,7 +13,7 @@
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
-          'locale' => (Auth::check() ? auth()->user()->locale : config('app.locale'))
+          'locale' => \App::getLocale()
       ]); !!}
     </script>
   </head>
