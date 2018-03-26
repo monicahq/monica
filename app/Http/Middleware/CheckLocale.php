@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Auth;
 use Closure;
 use Carbon\Carbon;
+use Jenssegers\Date\Date;
 
 class CheckLocale
 {
@@ -18,9 +19,14 @@ class CheckLocale
     public function handle($request, Closure $next)
     {
         if (Auth::check()) {
-            \App::setLocale(Auth::user()->locale);
-            Carbon::setLocale(config('app.locale'));
+            $locale = Auth::user()->locale;
+        } else {
+            $locale = app('language.detector')->detect() ?: config('app.locale');
         }
+
+        \App::setLocale($locale);
+        Carbon::setLocale($locale);
+        Date::setLocale($locale);
 
         return $next($request);
     }
