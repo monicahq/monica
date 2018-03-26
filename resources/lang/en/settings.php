@@ -18,6 +18,8 @@ return [
     'export_sql_cta' => 'Export to SQL',
     'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
 
+    'firstname' => 'First name',
+    'lastname' => 'Last name',
     'name_order' => 'Name order',
     'name_order_firstname_first' => 'First name first (John Doe)',
     'name_order_lastname_first' => 'Last name first (Doe John)',
@@ -166,12 +168,36 @@ return [
 
     'api_title' => 'API access',
     'api_description' => 'The API can be used to manipulate Monica\'s data from an external application, like a mobile application for instance.',
+
     'api_personal_access_tokens' => 'Personal access tokens',
     'api_pao_description' => 'Make sure you give this token to a source you trust - as they allow you to access all your data.',
+    'api_token_title' => 'Personal access token',
+    'api_token_create_new' => 'Create New Token',
+    'api_token_not_created' => 'You have not created any personal access tokens.',
+    'api_token_name' => 'Name',
+    'api_token_delete' => 'Delete',
+    'api_token_create' => 'Create Token',
+    'api_token_scopes' => 'Scopes',
+    'api_token_help' => 'Here is your new personal access token. This is the only time it will be shown so don’t lose it! You may now use this token to make API requests.',
+    
     'api_oauth_clients' => 'Your Oauth clients',
     'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
+    'api_oauth_title' => 'Oauth Clients',
+    'api_oauth_create_new' => 'Create New Client',
+    'api_oauth_not_created' => 'You have not created any OAuth clients.',
+    'api_oauth_clientid' => 'Client ID',
+    'api_oauth_name' => 'Name',
+    'api_oauth_name_help' => 'Something your users will recognize and trust.',
+    'api_oauth_secret' => 'Secret',
+    'api_oauth_create' => 'Create Client',
+    'api_oauth_redirecturl' => 'Redirect URL',
+    'api_oauth_redirecturl_help' => "Your application's authorization callback URL.",
+
     'api_authorized_clients' => 'List of authorized clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you\'ve authorized to access your application. You can revoke this authorization at anytime.',
+    'api_authorized_clients_title' => 'Authorized Applications',
+    'api_authorized_clients_name' => 'Name',
+    'api_authorized_clients_scopes' => 'Scopes',
 
     'personalization_tab_title' => 'Personalize your account',
 
