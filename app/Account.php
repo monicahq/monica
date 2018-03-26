@@ -526,7 +526,6 @@ class Account extends Model
         $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-
             if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
                 $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
                                         ->where('id', $defaultRelationshipType->relationship_type_group_id)
