@@ -22,7 +22,7 @@ class SubscriptionsController extends Controller
 
         if (! auth()->user()->account->isSubscribed()) {
             return view('settings.subscriptions.blank', [
-                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers()
+                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
         }
 

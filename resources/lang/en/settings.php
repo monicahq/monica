@@ -216,7 +216,7 @@ return [
     'api_token_create' => 'Create Token',
     'api_token_scopes' => 'Scopes',
     'api_token_help' => 'Here is your new personal access token. This is the only time it will be shown so don’t lose it! You may now use this token to make API requests.',
-    
+
     'api_oauth_clients' => 'Your Oauth clients',
     'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
     'api_oauth_title' => 'Oauth Clients',
