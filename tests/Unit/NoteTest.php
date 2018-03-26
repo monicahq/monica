@@ -77,11 +77,10 @@ class NoteTest extends TestCase
     {
         $note = new Note;
         $note->created_at = '2017-01-22 17:56:03';
-        $locale = 'en';
 
         $this->assertEquals(
             'Jan 22, 2017',
-            $note->getCreatedAt($locale)
+            $note->getCreatedAt()
         );
     }
 
@@ -89,9 +88,8 @@ class NoteTest extends TestCase
     {
         $note = new Note;
         $note->created_at = '2017-01-22 17:56:03';
-        $locale = 'en';
 
-        $this->assertInternalType('string', $note->getCreatedAt($locale));
+        $this->assertInternalType('string', $note->getCreatedAt());
     }
 
     public function testGetContentReturnsAString()
