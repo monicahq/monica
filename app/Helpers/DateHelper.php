@@ -2,10 +2,8 @@
 
 namespace App\Helpers;
 
-use Auth;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
-use App\Helpers\LocaleHelper;
 
 class DateHelper
 {
@@ -44,7 +42,7 @@ class DateHelper
     public static function getShortDate($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();;
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -102,7 +100,7 @@ class DateHelper
     public static function getShortDateWithoutYear($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();;
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -130,7 +128,7 @@ class DateHelper
     public static function getShortDateWithTime($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();;
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -179,7 +177,7 @@ class DateHelper
     public static function getMonthAndYear(int $month)
     {
         $date = Date::now()->addMonthsNoOverflow($month);
-        $locale = Date::getLocale();;
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':

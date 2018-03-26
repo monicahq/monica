@@ -2,7 +2,6 @@
 
 namespace Tests\Helper;
 
-use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
 

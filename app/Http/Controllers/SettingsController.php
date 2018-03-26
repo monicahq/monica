@@ -62,13 +62,13 @@ class SettingsController extends Controller
     private function getLocaleList()
     {
         $locales = collect([]);
-        foreach (config('lang-detector.languages') as $lang)
-        {
+        foreach (config('lang-detector.languages') as $lang) {
             $locales->push([
                 'lang' => $lang,
                 'name' => trans('settings.locale_'.$lang),
             ]);
         }
+
         return $locales->sortBy('name');
     }
 

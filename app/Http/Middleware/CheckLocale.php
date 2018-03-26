@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Closure;
 use App\Helpers\DateHelper;
 use App\Helpers\LocaleHelper;
