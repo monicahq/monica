@@ -25,11 +25,11 @@
                 <div class="panel-heading">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span>
-                            {{ $t('setting.api_personal_access_tokens') }}
+                            {{ $t('settings.api_personal_access_tokens') }}
                         </span>
 
                         <a class="btn" @click="showCreateTokenForm">
-                            {{ $t('setting.api_token_create_new') }}
+                            {{ $t('settings.api_token_create_new') }}
                         </a>
                     </div>
                 </div>
@@ -37,14 +37,14 @@
                 <div class="panel-body">
                     <!-- No Tokens Notice -->
                     <p class="m-b-none" v-if="tokens.length === 0">
-                        {{ $t('setting.api_token_not_created') }}
+                        {{ $t('settings.api_token_not_created') }}
                     </p>
 
                     <!-- Personal Access Tokens -->
                     <table class="table table-borderless m-b-none" v-if="tokens.length > 0">
                         <thead>
                             <tr>
-                                <th>{{ $t('setting.api_token_name') }}</th>
+                                <th>{{ $t('settings.api_token_name') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -59,7 +59,7 @@
                                 <!-- Delete Button -->
                                 <td style="vertical-align: middle;">
                                     <a class="action-link text-danger" @click="revoke(token)">
-                                        {{ $t('setting.api_token_delete') }}
+                                        {{ $t('settings.api_token_delete') }}
                                     </a>
                                 </td>
                             </tr>
@@ -77,7 +77,7 @@
                         <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            {{ $t('setting.api_token_create') }}
+                            {{ $t('settings.api_token_create') }}
                         </h4>
                     </div>
 
@@ -97,7 +97,7 @@
                         <form class="form-horizontal" role="form" @submit.prevent="store">
                             <!-- Name -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label">{{ $t('setting.api_token_name') }}</label>
+                                <label class="col-md-4 control-label">{{ $t('settings.api_token_name') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="create-token-name" type="text" class="form-control" name="name" v-model="form.name">
@@ -106,7 +106,7 @@
 
                             <!-- Scopes -->
                             <div class="form-group" v-if="scopes.length > 0">
-                                <label class="col-md-4 control-label">{{ $t('setting.api_token_scopes') }}</label>
+                                <label class="col-md-4 control-label">{{ $t('settings.api_token_scopes') }}</label>
 
                                 <div class="col-md-6">
                                     <div v-for="scope in scopes">
@@ -143,12 +143,12 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            {{ $t('setting.api_token_title') }}
+                            {{ $t('settings.api_token_title') }}
                         </h4>
                     </div>
 
                     <div class="modal-body">
-                        <p>{{ $t('setting.api_token_help') }}</p>
+                        <p>{{ $t('settings.api_token_help') }}</p>
 
                         <div class="access-key">
                             <pre><code>{{ accessToken }}</code></pre>

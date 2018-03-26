@@ -13,7 +13,7 @@
         <div v-if="tokens.length > 0">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    {{ $t('setting.api_authorized_clients_title') }}
+                    {{ $t('settings.api_authorized_clients_title') }}
                 </div>
 
                 <div class="panel-body">
@@ -21,8 +21,8 @@
                     <table class="table table-borderless m-b-none">
                         <thead>
                             <tr>
-                                <th>{{ $t('setting.api_authorized_clients_name') }}</th>
-                                <th>{{ $t('setting.api_authorized_clients_scopes') }}</th>
+                                <th>{{ $t('settings.api_authorized_clients_name') }}</th>
+                                <th>{{ $t('settings.api_authorized_clients_scopes') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
