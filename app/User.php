@@ -175,7 +175,7 @@ class User extends Authenticatable
     {
         try {
             Day::where('account_id', $this->account_id)
-                ->where('date', Carbon::now($this->timezone)->format('Y-m-d'))
+                ->where('date', now($this->timezone)->format('Y-m-d'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return false;
@@ -223,7 +223,7 @@ class User extends Authenticatable
     {
         $dateOfReminder = $date->hour(0)->minute(0)->second(0)->toDateString();
 
-        $currentDate = Carbon::now($this->timezone);
+        $currentDate = now($this->timezone);
 
         $currentHourOnUserTimezone = $currentDate->format('H:00');
         $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();

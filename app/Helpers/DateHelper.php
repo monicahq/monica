@@ -185,8 +185,8 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month)
     {
-        $month = Carbon::now()->addMonthsNoOverflow($month)->format('M');
-        $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
+        $month = now()->addMonthsNoOverflow($month)->format('M');
+        $year = now()->addMonthsNoOverflow($month)->format('Y');
 
         return $month.' '.$year;
     }
@@ -202,10 +202,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return Carbon::now()->addMonth();
+            return now()->addMonth();
         }
 
-        return Carbon::now()->addYear();
+        return now()->addYear();
     }
 
     /**
