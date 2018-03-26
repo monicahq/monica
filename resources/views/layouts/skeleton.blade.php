@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ Auth::check() ? auth()->user()->locale : 'en' }}">
+<html lang="{{ Auth::check() ? auth()->user()->locale : config('app.locale') }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,7 +13,7 @@
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
-          'locale' => (Auth::check() ? auth()->user()->locale : 'en')
+          'locale' => (Auth::check() ? auth()->user()->locale : config('app.locale'))
       ]); !!}
     </script>
   </head>

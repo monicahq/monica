@@ -146,7 +146,7 @@ class DateHelper
         if (Auth::check()) {
             $locale = $locale ?: Auth::user()->locale;
         } else {
-            $locale = $locale ?: 'en';
+            $locale = $locale ?: config('app.locale');
         }
 
         Date::setLocale($locale);
