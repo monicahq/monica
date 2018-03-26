@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => ':count ребёнок|:count ребёнка|:count детей',
+    'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Последнее обновление:',
-    'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
+    'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
     'people_list_sort' => 'Сортировка',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
     'people_list_clear_filter' => 'Очистить фильтр',
-    'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
+    'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'Поиск по контактам...',
     'people_search_no_results' => 'Контакты не найдены :(',
     'people_list_account_usage' => 'Лимиты контактов: :current/:limit',
@@ -42,6 +42,7 @@ return [
     'people_add_birthday_reminder' => 'Поздравить :name с днём рождения',
     'people_add_import' => 'Вы хотите <a href="/settings/import">импортировать ваши контакты</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
-    'information_edit_help' => 'Если вы укажите точную дату рождения для этого человека, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения',
+    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'information_no_linkedin_defined' => 'LinkedIn не указан',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => 'Обновление информации о работе: :name',
     'work_edit_job' => 'Должность (не обяз.)',
     'work_edit_company' => 'Компания (не обяз.)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Предпочтения в еде были сохранены',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => 'Этой личности примерно',
     'significant_other_add_probably_yo' => 'лет',
     'significant_other_add_exact' => 'Я знаю точную дату рождения и она:',
-    'significant_other_add_help' => 'Если вы укажите точную дату рождения для этого человека, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения',
+    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'significant_other_add_cta' => 'Добавить вторую половинку',
     'significant_other_edit_cta' => 'Редактировать вторую половинку',
     'significant_other_delete_confirmation' => 'Вы уверены что хотите удалить эту вторую половинку? Восстановление невозможно.',
-    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'Вторая половинка была успешно добавлена',
     'significant_other_edit_success' => 'Вторая половинка была успешно обновлена',
     'significant_other_delete_success' => 'Вторая половинка была успешно удалена',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Дети',
     'kids_sidebar_cta' => 'Добавить ещё одного ребёнка',
     'kids_blank_cta' => 'Добавить ребёнка',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => 'Этому ребёнку вероятно',
     'kids_add_probably_yo' => 'лет',
     'kids_add_exact' => 'Я знаю точную дату рождения и она:',
-    'kids_add_help' => 'Если вы укажите точную дату рождения для этого ребёнка, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения',
+    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate',
     'kids_add_cta' => 'Добавить ребёнка',
     'kids_edit_title' => 'Изменить информацию о :name',
     'kids_delete_confirmation' => 'Вы уверены что хотите удалить запись об этом ребёнке? Восстановление невозможно.',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => 'Запись о ребёнке была успешно обновлена!',
     'kids_delete_success' => 'Запись о ребёнке была удалена!',
     'kids_add_birthday_reminder' => 'Поздравьте с днём рождения :name, ребёнка :contact_firstname',
-    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
 
     // tasks
     'tasks_blank_title' => 'Похоже что у вас пока нет задач связанных с :name',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'Этот подарок в том числе для кого-то из семьи :name',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
