@@ -40,6 +40,7 @@ return [
     'password_reset_password' => 'Password',
     'password_reset_password_confirm' => 'Confirm Password',
     'password_reset_action' => 'Reset Password',
+    'password_reset_email_content' => 'Click here to reset your password:',
 
     'register_title_welcome' => 'Welcome to your newly installed Monica instance',
     'register_create_account' => 'You need to create an account to use Monica',
