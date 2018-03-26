@@ -104,6 +104,7 @@ return [
     'work_edit_title' => 'Update :name\'s job information',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Food preferences have been saved',
@@ -173,6 +174,7 @@ return [
     'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Children',
     'kids_sidebar_cta' => 'Add another child',
     'kids_blank_cta' => 'Add a child',
