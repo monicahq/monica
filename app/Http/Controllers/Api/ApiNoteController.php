@@ -19,8 +19,13 @@ class ApiNoteController extends ApiController
      */
     public function index(Request $request)
     {
-        $notes = auth()->user()->account->notes()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $notes = auth()->user()->account->notes()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return NoteResource::collection($notes);
     }
@@ -175,6 +180,7 @@ class ApiNoteController extends ApiController
         }
 
         $notes = $contact->notes()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return NoteResource::collection($notes);

@@ -43,7 +43,7 @@
 
             @include('people.dashboard.index')
 
-            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">Export as vCard</a></p>
+            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">{{ trans('people.people_export') }}</a></p>
             <p>
               {{ trans('people.people_delete_message') }}
               <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.

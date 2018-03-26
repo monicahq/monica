@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b28f85847f7a21027c396cea94986b9b",
+    "content-hash": "d4df94eb414e4edd8d927f54f186c2b9",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -178,7 +178,7 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "1.0.10",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
@@ -195,6 +195,16 @@
                 "php": ">=5.4.0"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Creativeorange\\Gravatar\\GravatarServiceProvider"
+                    ],
+                    "aliases": {
+                        "Gravatar": "Creativeorange\\Gravatar\\Facades\\Gravatar"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Creativeorange\\Gravatar\\": "src/"
@@ -212,13 +222,13 @@
                     "role": "Developer"
                 }
             ],
-            "description": "A Laravel 5.0, 5.1, 5.2 and 5.3 gravatar package for retrieving gravatar image URLs or checking the existance of an image.",
+            "description": "Gravatar for Laravel 5.0.x through 5.5.x package for retrieving gravatar image URLs or checking the existance of an image.",
             "keywords": [
                 "avatar",
                 "gravatar",
                 "laravel"
             ],
-            "time": "2017-02-15T22:07:40+00:00"
+            "time": "2017-08-08T22:14:26+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -3793,25 +3803,25 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.0.9",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "b8999c1f33c224b2b66b38253f5e3a838d0d0115"
+                "reference": "c69f1e93aa898fd9fec627ebef467188151c8dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b8999c1f33c224b2b66b38253f5e3a838d0d0115",
-                "reference": "b8999c1f33c224b2b66b38253f5e3a838d0d0115",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/c69f1e93aa898fd9fec627ebef467188151c8dc2",
+                "reference": "c69f1e93aa898fd9fec627ebef467188151c8dc2",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -3842,7 +3852,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-29T05:40:00+00:00"
+            "time": "2018-02-03T14:58:37+00:00"
         },
         {
             "name": "symfony/debug",
@@ -4802,6 +4812,61 @@
             "time": "2016-09-01T10:05:43+00:00"
         },
         {
+            "name": "vluzrmos/language-detector",
+            "version": "v1.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vluzrmos/laravel-language-detector.git",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/cookie": "~5.0",
+                "illuminate/support": "~5.0",
+                "illuminate/translation": "~5.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~1.11",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "3.0.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Vluzrmos\\LanguageDetector\\": "src/"
+                },
+                "files": [
+                    "src/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vagner do Carmo",
+                    "email": "vluzrmos@gmail.com"
+                }
+            ],
+            "description": "Detect the language for your application using browser preferences, subdomains or route prefixes.",
+            "keywords": [
+                "i18n",
+                "language",
+                "laravel",
+                "locale",
+                "lumen"
+            ],
+            "time": "2017-03-11T03:40:17+00:00"
+        },
+        {
             "name": "zendframework/zend-diactoros",
             "version": "1.7.1",
             "source": {
@@ -4979,16 +5044,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.36",
+            "version": "2.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "6af6ee96f78cecff036be73d61f526f4c5b21e7a"
+                "reference": "00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/6af6ee96f78cecff036be73d61f526f4c5b21e7a",
-                "reference": "6af6ee96f78cecff036be73d61f526f4c5b21e7a",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6",
+                "reference": "00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6",
                 "shasum": ""
             },
             "bin": [
@@ -5013,7 +5078,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-03-06T20:49:24+00:00"
+            "time": "2018-03-17T21:19:04+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -6262,12 +6327,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
+<<<<<<< HEAD
                 "reference": "1b2f1f59ff8fc933e4d61ee45214ff3228e20c75"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1b2f1f59ff8fc933e4d61ee45214ff3228e20c75",
                 "reference": "1b2f1f59ff8fc933e4d61ee45214ff3228e20c75",
+=======
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+>>>>>>> master
                 "shasum": ""
             },
             "conflict": {
@@ -6340,7 +6414,7 @@
                 "simplesamlphp/simplesamlphp": "<1.15.2",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "socalnick/scn-social-auth": "<1.15.2",
-                "squizlabs/php_codesniffer": ">=1,<2.8.1",
+                "squizlabs/php_codesniffer": ">=1,<2.8.1|>=3,<3.0.1",
                 "stormpath/sdk": ">=0,<9.9.99",
                 "swiftmailer/swiftmailer": ">=4,<5.4.5",
                 "symfony/dependency-injection": ">=2,<2.0.17",
@@ -6369,11 +6443,13 @@
                 "typo3/neos": ">=1.1,<1.1.3|>=1.2,<1.2.13|>=2,<2.0.4",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "yiisoft/yii": ">=1.1.14,<1.1.15",
-                "yiisoft/yii2": "<2.0.14",
+                "yiisoft/yii2": "<2.0.15",
                 "yiisoft/yii2-bootstrap": "<2.0.4",
-                "yiisoft/yii2-dev": "<2.0.14",
+                "yiisoft/yii2-dev": "<2.0.15",
+                "yiisoft/yii2-elasticsearch": "<2.0.5",
                 "yiisoft/yii2-gii": "<2.0.4",
                 "yiisoft/yii2-jui": "<2.0.4",
+                "yiisoft/yii2-redis": "<2.0.8",
                 "zendframework/zend-cache": ">=2.4,<2.4.8|>=2.5,<2.5.3",
                 "zendframework/zend-captcha": ">=2,<2.4.9|>=2.5,<2.5.2",
                 "zendframework/zend-crypt": ">=2,<2.4.9|>=2.5,<2.5.2",
@@ -6411,7 +6487,11 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
+<<<<<<< HEAD
             "time": "2018-03-15T17:53:05+00:00"
+=======
+            "time": "2018-03-22T21:16:54+00:00"
+>>>>>>> master
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -7013,24 +7093,24 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v3.0.9",
+            "version": "v4.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "dff8fecf1f56990d88058e3a1885c2a5f1b8e970"
+                "reference": "26726ddc01601dc9393f2afc3369ce1ca64e4537"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/dff8fecf1f56990d88058e3a1885c2a5f1b8e970",
-                "reference": "dff8fecf1f56990d88058e3a1885c2a5f1b8e970",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/26726ddc01601dc9393f2afc3369ce1ca64e4537",
+                "reference": "26726ddc01601dc9393f2afc3369ce1ca64e4537",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9",
+                "php": "^7.1.3",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "require-dev": {
-                "symfony/css-selector": "~2.8|~3.0"
+                "symfony/css-selector": "~3.4|~4.0"
             },
             "suggest": {
                 "symfony/css-selector": ""
@@ -7038,7 +7118,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -7065,7 +7145,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30T07:22:48+00:00"
+            "time": "2018-02-22T10:50:29+00:00"
         },
         {
             "name": "theseer/fdomdocument",

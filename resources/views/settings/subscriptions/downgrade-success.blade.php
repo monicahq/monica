@@ -60,9 +60,9 @@
         </svg>
       </div>
 
-      <h2 class="tc mt2 fw4">You are back to the Free plan!</h2>
-      <p class="tc mb4">Thanks so much for having tried the paid plan. We keep adding new features on Monica all the time - so you might want to come back in the future to see if you might be interested in taking a subscription again.</p>
-      <p class="tc"><a href="{{ url('/settings/subscriptions') }}" class="btn btn-primary">Back to Settings</a></p>
+      <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_downgrade_success') }}</h2>
+      <p class="tc mb4">{{ trans('settings.subscriptions_downgrade_thanks') }}</p>
+      <p class="tc"><a href="{{ url('/settings/subscriptions') }}" class="btn btn-primary">{{trans('settings.subscriptions_back') }}</a></p>
     </div>
   </div>
 </div>

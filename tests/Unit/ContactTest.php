@@ -719,7 +719,7 @@ class ContactTest extends FeatureTestCase
     public function test_set_name_returns_true()
     {
         $contact = factory(Contact::class)->create();
-        $contact->setName('John', 'Jr', 'Doe');
+        $contact->setName('John', 'Doe', 'Jr');
 
         $this->assertDatabaseHas(
             'contacts',

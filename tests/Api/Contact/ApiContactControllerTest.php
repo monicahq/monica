@@ -22,9 +22,9 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(
+        $this->assertCount(
             10,
-            count($response->decodeResponseJson()['data'])
+            $response->decodeResponseJson()['data']
         );
     }
 

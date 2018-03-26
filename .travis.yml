@@ -50,6 +50,7 @@ install:
   - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
+  - php artisan vue-i18n:generate
   - npm install
   - npm run production
 
@@ -126,6 +127,7 @@ jobs:
         # Get packages without require-dev
         - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
         # Build js and css assets
+        - php artisan vue-i18n:generate
         - npm install
         - npm run production
 
@@ -142,6 +144,7 @@ jobs:
       deploy:
         provider: bintray
         file: .travis.deploy.json
+        skip_cleanup: true
         user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
         on:
@@ -149,7 +152,6 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
-      skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
@@ -166,7 +168,6 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
-      skip_cleanup: true
       before_install:
         - scripts/vagrant/install-vagrant.sh
 
@@ -182,6 +183,7 @@ jobs:
       deploy:
         provider: bintray
         file: .travis.deploy.json
+        skip_cleanup: true
         user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
         on:

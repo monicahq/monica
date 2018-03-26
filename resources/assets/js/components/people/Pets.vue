@@ -174,7 +174,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.pets_create_success'),
+                              title: this.$t('people.pets_create_success'),
                               text: '',
                               type: 'success'
                           });
@@ -204,7 +204,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.pets_update_success'),
+                              title: this.$t('people.pets_update_success'),
                               text: '',
                               type: 'success'
                           });
@@ -218,7 +218,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.pets_delete_success'),
+                              title: this.$t('people.pets_delete_success'),
                               text: '',
                               type: 'success'
                           });

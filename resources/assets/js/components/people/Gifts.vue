@@ -81,7 +81,7 @@
                     <span class="ml1 mr1 black-50">•</span>
                 </span>
                 <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
-                <a @click="toggle(gift)" class="pointer mr1">Mark as an idea</a>
+                <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_offered_as_an_idea') }}</a>
                 <a :href="'/people/' + contactId + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
                 <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
