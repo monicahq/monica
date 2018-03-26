@@ -55,7 +55,7 @@ return [
     'register_password_example' => 'Enter a secure password',
     'register_password_confirmation' => 'Password confirmation',
     'register_action' => 'Register',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url">Privacy Policy</a>.'
-
+    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url">Privacy Policy</a>.',
+    'register_invitation_email' => 'For security purposes, please indicate the email of the person who\'ve invited you to join this account. This information is provided in the invitation email.'
 
 ];
