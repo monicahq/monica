@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ Auth::check() ? auth()->user()->locale : 'en' }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
-      window.Laravel = <?php echo json_encode([
+      window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
           'locale' => (Auth::check() ? auth()->user()->locale : 'en')
-      ]); ?>
+      ]); !!}
     </script>
   </head>
   <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
