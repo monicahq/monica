@@ -1784,6 +1784,7 @@ export default {
             "password_reset_password": "Password",
             "password_reset_password_confirm": "Confirm Password",
             "password_reset_action": "Reset Password",
+            "password_reset_email_content": "Click here to reset your password:",
             "register_title_welcome": "Welcome to your newly installed Monica instance",
             "register_create_account": "You need to create an account to use Monica",
             "register_title_create": "Create your Monica account",
@@ -1861,6 +1862,7 @@ export default {
             "locale_de": "German",
             "locale_zh": "Chinese Simplified",
             "locale_he": "Hebrew",
+            "locale_es": "Spanish",
             "security_title": "Security",
             "security_help": "Change security matters for your account.",
             "password_change": "Password change",
@@ -2108,7 +2110,8 @@ export default {
             "statistics_activities": "Activities",
             "statistics_gifts": "Gifts",
             "reminders_next_months": "Events in the next 3 months",
-            "reminders_none": "No reminder for this month"
+            "reminders_none": "No reminder for this month",
+            "linkedin_profile": "LinkedIn"
         },
         "reminder": {
             "type_birthday": "Wish happy birthday to",
@@ -2137,6 +2140,9 @@ export default {
             "load_more": "Load more",
             "loading": "Loading...",
             "with": "with",
+            "application_title": "Monica – a CRM for your friends and family",
+            "application_description": "Monica is a tool to manage your interactions with your loved ones, friends and family.",
+            "application_og_title": "Have better relations with your loved ones. Free Online CRM for friends and family.",
             "markdown_description": "Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.",
             "markdown_link": "Read documentation",
             "header_settings_link": "Settings",
