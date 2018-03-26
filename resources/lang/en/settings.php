@@ -53,6 +53,7 @@ return [
     'locale_de' => 'German',
     'locale_zh' => 'Chinese Simplified',
     'locale_he' => 'Hebrew',
+    'locale_es' => 'Spanish',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
