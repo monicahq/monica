@@ -3,8 +3,6 @@
 namespace App\Http\Resources\RelationshipTypeGroup;
 
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
 class RelationshipTypeGroup extends Resource
 {
@@ -24,7 +22,7 @@ class RelationshipTypeGroup extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
+            'created_at' => (is_null($this->created_at) ? null : $this->created_at->format(config('api.timestamp_format'))),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
         ];
     }

@@ -7,8 +7,8 @@ use App\Contact;
 use Illuminate\Http\Request;
 use App\RelationshipTypeGroup;
 use Illuminate\Database\QueryException;
-use App\Http\Resources\Pet\Pet as PetResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
 
 class ApiRelationshipTypeGroupController extends ApiController
 {
@@ -24,19 +24,20 @@ class ApiRelationshipTypeGroupController extends ApiController
 
     /**
      * Get all relationship type groups in an instance.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $id)
+    public function index(Request $request)
     {
         try {
             $relationshipTypeGroups = RelationshipTypeGroup::where(static::ACCOUNT_ID, auth()->user()->account_id)
-                ->get();
+                                                            ->get();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new RelationshipTypeGroupResource::collection($relationshipTypeGroups);
+        return RelationshipTypeGroupResource::collection($relationshipTypeGroups);
     }
 
     /**
