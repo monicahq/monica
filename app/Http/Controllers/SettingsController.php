@@ -55,7 +55,21 @@ class SettingsController extends Controller
     public function index()
     {
         return view('settings.index')
+                ->withLocales($this->getLocaleList())
                 ->withHours(\App\Helpers\DateHelper::getListOfHours());
+    }
+
+    private function getLocaleList()
+    {
+        $locales = collect([]);
+        foreach (config('lang-detector.languages') as $lang) {
+            $locales->push([
+                'lang' => $lang,
+                'name' => trans('settings.locale_'.$lang),
+            ]);
+        }
+
+        return $locales->sortBy('name');
     }
 
     /**

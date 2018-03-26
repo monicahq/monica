@@ -2,12 +2,24 @@
 
 namespace App\Helpers;
 
-use Auth;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
 
 class DateHelper
 {
+    /**
+     * Set the locale of the instance for Date frameworks.
+     *
+     * @param string
+     * @return string
+     */
+    public static function setLocale($locale)
+    {
+        $locale = $locale ?: config('app.locale');
+        Carbon::setLocale($locale);
+        Date::setLocale($locale);
+    }
+
     /**
      * Creates a Carbon object.
      *
@@ -27,10 +39,10 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDate($date, $locale = null)
+    public static function getShortDate($date)
     {
         $date = new Date($date);
-        $locale = self::getLocale($locale);
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -55,10 +67,9 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortMonth($date, $locale = null)
+    public static function getShortMonth($date)
     {
         $date = new Date($date);
-        $locale = self::getLocale($locale);
         $format = 'M';
 
         return $date->format($format);
@@ -71,10 +82,9 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDay($date, $locale = null)
+    public static function getShortDay($date)
     {
         $date = new Date($date);
-        $locale = self::getLocale($locale);
         $format = 'D';
 
         return $date->format($format);
@@ -87,10 +97,10 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithoutYear($date, $locale = null)
+    public static function getShortDateWithoutYear($date)
     {
         $date = new Date($date);
-        $locale = self::getLocale($locale);
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -115,10 +125,10 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithTime($date, $locale = null)
+    public static function getShortDateWithTime($date)
     {
         $date = new Date($date);
-        $locale = self::getLocale($locale);
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
@@ -133,25 +143,6 @@ class DateHelper
         }
 
         return $date->format($format);
-    }
-
-    /**
-     * Returns the locale of the instance, if defined. English by default.
-     *
-     * @param string
-     * @return string
-     */
-    public static function getLocale($locale = null)
-    {
-        if (Auth::check()) {
-            $locale = $locale ?: Auth::user()->locale;
-        } else {
-            $locale = $locale ?: 'en';
-        }
-
-        Date::setLocale($locale);
-
-        return $locale;
     }
 
     /**
@@ -185,10 +176,18 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month)
     {
-        $month = Carbon::now()->addMonthsNoOverflow($month)->format('M');
-        $year = Carbon::now()->addMonthsNoOverflow($month)->format('Y');
+        $date = Date::now()->addMonthsNoOverflow($month);
+        $locale = Date::getLocale();
 
-        return $month.' '.$year;
+        switch ($locale) {
+            case 'en':
+                $format = 'M Y';
+                break;
+            default:
+                $format = 'M Y';
+        }
+
+        return $date->format($format);
     }
 
     /**
@@ -202,10 +201,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return Carbon::now()->addMonth();
+            return Date::now()->addMonth();
         }
 
-        return Carbon::now()->addYear();
+        return Date::now()->addYear();
     }
 
     /**
@@ -215,7 +214,6 @@ class DateHelper
      */
     public static function getListOfMonths()
     {
-        Date::setLocale(auth()->user()->locale);
         $months = collect([]);
         $currentDate = Date::now();
         $currentDate->day = 1;

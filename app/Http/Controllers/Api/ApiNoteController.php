@@ -180,6 +180,7 @@ class ApiNoteController extends ApiController
         }
 
         $notes = $contact->notes()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return NoteResource::collection($notes);

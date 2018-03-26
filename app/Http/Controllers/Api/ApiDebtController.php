@@ -180,6 +180,7 @@ class ApiDebtController extends ApiController
         }
 
         $debts = $contact->debts()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return DebtResource::collection($debts);

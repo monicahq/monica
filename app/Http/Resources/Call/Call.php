@@ -18,7 +18,7 @@ class Call extends Resource
         return [
             'id' => $this->id,
             'object' => 'call',
-            'called_at' => $this->created_at->format(config('api.timestamp_format')),
+            'called_at' => $this->called_at->format(config('api.timestamp_format')),
             'content' => $this->content,
             'account' => [
                 'id' => $this->account->id,
