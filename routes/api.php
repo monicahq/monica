@@ -96,6 +96,11 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    // Relationship Type Groups
+    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     /*
      * SETTINGS
      */
