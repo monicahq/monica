@@ -116,9 +116,9 @@ return [
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',
     'subscriptions_downgrade_limitations' => 'The free plan has limitations. In order to be able to downgrade, you need to pass the checklist below:',
     'subscriptions_downgrade_rule_users' => 'You must have only 1 user in your account',
-    'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">:count users</a> in your account.',
+    'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">1 user</a> in your account.|You currently have <a href=":url">:count users</a> in your account.',
     'subscriptions_downgrade_rule_invitations' => 'You must not have pending invitations',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href="/settings/users/">:count pending invitations</a> sent to people.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href="/settings/users/">1 pending invitation</a> sent to people.|You currently have <a href="/settings/users/">:count pending invitations</a> sent to people.',
     'subscriptions_downgrade_cta' => 'Downgrade',
     'subscriptions_upgrade_title' => 'Upgrade your account',
     'subscriptions_upgrade_description' => 'Please enter your card details below. Monica uses <a href="https://stripe.com">Stripe</a> to process your payments securely. No credit card information are stored on our servers.',
@@ -130,7 +130,7 @@ return [
     'import_title' => 'Import contacts in your account',
     'import_cta' => 'Upload contacts',
     'import_stat' => 'You\'ve imported :number files so far.',
-    'import_result_stat' => 'Uploaded vCard with :total_contacts contacts (:total_imported imported, :total_skipped skipped)',
+    'import_result_stat' => 'Uploaded vCard with 1 contact (:total_imported imported, :total_skipped skipped)|Uploaded vCard with :total_contacts contacts (:total_imported imported, :total_skipped skipped)',
     'import_view_report' => 'View report',
     'import_in_progress' => 'The import is in progress. Reload the page in one minute.',
     'import_upload_title' => 'Import your contacts from a vCard file',
@@ -160,7 +160,7 @@ return [
 
     'tags_list_title' => 'Tags',
     'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact. To add a new tag, add it on the contact itself.',
-    'tags_list_contact_number' => ':count contacts',
+    'tags_list_contact_number' => '1 contact|:count contacts',
     'tags_list_delete_success' => 'The tag has been successfully deleted',
     'tags_list_delete_confirmation' => 'Are you sure you want to delete the tag? No contacts will be deleted, only the tag.',
     'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
@@ -235,7 +235,7 @@ return [
 
     'personalization_reminder_rule_save' => 'The change has been saved',
     'personalization_reminder_rule_title' => 'Reminder rules',
-    'personalization_reminder_rule_line' => ':count days before',
+    'personalization_reminder_rule_line' => '1 day before|:count days before',
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',

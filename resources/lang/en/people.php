@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 kid|{1,1} 1 kid|{2,*} :count kids',
+    'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Last consulted:',
-    'people_list_number_reminders' => '{0} 0 reminders|{1,1} 1 reminder|{2, *} :count reminders',
+    'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'You don\'t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_sort' => 'Sort',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Showing all the contacts tagged with ',
     'people_list_clear_filter' => 'Clear filter',
-    'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
+    'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'Search your contacts...',
     'people_search_no_results' => 'No relevant contacts found :(',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
