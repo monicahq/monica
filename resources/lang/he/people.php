@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} אין ילדים|{1,1} ילד אחד|{2,*} :count ילדים',
+    'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'יעוץ אחרון:',
-    'people_list_number_reminders' => '{0} אין תזכורות|{1,1} תזכורת אחת|{2, *} :count תזכורות',
+    'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'אין אף אחד בחשבון שלך עדיין',
     'people_list_blank_cta' => 'להוסיף מישהו',
     'people_list_sort' => 'מיון',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'מיון לפי מועד הפעילות האחרונה מהישנה לחדשה',
     'people_list_filter_tag' => 'הצגת כל אנשי הקשר עם התגית ',
     'people_list_clear_filter' => 'ניקוי מסנן',
-    'people_list_contacts_per_tags' => '{0} אין אנשי קשר|{1,1} איש קשר אחד|{2,*} :count אנשי קשר',
+    'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
     'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
@@ -42,6 +42,7 @@ return [
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
     'people_add_import' => '<a href="/settings/import">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'פרטי קשר',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
-    'information_edit_help' => 'ציון יום ההולדת המדויק של האדם הזה, יצור תזכורת עבורך - כדי להודיע לך בכל שנה מתי הגיע לברך את האדם הזה לרגל יום הולדתו.',
+    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
     'work_edit_job' => 'תפקיד (רשות)',
     'work_edit_company' => 'חברה (רשות)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'העדפות המזון נשמרו',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => 'אדם זה כנראה בגיל',
     'significant_other_add_probably_yo' => 'שנים',
     'significant_other_add_exact' => 'מועד הלידה של האדם הזה ידוע לי והוא',
-    'significant_other_add_help' => 'ציון יום ההולדת המדויק של האדם הזה, יצור תזכורת עבורך - כדי להודיע לך בכל שנה מתי הגיע לברך את האדם הזה לרגל יום הולדתו.',
+    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'significant_other_add_cta' => 'הוספת קשר זוגי',
     'significant_other_edit_cta' => 'עריכת קשר זוגי',
     'significant_other_delete_confirmation' => 'למחוק את הצד הזה בקשר הזוגי? מחיקה אינה הפיכה',
-    'significant_other_unlink_confirmation' => 'למחוק את הקשר הזה? הצד השני בקשר הזוגי לא יימחק - רק הקשר בין השניים.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'הצד השני בקשר הזוגי נוסף בהצלחה',
     'significant_other_edit_success' => 'הצד השני בקשר הזוגי עודכן בהצלחה',
     'significant_other_delete_success' => 'הצד השני בקשר הזוגי נמחק בהצלחה',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'ילדים',
     'kids_sidebar_cta' => 'הוספת ילד נוסף',
     'kids_blank_cta' => 'הוספת ילד',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => 'גילו של הילד הוא כנראה',
     'kids_add_probably_yo' => 'שנים',
     'kids_add_exact' => 'מועד הלידה של הילד הזה ידוע לי והוא',
-    'kids_add_help' => 'ציון יום ההולדת המדויק של הילד הזה, יצור תזכורת עבורך - כדי להודיע לך בכל שנה מתי הגיע לברך את הילד הזה לרגל יום הולדתו',
+    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate',
     'kids_add_cta' => 'הוספת ילד',
     'kids_edit_title' => 'עריכת פרטים על :name',
     'kids_delete_confirmation' => 'למחוק את הילד הזה? מחיקה אינה הפיכה',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => 'הילד עודכן בהצלחה',
     'kids_delete_success' => 'הילד נמחק בהצלחה',
     'kids_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name, הילד של :contact_firstname',
-    'kids_unlink_confirmation' => 'למחוק את הקשר הזה? הילד לא יימחק - רק הקשר בין השניים.',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
 
     // tasks
     'tasks_blank_title' => 'אין לך משימות עדיין.',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למשפחה של :name',
     'gifts_ideas' => 'רעיונות למתנות',
     'gifts_offered' => 'מתנות שהוצעו',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'מתנות שהתקבלו',
     'gifts_view_comment' => 'צפייה בתגובה',
     'gifts_mark_offered' => 'סימון כהוצעה',
