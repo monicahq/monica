@@ -9,7 +9,9 @@ return [
     'edit' => 'עריכה',
     'upload' => 'העלאה',
     'close' => 'סגירה',
+    'create' => 'Create',
     'remove' => 'הסרה',
+    'revoke' => 'Revoke',
     'done' => 'סיום',
     'verify' => 'אימות',
     'for' => 'for',
@@ -17,6 +19,10 @@ return [
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'רוצה להוסיף קצת עניין לטקסט שלך? במערכת זו קיימת תמיכה ב־Markdown כדי להוסיף הדגשה, הטיה, רשימות ועוד.',
     'markdown_link' => 'קריאת התיעוד',
