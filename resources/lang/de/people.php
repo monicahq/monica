@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 Kinder|{1,1} 1 Kind|{2,*} :count Kinder',
+    'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Zuletzt aufgerufen:',
-    'people_list_number_reminders' => '{0} 0 Erinnerungen|{1,1} 1 Erinnerung|{2, *} :count Erinnerungen',
+    'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
     'people_list_blank_cta' => 'Jemand hinzufügen',
     'people_list_sort' => 'Sortieren',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Älteste Aktivitäten zuerst anzeigen',
     'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: ',
     'people_list_clear_filter' => 'Filter löschen',
-    'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
+    'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
@@ -42,6 +42,7 @@ return [
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href="/settings/import">importieren</a>?',
     'people_edit_email_error' => 'Es gibt bereits ein Kontakt in deinem Konto mit dieser e-Mail-Adresse. Bitte wähle eine anderen.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
     'information_edit_not_year' => 'Ich weiß den Tag und Monat des Geburtsdatums dieser Person, aber nicht das Jahr…',
     'information_edit_exact' => 'Ich kenne den Geburtstag der Person...',
-    'information_edit_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst, dieser Person zu gratulieren.',
+    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'information_no_linkedin_defined' => 'LinkedIn nicht angegeben',
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => 'Ändere :name\'s Arbeitsplatz-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Essensvorlieben gespeichert',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => 'Diese Person ist wahrscheinlich',
     'significant_other_add_probably_yo' => 'Jahre alt',
     'significant_other_add_exact' => 'Ich kenne den Geburtstag dieser Person',
-    'significant_other_add_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst, dieser Person zu gratulieren.',
+    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
     'significant_other_add_cta' => 'Lebensgefährte hinzufügen',
     'significant_other_edit_cta' => 'Lebensgefährte bearbeiten',
     'significant_other_delete_confirmation' => 'Möchtest du diesen Lebensgefährten wirklich löschen? Es gibt kein Zurück.',
-    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'Lebensgefährte wurde erfolgreich hinzugefügt',
     'significant_other_edit_success' => 'Lebensgefährte wurde erfolgreich aktualisiert',
     'significant_other_delete_success' => 'Lebensgefährte wurde erfolgreich gelöscht',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Kinder',
     'kids_sidebar_cta' => 'Kind hinzufügen',
     'kids_blank_cta' => 'Kind hinzufügen',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => 'Das Kind ist wahrscheinlich',
     'kids_add_probably_yo' => 'Jahre alt',
     'kids_add_exact' => 'Ich kenne den Geburtstag dieses Kindes',
-    'kids_add_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst, diesem Kind zu gratulieren',
+    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate',
     'kids_add_cta' => 'Kind hinzufügen',
     'kids_edit_title' => 'Informationen über :name bearbeiten',
     'kids_delete_confirmation' => 'Möchtest du dieses Kind wirklich löschen? Es gibt kein Zurück',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => 'Das Kind wurde erfolgreich aktualisiert',
     'kids_delete_success' => 'Das Kind wurde erfolgreich gelöscht',
     'kids_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag, :contact_firstname\'s Kind',
-    'kids_unlink_confirmation' => 'Bist Du dir sicher, dass du diese Verbindung lösen möchtest? Das Kind wird nicht gelöscht nur die Verbindung zwischen beiden Kontakten.',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
 
     // tasks
     'tasks_blank_title' => 'Du hast noch keine Aufgaben.',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'Dieses Geschenk ist für jemanden in :name\'s Familie',
     'gifts_ideas' => 'Geschenkideen',
     'gifts_offered' => 'Geschenke angeboten',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Geschenke erhalten',
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
