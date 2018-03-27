@@ -115,7 +115,7 @@ return [
         'first_name'            => 'Vorname',
         'last_name'             => 'Nachname',
         'password'              => 'Passwort',
-        'password_confirmation' => 'Passwort bestätigung',
+        'password_confirmation' => 'Passwortbestätigung',
         'city'                  => 'Stadt',
         'country'               => 'Land',
         'address'               => 'Adresse',

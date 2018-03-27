@@ -4,7 +4,7 @@ return [
 
     //index
     'people_list_number_kids' => '{0} 0 enfant |{1,1} 1 enfant|{2,*} :count enfants',
-    'people_list_last_updated' => 'Last consulted:',
+    'people_list_last_updated' => 'Consulté le:',
     'people_list_number_reminders' => '{0} 0 rappel |{1,1} 1 rappel |{2,*} :count rappels',
     'people_list_blank_title' => 'Vous n\'avez encore ajouté aucun contact.',
     'people_list_blank_cta' => 'Ajouter quelqu\'un',
@@ -14,9 +14,9 @@ return [
     'people_list_firstnameZA' => 'Tri par prénom Z → A',
     'people_list_lastnameAZ' => 'Tri par nom de famille A → Z',
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
-    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
-    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Affichge des contacts avec le tag ',
+    'people_list_lastactivitydateNewtoOld' => 'Tri par activité récentes → anciennes',
+    'people_list_lastactivitydateOldtoNew' => 'Tri par activité anciennes → récentes',
+    'people_list_filter_tag' => 'Affichage des contacts avec le tag ',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => '{0} 0 contact|{1,1} 1 contact|{2,*} :count contacts',
     'people_search' => 'Recherchez dans vos contacts...',

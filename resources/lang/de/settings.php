@@ -14,7 +14,7 @@ return [
     'export_title_sql' => 'Nach SQL exportieren',
     'export_sql_explanation' => 'Der SQL-Export ermöglicht es dir deine Daten in einer eigenen monica-Installation zu importieren. Dies ist nur sinnvoll, wenn du einen eigenen Server besitzt.',
     'export_sql_cta' => 'SQL exportieren',
-    'export_sql_link_instructions' => 'Hinweis: <a href=":url">lies die Anleitung</a> um mehr über das Importieren in die eigene Installation zu erfahren.',
+    'export_sql_link_instructions' => 'Hinweis: <a href=":url">Lies die Anleitung</a> um mehr über das Importieren in die eigene Installation zu erfahren.',
 
     'name_order' => 'Namensortierrichtung',
     'name_order_firstname_first' => 'Vorname zuerst (Max Mustermann)',

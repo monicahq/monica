@@ -12,12 +12,12 @@ return [
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
-    'unknown' => 'Ich weiß das nicht',
+    'unknown' => 'Ich weiß nicht',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
 
-    'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
+    'markdown_description' => 'Du möchtest deinen Text schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
@@ -40,7 +40,7 @@ return [
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'Es ist eine neue Version verfügbar',
 
-    'footer_modal_version_whats_new' => 'Was gibt\'s neues',
+    'footer_modal_version_whats_new' => 'Was gibt\'s Neues',
     'footer_modal_version_release_away' => 'Du bist ein Release hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.|Du bist :number Releases hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.',
 
     'breadcrumb_dashboard' => 'Dashboard',
