@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Questa persona probabilmente ha ',
     'kids_add_probably_yo' => 'anni',
     'kids_add_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te – ti verrà notificato l\'arrivo del suo compleanno annualmente.',
     'kids_add_cta' => 'Aggiungi figlio',
     'kids_edit_title' => 'Modifica informazioni su :name',
     'kids_delete_confirmation' => 'Rimuovere questo figlio? Questo cambio è permanente.',
@@ -315,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'Questo é il giorno in cui si siamo conosciuti',
     'introductions_add_reminder' => 'Aggiungi un promemoria per celebrare questo incontro nel suo anniversario',
     'introductions_update_success' => 'Hai aggiornato con successo le informazioni sull\'incontro con questa persona',
-    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
+    'introductions_met_through' => 'Conosciuto/a attraverso <a href=":url">:name</a>',
     'introductions_met_date' => 'Incontrato/a il :date',
     'introductions_reminder_title' => 'Anniversario del giorno in cui vi siete conosciuti',
 
