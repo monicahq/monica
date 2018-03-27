@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Gender;
-use App\Account;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Account;
 use Tests\TestCase;
 use App\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
