@@ -37,21 +37,24 @@ docker_push:
 	docker push monicahq/monicahq:$(GIT_TAG)
 	docker push monicahq/monicahq:latest
 
-docker_push_bintray:
+docker_push_bintray: .travis.deploy.json
 	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
 build: build-dev
 
 build-prod:
-	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader --no-dev
+	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+	php artisan vue-i18n:generate
 	npm install
 	npm run production
 
 build-dev:
-	composer install --no-interaction --prefer-dist --no-suggest --optimize-autoloader
+	composer install --no-interaction --no-suggest --ignore-platform-reqs
+	php artisan vue-i18n:generate
 	npm install
 	npm run dev
 
@@ -103,15 +106,18 @@ dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2
 
 COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
-.travis.deploy.json: scripts/tests/.travis.deploy.json.in
+ifeq (,$(DEPLOY_TEMPLATE))
+DEPLOY_TEMPLATE := scripts/tests/.travis.deploy.json.in
+endif
+
+.travis.deploy.json: $(DEPLOY_TEMPLATE)
 	cp $< $@
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(COMMIT_MESSAGE)/" $@
-	sed -si "s/\$$(released)/$(shell date --iso-8601=date)/" $@
+	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
 	sed -si "s/\$$(travis_tag)/$(TRAVIS_TAG)/" $@
 	sed -si "s/\$$(travis_commit)/$(GIT_COMMIT)/" $@
 	sed -si "s/\$$(travis_build_number)/$(TRAVIS_BUILD_NUMBER)/" $@
-	sed -si "s/\$$(date)/$(shell date --iso-8601=s)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<
@@ -145,4 +151,7 @@ update: .env build-dev
 	cp .env.example .env
 
 .PHONY: dist clean fullclean install update build prepare build-prod build-dev
+
+vagrant_build:
+	make -C scripts/vagrant/build package
 

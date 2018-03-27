@@ -47,12 +47,12 @@
 
               {{-- names --}}
               <div class="form-group">
-                <label for="firstname">First name</label>
+                <label for="firstname">{{ trans('settings.firstname') }}</label>
                 <input type="text" class="form-control" name="first_name" id="first_name" required value="{{ auth()->user()->first_name }}">
               </div>
 
               <div class="form-group">
-                <label for="firstname">Last name</label>
+                <label for="firstname">{{ trans('settings.lastname') }}</label>
                 <input type="text" class="form-control" name="last_name" id="last_name" required value="{{ auth()->user()->last_name }}">
               </div>
 
@@ -67,8 +67,8 @@
               <div class="form-group">
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
-                  @foreach(config('monica.langs') as $lang)
-                    <option value="{{ $lang }}" {{ (auth()->user()->locale == $lang)?'selected':'' }}>{{ trans('settings.locale_'.$lang) }}</option>
+                  @foreach($locales as $locale)
+                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
                   @endforeach
                 </select>
               </div>
@@ -247,6 +247,16 @@
                   <option value='false' {{ (auth()->user()->fluid_container == 'false')?'selected':'' }}>{{ trans('settings.layout_small') }}</option>
                   <option value='true' {{ (auth()->user()->fluid_container == 'true')?'selected':'' }}>{{ trans('settings.layout_big') }}</option>
                 </select>
+              </div>
+
+              {{-- Layout --}}
+              <div class="form-group">
+                <form-select
+                  :value="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
+                  :options="{{ $hours }}"
+                  v-bind:id="'reminder_time'"
+                  v-bind:title="'{{ trans('settings.reminder_time_to_send') }}'">
+                </form-select>
               </div>
 
               <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>

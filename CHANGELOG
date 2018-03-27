@@ -1,8 +1,50 @@
 UNRELEASED CHANGES:
 
-*
+* Fix called_at field in the Call object returned by the API
+* Add Linkedin URL in the Contact object returned by the API
+* Improve localization: add plural forms, localize every needed messages
 
 RELEASED VERSIONS:
+
+v1.8.2 - 2018-03-20
+-------------------
+
+* Add a Vagrantfile to run Monica on Vagrant
+* Add support for Hebrew and Chinese Simplified
+* Add bullet points to call lists when rendered from markdown
+* Require debugbar on dev only
+* Improve heroku integration
+* Open register page after a clean installation
+* API:  Add ability to sort tasks by completed_at attribute
+* API: Add sorting capabilities to most models
+* Update Czech, Italian, Portuguese, Russian, German, French language files
+* Fix docker image creating wrong storage directories
+* Fix notification messages
+
+v1.8.1 - 2018-03-02
+-------------------
+
+* Fix message in contact edit page
+* Fix months list for non english languages  in contact edit page
+* Fix birthdate calendar for non english languages in contact edit page
+* Fix Gravatar support
+* Remove partial contacts from search results returned by the API
+* Fix reset account deleting default account values
+* Fix notifications not working with aysnchronous queue
+* Support mysql unix socket
+
+v1.8.0 - 2018-02-26
+-------------------
+
+* Add ability to search and sort in the API
+* Add ability to define the hour the reminder should be sent
+* Add notifications for reminders (30 and 7 days before an event happens)
+* Add API calls to associate and remove tags to a contact
+* Docker image: use cron to run schedule tasks
+* Docker image: reduce size of image
+* Docker image: create storage subdirectory in case they not exist
+* Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
+* Remove trailing slash from routes
 
 v1.7.2 - 2018-02-20
 -------------------
@@ -112,7 +154,7 @@ v1.0.0 - 2017-11-09
 * Add a button to `Save and add another contact` straight from the Add contact screen
 * Add the ability to indicate how you've met someone
 * Replace former front-end build system by mix (which is the new default with Laravel 5.5)
-* Add a first part of the API
+* Add the first part of the API
 * Fix the access to upgrade account view
 * Add security.txt file
 * Upgrade codebase to Laravel 5.5

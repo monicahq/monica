@@ -57,6 +57,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = Carbon::now();
+        $user->locale = \App::getLocale();
         $user->save();
 
         return $user;
@@ -174,7 +175,7 @@ class User extends Authenticatable
     public function hasAlreadyRatedToday()
     {
         try {
-            $day = Day::where('account_id', $this->account_id)
+            Day::where('account_id', $this->account_id)
                 ->where('date', \Carbon\Carbon::now($this->timezone)->format('Y-m-d'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -199,7 +200,7 @@ class User extends Authenticatable
      * Decrypt the user's google_2fa secret.
      *
      * @param  string  $value
-     * @return string
+     * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)
     {
@@ -208,5 +209,36 @@ class User extends Authenticatable
         }
 
         return decrypt($value);
+    }
+
+    /**
+     * Indicate whether the user should be reminded about a reminder or notification.
+     * The user should be reminded only if the date of the reminder matches the
+     * current date, and the current hour matches the hour the account owner
+     * wants to be reminded.
+     *
+     * @param Carbon $date
+     * @return bool
+     */
+    public function shouldBeReminded(Carbon $date)
+    {
+        $dateOfReminder = $date->hour(0)->minute(0)->second(0)->toDateString();
+
+        $currentDate = Carbon::now($this->timezone);
+
+        $currentHourOnUserTimezone = $currentDate->format('H:00');
+        $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
+
+        $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
+
+        if ($dateOfReminder != $currentDateOnUserTimezone) {
+            return false;
+        }
+
+        if ($hourEmailShouldBeSent != $currentHourOnUserTimezone) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -17,7 +17,7 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
-use PragmaRX\Google2FALaravel\Support\Authenticator;
+use PragmaRX\Google2FALaravel\Google2FA;
 
 class SettingsController extends Controller
 {
@@ -54,7 +54,9 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        return view('settings.index');
+        return view('settings.index')
+                ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
+                ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }
 
     /**
@@ -78,6 +80,9 @@ class SettingsController extends Controller
                 'fluid_container' => $request->get('layout'),
             ]
         );
+
+        $request->user()->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $request->user()->account->save();
 
         return redirect('settings')
             ->with('status', trans('settings.settings_success', [], $request['locale']));
@@ -144,6 +149,8 @@ class SettingsController extends Controller
 
             DB::table($tableName)->where('account_id', $account->id)->delete();
         }
+
+        $account->populateDefaultFields($account);
 
         return redirect('/settings')
                     ->with('status', trans('settings.reset_success'));
@@ -334,8 +341,8 @@ class SettingsController extends Controller
             return redirect('/');
         }
 
-        $invitation = Invitation::where('invitation_key', $key)
-                                ->firstOrFail();
+        Invitation::where('invitation_key', $key)
+            ->firstOrFail();
 
         return view('settings.users.accept', compact('key'));
     }
@@ -431,6 +438,6 @@ class SettingsController extends Controller
 
     public function security(Request $request)
     {
-        return view('settings.security.index', ['is2FAActivated' => (new Authenticator($request))->isActivated()]);
+        return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
     }
 }

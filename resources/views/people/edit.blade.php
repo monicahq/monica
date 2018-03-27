@@ -9,7 +9,7 @@
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import') !!}</p>
+      <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
       @endif
     </div>
 
@@ -105,6 +105,7 @@
               v-bind:day="{{ $day }}"
               v-bind:age="'{{ $age }}'"
               v-bind:default-date="'{{ $birthdate }}'"
+              v-bind:locale="'{{ auth()->user()->locale }}'"
               :value="'{{ $birthdayState }}'"
             ></form-specialdate>
           </div>
@@ -116,11 +117,11 @@
             <div class="form-check">
               <label class="form-check-label">
                 <input class="form-check-input" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
-                {{ ($contact->is_dead == true) ? 'checked' : '' }}>
+                {{ $contact->is_dead ? 'checked' : '' }}>
                 {{ trans('people.deceased_mark_person_deceased') }}
               </label>
             </div>
-            <div class="form-check {{ ($contact->is_dead == false) ? 'hidden' : '' }}" id="datePersonDeceased">
+            <div class="form-check {{ $contact->is_dead ? '' : 'hidden' }}" id="datePersonDeceased">
             <label class="form-check-label">
               <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
               {{ trans('people.deceased_know_date') }}
@@ -128,7 +129,7 @@
               @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
             </div>
-            <div class="form-check {{ ($contact->deceasedDate == null) ? 'hidden' : '' }}" id="reminderDeceased">
+            <div class="form-check {{ $contact->deceasedDate == null ? 'hidden' : '' }}" id="reminderDeceased">
               <label class="form-check-label">
                 <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
                 {{ trans('people.deceased_add_reminder') }}

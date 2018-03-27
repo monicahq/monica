@@ -1,14 +1,11 @@
 sudo: required
 language: php
+php: 7.1
 
 services:
   - mysql
   - docker
   - postgresql
-
-env:
-  global:
-    - SAUCELABS=1
 
 matrix:
   include:
@@ -31,7 +28,7 @@ matrix:
     - env: DB=postgres
   fast_finish: true
 
-# Run branches build on master and tagged version
+# Run pushed branches build on master and tagged version
 branches:
   only:
   - master
@@ -40,10 +37,6 @@ branches:
 addons:
   postgresql: "9.6"
   chrome: stable
-  sauce_connect:
-    username: "monicahq"
-  jwt:
-    secure: "Z6XcUlBrmiO085kmF/WBRA6dnhtIhdQG+olFHM5CmQXkIXKUTR7wwAMRg+ys5NtFKVspYPDPPtV9CdEl1zQ3Ii3aSWentsCwbXxGurPqvY+aQjP1U1CmURvPY55BGTMHabt5WcPnFVIJql3vCfD2BFWwIk/78cQ9QKuDJ7/2BxFzWE4AZG9wKYzbqYGbc4l4wdvEE0H0ClRzqGPDvyWpUw1RbZU0lVud0JVa9UXntmtsEFgKEZ7WTTSm2XgoFtVK9qVrXc8TEVve126FSoi5GIxQFdQ/ZWybq5AggVy/Dp5w+q9zCLu19J95itGKpj+GL+9YCJSo4lqHlyLtZ+Ddt41y2E6O4SXoHCjeiFK3wV00AKWIpLedHBovdT2fnQ4f62GrOFA6iw8hV0ftxiFgRwdxv/r+ee1PDy5tQeLl/A0UelIAGy0ZyCfYDgaoK3td45iXcnBUjnbveq8rFgUNkdCXwBCJF89veQS4F/QQFms1AWsodifmT6PgIaWgk6Nt0dPO5jAT6NZ2wlHlkXu80TZf6pJCVC+Pvmuwdlhs+clSizjVJOQ0wVBCETmz4VSKPXLTgdlySncfKrnO8VnfospfZ5KwMGm4JR0wtixH0qTPNDKRlv4X/OedTJFZeN9iqJmWJLTfYc7I16TFXhOpdhP5o+yQE+k7BFrTveGG5bw="
 
 before_install:
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
@@ -54,16 +47,23 @@ before_install:
 
 install:
   # Get packages
-  - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
+  - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
+  - php artisan vue-i18n:generate
   - npm install
   - npm run production
 
 before_script:
-  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost; fi" &
   - php artisan migrate --env=testing --no-interaction -vvv
   - php artisan db:seed --env=testing --no-interaction -vvv
+
+  # Start Xvfb
+  - "export DISPLAY=:99.0"
+  - if [[ "$SELENIUM" == "1" && "$SAUCELABS" != "1" ]]; then /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16; fi
+
+  # Start chromedriver
+  - bash -c "if [[ \"$SELENIUM\" == \"1\" && \"$SAUCELABS\" != \"1\" ]]; then ./vendor/bin/chromedriver; fi" &
   
 script:
   # Run unit tests
@@ -118,14 +118,16 @@ jobs:
 
     - stage: Deploy
       if: tag IS present
+      skip_cleanup: true
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - composer self-update
 
       install:
         # Get packages without require-dev
-        - travis_retry composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs --no-dev
+        - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
         # Build js and css assets
+        - php artisan vue-i18n:generate
         - npm install
         - npm run production
 
@@ -142,13 +144,16 @@ jobs:
       deploy:
         provider: bintray
         file: .travis.deploy.json
-        user: asbin
+        skip_cleanup: true
+        user: $BINTRAY_USER
         key: $BINTRAY_APIKEY
+        on:
+          all_branches: true
 
     - stage: Deploy
       if: tag IS present
       before_install:
-        - cp .env.travis .env
+        - cp scripts/tests/.env.mysql.travis .env
         - docker-compose --version
 
       install: skip
@@ -156,7 +161,30 @@ jobs:
 
       script:
         - make docker_build
-        - echo $BINTRAY_APIKEY | docker login -u asbin --password-stdin monicahq-docker-docker.bintray.io
+        - echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
         - make docker_push_bintray
 
       after_script: skip
+
+    - stage: Deploy
+      if: tag IS present
+      before_install:
+        - scripts/vagrant/install-vagrant.sh
+
+      install: skip
+      before_script: skip
+
+      script:
+        - make vagrant_build
+      after_script: skip
+
+      before_deploy:
+        - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        skip_cleanup: true
+        user: $BINTRAY_USER
+        key: $BINTRAY_APIKEY
+        on:
+          all_branches: true

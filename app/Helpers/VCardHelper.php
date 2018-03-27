@@ -45,9 +45,9 @@ class VCardHelper
      *
      * @param  Contact $contact
      * @param  string $fieldType
-     * @return Collection|string
+     * @return \Illuminate\Database\Eloquent\Collection|null
      */
-    public static function getAllEntriesOfASpecificContactFieldType(Contact $contact, String $fieldType)
+    public static function getAllEntriesOfASpecificContactFieldType(Contact $contact, string $fieldType)
     {
         $contactFieldType = $contact->account->contactFieldTypes()
                                     ->where('type', $fieldType)

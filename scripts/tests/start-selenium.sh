@@ -1,21 +1,9 @@
 #!/bin/bash
 
-realpath ()
-{
-    f=$@;
-    if [ -d "$f" ]; then
-        base="";
-        dir="$f";
-    else
-        base="/$(basename "$f")";
-        dir=$(dirname "$f");
-    fi;
-    dir=$(cd "$dir" && /bin/pwd -P);
-    echo "$dir$base"
-}
 set -evuo pipefail
 
 SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && /bin/pwd -P)
+source $SELF_PATH/realpath.sh
 ROOT=$(realpath $SELF_PATH/../..)
 
 if [ -z "${DISPLAY:-}" ]; then

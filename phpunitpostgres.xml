@@ -38,13 +38,10 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:NTrXToqFZJlv48dgPc+kNpc3SBt333TfDnF1mDShsBg="/>
         <env name="DB_CONNECTION" value="pgsqltesting"/>
-        <env name="DB_HOST" value="127.0.0.1"/>
-        <env name="DB_DATABASE" value="monica"/>
-        <env name="DB_USERNAME" value="postgres"/>
-        <env name="DB_PASSWORD" value=""/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="APP_DEFAULT_LOCALE" value="en"/>
     </php>
     <logging>
         <log type="coverage-clover" target="./results/coverage.xml"/>

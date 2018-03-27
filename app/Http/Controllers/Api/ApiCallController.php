@@ -19,10 +19,17 @@ class ApiCallController extends ApiController
      */
     public function index(Request $request)
     {
-        $calls = auth()->user()->account->calls()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $calls = auth()->user()->account->calls()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
-        return CallResource::collection($calls);
+        return CallResource::collection($calls)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+        ]]);
     }
 
     /**
@@ -50,24 +57,9 @@ class ApiCallController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'content' => 'required|max:100000',
-            'called_at' => 'required|date',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -98,6 +90,28 @@ class ApiCallController extends ApiController
             return $this->respondNotFound();
         }
 
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $call->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        return new CallResource($call);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'content' => 'required|max:100000',
@@ -111,20 +125,14 @@ class ApiCallController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        try {
-            $call->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
-        }
-
-        return new CallResource($call);
+        return true;
     }
 
     /**
@@ -163,8 +171,11 @@ class ApiCallController extends ApiController
         }
 
         $calls = $contact->calls()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
-        return CallResource::collection($calls);
+        return CallResource::collection($calls)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyCallStatistics(),
+        ]]);
     }
 }

@@ -3,11 +3,11 @@
 <div class="mt2">
 
   <select id="{{ $class }}_month" name="{{ $class }}_month" class="mr2">
-    @foreach($months as $month => $value)
-      <option value="{{ $month + 1 }}"
-        {{ ($specialDate == null) ? '' : (($specialDate->date->month == ($month + 1)) ? 'selected="selected"': '') }}
+    @foreach($months as $month)
+      <option value="{{ $month['id'] }}"
+        {{ ($specialDate == null) ? '' : (($specialDate->date->month == $month['id']) ? 'selected="selected"': '') }}
       >
-        {{ $value }}
+        {{ $month['name'] }}
       </option>
     @endforeach
   </select>
@@ -25,14 +25,14 @@
     <select id="{{ $class }}_year" name="{{ $class }}_year">
 
       @if ($specialDate)
-        <option value="0" {{ ($specialDate->is_year_unknown == false) ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
+        <option value="0" {{ ! $specialDate->is_year_unknown ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
       @else
         <option value="0">{{ trans('app.unknown') }}</option>
       @endif
 
       @foreach($years as $year => $value)
         @if ($specialDate)
-          <option value="{{ $value }}" {{ ($specialDate->is_year_unknown == true) ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '') }}>
+          <option value="{{ $value }}" {{ $specialDate->is_year_unknown ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '') }}>
             {{ $value }}
           </option>
         @else

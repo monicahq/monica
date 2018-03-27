@@ -20,6 +20,6 @@
     </li>
     @endforeach
   @else
-  <p>No reminder for this month</p>
+  <p>{{ trans('dashboard.reminders_none') }}</p>
   @endif
 </ul>

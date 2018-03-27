@@ -57,6 +57,8 @@ class ContactFieldsController extends Controller
             ]
         );
 
+        $contact->updateGravatar();
+
         return $contactField;
     }
 
@@ -75,11 +77,15 @@ class ContactFieldsController extends Controller
             ]
         );
 
+        $contact->updateGravatar();
+
         return $contactField;
     }
 
     public function destroyContactField(Contact $contact, ContactField $contactField)
     {
         $contactField->delete();
+
+        $contact->updateGravatar();
     }
 }
