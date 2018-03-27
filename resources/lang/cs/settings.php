@@ -12,7 +12,7 @@ return [
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Exportovat data účtu',
-    'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_be_patient' => 'Kliknout na tlačítko pro spuštění exportu. Zpracování exportu může zabrat až několik minut – buďte prosím trpěliví a neklikejte vícekrát.',
     'export_title_sql' => 'Exportovat jako SQL',
     'export_sql_explanation' => 'Export dat v SQL formátu je umožňuje převést a importovat do vlastní instance Monica. Toto se hodí hlavně pokud provozujete vlastní server.',
     'export_sql_cta' => 'Exportovat jako SQL',
