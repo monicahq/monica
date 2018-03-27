@@ -177,15 +177,7 @@ class DateHelper
     public static function getMonthAndYear(int $month)
     {
         $date = Date::now()->addMonthsNoOverflow($month);
-        $locale = Date::getLocale();
-
-        switch ($locale) {
-            case 'en':
-                $format = 'M Y';
-                break;
-            default:
-                $format = 'M Y';
-        }
+        $format = 'M Y';
 
         return $date->format($format);
     }
