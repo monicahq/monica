@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => '这个孩子可能是',
     'kids_add_probably_yo' => '岁',
     'kids_add_exact' => '我知道这个孩子的确切出生日期, 是',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => '如果您为这个孩子指明了确切的出生日期,，我们将为您创建一个新的提醒，从而您将在每年该庆祝这个孩子生日时通知您。',
     'kids_add_cta' => '添加孩子',
     'kids_edit_title' => '编辑有关:name的信息',
     'kids_delete_confirmation' => '确实要删除这个孩子吗？删除是永久性的',
