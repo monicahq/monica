@@ -3,13 +3,13 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 dětí|{1,1} 1 dítě|{2,*} :count děti',
+    'people_list_number_kids' => '1 dítě|:count děti',
     'people_list_last_updated' => 'Naposledy konzultováno:',
-    'people_list_number_reminders' => '{0} 0 připomínek|{1,1} 1 připomínka|{2, *} :count připomínek',
+    'people_list_number_reminders' => '1 připomínka|:count připomínek',
     'people_list_blank_title' => 'Zatím jste do svého účtu nikoho nepřidali',
     'people_list_blank_cta' => 'Někoho přidat',
     'people_list_sort' => 'Řazení',
-    'people_list_stats' => ':count kontaktů',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Řadit podle jména A → Z',
     'people_list_firstnameZA' => 'Řadit podle jména Z → A',
     'people_list_lastnameAZ' => 'Řadit podle příjmení A → Z',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
     'people_list_clear_filter' => 'Vyčistit filtr',
-    'people_list_contacts_per_tags' => '{0} 0 kontaktů|{1,1} 1 kontakt|{2,*} :count kontaktů',
+    'people_list_contacts_per_tags' => '1 kontakt|:count kontaktů',
     'people_search' => 'Prohledat kontakty...',
     'people_search_no_results' => 'Nebyly nalezeny žádné odpovídající kontakty :(',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
@@ -40,8 +40,9 @@ return [
     'people_delete_click_here' => 'klikněte zde',
     'people_delete_confirmation' => 'Opravdu chcete smazat tento kontakt? Smazání je trvalé.',
     'people_add_birthday_reminder' => 'Popřát k narozeninám :name',
-    'people_add_import' => 'Chcete <a href="/settings/import">importovat své kontakty</a>?',
+    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
-    'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění - takže budete každoročně upozorněni na oslavu narozenin.',
+    'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin.',
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => 'Aktualizovat informace o práci pro :name',
     'work_edit_job' => 'Pracovní pozice (volitelné)',
     'work_edit_company' => 'Společnost (volitelné)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Informace o oblíbených potravinách uloženy',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => 'Tato osoba je přibližně',
     'significant_other_add_probably_yo' => 'let stará',
     'significant_other_add_exact' => 'Vím přesné datum narození této osoby, které je',
-    'significant_other_add_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění - takže budete každoročně upozorněni na oslavu narozenin.',
+    'significant_other_add_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin.',
     'significant_other_add_cta' => 'Přidat drahou polovičku',
     'significant_other_edit_cta' => 'Upravit drahou polovičku',
     'significant_other_delete_confirmation' => 'Opravdu chcete smazat tuto drahou polovičku? Smazání je trvalé.',
-    'significant_other_unlink_confirmation' => 'Opravdu chcete smazat tento vztah? Drahá polovička nebude smazána - jen údaje o vztahu mezi oběma kontakty.',
+    'significant_other_unlink_confirmation' => 'Opravdu chcete smazat tento vztah? Drahá polovička nebude smazána – jen údaje o vztahu mezi oběma kontakty.',
     'significant_other_add_success' => 'Drahá polovička byla úspěšně přidána',
     'significant_other_edit_success' => 'Drahá polovička byla úspěšně aktualizována',
     'significant_other_delete_success' => 'Drahá polovička byla úspěšně smazána',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'To povolí stejnou možnost úpravy informací o této drahé polovičce jako jakéhokoliv jiného kontaktu.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Děti',
     'kids_sidebar_cta' => 'Přidat další dítě',
     'kids_blank_cta' => 'Přidat dítě',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => 'Toto dítě je asi',
     'kids_add_probably_yo' => 'let staré',
     'kids_add_exact' => 'Vím přesné datum narození tohoto dítěte, které je',
-    'kids_add_help' => 'Pokud zadáte přesné datum narození tohoto dítěte, bude vytvořeno nové upozornění - takže budete každoročně upozorněni na oslavu narozenin dítěte.',
+    'kids_add_help' => 'Pokud zadáte přesné datum narození tohoto dítěte, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin dítěte.',
     'kids_add_cta' => 'Přidat dítě',
     'kids_edit_title' => 'Upravit informace o :name',
     'kids_delete_confirmation' => 'Opravdu chcete smazat toto dítě? Smazání je trvalé.',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => 'Dítě bylo úspěšně aktualizován',
     'kids_delete_success' => 'Dítě bylo úspěšně smazáno',
     'kids_add_birthday_reminder' => 'Popřát k narozeninám :name, dítě od :contact_firstname',
-    'kids_unlink_confirmation' => 'Opravdu chcete smazat tento vztah? Dítě nebude smazáno - jen údaje o vztahu mezi oběma kontakty.',
+    'kids_unlink_confirmation' => 'Opravdu chcete smazat tento vztah? Dítě nebude smazáno – jen údaje o vztahu mezi oběma kontakty.',
 
     // tasks
     'tasks_blank_title' => 'You don\'t have any tasks yet.',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'Tento dárek je pro někoho konkrétního z rodiny od :name',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'darováno',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'View comment',
     'gifts_mark_offered' => 'Mark as offered',
@@ -311,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'This is the date we met',
     'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
     'introductions_update_success' => 'You\'ve successfully updated the information about how you met this person',
-    'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
+    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
     'introductions_met_date' => 'Met on :date',
     'introductions_reminder_title' => 'Anniversary of the day you first met',
 

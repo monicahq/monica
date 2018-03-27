@@ -3,13 +3,13 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 crianças|{1,1} 1 criança|{2,*} :count crianças',
+    'people_list_number_kids' => '1 criança|:count crianças',
     'people_list_last_updated' => 'Última consulta:',
-    'people_list_number_reminders' => '{0} 0 lembretes|{1,1} 1 lembrete|{2, *} :count lembretes',
+    'people_list_number_reminders' => '1 lembrete|:count lembretes',
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
     'people_list_sort' => 'Ordenar',
-    'people_list_stats' => ':count contatos',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Ordenar por data de última atividade (da mais antiga à mais recente)',
     'people_list_filter_tag' => 'A mostrar todos os contactos marcados com ',
     'people_list_clear_filter' => 'Limpar filtro',
-    'people_list_contacts_per_tags' => '{0} 0 contactos|{1,1} 1 contacto|{2,*} :count contactos',
+    'people_list_contacts_per_tags' => '1 contacto|:count contactos',
     'people_search' => 'Procurar nos seus contactos...',
     'people_search_no_results' => 'No relevant contact found :(',
     'people_list_account_usage' => 'Consumo da sua conta: :current/:limit contactos',
@@ -40,8 +40,9 @@ return [
     'people_delete_click_here' => 'clique aqui',
     'people_delete_confirmation' => 'Você tem certeza de que deseja excluir esse contato? A exclusão é permanente.',
     'people_add_birthday_reminder' => 'Desejar feliz aniversário a :name',
-    'people_add_import' => 'Deseja <a href="/settings/import">importar os seus contatos</a>?',
+    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'Já existe um contacto na sua conta com este endereço de e-mail. Por favor escolha outro.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'Informações de contacto',
@@ -95,7 +96,7 @@ return [
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'Eu sei o dia e o mês da data de nascimento desta pessoa, mas não o ano…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
-    'information_edit_help' => 'Se você indicar uma data de nascimento exata para essa pessoa, criaremos um novo lembrete para você - então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta pessoa.',
+    'information_edit_help' => 'Se você indicar uma data de nascimento exata para essa pessoa, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta pessoa.',
     'information_no_linkedin_defined' => 'Nenhum LinkedIn definido',
     'information_no_work_defined' => 'Nenhuma informação profissional definida',
     'information_work_at' => 'em :company',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => 'Atualizar a informação profissional de :name',
     'work_edit_job' => 'Cargo (opcional)',
     'work_edit_company' => 'Empresa (opcional)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'As preferências de alimentos foram salvas',
@@ -156,11 +158,11 @@ return [
     'significant_other_add_probably' => 'Esta pessoa é provavelmente',
     'significant_other_add_probably_yo' => 'anos de idade',
     'significant_other_add_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
-    'significant_other_add_help' => 'Se você indicar uma data de nascimento exata para esta pessoa, criaremos um novo lembrete para você - então você será notificado todos os anos quando é hora de celebrar esta data de nascimento.',
+    'significant_other_add_help' => 'Se você indicar uma data de nascimento exata para esta pessoa, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar esta data de nascimento.',
     'significant_other_add_cta' => 'Adicionar pessoa importante',
     'significant_other_edit_cta' => 'Editar pessoa importante',
     'significant_other_delete_confirmation' => 'Tem certeza de que deseja excluir essa pessoa importante? A exclusão é permanente',
-    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted - only the relationship between the two.',
+    'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'Pessoa importante adicionada com sucesso',
     'significant_other_edit_success' => 'Pessoa importante atualizada com sucesso',
     'significant_other_delete_success' => 'Pessoa importante excluída com sucesso',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'This will let you treat this significant other like any other contact.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Crianças',
     'kids_sidebar_cta' => 'Adicionar outra criança',
     'kids_blank_cta' => 'Adicionar uma criança',
@@ -190,7 +193,7 @@ return [
     'kids_add_probably' => 'Esta criança provavelmente é',
     'kids_add_probably_yo' => 'anos de idade',
     'kids_add_exact' => 'Conheço a data de nascimento exata dessa criança, que é',
-    'kids_add_help' => 'Se você indicar uma data de nascimento exata para essa criança, criaremos um novo lembrete para você - então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta criança.',
+    'kids_add_help' => 'Se você indicar uma data de nascimento exata para essa criança, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta criança.',
     'kids_add_cta' => 'Adicionar criança',
     'kids_edit_title' => 'Editar informações de :name',
     'kids_delete_confirmation' => 'Tem certeza de que deseja excluir esta criança? A exclusão é permanente',
@@ -198,7 +201,7 @@ return [
     'kids_update_success' => 'A criança foi atualizada com sucesso',
     'kids_delete_success' => 'A criança foi excluída com sucesso',
     'kids_add_birthday_reminder' => 'Deseje um feliz aniversário para :name, pessoa importante de :contact_firstname',
-    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted - only the relationship between the two.',
+    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
 
     // tasks
     'tasks_blank_title' => 'Parece que você não tem nenhuma tarefa para :name ainda',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'Esse presente é pra alguem na família de :name',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Gifts received',
     'gifts_view_comment' => 'Ver comentário',
     'gifts_mark_offered' => 'Mark as offered',
@@ -311,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'This is the date we met',
     'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
     'introductions_update_success' => 'You\'ve successfully updated the information about how you met this person',
-    'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
+    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
     'introductions_met_date' => 'Met on :date',
     'introductions_reminder_title' => 'Anniversary of the day you first met',
 

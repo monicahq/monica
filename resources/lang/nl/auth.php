@@ -13,15 +13,15 @@ return [
     |
     */
 
-    'failed' => 'Имя пользователя и пароль не совпадают.',
-    'throttle' => 'Слишком много попыток входа. Пожалуйста, попробуйте еще раз через :seconds секунд.',
-    'not_authorized' => 'Вам не разрешено выполнять это действие.',
-    'signup_disabled' => 'Регистрация сейчас выключена.',
-    'back_homepage' => 'Back to homepage',
-    '2fa_title' => 'Two Factor Authentication',
-    '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Authentication code',
-    '2fa_recuperation_code' => 'Enter a two factor recovery code',
+    'failed' => 'Deze gegevens zijn niet correct.',
+    'throttle' => 'Te veel inlogpogingen. Probeer opnieuw in :seconds seconden.',
+    'not_authorized' => 'Je bent niet gemachtigd om dit te doen',
+    'signup_disabled' => 'Registratie is momenteel uitgeschakeld',
+    'back_homepage' => 'Terug naar homepage',
+    '2fa_title' => 'Tweestapsverificatie',
+    '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
+    '2fa_one_time_password' => 'Authenticatie code',
+    '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
 
     'login_to_account' => 'Login to your account',
     'email' => 'Email',
