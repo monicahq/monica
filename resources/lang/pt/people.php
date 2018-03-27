@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Esta criança provavelmente é',
     'kids_add_probably_yo' => 'anos de idade',
     'kids_add_exact' => 'Conheço a data de nascimento exata dessa criança, que é',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'Se você indicar uma data de nascimento exata para essa criança, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta criança.',
     'kids_add_cta' => 'Adicionar criança',
     'kids_edit_title' => 'Editar informações de :name',
     'kids_delete_confirmation' => 'Tem certeza de que deseja excluir esta criança? A exclusão é permanente',
