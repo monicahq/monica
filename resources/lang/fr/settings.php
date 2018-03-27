@@ -209,12 +209,12 @@ return [
     'api_personal_access_tokens' => 'Jeton d\'accès personnel',
     'api_pao_description' => 'Make sure you give this token to a source you trust – as they allow you to access all your data.',
     'api_token_title' => 'Personal access token',
-    'api_token_create_new' => 'Create New Token',
+    'api_token_create_new' => 'Créer un nouveau jeton',
     'api_token_not_created' => 'You have not created any personal access tokens.',
-    'api_token_name' => 'Name',
-    'api_token_delete' => 'Delete',
-    'api_token_create' => 'Create Token',
-    'api_token_scopes' => 'Scopes',
+    'api_token_name' => 'Nom',
+    'api_token_delete' => 'Supprimer',
+    'api_token_create' => 'Créer un jeton',
+    'api_token_scopes' => 'Périmètres',
     'api_token_help' => 'Here is your new personal access token. This is the only time it will be shown so don’t lose it! You may now use this token to make API requests.',
 
     'api_oauth_clients' => 'Votre client Oauth',
@@ -223,7 +223,7 @@ return [
     'api_oauth_create_new' => 'Create New Client',
     'api_oauth_not_created' => 'You have not created any OAuth clients.',
     'api_oauth_clientid' => 'Client ID',
-    'api_oauth_name' => 'Name',
+    'api_oauth_name' => 'Nom',
     'api_oauth_name_help' => 'Something your users will recognize and trust.',
     'api_oauth_secret' => 'Secret',
     'api_oauth_create' => 'Create Client',
@@ -233,8 +233,8 @@ return [
     'api_authorized_clients' => 'Liste de clients autorisés',
     'api_authorized_clients_desc' => 'Cette section liste tous les clients que vous avez autorisés à accéder à votre application. Vous pouvez révoquer cette autorisation à tout moment.',
     'api_authorized_clients_title' => 'Authorized Applications',
-    'api_authorized_clients_name' => 'Name',
-    'api_authorized_clients_scopes' => 'Scopes',
+    'api_authorized_clients_name' => 'Nom',
+    'api_authorized_clients_scopes' => 'Périmètres',
 
     'personalization_tab_title' => 'Personnalisez votre compte',
 
@@ -272,7 +272,7 @@ return [
 
     'personalization_reminder_rule_save' => 'Les modifications ont été enregistrées',
     'personalization_reminder_rule_title' => 'Règles de rappel',
-    'personalization_reminder_rule_line' => '1 day before|:count days before',
+    'personalization_reminder_rule_line' => ':count jour avant|:count jours avant',
     'personalization_reminder_rule_desc' => 'Pour chaque rappel que vous mettez en place, nous pouvons envoyer un courriel plusieurs jours avant que l\'évènement ne se passe. Vous pouvez désactiver ces notifications ici. Notez que ces notifications ne s\'appliquent qu\'aux rappels mensuels et annuels.',
 
     'reminder_time_to_send' => 'Heure du jour à laquelle les rappels doivent être envoyés',
