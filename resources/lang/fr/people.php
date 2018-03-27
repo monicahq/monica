@@ -105,7 +105,7 @@ return [
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
     'work_edit_job' => 'Poste (optionnel)',
     'work_edit_company' => 'Entreprise (optionnel)',
-    'work_information' => 'Work information',
+    'work_information' => 'Information sur le travail',
 
     // food preferencies
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
@@ -175,7 +175,7 @@ return [
     'contact_add_add_description' => 'Ceci vous permettra de traiter ce partenaire comme tous les autres contacts de votre compte.',
 
     // kids
-    'kid_add_title' => 'Add a new kid',
+    'kid_add_title' => 'Ajouter un nouvel enfant',
     'kids_sidebar_title' => 'Enfants',
     'kids_sidebar_cta' => 'Ajouter un autre enfant',
     'kids_blank_cta' => 'Ajouter un enfant',
@@ -276,7 +276,7 @@ return [
     'gifts_add_someone' => 'Ce cadeau est destiné à quelqu\'un de la famille :name en particulier',
     'gifts_ideas' => 'Idées cadeaux',
     'gifts_offered' => 'Cadeaux déjà offerts',
-    'gifts_offered_as_an_idea' => 'Mark as an idea',
+    'gifts_offered_as_an_idea' => 'Marquer comme une idée',
     'gifts_received' => 'Cadeaux reçus',
     'gifts_view_comment' => 'Voir commentaire',
     'gifts_mark_offered' => 'Marquer comme offert',
