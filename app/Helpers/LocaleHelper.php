@@ -24,7 +24,7 @@ class LocaleHelper
 
     /**
      * Get the list of avalaible languages.
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public static function getLocaleList()
