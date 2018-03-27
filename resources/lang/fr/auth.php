@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'Entrez un mot de passe sécurisé',
     'register_password_confirmation' => 'Confirmez le mot de passe',
     'register_action' => 'Enregistrement',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url">Privacy Policy</a>.',
-    'register_invitation_email' => 'For security purposes, please indicate the email of the person who\'ve invited you to join this account. This information is provided in the invitation email.',
+    'register_policy' => 'L\'enregistrement signifie que vous avez lu et acceptez notre <a href=":url">Politique de Confidentialité</a>.',
+    'register_invitation_email' => 'Pour des raisons de sécurité, merci d\'indiquer l\'adresse couriel de la personne qui vous a invité à joindre son compte. Cette information est indiquée dans le couriel d\'invitation.',
 
 ];
