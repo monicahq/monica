@@ -18,8 +18,8 @@ return [
     'export_sql_cta' => 'SQL exportieren',
     'export_sql_link_instructions' => 'Hinweis: <a href=":url">lies die Anleitung</a> um mehr über das Importieren in die eigene Installation zu erfahren.',
 
-    'firstname' => 'First name',
-    'lastname' => 'Last name',
+    'firstname' => 'Vorname',
+    'lastname' => 'Nachname',
     'name_order' => 'Namensortierrichtung',
     'name_order_firstname_first' => 'Vorname zuerst (Max Mustermann)',
     'name_order_lastname_first' => 'Nachname zuerst (Mustermann Max)',
@@ -53,7 +53,7 @@ return [
     'locale_de' => 'Deutsch',
     'locale_zh' => 'Vereinfachtes Chinesisch',
     'locale_he' => 'Hebräisch',
-    'locale_es' => 'Spanish',
+    'locale_es' => 'Spanisch',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
@@ -94,7 +94,7 @@ return [
     'users_add_email_field' => 'Gib die E-Mail-Adresse der Person an, die du einladen möchtest',
     'users_add_confirmation' => 'Ich bestätige, dass ich diesen Benutzer zu meinem Account einladen möchte. Diese Person hat Zugriff auf all meine Daten und sieht, was ich sehe.',
     'users_add_cta' => 'Benutzer per E-Mail einladen',
-    'users_accept_title' => 'Accept invitation and create a new account',
+    'users_accept_title' => 'Einladung annehmen und neues Benutzerkonto erstellen',
     'users_error_please_confirm' => 'Bitte bestätige, dass du diesen Benutzer einladen willst',
     'users_error_email_already_taken' => 'Diese E-Mail-Adresse ist bereits vergeben. Bitte eine andere wählen.',
     'users_error_already_invited' => 'Diesen Benutzer hast du schon eingeladen. Bitte andere E-Mail-Adresse wählen.',
