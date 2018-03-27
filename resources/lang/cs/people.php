@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Toto dítě je asi',
     'kids_add_probably_yo' => 'let staré',
     'kids_add_exact' => 'Vím přesné datum narození tohoto dítěte, které je',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'Pokud zadáte přesné datum narození tohoto dítěte, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin dítěte.',
     'kids_add_cta' => 'Přidat dítě',
     'kids_edit_title' => 'Upravit informace o :name',
     'kids_delete_confirmation' => 'Opravdu chcete smazat toto dítě? Smazání je trvalé.',
