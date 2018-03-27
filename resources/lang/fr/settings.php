@@ -38,7 +38,7 @@ return [
     'reset_desc' => 'Souhaitez-vous remettre à zéro votre compte ? Ceci effacera tous les contacts ainsi que les données associées. Votre compte ne sera pas effacé.',
     'reset_title' => 'Remettre à zéro votre compte',
     'reset_cta' => 'Remettre à zéro',
-    'reset_notice' => 'Etes-vous sûr de remettre votre compte à zéro ?',
+    'reset_notice' => 'Êtes-vous sûr de réinitialiser votre compte ? Ceci ne peut pas être annulé.',
     'reset_success' => 'Votre compte a été réinitialisé',
     'delete_notice' => 'Etes-vous sûr de vouloir supprimer votre compte ? Ceci ne peut pas être annulé.',
     'delete_cta' => 'Effacer le compte',
