@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 kid|:count kids',
+    'people_list_number_kids' => '1 bambino|:count bambini',
     'people_list_last_updated' => 'Consultati per ultimi:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
+    'people_list_number_reminders' => ':count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
     'people_list_sort' => 'Ordina',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con ',
     'people_list_clear_filter' => 'Reimposta filtro',
-    'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_contacts_per_tags' => '1 contatto|:count contatti',
     'people_search' => 'Cerca nei tuoi contatti...',
     'people_search_no_results' => 'Nessun contatto trovato :(',
     'people_list_account_usage' => 'Utilizzo account: :current/:limit contatti',
@@ -96,7 +96,7 @@ return [
     'information_edit_probably' => 'Questa persona probabilmente ha',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
-    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
+    'information_edit_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te – ti verrà notificato l\'arrivo del suo compleanno annualmente.',
     'information_no_linkedin_defined' => 'Nessun profilo LinkedIn',
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
@@ -158,7 +158,7 @@ return [
     'significant_other_add_probably' => 'Questa persona probabilmente ha',
     'significant_other_add_probably_yo' => 'anni',
     'significant_other_add_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
-    'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
+    'significant_other_add_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te – ti verrà notificato l\'arrivo del suo compleanno annualmente.',
     'significant_other_add_cta' => 'Aggiungi partner',
     'significant_other_edit_cta' => 'Modifica partner',
     'significant_other_delete_confirmation' => 'Rimuovere il partner di questo contatto? Questo cambio è permanente.',
@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Questa persona probabilmente ha ',
     'kids_add_probably_yo' => 'anni',
     'kids_add_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate',
+    'kids_add_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te – ti verrà notificato l\'arrivo del suo compleanno annualmente',
     'kids_add_cta' => 'Aggiungi figlio',
     'kids_edit_title' => 'Modifica informazioni su :name',
     'kids_delete_confirmation' => 'Rimuovere questo figlio? Questo cambio è permanente.',
@@ -201,7 +201,7 @@ return [
     'kids_update_success' => 'Figlio modificato',
     'kids_delete_success' => 'Figlio rimosso',
     'kids_add_birthday_reminder' => 'Fai gli auguri di buon compleanno a :name, figlio di :contact_firstname',
-    'kids_unlink_confirmation' => 'Are you sure you want to delete this relationship? This kid will not be deleted – only the relationship between the two.',
+    'kids_unlink_confirmation' => 'Rimuovere questa relazione? Il bambino non sará cancellato – solo la relazione con il genitore.',
 
     // tasks
     'tasks_blank_title' => 'Sembra tu non abbia nulla da fare che riguardi :name',
