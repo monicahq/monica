@@ -315,7 +315,7 @@ return [
     'introductions_first_met_date_known' => '这是我们相遇的日子',
     'introductions_add_reminder' => '添加提醒以庆祝此事件发生的周年纪念',
     'introductions_update_success' => '您已成功更新了有关如何遇到此人的信息',
-    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
+    'introductions_met_through' => '通过 <a href=":url">:name</a>遇到',
     'introductions_met_date' => '在:date遇到',
     'introductions_reminder_title' => '你第一次遇见的那一天的周年纪念日',
 
