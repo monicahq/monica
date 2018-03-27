@@ -49,7 +49,7 @@ return [
     'register_email' => 'Gültige E-Mail Adresse eingeben',
     'register_email_example' => 'you@home',
     'register_firstname' => 'Vorname',
-    'register_firstname_example' => 'eg. John',
+    'register_firstname_example' => 'z.B. Max',
     'register_lastname' => 'Nachname',
     'register_lastname_example' => 'z.B. Mustermann',
     'register_password' => 'Passwort',
