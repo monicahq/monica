@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
     'people_list_blank_cta' => 'Jemand hinzufügen',
     'people_list_sort' => 'Sortieren',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => '1 Kontakt|:count Kontakte',
     'people_list_firstnameAZ' => 'Nach Vorname sortieren A → Z',
     'people_list_firstnameZA' => 'Nach Vorname sortieren Z → A',
     'people_list_lastnameAZ' => 'Nach Nachname sortieren A → Z',
