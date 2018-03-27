@@ -23,7 +23,30 @@ class LocaleHelper
     }
 
     /**
-     * Get the current or default locale.
+     * Get the list of avalaible languages.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getLocaleList()
+    {
+        $locales = collect([]);
+        foreach (config('lang-detector.languages') as $lang) {
+            $name = trans('settings.locale_'.$lang);
+            if ($name == 'settings.locale_'.$lang) {
+                // The name of the new language is not already set, even in english
+                $name = $lang;
+            }
+            $locales->push([
+                'lang' => $lang,
+                'name' => $name,
+            ]);
+        }
+
+        return $locales->sortBy('name');
+    }
+
+    /**
+     * Get the direction: left to right/right to left.
      *
      * @return string
      */

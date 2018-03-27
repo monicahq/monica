@@ -124,7 +124,7 @@ return [
     'subscriptions_downgrade_rule_users' => 'You must have only 1 user in your account',
     'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">1 user</a> in your account.|You currently have <a href=":url">:count users</a> in your account.',
     'subscriptions_downgrade_rule_invitations' => 'You must not have pending invitations',
-    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href="/settings/users/">1 pending invitation</a> sent to people.|You currently have <a href="/settings/users/">:count pending invitations</a> sent to people.',
+    'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href=":url">1 pending invitation</a> sent to people.|You currently have <a href=":url">:count pending invitations</a> sent to people.',
     'subscriptions_downgrade_cta' => 'Downgrade',
     'subscriptions_downgrade_success' => 'You are back to the Free plan!',
     'subscriptions_downgrade_thanks' => 'Thanks so much for having tried the paid plan. We keep adding new features on Monica all the time – so you might want to come back in the future to see if you might be interested in taking a subscription again.',
