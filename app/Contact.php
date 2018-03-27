@@ -1396,7 +1396,7 @@ class Contact extends Model
      * @param  Contact $otherContact
      * @return Relationship|null
      */
-    public function getRelationshipNatureWith(selft $otherContact)
+    public function getRelationshipNatureWith(self $otherContact)
     {
         $relationship = Relationship::where('contact_id_main', $this->id)
                                     ->where('contact_id_secondary', $otherContact->id)

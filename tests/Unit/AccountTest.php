@@ -70,7 +70,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
-        $account = factory(Account::class)->create();
+        $account = factory('App\Account')->create();
 
         $user = factory(User::class)->create([
             'account_id' => $account->id,
@@ -84,7 +84,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_cant_downgrade_with_two_users()
     {
-        $account = factory(Account::class)->create();
+        $account = factory('App\Account')->create();
 
         $user = factory(User::class)->create([
             'account_id' => $account->id,
@@ -102,7 +102,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_cant_downgrade_with_pending_invitations()
     {
-        $account = factory(Account::class)->create();
+        $account = factory('App\Account')->create();
 
         $invitation = factory(Invitation::class)->create([
             'account_id' => $account->id,
@@ -116,7 +116,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_if_user_can_access_to_paid_version_for_free()
     {
-        $account = factory(Account::class)->make([
+        $account = factory('App\Account')->make([
             'has_access_to_paid_version_for_free' => true,
         ]);
 
@@ -128,7 +128,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_false_if_not_subcribed()
     {
-        $account = factory(Account::class)->make([
+        $account = factory('App\Account')->make([
             'has_access_to_paid_version_for_free' => false,
         ]);
 
@@ -140,7 +140,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_true_if_monthly_plan_is_set()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -159,7 +159,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_true_if_annual_plan_is_set()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -178,7 +178,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_false_if_no_plan_is_set()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
 
         $this->assertEquals(
             false,
@@ -188,7 +188,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_has_limitations_if_not_subscribed_or_exempted_of_subscriptions()
     {
-        $account = factory(Account::class)->make([
+        $account = factory('App\Account')->make([
             'has_access_to_paid_version_for_free' => true,
         ]);
 
@@ -198,7 +198,7 @@ class AccountTest extends FeatureTestCase
         );
 
         // Check that if the ENV variable REQUIRES_SUBSCRIPTION has an effect
-        $account = factory(Account::class)->make([
+        $account = factory('App\Account')->make([
             'has_access_to_paid_version_for_free' => false,
         ]);
 
@@ -212,7 +212,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_get_timezone_gets_the_first_timezone_it_finds()
     {
-        $account = factory(Account::class)->create();
+        $account = factory('App\Account')->create();
 
         $user1 = factory(User::class)->create([
             'account_id' => $account->id,
@@ -232,7 +232,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_has_invoices_returns_true_if_a_plan_exists()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -246,7 +246,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_has_invoices_returns_false_if_a_plan_does_not_exist()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
 
         $this->assertFalse($account->hasInvoices());
     }
@@ -332,7 +332,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_three_default_genders()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $account->populateDefaultGendersTable();
 
         $this->assertEquals(
@@ -343,7 +343,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_the_right_default_genders()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $account->populateDefaultGendersTable();
 
         $this->assertDatabaseHas(
@@ -364,7 +364,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_replaces_gender_with_another_gender()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $gender1 = factory('App\Gender')->create([
             'account_id' => $account->id,
         ]);
@@ -385,7 +385,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_default_time_reminder_is_sent_attribute()
     {
-        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
+        $account = factory('App\Account')->create(['default_time_reminder_is_sent' => '14:00']);
 
         $this->assertEquals(
             '14:00',
@@ -406,7 +406,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_two_default_reminder_rules()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $account->populateDefaultReminderRulesTable();
 
         $this->assertEquals(
@@ -417,7 +417,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_the_right_default_reminder_rules()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $account->populateDefaultReminderRulesTable();
 
         $this->assertDatabaseHas(
@@ -527,7 +527,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_call_statistics()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $contact = factory('App\Call', 4)->create([
             'account_id' => $account->id,
             'called_at' => '2018-03-02',
@@ -551,7 +551,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_activities_statistics()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $contact = factory('App\Activity', 4)->create([
             'account_id' => $account->id,
             'date_it_happened' => '2018-03-02',

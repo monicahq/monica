@@ -13,7 +13,7 @@ class NotificationTest extends TestCase
 
     public function test_it_belongs_to_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $notification = factory('App\Notification')->create(['account_id' => $account->id]);
 
         $this->assertTrue($notification->account()->exists());
@@ -21,7 +21,7 @@ class NotificationTest extends TestCase
 
     public function test_it_belongs_to_contact()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
@@ -33,7 +33,7 @@ class NotificationTest extends TestCase
 
     public function test_it_belongs_to_reminder()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
@@ -54,7 +54,7 @@ class NotificationTest extends TestCase
 
     public function test_it_deletes_a_notification_if_all_emails_have_been_sent()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,

@@ -38,6 +38,6 @@ class Relationship extends Model
 
     public function relationshipType()
     {
-        return $this->belongsTo('App\RelationshipType');
+        return $this->belongsTo('App\RelationshipType', 'relationship_type_id');
     }
 }
