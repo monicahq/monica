@@ -12,7 +12,7 @@ return [
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Esporta i dati del tuo account',
-    'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_be_patient' => 'Clicca il pulsante per iniziare l\'esportazione. Potrebbe volerci qualche minuto – ti chiediamo di portare pazienza e non premere il pulsante a ripetizione.',
     'export_title_sql' => 'Esporta a SQL',
     'export_sql_explanation' => 'Esportare i dati in formato SQL ti permette di importarli nella tua istanza di Monica. Ciò ha senso solo se hai un tuo proprio server.',
     'export_sql_cta' => 'Esporta a SQL',
