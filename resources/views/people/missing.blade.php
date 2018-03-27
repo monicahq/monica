@@ -17,7 +17,7 @@
         <h2>{{ trans('people.people_add_missing') }}</h2>
 
         @if (! auth()->user()->account->hasLimitations())
-          <p class="import">{!! trans('people.people_add_import') !!}</p>
+          <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
         @endif
 
         <form action="/people" method="POST">

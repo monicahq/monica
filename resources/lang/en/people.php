@@ -40,7 +40,7 @@ return [
     'people_delete_click_here' => 'click here',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
-    'people_add_import' => 'Do you want to <a href="/settings/import">import your contacts</a>?',
+    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
 
@@ -315,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'This is the date we met',
     'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
     'introductions_update_success' => 'You\'ve successfully updated the information about how you met this person',
-    'introductions_met_through' => 'Met through <a href="/people/:id">:name</a>',
+    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
     'introductions_met_date' => 'Met on :date',
     'introductions_reminder_title' => 'Anniversary of the day you first met',
 
