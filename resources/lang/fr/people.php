@@ -38,9 +38,9 @@ return [
     'people_delete_success' => 'Le contact a été supprimé',
     'people_delete_message' => 'Si vous devez supprimer ce contact,',
     'people_delete_click_here' => 'cliquez ici',
-    'people_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
+    'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
-    'people_add_import' => 'Souhaitez-vous <a href="/settings/import">importer vos contacts</a>?',
+    'people_add_import' => 'Souhaitez-vous <a href="/settings/import">importer vos contacts</a> ?',
     'people_edit_email_error' => 'Il y a déjà quelqu\'un dans votre compte avec cette adresse email. Merci d\'en choisir une autre.',
     'people_export' => 'Export as vCard',
 
@@ -60,12 +60,12 @@ return [
 
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
-    'modal_call_comment' => 'De quoi avez-vous parler ? (optionnel)',
+    'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_date' => 'Cet appel téléphonique s\'est passé plus tôt dans la journée.',
     'modal_call_change' => 'Changer',
     'modal_call_exact_date' => 'L\'appel s\'est passé le',
     'calls_add_success' => 'L\'appel téléphonique a été enregistré.',
-    'call_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer cet appel ?',
+    'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L\'appel a été supprimé avec succès.',
     'call_title' => 'Appels téléphoniques',
     'call_empty_comment' => 'Aucun details',
