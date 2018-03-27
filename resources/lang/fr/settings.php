@@ -40,7 +40,7 @@ return [
     'reset_cta' => 'Remettre à zéro',
     'reset_notice' => 'Êtes-vous sûr de réinitialiser votre compte ? Ceci ne peut pas être annulé.',
     'reset_success' => 'Votre compte a été réinitialisé',
-    'delete_notice' => 'Etes-vous sûr de vouloir supprimer votre compte ? Ceci ne peut pas être annulé.',
+    'delete_notice' => 'Êtes-vous sûr de vouloir supprimer votre compte ? Ceci ne peut pas être annulé.',
     'delete_cta' => 'Effacer le compte',
     'settings_success' => 'Préférences mises à jour',
     'locale' => 'Langue',
@@ -53,7 +53,7 @@ return [
     'locale_de' => 'Allemand',
     'locale_zh' => 'Chinois Simplifié',
     'locale_he' => 'Hébreu',
-    'locale_es' => 'Spanish',
+    'locale_es' => 'Espagnol',
 
     'security_title' => 'Sécurité',
     'security_help' => 'Changer les questions de sécurité pour votre compte.',
@@ -100,7 +100,7 @@ return [
     'users_error_already_invited' => 'Vous avez déjà invité cet utilisateur. Veuillez choisir une autre adresse couriel.',
     'users_error_email_not_similar' => 'Ce n’est pas le couriel de la personne qui vous a invité.',
     'users_invitation_deleted_confirmation_message' => 'L\'invitation a été supprimée avec succès',
-    'users_invitations_delete_confirmation' => 'Confirmez-vous la suppression de cette invitation ?',
+    'users_invitations_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer de cette invitation ?',
     'users_list_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet utilisateur de votre compte ?',
     'users_invitation_need_subscription' => 'Adding more users requires a subscription.',
 
@@ -197,9 +197,9 @@ return [
 
     'tags_list_title' => 'Étiquettes',
     'tags_list_description' => 'Vous pouvez organiser vos contact avec des étiquettes. Les étiquettes sont comme des dossiers, mais vous pouvez avoir autant d\'étiquettes que vous le souhaitez par contact.',
-    'tags_list_contact_number' => '1 contact|:count contacts',
+    'tags_list_contact_number' => ':count contact|:count contacts',
     'tags_list_delete_success' => 'L\'étiquette a été supprimée avec succès',
-    'tags_list_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer cette étiquette ? Aucun contact ne sera supprimé, seulement l\'étiquette.',
+    'tags_list_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette étiquette ? Aucun contact ne sera supprimé, seulement l\'étiquette.',
     'tags_blank_title' => 'Les étiquettes sont une excellente manière de catégoriser vos contacts.',
     'tags_blank_description' => 'Les étiquettes sont comme des dossiers, mais vous pouvez avoir autant d\'étiquette que vous le souhaitez par contact.',
 
