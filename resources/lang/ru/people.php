@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Этому ребёнку вероятно',
     'kids_add_probably_yo' => 'лет',
     'kids_add_exact' => 'Я знаю точную дату рождения и она:',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'Если вы укажите точную дату рождения для этого ребёнка, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения.',
     'kids_add_cta' => 'Добавить ребёнка',
     'kids_edit_title' => 'Изменить информацию о :name',
     'kids_delete_confirmation' => 'Вы уверены что хотите удалить запись об этом ребёнке? Восстановление невозможно.',
