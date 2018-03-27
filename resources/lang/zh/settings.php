@@ -12,7 +12,7 @@ return [
     'sidebar_settings_security' => '安全',
 
     'export_title' => '导出帐户数据',
-    'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_be_patient' => '单击按钮开始导出。处理导出可能需要几分钟时间，请耐心等待, 不要取消按钮。',
     'export_title_sql' => '导出到 SQL',
     'export_sql_explanation' => '以 SQL 格式导出数据使您可以将数据导入到自己的Monica实例中。这只在你有自己的服务器时有效。',
     'export_sql_cta' => '导出到 SQL',
