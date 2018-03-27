@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 kid|:count kids',
+    'people_list_number_kids' => '1 dítě|:count děti',
     'people_list_last_updated' => 'Naposledy konzultováno:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
+    'people_list_number_reminders' => '1 připomínka|:count připomínek',
     'people_list_blank_title' => 'Zatím jste do svého účtu nikoho nepřidali',
     'people_list_blank_cta' => 'Někoho přidat',
     'people_list_sort' => 'Řazení',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
     'people_list_clear_filter' => 'Vyčistit filtr',
-    'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_contacts_per_tags' => '1 kontakt|:count kontaktů',
     'people_search' => 'Prohledat kontakty...',
     'people_search_no_results' => 'Nebyly nalezeny žádné odpovídající kontakty :(',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
@@ -96,7 +96,7 @@ return [
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
-    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
+    'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin.',
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
