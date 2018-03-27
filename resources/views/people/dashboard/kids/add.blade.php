@@ -19,7 +19,7 @@
                 <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
               </li>
               <li>
-                Add a new kid
+                  {{ trans('people.kid_add_title') }}
               </li>
             </ul>
           </div>

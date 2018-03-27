@@ -9,7 +9,9 @@ return [
     'edit' => 'Éditer',
     'upload' => 'Envoyer',
     'close' => 'Fermer',
+    'create' => 'Créer',
     'remove' => 'Enlever',
+    'revoke' => 'Révoquer',
     'done' => 'Terminé',
     'verify' => 'Vérifier',
     'for' => 'pour',
@@ -18,7 +20,11 @@ return [
     'loading' => 'Chargement...',
     'with' => 'avec',
 
-    'markdown_description' => 'Souhaitez-vous formatter votre texte d\' une belle manière? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
+    'application_title' => 'Monica – un GRC pour vos amis et votre famille',
+    'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
+    'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
+
+    'markdown_description' => 'Souhaitez-vous formatter votre texte d\'une belle manière ? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
     'markdown_link' => 'Lire la documentation',
 
     'header_settings_link' => 'Paramètres',
@@ -41,7 +47,7 @@ return [
     'footer_version' => 'Version : :version',
     'footer_new_version' => 'Une nouvelle version est disponible',
 
-    'footer_modal_version_whats_new' => 'Qu\'y a t\'il de nouveau?',
+    'footer_modal_version_whats_new' => 'Qu\'y a t\'il de nouveau ?',
     'footer_modal_version_release_away' => 'Vous avez une version de retard par rapport à la dernière version disponible.|Vous avez :number versions de retard par rapport à la dernière version disponible. Vous devriez mettre à jour votre instance.',
 
     'breadcrumb_dashboard' => 'Tableau de bord',

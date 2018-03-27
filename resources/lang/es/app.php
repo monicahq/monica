@@ -1,15 +1,17 @@
 <?php
 
 return [
-    'update' => 'Update',
-    'save' => 'Save',
-    'add' => 'Add',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'edit' => 'Edit',
-    'upload' => 'Upload',
-    'close' => 'Close',
-    'remove' => 'Remove',
+    'update' => 'Actualizar',
+    'save' => 'Guardar',
+    'add' => 'Añadir',
+    'cancel' => 'Cancelar',
+    'delete' => 'Eliminar',
+    'edit' => 'Editar',
+    'upload' => 'Subir',
+    'close' => 'Cerrar',
+    'create' => 'Create',
+    'remove' => 'Remover',
+    'revoke' => 'Revoke',
     'done' => 'Done',
     'verify' => 'Verify',
     'for' => 'for',
@@ -18,11 +20,15 @@ return [
     'loading' => 'Loading...',
     'with' => 'with',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
-    'markdown_link' => 'Read documentation',
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'header_settings_link' => 'Settings',
-    'header_logout_link' => 'Logout',
+    'markdown_description' => '¿Desea dar formato a su texto de una manera agradable? Soportamos el uso de Markdown para añadir negrita, cursiva, listas y más.',
+    'markdown_link' => 'Leer documentación',
+
+    'header_settings_link' => 'Configuración',
+    'header_logout_link' => 'Salir',
 
     'main_nav_cta' => 'Add people',
     'main_nav_dashboard' => 'Dashboard',

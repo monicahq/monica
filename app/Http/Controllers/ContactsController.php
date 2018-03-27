@@ -31,13 +31,12 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $date_flag = false;
-        $date_sort = null;
+        $dateFlag = false;
 
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
             $sort = 'firstnameAZ';
-            $date_flag = true;
+            $dateFlag = true;
         }
 
         $tags = null;
@@ -85,7 +84,7 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
-        if ($date_flag) {
+        if ($dateFlag) {
             foreach ($contacts as $contact) {
                 $contact['sort_date'] = $contact->getLastActivityDate();
             }
@@ -241,7 +240,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if (! $contact->setName($request->input('firstname'), $request->input('lastname'))) {
+        if (! $contact->setName($request->input('firstname'), null, $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -266,7 +265,7 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
         }
@@ -276,6 +275,8 @@ class ContactsController extends Controller
         // Handling the case of the birthday
         $contact->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
+            case 'unknown':
+                break;
             case 'approximate':
                 $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
@@ -286,7 +287,7 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -297,10 +298,7 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-                break;
-            case 'unknown':
-            default:
+                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 break;
         }
 
@@ -465,7 +463,7 @@ class ContactsController extends Controller
     public function vCard(Contact $contact)
     {
         if (config('app.debug')) {
-            \Barryvdh\Debugbar\Facade::disable();
+            \Debugbar::disable();
         }
 
         $vcard = VCardHelper::prepareVCard($contact);
