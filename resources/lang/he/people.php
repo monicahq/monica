@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'גילו של הילד הוא כנראה',
     'kids_add_probably_yo' => 'שנים',
     'kids_add_exact' => 'מועד הלידה של הילד הזה ידוע לי והוא',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'ציון יום ההולדת המדויק של הילד הזה, יצור תזכורת עבורך – כדי להודיע לך בכל שנה מתי הגיע לברך את הילד הזה לרגל יום הולדתו.',
     'kids_add_cta' => 'הוספת ילד',
     'kids_edit_title' => 'עריכת פרטים על :name',
     'kids_delete_confirmation' => 'למחוק את הילד הזה? מחיקה אינה הפיכה',
@@ -315,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'זה התאריך בו נפגשנו',
     'introductions_add_reminder' => 'הוספת תזכורת לחגוג את יום השנה להיכרותכם',
     'introductions_update_success' => 'עדכנת בהצלחה את המידע בנוגע לאופי המפגש שלך עם אדם זה',
-    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
+    'introductions_met_through' => 'הכרתם דרך <a href=":url">:name</a>',
     'introductions_met_date' => 'נפגשתם ב־:date',
     'introductions_reminder_title' => 'יום השנה למועד ההיכרות ביניכם',
 
