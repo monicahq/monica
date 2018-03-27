@@ -193,7 +193,7 @@ return [
     'kids_add_probably' => 'Das Kind ist wahrscheinlich',
     'kids_add_probably_yo' => 'Jahre alt',
     'kids_add_exact' => 'Ich kenne den Geburtstag dieses Kindes',
-    'kids_add_help' => 'If you indicate an exact birthdate for this child, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this child\'s birthdate.',
+    'kids_add_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst diesem Kind zu gratulieren.',
     'kids_add_cta' => 'Kind hinzufügen',
     'kids_edit_title' => 'Informationen über :name bearbeiten',
     'kids_delete_confirmation' => 'Möchtest du dieses Kind wirklich löschen? Es gibt kein Zurück',
@@ -315,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'An diesem Datum haben wir uns das erste mal getroffen',
     'introductions_add_reminder' => 'Erstelle eine Erinnerung für den Jahrestag unseres ersten Zusammentreffens',
     'introductions_update_success' => 'Euer erstes Kennenlernen wurde erfolgreich geändert',
-    'introductions_met_through' => 'Met through <a href=":url">:name</a>',
+    'introductions_met_through' => 'Kennengelernt durch <a href=":url">:name</a>',
     'introductions_met_date' => 'Am :date',
     'introductions_reminder_title' => 'Jahrestag eures ersten Zusammentreffens',
 
