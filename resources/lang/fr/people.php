@@ -42,7 +42,7 @@ return [
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
     'people_add_import' => 'Souhaitez-vous <a href="/settings/import">importer vos contacts</a> ?',
     'people_edit_email_error' => 'Il y a déjà quelqu\'un dans votre compte avec cette adresse email. Merci d\'en choisir une autre.',
-    'people_export' => 'Export as vCard',
+    'people_export' => 'Exporter en tant que vCard',
 
     // show
     'section_contact_information' => 'Information de contact',
