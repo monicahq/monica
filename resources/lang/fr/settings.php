@@ -12,7 +12,7 @@ return [
     'sidebar_settings_security' => 'Sécurité',
 
     'export_title' => 'Exporter les données de votre compte',
-    'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_be_patient' => 'Cliquez sur le bouton pour commencer l\'export. Cela peut prendre plusieurs minutes pour préparer l\'export – merci d\'être patient et de ne pas spammer le bouton.',
     'export_title_sql' => 'Exporter en SQL',
     'export_sql_explanation' => 'Exporter les données au format SQL vous permet de récupérer vos données et de les importer dans votre propre instance de Monica. Ceci n\'est valable que si vous avez votre propre serveur.',
     'export_sql_cta' => 'Exporter en SQL',
