@@ -18,7 +18,7 @@ return [
     'export_sql_cta' => 'Exportovat jako SQL',
     'export_sql_link_instructions' => 'Poznámka: <a href=":url">přečtěte si instrukce</a> abyste se dozvěděli více o importu tohoto souboru do vlastní instance.',
 
-    'firstname' => 'First name',
+    'firstname' => 'Jméno',
     'lastname' => 'Last name',
     'name_order' => 'Řazení jmen',
     'name_order_firstname_first' => 'Jméno první (Josef Vomáčka)',
@@ -197,7 +197,7 @@ return [
 
     'tags_list_title' => 'Tagy',
     'tags_list_description' => 'Své kontakty můžete organizovat pomocí tagů. Tagy fungují jako adresáře, kontaktům můžete ale přidat vícero tagů. Nový tag přidáte úpravou vlastního kontaktu.',
-    'tags_list_contact_number' => '1 contact|:count contacts',
+    'tags_list_contact_number' => '1 kontakt|:count kontaktů',
     'tags_list_delete_success' => 'Tag byl úspěšně smazán',
     'tags_list_delete_confirmation' => 'Opravdu chcete smazat tento tag? Bude smazán pouze vybraný tag, žádné kontakty.',
     'tags_blank_title' => 'Tagy jsou šikovné řešení kategorizace kontaktů.',
@@ -212,7 +212,7 @@ return [
     'api_token_create_new' => 'Create New Token',
     'api_token_not_created' => 'You have not created any personal access tokens.',
     'api_token_name' => 'Name',
-    'api_token_delete' => 'Delete',
+    'api_token_delete' => 'Smazat',
     'api_token_create' => 'Create Token',
     'api_token_scopes' => 'Scopes',
     'api_token_help' => 'Here is your new personal access token. This is the only time it will be shown so don’t lose it! You may now use this token to make API requests.',
