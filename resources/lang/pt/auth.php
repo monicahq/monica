@@ -48,7 +48,7 @@ return [
     'register_login' => '<a href=":url">Log in</a> if you already have an account.',
     'register_email' => 'Enter a valid email address',
     'register_email_example' => 'you@home',
-    'register_firstname' => 'First name',
+    'register_firstname' => 'Primeiro nome',
     'register_firstname_example' => 'eg. John',
     'register_lastname' => 'Last name',
     'register_lastname_example' => 'eg. Doe',
