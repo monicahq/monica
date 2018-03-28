@@ -31,7 +31,7 @@ return [
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
-    'people_add_cta' => 'Add',
+    'people_add_cta' => 'Toevoegen',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
@@ -46,13 +46,13 @@ return [
 
     // show
     'section_contact_information' => 'Contact information',
-    'section_personal_activities' => 'Activities',
+    'section_personal_activities' => 'Activiteiten',
     'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tasks',
-    'section_personal_gifts' => 'Gifts',
+    'section_personal_tasks' => 'Taken',
+    'section_personal_gifts' => 'Cadeaus',
 
     //
-    'link_to_list' => 'List of people',
+    'link_to_list' => 'Lijst van mensen',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
@@ -138,7 +138,7 @@ return [
     'reminder_frequency_year' => 'every year|every :number year',
     'reminder_frequency_one_time' => 'on :date',
     'reminders_delete_confirmation' => 'Are you sure you want to delete this reminder?',
-    'reminders_delete_cta' => 'Delete',
+    'reminders_delete_cta' => 'Verwijderen',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
     'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
@@ -151,7 +151,7 @@ return [
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
-    'significant_other_cta' => 'Add significant other',
+    'significant_other_cta' => 'Partner toevoegen',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
     'significant_other_add_firstname' => 'First name',
     'significant_other_add_unknown' => 'I do not know this person\'s age',
@@ -159,8 +159,8 @@ return [
     'significant_other_add_probably_yo' => 'years old',
     'significant_other_add_exact' => 'I know the exact birthdate of this person, which is',
     'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
-    'significant_other_add_cta' => 'Add significant other',
-    'significant_other_edit_cta' => 'Edit significant other',
+    'significant_other_add_cta' => 'Partner toevoegen',
+    'significant_other_edit_cta' => 'Partner bewerken',
     'significant_other_delete_confirmation' => 'Are you sure you want to delete this significant other? Deletion is permanent',
     'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'The significant other has been added successfully',
@@ -212,7 +212,7 @@ return [
     'tasks_complete_success' => 'The task has changed status successfully',
 
     // activities
-    'activity_title' => 'Activities',
+    'activity_title' => 'Activiteiten',
     'activity_type_group_simple_activities' => 'Simple activities',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Food',
@@ -264,7 +264,7 @@ return [
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
     'gifts_add_gift' => 'Add a gift',
     'gifts_link' => 'Link',
-    'gifts_delete_cta' => 'Delete',
+    'gifts_delete_cta' => 'Verwijderen',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',
     'gifts_add_gift_already_offered' => 'Gift offered',
