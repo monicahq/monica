@@ -15,10 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
-use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
-use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 
 class Contact extends Model
 {
@@ -240,26 +237,6 @@ class Contact extends Model
     public function relationships()
     {
         return $this->hasMany('App\Relationship', 'contact_id_main');
-    }
-
-    /**
-     * Get the Offsprings records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function offsprings()
-    {
-        return $this->hasMany('App\Offspring', 'is_the_child_of');
-    }
-
-    /**
-     * Get the Progenitors records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function progenitors()
-    {
-        return $this->hasMany('App\Progenitor', 'is_the_parent_of');
     }
 
     /**
@@ -568,6 +545,20 @@ class Contact extends Model
     public function getCompanyAttribute($value)
     {
         return $value;
+    }
+
+    /**
+     * Get all the contacts related to the current contact by a specific
+     * relationship type.
+     *
+     * @param  string $type
+     * @param  bool   $includePartialContact
+     * @return Collection
+     */
+    public function getRelatedContactsByRelationshipType(string $type, bool $includePartialContact)
+    {
+        $relationshipType = $this->account->getRelationshipTypeByType()
+        // @TODO
     }
 
     /**
