@@ -212,7 +212,7 @@ return [
     'api_token_create_new' => 'Create New Token',
     'api_token_not_created' => 'You have not created any personal access tokens.',
     'api_token_name' => 'Name',
-    'api_token_delete' => 'Delete',
+    'api_token_delete' => 'Löschen',
     'api_token_create' => 'Create Token',
     'api_token_scopes' => 'Scopes',
     'api_token_help' => 'Here is your new personal access token. This is the only time it will be shown so don’t lose it! You may now use this token to make API requests.',
