@@ -552,13 +552,21 @@ class Contact extends Model
      * relationship type.
      *
      * @param  string $type
-     * @param  bool   $includePartialContact
-     * @return Collection
+     * @return Collection|null
      */
-    public function getRelatedContactsByRelationshipType(string $type, bool $includePartialContact)
+    public function getRelatedContactsByRelationshipType(String $type)
     {
-        $relationshipType = $this->account->getRelationshipTypeByType()
-        // @TODO
+        $relationshipType = $this->account->getRelationshipTypeByType($type);
+
+        if (! $relationshipType) {
+            return;
+        }
+
+        $relationships = $this->relationships()
+                            ->where('relationship_type_id', $relationshipType->id)
+                            ->get();
+
+        return $relationships;
     }
 
     /**
@@ -719,7 +727,7 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $lastName, String $middleName = null)
+    public function setName(String $firstName, String $lastName = null, String $middleName = null)
     {
         if ($firstName == '') {
             return false;

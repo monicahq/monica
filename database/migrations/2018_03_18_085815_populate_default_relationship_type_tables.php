@@ -41,6 +41,11 @@ class PopulateDefaultRelationshipTypeTables extends Migration
         ],
         [
             'name' => 'inlovewith',
+            'name_reverse_relationship' => 'lovedby',
+            'relationship_type_group_id' => $id,
+        ],
+        [
+            'name' => 'lovedby',
             'name_reverse_relationship' => 'inlovewith',
             'relationship_type_group_id' => $id,
         ], ]);

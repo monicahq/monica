@@ -3,12 +3,13 @@
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
-    /*
-     * CONTACTS
-     */
+    // Contacts
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    // Relationships
+    Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
