@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
     'people_list_sort' => 'Сортировка',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => ':count контакт|:count контакта|:count контактов',
     'people_list_firstnameAZ' => 'Сортировать по имени А → Я',
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
