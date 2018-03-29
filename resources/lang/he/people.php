@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 kid|:count kids',
+    'people_list_number_kids' => 'ילד אחד|:count ילדים',
     'people_list_last_updated' => 'יעוץ אחרון:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'אין אף אחד בחשבון שלך עדיין',
