@@ -32,7 +32,7 @@ return [
     'password_reset' => 'איפוס הססמה שלך',
     'signup_no_account' => 'אין לך חשבון?',
     'signup' => 'הרשמה',
-    'create_account' => 'Create the first account by <a href=":url">signing up</a>',
+    'create_account' => 'ניתן ליצור את החשבון הראשון על ידי <a href=":url">הרשמה</a>',
 
     'password_reset_title' => 'איפוס ססמה',
     'password_reset_email' => 'כתובת דוא״ל',
@@ -45,7 +45,7 @@ return [
     'register_title_welcome' => 'ברוך בואך לעותק החדש של מוניקה שזה עתה התקנת',
     'register_create_account' => 'עליך ליצור חשבון כדי להשתמש במוניקה',
     'register_title_create' => 'יצירת חשבון אצל מוניקה',
-    'register_login' => '<a href=":url">Log in</a> if you already have an account.',
+    'register_login' => 'ניתן <a href=":url">להיכנס</a> אם כבר יש לך חשבון.',
     'register_email' => 'נא להקליד כתובת דוא״ל תקנית',
     'register_email_example' => 'you@home',
     'register_firstname' => 'שם פרטי',
