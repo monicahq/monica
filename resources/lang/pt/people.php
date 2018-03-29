@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
     'people_list_sort' => 'Ordenar',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => '1 contacto|:count contactos',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
@@ -328,7 +328,7 @@ return [
     'deceased_label_with_date' => 'Deceased on :date',
 
     // Contact information
-    'contact_info_title' => 'Contact information',
+    'contact_info_title' => 'Informações de contacto',
     'contact_info_form_content' => 'Content',
     'contact_info_form_contact_type' => 'Contact type',
     'contact_info_form_personalize' => 'Personalize',
