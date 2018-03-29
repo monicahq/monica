@@ -5,11 +5,11 @@ return [
     //index
     'people_list_number_kids' => 'ילד אחד|:count ילדים',
     'people_list_last_updated' => 'יעוץ אחרון:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
+    'people_list_number_reminders' => 'תזכורת אחת|:count תזכורות',
     'people_list_blank_title' => 'אין אף אחד בחשבון שלך עדיין',
     'people_list_blank_cta' => 'להוסיף מישהו',
     'people_list_sort' => 'מיון',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => 'איש קשר אחד|:count אנשי קשר',
     'people_list_firstnameAZ' => 'מיון לפי שם פרטי א ← ת',
     'people_list_firstnameZA' => 'מיון לפי שם פרטי ת ← א',
     'people_list_lastnameAZ' => 'מיון לפי שם משפחה א ← ת',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'מיון לפי מועד הפעילות האחרונה מהישנה לחדשה',
     'people_list_filter_tag' => 'הצגת כל אנשי הקשר עם התגית ',
     'people_list_clear_filter' => 'ניקוי מסנן',
-    'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
     'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
@@ -40,7 +40,7 @@ return [
     'people_delete_click_here' => 'נא ללחוץ כאן',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
-    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
+    'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
 
@@ -105,7 +105,7 @@ return [
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
     'work_edit_job' => 'תפקיד (רשות)',
     'work_edit_company' => 'חברה (רשות)',
-    'work_information' => 'Work information',
+    'work_information' => 'פרטי תעסוקה',
 
     // food preferencies
     'food_preferencies_add_success' => 'העדפות המזון נשמרו',
@@ -133,9 +133,9 @@ return [
     'reminders_update_success' => 'התזכורת עודכנה בהצלחה',
 
     'reminder_frequency_day' => '{1} כל יום|{2} כל יומיים|[3,*] כל :number ימים',
-    'reminder_frequency_week' => 'every week|every :number weeks',
-    'reminder_frequency_month' => 'every month|every :number months',
-    'reminder_frequency_year' => 'every year|every :number year',
+    'reminder_frequency_week' => '{1} כל שבוע| {2} כל שבועיים|[3,*] כל :number שבועות',
+    'reminder_frequency_month' => '{1} כל חודש| {2} כל חודשיים|[3,*] כל :number חודשים',
+    'reminder_frequency_year' => '{1} כל שנה| {2} כל שנתיים|[3,*] כל :number שנים',
     'reminder_frequency_one_time' => 'ב־:date',
     'reminders_delete_confirmation' => 'למחוק את התזכורת הזו?',
     'reminders_delete_cta' => 'מחיקה',
@@ -175,7 +175,7 @@ return [
     'contact_add_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
 
     // kids
-    'kid_add_title' => 'Add a new kid',
+    'kid_add_title' => 'הוספת ילד חדש',
     'kids_sidebar_title' => 'ילדים',
     'kids_sidebar_cta' => 'הוספת ילד נוסף',
     'kids_blank_cta' => 'הוספת ילד',
@@ -276,7 +276,7 @@ return [
     'gifts_add_someone' => 'מתנה זו מיועדת במיוחד למשפחה של :name',
     'gifts_ideas' => 'רעיונות למתנות',
     'gifts_offered' => 'מתנות שהוצעו',
-    'gifts_offered_as_an_idea' => 'Mark as an idea',
+    'gifts_offered_as_an_idea' => 'סימון כרעיון',
     'gifts_received' => 'מתנות שהתקבלו',
     'gifts_view_comment' => 'צפייה בתגובה',
     'gifts_mark_offered' => 'סימון כהוצעה',
