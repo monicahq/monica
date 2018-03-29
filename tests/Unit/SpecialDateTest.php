@@ -184,7 +184,7 @@ class SpecialDateTest extends FeatureTestCase
     {
         $specialDate = factory(\App\SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
-        $specialDate->date = Carbon::now()->subYears(5);
+        $specialDate->date = now()->subYears(5);
         $specialDate->save();
 
         $this->assertEquals(
@@ -237,7 +237,7 @@ class SpecialDateTest extends FeatureTestCase
         );
 
         $this->assertEquals(
-            Carbon::now()->year,
+            now()->year,
             $specialDate->date->year
         );
     }

@@ -397,7 +397,7 @@ class FakeContentTableSeeder extends Seeder
                 'date' => $date,
                 'journalable_id' => $entryId,
                 'journalable_type' => 'App\Entry',
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => now(),
             ]);
         }
     }
@@ -436,7 +436,7 @@ class FakeContentTableSeeder extends Seeder
                 'date' => $date,
                 'journalable_id' => $dayId,
                 'journalable_type' => 'App\Day',
-                'created_at' => \Carbon\Carbon::now(),
+                'created_at' => now(),
             ]);
         }
     }

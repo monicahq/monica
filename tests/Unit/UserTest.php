@@ -78,7 +78,7 @@ class UserTest extends TestCase
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $day = factory('App\Day')->create([
             'account_id' => $account->id,
-            'date' => \Carbon\Carbon::now(),
+            'date' => now(),
         ]);
 
         $this->assertTrue($user->hasAlreadyRatedToday());

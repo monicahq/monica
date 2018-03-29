@@ -41,7 +41,7 @@ class DayTest extends TestCase
 
     public function test_get_info_for_journal_entry_that_happen_today()
     {
-        $date = \Carbon\Carbon::now();
+        $date = now();
 
         $day = new Day;
         $day->id = 1;
