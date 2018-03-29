@@ -19,7 +19,7 @@ return [
     'export_sql_link_instructions' => 'לתשומת לבך: ניתן <a href=":url">לקרוא את ההנחיות</a> כדי ללמוד יותר על יבוא הקובץ הזה לעותק שלך.',
 
     'firstname' => 'שם פרטי',
-    'lastname' => 'Last name',
+    'lastname' => 'שם משפחה',
     'name_order' => 'סדר השמות',
     'name_order_firstname_first' => 'קודם שם פרטי (ישראל ישראלי)',
     'name_order_lastname_first' => 'קודם שם משפחה (ישראלי ישראל)',
