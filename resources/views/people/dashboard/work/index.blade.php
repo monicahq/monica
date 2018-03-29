@@ -1,7 +1,7 @@
 <div class="sidebar-box">
 
   <p class="sidebar-box-title">
-    <strong>Work information</strong>
+    <strong>{{ trans('people.work_information') }}</strong>
   </p>
 
   <div class="work">
@@ -32,7 +32,7 @@
         @if (is_null($contact->linkedin_profile_url))
         {{ trans('people.information_no_linkedin_defined') }}
         @else
-        <a href="{{ $contact->linkedin_profile_url }}">LinkedIn</a>
+        <a href="{{ $contact->linkedin_profile_url }}">{{ trans('people.linkedin_profile') }}</a>
         @endif
       </li>
     </ul>

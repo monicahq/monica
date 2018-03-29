@@ -3,26 +3,26 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 Kinder|{1,1} 1 Kind|{2,*} :count Kinder',
-    'people_list_last_updated' => 'Zuletzt geändert:',
-    'people_list_number_reminders' => '{0} 0 Erinnerungen|{1,1} 1 Erinnerung|{2, *} :count Erinnerungen',
+    'people_list_number_kids' => '1 Kind|:count Kinder',
+    'people_list_last_updated' => 'Zuletzt aufgerufen:',
+    'people_list_number_reminders' => '1 Erinnerung|:count Erinnerungen',
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
     'people_list_blank_cta' => 'Jemand hinzufügen',
     'people_list_sort' => 'Sortieren',
-    'people_list_stats' => ':count Kontakte',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Nach Vorname sortieren A → Z',
     'people_list_firstnameZA' => 'Nach Vorname sortieren Z → A',
     'people_list_lastnameAZ' => 'Nach Nachname sortieren A → Z',
     'people_list_lastnameZA' => 'Nach Nachname sortieren Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Neueste Aktivitäten zuerst anzeigen',
-    'people_list_lastactivitydateOldtoNew' => 'Äteste Aktivitäten zuerst anzeigen',
+    'people_list_lastactivitydateOldtoNew' => 'Älteste Aktivitäten zuerst anzeigen',
     'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: ',
     'people_list_clear_filter' => 'Filter löschen',
-    'people_list_contacts_per_tags' => '{0} 0 Kontakte|{1,1} 1 Kontakt|{2,*} :count Kontakte',
+    'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
-    'people_list_account_upgrade_title' => 'Führe ein Upgrade aus um alle Funktionen freizuschalten.',
+    'people_list_account_upgrade_title' => 'Führe ein Upgrade aus, um alle Funktionen freizuschalten.',
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',
 
     // people add
@@ -40,8 +40,9 @@ return [
     'people_delete_click_here' => 'klick hier',
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
-    'people_add_import' => 'Möchtest du Kontakte <a href="/settings/import">importieren</a>?',
-    'people_edit_email_error' => 'Es gibt bereits ein Kontakt in Ihrem Konto mit dieser e-Mail-Adresse. Bitte wählen Sie einen anderen.',
+    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
+    'people_edit_email_error' => 'Es gibt bereits ein Kontakt in deinem Konto mit dieser e-Mail-Adresse. Bitte wähle eine anderen.',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
@@ -64,15 +65,15 @@ return [
     'modal_call_change' => 'Ändern',
     'modal_call_exact_date' => 'Das Telefonat war am',
     'calls_add_success' => 'Telefonat gespeichert.',
-    'call_delete_confirmation' => 'Möchstest du das Telefonat wirklich löschen?',
-    'call_delete_success' => 'Das Telfonat wurde erfolgreich gelöscht',
+    'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
+    'call_delete_success' => 'Das Telefonat wurde erfolgreich gelöscht',
     'call_title' => 'Telefonate',
     'call_empty_comment' => 'Keine Details',
     'call_blank_title' => 'Behalte deine Telefonate mit :name im Auge',
     'call_blank_desc' => 'Du hast :name angerufen',
 
     // age - birthday
-    'birthdate_not_set' => 'Geburstag noch nicht gesetzt',
+    'birthdate_not_set' => 'Geburtstag noch nicht gesetzt',
     'age_approximate_in_years' => 'ungefähr :age Jahre alt',
     'age_exact_in_years' => ':age Jahre alt',
     'age_exact_birthdate' => 'geboren am :date',
@@ -85,7 +86,7 @@ return [
 
     // additional information
     'information_edit_success' => 'Das Profil wurde erfolgreich aktualisiert',
-    'information_edit_title' => 'Ändere :name\'s persönliche informations',
+    'information_edit_title' => 'Ändere :name\'s persönliche Daten',
     'information_edit_avatar' => 'Foto/Avatar des Kontakts',
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Vorname',
@@ -94,28 +95,29 @@ return [
     'information_edit_unknown' => 'Ich kenne das Alter dieser Person nicht',
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
     'information_edit_not_year' => 'Ich weiß den Tag und Monat des Geburtsdatums dieser Person, aber nicht das Jahr…',
-    'information_edit_exact' => 'Ich kenne den Geburstag der Person',
+    'information_edit_exact' => 'Ich kenne den Geburtstag der Person...',
     'information_edit_help' => 'Wenn du einen genauen Geburtstag eingibst, erstellen wir für dich automatisch eine Erinnerung, so dass du jedes Jahr daran erinnert wirst dieser Person zu gratulieren.',
     'information_no_linkedin_defined' => 'LinkedIn nicht angegeben',
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
     'work_edit_success' => 'Arbeitsplatz-Informationen wurden erfolgreich aktualisiert',
-    'work_edit_title' => 'Änderer :name\'s Arbeitsplatz-Informationen',
+    'work_edit_title' => 'Ändere :name\'s Arbeitsplatz-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => 'Essensvorlieben gespeichert',
-    'food_preferencies_edit_description' => 'Vielleicht hat :firstname oder jemand in der :family Familie eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich beim der nächsten Einladung zum Abendessen daran erinnerst',
-    'food_preferencies_edit_description_no_last_name' => 'Vielleicht hat :firstname eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich beim der nächsten Einladung zum Abendessen daran erinnerst',
+    'food_preferencies_edit_description' => 'Vielleicht hat :firstname oder jemand in der :family Familie eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
+    'food_preferencies_edit_description_no_last_name' => 'Vielleicht hat :firstname eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
     'food_preferencies_edit_title' => 'Gib Essensvorlieben an',
     'food_preferencies_edit_cta' => 'Speichere Essensvorlieben',
     'food_preferencies_title' => 'Essensvorlieben',
     'food_preferencies_cta' => 'Essensvorlieben hinzufügen',
 
     // reminders
-    'reminders_blank_title' => 'Gibt es etwas an das du über :name erinnert werden willst?',
+    'reminders_blank_title' => 'Gibt es etwas, an das du über :name erinnert werden willst?',
     'reminders_blank_add_activity' => 'Erinnerung hinzufügen',
     'reminders_add_title' => 'Woran würdest du gerne über :name erinnert werden?',
     'reminders_add_description' => 'Erinnere mich daran...',
@@ -139,7 +141,7 @@ return [
     'reminders_delete_cta' => 'löschen',
     'reminders_next_expected_date' => 'am',
     'reminders_cta' => 'Erinnerung hinzufügen',
-    'reminders_description' => 'Wir werden eine E-Mail für jede der unten stehenden Erinnerungn verschicken. Erinnerungen werden immer morgens verschickt. Erinnerungn, die automatisch für Geburtstage angelegt wurden, können nicht gelöscht werden. Wenn du dieses Datum ändern willst, dann ändere den Geburtstag des Kontakts.',
+    'reminders_description' => 'Wir werden eine E-Mail für jede der unten stehenden Erinnerungen verschicken. Erinnerungen werden immer morgens verschickt. Erinnerungen, die automatisch für Geburtstage angelegt wurden, können nicht gelöscht werden. Wenn du dieses Datum ändern willst, dann ändere den Geburtstag des Kontakts.',
     'reminders_one_time' => 'Einmal',
     'reminders_type_week' => 'Woche',
     'reminders_type_month' => 'Monat',
@@ -160,11 +162,11 @@ return [
     'significant_other_add_cta' => 'Lebensgefährte hinzufügen',
     'significant_other_edit_cta' => 'Lebensgefährte bearbeiten',
     'significant_other_delete_confirmation' => 'Möchtest du diesen Lebensgefährten wirklich löschen? Es gibt kein Zurück.',
-    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
+    'significant_other_unlink_confirmation' => 'Möchtest du diese Beziehung wirklich löschen? Der Lebensgefährte wird nicht gelöscht – nur die Beziehung zwischen den beiden.',
     'significant_other_add_success' => 'Lebensgefährte wurde erfolgreich hinzugefügt',
     'significant_other_edit_success' => 'Lebensgefährte wurde erfolgreich aktualisiert',
     'significant_other_delete_success' => 'Lebensgefährte wurde erfolgreich gelöscht',
-    'significant_other_add_birthday_reminder' => 'Gratuliere :name zum Geburstag, :contact_firstname\'s Lebensgefährte',
+    'significant_other_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag, :contact_firstname\'s Lebensgefährte',
     'significant_other_add_person' => 'Person hinzufügen',
     'significant_other_link_existing_contact' => 'Existierenden Kontakt wählen',
     'significant_other_add_no_existing_contact' => 'Du hast derzeit keine Kontakte, die :name\'s Lebensgefährte werden könnten.',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => 'Kinder',
     'kids_sidebar_cta' => 'Kind hinzufügen',
     'kids_blank_cta' => 'Kind hinzufügen',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => 'Dieses Geschenk ist für jemanden in :name\'s Familie',
     'gifts_ideas' => 'Geschenkideen',
     'gifts_offered' => 'Geschenke angeboten',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Geschenke erhalten',
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
@@ -294,7 +298,7 @@ return [
     'debt_add_add_cta' => 'Schulden hinzufügen',
     'debt_edit_update_cta' => 'Schulden bearbeiten',
     'debt_edit_success' => 'Die Schulden wurden erfolgreich aktualisiert',
-    'debts_blank_title' => 'Verwalte die Schulden, die du :name schuldest oder:name dir schuldet',
+    'debts_blank_title' => 'Verwalte die Schulden, die du :name schuldest oder :name dir schuldet',
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
@@ -311,7 +315,7 @@ return [
     'introductions_first_met_date_known' => 'An diesem Datum haben wir uns das erste mal getroffen',
     'introductions_add_reminder' => 'Erstelle eine Erinnerung für den Jahrestag unseres ersten Zusammentreffens',
     'introductions_update_success' => 'Euer erstes Kennenlernen wurde erfolgreich geändert',
-    'introductions_met_through' => 'Kennengelernt durch <a href="/people/:id">:name</a>',
+    'introductions_met_through' => 'Kennengelernt durch <a href=":url">:name</a>',
     'introductions_met_date' => 'Am :date',
     'introductions_reminder_title' => 'Jahrestag eures ersten Zusammentreffens',
 
@@ -331,7 +335,7 @@ return [
     'contact_info_address' => 'Wohnt in',
 
     // Addresses
-    'contact_address_title' => 'Addressen',
+    'contact_address_title' => 'Adressen',
     'contact_address_form_name' => 'Titel (optional)',
     'contact_address_form_street' => 'Straße (optional)',
     'contact_address_form_city' => 'Stadt (optional)',
@@ -342,7 +346,7 @@ return [
     // Pets
     'pets_kind' => 'Tierart',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'Das Haustier wurde erfolgreich hinugefügt',
+    'pets_create_success' => 'Das Haustier wurde erfolgreich hinzugefügt',
     'pets_update_success' => 'Das Haustier wurde erfolgreich geändert',
     'pets_delete_success' => 'Das Haustier wurde erfolgreich entfernt',
     'pets_title' => 'Haustiere',

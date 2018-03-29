@@ -21,122 +21,102 @@ class DateHelperTest extends FeatureTestCase
     public function testGetShortDateWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22, 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan 22, 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithTimeWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22, 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function testGetShortDateWithTimeWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function testGetShortDateWithTimeWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan 22, 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function test_get_short_date_without_year_returns_a_date()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
 
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
 
-        $locale = '';
+        DateHelper::setLocale('');
 
         $this->assertEquals(
             'Jan 22',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
     }
 
     public function test_it_returns_the_default_short_date()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = null;
+        DateHelper::setLocale(null);
 
         $this->assertEquals(
             'Jan 22',
-            DateHelper::getShortDateWithoutYear($date, $locale)
-        );
-    }
-
-    public function test_get_locale_returns_english_by_default()
-    {
-        $this->assertEquals(
-            'en',
-            DateHelper::getLocale()
-        );
-    }
-
-    public function test_get_locale_returns_right_locale_if_user_logged()
-    {
-        $user = $this->signIn();
-        $user->locale = 'fr';
-        $user->save();
-
-        $this->assertEquals(
-            'fr',
-            DateHelper::getLocale()
+            DateHelper::getShortDateWithoutYear($date)
         );
     }
 
@@ -167,66 +147,66 @@ class DateHelperTest extends FeatureTestCase
     public function testGetShortMonthWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortMonthWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             'jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortMonthWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortDayWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Sun',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 
     public function testGetShortDayWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             'dim',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 
     public function testGetShortDayWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Sun',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 

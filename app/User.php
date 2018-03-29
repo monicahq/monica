@@ -57,6 +57,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
+        $user->locale = \App::getLocale();
         $user->save();
 
         return $user;

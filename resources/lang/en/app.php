@@ -9,7 +9,9 @@ return [
     'edit' => 'Edit',
     'upload' => 'Upload',
     'close' => 'Close',
+    'create' => 'Create',
     'remove' => 'Remove',
+    'revoke' => 'Revoke',
     'done' => 'Done',
     'verify' => 'Verify',
     'for' => 'for',
@@ -17,6 +19,10 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Read documentation',

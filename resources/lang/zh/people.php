@@ -3,13 +3,13 @@
 return [
 
     //index
-    'people_list_number_kids' => '{0} 0 个孩子|{1,1} 1 个孩子|{2,*} :count 个孩子',
+    'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '上次咨询:',
-    'people_list_number_reminders' => '{0} 0 个提醒 |{1,1} 1 提醒 |{2, *}:count 提醒',
+    'people_list_number_reminders' => ':count 提醒',
     'people_list_blank_title' => '您还没有任何联系人',
     'people_list_blank_cta' => '添加某人',
     'people_list_sort' => '排序',
-    'people_list_stats' => ':count 联系人',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => '以名字A → Z排序',
     'people_list_firstnameZA' => '以名字 Z → A排序',
     'people_list_lastnameAZ' => '以姓A → Z排序',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => '以最后活动日期从远到近排序',
     'people_list_filter_tag' => '显示所有联系人标签 ',
     'people_list_clear_filter' => '清除筛选',
-    'people_list_contacts_per_tags' => '{0} 0 个联系人|{1,1} 1 个联系人|{2,*} :count 个联系人',
+    'people_list_contacts_per_tags' => ':count 个联系人',
     'people_search' => '搜索联系人...',
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
@@ -40,8 +40,9 @@ return [
     'people_delete_click_here' => '点击这里',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
-    'people_add_import' => '是否要 <a href="/settings/import">导入您的联系人</a>？',
+    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
+    'people_export' => 'Export as vCard',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -104,6 +105,7 @@ return [
     'work_edit_title' => '更新:name的工作信息',
     'work_edit_job' => '职位名称 (可选)',
     'work_edit_company' => '公司 (可选)',
+    'work_information' => 'Work information',
 
     // food preferencies
     'food_preferencies_add_success' => '食品偏好已被保存',
@@ -173,6 +175,7 @@ return [
     'contact_add_add_description' => '这将让你像其他联系人一样来对待这个重要他人。',
 
     // kids
+    'kid_add_title' => 'Add a new kid',
     'kids_sidebar_title' => '孩子',
     'kids_sidebar_cta' => '添加其他孩子',
     'kids_blank_cta' => '添加孩子',
@@ -273,6 +276,7 @@ return [
     'gifts_add_someone' => '这个礼物是针对给:name的家庭的',
     'gifts_ideas' => '礼品创意',
     'gifts_offered' => '提供的礼品',
+    'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => '收到的礼物',
     'gifts_view_comment' => '查看评论',
     'gifts_mark_offered' => '标记为提供',
@@ -311,7 +315,7 @@ return [
     'introductions_first_met_date_known' => '这是我们相遇的日子',
     'introductions_add_reminder' => '添加提醒以庆祝此事件发生的周年纪念',
     'introductions_update_success' => '您已成功更新了有关如何遇到此人的信息',
-    'introductions_met_through' => '通过 <a href="/people/:id">:name</a>遇到',
+    'introductions_met_through' => '通过 <a href=":url">:name</a>遇到',
     'introductions_met_date' => '在:date遇到',
     'introductions_reminder_title' => '你第一次遇见的那一天的周年纪念日',
 
