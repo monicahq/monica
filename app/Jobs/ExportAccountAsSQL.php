@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -76,7 +75,7 @@ class ExportAccountAsSQL
         $sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name." dump of data
 # {$this->file}
-# Export date: ".Carbon::now().'
+# Export date: ".now().'
 # ************************************************************
 
 '.PHP_EOL;

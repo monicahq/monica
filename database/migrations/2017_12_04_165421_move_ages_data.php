@@ -26,7 +26,7 @@ class MoveAgesData extends Migration
                     'is_age_based' => false,
                     'date' => $contact->deceased_date,
                     'reminder_id' => null,
-                    'created_at' => \Carbon\Carbon::now(),
+                    'created_at' => now(),
                 ]);
             }
 
@@ -43,7 +43,7 @@ class MoveAgesData extends Migration
                             'is_age_based' => true,
                             'date' => $contact->birthdate,
                             'reminder_id' => $contact->birthday_reminder_id,
-                            'created_at' => \Carbon\Carbon::now(),
+                            'created_at' => now(),
                         ]);
 
                         break;
@@ -54,7 +54,7 @@ class MoveAgesData extends Migration
                             'is_age_based' => false,
                             'date' => $contact->birthdate,
                             'reminder_id' => $contact->birthday_reminder_id,
-                            'created_at' => \Carbon\Carbon::now(),
+                            'created_at' => now(),
                         ]);
 
                         break;
@@ -68,7 +68,7 @@ class MoveAgesData extends Migration
                     'is_age_based' => false,
                     'date' => $contact->first_met,
                     'reminder_id' => null,
-                    'created_at' => \Carbon\Carbon::now(),
+                    'created_at' => now(),
                 ]);
             }
 

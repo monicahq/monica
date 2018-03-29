@@ -82,7 +82,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         }
 
@@ -134,7 +134,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         } else {
             $note->favorited_at = null;
