@@ -26,7 +26,19 @@ return [
      * or just use the array of languages with its aliases.
      */
     'languages' => parse_langs_to_array(
-        env('LANG_DETECTOR_LANGUAGES', config('monica.langs'))
+        env('LANG_DETECTOR_LANGUAGES', [
+            'cs',
+            'de',
+            'en',
+            'es',
+            'fr',
+            'he',
+            'it',
+            'nl',
+            'pt',
+            'ru',
+            'zh',
+        ])
     ),
 
     /*
