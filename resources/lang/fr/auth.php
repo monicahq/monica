@@ -30,7 +30,7 @@ return [
     'button_remember' => 'Se souvenir de moi',
     'password_forget' => 'Mot de passe oublié ?',
     'password_reset' => 'Réinitialisez votre mot de passe',
-    'signup_no_account' => "Vous n'avez pas de compte ?",
+    'signup_no_account' => 'Vous n\'avez pas de compte ?',
     'signup' => 'S\'inscrire',
     'create_account' => 'Créer le premier compte en vous <a href=":url">enregistrant</a>',
 
@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'Entrez un mot de passe sécurisé',
     'register_password_confirmation' => 'Confirmez le mot de passe',
     'register_action' => 'Enregistrement',
-    'register_policy' => 'L\'enregistrement signifie que vous avez lu et que vous acceptez notre <a href=":url">Politique de Confidentialité</a>.',
+    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a>.',
     'register_invitation_email' => 'Pour des raisons de sécurité, merci d\'indiquer l\'adresse couriel de la personne qui vous a invité à joindre son compte. Cette information est indiquée dans le couriel d\'invitation.',
 
 ];
