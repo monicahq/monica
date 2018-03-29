@@ -26,7 +26,7 @@ return [
     'login_to_account' => 'כניסה לחשבון שלך',
     'email' => 'דוא״ל',
     'password' => 'ססמה',
-    'login' => 'Login',
+    'login' => 'כניסה',
     'button_remember' => 'לשמור את הפרטים שלי',
     'password_forget' => 'שכחת את הססמה שלך?',
     'password_reset' => 'איפוס הססמה שלך',
