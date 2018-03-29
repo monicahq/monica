@@ -30,7 +30,7 @@ return [
     'button_remember' => 'Eingeloggt bleiben',
     'password_forget' => 'Passwort vergessen?',
     'password_reset' => 'Passwort zurücksetzen',
-    'signup_no_account' => "Noch keinen Account?",
+    'signup_no_account' => 'Noch keinen Account?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
 
@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'Sicheres Kennwort eingeben',
     'register_password_confirmation' => 'Passwortbestätigung',
     'register_action' => 'Anmelden',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url">Privacy Policy</a>.',
+    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a>.',
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who\'ve invited you to join this account. This information is provided in the invitation email.',
 
 ];
