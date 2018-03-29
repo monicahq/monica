@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\User;
 use App\Account;
 use App\Reminder;
-use Carbon\Carbon;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
 use App\Jobs\SetNextReminderDate;
@@ -37,7 +36,7 @@ class SendReminders extends Command
         // Why 2? because in terms of timezone, we can have up to more than 24 hours
         // between two timezones and we need to take into accounts reminders
         // that are not in the same timezone.
-        $reminders = Reminder::where('next_expected_date', '<', Carbon::now()->addDays(2))
+        $reminders = Reminder::where('next_expected_date', '<', now()->addDays(2))
                                 ->orderBy('next_expected_date', 'asc')->get();
 
         foreach ($reminders as $reminder) {

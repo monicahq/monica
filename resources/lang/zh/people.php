@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => '您还没有任何联系人',
     'people_list_blank_cta' => '添加某人',
     'people_list_sort' => '排序',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => ':count 个联系人',
     'people_list_firstnameAZ' => '以名字A → Z排序',
     'people_list_firstnameZA' => '以名字 Z → A排序',
     'people_list_lastnameAZ' => '以姓A → Z排序',

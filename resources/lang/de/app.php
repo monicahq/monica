@@ -9,9 +9,9 @@ return [
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
     'close' => 'Schließen',
-    'create' => 'Create',
+    'create' => 'Erstellen',
     'remove' => 'Entfernen',
-    'revoke' => 'Revoke',
+    'revoke' => 'Aufheben',
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
@@ -47,7 +47,7 @@ return [
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'Es ist eine neue Version verfügbar',
 
-    'footer_modal_version_whats_new' => 'Was gibt\'s neues',
+    'footer_modal_version_whats_new' => 'Was gibt\'s Neues',
     'footer_modal_version_release_away' => 'Du bist ein Release hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.|Du bist :number Releases hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.',
 
     'breadcrumb_dashboard' => 'Dashboard',

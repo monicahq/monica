@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Notification;
 use Illuminate\Console\Command;
 use App\Jobs\Notification\ScheduleNotification;
@@ -30,7 +29,7 @@ class SendNotifications extends Command
      */
     public function handle()
     {
-        $notifications = Notification::where('trigger_date', '<', Carbon::now()->addDays(2))
+        $notifications = Notification::where('trigger_date', '<', now()->addDays(2))
                                 ->orderBy('trigger_date', 'asc')->get();
 
         foreach ($notifications as $notification) {
