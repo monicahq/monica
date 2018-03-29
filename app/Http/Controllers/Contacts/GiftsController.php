@@ -33,9 +33,9 @@ class GiftsController extends Controller
                 'is_an_idea' => $gift->is_an_idea,
                 'has_been_offered' => $gift->has_been_offered,
                 'has_been_received' => $gift->has_been_received,
-                'offered_at' => \App\Helpers\DateHelper::getShortDate($gift->offered_at, auth()->user()->locale),
-                'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at, auth()->user()->locale),
-                'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at, auth()->user()->locale),
+                'offered_at' => \App\Helpers\DateHelper::getShortDate($gift->offered_at),
+                'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at),
+                'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at),
                 'edit' => false,
                 'show_comment' => false,
             ];

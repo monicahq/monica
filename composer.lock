@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4b3aff6a5c74b487641883e0b97ba73",
+    "content-hash": "d4df94eb414e4edd8d927f54f186c2b9",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1032,16 +1032,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.0",
+            "version": "6.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
+                "reference": "68d0ea14d5a3f42a20e87632a5f84931e2709c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/68d0ea14d5a3f42a20e87632a5f84931e2709c90",
+                "reference": "68d0ea14d5a3f42a20e87632a5f84931e2709c90",
                 "shasum": ""
             },
             "require": {
@@ -1051,7 +1051,7 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0 || ^5.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4",
                 "psr/log": "^1.0"
             },
             "suggest": {
@@ -1060,7 +1060,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.2-dev"
+                    "dev-master": "6.3-dev"
                 }
             },
             "autoload": {
@@ -1093,7 +1093,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-06-22T18:50:49+00:00"
+            "time": "2018-03-26T16:33:04+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -4810,6 +4810,61 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "vluzrmos/language-detector",
+            "version": "v1.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vluzrmos/laravel-language-detector.git",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/cookie": "~5.0",
+                "illuminate/support": "~5.0",
+                "illuminate/translation": "~5.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~1.11",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "3.0.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Vluzrmos\\LanguageDetector\\": "src/"
+                },
+                "files": [
+                    "src/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vagner do Carmo",
+                    "email": "vluzrmos@gmail.com"
+                }
+            ],
+            "description": "Detect the language for your application using browser preferences, subdomains or route prefixes.",
+            "keywords": [
+                "i18n",
+                "language",
+                "laravel",
+                "locale",
+                "lumen"
+            ],
+            "time": "2017-03-11T03:40:17+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",

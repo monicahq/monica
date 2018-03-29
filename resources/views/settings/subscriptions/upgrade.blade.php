@@ -27,8 +27,8 @@
 
   <div class="mt4 mw6 center mb4 pa2 pa0-ns">
     <div class="br3 ba b--gray-monica bg-white pa4">
-      <h2 class="tc mt2 fw4">You picked the {{ $planInformation['type'] }} plan.</h2>
-      <p class="tc mb4">We couldn't be happier. Enter your payment info below.</p>
+      <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
+      <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_thanks') }}</p>
       <form action="/settings/subscriptions/processPayment" method="post" id="payment-form" class="mb4">
         {{ csrf_field() }}
 
@@ -36,17 +36,17 @@
         <div class="b--gray-monica ba pa4 br2 mb3 bg-black-05">
           <div class="form-row">
             <div class="mb3">
-              <span>Name on card</span>
+              <span>{{ trans('settings.subscriptions_upgrade_name') }}</span>
               <input name="cardholder-name" class="br3 b--black-30 ba pa3 w-100 f4" value="{{ auth()->user()->name }}" />
             </div>
 
             <div class="mb3">
-              <span>ZIP or postal code</span>
+              <span>{{ trans('settings.subscriptions_upgrade_zip') }}</span>
               <input name="address-zip" class="br3 b--black-30 ba pa3 w-100 f4" />
             </div>
 
             <div class="mb3" for="card-element">
-              Credit or debit card
+                {{ trans('settings.subscriptions_upgrade_credit') }}
             </div>
 
             <div id="card-element">
@@ -58,11 +58,11 @@
           </div>
         </div>
 
-        <button class="btn btn-primary w-100">Submit Payment</button>
+        <button class="btn btn-primary w-100">{{ trans('settings.subscriptions_upgrade_submit') }}</button>
       </form>
 
-      <p>We'll charge your card USD ${{ $planInformation['friendlyPrice'] }} now. The next charge will be on {{ $nextTheoriticalBillingDate }}. If you ever change your mind, you can cancel anytime, no questions asked.</p>
-      <p>The payment is handled by <a href="https://stripe.com">Stripe</a>. No card information touches our server.</p>
+      <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => $planInformation['friendlyPrice'], 'date' => $nextTheoriticalBillingDate]) }}</p>
+      <p>{!! trans('settings.subscriptions_upgrade_charge_handled', ['url' => 'https://stripe.com']) !!}</p>
     </div>
   </div>
 </div>

@@ -30,7 +30,7 @@
       <div class="dt-row bb b--light-gray" v-for="reminderRule in reminderRules" :key="reminderRule.id">
         <div class="dtc">
           <div class="pa2">
-            {{ $t('settings.personalization_reminder_rule_line', {count: reminderRule.number_of_days_before}) }}
+            {{ $tc('settings.personalization_reminder_rule_line', reminderRule.number_of_days_before, {count: reminderRule.number_of_days_before}) }}
           </div>
         </div>
         <div class="dtc tr">

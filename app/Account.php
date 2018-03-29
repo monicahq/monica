@@ -418,11 +418,8 @@ class Account extends Model
     public function hasInvoices()
     {
         $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-        if ($query > 0) {
-            return true;
-        }
 
-        return false;
+        return $query > 0;
     }
 
     /**
