@@ -31,7 +31,8 @@
         "vinkla/hashids": "^3.3",
         "pragmarx/recovery": "^0.1.0",
         "sentry/sentry-laravel": "^0.8",
-        "symfony/translation": "^3.4"
+        "symfony/translation": "^3.4",
+        "vluzrmos/language-detector": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",

@@ -9,7 +9,9 @@ return [
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
     'close' => 'Zavřít',
+    'create' => 'Create',
     'remove' => 'Odstranit',
+    'revoke' => 'Revoke',
     'done' => 'Hotovo',
     'verify' => 'Ověřit',
     'for' => 'pro',
@@ -17,6 +19,10 @@ return [
     'load_more' => 'Načíst další',
     'loading' => 'Načítá se...',
     'with' => 's',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Chcete pohodlně formátovat text? Podporujeme formát markdown pro značení tučně, kurzivou, vytváření seznamu a další.',
     'markdown_link' => 'Číst dokumentaci',

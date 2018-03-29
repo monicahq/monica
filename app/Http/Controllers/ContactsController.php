@@ -184,7 +184,7 @@ class ContactsController extends Controller
 
         $reminders = $contact->getRemindersAboutRelatives();
 
-        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = now(auth()->user()->timezone);
         $contact->save();
 
         return view('people.profile')
@@ -201,9 +201,9 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
 
         return view('people.edit')
             ->withContact($contact)

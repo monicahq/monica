@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_DEFAULT_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -154,6 +154,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,

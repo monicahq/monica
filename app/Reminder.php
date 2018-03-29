@@ -182,7 +182,7 @@ class Reminder extends Model
     {
         $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
 
-        if ($date->lte(Carbon::now())) {
+        if ($date->lte(now())) {
             return;
         }
 

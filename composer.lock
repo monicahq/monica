@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b16761d2901e238f07af3b49fc081ef8",
+    "content-hash": "3d068273dfd542dda5e85bfd1ff7da5f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.23",
+            "version": "3.52.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783"
+                "reference": "f1d453c2c090ef7a8d4887c7d121bdd0cb7b7613"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3ce95b96c217a699168d937c4ed700e6a27ec783",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/f1d453c2c090ef7a8d4887c7d121bdd0cb7b7613",
+                "reference": "f1d453c2c090ef7a8d4887c7d121bdd0cb7b7613",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-08T22:51:35+00:00"
+            "time": "2018-03-29T22:20:51+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -178,16 +178,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.10",
+            "version": "v1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "9affd46be10f1ebb11d5d9f03440f804c09f2b59"
+                "reference": "4459b68a853ffdb1c2abbf9419214df46371889b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/9affd46be10f1ebb11d5d9f03440f804c09f2b59",
-                "reference": "9affd46be10f1ebb11d5d9f03440f804c09f2b59",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/4459b68a853ffdb1c2abbf9419214df46371889b",
+                "reference": "4459b68a853ffdb1c2abbf9419214df46371889b",
                 "shasum": ""
             },
             "require": {
@@ -228,7 +228,7 @@
                 "gravatar",
                 "laravel"
             ],
-            "time": "2017-08-08T22:14:26+00:00"
+            "time": "2018-03-29T22:10:58+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -1092,16 +1092,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.0",
+            "version": "6.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
+                "reference": "68d0ea14d5a3f42a20e87632a5f84931e2709c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
-                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/68d0ea14d5a3f42a20e87632a5f84931e2709c90",
+                "reference": "68d0ea14d5a3f42a20e87632a5f84931e2709c90",
                 "shasum": ""
             },
             "require": {
@@ -1111,7 +1111,7 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0 || ^5.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4",
                 "psr/log": "^1.0"
             },
             "suggest": {
@@ -1120,7 +1120,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.2-dev"
+                    "dev-master": "6.3-dev"
                 }
             },
             "autoload": {
@@ -1153,7 +1153,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-06-22T18:50:49+00:00"
+            "time": "2018-03-26T16:33:04+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1523,16 +1523,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.0.13",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2"
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/24064155f6f9d97e83669455ad305c3dfec908b7",
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7",
                 "shasum": ""
             },
             "require": {
@@ -1584,7 +1584,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2017-12-29T15:23:28+00:00"
+            "time": "2018-03-14T12:22:43+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2045,16 +2045,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.18",
+            "version": "1.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "dc09b19f455750663b922ed52dcc0ff215bed284"
+                "reference": "f135691ef6761542af301b7c9880f140fb12dc74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/dc09b19f455750663b922ed52dcc0ff215bed284",
-                "reference": "dc09b19f455750663b922ed52dcc0ff215bed284",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/f135691ef6761542af301b7c9880f140fb12dc74",
+                "reference": "f135691ef6761542af301b7c9880f140fb12dc74",
                 "shasum": ""
             },
             "require": {
@@ -2088,7 +2088,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2017-06-30T06:29:25+00:00"
+            "time": "2018-03-27T20:33:59+00:00"
         },
         {
             "name": "league/oauth1-client",
@@ -2453,16 +2453,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.24.1",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41"
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cbcf13da0b531767e39eb86e9687f5deba9857b4",
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4",
                 "shasum": ""
             },
             "require": {
@@ -2502,7 +2502,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-03-09T15:49:34+00:00"
+            "time": "2018-03-19T15:50:49+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -3623,16 +3623,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95"
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/512661046e403dc5eb5ae192d5a6cda10e068a95",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
                 "shasum": ""
             },
             "require": {
@@ -3683,7 +3683,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2018-02-07T11:26:52+00:00"
+            "time": "2018-03-20T12:52:10+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
@@ -5009,6 +5009,61 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "vluzrmos/language-detector",
+            "version": "v1.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vluzrmos/laravel-language-detector.git",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vluzrmos/laravel-language-detector/zipball/7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "reference": "7aeb9531e8caee41421a8a1d53920eadcc602ad9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/cookie": "~5.0",
+                "illuminate/support": "~5.0",
+                "illuminate/translation": "~5.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~1.11",
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "3.0.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Vluzrmos\\LanguageDetector\\": "src/"
+                },
+                "files": [
+                    "src/Support/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vagner do Carmo",
+                    "email": "vluzrmos@gmail.com"
+                }
+            ],
+            "description": "Detect the language for your application using browser preferences, subdomains or route prefixes.",
+            "keywords": [
+                "i18n",
+                "language",
+                "laravel",
+                "locale",
+                "lumen"
+            ],
+            "time": "2017-03-11T03:40:17+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -7420,7 +7475,7 @@
     "platform": {
         "php": ">=7.0.0",
         "ext-intl": "*",
-        "ext-gmp": "*"
+        "ext-bcmath": "*"
     },
     "platform-dev": []
 }

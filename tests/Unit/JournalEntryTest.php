@@ -24,7 +24,7 @@ class JournalEntryTest extends TestCase
     public function test_get_add_adds_data_of_the_right_type()
     {
         $activity = factory(\App\Activity::class)->create();
-        $date = \Carbon\Carbon::now();
+        $date = now();
 
         $journalEntry = (new JournalEntry)->add($activity);
 
@@ -39,7 +39,7 @@ class JournalEntryTest extends TestCase
     public function test_get_object_data_returns_an_object()
     {
         $activity = factory(\App\Activity::class)->create();
-        $date = \Carbon\Carbon::now();
+        $date = now();
 
         $journalEntry = (new JournalEntry)->add($activity);
 

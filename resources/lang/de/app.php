@@ -9,7 +9,9 @@ return [
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
     'close' => 'Schließen',
+    'create' => 'Erstellen',
     'remove' => 'Entfernen',
+    'revoke' => 'Aufheben',
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
@@ -17,6 +19,10 @@ return [
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
@@ -41,7 +47,7 @@ return [
     'footer_version' => 'Version: :version',
     'footer_new_version' => 'Es ist eine neue Version verfügbar',
 
-    'footer_modal_version_whats_new' => 'Was gibt\'s neues',
+    'footer_modal_version_whats_new' => 'Was gibt\'s Neues',
     'footer_modal_version_release_away' => 'Du bist ein Release hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.|Du bist :number Releases hinter der neuesten verfügbaren Version. Du solltest deine Installation updaten.',
 
     'breadcrumb_dashboard' => 'Dashboard',
