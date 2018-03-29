@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,7 +45,7 @@ class Account extends Model
         // create new account
         $account = new self;
         $account->api_key = str_random(30);
-        $account->created_at = Carbon::now();
+        $account->created_at = now();
         $account->save();
 
         $account->populateDefaultFields($account);
@@ -531,8 +530,8 @@ class Account extends Model
      */
     public function getRemindersForMonth(int $month)
     {
-        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
-        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+        $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = now()->addMonthsNoOverflow($month)->endOfMonth();
 
         return auth()->user()->account->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
