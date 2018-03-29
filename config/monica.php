@@ -2,28 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Locales supported by the application
-    |--------------------------------------------------------------------------
-    |
-    | This is the list of locales that we will use to localize the application.
-    | Each locale is defined in `resources/lang/` in its respective folder.
-    |
-    */
-    'langs' => [
-        'en',
-        'fr',
-        'pt',
-        'ru',
-        'cs',
-        'it',
-        'de',
-        'zh',
-        'he',
-        'es',
-    ],
-
    /*
     |--------------------------------------------------------------------------
     | Disable User registration
