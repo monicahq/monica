@@ -42,7 +42,7 @@ return [
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
-    'people_export' => 'Export as vCard',
+    'people_export' => 'ייצוא כ־vCard',
 
     // show
     'section_contact_information' => 'פרטי קשר',
@@ -132,7 +132,7 @@ return [
     'reminders_delete_success' => 'התזכורת נמחקה בהצלחה',
     'reminders_update_success' => 'התזכורת עודכנה בהצלחה',
 
-    'reminder_frequency_day' => 'every day|every :number days',
+    'reminder_frequency_day' => '{1} כל יום|{2} כל יומיים|[3,*] כל :number ימים',
     'reminder_frequency_week' => 'every week|every :number weeks',
     'reminder_frequency_month' => 'every month|every :number months',
     'reminder_frequency_year' => 'every year|every :number year',
