@@ -14,8 +14,8 @@ class CreateActivityContactTable extends Migration
     public function up()
     {
         Schema::create('activity_contact', function (Blueprint $table) {
-            $table->integer('activity_id')->unsigned();
-            $table->integer('contact_id')->unsigned();
+            $table->unsignedInteger('activity_id');
+            $table->unsignedInteger('contact_id');
 
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');

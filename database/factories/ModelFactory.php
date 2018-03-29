@@ -230,6 +230,6 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'stripe_id' => $stripe_id,
         'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
-        'created_at' => \Carbon\Carbon::now(),
+        'created_at' => now(),
     ];
 });

@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Zatím jste do svého účtu nikoho nepřidali',
     'people_list_blank_cta' => 'Někoho přidat',
     'people_list_sort' => 'Řazení',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => '1 kontakt|:count kontaktů',
     'people_list_firstnameAZ' => 'Řadit podle jména A → Z',
     'people_list_firstnameZA' => 'Řadit podle jména Z → A',
     'people_list_lastnameAZ' => 'Řadit podle příjmení A → Z',

@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
     'people_list_blank_cta' => 'Jemand hinzufügen',
     'people_list_sort' => 'Sortieren',
-    'people_list_stats' => '1 contact|:count contacts',
+    'people_list_stats' => '1 Kontakt|:count Kontakte',
     'people_list_firstnameAZ' => 'Nach Vorname sortieren A → Z',
     'people_list_firstnameZA' => 'Nach Vorname sortieren Z → A',
     'people_list_lastnameAZ' => 'Nach Nachname sortieren A → Z',
@@ -40,9 +40,9 @@ return [
     'people_delete_click_here' => 'klick hier',
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
-    'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
+    'people_add_import' => 'Möchtest du Kontakte <a href=":url">importieren</a>?',
     'people_edit_email_error' => 'Es gibt bereits ein Kontakt in deinem Konto mit dieser e-Mail-Adresse. Bitte wähle eine anderen.',
-    'people_export' => 'Export as vCard',
+    'people_export' => 'Als vCard exportieren',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
@@ -105,7 +105,7 @@ return [
     'work_edit_title' => 'Ändere :name\'s Arbeitsplatz-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',
-    'work_information' => 'Work information',
+    'work_information' => 'Arbeitsinformationen',
 
     // food preferencies
     'food_preferencies_add_success' => 'Essensvorlieben gespeichert',
@@ -175,7 +175,7 @@ return [
     'contact_add_add_description' => 'Dies erlaubt dir den Lebensgefährten wie jeden anderen Kontakt zu verwalten.',
 
     // kids
-    'kid_add_title' => 'Add a new kid',
+    'kid_add_title' => 'Neues Kind hinzufügen',
     'kids_sidebar_title' => 'Kinder',
     'kids_sidebar_cta' => 'Kind hinzufügen',
     'kids_blank_cta' => 'Kind hinzufügen',
@@ -201,7 +201,7 @@ return [
     'kids_update_success' => 'Das Kind wurde erfolgreich aktualisiert',
     'kids_delete_success' => 'Das Kind wurde erfolgreich gelöscht',
     'kids_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag, :contact_firstname\'s Kind',
-    'kids_unlink_confirmation' => 'Bist Du dir sicher, dass du diese Verbindung lösen möchtest? Das Kind wird nicht gelöscht nur die Verbindung zwischen beiden Kontakten.',
+    'kids_unlink_confirmation' => 'Bist Du dir sicher, dass du diese Verbindung lösen möchtest? Das Kind wird nicht gelöscht – nur die Verbindung zwischen beiden Kontakten.',
 
     // tasks
     'tasks_blank_title' => 'Du hast noch keine Aufgaben.',
@@ -276,7 +276,7 @@ return [
     'gifts_add_someone' => 'Dieses Geschenk ist für jemanden in :name\'s Familie',
     'gifts_ideas' => 'Geschenkideen',
     'gifts_offered' => 'Geschenke angeboten',
-    'gifts_offered_as_an_idea' => 'Mark as an idea',
+    'gifts_offered_as_an_idea' => 'Als Idee markieren',
     'gifts_received' => 'Geschenke erhalten',
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',

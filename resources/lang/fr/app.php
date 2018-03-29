@@ -40,9 +40,9 @@ return [
 
     'footer_remarks' => 'Une remarque ?',
     'footer_send_email' => 'Envoyez moi un courriel',
-    'footer_privacy' => 'Politique de confidentialité (en)',
-    'footer_release' => 'Notes de version (en)',
-    'footer_newsletter' => 'Infolettre (en)',
+    'footer_privacy' => 'Politique de confidentialité',
+    'footer_release' => 'Notes de version',
+    'footer_newsletter' => 'Infolettre',
     'footer_source_code' => 'Contribuer',
     'footer_version' => 'Version : :version',
     'footer_new_version' => 'Une nouvelle version est disponible',

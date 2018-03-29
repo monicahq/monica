@@ -49,7 +49,7 @@ class JournalEntry extends Model
     public function add($resourceToLog)
     {
         $this->account_id = $resourceToLog->account_id;
-        $this->date = \Carbon\Carbon::now();
+        $this->date = now();
         $this->journalable_id = $resourceToLog->id;
         $this->journalable_type = get_class($resourceToLog);
         $this->save();

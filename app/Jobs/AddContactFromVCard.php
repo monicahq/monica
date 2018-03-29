@@ -58,7 +58,7 @@ class AddContactFromVCard implements ShouldQueue
     protected function workInit($matchCount)
     {
         $this->matchCount = $matchCount;
-        $this->importJob->started_at = \Carbon\Carbon::now();
+        $this->importJob->started_at = now();
 
         return true;
     }
@@ -83,7 +83,7 @@ class AddContactFromVCard implements ShouldQueue
         $this->importJob->contacts_found = $numberOfContactsInTheFile;
         $this->importJob->contacts_skipped = $skippedContacts;
         $this->importJob->contacts_imported = $importedContacts;
-        $this->importJob->ended_at = \Carbon\Carbon::now();
+        $this->importJob->ended_at = now();
         $this->importJob->save();
 
         Storage::disk('public')->delete($this->importJob->filename);
