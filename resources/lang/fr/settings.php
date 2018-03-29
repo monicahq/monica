@@ -51,7 +51,7 @@ return [
     'locale_fr' => 'Francais',
     'locale_he' => 'Hébreu',
     'locale_it' => 'Italien',
-    'locale_nl' => 'Dutch',
+    'locale_nl' => 'Néerlandais',
     'locale_pt' => 'Portugais',
     'locale_ru' => 'Russe',
     'locale_zh' => 'Chinois Simplifié',
@@ -160,7 +160,7 @@ return [
     'subscriptions_help_limits_title' => 'Y a-t-il une limite au nombre de contacts que nous pouvons avoir sur l\'offre gratuite ?',
     'subscriptions_help_limits_plan' => 'Absolument pas. L\'offre gratuite n’a aucune limite sur le nombre de contacts que vous pouvez avoir.',
     'subscriptions_help_discounts_title' => 'Avez-vous des réductions pour les organismes sans but lucratif et les organismes d’éducation ?',
-    'subscriptions_help_discounts_desc' => 'We do! Monica is free for students, and free for non-profits and charities. Just contact <a href=":support">the support</a> with a proof of your status and we\'ll apply this special status in your account.',
+    'subscriptions_help_discounts_desc' => 'En effet ! Monica est gratuit pour les étudiants, les organismes sans but lucratif et les organismes de bienfaisance. Il suffit de contacter le <a href=":support">support</a> avec un justificatif de votre statut et nous allons appliquer ce statut spécial dans votre compte.',
     'subscriptions_help_change_title' => 'Que se passe-t-il si je change d\'avis ?',
     'subscriptions_help_change_desc' => 'Vous pouvez annuler à tout moment, sans question, et par vous-même – aucun support requis. Toutefois, vous ne serez pas remboursé pour la période en cours.',
 
