@@ -106,7 +106,7 @@ return [
     'users_invitation_need_subscription' => 'הוספת משתמשים נוספים דורשת רישום.',
 
     'subscriptions_account_current_plan' => 'התכנית הנוכחית שלך',
-    'subscriptions_account_current_paid_plan' => 'התכנית שלך היא :name. תודה לך על ההרשמה.',
+    'subscriptions_account_current_paid_plan' => 'You are on the :name plan. Thanks so much for being a subscriber.',
     'subscriptions_account_next_billing' => 'המינוי שלך יחודש אוטומטית ב־<strong>:date</strong>. ניתן <a href=":url">לבטל את המינוי</a> בכל עת.',
     'subscriptions_account_free_plan' => 'התכנית שלך היא החינמית.',
     'subscriptions_account_free_plan_upgrade' => 'ניתן לשדרג את החשבון שלך לתכנית :name, שעולה $:price לחודש. להלן היתרונות:',
