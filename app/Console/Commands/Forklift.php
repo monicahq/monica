@@ -15,7 +15,8 @@ class Forklift extends Command
      */
     private function mysqlTables()
     {
-        return DB::connection('mysql')->select('show tables');
+        return array_map(function($table) { return $table->Tables_in_monica; },
+                         DB::connection('mysql')->select('show tables'));
     }
 
     /**
@@ -38,7 +39,7 @@ class Forklift extends Command
     private function fillPgsqlTable($tableName, $rows)
     {
         foreach ($rows as $row)
-            DB::connection('pgsql')->table($tableName)->insert($row);
+            DB::connection('pgsql')->table($tableName)->insert(get_object_vars($row));
     }
 
     /**
@@ -74,10 +75,10 @@ class Forklift extends Command
     {
         $this->call('migrate:fresh', ['--database' => 'pgsql']);
         $tables = $this->mysqlTables();
-        // foreach ($tables as $table)
-        // {
-        //     $rows = $this->readMysqlTable($table);
-        //     $this->fillPgsqlTable($table, $rows);
-        // }
+        foreach ($tables as $table)
+        {
+            $rows = $this->readMysqlTable($table);
+            $this->fillPgsqlTable($table, $rows);
+        }
     }
 }
