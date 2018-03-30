@@ -174,18 +174,17 @@ function setI18nLanguage (lang) {
     return lang;
 }
 
-export function loadLanguageAsync (lang) {
+export function loadLanguageAsync (lang, set) {
     if (i18n.locale !== lang) {
       if (!loadedLanguages.includes(lang)) {
         return axios.get(`/js/langs/${lang}.json`).then(msgs => {
           i18n.setLocaleMessage(lang, msgs.data);
           loadedLanguages.push(lang);
-          return setI18nLanguage(lang);
-        })
+          return set ? setI18nLanguage(lang) : lang;
+        });
       }
-      return Promise.resolve(setI18nLanguage(lang));
     }
-    return Promise.resolve(lang);
+    return Promise.resolve(set ? setI18nLanguage(lang) : lang);
 }
 
 const app = new Vue({
@@ -204,7 +203,11 @@ require('./tags');
 require('./search');
 require('./contacts');
 
-loadLanguageAsync(window.Laravel.locale);
+loadLanguageAsync(window.Laravel.locale, true).then(function (lang) {
+    if (lang !== 'en') {
+        loadLanguageAsync('en', false);
+    }
+});
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
