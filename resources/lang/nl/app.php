@@ -15,7 +15,7 @@ return [
     'done' => 'Gereed',
     'verify' => 'Bevestigen',
     'for' => 'voor',
-    'unknown' => 'Ik weet het niet',
+    'unknown' => 'I don’t know',
     'load_more' => 'Meer laden',
     'loading' => 'Laden...',
     'with' => 'met',
