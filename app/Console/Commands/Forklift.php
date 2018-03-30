@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Forklift extends Command
 {
@@ -14,7 +15,7 @@ class Forklift extends Command
      */
     private function mysqlTables()
     {
-        return DB::select('show tables');
+        return DB::connection('mysql')->select('show tables');
     }
 
     /**
@@ -25,7 +26,19 @@ class Forklift extends Command
      */
     private function readMysqlTable($tableName)
     {
-        return DB::select('select * from ' . $tableName);
+        return DB::connection('mysql')->table($tableName)->get();
+    }
+
+    /**
+     * Fills the specified PostgreSQL table with the given rows.
+     * 
+     * @param string $tableName
+     * @param array $rows
+     */
+    private function fillPgsqlTable($tableName, $rows)
+    {
+        foreach ($rows as $row)
+            DB::connection('pgsql')->table($tableName)->insert($row);
     }
 
     /**
@@ -59,6 +72,12 @@ class Forklift extends Command
      */
     public function handle()
     {
-        $this->line('test');
+        $this->call('migrate:fresh', ['--database' => 'pgsql']);
+        $tables = $this->mysqlTables();
+        // foreach ($tables as $table)
+        // {
+        //     $rows = $this->readMysqlTable($table);
+        //     $this->fillPgsqlTable($table, $rows);
+        // }
     }
 }
