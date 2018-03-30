@@ -42,7 +42,7 @@ class SetupProduction extends Command
             touch(__DIR__.'/../../../.env');
         }
 
-        $this->callSilent('update', ['--force' => true]);
+        $this->callSilent('monica:update', ['--force' => true]);
 
         $this->line('');
         $this->line('-----------------------------');

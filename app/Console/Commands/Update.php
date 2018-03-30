@@ -14,7 +14,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:update {--force} {--update-composer}';
+    protected $signature = 'monica:update {--force} {--composer-install}';
 
     /**
      * The console command description.
@@ -38,8 +38,8 @@ class Update extends Command
                     '--retry' => '10',
                     ]);
 
-                if ($this->option('update-composer') === true) {
-                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --no-dev');
+                if ($this->option('composer-install') === true) {
+                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs');
                 }
 
                 $this->artisan('✓ Performing migrations', 'migrate', ['--force' => true]);

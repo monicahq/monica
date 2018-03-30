@@ -20,7 +20,7 @@ else
 fi
 
 # Run migrations
-${ARTISAN} update --force
+${ARTISAN} monica:update --force
 
 # Run cron
 crond -b &
