@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Вы уверены что хотите удалить эту заметку? Восстановление невозможно.',
 
     // gifts
+    'gifts_title' => 'Подарки',
     'gifts_add_success' => 'Подарок был добавлен',
     'gifts_delete_success' => 'Подарок был удалён',
     'gifts_delete_confirmation' => 'Вы уверены что хотите удалить этот подарок?',
