@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => '如何重新命名这种新的性别？',
     'personalization_genders_modal_delete' => '删除性别类型',
     'personalization_genders_modal_delete_desc' => '是否确实要删除:name？',
-    'personalization_genders_modal_delete_question' => '你目前有:numberOfContacts 与这种性别有关。如果您删除此性别, 这些联系人应该设置成什么性别？',
+    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => '请从列表中选择一个有效的性别。',
 
     'personalization_reminder_rule_save' => '更改已保存',
@@ -277,5 +277,4 @@ return [
     'personalization_reminder_rule_desc' => '对于您设置的每个提醒, 我们可以在事件发生前几天向您发送电子邮件。您可以在此处切换这些通知。请注意, 这些通知只适用于每月和每年的提醒。',
 
     'reminder_time_to_send' => '应发送每日提醒的时间',
-    'test_for_crowdin' => 'Crowdin 测试',
 ];
