@@ -156,16 +156,17 @@ Vue.component(
 // i18n
 import VueI18n from 'vue-i18n';
 import axios from 'axios';
+import messages from '../../../public/js/langs/en.json';
 
 Vue.use(VueI18n);
 
 export const i18n = new VueI18n({
-    locale: '', // set locale
+    locale: 'en', // set locale
     fallbackLocale: 'en',
-    messages: []
+    messages: {'en': messages}
 });
 
-const loadedLanguages = []; // our default language that is prelaoded
+const loadedLanguages = ['en']; // our default language that is prelaoded
 
 function setI18nLanguage (lang) {
     i18n.locale = lang;
@@ -187,27 +188,27 @@ export function loadLanguageAsync (lang, set) {
     return Promise.resolve(set ? setI18nLanguage(lang) : lang);
 }
 
-const app = new Vue({
-    i18n,
-    data: {
-      activities_description_show: false,
-      reminders_frequency: 'once',
-      accept_invite_user: false,
-      date_met_the_contact: 'known'
-    },
-    methods: {
-    },
-}).$mount('#app');
+const app = null;
+
+loadLanguageAsync(window.Laravel.locale, true)
+.then((lang) => {
+    this.app = new Vue({
+      i18n,
+      data: {
+        activities_description_show: false,
+        reminders_frequency: 'once',
+        accept_invite_user: false,
+        date_met_the_contact: 'known'
+      },
+      methods: {
+      },
+    }).$mount('#app');
+    return lang;
+});
 
 require('./tags');
 require('./search');
-require('./contacts');
-
-loadLanguageAsync(window.Laravel.locale, true).then(function (lang) {
-    if (lang !== 'en') {
-        loadLanguageAsync('en', false);
-    }
-});
+require('./contacts');        
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
