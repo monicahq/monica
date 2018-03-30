@@ -10,6 +10,7 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
 
     // Relationships
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
+    Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');

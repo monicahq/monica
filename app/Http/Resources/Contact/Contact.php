@@ -3,7 +3,9 @@
 namespace App\Http\Resources\Contact;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+
 
 class Contact extends Resource
 {
@@ -26,18 +28,22 @@ class Contact extends Resource
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'information' => [
-                'family' => $this->when(! $this->is_partial, [
-                    'kids' => [
-                        'total' => $this->getOffsprings()->count(),
-                        'kids' => $this->getOffspringsForAPI(),
+                'relationships' => $this->when(! $this->is_partial, [
+                    'love' => [
+                        'total' => $this->getRelationshipsByRelationshipTypeGroup('love')->count(),
+                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love')),
                     ],
-                    'partners' => [
-                        'total' => $this->getCurrentPartners()->count(),
-                        'partners' => $this->getCurrentPartnersForAPI(),
+                    'family' => [
+                        'total' => $this->getRelationshipsByRelationshipTypeGroup('family')->count(),
+                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family')),
                     ],
-                    'progenitors' => [
-                        'total' => $this->getProgenitors()->count(),
-                        'progenitors' => $this->getProgenitorsForAPI(),
+                    'friend' => [
+                        'total' => $this->getRelationshipsByRelationshipTypeGroup('friend')->count(),
+                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend')),
+                    ],
+                    'work' => [
+                        'total' => $this->getRelationshipsByRelationshipTypeGroup('work')->count(),
+                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work')),
                     ],
                 ]),
                 'dates' => [

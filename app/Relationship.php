@@ -26,14 +26,14 @@ class Relationship extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public function contact()
+    public function contactIs()
     {
-        return $this->belongsTo(Contact::class, 'contact_id_main');
+        return $this->belongsTo(Contact::class, 'contact_is');
     }
 
-    public function withContact()
+    public function ofContact()
     {
-        return $this->belongsTo(Contact::class, 'contact_id_secondary');
+        return $this->belongsTo(Contact::class, 'of_contact');
     }
 
     public function relationshipType()

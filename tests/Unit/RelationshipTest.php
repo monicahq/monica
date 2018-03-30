@@ -23,7 +23,7 @@ class RelationshipTest extends TestCase
     {
         $contact = factory('App\Contact')->create([]);
         $relationship = factory('App\Relationship')->create([
-            'contact_id_main' => $contact->id,
+            'contact_is' => $contact->id,
         ]);
 
         $this->assertTrue($relationship->contact()->exists());
@@ -33,7 +33,7 @@ class RelationshipTest extends TestCase
     {
         $contact = factory('App\Contact')->create([]);
         $relationship = factory('App\Relationship')->create([
-            'contact_id_secondary' => $contact->id,
+            'of_contact' => $contact->id,
         ]);
 
         $this->assertTrue($relationship->withContact()->exists());

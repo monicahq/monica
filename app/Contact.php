@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
@@ -236,7 +238,7 @@ class Contact extends Model
      */
     public function relationships()
     {
-        return $this->hasMany('App\Relationship', 'contact_id_main');
+        return $this->hasMany('App\Relationship', 'contact_is');
     }
 
     /**
@@ -549,120 +551,51 @@ class Contact extends Model
 
     /**
      * Get all the contacts related to the current contact by a specific
-     * relationship type.
+     * relationship type group.
      *
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelatedContactsByRelationshipType(String $type)
+    public function getRelationshipsByRelationshipTypeGroup(String $type)
     {
-        $relationshipType = $this->account->getRelationshipTypeByType($type);
+        $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
-        if (! $relationshipType) {
+        if (! $relationshipTypeGroup) {
             return;
         }
 
-        $relationships = $this->relationships()
-                            ->where('relationship_type_id', $relationshipType->id)
-                            ->get();
+        $relationships = $this->relationships->filter(function ($item) use ($type) {
+            return $item->relationshipType->relationshipTypeGroup->name == $type;
+        });;
 
         return $relationships;
     }
 
     /**
-     * Get the current Significant Others, if they exists, or return null otherwise.
+     * Translate a collection of relationships into a collection that the API can
+     * parse.
      *
+     * @param  Collection $collection
+     * @param  bool       $shortVersion Indicates whether the collection should include how contacts are related
      * @return Collection
      */
-    public function getCurrentPartners()
+    public static function translateForAPI(Collection $collection)
     {
-        $partners = collect([]);
-        foreach ($this->activeRelationships as $relationship) {
-            $contact = self::find($relationship->with_contact_id);
-            $partners->push($contact);
+        $contacts = collect();
+
+        foreach ($collection as $relationship) {
+            $contact = $relationship->ofContact;
+
+            $contacts->push([
+                'relationship' => [
+                    'id' => $relationship->id,
+                    'name' => $relationship->relationship_type_name,
+                ],
+                'contact' => new ContactShortResource($contact)
+                ]);
         }
 
-        return $partners;
-    }
-
-    /**
-     * Get the current Significant Others as ID, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getCurrentPartnersForAPI()
-    {
-        $partners = collect([]);
-        foreach ($this->activeRelationships as $relationship) {
-            $contact = self::find($relationship->with_contact_id);
-            $partners->push(new PartnerShortResource($contact));
-        }
-
-        return $partners;
-    }
-
-    /**
-     * Get the Kids, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getOffsprings()
-    {
-        $kids = collect([]);
-        foreach ($this->offsprings as $offspring) {
-            $contact = self::find($offspring->contact_id);
-            $kids->push($contact);
-        }
-
-        return $kids;
-    }
-
-    /**
-     * Get the Kids, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getOffspringsForAPI()
-    {
-        $kids = collect([]);
-        foreach ($this->offsprings as $offspring) {
-            $contact = self::find($offspring->contact_id);
-            $kids->push(new OffspringShortResource($contact));
-        }
-
-        return $kids;
-    }
-
-    /**
-     * Get the current parents, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getProgenitors()
-    {
-        $progenitors = collect([]);
-        foreach ($this->progenitors as $progenitor) {
-            $contact = self::find($progenitor->contact_id);
-            $progenitors->push($contact);
-        }
-
-        return $progenitors;
-    }
-
-    /**
-     * Get the current parents, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getProgenitorsForAPI()
-    {
-        $progenitors = collect([]);
-        foreach ($this->progenitors as $progenitor) {
-            $contact = self::find($progenitor->contact_id);
-            $progenitors->push(new ProgenitorShortResource($contact));
-        }
-
-        return $progenitors;
+        return $contacts;
     }
 
     /**
@@ -792,7 +725,6 @@ class Contact extends Model
 
     /**
      * Refresh statistics about activities
-     * TODO: unit test.
      *
      * @return void
      */
@@ -1023,9 +955,9 @@ class Contact extends Model
         $relationship = new Relationship;
         $relationship->account_id = $this->account_id;
         $relationship->relationship_type_id = $relationshipType->id;
-        $relationship->contact_id_main = $this->id;
+        $relationship->contact_is = $this->id;
         $relationship->relationship_type_name = $relationshipType->name;
-        $relationship->contact_id_secondary = $otherContact->id;
+        $relationship->of_contact = $otherContact->id;
         $relationship->save();
 
         // Get the reverse relationship
@@ -1035,9 +967,9 @@ class Contact extends Model
         $relationship = new Relationship;
         $relationship->account_id = $this->account_id;
         $relationship->relationship_type_id = $reverseRelationshipType->id;
-        $relationship->contact_id_main = $otherContact->id;
+        $relationship->contact_is = $otherContact->id;
         $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
-        $relationship->contact_id_secondary = $this->id;
+        $relationship->of_contact = $this->id;
         $relationship->save();
     }
 
@@ -1059,13 +991,13 @@ class Contact extends Model
      *
      * @param  self   $otherContact
      */
-    public function deleteRelationship(self $otherContact, $relationshipTypeId)
+    public function deleteRelationship(self $otherContact, int $relationshipTypeId)
     {
         // Each relationship between two contacts has two Relationship objects.
         // We need to delete both.
 
-        $relationship = Relationship::where('contact_id_main', $this->id)
-                                    ->where('contact_id_secondary', $otherContact->id)
+        $relationship = Relationship::where('contact_is', $this->id)
+                                    ->where('of_contact', $otherContact->id)
                                     ->where('relationship_type_id', $relationshipTypeId)
                                     ->first();
 
@@ -1074,82 +1006,12 @@ class Contact extends Model
         $relationshipType = RelationshipType::find($relationshipTypeId);
         $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-        $relationship = Relationship::where('contact_id_main', $otherContact->id)
-                                    ->where('contact_id_secondary', $this->id)
+        $relationship = Relationship::where('contact_is', $otherContact->id)
+                                    ->where('of_contact', $this->id)
                                     ->where('relationship_type_id', $reverseRelationshipType->id)
                                     ->first();
 
         $relationship->delete();
-    }
-
-    /**
-     * Deletes all the events that mentioned the relationship with this partner.
-     *
-     * @var Contact
-     */
-    public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
-    {
-        Event::where('contact_id', $this->id)
-                ->where('object_id', $contact->id)
-                ->where('object_type', $type)
-                ->delete();
-
-        Event::where('contact_id', $contact->id)
-                ->where('object_id', $this->id)
-                ->where('object_type', $type)
-                ->delete();
-    }
-
-    /**
-     * Get all the reminders about the contact, and also about the relatives
-     * (significant others and kids).
-     *
-     * @return Collection
-     */
-    public function getRemindersAboutRelatives()
-    {
-        // @todo: remove this method entirely
-        $reminders = $this->reminders;
-
-        $partners = $this->getPartialPartners();
-        foreach ($partners as $partner) {
-            foreach ($partner->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
-
-        $kids = $this->getPartialOffsprings();
-        foreach ($kids as $kid) {
-            foreach ($kid->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
-
-        return $reminders;
-    }
-
-    /**
-     * Get the first progenitor of the contact.
-     * @return Contact
-     */
-    public function getFirstProgenitor()
-    {
-        $offspring = Offspring::where('contact_id', $this->id)
-                        ->first();
-
-        return self::findOrFail($offspring->is_the_child_of);
-    }
-
-    /**
-     * Get the partner of the contact.
-     * @return Contact
-     */
-    public function getFirstPartner()
-    {
-        $relationship = Relationship::where('with_contact_id', $this->id)
-                        ->first();
-
-        return self::findOrFail($relationship->contact_id);
     }
 
     /**
@@ -1182,6 +1044,7 @@ class Contact extends Model
      */
     public function getFamilyMembers()
     {
+        // @TODO delete
         $offsprings = $this->offsprings;
         $relationships = $this->activeRelationships;
 
@@ -1334,6 +1197,7 @@ class Contact extends Model
 
     /**
      * Gets the contact related to this contact if the current contact is partial.
+     * @TODO: delete
      */
     public function getRelatedRealContact()
     {
@@ -1397,8 +1261,8 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        $relationship = Relationship::where('contact_id_main', $this->id)
-                                    ->where('contact_id_secondary', $otherContact->id)
+        $relationship = Relationship::where('contact_is', $this->id)
+                                    ->where('of_contact', $otherContact->id)
                                     ->first();
 
         return $relationship;

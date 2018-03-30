@@ -997,4 +997,42 @@ class ContactTest extends FeatureTestCase
             $foundRelationship->id
         );
     }
+
+    public function test_it_gets_related_relationships_of_a_certain_relationshiptype_group_name()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $relatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $otherRelatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+            'account_id' => $account->id,
+            'name' => 'friend',
+        ]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'relationship_type_group_id' => $relationshipTypeGroup->id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_id_main' => $contact->id,
+            'contact_id_secondary' => $relatedContact->id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_id_main' => $contact->id,
+            'contact_id_secondary' => $otherRelatedContact->id,
+        ]);
+
+        $this->assertEquals(
+            2,
+            $contact->getRelationshipsByRelationshipTypeGroup('friend')->count()
+        );
+
+        $this->assertEquals(
+            0,
+            $contact->getRelationshipsByRelationshipTypeGroup('love')->count()
+        );
+    }
 }

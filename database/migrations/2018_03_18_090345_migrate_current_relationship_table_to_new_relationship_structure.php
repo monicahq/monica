@@ -32,17 +32,17 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
                     DB::table('temp_relationships_table')->insert([
                         [
                             'account_id' => $account->id,
-                            'contact_id_main' => $relationship->contact_id,
-                            'contact_id_secondary' => $relationship->with_contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
+                            'contact_is' => $relationship->contact_id,
                             'relationship_type_name' => 'partner',
+                            'of_contact' => $relationship->with_contact_id,
+                            'relationship_type_id' => $relationshipTypeId,
                         ],
                         [
                             'account_id' => $account->id,
-                            'contact_id_main' => $relationship->with_contact_id,
-                            'contact_id_secondary' => $relationship->contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
+                            'contact_is' => $relationship->with_contact_id,
                             'relationship_type_name' => 'partner',
+                            'of_contact' => $relationship->contact_id,
+                            'relationship_type_id' => $relationshipTypeId,
                         ],
                     ]);
                 }

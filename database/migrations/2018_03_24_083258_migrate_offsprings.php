@@ -23,17 +23,17 @@ class MigrateOffsprings extends Migration
                     DB::table('relationships')->insert([
                         [
                             'account_id' => $account->id,
-                            'contact_id_main' => $offspring->is_the_child_of,
-                            'contact_id_secondary' => $offspring->contact_id,
-                            'relationship_type_id' => $relationshipChildTypeId,
+                            'contact_is' => $offspring->is_the_child_of,
                             'relationship_type_name' => 'child',
+                            'of_contact' => $offspring->contact_id,
+                            'relationship_type_id' => $relationshipChildTypeId,
                         ],
                         [
                             'account_id' => $account->id,
-                            'contact_id_main' => $offspring->contact_id,
-                            'contact_id_secondary' => $offspring->is_the_child_of,
-                            'relationship_type_id' => $relationshipParentTypeId,
+                            'contact_is' => $offspring->contact_id,
                             'relationship_type_name' => 'parent',
+                            'of_contact' => $offspring->is_the_child_of,
+                            'relationship_type_id' => $relationshipParentTypeId,
                         ],
                     ]);
                 }

@@ -54,9 +54,9 @@ class CreateRelationshipTypeTable extends Migration
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('relationship_type_id');
-            $table->integer('contact_id_main');
+            $table->integer('contact_is');
             $table->string('relationship_type_name');
-            $table->integer('contact_id_secondary');
+            $table->integer('of_contact');
             $table->timestamps();
         });
     }

@@ -453,6 +453,7 @@ class ApiContactController extends ApiController
 
     /**
      * Link a child to an existing contact.
+     * TODO delete
      */
     public function kids(Request $request, $contactId)
     {
