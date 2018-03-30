@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => 'Comment ce nouveau genre doit être renommé ?',
     'personalization_genders_modal_delete' => 'Supprimer le type de genre',
     'personalization_genders_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer :name ?',
-    'personalization_genders_modal_delete_question' => 'Vous avez présentement :numberOfContacts contacts avec ce genre. Si vous supprimez ce genre, à quel autre genre doit-on associer ces contacts ?',
+    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'Merci de choisir un genre valide depuis cette liste.',
 
     'personalization_reminder_rule_save' => 'Les modifications ont été enregistrées',
@@ -277,5 +277,4 @@ return [
     'personalization_reminder_rule_desc' => 'Pour chaque rappel que vous mettez en place, nous pouvons envoyer un courriel plusieurs jours avant que l\'évènement ne se passe. Vous pouvez désactiver ces notifications ici. Notez que ces notifications ne s\'appliquent qu\'aux rappels mensuels et annuels.',
 
     'reminder_time_to_send' => 'Heure du jour à laquelle les rappels doivent être envoyés',
-    'test_for_crowdin' => 'Test pour Crowdin',
 ];
