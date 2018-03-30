@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\DB;
 class ConsistencyCheck extends Command
 {
 
-
+    private $count;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'datamigration:check';
+    protected $signature = 'monica:consistencycheck';
 
     /**
      * The console command description.
@@ -33,10 +33,21 @@ class ConsistencyCheck extends Command
      */
     public function __construct()
     {
-        Event::listen(['eloquent.saved: *', 'eloquent.created: *'], function() {
-            //
-        });
         parent::__construct();
+    }
+
+    private function checkTables()
+    {
+
+        $mysql = DB::connection('mysql');
+        $mtables = $mysql->select('show tables');
+        var_dump($mtables[0]);
+
+        foreach($mtables as $mtable) {
+            if (DB::connection('pgsql')->table($mtable) != null) {
+                $this->count++;
+            }
+        }
     }
 
     /**
@@ -47,20 +58,13 @@ class ConsistencyCheck extends Command
     public function handle()
     {
         //$mysql = DB::connection('mysql');
-        $pgsql = DB::connection('pgsql');
+        //$pgsql = DB::connection('pgsql');
 
         //$mtables = $mysql->select('show tables');
-        $ptables = $pgsql->select('show * from test');
+        //$ptables = $pgsql->select('select * from');
 
-
-        if($ptables == null) {
-            foreach ($ptables as $table) {
-
-                $this->line($table);
-            }
-        } else {
-            $this->line($ptables);
-        }
+        $this->checkTables();
+        $this->line($this->count);
 
     }
 }
