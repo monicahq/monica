@@ -29,7 +29,7 @@
         "predis/predis": "^1.1",
         "sabre/vobject": "^4.1",
         "sentry/sentry-laravel": "^0.8",
-        "symfony/translation": "^3.4",
+        "symfony/translation": "^4.0",
         "vluzrmos/language-detector": "^1.0"
     },
     "require-dev": {
