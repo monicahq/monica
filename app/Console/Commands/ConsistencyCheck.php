@@ -11,7 +11,7 @@ class ConsistencyCheck extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'datamigration:check';
 
     /**
      * The console command description.
@@ -20,6 +20,7 @@ class ConsistencyCheck extends Command
      */
     protected $description = 'Command description';
 
+    private $sql = 
     /**
      * Create a new command instance.
      *
@@ -38,5 +39,6 @@ class ConsistencyCheck extends Command
     public function handle()
     {
         //
+        $this->comment("hello");
     }
 }
