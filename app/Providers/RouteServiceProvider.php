@@ -95,8 +95,8 @@ class RouteServiceProvider extends ServiceProvider
             Contact::findOrFail($route->parameter('contact')->id);
 
             Relationship::where('account_id', auth()->user()->account_id)
-                ->where('contact_id_main', $route->parameter('contact')->id)
-                ->where('contact_id_secondary', $value)
+                ->where('contact_is', $route->parameter('contact')->id)
+                ->where('of_contact', $value)
                 ->firstOrFail();
 
             return Contact::findOrFail($value);

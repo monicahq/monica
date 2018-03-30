@@ -26,7 +26,7 @@ class RelationshipTest extends TestCase
             'contact_is' => $contact->id,
         ]);
 
-        $this->assertTrue($relationship->contact()->exists());
+        $this->assertTrue($relationship->contactIs()->exists());
     }
 
     public function test_it_belongs_to_another_contact()
@@ -36,7 +36,7 @@ class RelationshipTest extends TestCase
             'of_contact' => $contact->id,
         ]);
 
-        $this->assertTrue($relationship->withContact()->exists());
+        $this->assertTrue($relationship->ofContact()->exists());
     }
 
     public function test_it_belongs_to_a_relationship_type()
@@ -57,9 +57,9 @@ class RelationshipTest extends TestCase
     {
         $contact = factory('App\Contact')->create([]);
         $relationship = factory('App\Relationship')->create([
-            'contact_id_secondary' => $contact->id,
+            'of_contact' => $contact->id,
         ]);
 
-        $this->assertTrue($relationship->withContact()->exists());
+        $this->assertTrue($relationship->ofContact()->exists());
     }
 }
