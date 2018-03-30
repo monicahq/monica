@@ -13,11 +13,11 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to execute this action',
-    'signup_disabled' => 'Registration is currently disabled',
-    'back_homepage' => 'Back to homepage',
+    'failed' => 'Estas credenciales no concuerdas con nuestros registros.',
+    'throttle' => 'Demasiados intentos de ingreso. Por favor intente nuevamente en :seconds segundos.',
+    'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
+    'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
+    'back_homepage' => 'Volver al inicio',
     '2fa_title' => 'Two Factor Authentication',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
     '2fa_one_time_password' => 'Authentication code',
