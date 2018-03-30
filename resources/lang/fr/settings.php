@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => 'Comment ce nouveau genre doit être renommé ?',
     'personalization_genders_modal_delete' => 'Supprimer le type de genre',
     'personalization_genders_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer :name ?',
-    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_question' => 'Vous avez actuellement :count contact qui a ce genre. Si vous supprimez ce genre, quel genre ce contact aurait ?|Vous avez actuellement :count contacts qui ont ce genre. Si vous supprimez ce genre, quel genre ces contacts devraient avoir ?',
     'personalization_genders_modal_error' => 'Merci de choisir un genre valide depuis cette liste.',
 
     'personalization_reminder_rule_save' => 'Les modifications ont été enregistrées',
