@@ -151,7 +151,7 @@ return [
 
     // significant other
     'significant_other_sidebar_title' => 'Significant other',
-    'significant_other_cta' => 'Add significant other',
+    'significant_other_cta' => 'Añadir relación',
     'significant_other_add_title' => 'Who is :name\'s significant other?',
     'significant_other_add_firstname' => 'First name',
     'significant_other_add_unknown' => 'I do not know this person\'s age',
@@ -159,8 +159,8 @@ return [
     'significant_other_add_probably_yo' => 'years old',
     'significant_other_add_exact' => 'I know the exact birthdate of this person, which is',
     'significant_other_add_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you\'ll be notified every year when it\'s time to celebrate this person\'s birthdate.',
-    'significant_other_add_cta' => 'Add significant other',
-    'significant_other_edit_cta' => 'Edit significant other',
+    'significant_other_add_cta' => 'Añadir relación',
+    'significant_other_edit_cta' => 'Editar relación',
     'significant_other_delete_confirmation' => 'Are you sure you want to delete this significant other? Deletion is permanent',
     'significant_other_unlink_confirmation' => 'Are you sure you want to delete this relationship? This significant other will not be deleted – only the relationship between the two.',
     'significant_other_add_success' => 'The significant other has been added successfully',
