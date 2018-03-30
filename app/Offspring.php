@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * An offspring is the child of a contact.
  */
-class Offspring extends Model
+class Offspring extends BaseMigrationModel
 {
     protected $table = 'offsprings';
 

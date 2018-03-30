@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * A relationship defines relations between contacts.
  */
-class Relationship extends Model
+class Relationship extends BaseMigrationModel
 {
     /**
      * The attributes that are mass assignable.

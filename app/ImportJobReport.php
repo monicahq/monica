@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Account $account
  * @property User $user
  */
-class ImportJobReport extends Model
+class ImportJobReport extends BaseMigrationModel
 {
     protected $table = 'import_job_reports';
 

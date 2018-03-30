@@ -2,8 +2,10 @@
 
 namespace App;
 
+
 use Illuminate\Database\Eloquent\Model;
 
-class Statistic extends BaseMigrationModel
+class BaseMigrationModel extends Model
 {
+
 }

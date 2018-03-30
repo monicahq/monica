@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * A relationship defines relations between contacts.
  */
-class Progenitor extends Model
+class Progenitor extends BaseMigrationModel
 {
     protected $table = 'progenitors';
 

@@ -17,7 +17,7 @@ class AddAboutWhoToReminders extends Migration
         Schema::table('reminders', function (Blueprint $table) {
             $table->string('is_birthday')->after('contact_id')->default('false');
             $table->string('about_object')->after('is_birthday')->nullable();
-            $table->string('about_object_id')->after('about_object')->nullable();
+            $table->integer('about_object_id')->after('about_object')->nullable();
         });
 
         // Migrate all kids birthdays to the new system to track birthdays reminders

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -12,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder owed()
  * @method static Builder inProgress()
  */
-class Debt extends Model
+class Debt extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

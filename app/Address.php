@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Address extends Model
+class Address extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.
