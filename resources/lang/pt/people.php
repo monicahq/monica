@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Tem certeza de que deseja excluir esta anotação? A exclusão é permanente',
 
     // gifts
+    'gifts_title' => 'Presentes',
     'gifts_add_success' => 'O presente foi adicionado com sucesso',
     'gifts_delete_success' => 'O presente foi excluído com sucesso',
     'gifts_delete_confirmation' => 'Tem certeza de que deseja excluir esse presente?',
