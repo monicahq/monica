@@ -207,6 +207,9 @@ class ContactsController extends Controller
 
         // reminders
         $reminders = $contact->reminders;
+        $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
+        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
+                                ->sortBy('next_expected_date');
 
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)

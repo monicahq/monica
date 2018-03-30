@@ -566,7 +566,7 @@ class Contact extends Model
 
         $relationships = $this->relationships->filter(function ($item) use ($type) {
             return $item->relationshipType->relationshipTypeGroup->name == $type;
-        });;
+        });
 
         return $relationships;
     }
@@ -1252,24 +1252,27 @@ class Contact extends Model
         return true;
     }
 
+    /**
+     * Get all the reminders regarding the birthdays of the contacts who have a
+     * relationships with the current contact.
+     *
+     * @return Collection
+     */
     public function getBirthdayRemindersAboutRelatedContacts()
     {
         $reminders = collect();
-
-        $relationships = $contact->relationships;
-
-        $contacts = $relationships->filter(function ($item) {
+        $relationships = $this->relationships->filter(function ($item) {
             return ! is_null($item->ofContact->birthday_special_date_id);
         });
 
-        foreach ($contacts as $contact) {
-            $contact = $relationship->ofContact->();
+        foreach ($relationships as $relationship) {
+            $reminder = Reminder::find($relationship->ofContact->birthdate->reminder_id);
 
-            foreach ($contact->reminders as $reminder) {
-
+            if ($reminder) {
+                $reminders->push($reminder);
             }
-
-            $reminders->push($contact->);
         }
+
+        return $reminders;
     }
 }

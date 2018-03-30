@@ -151,9 +151,6 @@ class FakeContentTableSeeder extends Seeder
 
         if (rand(1, 2) == 1) {
             $this->contact->first_met_additional_info = $this->faker->realText(20);
-        }
-
-        if (rand(1, 2) == 1) {
             $firstMetDate = $this->faker->dateTimeThisCentury();
 
             if (rand(1, 2) == 1) {
