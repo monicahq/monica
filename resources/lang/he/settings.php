@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => 'לאיזה כינוי יש לשנות את סוג המגדר החדש הזה?',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את :name?',
-    'personalization_genders_modal_delete_question' => 'כרגע יש לך :numberOfContacts אנשי קשר עבורם מוגדר המגדר הזה. במקרה של מחיקת המגדר הזה, איזה מגדר אמור להיות לאנשי הקשר האלה?',
+    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'נא לבחור במגדר תקני מהרשימה.',
 
     'personalization_reminder_rule_save' => 'השינוי נשמר',
@@ -277,5 +277,4 @@ return [
     'personalization_reminder_rule_desc' => 'לכל תזכורת מוגדרת, נוכל לשלוח אליך הודעת דוא״ל כמה ימים לפני שהאירוע מתרחש. ניתן להחליף את מצב ההודעות האלה כאן. לתשומת לך: ההתרעות האלו חלות רק על תזכורות חודשיות ושנתיות.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
-    'test_for_crowdin' => 'בדיקה ל־Crowdin',
 ];
