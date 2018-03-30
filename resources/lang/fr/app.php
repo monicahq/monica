@@ -15,7 +15,7 @@ return [
     'done' => 'Terminé',
     'verify' => 'Vérifier',
     'for' => 'pour',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Je ne sais pas',
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
