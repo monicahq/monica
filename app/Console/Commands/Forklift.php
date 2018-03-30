@@ -8,12 +8,23 @@ use Illuminate\Support\Facades\DB;
 class Forklift extends Command
 {
     /**
+     * Return the names of the MySQL tables.
+     * 
+     * @return array
+     */
+    private function mysqlTables()
+    {
+        return DB::select('show tables');
+    }
+
+    /**
      * Read and return all rows from the given MySQL table.
      * 
      * @param string $tableName
      * @return array
      */
-    private function readMysqlTable($tableName) {
+    private function readMysqlTable($tableName)
+    {
         return DB::select('select * from ' . $tableName);
     }
 
