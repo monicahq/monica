@@ -97,7 +97,7 @@
         <div class="mb4">
           <p class="mb2">{{ $t('settings.personalization_genders_modal_delete_desc', {name: deleteForm.name}) }}</p>
           <div v-if="numberOfContacts != 0">
-            <p>{{ $tc('settings.personalization_genders_modal_delete_question', numberOfContacts, {numberOfContacts: numberOfContacts}) }}</p>
+            <p>{{ $tc('settings.personalization_genders_modal_delete_question', numberOfContacts, {count: numberOfContacts}) }}</p>
             <form-select
               v-model="deleteForm.newId"
               :options="genders"
