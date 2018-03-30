@@ -1039,28 +1039,6 @@ class Contact extends Model
     }
 
     /**
-     * Get all the family members.
-     * @return Collection
-     */
-    public function getFamilyMembers()
-    {
-        // @TODO delete
-        $offsprings = $this->offsprings;
-        $relationships = $this->activeRelationships;
-
-        $family = collect([]);
-        foreach ($offsprings as $offspring) {
-            $family->push($offspring->contact);
-        }
-
-        foreach ($relationships as $relationship) {
-            $family->push($relationship->with_contact);
-        }
-
-        return $family;
-    }
-
-    /**
      * Indicates whether the contact has information about how they first met.
      * @return bool
      */
@@ -1192,26 +1170,6 @@ class Contact extends Model
                     $this->save();
                 }
             break;
-        }
-    }
-
-    /**
-     * Gets the contact related to this contact if the current contact is partial.
-     * @TODO: delete
-     */
-    public function getRelatedRealContact()
-    {
-        // Look in the Relationships table
-        $relatedContact = \App\Relationship::where('with_contact_id', $this->id)->first();
-
-        if ($relatedContact) {
-            return \App\Contact::find($relatedContact->contact_id);
-        }
-
-        // Look in the Offspring table
-        $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
-        if ($relatedContact) {
-            return self::find($relatedContact->is_the_child_of);
         }
     }
 

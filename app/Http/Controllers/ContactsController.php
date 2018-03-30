@@ -205,11 +205,15 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
 
+        // reminders
+        $reminders = $contact->reminders;
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
             ->withWorkRelationships($workRelationships)
+            ->withReminders($reminders)
             ->withContact($contact);
     }
 
