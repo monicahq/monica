@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Rimuovere nota? Questo cambio è permanente.',
 
     // gifts
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'Regalo aggiunto',
     'gifts_delete_success' => 'Regalo rimosso',
     'gifts_delete_confirmation' => 'Rimuovere regalo?',
