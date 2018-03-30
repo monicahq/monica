@@ -14,9 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class Contact extends Model
@@ -591,7 +590,7 @@ class Contact extends Model
                     'id' => $relationship->id,
                     'name' => $relationship->relationship_type_name,
                 ],
-                'contact' => new ContactShortResource($contact)
+                'contact' => new ContactShortResource($contact),
                 ]);
         }
 
@@ -724,7 +723,7 @@ class Contact extends Model
     }
 
     /**
-     * Refresh statistics about activities
+     * Refresh statistics about activities.
      *
      * @return void
      */

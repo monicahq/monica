@@ -359,9 +359,4 @@ class ApiContactController extends ApiController
 
         return $this->respondObjectDeleted($contact->id);
     }
-
-    /**
-     * Link a partner to an existing contact.
-     * TODO: faire la methode qui permet de creer des relations
-     */
 }

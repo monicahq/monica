@@ -26,7 +26,7 @@ class ContactWithContactFields extends Resource
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'information' => [
-                'relationships' => $this->when(!$this->is_partial, [
+                'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
                         'total' => $this->getRelationshipsByRelationshipTypeGroup('love')->count(),
                         'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love')),

@@ -2,7 +2,6 @@
 
 namespace Tests\Api\Contact;
 
-use App\Contact;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
