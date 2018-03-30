@@ -3,9 +3,20 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class Forklift extends Command
 {
+    /**
+     * Read and return all rows from the given MySQL table.
+     * 
+     * @param string $tableName
+     * @return array
+     */
+    private function readMysqlTable($tableName) {
+        return DB::select('select * from ' . $tableName);
+    }
+
     /**
      * The name and signature of the console command.
      *
