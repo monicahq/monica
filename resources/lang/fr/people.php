@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette note ? La suppression est permanente',
 
     // gifts
+    'gifts_title' => 'Cadeaux',
     'gifts_add_success' => 'Le cadeau a été ajouté avec succès',
     'gifts_delete_success' => 'Le cadeau a été supprimé',
     'gifts_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce cadeau ?',
