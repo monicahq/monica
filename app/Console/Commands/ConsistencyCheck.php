@@ -3,9 +3,15 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\DB;
+
 
 class ConsistencyCheck extends Command
 {
+
+
+
     /**
      * The name and signature of the console command.
      *
@@ -20,7 +26,6 @@ class ConsistencyCheck extends Command
      */
     protected $description = 'Command description';
 
-    private $sql = 
     /**
      * Create a new command instance.
      *
@@ -28,6 +33,9 @@ class ConsistencyCheck extends Command
      */
     public function __construct()
     {
+        Event::listen(['eloquent.saved: *', 'eloquent.created: *'], function() {
+            //
+        });
         parent::__construct();
     }
 
@@ -38,7 +46,21 @@ class ConsistencyCheck extends Command
      */
     public function handle()
     {
-        //
-        $this->comment("hello");
+        //$mysql = DB::connection('mysql');
+        $pgsql = DB::connection('pgsql');
+
+        //$mtables = $mysql->select('show tables');
+        $ptables = $pgsql->select('show * from test');
+
+
+        if($ptables == null) {
+            foreach ($ptables as $table) {
+
+                $this->line($table);
+            }
+        } else {
+            $this->line($ptables);
+        }
+
     }
 }
