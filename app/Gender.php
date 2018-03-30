@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Gender extends Model
+class Gender extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

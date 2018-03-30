@@ -4,7 +4,6 @@ namespace App;
 
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
@@ -15,7 +14,7 @@ use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
 use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
 use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
 
-class Contact extends Model
+class Contact extends BaseMigrationModel
 {
     use Searchable;
 

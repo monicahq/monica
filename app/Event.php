@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Contact $contact
  * @method static Builder forObject(Model $object, string $key = null)
  */
-class Event extends Model
+class Event extends BaseMigrationModel
 {
     /**
      * Get the account record associated with the event.

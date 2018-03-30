@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Account $account
  * @property User $invitedBy
  */
-class Invitation extends Model
+class Invitation extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

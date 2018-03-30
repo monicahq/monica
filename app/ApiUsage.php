@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ApiUsage extends Model
+class ApiUsage extends BaseMigrationModel
 {
     protected $table = 'api_usage';
 

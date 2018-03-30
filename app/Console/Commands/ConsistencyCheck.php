@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ConsistencyCheck extends Command
 {
@@ -37,6 +38,6 @@ class ConsistencyCheck extends Command
      */
     public function handle()
     {
-        //
+        
     }
 }

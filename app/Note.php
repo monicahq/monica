@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Contact $contact
  * @property string $parsed_body
  */
-class Note extends Model
+class Note extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

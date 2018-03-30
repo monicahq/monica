@@ -3,10 +3,9 @@
 namespace App;
 
 use Parsedown;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Call extends Model
+class Call extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

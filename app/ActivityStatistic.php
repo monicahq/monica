@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ActivityStatistic extends Model
+class ActivityStatistic extends BaseMigrationModel
 {
     protected $table = 'activity_statistics';
 

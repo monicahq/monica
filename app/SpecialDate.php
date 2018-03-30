@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Instead of adding a lot of logic in the Contact table, we've decided to
  * create this class that will deal with this complexity.
  */
-class SpecialDate extends Model
+class SpecialDate extends BaseMigrationModel
 {
     /**
      * The table associated with the model.

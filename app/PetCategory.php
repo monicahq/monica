@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PetCategory extends Model
+class PetCategory extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

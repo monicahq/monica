@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder completed()
  * @method static Builder inProgress()
  */
-class Task extends Model
+class Task extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

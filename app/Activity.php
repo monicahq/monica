@@ -4,7 +4,6 @@ namespace App;
 
 use Carbon\Carbon;
 use App\Traits\Journalable;
-use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
@@ -14,7 +13,7 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
  * @property Contact $contact
  * @property ActivityType $type
  */
-class Activity extends Model implements IsJournalableInterface
+class Activity extends BaseMigrationModel implements IsJournalableInterface
 {
     use Journalable;
 

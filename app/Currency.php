@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Currency extends Model
+class Currency extends BaseMigrationModel
 {
     protected $table = 'currencies';
 }

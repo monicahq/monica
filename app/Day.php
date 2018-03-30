@@ -3,10 +3,9 @@
 namespace App;
 
 use App\Traits\Journalable;
-use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 
-class Day extends Model implements IsJournalableInterface
+class Day extends BaseMigrationModel implements IsJournalableInterface
 {
     use Journalable;
 

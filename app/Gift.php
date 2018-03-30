@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
-class Gift extends Model
+class Gift extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

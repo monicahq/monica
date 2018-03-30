@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ActivityTypeGroup extends Model
+class ActivityTypeGroup extends BaseMigrationModel
 {
     protected $table = 'activity_type_groups';
 }

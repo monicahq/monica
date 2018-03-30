@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ContactFieldType extends Model
+class ContactFieldType extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.

@@ -5,7 +5,7 @@ namespace App;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 
-class Instance extends Model
+class Instance extends BaseMigrationModel
 {
     /**
      * Once migrations have been run to add a new default contact field type,

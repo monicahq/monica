@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Account $account
  * @property Contact $contact
  */
-class Reminder extends Model
+class Reminder extends BaseMigrationModel
 {
     /**
      * The attributes that aren't mass assignable.
