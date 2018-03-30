@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Möchtest du diese Notiz wirklich löschen?',
 
     // gifts
+    'gifts_title' => 'Geschenke',
     'gifts_add_success' => 'Geschenk erfolgreich hinzugefügt',
     'gifts_delete_success' => 'Geschenk erfolgreich gelöscht',
     'gifts_delete_confirmation' => 'Möchtest du das Geschenk wirklich löschen?',
