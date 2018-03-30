@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => '确实要删除此便笺吗？删除是永久性的',
 
     // gifts
+    'gifts_title' => '礼物',
     'gifts_add_success' => '已成功添加礼品',
     'gifts_delete_success' => '礼品已成功删除',
     'gifts_delete_confirmation' => '是否确实要删除此礼品？',
