@@ -1251,4 +1251,25 @@ class Contact extends Model
 
         return true;
     }
+
+    public function getBirthdayRemindersAboutRelatedContacts()
+    {
+        $reminders = collect();
+
+        $relationships = $contact->relationships;
+
+        $contacts = $relationships->filter(function ($item) {
+            return ! is_null($item->ofContact->birthday_special_date_id);
+        });
+
+        foreach ($contacts as $contact) {
+            $contact = $relationship->ofContact->();
+
+            foreach ($contact->reminders as $reminder) {
+
+            }
+
+            $reminders->push($contact->);
+        }
+    }
 }
