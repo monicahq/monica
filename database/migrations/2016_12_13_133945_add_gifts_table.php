@@ -18,7 +18,7 @@ class AddGiftsTable extends Migration
             $table->integer('account_id');
             $table->integer('people_id');
             $table->string('about_object_type')->nullable();
-            $table->string('about_object_id')->nullable();
+            $table->integer('about_object_id')->nullable();
             $table->string('title');
             $table->longText('description')->nullable();
             $table->longText('url')->nullable();
