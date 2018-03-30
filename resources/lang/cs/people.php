@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Opravdu chcete smazat tuto poznámku? Smazání je trvalé.',
 
     // gifts
+    'gifts_title' => 'Dárků',
     'gifts_add_success' => 'Dárek byl úspěšně přidán',
     'gifts_delete_success' => 'Dárek byl úspěšně smazán',
     'gifts_delete_confirmation' => 'Opravdu chcete smazat tento dárek?',
