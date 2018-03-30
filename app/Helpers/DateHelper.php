@@ -176,7 +176,7 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month)
     {
-        $date = now()->addMonthsNoOverflow($month);
+        $date = Date::now()->addMonthsNoOverflow($month);
         $format = 'M Y';
 
         return $date->format($format);
@@ -193,10 +193,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return now()->addMonth();
+            return Date::now()->addMonth();
         }
 
-        return now()->addYear();
+        return Date::now()->addYear();
     }
 
     /**
