@@ -212,7 +212,7 @@ class FakeContentTableSeeder extends Seeder
 
                 // set relationship
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
-                $this->contact->setRelationship($relatedContact->id, $relationshipId);
+                $this->contact->setRelationship($relatedContact, $relationshipId);
             }
         }
     }
