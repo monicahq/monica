@@ -168,7 +168,7 @@ class SpecialDate extends Model
             return;
         }
 
-        return $this->date->diffInYears(Carbon::now());
+        return $this->date->diffInYears(now());
     }
 
     /**
@@ -178,7 +178,7 @@ class SpecialDate extends Model
     public function createFromAge(int $age)
     {
         $this->is_age_based = true;
-        $this->date = Carbon::now()->subYears($age)->month(1)->day(1);
+        $this->date = now()->subYears($age)->month(1)->day(1);
         $this->save();
 
         return $this;
@@ -197,7 +197,7 @@ class SpecialDate extends Model
         if ($year != 0) {
             $date = Carbon::createFromDate($year, $month, $day);
         } else {
-            $date = Carbon::createFromDate(Carbon::now()->year, $month, $day);
+            $date = Carbon::createFromDate(now()->year, $month, $day);
             $this->is_year_unknown = true;
         }
 

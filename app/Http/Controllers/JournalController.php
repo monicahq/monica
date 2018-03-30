@@ -83,7 +83,7 @@ class JournalController extends Controller
     public function storeDay(DaysRequest $request)
     {
         $day = auth()->user()->account->days()->create([
-            'date' => \Carbon\Carbon::now(auth()->user()->timezone),
+            'date' => now(auth()->user()->timezone),
             'rate' => $request->get('rate'),
         ]);
 

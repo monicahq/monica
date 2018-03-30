@@ -403,4 +403,52 @@ class AccountTest extends FeatureTestCase
             ['number_of_days_before' => 30]
         );
     }
+
+    public function test_it_retrieves_yearly_call_statistics()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory('App\Call', 4)->create([
+            'account_id' => $account->id,
+            'called_at' => '2018-03-02',
+        ]);
+
+        $contact = factory('App\Call', 2)->create([
+            'account_id' => $account->id,
+            'called_at' => '1992-03-02',
+        ]);
+
+        $statistics = $account->getYearlyCallStatistics();
+
+        $this->assertTrue(
+            $statistics->contains(4)
+        );
+
+        $this->assertTrue(
+            $statistics->contains(2)
+        );
+    }
+
+    public function test_it_retrieves_yearly_activities_statistics()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory('App\Activity', 4)->create([
+            'account_id' => $account->id,
+            'date_it_happened' => '2018-03-02',
+        ]);
+
+        $contact = factory('App\Activity', 2)->create([
+            'account_id' => $account->id,
+            'date_it_happened' => '1992-03-02',
+        ]);
+
+        $statistics = $account->getYearlyActivitiesStatistics();
+
+        $this->assertTrue(
+            $statistics->contains(4)
+        );
+
+        $this->assertTrue(
+            $statistics->contains(2)
+        );
+    }
 }

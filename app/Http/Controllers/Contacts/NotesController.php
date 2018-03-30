@@ -58,7 +58,7 @@ class NotesController extends Controller
             $note->is_favorited = false;
         } else {
             $note->is_favorited = true;
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
         }
 
         $contact->logEvent('note', $note->id, 'update');

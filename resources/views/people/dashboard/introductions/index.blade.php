@@ -13,7 +13,7 @@
       @if ($contact->getIntroducer())
       <li>
         <i class="fa fa-sign-language"></i>
-        {!! trans('people.introductions_met_through', ['id' => $contact->first_met_through_contact_id, 'name' => $contact->getIntroducer()->getCompleteName(auth()->user()->name_order)]) !!}
+        {!! trans('people.introductions_met_through', ['url' => '/people/'.$contact->first_met_through_contact_id, 'name' => $contact->getIntroducer()->getCompleteName(auth()->user()->name_order)]) !!}
       </li>
       @endif
 

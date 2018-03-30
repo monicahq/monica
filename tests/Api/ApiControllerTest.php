@@ -44,6 +44,23 @@ class ApiControllerTest extends ApiTestCase
         );
     }
 
+    public function test_get_with_parameter_returns_the_parameter()
+    {
+        $apiController = new ApiController;
+
+        $this->assertEquals(
+            null,
+            $apiController->getWithParameter()
+        );
+
+        $apiController->setWithParameter('test');
+
+        $this->assertEquals(
+            'test',
+            $apiController->getWithParameter()
+        );
+    }
+
     public function test_get_limit_per_page_code_returns_the_limit_per_page()
     {
         $apiController = new ApiController;

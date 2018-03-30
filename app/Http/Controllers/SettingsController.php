@@ -55,6 +55,7 @@ class SettingsController extends Controller
     public function index()
     {
         return view('settings.index')
+                ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
                 ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }
 

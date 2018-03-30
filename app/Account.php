@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,7 +45,7 @@ class Account extends Model
         // create new account
         $account = new self;
         $account->api_key = str_random(30);
-        $account->created_at = Carbon::now();
+        $account->created_at = now();
         $account->save();
 
         $account->populateDefaultFields($account);
@@ -418,11 +417,8 @@ class Account extends Model
     public function hasInvoices()
     {
         $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-        if ($query > 0) {
-            return true;
-        }
 
-        return false;
+        return $query > 0;
     }
 
     /**
@@ -534,8 +530,8 @@ class Account extends Model
      */
     public function getRemindersForMonth(int $month)
     {
-        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
-        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
+        $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = now()->addMonthsNoOverflow($month)->endOfMonth();
 
         return auth()->user()->account->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
@@ -582,5 +578,75 @@ class Account extends Model
                     ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    /**
+     * Get the statistics of the number of calls grouped by year.
+     *
+     * @return json
+     */
+    public function getYearlyCallStatistics()
+    {
+        $callsStatistics = collect([]);
+        $calls = $this->calls()->latest('called_at')->get();
+        $years = [];
+
+        // Create a table that contains the combo year/number of
+        foreach ($calls as $call) {
+            $yearStatistic = $call->called_at->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (! $foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $callsStatistics->put($year, $number);
+        }
+
+        return $callsStatistics;
+    }
+
+    /**
+     * Get the statistics of the number of activities grouped by year.
+     *
+     * @return json
+     */
+    public function getYearlyActivitiesStatistics()
+    {
+        $activitiesStatistics = collect([]);
+        $activities = $this->activities()->latest('date_it_happened')->get();
+        $years = [];
+
+        // Create a table that contains the combo year/number of
+        foreach ($activities as $call) {
+            $yearStatistic = $call->date_it_happened->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (! $foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $activitiesStatistics->put($year, $number);
+        }
+
+        return $activitiesStatistics;
     }
 }

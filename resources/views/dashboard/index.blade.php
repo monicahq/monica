@@ -33,7 +33,7 @@
             <div class="pa3 bb b--gray-monica">
               <p class="mb0">
                 <img src="/img/people/reminders.svg" width="17">
-                Events in the next 3 months
+                {{ trans('dashboard.reminders_next_months') }}
               </p>
             </div>
             <div class="pt3 pr3 pl3 mb4">

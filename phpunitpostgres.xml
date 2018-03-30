@@ -41,6 +41,7 @@
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="APP_DEFAULT_LOCALE" value="en"/>
     </php>
     <logging>
         <log type="coverage-clover" target="./results/coverage.xml"/>

@@ -174,7 +174,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_create_success'),
+                              title: this.$t('people.notes_create_success'),
                               text: '',
                               type: 'success'
                           });
@@ -196,7 +196,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_update_success'),
+                              title: this.$t('people.notes_update_success'),
                               text: '',
                               type: 'success'
                           });
@@ -218,7 +218,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_delete_success'),
+                              title: this.$t('people.notes_delete_success'),
                               text: '',
                               type: 'success'
                           });

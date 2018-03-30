@@ -64,7 +64,7 @@
                 <li class="table-row" data-tag-id="{{ $tag->id }}">
                   <div class="table-cell">
                     {{ $tag->name }}
-                    <span class="tags-list-contact-number">({{ trans('settings.tags_list_contact_number', ['count' => $tag->contacts()->count()]) }})</span>
+                    <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                   </div>
                   <div class="table-cell actions">
                     <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">

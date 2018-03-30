@@ -1,7 +1,5 @@
 <?php
 
-use App\Helpers\MoneyHelper;
-
 return [
 
     /*
@@ -67,7 +65,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env('APP_DEFAULT_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------
@@ -156,6 +154,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -213,7 +212,6 @@ return [
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'MoneyHelper' => App\Helpers\MoneyHelper::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
     ],

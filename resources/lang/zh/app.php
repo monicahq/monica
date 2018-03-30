@@ -9,7 +9,9 @@ return [
     'edit' => '编辑',
     'upload' => '上传',
     'close' => '关闭',
+    'create' => 'Create',
     'remove' => '删除',
+    'revoke' => 'Revoke',
     'done' => '完成',
     'verify' => '验证',
     'for' => '为',
@@ -17,6 +19,10 @@ return [
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
+
+    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => '想用一种美观的方式格式化文本吗？我们以Markdown语法支持粗体、斜体、列表等样式。',
     'markdown_link' => '阅读文档',
