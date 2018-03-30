@@ -46,13 +46,13 @@ return [
 
     // show
     'section_contact_information' => 'Contact information',
-    'section_personal_activities' => 'Activities',
+    'section_personal_activities' => 'Actividades',
     'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tasks',
+    'section_personal_tasks' => 'Tareas',
     'section_personal_gifts' => 'Gifts',
 
     //
-    'link_to_list' => 'List of people',
+    'link_to_list' => 'Lista de personas',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
@@ -212,7 +212,7 @@ return [
     'tasks_complete_success' => 'The task has changed status successfully',
 
     // activities
-    'activity_title' => 'Activities',
+    'activity_title' => 'Actividades',
     'activity_type_group_simple_activities' => 'Simple activities',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Food',
