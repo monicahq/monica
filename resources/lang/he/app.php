@@ -15,7 +15,7 @@ return [
     'done' => 'סיום',
     'verify' => 'אימות',
     'for' => 'for',
-    'unknown' => 'לא ידוע לי',
+    'unknown' => 'I don’t know',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
