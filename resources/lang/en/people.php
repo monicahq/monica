@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'Are you sure you want to delete this note? Deletion is permanent',
 
     // gifts
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'The gift has been added successfully',
     'gifts_delete_success' => 'The gift has been deleted successfully',
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
