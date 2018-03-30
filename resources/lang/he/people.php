@@ -259,6 +259,7 @@ return [
     'notes_delete_confirmation' => 'למחוק את ההערה הזאת? מחיקה אינה הפיכה',
 
     // gifts
+    'gifts_title' => 'מתנות',
     'gifts_add_success' => 'המתנה הזאת נוספה בהצלחה',
     'gifts_delete_success' => 'המתנה הזאת נמחקה בהצלחה',
     'gifts_delete_confirmation' => 'למחוק את המתנה הזאת?',
