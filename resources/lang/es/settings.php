@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => 'How should this new gender be renamed?',
     'personalization_genders_modal_delete' => 'Delete gender type',
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete :name?',
-    'personalization_genders_modal_delete_question' => 'You currently have :numberOfContacts contacts who have this gender. If you delete this gender, what gender should those contacts have?',
+    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'Please choose a valid gender from the list.',
 
     'personalization_reminder_rule_save' => 'The change has been saved',
@@ -277,5 +277,4 @@ return [
     'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
-    'test_for_crowdin' => 'Test for Crowdin',
 ];
