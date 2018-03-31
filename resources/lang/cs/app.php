@@ -15,7 +15,7 @@ return [
     'done' => 'Hotovo',
     'verify' => 'Ověřit',
     'for' => 'pro',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Nevím',
     'load_more' => 'Načíst další',
     'loading' => 'Načítá se...',
     'with' => 's',
