@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use Carbon\Carbon;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
