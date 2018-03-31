@@ -39,9 +39,7 @@ addons:
   chrome: stable
 
 before_install:
-  - ls /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d
-  - ls /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/php.ini
-  - ls /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/php-fpm.d
+  - ls -AlF /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d
   - phpenv config-rm xdebug.ini
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - cp scripts/tests/.env.$DB.travis .env
