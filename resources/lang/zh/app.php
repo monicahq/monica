@@ -15,7 +15,7 @@ return [
     'done' => '完成',
     'verify' => '验证',
     'for' => '为',
-    'unknown' => 'I don’t know',
+    'unknown' => '我不知道',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
