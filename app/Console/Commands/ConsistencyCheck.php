@@ -60,6 +60,36 @@ class ConsistencyCheck extends Command
     }
 
     /**
+     * No need for tables names comparison because they are
+     * already handle in Forklift migration
+     * however we can count the number of
+     * tables current stored in monica (MySQL) database
+     * and tables stored in PostgreSQl monica database
+     * @return int number of tables
+     */
+    private function countMonicaMySQLtables()
+    {
+        $count = array_map(function ($table) {
+            return $table->Tables_in_monica;
+        },
+            DB::connection('mysql')->select('show tables'));
+        return count($count);
+    }
+
+    private function countMonicaPSQLTables()
+    {
+        $pgsql = DB::connection('pgsql');
+        $sql = "SELECT * FROM information_schema.tables ";
+        $sql .= "WHERE table_schema NOT IN ('information_schema', 'pg_catalog');";
+        $mtables = $pgsql->select($sql);
+        $items = array();
+        foreach ($mtables as $mtable) {
+            $items[] = $mtable;
+        }
+        return count($items);
+    }
+
+    /**
      * Check if tables have the same column names
      * Increment $inconsistence_columns_count if it doesn't
      *
@@ -100,6 +130,12 @@ class ConsistencyCheck extends Command
 
         //$mtables = $mysql->select('show tables');
         //$ptables = $pgsql->select('select * from');
+
+        if ($this->countMonicaMySQLtables() != $this->countMonicaPSQLTables()) {
+            $this->line("Inconsistent table count!");
+            $this->line("MySQL monica tables count: " . $this->countMonicaMySQLtables());
+            $this->line("PostgresSQL monica tables count: " . $this->countMonicaPSQLTables());
+        }
 
         $this->checkTables();
         $this->checkTableColumnsNamesMatch();
