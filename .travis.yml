@@ -39,6 +39,7 @@ addons:
   chrome: stable
 
 before_install:
+  - ls /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION
   - phpenv config-rm xdebug.ini
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - cp scripts/tests/.env.$DB.travis .env
@@ -71,7 +72,7 @@ script:
   - phpdbg -qrr vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
-  - phpenv config-add xdebug.ini
+  - phpenv config-add /home/travis/.phpenv/versions/$TRAVIS_PHP_VERSION/mods-available/xdebug.ini
   - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/scripts/tests/server-cc.php 2>/dev/null; fi" &
   - if [[ "$SELENIUM" == "1" ]]; then until $(nc -z localhost 8000); do sleep 1; echo Waiting for http server to start...; done; fi
 
