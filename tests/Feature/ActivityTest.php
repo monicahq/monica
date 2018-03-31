@@ -60,7 +60,7 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activityTitle = 'This is the title';
-        $activityDate = \Carbon\Carbon::now();
+        $activityDate = now();
 
         $params = [
             'summary' => $activityTitle,
@@ -105,7 +105,7 @@ class ActivityTest extends FeatureTestCase
         $activity = factory(\App\Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
-            'date_it_happened' => \Carbon\Carbon::now(),
+            'date_it_happened' => now(),
         ]);
 
         // Attach the created activity to the current user to make this an update
@@ -119,7 +119,7 @@ class ActivityTest extends FeatureTestCase
         $params = [
             'contacts' => [$contact->id],
             'summary' => 'this is another test',
-            'date_it_happened' => \Carbon\Carbon::now(),
+            'date_it_happened' => now(),
             'activity_type_id' => null,
             'description' => null,
         ];

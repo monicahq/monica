@@ -72,7 +72,7 @@ class TasksController extends Controller
             $task->completed = false;
         } else {
             $task->completed = true;
-            $task->completed_at = \Carbon\Carbon::now();
+            $task->completed_at = now();
         }
 
         $contact->logEvent('task', $task->id, 'update');

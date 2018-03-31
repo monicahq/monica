@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.33",
+            "version": "3.53.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d8e6d52af2517360c2146ed6c0d43156284a4b84"
+                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d8e6d52af2517360c2146ed6c0d43156284a4b84",
-                "reference": "d8e6d52af2517360c2146ed6c0d43156284a4b84",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/225593974bb6f6b1c13ddf946d3736d3e39119e5",
+                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-26T21:49:03+00:00"
+            "time": "2018-03-30T20:22:38+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -178,16 +178,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "1.0.10",
+            "version": "v1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "9affd46be10f1ebb11d5d9f03440f804c09f2b59"
+                "reference": "4459b68a853ffdb1c2abbf9419214df46371889b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/9affd46be10f1ebb11d5d9f03440f804c09f2b59",
-                "reference": "9affd46be10f1ebb11d5d9f03440f804c09f2b59",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/4459b68a853ffdb1c2abbf9419214df46371889b",
+                "reference": "4459b68a853ffdb1c2abbf9419214df46371889b",
                 "shasum": ""
             },
             "require": {
@@ -195,6 +195,16 @@
                 "php": ">=5.4.0"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Creativeorange\\Gravatar\\GravatarServiceProvider"
+                    ],
+                    "aliases": {
+                        "Gravatar": "Creativeorange\\Gravatar\\Facades\\Gravatar"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Creativeorange\\Gravatar\\": "src/"
@@ -212,13 +222,13 @@
                     "role": "Developer"
                 }
             ],
-            "description": "A Laravel 5.0, 5.1, 5.2 and 5.3 gravatar package for retrieving gravatar image URLs or checking the existance of an image.",
+            "description": "Gravatar for Laravel 5.0.x through 5.5.x package for retrieving gravatar image URLs or checking the existance of an image.",
             "keywords": [
                 "avatar",
                 "gravatar",
                 "laravel"
             ],
-            "time": "2017-02-15T22:07:40+00:00"
+            "time": "2018-03-29T22:10:58+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -1452,16 +1462,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.39",
+            "version": "v5.5.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a21ef7e51df831a7c38d24dcf8c4774ee0847526"
+                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a21ef7e51df831a7c38d24dcf8c4774ee0847526",
-                "reference": "a21ef7e51df831a7c38d24dcf8c4774ee0847526",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d724ce0aa61bbd9adf658215eec484f5dd6711d6",
+                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6",
                 "shasum": ""
             },
             "require": {
@@ -1469,7 +1479,7 @@
                 "erusev/parsedown": "~1.7",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "league/flysystem": "~1.0",
+                "league/flysystem": "^1.0.8",
                 "monolog/monolog": "~1.12",
                 "mtdowling/cron-expression": "~1.0",
                 "nesbot/carbon": "^1.24.1",
@@ -1582,7 +1592,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-03-09T17:24:53+00:00"
+            "time": "2018-03-30T13:29:30+00:00"
         },
         {
             "name": "laravel/passport",
@@ -1909,16 +1919,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.18",
+            "version": "1.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "dc09b19f455750663b922ed52dcc0ff215bed284"
+                "reference": "f135691ef6761542af301b7c9880f140fb12dc74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/dc09b19f455750663b922ed52dcc0ff215bed284",
-                "reference": "dc09b19f455750663b922ed52dcc0ff215bed284",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/f135691ef6761542af301b7c9880f140fb12dc74",
+                "reference": "f135691ef6761542af301b7c9880f140fb12dc74",
                 "shasum": ""
             },
             "require": {
@@ -1952,7 +1962,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2017-06-30T06:29:25+00:00"
+            "time": "2018-03-27T20:33:59+00:00"
         },
         {
             "name": "league/oauth1-client",
@@ -6317,12 +6327,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7"
+                "reference": "2fcfe963d8a1310c2d42e5dce4df0789152bf681"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
-                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/2fcfe963d8a1310c2d42e5dce4df0789152bf681",
+                "reference": "2fcfe963d8a1310c2d42e5dce4df0789152bf681",
                 "shasum": ""
             },
             "conflict": {
@@ -6353,8 +6363,8 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=8,<8.4.5",
-                "drupal/drupal": ">=8,<8.4.5",
+                "drupal/core": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
+                "drupal/drupal": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
                 "erusev/parsedown": "<1.7",
                 "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.3|>=5.4,<5.4.11.3|>=2017.8,<2017.8.1.1|>=2017.12,<2017.12.2.1",
                 "firebase/php-jwt": "<2",
@@ -6468,7 +6478,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-22T21:16:54+00:00"
+            "time": "2018-03-30T07:14:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

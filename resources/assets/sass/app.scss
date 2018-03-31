@@ -177,6 +177,10 @@ a {
   }
 }
 
+a[hreflang]:after {
+  content: " (" attr(hreflang) ")"; 
+}
+
 ul {
   list-style-type: none;
   margin: 0;

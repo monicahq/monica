@@ -229,9 +229,9 @@ class ContactsController extends Controller
     public function edit(Contact $contact)
     {
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : \Carbon\Carbon::now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : \Carbon\Carbon::now()->month;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
 
         return view('people.edit')
             ->withContact($contact)
@@ -268,7 +268,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if (! $contact->setName($request->input('firstname'), null, $request->input('lastname'))) {
+        if (! $contact->setName($request->input('firstname'), $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
