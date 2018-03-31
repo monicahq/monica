@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\DB;
 class ConsistencyCheck extends Command
 {
 
-    private $count;
+    private $inconsistence_table_count = 0;
+    private $inconsistence_columns_count = 0;
+    private $inconsistence_data_count = 0;
+
+
 
     /**
      * The name and signature of the console command.
@@ -36,17 +40,41 @@ class ConsistencyCheck extends Command
         parent::__construct();
     }
 
+    /**
+     * Check if tables in mysql exist in pgsql
+     *
+     * @return void
+     */
     private function checkTables()
     {
-
         $mysql = DB::connection('mysql');
         $mtables = $mysql->select('show tables');
-        var_dump($mtables[0]);
 
         foreach($mtables as $mtable) {
-            if (DB::connection('pgsql')->table($mtable) != null) {
-                $this->count++;
+            $table_name = $mtable->Tables_in_monica;
+            if (DB::connection('pgsql')->table($table_name)->from != $table_name) {
+                $this->inconsistence_table_count++;
+            } else {
+                //$this->line(DB::connection('pgsql')->table($table_name)->from);
             }
+        }
+    }
+
+    private function checkTableColumns()
+    {
+        $mysql = DB::connection('mysql');
+        $mtables = $mysql->select('show tables');
+
+        foreach($mtables as $mtable) {
+            $thisTable = $mysql->select('show columns from '. $mtable->Tables_in_monica );
+            $dataTable = $mysql->select('select * from '. $mtable->Tables_in_monica );
+
+            
+            foreach($thisTable as $row){
+                $this->line($row->Field);
+            }
+
+            break;
         }
     }
 
@@ -57,6 +85,7 @@ class ConsistencyCheck extends Command
      */
     public function handle()
     {
+        $this->inconsistence_table_count = 0;
         //$mysql = DB::connection('mysql');
         //$pgsql = DB::connection('pgsql');
 
@@ -64,7 +93,10 @@ class ConsistencyCheck extends Command
         //$ptables = $pgsql->select('select * from');
 
         $this->checkTables();
-        $this->line($this->count);
+        $this->checkTableColumns();
+        $this->line("Inconsistent tables: ");
+        $this->line($this->inconsistence_table_count);
+
 
     }
 }
