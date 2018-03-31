@@ -39,6 +39,7 @@ addons:
   chrome: stable
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - mkdir -p $TRAVIS_BUILD_DIR/results/coverage
   - cp scripts/tests/.env.$DB.travis .env
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
@@ -67,7 +68,7 @@ before_script:
   
 script:
   # Run unit tests
-  - vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
+  - phpdbg -qrr vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
   # Start http server
   - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/scripts/tests/server-cc.php 2>/dev/null; fi" &
