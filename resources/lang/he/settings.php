@@ -268,7 +268,7 @@ return [
     'personalization_genders_modal_edit_question' => 'לאיזה כינוי יש לשנות את סוג המגדר החדש הזה?',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
     'personalization_genders_modal_delete_desc' => 'למחוק את :name?',
-    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־:count מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
     'personalization_genders_modal_error' => 'נא לבחור במגדר תקני מהרשימה.',
 
     'personalization_reminder_rule_save' => 'השינוי נשמר',
