@@ -48,13 +48,13 @@ build: build-dev
 
 build-prod:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
-	php artisan vue-i18n:generate
+	php artisan lang:generate
 	npm install
 	npm run production
 
 build-dev:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
-	php artisan vue-i18n:generate
+	php artisan lang:generate
 	npm install
 	npm run dev
 

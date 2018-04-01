@@ -442,7 +442,7 @@ class ContactTest extends FeatureTestCase
         $url = $contact->getAvatarURL();
         $this->assertNotNull($url);
         $this->assertContains('s=250&d=mm&r=g', $url);
-        $this->assertContains('http://www.gravatar.com', $url);
+        $this->assertContains('https://www.gravatar.com', $url);
     }
 
     public function test_gravatar_set_emailreal_secure()

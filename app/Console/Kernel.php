@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetupTest',
         'App\Console\Commands\Deactivate2FA',
         'App\Console\Commands\GetVersion',
+        'App\Console\Commands\LangGenerate',
     ];
 
     /**

@@ -153,27 +153,58 @@ Vue.component(
     require('./components/settings/ReminderRules.vue')
 );
 
+// axios
+import axios from 'axios';
+
 // i18n
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
-import messages from './vue-i18n-locales.generated.js';
-const i18n = new VueI18n({
-    locale: window.Laravel.locale,
-    messages
+import messages from '../../../public/js/langs/en.json';
+
+export const i18n = new VueI18n({
+    locale: 'en', // set locale
+    fallbackLocale: 'en',
+    messages: {'en': messages}
 });
 
-const app = new Vue({
-    i18n,
-    data: {
-      activities_description_show: false,
-      reminders_frequency: 'once',
-      accept_invite_user: false,
-      date_met_the_contact: 'known'
-    },
-    methods: {
-    },
-}).$mount('#app');
+const loadedLanguages = ['en']; // our default language that is prelaoded
+
+function setI18nLanguage (lang) {
+    i18n.locale = lang;
+    axios.defaults.headers.common['Accept-Language'] = lang;
+    document.querySelector('html').setAttribute('lang', lang);
+    return lang;
+}
+
+export function loadLanguageAsync (lang, set) {
+    if (i18n.locale !== lang) {
+      if (!loadedLanguages.includes(lang)) {
+        return axios.get(`/js/langs/${lang}.json`).then(msgs => {
+          i18n.setLocaleMessage(lang, msgs.data);
+          loadedLanguages.push(lang);
+          return set ? setI18nLanguage(lang) : lang;
+        });
+      }
+    }
+    return Promise.resolve(set ? setI18nLanguage(lang) : lang);
+}
+
+const app = null;
+loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+    this.app = new Vue({
+      i18n,
+      data: {
+        activities_description_show: false,
+        reminders_frequency: 'once',
+        accept_invite_user: false,
+        date_met_the_contact: 'known'
+      },
+      methods: {
+      },
+    }).$mount('#app');
+    return lang;
+});
 
 require('./tags');
 require('./search');
@@ -181,4 +212,4 @@ require('./contacts');
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
-} );
+});
