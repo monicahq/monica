@@ -32,50 +32,38 @@
 
       <div class="col-xs-12 col-sm-9 subscriptions">
 
-        <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
 
-        @if (auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name')))
+            <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
 
-        {{-- User is subscribed --}}
-        <p>{{ trans('settings.subscriptions_account_paid_plan', ['name' => config('monica.paid_plan_friendly_name'), 'price' => ((int)config('monica.paid_plan_price')/100)]) }}</p>
-        <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => auth()->user()->account->getNextBillingDate(), 'url' => '/settings/subscriptions/downgrade']) !!}</p>
+            <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) }}</p>
+            <p>{{ trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => url('/settings/subscriptions/downgrade')]) }}</p>
 
-        @else
+            {{-- Only display invoices if the subscription exists or existed --}}
+            @if (auth()->user()->account->hasInvoices())
+              <div class="invoices">
+                <h3>{{ trans('settings.subscriptions_account_invoices') }}</h3>
+                <ul class="table">
+                  @foreach (auth()->user()->account->invoices() as $invoice)
+                  <li class="table-row">
+                    <div class="table-cell date">
+                      {{ $invoice->date()->toFormattedDateString() }}
+                    </div>
+                    <div class="table-cell">
+                      {{ $invoice->total() }}
+                    </div>
+                    <div class="table-cell">
+                      <a href="/settings/subscriptions/invoice/{{ $invoice->id }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
+                    </div>
+                  </li>
+                  @endforeach
+                </ul>
+              </div>
+            @endif
 
-        {{-- User was subscribed but not anymore --}}
-        <p>{{ trans('settings.subscriptions_account_free_plan') }}</p>
-        <p>{{ trans('settings.subscriptions_account_free_plan_upgrade', ['name' => config('monica.paid_plan_friendly_name'), 'price' => ((int)config('monica.paid_plan_price')/100)]) }}</p>
-        <ul class="upgrade-benefits">
-          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_users') }}</li>
-          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_reminders') }}</li>
-          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_import_data_vcard') }}</li>
-          <li>{{ trans('settings.subscriptions_account_free_plan_benefits_support') }}</li>
-        </ul>
-        <p><a href="/settings/subscriptions/upgrade">{{ trans('settings.subscriptions_account_upgrade') }}</a></p>
-
-        @endif
-
-        {{-- Only display invoices if the subscription exists or existed --}}
-        @if (auth()->user()->account->hasInvoices())
-          <div class="invoices">
-            <h3>{{ trans('settings.subscriptions_account_invoices') }}</h3>
-            <ul class="table">
-              @foreach (auth()->user()->account->invoices() as $invoice)
-              <li class="table-row">
-                <div class="table-cell date">
-                  {{ $invoice->date()->toFormattedDateString() }}
-                </div>
-                <div class="table-cell">
-                  {{ $invoice->total() }}
-                </div>
-                <div class="table-cell">
-                  <a href="/settings/subscriptions/invoice/{{ $invoice->id }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
-                </div>
-              </li>
-              @endforeach
-            </ul>
           </div>
-        @endif
+        </div>
 
       </div>
     </div>

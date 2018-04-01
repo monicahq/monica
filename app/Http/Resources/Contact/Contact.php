@@ -20,7 +20,7 @@ class Contact extends Resource
             'object' => 'contact',
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'gender' => $this->gender,
+            'gender' => $this->gender->name,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
@@ -55,10 +55,12 @@ class Contact extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
+                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
-                    'url' => $this->getAvatarUrl(),
+                    'url' => $this->getAvatarUrl(110),
                     'source' => $this->getAvatarSource(),
+                    'default_avatar_color' => $this->default_avatar_color,
                 ]),
                 'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
                 'how_you_met' => $this->when(! $this->is_partial, [

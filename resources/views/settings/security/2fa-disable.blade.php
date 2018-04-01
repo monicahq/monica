@@ -32,23 +32,27 @@
 
       <div class="col-xs-12 col-md-9">
 
-        <h3 class="with-actions">{{ trans('settings.2fa_title') }}</h3>
-        <p>{{ trans('settings.2fa_disable_description') }}</p>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <h3 class="with-actions">{{ trans('settings.2fa_title') }}</h3>
+            <p>{{ trans('settings.2fa_disable_description') }}</p>
 
-        @include('partials.errors')
-      
-        <form action="/settings/security/2fa-disable" method="POST">
-          {{ csrf_field() }}
+            @include('partials.errors')
 
-          {{-- code --}}
-          <div class="form-group">
-            <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-            <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
+            <form action="/settings/security/2fa-disable" method="POST">
+              {{ csrf_field() }}
+
+              {{-- code --}}
+              <div class="form-group">
+                <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
+                <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
+              </div>
+
+              <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>
+              <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
+            </form>
           </div>
-
-          <button type="submit" class="btn btn-primary">{{ trans('app.verify') }}</button>
-          <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
-        </form>
+        </div>
       </div>
     </div>
   </div>

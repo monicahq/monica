@@ -282,12 +282,6 @@
     padding-bottom: 20px;
     padding-top: 40px;
 
-    .delete-contact {
-      font-size: 12px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
     .section-title {
       position: relative;
 
@@ -520,6 +514,9 @@
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
+    }
+    .pa2 li {
+      list-style: inside disc;
     }
 
     .frequency-type,

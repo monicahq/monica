@@ -36,8 +36,7 @@ $('a[href^="#logCallModal"]').click(function(e) {
 $('#markPersonDeceased').click(function() {
   $('#datePersonDeceased').toggle(this.checked);
 
-  if(document.getElementById('markPersonDeceased').checked) {
-  } else {
+  if(! document.getElementById('markPersonDeceased').checked) {
     $('#checkboxDatePersonDeceased').prop('checked', false);
     $('#addReminderDeceased').prop('checked', false);
     $('#datesSelector').prop('checked', false);

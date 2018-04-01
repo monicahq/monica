@@ -6,12 +6,40 @@ use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
-use Tests\TestCase;
+use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AccountTest extends TestCase
+class AccountTest extends FeatureTestCase
 {
     use DatabaseTransactions;
+
+    public function test_it_has_many_genders()
+    {
+        $account = factory('App\Account')->create([]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+            'name' => 'test',
+        ]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+            'name' => 'test',
+        ]);
+
+        $this->assertTrue($account->genders()->exists());
+    }
+
+    public function test_it_has_many_notifications()
+    {
+        $account = factory('App\Account')->create([]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->notifications()->exists());
+    }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
@@ -83,7 +111,7 @@ class AccountTest extends TestCase
         );
     }
 
-    public function test_user_is_subscribed_returns_true_if_plan_is_set()
+    public function test_user_is_subscribed_returns_true_if_monthly_plan_is_set()
     {
         $account = factory(Account::class)->create([]);
 
@@ -94,7 +122,26 @@ class AccountTest extends TestCase
             'name' => 'fakePlan',
         ]);
 
-        config(['monica.paid_plan_friendly_name' => 'fakePlan']);
+        config(['monica.paid_plan_monthly_friendly_name' => 'fakePlan']);
+
+        $this->assertEquals(
+            true,
+            $account->isSubscribed()
+        );
+    }
+
+    public function test_user_is_subscribed_returns_true_if_annual_plan_is_set()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_annual',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'annualPlan',
+        ]);
+
+        config(['monica.paid_plan_annual_friendly_name' => 'annualPlan']);
 
         $this->assertEquals(
             true,
@@ -215,6 +262,193 @@ class AccountTest extends TestCase
         $this->assertEquals(
             3,
             $account->getRemindersForMonth(2)->count()
+        );
+    }
+
+    public function test_it_gets_the_id_of_the_subscribed_plan()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertEquals(
+            'chandler_5',
+            $account->getSubscribedPlanId()
+        );
+    }
+
+    public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        $plan = factory(\Laravel\Cashier\Subscription::class)->create([
+            'account_id' => $account->id,
+            'stripe_plan' => 'chandler_5',
+            'stripe_id' => 'sub_C0R444pbxddhW7',
+            'name' => 'fakePlan',
+        ]);
+
+        $this->assertEquals(
+            'fakePlan',
+            $account->getSubscribedPlanName()
+        );
+    }
+
+    public function test_it_populates_the_account_with_three_default_genders()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultGendersTable();
+
+        $this->assertEquals(
+            3,
+            $account->genders->count()
+        );
+    }
+
+    public function test_it_populates_the_account_with_the_right_default_genders()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultGendersTable();
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Man']
+        );
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Woman']
+        );
+
+        $this->assertDatabaseHas(
+            'genders',
+            ['name' => 'Rather not say']
+        );
+    }
+
+    public function test_it_replaces_gender_with_another_gender()
+    {
+        $account = factory(Account::class)->create([]);
+        $gender1 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+        $gender2 = factory('App\Gender')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
+
+        $account->replaceGender($gender1, $gender2);
+        $this->assertEquals(
+            3,
+            $gender2->contacts->count()
+        );
+    }
+
+    public function test_it_gets_default_time_reminder_is_sent_attribute()
+    {
+        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '14:00']);
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
+
+    public function test_it_sets_default_time_reminder_is_sent_attribute()
+    {
+        $account = new Account;
+        $account->default_time_reminder_is_sent = '14:00';
+
+        $this->assertEquals(
+            '14:00',
+            $account->default_time_reminder_is_sent
+        );
+    }
+
+    public function test_it_populates_the_account_with_two_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertEquals(
+            2,
+            $account->reminderRules->count()
+        );
+    }
+
+    public function test_it_populates_the_account_with_the_right_default_reminder_rules()
+    {
+        $account = factory(Account::class)->create([]);
+        $account->populateDefaultReminderRulesTable();
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 7]
+        );
+
+        $this->assertDatabaseHas(
+            'reminder_rules',
+            ['number_of_days_before' => 30]
+        );
+    }
+
+    public function test_it_retrieves_yearly_call_statistics()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory('App\Call', 4)->create([
+            'account_id' => $account->id,
+            'called_at' => '2018-03-02',
+        ]);
+
+        $contact = factory('App\Call', 2)->create([
+            'account_id' => $account->id,
+            'called_at' => '1992-03-02',
+        ]);
+
+        $statistics = $account->getYearlyCallStatistics();
+
+        $this->assertTrue(
+            $statistics->contains(4)
+        );
+
+        $this->assertTrue(
+            $statistics->contains(2)
+        );
+    }
+
+    public function test_it_retrieves_yearly_activities_statistics()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory('App\Activity', 4)->create([
+            'account_id' => $account->id,
+            'date_it_happened' => '2018-03-02',
+        ]);
+
+        $contact = factory('App\Activity', 2)->create([
+            'account_id' => $account->id,
+            'date_it_happened' => '1992-03-02',
+        ]);
+
+        $statistics = $account->getYearlyActivitiesStatistics();
+
+        $this->assertTrue(
+            $statistics->contains(4)
+        );
+
+        $this->assertTrue(
+            $statistics->contains(2)
         );
     }
 }

@@ -32,7 +32,8 @@ class RelationshipsController extends Controller
     {
         return view('people.relationship.add')
             ->withContact($contact)
-            ->withPartner(new Contact);
+            ->withPartner(new Contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -50,7 +51,7 @@ class RelationshipsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -65,7 +66,7 @@ class RelationshipsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -81,14 +82,15 @@ class RelationshipsController extends Controller
         // birthdate
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 
@@ -125,7 +127,8 @@ class RelationshipsController extends Controller
     {
         return view('people.relationship.edit')
             ->withContact($contact)
-            ->withPartner($partner);
+            ->withPartner($partner)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -142,7 +145,7 @@ class RelationshipsController extends Controller
             $request->only([
                 'first_name',
                 'last_name',
-                'gender',
+                'gender_id',
             ])
             + [
                 'account_id' => $contact->account_id,
@@ -161,14 +164,15 @@ class RelationshipsController extends Controller
         // birthdate
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $partner->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 

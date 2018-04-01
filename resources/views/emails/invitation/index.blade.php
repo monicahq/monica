@@ -436,7 +436,7 @@
                 <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="content-cell" align="center">
-                      <p class="sub align-center">&copy; {{ Carbon\Carbon::now()->year }} Monica. All rights reserved.</p>
+                      <p class="sub align-center">&copy; {{ \Jenssegers\Date\Date::now()->year }} Monica. All rights reserved.</p>
                       <p class="sub align-center">
                         Monica
                         <br>2889 rue de Rouen

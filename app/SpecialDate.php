@@ -105,6 +105,7 @@ class SpecialDate extends Model
     /**
      * Sets a reminder for this date. If a reminder is already defined for this
      * date, it will delete it first and recreate one.
+     *
      * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
      * @param int $frequencyNumber
      * @return Reminder
@@ -128,6 +129,8 @@ class SpecialDate extends Model
         $this->reminder_id = $reminder->id;
         $this->save();
 
+        $reminder->scheduleNotifications();
+
         return $reminder;
     }
 
@@ -141,7 +144,13 @@ class SpecialDate extends Model
             return;
         }
 
-        return Reminder::destroy($this->reminder_id);
+        if (! $this->reminder) {
+            return;
+        }
+
+        $this->reminder->purgeNotifications();
+
+        return $this->reminder->delete();
     }
 
     /**
@@ -155,11 +164,11 @@ class SpecialDate extends Model
             return;
         }
 
-        if ($this->is_year_unknown == true) {
+        if ($this->is_year_unknown) {
             return;
         }
 
-        return $this->date->diffInYears(Carbon::now());
+        return $this->date->diffInYears(now());
     }
 
     /**
@@ -169,7 +178,7 @@ class SpecialDate extends Model
     public function createFromAge(int $age)
     {
         $this->is_age_based = true;
-        $this->date = Carbon::now()->subYears($age)->month(1)->day(1);
+        $this->date = now()->subYears($age)->month(1)->day(1);
         $this->save();
 
         return $this;
@@ -188,7 +197,7 @@ class SpecialDate extends Model
         if ($year != 0) {
             $date = Carbon::createFromDate($year, $month, $day);
         } else {
-            $date = Carbon::createFromDate(Carbon::now()->year, $month, $day);
+            $date = Carbon::createFromDate(now()->year, $month, $day);
             $this->is_year_unknown = true;
         }
 

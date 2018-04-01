@@ -66,7 +66,7 @@ class ActivitiesController extends Controller
         }
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($activity);
+        (new JournalEntry)->add($activity);
 
         return redirect('/people/'.$contact->id)
             ->with('success', trans('people.activities_add_success'));

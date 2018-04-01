@@ -33,7 +33,7 @@
           <!-- Log content -->
           <div class="flex-auto">
             <p class="mb1">
-              <span class="pr2 f6 avenir">{{ trans('journal.journal_entry_type_activity') }}: {{ activity.activity_type }}</span>
+              <span class="pr2 f6 avenir">{{ $t('journal.journal_entry_type_activity') }}: {{ activity.activity_type }}</span>
             </p>
             <p class="mb1">{{ activity.summary }}</p>
 
@@ -70,12 +70,12 @@
           </div>
 
           <div class="flex-none w-30 mt2 pt1 pb2">
-            <p class="mb0 f6 gray">{{ trans('journal.journal_created_automatically') }}</p>
+            <p class="mb0 f6 gray">{{ $t('journal.journal_created_automatically') }}</p>
           </div>
 
           <!-- Avatars of the attendees -->
           <div class="flex-auto w-60 tr mt2 pa1 pr3 pb2">
-            <span class="f6 gray">{{ trans('app.with') }} </span>
+            <span class="f6 gray">{{ $t('app.with') }} </span>
             <div v-for="attendees in activity.attendees" class="dib pointer ml2" @click="redirect(attendees)">
               <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name">
               <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">

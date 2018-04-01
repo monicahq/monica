@@ -7,7 +7,7 @@
 
         <div class="people-profile-information">
 
-          @if ($contact->has_avatar == true)
+          @if ($contact->has_avatar)
             <img src="{{ $contact->getAvatarURL(110) }}" width="87">
           @else
             @if (! is_null($contact->gravatar_url))
@@ -63,7 +63,7 @@
           <ul class="tags">
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="/people?tags={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+                <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
             <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>

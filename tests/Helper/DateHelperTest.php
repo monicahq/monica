@@ -21,111 +21,102 @@ class DateHelperTest extends FeatureTestCase
     public function testGetShortDateWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22, 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan 22, 2017',
-            DateHelper::getShortDate($date, $locale)
+            DateHelper::getShortDate($date)
         );
     }
 
     public function testGetShortDateWithTimeWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22, 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function testGetShortDateWithTimeWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function testGetShortDateWithTimeWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan 22, 2017 17:56',
-            DateHelper::getShortDateWithTime($date, $locale)
+            DateHelper::getShortDateWithTime($date)
         );
     }
 
     public function test_get_short_date_without_year_returns_a_date()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan 22',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
 
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             '22 jan',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
 
-        $locale = '';
+        DateHelper::setLocale('');
 
         $this->assertEquals(
             'Jan 22',
-            DateHelper::getShortDateWithoutYear($date, $locale)
+            DateHelper::getShortDateWithoutYear($date)
         );
     }
 
-    public function test_get_locale_returns_english_by_default()
+    public function test_it_returns_the_default_short_date()
     {
-        $this->assertEquals(
-            'en',
-            DateHelper::getLocale()
-        );
-    }
-
-    public function test_get_locale_returns_right_locale_if_user_logged()
-    {
-        $user = $this->signIn();
-        $user->locale = 'fr';
-        $user->save();
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale(null);
 
         $this->assertEquals(
-            'fr',
-            DateHelper::getLocale()
+            'Jan 22',
+            DateHelper::getShortDateWithoutYear($date)
         );
     }
 
@@ -156,66 +147,66 @@ class DateHelperTest extends FeatureTestCase
     public function testGetShortMonthWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortMonthWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             'jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortMonthWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Jan',
-            DateHelper::getShortMonth($date, $locale)
+            DateHelper::getShortMonth($date)
         );
     }
 
     public function testGetShortDayWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'en';
+        DateHelper::setLocale('en');
 
         $this->assertEquals(
             'Sun',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 
     public function testGetShortDayWithFrenchLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'fr';
+        DateHelper::setLocale('fr');
 
         $this->assertEquals(
             'dim',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 
     public function testGetShortDayWithUnknownLocale()
     {
         $date = '2017-01-22 17:56:03';
-        $locale = 'jp';
+        DateHelper::setLocale('jp');
 
         $this->assertEquals(
             'Sun',
-            DateHelper::getShortDay($date, $locale)
+            DateHelper::getShortDay($date)
         );
     }
 
@@ -227,5 +218,103 @@ class DateHelperTest extends FeatureTestCase
             'Jul 2017',
             DateHelper::getMonthAndYear(6)
         );
+    }
+
+    public function test_it_gets_date_one_month_from_now()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $this->assertEquals(
+            '2017-02-01',
+            DateHelper::getNextTheoriticalBillingDate('monthly')->format('Y-m-d')
+        );
+    }
+
+    public function test_it_gets_date_one_year_from_now()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $this->assertEquals(
+            '2018-01-01',
+            DateHelper::getNextTheoriticalBillingDate('yearly')->format('Y-m-d')
+        );
+    }
+
+    public function test_it_returns_a_list_with_twelve_months()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertCount(
+            12,
+            DateHelper::getListOfMonths()
+        );
+    }
+
+    public function test_it_returns_a_list_of_months_in_english()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $months = DateHelper::getListOfMonths();
+
+        $this->assertEquals(
+            'January',
+            $months[0]['name']
+        );
+    }
+
+    public function test_it_returns_a_list_with_thirty_one_days()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertCount(
+            31,
+            DateHelper::getListOfDays()
+        );
+    }
+
+    public function test_it_returns_a_list_with_twenty_four_hours()
+    {
+        $this->assertCount(
+            24,
+            DateHelper::getListOfHours()
+        );
+    }
+
+    public function test_it_returns_a_list_of_hours()
+    {
+        $hours = DateHelper::getListOfHours();
+
+        $this->assertEquals(
+            '01.00AM',
+            $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['id']
+        );
+    }
+
+    public function test_it_returns_a_date_minus_a_number_of_days()
+    {
+        $date = Carbon::create(2017, 1, 1);
+
+        $this->assertEquals(
+            '2016-12-25',
+            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->format('Y-m-d')
+        );
+    }
+
+    public function test_it_returns_a_carbon_instance()
+    {
+        $date = Carbon::create(2017, 1, 1);
+
+        $this->assertInstanceOf(Carbon::class, DateHelper::getDateMinusGivenNumberOfDays($date, 7));
     }
 }

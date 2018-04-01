@@ -4,11 +4,12 @@ namespace Tests\Feature;
 
 use App\Contact;
 use Tests\FeatureTestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, WithFaker;
 
     /**
      * Returns an array containing a user object along with
@@ -35,24 +36,6 @@ class ContactTest extends FeatureTestCase
         $response->assertSee(
             $contact->getCompleteName()
         );
-    }
-
-    public function test_user_can_add_a_contact()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $params = [
-            'gender' => 'male',
-            'first_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-        ];
-
-        $this->post('/people', $params);
-
-        // Assert the contact has been added for the correct user.
-        $params['account_id'] = $user->account_id;
-
-        $this->assertDatabaseHas('contacts', $params);
     }
 
     public function test_user_can_be_reminded_about_an_event_once()
@@ -191,17 +174,6 @@ class ContactTest extends FeatureTestCase
         $this->changeArrayKey('food', 'food_preferencies', $food);
 
         $this->assertDatabaseHas('contacts', $food);
-    }
-
-    public function test_a_contact_can_be_deleted()
-    {
-        list($user, $contact) = $this->fetchUser();
-
-        $this->delete('/people/'.$contact->id);
-
-        $this->assertDatabaseMissing('contacts', [
-            'id' => $contact->id,
-        ]);
     }
 
     private function changeArrayKey($from, $to, &$array = [])

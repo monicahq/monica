@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Helpers\InstanceHelper;
 use App\Http\Controllers\Controller;
 
 class SubscriptionsController extends Controller
@@ -18,7 +20,18 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        return view('settings.subscriptions.account');
+        if (! auth()->user()->account->isSubscribed()) {
+            return view('settings.subscriptions.blank', [
+                'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
+            ]);
+        }
+
+        $planId = auth()->user()->account->getSubscribedPlanId();
+
+        return view('settings.subscriptions.account', [
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
+            'nextBillingDate' => auth()->user()->account->getNextBillingDate(),
+        ]);
     }
 
     /**
@@ -26,19 +39,50 @@ class SubscriptionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upgrade()
+    public function upgrade(Request $request)
     {
         if (! config('monica.requires_subscription')) {
             return redirect('settings/');
         }
 
-        $account = auth()->user()->account;
-
-        if ($account->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if (auth()->user()->account->isSubscribed()) {
             return redirect('/settings/subscriptions');
         }
 
-        return view('settings.subscriptions.upgrade');
+        $plan = $request->query('plan');
+
+        return view('settings.subscriptions.upgrade', [
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
+            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+        ]);
+    }
+
+    /**
+     * Display the upgrade success page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upgradeSuccess(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect('settings/');
+        }
+
+        return view('settings.subscriptions.success');
+    }
+
+    /**
+     * Display the downgrade success page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downgradeSuccess(Request $request)
+    {
+        if (! config('monica.requires_subscription')) {
+            return redirect('settings/');
+        }
+
+        return view('settings.subscriptions.downgrade-success');
     }
 
     /**
@@ -52,7 +96,7 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        if (! auth()->user()->account->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if (! auth()->user()->account->isSubscribed()) {
             return redirect('/settings');
         }
 
@@ -70,9 +114,13 @@ class SubscriptionsController extends Controller
             return redirect('/settings/users/subscriptions/downgrade');
         }
 
-        auth()->user()->account->subscription(config('monica.paid_plan_friendly_name'))->cancelNow();
+        if (! auth()->user()->account->isSubscribed()) {
+            return redirect('/settings');
+        }
 
-        return redirect('/settings/subscriptions');
+        auth()->user()->account->subscription(auth()->user()->account->getSubscribedPlanName())->cancelNow();
+
+        return redirect('/settings/subscriptions/downgrade/success');
     }
 
     /**
@@ -88,10 +136,14 @@ class SubscriptionsController extends Controller
 
         $stripeToken = $request->input('stripeToken');
 
-        auth()->user()->account->newSubscription(config('monica.paid_plan_friendly_name'), config('monica.paid_plan_id'))
-                    ->create($stripeToken);
+        $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
 
-        return redirect('settings/subscriptions');
+        auth()->user()->account->newSubscription($plan['name'], $plan['id'])
+                    ->create($stripeToken, [
+                        'email' => auth()->user()->email,
+                    ]);
+
+        return redirect('settings/subscriptions/upgrade/success');
     }
 
     /**
@@ -103,7 +155,7 @@ class SubscriptionsController extends Controller
     {
         return auth()->user()->account->downloadInvoice($invoiceId, [
             'vendor'  => 'Monica',
-            'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_friendly_name')]),
+            'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_monthly_friendly_name')]),
         ]);
     }
 }

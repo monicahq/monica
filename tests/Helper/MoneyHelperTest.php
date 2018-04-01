@@ -40,4 +40,16 @@ class MoneyHelperTest extends TestCase
     {
         $this->assertEquals('0', MoneyHelper::format(null));
     }
+
+    public function test_it_covers_brazilian_currency()
+    {
+        $currency = Currency::where('iso', 'BRL')->first();
+
+        $user = factory(User::class)->create([
+            'currency_id' => $currency->id,
+        ]);
+        $this->actingAs($user);
+
+        $this->assertEquals('R$12.345,67', MoneyHelper::format(12345.67));
+    }
 }

@@ -2,25 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Locales supported by the application
-    |--------------------------------------------------------------------------
-    |
-    | This is the list of locales that we will use to localize the application.
-    | Each locale is defined in `resources/lang/` in their respective folder.
-    |
-    */
-    'langs' => [
-        'en',
-        'fr',
-        'pt-br',
-        'ru',
-        'cz',
-        'it',
-        'de',
-    ],
-
    /*
     |--------------------------------------------------------------------------
     | Disable User registration
@@ -78,9 +59,12 @@ return [
     |
     |
     */
-   'paid_plan_friendly_name' => env('PAID_PLAN_FRIENDLY_NAME', null),
-   'paid_plan_id' => env('PAID_PLAN_ID', null),
-   'paid_plan_price' => env('PAID_PLAN_PRICE', null),
+   'paid_plan_monthly_friendly_name' => env('PAID_PLAN_MONTHLY_FRIENDLY_NAME', null),
+   'paid_plan_monthly_id' => env('PAID_PLAN_MONTHLY_ID', null),
+   'paid_plan_monthly_price' => env('PAID_PLAN_MONTHLY_PRICE', null),
+   'paid_plan_annual_friendly_name' => env('PAID_PLAN_ANNUAL_FRIENDLY_NAME', null),
+   'paid_plan_annual_id' => env('PAID_PLAN_ANNUAL_ID', null),
+   'paid_plan_annual_price' => env('PAID_PLAN_ANNUAL_PRICE', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -114,5 +98,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '1.6.1',
+    'app_version' => '1.8.2',
 ];

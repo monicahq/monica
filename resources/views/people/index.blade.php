@@ -77,7 +77,7 @@
 
                 {{-- Sorting options --}}
                 <li class="people-list-item sorting">
-                  {{ trans('people.people_list_stats', ['count' => $contacts->count()]) }}
+                  {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
 
                   <div class="options">
                     <div class="options-dropdowns">
@@ -116,7 +116,7 @@
 
                 <li class="people-list-item bg-white">
                   <a href="{{ route('people.show', $contact) }}">
-                    @if ($contact->has_avatar == true)
+                    @if ($contact->has_avatar)
                       <img src="{{ $contact->getAvatarURL(110) }}" width="43">
                     @else
                       @if (! is_null($contact->gravatar_url))

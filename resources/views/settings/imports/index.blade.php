@@ -56,7 +56,7 @@
             </div>
             <div class="table-cell">
               @if (! is_null($importJob->ended_at))
-              {{ trans('settings.import_result_stat', ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
+              {{ trans_choice('settings.import_result_stat', $importJob->contacts_found, ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
               @endif
             </div>
             <div class="table-cell">

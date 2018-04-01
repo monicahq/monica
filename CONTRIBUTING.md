@@ -3,9 +3,13 @@
 First off, thank you for considering contributing to Monica. We need people like
 you to make Monica the best tool it can be.
 
-Before you do anything else, please read the README.md of this project first.
+Before you do anything else, please read the [README.md](readme.md) of this project first.
 This is where we highlight the vision and the strategy. Please make sure you
 accept this vision before contributing to this project.
+
+If you want to contribute to the translation / localization of Monica, please
+head over to [Crowdin](https://crowdin.com/project/monicahq) where we manage our
+localization files.
 
 ### 1. Where do I go from here?
 
@@ -26,7 +30,7 @@ git checkout -b 325-add-japanese-translations
 
 ### 3. Get the test suite running
 
-Make sure you follow the [readme's instructions](https://github.com/monicahq/monica/blob/master/docs/contribute/contribute.md#setup-the-testing-environment)
+Make sure you follow the [instructions](https://github.com/monicahq/monica/wiki/Contribute-as-a-developer#testing-environment)
 on how to setup the test suite.
 
 ### 4. Did you find a bug?

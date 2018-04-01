@@ -20,8 +20,13 @@ class ApiDebtController extends ApiController
      */
     public function index(Request $request)
     {
-        $debts = auth()->user()->account->debts()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $debts = auth()->user()->account->debts()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return DebtResource::collection($debts);
     }
@@ -51,34 +56,9 @@ class ApiDebtController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'in_debt' => [
-                'required',
-                'string',
-                Rule::in(['yes', 'no']),
-            ],
-            'status' => [
-                'required',
-                'string',
-                Rule::in(['inprogress', 'completed']),
-            ],
-            'amount' => 'required|numeric',
-            'reason' => 'string|max:1000000|nullable',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -109,6 +89,28 @@ class ApiDebtController extends ApiController
             return $this->respondNotFound();
         }
 
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $debt->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        return new DebtResource($debt);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'in_debt' => [
@@ -132,20 +134,14 @@ class ApiDebtController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        try {
-            $debt->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
-        }
-
-        return new DebtResource($debt);
+        return true;
     }
 
     /**
@@ -184,6 +180,7 @@ class ApiDebtController extends ApiController
         }
 
         $debts = $contact->debts()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return DebtResource::collection($debts);

@@ -31,7 +31,8 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.add')
             ->withContact($contact)
-            ->withKid(new Contact);
+            ->withKid(new Contact)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -43,15 +44,13 @@ class KidsController extends Controller
      */
     public function store(KidsRequest $request, Contact $contact)
     {
-        $contactToSaveTheReminderTo = $contact;
-
         // this is a real contact, not just a significant other
         if ($request->get('realContact')) {
             $kid = Contact::create(
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -66,7 +65,7 @@ class KidsController extends Controller
                 $request->only([
                     'first_name',
                     'last_name',
-                    'gender',
+                    'gender_id',
                 ])
                 + [
                     'account_id' => $contact->account_id,
@@ -82,14 +81,15 @@ class KidsController extends Controller
         // birthdate
         $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 
@@ -112,7 +112,7 @@ class KidsController extends Controller
         $kid->isTheOffspringOf($contact, true);
 
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_add_success'));
+            ->with('success', trans('people.kids_add_success'));
     }
 
     /**
@@ -126,7 +126,8 @@ class KidsController extends Controller
     {
         return view('people.dashboard.kids.edit')
             ->withContact($contact)
-            ->withKid($kid);
+            ->withKid($kid)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
@@ -134,7 +135,7 @@ class KidsController extends Controller
      *
      * @param KidsRequest $request
      * @param Contact $contact
-     * @param Kid $kid
+     * @param Contact $kid
      * @return \Illuminate\Http\Response
      */
     public function update(KidsRequest $request, Contact $contact, Contact $kid)
@@ -143,7 +144,7 @@ class KidsController extends Controller
             $request->only([
                 'first_name',
                 'last_name',
-                'gender',
+                'gender_id',
             ])
             + [
                 'account_id' => $contact->account_id,
@@ -153,14 +154,15 @@ class KidsController extends Controller
         // birthdate
         $kid->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
             case 'approximate':
                 $specialDate = $kid->setSpecialDateFromAge('birthdate', $request->input('age'));
                 break;
             case 'exact':
                 $specialDate = $kid->setSpecialDate('birthdate', $request->input('birthdate_year'), $request->input('birthdate_month'), $request->input('birthdate_day'));
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
+                break;
+            case 'unknown':
+            default:
                 break;
         }
 
@@ -172,7 +174,7 @@ class KidsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Kid $kid
+     * @param Contact $kid
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Contact $kid)

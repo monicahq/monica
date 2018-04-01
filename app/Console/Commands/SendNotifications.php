@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Account;
-use App\Reminder;
-use Carbon\Carbon;
-use App\Jobs\SendReminderEmail;
+use App\Notification;
 use Illuminate\Console\Command;
-use App\Jobs\SetNextReminderDate;
+use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command
 {
@@ -17,7 +13,7 @@ class SendNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:sendnotifications';
+    protected $signature = 'send:notifications';
 
     /**
      * The console command description.
@@ -27,56 +23,22 @@ class SendNotifications extends Command
     protected $description = 'Send notifications about reminders';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        // grab all the reminders that are supposed to be sent in the next two days
-        // we put a limit of two days to limit parsing all the reminders table
-        $reminders = Reminder::where('next_expected_date', '<', Carbon::now()->addDays(2))
-                                ->orderBy('next_expected_date', 'asc')->get();
+        $notifications = Notification::where('trigger_date', '<', now()->addDays(2))
+                                ->orderBy('trigger_date', 'asc')->get();
 
-        foreach ($reminders as $reminder) {
-            if (! $reminder->contact) {
+        foreach ($notifications as $notification) {
+            if (! $notification->contact) {
+                $notification->delete();
                 continue;
             }
 
-            $account = $reminder->contact->account;
-            $reminderDate = $reminder->next_expected_date->hour(0)->minute(0)->second(0)->toDateString();
-            $sendEmailToUser = false;
-            $userTimezone = null;
-
-            // check if one of the user of the account has the reminder on this day
-            foreach ($account->users as $user) {
-                $userCurrentDate = Carbon::now($user->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-
-                if ($reminderDate === $userCurrentDate) {
-                    $sendEmailToUser = true;
-                    $userTimezone = $user->timezone;
-                }
-            }
-
-            if ($sendEmailToUser == true) {
-                if (! $account->hasLimitations()) {
-                    foreach ($account->users as $user) {
-                        dispatch(new SendReminderEmail($reminder, $user));
-                    }
-                }
-
-                dispatch(new SetNextReminderDate($reminder, $userTimezone));
-            }
+            ScheduleNotification::dispatch($notification);
         }
     }
 }

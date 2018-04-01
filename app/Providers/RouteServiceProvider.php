@@ -9,12 +9,14 @@ use App\Debt;
 use App\Gift;
 use App\Note;
 use App\Task;
+use App\Gender;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\Offspring;
 use App\ContactField;
 use App\Relationship;
+use App\ReminderRule;
 use Illuminate\Routing\Router;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -91,9 +93,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('significant_other', function ($value, $route) {
-            $contact = Contact::findOrFail($route->parameter('contact')->id);
+            Contact::findOrFail($route->parameter('contact')->id);
 
-            $relationShip = Relationship::where('account_id', auth()->user()->account_id)
+            Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('with_contact_id', $value)
                 ->firstOrFail();
@@ -102,9 +104,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('kid', function ($value, $route) {
-            $contact = Contact::findOrFail($route->parameter('contact')->id);
+            Contact::findOrFail($route->parameter('contact')->id);
 
-            $offspring = Offspring::where('account_id', auth()->user()->account_id)
+            Offspring::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $value)
                 ->where('is_the_child_of', $route->parameter('contact')->id)
                 ->firstOrFail();
@@ -133,6 +135,18 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('pet', function ($value, $route) {
             return Pet::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('gender', function ($value) {
+            return Gender::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('reminderRule', function ($value) {
+            return ReminderRule::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

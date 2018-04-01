@@ -5,23 +5,8 @@ namespace App;
 use DB;
 use Laravel\Cashier\Billable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @property User $user
- * @property Collection|Activity[] $activities
- * @property Collection|ActitivyStatistic[] $activityStatistics
- * @property Collection|Contact[] $contacts
- * @property Collection|Invitation[] $invitations
- * @property Collection|Debt[] $debts
- * @property Collection|Entry[] $entries
- * @property Collection|Gift[] $gifts
- * @property Collection|Event[] $events
- * @property Collection|Note[] $notes
- * @property Collection|Reminder[] $reminders
- * @property Collection|Task[] $tasks
- */
 class Account extends Model
 {
     use Billable;
@@ -32,7 +17,9 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
-        'number_of_invitations_sent', 'api_key',
+        'number_of_invitations_sent',
+        'api_key',
+        'default_time_reminder_is_sent',
     ];
 
     /**
@@ -43,6 +30,52 @@ class Account extends Model
     protected $casts = [
         'has_access_to_paid_version_for_free' => 'boolean',
     ];
+
+    /**
+     * Create a new account and associate a new User.
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function createDefault($first_name, $last_name, $email, $password)
+    {
+        // create new account
+        $account = new self;
+        $account->api_key = str_random(30);
+        $account->created_at = now();
+        $account->save();
+
+        $account->populateDefaultFields($account);
+
+        // create the first user for this account
+        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+
+        return $account;
+    }
+
+    /**
+     * Get if any account exists on the database.
+     *
+     * @return bool
+     */
+    public static function hasAny()
+    {
+        return DB::table('accounts')->count() > 0;
+    }
+
+    /**
+     * Populates all the default column that should be there when a new account
+     * is created or reset.
+     */
+    public static function populateDefaultFields($account)
+    {
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
+    }
 
     /**
      * Get the activity records associated with the account.
@@ -275,9 +308,61 @@ class Account extends Model
     }
 
     /**
+     * Get the Genders records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function genders()
+    {
+        return $this->hasMany('App\Gender');
+    }
+
+    /**
+     * Get the Reminder Rules records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderRules()
+    {
+        return $this->hasMany('App\ReminderRule');
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
+     * Get the default time reminder is sent.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDefaultTimeReminderIsSentAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Set the default time a reminder is sent.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDefaultTimeReminderIsSentAttribute($value)
+    {
+        $this->attributes['default_time_reminder_is_sent'] = $value;
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return this
+     * @return $this
      */
     public function canDowngrade()
     {
@@ -311,7 +396,11 @@ class Account extends Model
 
         $isSubscribed = false;
 
-        if ($this->subscribed(config('monica.paid_plan_friendly_name'))) {
+        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
+            $isSubscribed = true;
+        }
+
+        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
             $isSubscribed = true;
         }
 
@@ -328,11 +417,8 @@ class Account extends Model
     public function hasInvoices()
     {
         $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-        if ($query > 0) {
-            return true;
-        }
 
-        return false;
+        return $query > 0;
     }
 
     /**
@@ -399,8 +485,8 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if ($ignoreMigratedTable == false) {
-                $contactFieldType = ContactFieldType::create([
+            if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
+                ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
@@ -408,19 +494,31 @@ class Account extends Model
                     'delible' => $defaultContactFieldType->delible,
                     'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                 ]);
-            } else {
-                if ($defaultContactFieldType->migrated == 0) {
-                    $contactFieldType = ContactFieldType::create([
-                        'account_id' => $this->id,
-                        'name' => $defaultContactFieldType->name,
-                        'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                        'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                        'delible' => $defaultContactFieldType->delible,
-                        'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                    ]);
-                }
             }
         }
+    }
+
+    /**
+     * Populates the default genders in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultGendersTable()
+    {
+        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+    }
+
+    /**
+     * Populates the default reminder rules in a new account.
+     *
+     * @return void
+     */
+    public function populateDefaultReminderRulesTable()
+    {
+        ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id, 'active' => 1]);
+        ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id, 'active' => 1]);
     }
 
     /**
@@ -432,13 +530,123 @@ class Account extends Model
      */
     public function getRemindersForMonth(int $month)
     {
-        $startOfMonth = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->startOfMonth();
-        $endInThreeMonths = \Carbon\Carbon::now()->addMonthsNoOverflow($month)->endOfMonth();
-        $reminders = auth()->user()->account->reminders()
-                            ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
-                            ->orderBy('next_expected_date', 'asc')
-                            ->get();
+        $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
+        $endInThreeMonths = now()->addMonthsNoOverflow($month)->endOfMonth();
 
-        return $reminders;
+        return auth()->user()->account->reminders()
+                     ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
+                     ->orderBy('next_expected_date', 'asc')
+                     ->get();
+    }
+
+    /**
+     * Get the id of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanId()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->stripe_plan;
+    }
+
+    /**
+     * Get the friendly name of the plan the account is subscribed to.
+     *
+     * @return string
+     */
+    public function getSubscribedPlanName()
+    {
+        $plan = $this->subscriptions()->first();
+
+        return $plan->name;
+    }
+
+    /**
+     * Replaces a specific gender of all the contacts in the account with another
+     * gender.
+     *
+     * @param  Gender $genderToDelete
+     * @param  Gender $genderToReplaceWith
+     * @return bool
+     */
+    public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
+    {
+        Contact::where('account_id', $this->id)
+                    ->where('gender_id', $genderToDelete->id)
+                    ->update(['gender_id' => $genderToReplaceWith->id]);
+
+        return true;
+    }
+
+    /**
+     * Get the statistics of the number of calls grouped by year.
+     *
+     * @return json
+     */
+    public function getYearlyCallStatistics()
+    {
+        $callsStatistics = collect([]);
+        $calls = $this->calls()->latest('called_at')->get();
+        $years = [];
+
+        // Create a table that contains the combo year/number of
+        foreach ($calls as $call) {
+            $yearStatistic = $call->called_at->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (! $foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $callsStatistics->put($year, $number);
+        }
+
+        return $callsStatistics;
+    }
+
+    /**
+     * Get the statistics of the number of activities grouped by year.
+     *
+     * @return json
+     */
+    public function getYearlyActivitiesStatistics()
+    {
+        $activitiesStatistics = collect([]);
+        $activities = $this->activities()->latest('date_it_happened')->get();
+        $years = [];
+
+        // Create a table that contains the combo year/number of
+        foreach ($activities as $call) {
+            $yearStatistic = $call->date_it_happened->format('Y');
+            $foundInYear = false;
+
+            foreach ($years as $year => $number) {
+                if ($year == $yearStatistic) {
+                    $years[$year] = $number + 1;
+                    $foundInYear = true;
+                }
+            }
+
+            if (! $foundInYear) {
+                $years[$yearStatistic] = 1;
+            }
+        }
+
+        foreach ($years as $year => $number) {
+            $activitiesStatistics->put($year, $number);
+        }
+
+        return $activitiesStatistics;
     }
 }

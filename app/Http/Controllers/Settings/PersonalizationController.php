@@ -6,6 +6,7 @@ use Validator;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PersonalizationController extends Controller
 {
@@ -40,7 +41,7 @@ class PersonalizationController extends Controller
             'protocol' => 'max:255|nullable',
         ])->validate();
 
-        $contactFieldType = auth()->user()->account->contactFieldTypes()->create(
+        return auth()->user()->account->contactFieldTypes()->create(
             $request->only([
                 'name',
                 'protocol',
@@ -50,8 +51,6 @@ class PersonalizationController extends Controller
                 'account_id' => auth()->user()->account->id,
             ]
         );
-
-        return $contactFieldType;
     }
 
     /**
@@ -68,7 +67,7 @@ class PersonalizationController extends Controller
                 ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return $this->respond([
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
@@ -94,6 +93,9 @@ class PersonalizationController extends Controller
         return $contactFieldType;
     }
 
+    /**
+     * Destroy the contact field type.
+     */
     public function destroyContactFieldType(Request $request, $contactFieldTypeId)
     {
         try {
@@ -101,15 +103,15 @@ class PersonalizationController extends Controller
                 ->where('id', $contactFieldTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return $this->respond([
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],
             ]);
         }
 
-        if ($contactFieldType->delible == false) {
-            return $this->respond([
+        if (! $contactFieldType->delible) {
+            return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),
                 ],

@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -58,7 +57,7 @@ class ExportAccountAsSQL
     public function __construct($file = null, $path = null)
     {
         $this->path = $path ?? 'exports/';
-        $this->file = rand().'.sql';
+        $this->file = $file ?? rand().'.sql';
     }
 
     /**
@@ -76,7 +75,7 @@ class ExportAccountAsSQL
         $sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name." dump of data
 # {$this->file}
-# Export date: ".Carbon::now().'
+# Export date: ".now().'
 # ************************************************************
 
 '.PHP_EOL;
@@ -109,11 +108,9 @@ class ExportAccountAsSQL
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
-                    if ($columnName == 'account_id') {
-                        if ($value !== $account->id) {
-                            $skipLine = true;
-                            break;
-                        }
+                    if ($columnName == 'account_id' && $value !== $account->id) {
+                        $skipLine = true;
+                        break;
                     }
 
                     if (is_null($value)) {
@@ -125,7 +122,7 @@ class ExportAccountAsSQL
                     array_push($tableValues, $value);
                 }
 
-                if ($skipLine == false) {
+                if (! $skipLine) {
                     $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
                 }

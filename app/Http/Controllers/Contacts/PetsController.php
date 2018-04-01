@@ -69,7 +69,7 @@ class PetsController extends Controller
             ]
         );
 
-        return $data = [
+        return [
             'id' => $pet->id,
             'name' => $pet->name,
             'pet_category_id' => $pet->pet_category_id,
@@ -93,7 +93,7 @@ class PetsController extends Controller
             ]
         );
 
-        return $data = [
+        return [
             'id' => $pet->id,
             'name' => $pet->name,
             'pet_category_id' => $pet->pet_category_id,

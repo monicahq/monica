@@ -58,6 +58,16 @@ class Reminder extends Model
     }
 
     /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
      * Get the next_expected_date field according to user's timezone.
      *
      * @param string $value
@@ -139,5 +149,59 @@ class Reminder extends Model
         $this->next_expected_date = $date;
 
         return $this;
+    }
+
+    /**
+     * Schedules the notifications for the given reminder.
+     *
+     * @return void
+     */
+    public function scheduleNotifications()
+    {
+        if ($this->frequency_type == 'week') {
+            return;
+        }
+
+        // Only schedule notifications for active reminder rules
+        $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
+
+        foreach ($reminderRules as $reminderRule) {
+            $this->scheduleSingleNotification($reminderRule->number_of_days_before);
+        }
+    }
+
+    /**
+     * Schedules a notification for the given reminder.
+     *
+     * @param  int  $numberOfDaysBefore
+     * @return Notification
+     */
+    public function scheduleSingleNotification(int $numberOfDaysBefore)
+    {
+        $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
+
+        if ($date->lte(now())) {
+            return;
+        }
+
+        $notification = new Notification;
+        $notification->account_id = $this->account_id;
+        $notification->contact_id = $this->contact_id;
+        $notification->reminder_id = $this->id;
+        $notification->trigger_date = $date;
+        $notification->scheduled_number_days_before = $numberOfDaysBefore;
+        $notification->save();
+
+        return $notification;
+    }
+
+    /**
+     * Purge all the existing notifications for a reminder.
+     *
+     * @return void
+     */
+    public function purgeNotifications()
+    {
+        $this->notifications->each->delete();
     }
 }

@@ -10,7 +10,6 @@ class ApiUsage extends Model
 
     /**
      * Log a request made through the API.
-     * @param  Request $request
      */
     public function log(\Illuminate\Http\Request $request)
     {

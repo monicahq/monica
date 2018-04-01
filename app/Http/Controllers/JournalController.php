@@ -57,7 +57,7 @@ class JournalController extends Controller
 
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
-        $jsonToSendBack = [
+        return [
             'total' => $journalEntries->total(),
             'per_page' => $journalEntries->perPage(),
             'current_page' => $journalEntries->currentPage(),
@@ -65,8 +65,6 @@ class JournalController extends Controller
             'prev_page_url' => $journalEntries->previousPageUrl(),
             'data' => $entries,
         ];
-
-        return $jsonToSendBack;
     }
 
     /**
@@ -76,9 +74,7 @@ class JournalController extends Controller
      */
     public function get(JournalEntry $journalEntry)
     {
-        $object = $journalEntry->getObjectData();
-
-        return $object;
+        return $journalEntry->getObjectData();
     }
 
     /**
@@ -87,14 +83,14 @@ class JournalController extends Controller
     public function storeDay(DaysRequest $request)
     {
         $day = auth()->user()->account->days()->create([
-            'date' => \Carbon\Carbon::now(auth()->user()->timezone),
+            'date' => now(auth()->user()->timezone),
             'rate' => $request->get('rate'),
         ]);
 
         // Log a journal entry
         $journalEntry = (new JournalEntry)->add($day);
 
-        $data = [
+        return [
             'id' => $journalEntry->id,
             'date' => $journalEntry->date,
             'journalable_id' => $journalEntry->journalable_id,
@@ -102,8 +98,6 @@ class JournalController extends Controller
             'object' => $journalEntry->getObjectData(),
             'show_calendar' => true,
         ];
-
-        return $data;
     }
 
     /**
@@ -144,7 +138,7 @@ class JournalController extends Controller
      * Saves the journal entry.
      *
      * @param  Request $request
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
@@ -169,7 +163,7 @@ class JournalController extends Controller
         $entry->save();
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($entry);
+        (new JournalEntry)->add($entry);
 
         return redirect()->route('journal.index');
     }

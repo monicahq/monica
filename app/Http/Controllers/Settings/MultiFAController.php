@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Google2FA;
 use Illuminate\Http\Request;
+use PragmaRX\Google2FA\Google2FA;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
@@ -17,7 +17,7 @@ class MultiFAController extends Controller
     /**
      * Session var name to store secret code.
      */
-    private const SESSION_TFA_SECRET = '2FA_secret';
+    private $SESSION_TFA_SECRET = '2FA_secret';
 
     /**
      * Create a new authentication controller instance.
@@ -41,14 +41,14 @@ class MultiFAController extends Controller
         $user = $request->user();
 
         //generate image for QR barcode
-        $imageDataUri = Google2FA::getQRCodeInline(
+        $imageDataUri = app('pragmarx.google2fa')->getQRCodeInline(
             $request->getHttpHost(),
             $user->email,
             $secret,
             200
         );
 
-        $request->session()->put(self::SESSION_TFA_SECRET, $secret);
+        $request->session()->put($this->SESSION_TFA_SECRET, $secret);
 
         return view('settings.security.2fa-enable', ['image' => $imageDataUri, 'secret' => $secret]);
     }
@@ -64,7 +64,7 @@ class MultiFAController extends Controller
         ]);
 
         //retrieve secret
-        $secret = $request->session()->pull(self::SESSION_TFA_SECRET);
+        $secret = $request->session()->pull($this->SESSION_TFA_SECRET);
 
         $authenticator = app(Authenticator::class)->boot($request);
 

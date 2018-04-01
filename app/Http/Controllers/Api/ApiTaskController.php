@@ -19,8 +19,13 @@ class ApiTaskController extends ApiController
      */
     public function index(Request $request)
     {
-        $tasks = auth()->user()->account->tasks()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $tasks = auth()->user()->account->tasks()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return TaskResource::collection($tasks);
     }
@@ -50,26 +55,9 @@ class ApiTaskController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'description' => 'string|max:1000000',
-            'completed_at' => 'date',
-            'completed' => 'boolean|required',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -100,6 +88,28 @@ class ApiTaskController extends ApiController
             return $this->respondNotFound();
         }
 
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $task->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
@@ -115,20 +125,14 @@ class ApiTaskController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        try {
-            $task->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
-        }
-
-        return new TaskResource($task);
+        return true;
     }
 
     /**
@@ -167,6 +171,7 @@ class ApiTaskController extends ApiController
         }
 
         $tasks = $contact->tasks()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return TaskResource::collection($tasks);

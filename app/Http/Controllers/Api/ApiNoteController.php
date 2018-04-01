@@ -19,8 +19,13 @@ class ApiNoteController extends ApiController
      */
     public function index(Request $request)
     {
-        $notes = auth()->user()->account->notes()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $notes = auth()->user()->account->notes()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return NoteResource::collection($notes);
     }
@@ -63,7 +68,7 @@ class ApiNoteController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -77,7 +82,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         }
 
@@ -115,7 +120,7 @@ class ApiNoteController extends ApiController
         }
 
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $request->input('contact_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -129,7 +134,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         } else {
             $note->favorited_at = null;
@@ -175,6 +180,7 @@ class ApiNoteController extends ApiController
         }
 
         $notes = $contact->notes()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return NoteResource::collection($notes);

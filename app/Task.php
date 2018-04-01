@@ -77,6 +77,6 @@ class Task extends Model
      */
     public function scopeInProgress(Builder $query)
     {
-        return $query->where('completed', 'false');
+        return $query->where('completed', false);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property Account $account
  * @property Contact $contact
- * @property Contact|Kid|SignificantOther $recipient
+ * @property Contact $recipient
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
@@ -109,14 +109,12 @@ class Gift extends Model
     /**
      * Set the recipient for the gift.
      *
-     * @param string $recipient
-     * @return static
+     * @param int $value
+     * @return string
      */
-    public function forRecipient($recipient)
+    public function setIsForAttribute($value)
     {
-        $this->is_for = $recipient;
-
-        return $this;
+        $this->attributes['is_for'] = $value;
     }
 
     /**

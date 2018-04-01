@@ -32,12 +32,16 @@
 
       <div class="col-xs-12 col-sm-9">
 
-        <h3>{{ trans('settings.export_title') }}</h3>
-        <h4>{{ trans('settings.export_title_sql') }}</h4>
-        <p>{{ trans('settings.export_sql_explanation') }}</p>
-        <p>{{ trans('settings.export_be_patient') }}</p>
-        <p><a href="/settings/exportToSql" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>
-        <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica#importing-sql-from-the-exporter-feature']) !!}</p>
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <h3>{{ trans('settings.export_title') }}</h3>
+            <h4>{{ trans('settings.export_title_sql') }}</h4>
+            <p>{{ trans('settings.export_sql_explanation') }}</p>
+            <p>{{ trans('settings.export_be_patient') }}</p>
+            <p><a href="/settings/exportToSql" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>
+            <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica/wiki/Update-your-server#importing-sql-from-the-exporter-feature']) !!}</p>
+          </div>
+        </div>
 
       </div>
     </div>
