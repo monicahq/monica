@@ -3,6 +3,7 @@ UNRELEASED CHANGES:
 * Fix called_at field in the Call object returned by the API
 * Add Linkedin URL in the Contact object returned by the API
 * Improve localization: add plural forms, localize every needed messages
+* Split app.js in 3 files, and load translations files for Vue in separate files
 
 RELEASED VERSIONS:
 
