@@ -28,7 +28,7 @@
   <div class="mt4 mw6 center mb4 pa2 pa0-ns">
     <div class="br3 ba b--gray-monica bg-white pa4">
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
-      <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_thanks') }}</p>
+      <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_infos') }}</p>
       <form action="/settings/subscriptions/processPayment" method="post" id="payment-form" class="mb4">
         {{ csrf_field() }}
 

@@ -240,7 +240,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if (! $contact->setName($request->input('firstname'), null, $request->input('lastname'))) {
+        if (! $contact->setName($request->input('firstname'), $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
