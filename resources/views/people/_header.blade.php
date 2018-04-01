@@ -69,7 +69,7 @@
             <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
-          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
+          <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm">
             {{ csrf_field() }}
             <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
             <div class="tagsFormActions">

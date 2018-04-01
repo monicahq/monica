@@ -67,7 +67,7 @@
           @endif
         </div>
 
-        <form method="POST" action="/people/{{ $contact->id }}/reminders/{{ $reminder->id }}" class="entry-delete-form hidden">
+        <form method="POST" action="/people/{{ $contact->hashID() }}/reminders/{{ $reminder->id }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>
