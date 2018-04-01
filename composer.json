@@ -24,7 +24,7 @@
         "martinlindhe/laravel-vue-i18n-generator": "^0.1.23",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/google2fa": "^3.0",
-        "pragmarx/google2fa-laravel": "dev-master",
+        "pragmarx/google2fa-laravel": "^0.2",
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
         "sabre/vobject": "^4.1",
