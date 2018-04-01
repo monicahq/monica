@@ -7,7 +7,7 @@ use Vinkla\Hashids\Facades\Hashids;
 class IdHasher
 {
     /**
-     * Prefix for ids
+     * Prefix for ids.
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class IdHasher
 
     public function encodeId($id)
     {
-        return $this->prefix . Hashids::encode($id);
+        return $this->prefix.Hashids::encode($id);
     }
 
     public function decodeId($hash)
