@@ -74,7 +74,7 @@ class RelationshipsController extends Controller
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
             return redirect('/people/'.$contact->id)
-                ->with('success', trans('people.significant_other_add_success'));
+                ->with('success', trans('people.relationship_form_add_success'));
         }
 
         // case of creating a new contact
@@ -148,7 +148,7 @@ class RelationshipsController extends Controller
         }
 
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_add_success'));
+            ->with('success', trans('people.relationship_form_add_success'));
     }
 
     /**
@@ -266,7 +266,7 @@ class RelationshipsController extends Controller
         }
 
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_add_success'));
+            ->with('success', trans('people.relationship_form_add_success'));
     }
 
     /**
@@ -297,6 +297,6 @@ class RelationshipsController extends Controller
         }
 
         return redirect('/people/'.$contact->id)
-            ->with('success', trans('people.significant_other_delete_success'));
+            ->with('success', trans('people.relationship_form_deletion_success'));
     }
 }

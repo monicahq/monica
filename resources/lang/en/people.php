@@ -162,6 +162,8 @@ return [
     'relationship_form_add_no_existing_contact' => 'You don\'t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
     'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted - only the relationship between the two.',
+    'relationship_form_add_success' => 'The relationship has been successfully set.',
+    'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
     'tasks_blank_title' => 'You don\'t have any tasks yet.',
