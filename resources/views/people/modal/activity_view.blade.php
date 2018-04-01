@@ -15,7 +15,6 @@
                       <ul class="contacts-list">
                           @foreach ($activity->contacts as $contact)
                               <li class="pretty-tag"><a href="/people/{{ $contact->hashID() }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
-                              <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                           @endforeach
                       </ul>
                   </ul>
