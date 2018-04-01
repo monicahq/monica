@@ -41,7 +41,7 @@ class Update extends Command
                     ]);
 
                 if ($this->option('composer-install') === true) {
-                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs' . ($this->option('composer-install') === false ? '--no-dev' : ''));
+                    $this->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('composer-install') === false ? '--no-dev' : ''));
                 }
 
                 $this->artisan('✓ Performing migrations', 'migrate', ['--force' => 'true']);
@@ -67,7 +67,7 @@ class Update extends Command
     {
         $this->info($message);
         $this->line($command);
-        exec($command . ' 2>&1', $output);
+        exec($command.' 2>&1', $output);
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             foreach ($output as $line) {
                 $this->line($line);
@@ -80,15 +80,13 @@ class Update extends Command
     {
         $this->info($message);
         $info = '';
-        foreach($arguments as $key => $value)
-        {
-            $info = $info . ' ' . $key . '=' . $value;
+        foreach ($arguments as $key => $value) {
+            $info = $info.' '.$key.'='.$value;
         }
-        $this->line('php artisan ' . $command . $info);
+        $this->line('php artisan '.$command.$info);
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->call($command, $arguments);
-        }
-        else{
+        } else {
             $this->callSilent($command, $arguments);
         }
         $this->line('');
