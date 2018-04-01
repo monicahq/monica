@@ -104,6 +104,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('significant_other', function ($value, $route) {
             Contact::findOrFail($route->parameter('contact')->id);
 
+            $value = app('idhasher')->decodeId($value);
+
             Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('with_contact_id', $value)

@@ -26,7 +26,7 @@
             @endif
           @endif
 
-          <a href="{{ route('people.relationships.edit', [$contact, $partner]) }}" class="action-link {{ $contact->id }}-edit-relationship">
+          <a href="{{ route('people.relationships.edit', [$contact, $partner]) }}" class="action-link edit-relationship">
             {{ trans('app.edit') }}
           </a>
 
@@ -49,7 +49,7 @@
             @endif
           @endif
 
-          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link {{ $contact->id }}-unlink-relationship">
+          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link unlink-relationship">
             {{ trans('app.remove') }}
           </a>
 

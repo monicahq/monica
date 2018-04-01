@@ -13,7 +13,7 @@ trait Hasher
 
     public function resolveRouteBinding($value)
     {
-        $value = app('idhasher')->encodeId($value);
+        $value = app('idhasher')->decodeId($value);
 
         return $this->where($this->getRouteKeyName(), $value)->first();
     }
