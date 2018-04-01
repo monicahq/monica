@@ -132,7 +132,7 @@ return [
     'subscriptions_back' => 'Retourner aux paramètres',
     'subscriptions_upgrade_title' => 'Passer au plan supérieur',
     'subscriptions_upgrade_choose' => 'Vous avez choisi l\'offre :plan.',
-    'subscriptions_upgrade_infos' => 'We couldn\'t be happier. Enter your payment info below.',
+    'subscriptions_upgrade_infos' => 'Nous ne pourrions être plus heureux. Entrez vos informations de paiement ci-dessous.',
     'subscriptions_upgrade_name' => 'Nom sur la carte',
     'subscriptions_upgrade_zip' => 'Code postal',
     'subscriptions_upgrade_credit' => 'Carte de crédit ou de débit',
