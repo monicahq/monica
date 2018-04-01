@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4df94eb414e4edd8d927f54f186c2b9",
+    "content-hash": "5aa2f4806518188946b56ab87930126d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2720,16 +2720,16 @@
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "dev-master",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042"
+                "reference": "54f0c30c9be5497a7bd248844f1099156457e719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
-                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/54f0c30c9be5497a7bd248844f1099156457e719",
+                "reference": "54f0c30c9be5497a7bd248844f1099156457e719",
                 "shasum": ""
             },
             "require": {
@@ -2787,7 +2787,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2018-03-08T04:29:45+00:00"
+            "time": "2018-03-08T04:08:14+00:00"
         },
         {
             "name": "pragmarx/random",
@@ -7268,7 +7268,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pragmarx/google2fa-laravel": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
