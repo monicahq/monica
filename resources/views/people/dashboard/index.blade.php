@@ -8,13 +8,13 @@
 @include('people.progenitors.index')
 
 {{-- Pets --}}
-<pet v-bind:contact-id="{!! $contact->id !!}"></pet>
+<pet hash={!! $contact->hashID() !!}></pet>
 
 {{-- Contact information --}}
-<contact-information hash={!! $contact->hashID() !!} v-bind:contact-id="{!! $contact->id !!}"></contact-information>
+<contact-information hash={!! $contact->hashID() !!} ></contact-information>
 
 {{-- Address --}}
-<contact-address v-bind:contact-id="{!! $contact->id !!}"></contact-address>
+<contact-address hash={!! $contact->hashID() !!}></contact-address>
 
 {{-- Introductions --}}
 @include('people.dashboard.introductions.index')
