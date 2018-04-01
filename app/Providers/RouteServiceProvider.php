@@ -112,7 +112,7 @@ class RouteServiceProvider extends ServiceProvider
             return Contact::findOrFail($value);
         });
 
-        Route::bind('kid', function ($value, $route) use ($ID_hasher) {
+        Route::bind('kid', function ($value, $route) {
             Contact::findOrFail($route->parameter('contact')->id);
 
             $value = app('idhasher')->decodeId($value);
