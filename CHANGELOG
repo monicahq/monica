@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Split app.js in 3 files, and load translations files for Vue in separate files
 * Fix Bug when editing gift #1046
 
+
 RELEASED VERSIONS:
 
 v1.8.2 - 2018-03-20
