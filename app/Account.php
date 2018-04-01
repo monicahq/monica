@@ -506,7 +506,7 @@ class Account extends Model
         $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
         foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
             if (! $ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
-                $id = DB::table('relationship_type_groups')->insertGetId([
+                DB::table('relationship_type_groups')->insert([
                     'account_id' => $this->id,
                     'name' => $defaultRelationshipTypeGroup->name,
                     'delible' => $defaultRelationshipTypeGroup->delible,

@@ -563,11 +563,9 @@ class Contact extends Model
             return;
         }
 
-        $relationships = $this->relationships->filter(function ($item) use ($type) {
+        return $this->relationships->filter(function ($item) use ($type) {
             return $item->relationshipType->relationshipTypeGroup->name == $type;
         });
-
-        return $relationships;
     }
 
     /**
@@ -1218,11 +1216,9 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        $relationship = Relationship::where('contact_is', $this->id)
+        return Relationship::where('contact_is', $this->id)
                                     ->where('of_contact', $otherContact->id)
                                     ->first();
-
-        return $relationship;
     }
 
     /**
