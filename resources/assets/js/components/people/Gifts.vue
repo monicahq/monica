@@ -171,7 +171,7 @@
             this.prepareComponent();
         },
 
-        props: ['hash', 'contactId', 'giftsActiveTab'],
+        props: ['hash', 'giftsActiveTab'],
 
         computed: {
             ideas: function () {
@@ -211,7 +211,7 @@
             },
 
             getGifts() {
-                axios.get('/people/' + this.contactId + '/gifts')
+                axios.get('/people/' + this.hash + '/gifts')
                         .then(response => {
                             this.gifts = response.data;
                         });
