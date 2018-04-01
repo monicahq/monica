@@ -132,7 +132,7 @@ return [
     'subscriptions_back' => 'Back to settings',
     'subscriptions_upgrade_title' => '升级您的帐户',
     'subscriptions_upgrade_choose' => 'You picked the :plan plan.',
-    'subscriptions_upgrade_thanks' => 'We couldn\'t be happier. Enter your payment info below.',
+    'subscriptions_upgrade_infos' => 'We couldn\'t be happier. Enter your payment info below.',
     'subscriptions_upgrade_name' => 'Name on card',
     'subscriptions_upgrade_zip' => 'ZIP or postal code',
     'subscriptions_upgrade_credit' => '信用卡或借记卡',
