@@ -132,7 +132,7 @@ return [
     'subscriptions_back' => 'חזרה להגדרות',
     'subscriptions_upgrade_title' => 'שדרוג החשבון שלך',
     'subscriptions_upgrade_choose' => 'בחרת בתכנית :plan.',
-    'subscriptions_upgrade_thanks' => 'אין מאושרים מאתנו. נא להקליד את פרטי התשלום שלך להלן.',
+    'subscriptions_upgrade_infos' => 'We couldn\'t be happier. Enter your payment info below.',
     'subscriptions_upgrade_name' => 'השם על הכרטיס',
     'subscriptions_upgrade_zip' => 'מיקוד או תא דואר',
     'subscriptions_upgrade_credit' => 'כרטיס אשראי או חיוב',
