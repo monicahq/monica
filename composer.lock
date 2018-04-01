@@ -1397,16 +1397,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.0.13",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2"
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/24064155f6f9d97e83669455ad305c3dfec908b7",
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7",
                 "shasum": ""
             },
             "require": {
@@ -1458,7 +1458,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2017-12-29T15:23:28+00:00"
+            "time": "2018-03-14T12:22:43+00:00"
         },
         {
             "name": "laravel/framework",
@@ -6327,12 +6327,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7"
+                "reference": "2fcfe963d8a1310c2d42e5dce4df0789152bf681"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
-                "reference": "4a272b63452f4d8ff0d48a759e59db9359a9b5b7",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/2fcfe963d8a1310c2d42e5dce4df0789152bf681",
+                "reference": "2fcfe963d8a1310c2d42e5dce4df0789152bf681",
                 "shasum": ""
             },
             "conflict": {
@@ -6363,8 +6363,8 @@
                 "doctrine/mongodb-odm-bundle": ">=2,<3.0.1",
                 "doctrine/orm": ">=2,<2.4.8|>=2.5,<2.5.1",
                 "dompdf/dompdf": ">=0.6,<0.6.2",
-                "drupal/core": ">=8,<8.4.5",
-                "drupal/drupal": ">=8,<8.4.5",
+                "drupal/core": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
+                "drupal/drupal": ">=7,<7.58|>=8,<8.4.6|>=8.5,<8.5.1",
                 "erusev/parsedown": "<1.7",
                 "ezsystems/ezpublish-legacy": ">=5.3,<5.3.12.3|>=5.4,<5.4.11.3|>=2017.8,<2017.8.1.1|>=2017.12,<2017.12.2.1",
                 "firebase/php-jwt": "<2",
@@ -6478,7 +6478,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-03-22T21:16:54+00:00"
+            "time": "2018-03-30T07:14:38+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
