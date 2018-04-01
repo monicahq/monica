@@ -153,12 +153,14 @@ Vue.component(
     require('./components/settings/ReminderRules.vue')
 );
 
+// axios
+import axios from 'axios';
+
 // i18n
 import VueI18n from 'vue-i18n';
-import axios from 'axios';
-import messages from '../../../public/js/langs/en.json';
-
 Vue.use(VueI18n);
+
+import messages from '../../../public/js/langs/en.json';
 
 export const i18n = new VueI18n({
     locale: 'en', // set locale
@@ -189,9 +191,7 @@ export function loadLanguageAsync (lang, set) {
 }
 
 const app = null;
-
-loadLanguageAsync(window.Laravel.locale, true)
-.then((lang) => {
+loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     this.app = new Vue({
       i18n,
       data: {
@@ -208,7 +208,7 @@ loadLanguageAsync(window.Laravel.locale, true)
 
 require('./tags');
 require('./search');
-require('./contacts');        
+require('./contacts');
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
