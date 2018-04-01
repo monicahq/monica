@@ -42,15 +42,13 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        $ID_hasher = new IdHasher();
-
-        Route::bind('contact', function ($value) use ($ID_hasher) {
+        Route::bind('contact', function ($value) {
             try {
-                $value = $ID_hasher->decodeId($value);
+                $value = app('idhasher')->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                    ->where('id', $value)
+                    ->firstOrFail();
             } catch (ModelNotFoundException $ex) {
                 redirect('/people/notfound')->send();
             }
@@ -63,16 +61,16 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('activity', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decodeId($value);
+        Route::bind('activity', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
 
             return  Activity::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });
 
-        Route::bind('reminder', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decodeId($value);
+        Route::bind('reminder', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
 
             return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
@@ -94,8 +92,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('debt', function ($value, $route) use ($ID_hasher) {
-            $value = $ID_hasher->decodeId($value);
+        Route::bind('debt', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
 
             return  Debt::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
@@ -117,10 +115,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('kid', function ($value, $route) use ($ID_hasher) {
             Contact::findOrFail($route->parameter('contact')->id);
 
-            $value = $ID_hasher->decodeId($value);
+            $value = app('idhasher')->decodeId($value);
 
             Offspring::where('account_id', auth()->user()->account_id)
-
                 ->where('contact_id', $value)
                 ->where('is_the_child_of', $route->parameter('contact')->id)
                 ->firstOrFail();
