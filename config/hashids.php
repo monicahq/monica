@@ -51,4 +51,9 @@ return [
 
     ],
 
+    /**
+     * Default prefix for ids
+     */
+    'default_prefix' => 'h:',
+
 ];
