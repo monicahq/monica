@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6d23443c7a65d9b450224ee04a77074",
+    "content-hash": "516331eadcdbace1baa3a12e082f3d66",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.52.23",
+            "version": "3.53.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783"
+                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3ce95b96c217a699168d937c4ed700e6a27ec783",
-                "reference": "3ce95b96c217a699168d937c4ed700e6a27ec783",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/225593974bb6f6b1c13ddf946d3736d3e39119e5",
+                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-08T22:51:35+00:00"
+            "time": "2018-03-30T20:22:38+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1397,16 +1397,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.0.13",
+            "version": "v7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2"
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
-                "reference": "df8b12de451e2ad1b2285e67518e9fb97ebd7cb2",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/24064155f6f9d97e83669455ad305c3dfec908b7",
+                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7",
                 "shasum": ""
             },
             "require": {
@@ -1458,20 +1458,20 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2017-12-29T15:23:28+00:00"
+            "time": "2018-03-14T12:22:43+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.39",
+            "version": "v5.5.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a21ef7e51df831a7c38d24dcf8c4774ee0847526"
+                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a21ef7e51df831a7c38d24dcf8c4774ee0847526",
-                "reference": "a21ef7e51df831a7c38d24dcf8c4774ee0847526",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d724ce0aa61bbd9adf658215eec484f5dd6711d6",
+                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6",
                 "shasum": ""
             },
             "require": {
@@ -1479,7 +1479,7 @@
                 "erusev/parsedown": "~1.7",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "league/flysystem": "~1.0",
+                "league/flysystem": "^1.0.8",
                 "monolog/monolog": "~1.12",
                 "mtdowling/cron-expression": "~1.0",
                 "nesbot/carbon": "^1.24.1",
@@ -1592,7 +1592,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-03-09T17:24:53+00:00"
+            "time": "2018-03-30T13:29:30+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2274,16 +2274,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.24.1",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41"
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
-                "reference": "ef12cbd8ba5ce624f0a6a95e0850c4cc13e71e41",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/cbcf13da0b531767e39eb86e9687f5deba9857b4",
+                "reference": "cbcf13da0b531767e39eb86e9687f5deba9857b4",
                 "shasum": ""
             },
             "require": {
@@ -2323,7 +2323,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-03-09T15:49:34+00:00"
+            "time": "2018-03-19T15:50:49+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -2667,16 +2667,16 @@
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "dev-master",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042"
+                "reference": "54f0c30c9be5497a7bd248844f1099156457e719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
-                "reference": "7bdf97dbc75d319f0c621a41cd83f17dd1f23042",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/54f0c30c9be5497a7bd248844f1099156457e719",
+                "reference": "54f0c30c9be5497a7bd248844f1099156457e719",
                 "shasum": ""
             },
             "require": {
@@ -2734,7 +2734,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2018-03-08T04:29:45+00:00"
+            "time": "2018-03-08T04:08:14+00:00"
         },
         {
             "name": "pragmarx/random",
@@ -3444,16 +3444,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95"
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/512661046e403dc5eb5ae192d5a6cda10e068a95",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
                 "shasum": ""
             },
             "require": {
@@ -3504,7 +3504,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2018-02-07T11:26:52+00:00"
+            "time": "2018-03-20T12:52:10+00:00"
         },
         {
             "name": "sentry/sentry-laravel",
@@ -7344,7 +7344,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "pragmarx/google2fa-laravel": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
