@@ -192,6 +192,8 @@ export function loadLanguageAsync (lang, set) {
 
 const app = null;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+
+    // the Vue appplication
     this.app = new Vue({
       i18n,
       data: {
@@ -203,12 +205,14 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       methods: {
       },
     }).$mount('#app');
+
+    // required modules
+    require('./tags');
+    require('./search');
+    require('./contacts');
+
     return lang;
 });
-
-require('./tags');
-require('./search');
-require('./contacts');
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
