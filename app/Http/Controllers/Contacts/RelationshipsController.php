@@ -135,7 +135,7 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.significant_other_add_success'));
     }
 
