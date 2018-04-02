@@ -3,7 +3,7 @@
 @section('content')
   <section class="ph3 ph0-ns">
 
-    <!-- Page content -->
+    {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
       <p><a href="{{ url('/people/'.$contact->id) }}">< {{ $contact->getCompleteName() }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
