@@ -265,6 +265,7 @@ return [
 
     // tags
     'tag_edit' => '编辑标签',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => '你是如何相遇的',
