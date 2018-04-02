@@ -265,6 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'Upravit tag',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => 'How you met',
