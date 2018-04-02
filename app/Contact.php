@@ -1270,4 +1270,17 @@ class Contact extends Model
 
         return $reminders;
     }
+
+    /**
+     * Gets the first contact related to this contact if the current contact is
+     * partial.
+     */
+    public function getRelatedRealContact()
+    {
+        $relatedContact = \App\Relationship::where('contact_is', $this->id)->first();
+
+        if ($relatedContact) {
+            return \App\Contact::find($relatedContact->of_contact);
+        }
+    }
 }
