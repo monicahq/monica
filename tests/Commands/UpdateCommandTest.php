@@ -36,7 +36,6 @@ class UpdateCommandTest extends TestCase
         $this->assertCommandContains($commandExecutor->buffer[5], 'Updating composer dependencies', 'composer install');
         $this->assertCommandContains($commandExecutor->buffer[6], 'Performing migrations', 'php artisan migrate');
         $this->assertCommandContains($commandExecutor->buffer[7], 'Maintenance mode: off', 'php artisan up');
-
     }
 
     public function assertCommandContains($array, $message, $command)
