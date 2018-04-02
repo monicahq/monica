@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0499121bcb3c2eeb223780fa0505aee6",
+    "content-hash": "921c4d6f0edb2a28f4f8fa5790f0376a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -5488,16 +5488,16 @@
         },
         {
             "name": "matthiasnoback/live-code-coverage",
-            "version": "dev-update-phpunit-7.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/asbiin/live-code-coverage.git",
-                "reference": "b9cb402459828e359fbce03ecfed27ba3a4fca5a"
+                "url": "https://github.com/matthiasnoback/live-code-coverage.git",
+                "reference": "996caf34bea1a1db8d2121024aec555ad9ac5caa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/live-code-coverage/zipball/b9cb402459828e359fbce03ecfed27ba3a4fca5a",
-                "reference": "b9cb402459828e359fbce03ecfed27ba3a4fca5a",
+                "url": "https://api.github.com/repos/matthiasnoback/live-code-coverage/zipball/996caf34bea1a1db8d2121024aec555ad9ac5caa",
+                "reference": "996caf34bea1a1db8d2121024aec555ad9ac5caa",
                 "shasum": ""
             },
             "require": {
@@ -5517,10 +5517,8 @@
                     "": "src/"
                 }
             },
-            "support": {
-                "source": "https://github.com/asbiin/live-code-coverage/tree/update-phpunit-7.0"
-            },
-            "time": "2018-04-02T17:11:45+00:00"
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2018-04-02T18:37:33+00:00"
         },
         {
             "name": "maximebf/debugbar",
@@ -7399,7 +7397,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "matthiasnoback/live-code-coverage": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
