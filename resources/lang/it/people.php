@@ -265,6 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'Modifica etichetta',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => 'Come vi siete conosciuti',
