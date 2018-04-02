@@ -1,70 +1,43 @@
-<div class="sidebar-box significantother">
+<div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
+  <div class="w-100 dt">
+    <div class="dtc">
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_'.auth()->user()->account->getRelationshipTypeGroupByType('love')->name) }}</h3>
+    </div>
+  </div>
 
-  <p class="sidebar-box-title">
-    <strong>{{ trans('people.significant_other_sidebar_title') }}</strong>
+   @include('people.relationship._relationship', ['relationships' => $loveRelationships])
+
+  <p class="mb0">
+    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('partner')->id }}">{{ trans('app.add') }}</a>
   </p>
+</div>
 
-  @if ($contact->getCurrentPartners()->count() == 0)
+<div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
+  <div class="w-100 dt">
+    <div class="dtc">
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_'.auth()->user()->account->getRelationshipTypeGroupByType('family')->name) }}</h3>
+    </div>
+  </div>
 
-    <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.relationships.add', $contact) }}">{{ trans('people.significant_other_cta') }}</a>
-    </p>
+   @include('people.relationship._relationship', ['relationships' => $familyRelationships])
 
-  @else
+   <p class="mb0">
+    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('child')->id }}">{{ trans('app.add') }}</a>
+  </p>
+</div>
 
-    {{-- Information about the significant other --}}
-    @foreach ($contact->getCurrentPartners() as $partner)
-      <div class="sidebar-box-paragraph">
+<div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
+  <div class="w-100 dt">
+    <div class="dtc">
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_other') }}</h3>
+    </div>
+  </div>
 
-        @if ($partner->is_partial)
+   @include('people.relationship._relationship', ['relationships' => $friendRelationships])
 
-          <span class="name">{{ $partner->getCompleteName(auth()->user()->name_order) }}</span>
+   @include('people.relationship._relationship', ['relationships' => $workRelationships])
 
-          @if ($partner->birthday_special_date_id)
-            @if ($partner->birthdate->getAge())
-              ({{ $partner->birthdate->getAge() }})
-            @endif
-          @endif
-
-          <a href="{{ route('people.relationships.edit', [$contact, $partner]) }}" class="action-link {{ $contact->id }}-edit-relationship">
-            {{ trans('app.edit') }}
-          </a>
-
-          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_delete_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
-            {{ trans('app.delete') }}
-          </a>
-
-          <form method="POST" action="{{ route('people.relationships.delete', [$contact, $partner]) }}" class="entry-delete-form hidden">
-            {{ method_field('DELETE') }}
-            {{ csrf_field() }}
-          </form>
-
-        @else
-
-          <a href="{{ route('people.show', $partner) }}">{{ $partner->getCompleteName(auth()->user()->name_order) }}</a>
-
-          @if ($partner->birthday_special_date_id)
-            @if ($partner->birthdate->getAge())
-              ({{ $partner->birthdate->getAge() }})
-            @endif
-          @endif
-
-          <a href="#" onclick="if (confirm('{{ trans('people.significant_other_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link {{ $contact->id }}-unlink-relationship">
-            {{ trans('app.remove') }}
-          </a>
-
-          <form method="POST" action="{{ route('people.relationships.unlink', [$contact, $partner]) }}" class="entry-delete-form hidden">
-            {{ csrf_field() }}
-          </form>
-
-        @endif
-      </div>
-    @endforeach
-
-    <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.relationships.add', $contact) }}">{{ trans('people.significant_other_cta') }}</a>
-    </p>
-
-  @endif
-
+   <p class="mb0">
+    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('friend')->id }}">{{ trans('app.add') }}</a>
+  </p>
 </div>

@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,7 +13,7 @@ class UserTest extends TestCase
 
     public function test_it_belongs_to_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
 
         $this->assertTrue($user->account()->exists());
@@ -66,7 +65,7 @@ class UserTest extends TestCase
 
     public function test_you_can_vote_if_you_havent_voted_yet_today()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
 
         $this->assertFalse($user->hasAlreadyRatedToday());
@@ -74,7 +73,7 @@ class UserTest extends TestCase
 
     public function test_you_cant_vote_if_you_have_already_voted_today()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $day = factory('App\Day')->create([
             'account_id' => $account->id,

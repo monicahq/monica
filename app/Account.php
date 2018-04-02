@@ -32,52 +32,6 @@ class Account extends Model
     ];
 
     /**
-     * Create a new account and associate a new User.
-     *
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     * @return this
-     */
-    public static function createDefault($first_name, $last_name, $email, $password)
-    {
-        // create new account
-        $account = new self;
-        $account->api_key = str_random(30);
-        $account->created_at = now();
-        $account->save();
-
-        $account->populateDefaultFields($account);
-
-        // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
-
-        return $account;
-    }
-
-    /**
-     * Get if any account exists on the database.
-     *
-     * @return bool
-     */
-    public static function hasAny()
-    {
-        return DB::table('accounts')->count() > 0;
-    }
-
-    /**
-     * Populates all the default column that should be there when a new account
-     * is created or reset.
-     */
-    public static function populateDefaultFields($account)
-    {
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-        $account->populateDefaultReminderRulesTable();
-    }
-
-    /**
      * Get the activity records associated with the account.
      *
      * @return HasMany
@@ -328,6 +282,26 @@ class Account extends Model
     }
 
     /**
+     * Get the relationship types records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function relationshipTypes()
+    {
+        return $this->hasMany('App\RelationshipType');
+    }
+
+    /**
+     * Get the relationship type groups records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function relationshipTypeGroups()
+    {
+        return $this->hasMany('App\RelationshipTypeGroup');
+    }
+
+    /**
      * Get the Notifications records associated with the account.
      *
      * @return HasMany
@@ -480,12 +454,12 @@ class Account extends Model
      * Populates the Contact Field Types table right after an account is
      * created.
      */
-    public function populateContactFieldTypeTable($ignoreMigratedTable = false)
+    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
     {
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreMigratedTable || $defaultContactFieldType->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
                 ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
@@ -519,6 +493,54 @@ class Account extends Model
     {
         ReminderRule::create(['number_of_days_before' => 7, 'account_id' => $this->id, 'active' => 1]);
         ReminderRule::create(['number_of_days_before' => 30, 'account_id' => $this->id, 'active' => 1]);
+    }
+
+    /**
+     * Populates the default relationship types in a new account.
+     *
+     * @return void
+     */
+    public function populateRelationshipTypeGroupsTable($ignoreTableAlreadyMigrated = false)
+    {
+        $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
+        foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
+            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
+                DB::table('relationship_type_groups')->insert([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipTypeGroup->name,
+                    'delible' => $defaultRelationshipTypeGroup->delible,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Populate the relationship types table based on the default ones.
+     *
+     * @param  bool $ignoreTableAlreadyMigrated
+     * @return void
+     */
+    public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
+    {
+        $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+
+        foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
+            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
+                $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
+                                        ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                                        ->first();
+
+                $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
+
+                RelationshipType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipType->name,
+                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                    'relationship_type_group_id' => $relationshipTypeGroup->id,
+                    'delible' => $defaultRelationshipType->delible,
+                ]);
+            }
+        }
     }
 
     /**
@@ -578,6 +600,76 @@ class Account extends Model
                     ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    /**
+     * Get if any account exists on the database.
+     *
+     * @return bool
+     */
+    public static function hasAny()
+    {
+        return DB::table('accounts')->count() > 0;
+    }
+
+    /**
+     * Create a new account and associate a new User.
+     *
+     * @param string $first_name
+     * @param string $last_name
+     * @param string $email
+     * @param string $password
+     * @return this
+     */
+    public static function createDefault($first_name, $last_name, $email, $password)
+    {
+        // create new account
+        $account = new self;
+        $account->api_key = str_random(30);
+        $account->created_at = now();
+        $account->save();
+
+        $account->populateDefaultFields($account);
+
+        // create the first user for this account
+        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+
+        return $account;
+    }
+
+    /**
+     * Populates all the default column that should be there when a new account
+     * is created or reset.
+     */
+    public static function populateDefaultFields($account)
+    {
+        $account->populateContactFieldTypeTable();
+        $account->populateDefaultGendersTable();
+        $account->populateDefaultReminderRulesTable();
+        $account->populateRelationshipTypeGroupsTable();
+        $account->populateRelationshipTypesTable();
+    }
+
+    /**
+     * Gets the RelationshipType object matching the given type.
+     *
+     * @param  string $relationshipTypeName
+     * @return RelationshipType
+     */
+    public function getRelationshipTypeByType(string $relationshipTypeName)
+    {
+        return $this->relationshipTypes->where('name', $relationshipTypeName)->first();
+    }
+
+    /**
+     * Gets the RelationshipType object matching the given type.
+     *
+     * @param  string $relationshipTypeGroupName
+     * @return RelationshipTypeGroup
+     */
+    public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
+    {
+        return $this->relationshipTypeGroups->where('name', $relationshipTypeGroupName)->first();
     }
 
     /**
