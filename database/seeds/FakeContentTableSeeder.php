@@ -65,8 +65,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateDeceasedDate();
             $this->populateBirthday();
             $this->populateFirstMetInformation();
-            $this->populateKids();
-            $this->populatePartners();
+            $this->populateRelationships();
             $this->populateNotes();
             $this->populateActivities();
             $this->populateTasks();
@@ -152,9 +151,6 @@ class FakeContentTableSeeder extends Seeder
 
         if (rand(1, 2) == 1) {
             $this->contact->first_met_additional_info = $this->faker->realText(20);
-        }
-
-        if (rand(1, 2) == 1) {
             $firstMetDate = $this->faker->dateTimeThisCentury();
 
             if (rand(1, 2) == 1) {
@@ -178,80 +174,42 @@ class FakeContentTableSeeder extends Seeder
         $this->contact->save();
     }
 
-    public function populateKids()
+    public function populateRelationships()
     {
         if (rand(1, 2) == 1) {
             foreach (range(1, rand(2, 6)) as $index) {
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-                $kid = new Contact;
-                $kid->account_id = $this->contact->account_id;
-                $kid->gender_id = $this->getRandomGender()->id;
-                $kid->first_name = $this->faker->firstName($gender);
-                $kid->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
-                $kid->save();
+                $relatedContact = new Contact;
+                $relatedContact->account_id = $this->contact->account_id;
+                $relatedContact->gender_id = $this->getRandomGender()->id;
+                $relatedContact->first_name = $this->faker->firstName($gender);
+                $relatedContact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
+                $relatedContact->save();
 
                 // is real contact?
+                $relatedContact->is_partial = false;
                 if (rand(1, 2) == 1) {
-                    $kid->is_partial = true;
-                    $kid->isTheOffspringOf($this->contact);
-                } else {
-                    $kid->is_partial = false;
-                    $kid->isTheOffspringOf($this->contact, true);
+                    $relatedContact->is_partial = true;
                 }
-                $kid->save();
+                $relatedContact->save();
 
-                $kid->setAvatarColor();
+                $relatedContact->setAvatarColor();
 
                 // birthdate
-                $kidBirthDate = $this->faker->dateTimeThisCentury();
+                $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 if (rand(1, 2) == 1) {
                     // add a date where we don't know the year
-                    $specialDate = $kid->setSpecialDate('birthdate', 0, $kidBirthDate->format('m'), $kidBirthDate->format('d'));
+                    $specialDate = $relatedContact->setSpecialDate('birthdate', 0, $relatedContactBirthDate->format('m'), $relatedContactBirthDate->format('d'));
                 } else {
                     // add a date where we know the year
-                    $specialDate = $kid->setSpecialDate('birthdate', $kidBirthDate->format('Y'), $kidBirthDate->format('m'), $kidBirthDate->format('d'));
+                    $specialDate = $relatedContact->setSpecialDate('birthdate', $relatedContactBirthDate->format('Y'), $relatedContactBirthDate->format('m'), $relatedContactBirthDate->format('d'));
                 }
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $kid->first_name]));
-            }
-        }
-    }
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $relatedContact->first_name]));
 
-    public function populatePartners()
-    {
-        if (rand(1, 2) == 1) {
-            foreach (range(1, rand(2, 6)) as $index) {
-                $gender = (rand(1, 2) == 1) ? 'male' : 'female';
-
-                $partner = new Contact;
-                $partner->account_id = $this->contact->account_id;
-                $partner->gender_id = $this->getRandomGender()->id;
-                $partner->first_name = $this->faker->firstName($gender);
-                $partner->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
-                $partner->save();
-
-                // is real contact?
-                if (rand(1, 2) == 1) {
-                    $partner->is_partial = true;
-                    $this->contact->setRelationshipWith($partner);
-                } else {
-                    $partner->is_partial = false;
-                    $this->contact->setRelationshipWith($partner, true);
-                }
-                $partner->save();
-
-                $partner->setAvatarColor();
-
-                // birthdate
-                $partnerBirthDate = $this->faker->dateTimeThisCentury();
-                if (rand(1, 2) == 1) {
-                    // add a date where we don't know the year
-                    $specialDate = $partner->setSpecialDate('birthdate', 0, $partnerBirthDate->format('m'), $partnerBirthDate->format('d'));
-                } else {
-                    // add a date where we know the year
-                    $specialDate = $partner->setSpecialDate('birthdate', $partnerBirthDate->format('Y'), $partnerBirthDate->format('m'), $partnerBirthDate->format('d'));
-                }
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                // set relationship
+                $relationshipId = $this->contact->account->relationshipTypes->random()->id;
+                $this->contact->setRelationship($relatedContact, $relationshipId);
             }
         }
     }

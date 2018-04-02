@@ -21,13 +21,23 @@ class Relationship extends Model
         'is_active',
     ];
 
-    public function contact()
+    public function account()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Account::class);
     }
 
-    public function with_contact()
+    public function contactIs()
     {
-        return $this->belongsTo(Contact::class, 'with_contact_id');
+        return $this->belongsTo(Contact::class, 'contact_is');
+    }
+
+    public function ofContact()
+    {
+        return $this->belongsTo(Contact::class, 'of_contact');
+    }
+
+    public function relationshipType()
+    {
+        return $this->belongsTo('App\RelationshipType', 'relationship_type_id');
     }
 }
