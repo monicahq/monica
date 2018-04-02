@@ -80,8 +80,7 @@ class Update extends Command
     {
         $this->info($message);
         $info = '';
-        foreach ($arguments as $key => $value)
-        {
+        foreach ($arguments as $key => $value) {
             $info = $info.' '.$key.'='.$value;
         }
         $this->line('php artisan '.$command.$info);
