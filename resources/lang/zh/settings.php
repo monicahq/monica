@@ -267,7 +267,7 @@ return [
     'personalization_genders_modal_edit' => '更新性别类型',
     'personalization_genders_modal_edit_question' => '如何重新命名这种新的性别？',
     'personalization_genders_modal_delete' => '删除性别类型',
-    'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
+    'personalization_genders_modal_delete_desc' => '是否确实要删除{name}？',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => '请从列表中选择一个有效的性别。',
 
