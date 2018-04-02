@@ -265,7 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'Modifier le tag',
-    'tag_add' => 'add a tag',
+    'tag_add' => 'ajouter une étiquette',
 
     // Introductions
     'introductions_sidebar_title' => 'Comment vous vous êtes rencontré',
