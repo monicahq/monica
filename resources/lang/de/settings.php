@@ -267,13 +267,13 @@ return [
     'personalization_genders_modal_edit' => 'Geschlechtstyp aktualisieren',
     'personalization_genders_modal_edit_question' => 'Wie soll dieses neue Geschlech umbenannt werden?',
     'personalization_genders_modal_delete' => 'Geschlechtstyp löschen',
-    'personalization_genders_modal_delete_desc' => 'Möchten Sie :name wirklich löschen?',
-    'personalization_genders_modal_delete_question' => 'You currently have 1 contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have :count contacts that have this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
+    'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'Bitte wähle ein gültiges Geschlecht aus der Liste.',
 
     'personalization_reminder_rule_save' => 'Die Änderung wurde gespeichert',
     'personalization_reminder_rule_title' => 'Erinnerungs Regeln',
-    'personalization_reminder_rule_line' => '1 day before|:count days before',
+    'personalization_reminder_rule_line' => '{count} day before|{count} days before',
     'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
