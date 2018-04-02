@@ -267,13 +267,13 @@ return [
     'personalization_genders_modal_edit' => 'עדכון סוג מגדר',
     'personalization_genders_modal_edit_question' => 'לאיזה כינוי יש לשנות את סוג המגדר החדש הזה?',
     'personalization_genders_modal_delete' => 'מחיקת סוג מגדר',
-    'personalization_genders_modal_delete_desc' => 'למחוק את :name?',
-    'personalization_genders_modal_delete_question' => 'לאחד מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את איש הקשר?|ל־:count מאנשי הקשר שלך מוגדר המגדר הזה. אם המגדר יימחק, לאיזה מגדר לשייך את אנשי הקשר?',
+    'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
+    'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'נא לבחור במגדר תקני מהרשימה.',
 
     'personalization_reminder_rule_save' => 'השינוי נשמר',
     'personalization_reminder_rule_title' => 'כללי תזכורות',
-    'personalization_reminder_rule_line' => '{1} יום לפני|{2} יומיים לפני|[3,*] :count ימים לפני',
+    'personalization_reminder_rule_line' => '{count} day before|{count} days before',
     'personalization_reminder_rule_desc' => 'לכל תזכורת מוגדרת, נוכל לשלוח אליך הודעת דוא״ל כמה ימים לפני שהאירוע מתרחש. ניתן להחליף את מצב ההודעות האלה כאן. לתשומת לך: ההתרעות האלו חלות רק על תזכורות חודשיות ושנתיות.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
