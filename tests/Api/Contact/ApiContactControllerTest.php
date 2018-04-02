@@ -2,7 +2,6 @@
 
 namespace Tests\Api\Contact;
 
-use App\Contact;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -14,7 +13,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory('App\Contact', 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -32,7 +31,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory('App\Contact', 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -48,7 +47,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory('App\Contact', 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -75,13 +74,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class)->create([
+        $contact = factory('App\Contact')->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory('App\Contact', 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
