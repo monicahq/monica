@@ -90,6 +90,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | List of default relationship type group
+    |--------------------------------------------------------------------------
+    |
+    | This is used to populate the relationship type groups table.
+    |
+    */
+    'default_relationship_type_group' => [
+        'love',
+        'family',
+        'friend',
+        'work',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Version of the application that you run
     |--------------------------------------------------------------------------
     |

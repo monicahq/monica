@@ -37,6 +37,10 @@
 
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
+
+            {{-- Significant Other --}}
+            @include('people.relationship.index')
+
             @include('people.dashboard.index')
 
             <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">{{ trans('people.people_export') }}</a></p>

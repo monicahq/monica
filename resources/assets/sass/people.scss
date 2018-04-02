@@ -574,40 +574,6 @@
       }
     }
   }
-
-  &.significantother,
-  &.kid {
-    .significant-other-blank-state {
-      text-align: center;
-
-      img {
-        margin-bottom: 20px;
-        margin-top: 10px;
-      }
-    }
-
-    .central-form {
-      .hint-reminder {
-        margin-top: 10px;
-
-        p {
-          margin-bottom: 0;
-        }
-      }
-
-      .real-contact-checkbox {
-        margin-bottom: 0;
-
-        input {
-          margin-right: 5px;
-        }
-
-        .help {
-          color: #999;
-        }
-      }
-    }
-  }
 }
 
 .create-people {
