@@ -265,6 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => 'Wie ihr euch kennengelernt habt',
