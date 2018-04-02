@@ -135,10 +135,6 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        return redirect('/people/'.$contact->hashID())
-            ->with('success', trans('people.significant_other_add_success'));
-    }
-
         // set avatar color
         $partner->setAvatarColor();
 
