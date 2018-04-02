@@ -23,6 +23,7 @@
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
     "marked": "^0.3.12",
+    "pretty-checkbox-vue": "^1.1.8",
     "tachyons": "^4.9.1",
     "typeahead.js": "^0.11.1",
     "vue": "^2.5.16",

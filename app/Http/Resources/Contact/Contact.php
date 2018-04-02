@@ -26,18 +26,22 @@ class Contact extends Resource
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'information' => [
-                'family' => $this->when(! $this->is_partial, [
-                    'kids' => [
-                        'total' => $this->getOffsprings()->count(),
-                        'kids' => $this->getOffspringsForAPI(),
+                'relationships' => $this->when(! $this->is_partial, [
+                    'love' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('love')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : self::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
                     ],
-                    'partners' => [
-                        'total' => $this->getCurrentPartners()->count(),
-                        'partners' => $this->getCurrentPartnersForAPI(),
+                    'family' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('family')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : self::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family'))),
                     ],
-                    'progenitors' => [
-                        'total' => $this->getProgenitors()->count(),
-                        'progenitors' => $this->getProgenitorsForAPI(),
+                    'friend' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('friend')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : self::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend'))),
+                    ],
+                    'work' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('work')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : self::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work'))),
                     ],
                 ]),
                 'dates' => [

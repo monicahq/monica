@@ -48,7 +48,7 @@
         <textarea class="form-control" id="comment" name="comment" rows="3">{{ old('comment') ?? $gift->comment }}</textarea>
     </div>
 
-    @if ($contact->getFamilyMembers()->count() !== 0)
+    @if ($familyRelationships->count() !== 0)
         <div class="form-group">
             <div class="form-check">
                 <label class="form-check-label" id="has_recipient">
@@ -57,12 +57,12 @@
                 </label>
             </div>
             <select id="recipient" name="recipient" class="form-control">
-                @foreach($contact->getFamilyMembers() as $familyMember)
-                    <option value="{{ $familyMember->id }}"
-                        @if(old('recipient') && old('recipient') === $familyMember->id)
+                @foreach($familyRelationships as $familyRelationship)
+                    <option value="{{ $familyRelationship->ofContact->id }}"
+                        @if(old('recipient') && old('recipient') === $familyRelationship->ofContact->id)
                             selected
                         @endif
-                    >{{ $familyMember->first_name }}</option>
+                    >{{ $familyRelationship->ofContact->first_name }}</option>
                 @endforeach
             </select>
         </div>

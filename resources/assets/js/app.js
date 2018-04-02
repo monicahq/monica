@@ -34,6 +34,10 @@ Vue.use(ToggleButton);
 import Datepicker from 'vuejs-datepicker';
 Vue.use(Datepicker);
 
+// Radio buttons
+import PrettyCheckbox from 'pretty-checkbox-vue';
+Vue.use(PrettyCheckbox);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -72,6 +76,10 @@ Vue.component(
 Vue.component(
     'form-date',
     require('./components/partials/form/Date.vue')
+);
+Vue.component(
+    'form-radio',
+    require('./components/partials/form/Radio.vue')
 );
 
 // Dashboard
@@ -191,8 +199,11 @@ export function loadLanguageAsync (lang, set) {
 }
 
 const app = null;
+const me = this;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
-    this.app = new Vue({
+
+    // the Vue appplication
+    me.app = new Vue({
       i18n,
       data: {
         activities_description_show: false,
@@ -202,13 +213,18 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       },
       methods: {
       },
-    }).$mount('#app');
-    return lang;
-});
+      mounted: function() {
 
-require('./tags');
-require('./search');
-require('./contacts');
+        // required modules
+        require('./tags');
+        require('./search');
+        require('./contacts');
+
+      }
+    }).$mount('#app');
+
+    return app;
+});
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
