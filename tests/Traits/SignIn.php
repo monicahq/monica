@@ -19,6 +19,9 @@ trait SignIn
 
         $this->be($user);
 
+        $user->account->populateRelationshipTypeGroupsTable();
+        $user->account->populateRelationshipTypesTable();
+
         return $user;
     }
 }

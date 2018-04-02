@@ -66,8 +66,11 @@ class GiftsController extends Controller
      */
     public function create(Contact $contact)
     {
+        $familyRelationships = $contact->getRelationshipsByRelationshipTypeGroup('family');
+
         return view('people.gifts.add')
             ->withContact($contact)
+            ->withFamilyRelationships($familyRelationships)
             ->withGift(new Gift);
     }
 
