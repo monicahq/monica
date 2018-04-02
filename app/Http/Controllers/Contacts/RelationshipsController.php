@@ -149,7 +149,6 @@ class RelationshipsController extends Controller
 
         return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_add_success'));
-
     }
 
     /**
@@ -297,6 +296,5 @@ class RelationshipsController extends Controller
 
         return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_deletion_success'));
-
     }
 }
