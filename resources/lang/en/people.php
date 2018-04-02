@@ -303,6 +303,7 @@ return [
 
     // tags
     'tag_edit' => 'Edit tag',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => 'How you met',
