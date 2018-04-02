@@ -265,6 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'עריכת תגית',
+    'tag_add' => 'add a tag',
 
     // Introductions
     'introductions_sidebar_title' => 'איך נפגשתם',
