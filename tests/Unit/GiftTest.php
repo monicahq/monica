@@ -3,92 +3,145 @@
 namespace Tests\Unit;
 
 use App\Gift;
-use Carbon\Carbon;
+use App\Contact;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GiftTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetNameReturnsNullIfUndefined()
+    public function test_toggle_a_gift_idea()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getName());
-    }
-
-    public function testGetNameReturnsName()
-    {
-        $gift = new Gift;
-        $gift->name = encrypt('This is a test');
+        $gift->is_an_idea = true;
+        $gift->toggle();
 
         $this->assertEquals(
-            'This is a test',
-            $gift->getName()
+            false,
+            $gift->is_an_idea
+        );
+
+        $this->assertEquals(
+            true,
+            $gift->has_been_offered
+        );
+
+        $this->assertEquals(
+            false,
+            $gift->has_been_received
         );
     }
 
-    public function testGetUrlReturnsNullIfUndefined()
+    public function test_toggle_a_gift_offered()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getUrl());
-    }
-
-    public function testGetURLReturnsURL()
-    {
-        $gift = new Gift;
-        $gift->url = encrypt('https://test.com');
+        $gift->has_been_offered = true;
+        $gift->toggle();
 
         $this->assertEquals(
-            'https://test.com',
-            $gift->getUrl()
+            true,
+            $gift->is_an_idea
+        );
+
+        $this->assertEquals(
+            false,
+            $gift->has_been_offered
+        );
+
+        $this->assertEquals(
+            false,
+            $gift->has_been_received
         );
     }
 
-    public function testGetCommentReturnsNullIfUndefined()
+    public function test_has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getComment());
-    }
-
-    public function testGetCommentReturnsComment()
-    {
-        $gift = new Gift;
-        $gift->comment = encrypt('this is a test');
 
         $this->assertEquals(
-            'this is a test',
-            $gift->getComment()
+            false,
+            $gift->hasParticularRecipient()
         );
     }
 
-    public function testGetValueReturnsNullIfUndefined()
+    public function test_has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
     {
         $gift = new Gift;
-
-        $this->assertNull($gift->getValue());
-    }
-
-    public function testGetValueReturnsValue()
-    {
-        $gift = new Gift;
-        $gift->value_in_dollars = '220.00';
+        $gift->is_for = 1;
 
         $this->assertEquals(
-            '220.00',
-            $gift->getValue()
+            true,
+            $gift->hasParticularRecipient()
         );
     }
 
-    public function testGetCreatedAtReturnsCarbonObject()
+    public function test_it_sets_is_for_attribute()
     {
-        $gift = factory(\App\Gift::class)->make();
+        $gift = new Gift;
+        $gift->is_for = 1;
 
-        $this->assertInstanceOf(Carbon::class, $gift->getCreatedAt());
+        $this->assertEquals(
+            1,
+            $gift->is_for
+        );
+    }
+
+    public function test_it_gets_the_recipient_name()
+    {
+        $gift = new Gift;
+        $gift->is_for = 1;
+        $gift->contact_id = 1;
+
+        $contact = factory(Contact::class)->create(['id' => 1, 'first_name' => 'Regis']);
+
+        $this->assertEquals(
+            'Regis',
+            $gift->recipient_name
+        );
+    }
+
+    public function test_it_gets_the_gift_name()
+    {
+        $gift = new Gift;
+        $gift->name = 'Maison de folie';
+
+        $this->assertEquals(
+            'Maison de folie',
+            $gift->name
+        );
+    }
+
+    public function test_it_gets_the_gift_url()
+    {
+        $gift = new Gift;
+        $gift->url = 'https://facebook.com';
+
+        $this->assertEquals(
+            'https://facebook.com',
+            $gift->url
+        );
+    }
+
+    public function test_it_gets_the_comment()
+    {
+        $gift = new Gift;
+        $gift->comment = 'This is just a comment';
+
+        $this->assertEquals(
+            'This is just a comment',
+            $gift->comment
+        );
+    }
+
+    public function test_it_gets_the_value()
+    {
+        $gift = new Gift;
+        $gift->value = '100$';
+
+        $this->assertEquals(
+            '100$',
+            $gift->value
+        );
     }
 }

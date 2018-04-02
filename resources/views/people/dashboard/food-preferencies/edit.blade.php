@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -28,7 +28,7 @@
     @include('people._header')
 
     <!-- Page content -->
-    <div class="main-content food-preferencies modal">
+    <div class="main-content food-preferencies central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
@@ -40,19 +40,19 @@
               @include('partials.errors')
 
               <p>
-                @if (is_null($contact->getLastName()))
-                {{ trans('people.food_preferencies_edit_description_no_last_name', ['firstname' => $contact->getFirstname()]) }}</p>
+                @if (is_null($contact->last_name))
+                {{ trans('people.food_preferencies_edit_description_no_last_name', ['firstname' => $contact->first_name]) }}</p>
                 @else
-                {{ trans('people.food_preferencies_edit_description', ['firstname' => $contact->getFirstname(), 'family' => $contact->getLastName()]) }}</p>
+                {{ trans('people.food_preferencies_edit_description', ['firstname' => $contact->first_name, 'family' => $contact->last_name]) }}</p>
                 @endif
 
               <div class="form-group">
-                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->getFoodPreferencies() }}</textarea>
+                <textarea class="form-control" id="food" name="food" rows="3">{{ $contact->food_preferencies }}</textarea>
               </div>
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('people.food_preferencies_edit_cta') }}</button>
-                <a href="/people/{{ $contact->id }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div>
             </form>
           </div>

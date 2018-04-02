@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION ||= "2"
+
+$script = <<SCRIPT
+cd /var/www/html/monica
+
+echo -e "\n\033[4;32mConfiguring Monica\033[0;40m"
+
+APP_KEY=$(source .env 2>/dev/null || echo $APP_KEY)
+if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; then
+  ${ARTISAN} key:generate --no-interaction
+else
+  echo "APP_KEY already set"
+fi
+sudo -u www-data php artisan setup:production --force
+sudo -u www-data php artisan passport:install
+
+echo -e "\n\n\033[1;32mDone! You can access Monica by visiting \033[4;96mhttp://localhost:8080\033[0;40m\033[1;32m from your host machine\033[0;40m"
+
+SCRIPT
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "monicahq/monicahq"
+  config.vm.hostname = "monica"
+
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  config.vm.provision "shell", inline: $script, keep_color: true
+end

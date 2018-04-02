@@ -2,15 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Log;
-use App\User;
-use App\Account;
-use App\Contact;
-use App\Reminder;
-use Carbon\Carbon;
-use App\Jobs\SendReminderEmail;
+use App\Notification;
 use Illuminate\Console\Command;
-use App\Jobs\SetNextReminderDate;
+use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command
 {
@@ -19,7 +13,7 @@ class SendNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:sendnotifications';
+    protected $signature = 'send:notifications';
 
     /**
      * The console command description.
@@ -29,35 +23,22 @@ class SendNotifications extends Command
     protected $description = 'Send notifications about reminders';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        $reminders = Reminder::orderBy('next_expected_date', 'asc')->get();
+        $notifications = Notification::where('trigger_date', '<', now()->addDays(2))
+                                ->orderBy('trigger_date', 'asc')->get();
 
-        foreach ($reminders as $reminder) {
-            $contact = Contact::findOrFail($reminder->contact_id);
-            $account = Account::findOrFail($contact->account_id);
-            $user = User::where('account_id', $account->id)->first();
-            $date = $reminder->next_expected_date->setTimezone($user->timezone);
-
-            if ($date->isToday()) {
-                Log::info($reminder->id);
-                dispatch(new SendReminderEmail($reminder, $user));
-                dispatch(new SetNextReminderDate($reminder, $user));
+        foreach ($notifications as $notification) {
+            if (! $notification->contact) {
+                $notification->delete();
+                continue;
             }
+
+            ScheduleNotification::dispatch($notification);
         }
     }
 }

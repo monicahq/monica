@@ -1,23 +1,22 @@
-.journal {
-  .main-content {
-    margin-top: 40px;
-  }
+.journal-calendar-text {
+  top: 19px;
+  line-height: 16px;
+  width: 62px;
+}
 
-  .entry-row {
-    margin-bottom: 30px;
+.journal-calendar-box {
+  width: 62px;
+  margin-right: 11px;
+}
 
-    .entry-information {
-      background-color: #fafafa;
-      border: 1px solid #eee;
-      border-radius: 3px;
-      font-size: 12px;
-      padding: 10px;
-    }
-  }
+.journal-calendar-content {
+  width: calc(100% - 73px);
+}
 
-  .modal {
-    textarea {
-      height: 300px;
-    }
+.journal-line {
+  transition: all .2s;
+
+  &:hover {
+    border-color: #00a8ff;
   }
 }

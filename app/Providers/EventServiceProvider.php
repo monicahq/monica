@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,22 +12,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Reminder\ReminderCreated' => [
-            'App\Listeners\Reminder\LogReminderCreatedEvent',
-            'App\Listeners\Reminder\IncrementNumberOfReminders',
-        ],
-        'App\Events\Reminder\ReminderDeleted' => [
-            'App\Listeners\Reminder\RemoveAllReminderEvents',
-            'App\Listeners\Reminder\DecreaseNumberOfReminders',
-        ],
-        'App\Events\Gift\GiftCreated' => [
-            'App\Listeners\Gift\LogGiftCreatedEvent',
-            'App\Listeners\Gift\IncrementNumberOfGifts',
-        ],
-        'App\Events\Gift\GiftDeleted' => [
-            'App\Listeners\Gift\RemoveAllGiftEvents',
-            'App\Listeners\Gift\DecreaseNumberOfGifts',
-        ],
     ];
 
     /**

@@ -30,15 +30,9 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
-    ],
-
-    'facebook' => [
-        'client_id' => env('FACEBOOK_CLIENT_ID'),
-        'client_secret' => env('FACEBOOK_CLIENT_SECRET_ID'),
-        'redirect' => env('FACEBOOK_REDIRECT_URL'),
+        'model' => App\Account::class,
+        'key' => env('STRIPE_KEY', null),
+        'secret' => env('STRIPE_SECRET', null),
     ],
 
 ];

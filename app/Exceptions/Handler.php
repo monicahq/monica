@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,6 +34,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
+        if (config('monica.sentry_support') && config('app.env') == 'production' && $this->shouldReport($e)) {
+            app('sentry')->captureException($e);
+        }
         parent::report($e);
     }
 
@@ -47,7 +51,7 @@ class Handler extends ExceptionHandler
     {
         // hopefully catches those pesky token expiries
         // and send them back to login.
-        if ( $e instanceof TokenMismatchException ){
+        if ($e instanceof TokenMismatchException) {
             return redirect('login');
         }
 

@@ -2,12 +2,24 @@
 
 namespace App\Helpers;
 
-use Auth;
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
 
 class DateHelper
 {
+    /**
+     * Set the locale of the instance for Date frameworks.
+     *
+     * @param string
+     * @return string
+     */
+    public static function setLocale($locale)
+    {
+        $locale = $locale ?: config('app.locale');
+        Carbon::setLocale($locale);
+        Date::setLocale($locale);
+    }
+
     /**
      * Creates a Carbon object.
      *
@@ -17,9 +29,7 @@ class DateHelper
      */
     public static function createDateFromFormat($date, $timezone)
     {
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
-
-        return $date;
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
     }
 
     /**
@@ -29,22 +39,79 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDate($date, $locale)
+    public static function getShortDate($date)
     {
         $date = new Date($date);
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
-                Date::setLocale('en');
                 $format = 'M d, Y';
                 break;
+            case 'pt':
             case 'fr':
-                Date::setLocale('fr');
                 $format = 'd M Y';
                 break;
             default:
-                Date::setLocale('en');
                 $format = 'M d, Y';
+                break;
+        }
+
+        return $date->format($format);
+    }
+
+    /**
+     * Return the month of the date according to the timezone of the user
+     * like "Oct", or "Dec.
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortMonth($date)
+    {
+        $date = new Date($date);
+        $format = 'M';
+
+        return $date->format($format);
+    }
+
+    /**
+     * Return the day of the date according to the timezone of the user
+     * like "Mon", or "Wed.
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortDay($date)
+    {
+        $date = new Date($date);
+        $format = 'D';
+
+        return $date->format($format);
+    }
+
+    /**
+     * Return a date according to the timezone of the user, in a short format
+     * like "Oct 29".
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getShortDateWithoutYear($date)
+    {
+        $date = new Date($date);
+        $locale = Date::getLocale();
+
+        switch ($locale) {
+            case 'en':
+                $format = 'M d';
+                break;
+            case 'pt':
+            case 'fr':
+                $format = 'd M';
+                break;
+            default:
+                $format = 'M d';
                 break;
         }
 
@@ -58,21 +125,20 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithTime($date, $locale)
+    public static function getShortDateWithTime($date)
     {
         $date = new Date($date);
+        $locale = Date::getLocale();
 
         switch ($locale) {
             case 'en':
-                Date::setLocale('en');
                 $format = 'M d, Y H:i';
                 break;
+            case 'pt':
             case 'fr':
-                Date::setLocale('fr');
                 $format = 'd M Y H:i';
                 break;
             default:
-                Date::setLocale('en');
                 $format = 'M d, Y H:i';
         }
 
@@ -80,63 +146,123 @@ class DateHelper
     }
 
     /**
-     * Calculate the next date an event will occur.
-     * @param Carbon
-     * @param string
-     * @param int
-     * @return Carbon
+     * Add a given number of week/month/year to a date.
+     * @param Carbon $date      the start date
+     * @param string $frequency week/month/year
+     * @param int $number    the number of week/month/year to increment to
      */
-    public static function calculateNextOccuringDate($date, $frequency_type, $frequency_number)
+    public static function addTimeAccordingToFrequencyType(Carbon $date, $frequency, $number)
     {
-        if ($frequency_type == 'week') {
-            $date->addWeeks($frequency_number);
-        }
-        if ($frequency_type == 'month') {
-            $date->addMonths($frequency_number);
-        }
-        if ($frequency_type == 'year') {
-            $date->addYears($frequency_number);
+        switch ($frequency) {
+            case 'week':
+                $date->addWeeks($number);
+                break;
+            case 'month':
+                $date->addMonths($number);
+                break;
+            default:
+                $date->addYears($number);
+                break;
         }
 
         return $date;
     }
 
     /**
-     * Calculate the age given a date and the fact that the date is an
-     * approximation or not.
-     *
-     * @param  Carbon $date          [description]
-     * @param  string $approximation 'true' or 'false'
+     * Get the name of the month and year of a given date with a given number
+     * of months more.
+     * @param  int    $month
      * @return string
      */
-    public static function getAgeAsString($date, $approximation)
+    public static function getMonthAndYear(int $month)
     {
-        Carbon::setLocale(Auth::user()->locale);
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, Auth::user()->timezone);
-        $age = $date->diffInYears(Carbon::now());
+        $date = Date::now()->addMonthsNoOverflow($month);
+        $format = 'M Y';
 
-        if ($age < 1) {
-            $ageInMonths = self::createDateFromFormat($date, Auth::user()->timezone)->diffInMonths(Carbon::now());
+        return $date->format($format);
+    }
 
-            if ($approximation == 'true') {
-                // returns Approx. 3 months old
-                return trans('people.age_approximate_in_months', ['age' => $ageInMonths]);
-            } else {
-                // returns 3 month old (Oct 29, 1981)
-                $html = '<span class="age-date">('.self::getShortDate($date, Auth::user()->locale).')</span>';
-
-                return trans('people.age_exact_in_months', ['age' => $ageInMonths, 'html' => $html]);
-            }
+    /**
+     * Gets the next theoritical billing date.
+     * This is used on the Upgrade page to tell the user when the next billing
+     * date would be if he subscribed.
+     *
+     * @param  string
+     * @return Carbon
+     */
+    public static function getNextTheoriticalBillingDate(String $interval)
+    {
+        if ($interval == 'monthly') {
+            return Date::now()->addMonth();
         }
 
-        if ($approximation == 'true') {
-            // returns Approx. 3 years old
-            return trans('people.age_approximate_in_years', ['age' => $age]);
-        } else {
-            // returns 23 years old (Oct 29, 1981)
-            $html = '<span class="age-date">('.self::getShortDate($date, Auth::user()->locale).')</span>';
+        return Date::now()->addYear();
+    }
 
-            return trans('people.age_exact_in_years', ['age' => $age, 'html' => $html]);
+    /**
+     * Gets a list of all the months in a year.
+     *
+     * @return array
+     */
+    public static function getListOfMonths()
+    {
+        $months = collect([]);
+        $currentDate = Date::now();
+        $currentDate->day = 1;
+
+        for ($month = 1; $month < 13; $month++) {
+            $currentDate->month = $month;
+            $months->push([
+                'id' => $month,
+                'name' => mb_convert_case($currentDate->format('F'), MB_CASE_TITLE, 'UTF-8'),
+            ]);
         }
+
+        return $months;
+    }
+
+    /**
+     * Gets a list of all the days in a month.
+     *
+     * @return array
+     */
+    public static function getListOfDays()
+    {
+        $days = collect([]);
+        for ($day = 1; $day < 32; $day++) {
+            $days->push(['id' => $day, 'name' => $day]);
+        }
+
+        return $days;
+    }
+
+    /**
+     * Gets a list of all the hours in a day.
+     *
+     * @return array
+     */
+    public static function getListOfHours()
+    {
+        $hours = collect([]);
+        for ($hour = 1; $hour <= 24; $hour++) {
+            $hours->push([
+                'id' => date('H:i', strtotime("$hour:00")),
+                'name' => date('h.iA', strtotime("$hour:00")),
+            ]);
+        }
+
+        return $hours;
+    }
+
+    /**
+     * Removes a given number of days of a date given in parameter.
+     *
+     * @param  Carbon  $date
+     * @param  int    $numberOfDaysBefore
+     * @return Carbon
+     */
+    public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
+    {
+        return $date->subDays($numberOfDaysBefore);
     }
 }

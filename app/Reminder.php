@@ -6,36 +6,117 @@ use Auth;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
-use MartinJoiner\OrdinalNumber\OrdinalNumber;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ */
 class Reminder extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['last_triggered', 'next_expected_date'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_birthday' => 'boolean',
+    ];
+
+    /**
+     * Get the account record associated with the reminder.
+     *
+     * @return BelongsTo
+     */
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the contact record associated with the reminder.
+     *
+     * @return BelongsTo
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+
+    /**
+     * Get the next_expected_date field according to user's timezone.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getNextExpectedDateAttribute($value)
+    {
+        if (auth()->user()) {
+            return Carbon::parse($value, auth()->user()->timezone);
+        }
+
+        return Carbon::parse($value);
+    }
+
+    /**
+     * Correctly set the frequency type.
+     *
+     * @param string $value
+     */
+    public function setFrequencyTypeAttribute($value)
+    {
+        $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
+    }
 
     /**
      * Get the title of a reminder.
      * @return string
      */
-    public function getTitle()
+    public function getTitleAttribute($value)
     {
-        if (is_null($this->title)) {
-            return null;
-        }
+        return $value;
+    }
 
-        return $this->title;
+    /**
+     * Set the title of a reminder.
+     * @return string
+     */
+    public function setTitleAttribute($title)
+    {
+        $this->attributes['title'] = $title;
     }
 
     /**
      * Get the description of a reminder.
      * @return string
      */
-    public function getDescription()
+    public function getDescriptionAttribute($value)
     {
-        if (is_null($this->description)) {
-            return null;
-        }
-
-        return $this->description;
+        return $value;
     }
 
     /**
@@ -49,39 +130,78 @@ class Reminder extends Model
     }
 
     /**
-     * Calculate the next expected date for this reminder based on the current
-     * start date.
-     * @param  Carbon $startDate
-     * @param  string $frequencyTYpe
-     * @param  int $frequencyNumber
+     * Calculate the next expected date for this reminder.
+     *
+     * @return static
+     */
+    public function calculateNextExpectedDate($timezone)
+    {
+        $date = $this->next_expected_date->setTimezone($timezone);
+
+        while ($date->isPast()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        }
+
+        if ($date->isToday()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        }
+
+        $this->next_expected_date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Schedules the notifications for the given reminder.
+     *
      * @return void
      */
-    public function calculateNextExpectedDate($startDate, $frequencyType, $frequencyNumber)
+    public function scheduleNotifications()
     {
-        if ($startDate->isToday()) {
-            $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-            $this->next_expected_date = $nextDate;
+        if ($this->frequency_type == 'week') {
+            return;
         }
 
-        if ($startDate >= $startDate->tomorrow()) {
-            $this->next_expected_date = $startDate;
-        } else {
+        // Only schedule notifications for active reminder rules
+        $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
-            // Date is in the past, we need to extract the month and day, and
-            // setup the next occurence at those dates.
-            $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-
-            while ($nextDate->isPast()) {
-                $nextDate = DateHelper::calculateNextOccuringDate($nextDate, $frequencyType, $frequencyNumber);
-            }
-
-            // This is the case where we set the date in the past, but the next
-            // occuring date is still today, so we make sure it skips to the
-            // next occuring date.
-            if ($startDate->isToday()) {
-                $nextDate = DateHelper::calculateNextOccuringDate($startDate, $frequencyType, $frequencyNumber);
-            }
-            $this->next_expected_date = $nextDate;
+        foreach ($reminderRules as $reminderRule) {
+            $this->scheduleSingleNotification($reminderRule->number_of_days_before);
         }
+    }
+
+    /**
+     * Schedules a notification for the given reminder.
+     *
+     * @param  int  $numberOfDaysBefore
+     * @return Notification
+     */
+    public function scheduleSingleNotification(int $numberOfDaysBefore)
+    {
+        $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
+
+        if ($date->lte(now())) {
+            return;
+        }
+
+        $notification = new Notification;
+        $notification->account_id = $this->account_id;
+        $notification->contact_id = $this->contact_id;
+        $notification->reminder_id = $this->id;
+        $notification->trigger_date = $date;
+        $notification->scheduled_number_days_before = $numberOfDaysBefore;
+        $notification->save();
+
+        return $notification;
+    }
+
+    /**
+     * Purge all the existing notifications for a reminder.
+     *
+     * @return void
+     */
+    public function purgeNotifications()
+    {
+        $this->notifications->each->delete();
     }
 }

@@ -1,7 +1,9 @@
 @extends('layouts.skeleton')
-@section('title', $contact->getCompleteName() )
+
+@section('title', $contact->getCompleteName(auth()->user()->name_order) )
+
 @section('content')
-  <div class="people-show">
+  <div class="people-show" data-contact-id="{{ $contact->id }}">
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
@@ -17,7 +19,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName() }}
+                {{ $contact->getCompleteName(auth()->user()->name_order) }}
               </li>
             </ul>
           </div>
@@ -35,27 +37,47 @@
 
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
+
+            {{-- Significant Other --}}
+            @include('people.relationship.index')
+
             @include('people.dashboard.index')
+
+            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">{{ trans('people.people_export') }}</a></p>
+            <p>
+              {{ trans('people.people_delete_message') }}
+              <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
+              <form method="POST" action="{{ action('ContactsController@delete', $contact) }}" id="contact-delete-form" class="hidden">
+                {{ method_field('DELETE') }}
+                {{ csrf_field() }}
+              </form>
+            </p>
           </div>
 
           <div class="col-xs-12 col-sm-9">
             <div class="row section notes">
-              @include('people.notes.index')
+              <div class="col-xs-12 section-title">
+                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+              </div>
+            </div>
+
+            <div class="row section calls">
+              @include('people.calls.index')
             </div>
 
             <div class="row section activities">
-              @include('people.activities.index')
+              @include('activities.index')
             </div>
 
             <div class="row section reminders">
               @include('people.reminders.index')
             </div>
 
-            <div class="row section tasks">
+            <div class="row section">
               @include('people.tasks.index')
             </div>
 
-            <div class="row section gifts">
+            <div class="row section">
               @include('people.gifts.index')
             </div>
 
@@ -69,4 +91,7 @@
 
     </div>
   </div>
+
+  @include('people.modal.log_call')
+
 @endsection

@@ -1,27 +1,59 @@
 @import "_custom_bootstrap";
-@import "../../vendor/hint.css/hint.min";
+@import "~hint.css/hint.min";
 
-// Basecamp style editor
-@import "../../vendor/trix/dist/trix";
+@import "~tachyons/css/tachyons.min";
+
+// Tags for a contact
+@import "~jQuery-Tags-Input/dist/jquery.tagsinput.min";
 
 // For the datatables
 @import "_datatable.min";
 
-$octicons-font-path: "../../fonts/octicons/";
-@import "../../vendor/octicons/build/font/_octicons";
+// Icon fonts
+@import "~font-awesome/scss/font-awesome";
 
-$fa-font-path: "../../fonts/fontawesome";
-@import "../../vendor/font-awesome/scss/font-awesome";
+// Radio button
+@import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
 
 @import "buttons";
 @import "header";
-@import "dashboard";
 @import "people";
 @import "journal";
 @import "marketing";
 @import "settings";
+@import "modal";
+
+// Custom colors
+// Extending Tachyions
+.bg-gray-monica {
+  background-color: #f2f4f8;
+}
+
+.b--gray-monica {
+  border-color: #dde2e9;
+}
+.w-5 { width: 5%; }
+.w-95 { width: 95%; }
+
+.form-error-message {
+  border-top: 1px solid #ed6246;
+  background-color: #fbeae5;
+  box-shadow: inset 0 3px 0 0 #ed6347, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+}
+
+.form-information-message {
+  border-top: 1px solid #46C1BF;
+  background-color: #E0F5F5;
+  box-shadow: inset 0 3px 0 0 #47c1bf, inset 0 0 0 0 transparent, 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+
+  svg {
+    width: 20px;
+    fill: #00848e;
+    color: #fff;
+  }
+}
 
 // Utilities
 .border-bottom {
@@ -40,6 +72,10 @@ $border-color: #dfdfdf;
   border-left: 1px solid $border-color;
 }
 
+.padding-left-none {
+  padding-left: 0;
+}
+
 .boxed {
   background: #fff;
   border: 1px solid $border-color;
@@ -49,6 +85,72 @@ $border-color: #dfdfdf;
 
 .box-padding {
   padding: 15px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 5px;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+}
+
+.badge-success {
+  background-color: #5cb85c;
+}
+
+.badge-danger {
+  background-color: #d9534f;
+}
+
+.pretty-tag {
+  background: #eee;
+  border-radius: 3px;
+  color: #555;
+  display: inline-block;
+  font-size: 11px;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 10px 0 19px;
+  position: relative;
+  margin: 0 10px 0 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+
+  &::before {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+    content: '';
+    height: 6px;
+    left: 7px;
+    position: absolute;
+    width: 6px;
+    top: 9px;
+  }
+
+  &:hover {
+    background-color: #0366d6;
+
+    a {
+      color: #fff;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: #555;
+
+    &:hover {
+      background-color: transparent;
+      color: #fff;
+    }
+  }
 }
 
 // Generic styles
@@ -73,6 +175,10 @@ a {
     margin-right: 5px;
     text-decoration: underline;
   }
+}
+
+a[hreflang]:after {
+  content: " (" attr(hreflang) ")"; 
 }
 
 ul {
@@ -104,7 +210,7 @@ input:disabled {
   margin: 20px 0;
 }
 
-.modal {
+.central-form {
   margin-top: 40px;
 
   h2 {
@@ -144,6 +250,21 @@ input:disabled {
   .form-group:not(:last-child) {
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
+  }
+
+  .nav {
+    margin-top: 40px;
+
+    .nav-link {
+      text-decoration: none;
+    }
+  }
+
+  .tab-content {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
   }
 }
 
@@ -212,6 +333,15 @@ input:disabled {
     border-color: rgba(27,31,35,0.35);
     box-shadow: inset 0 0.15em 0.3em rgba(27,31,35,0.15)
   }
+
+  &:disabled {
+    background-image: linear-gradient(-180deg, #63b175 0%, #61986e 90%);
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
 }
 
 .btn-primary {
@@ -266,17 +396,31 @@ input:disabled {
 }
 
 footer {
-  margin-bottom: 30px;
-  margin-top: 30px;
-
-  ul {
-    margin: 0 auto;
-    text-align: center;
+  .badge-success {
+    font-size: 12px;
+    font-weight: 400;
   }
 
-  li {
-    font-size: 12px;
-    margin-right: 15px;
+  .show-version {
+    text-align: left;
+
+    h2 {
+      font-size: 16px;
+    }
+
+    .note {
+      margin-bottom: 20px;
+
+      ul {
+        list-style-type: disc;
+      }
+
+      li {
+        display: block;
+        font-size: 15px;
+        text-align: left;
+      }
+    }
   }
 }
 

@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,12 +15,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      View::composer(
-        'partials.components.country-select','App\Http\ViewComposers\CountrySelectViewComposer'
-      );
+        View::composer(
+            'partials.components.currency-select', 'App\Http\ViewComposers\CurrencySelectViewComposer'
+        );
 
-      Schema::defaultStringLength(191);
+        View::composer(
+            'partials.components.date-select', 'App\Http\ViewComposers\DateSelectViewComposer'
+        );
 
+        Schema::defaultStringLength(191);
     }
 
     /**

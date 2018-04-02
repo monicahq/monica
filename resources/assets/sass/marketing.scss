@@ -170,14 +170,24 @@
       padding: 50px 20px 20px;
 
       .logo {
-        left: 45%;
+        left: 40%;
         position: absolute;
         top: -33px;
+      }
+
+      h1 {
+        font-weight: 700;
+        text-align: center;
       }
 
       h2, h3 {
         font-weight: 300;
         text-align: center;
+      }
+
+      h2 {
+        margin-top: 20px;
+        margin-bottom: 20px;
       }
 
       h3 {
@@ -192,6 +202,11 @@
       }
 
       button {
+        margin-top: 10px;
+        width: 100%;
+      }
+
+      a.action {
         margin-top: 10px;
         width: 100%;
       }

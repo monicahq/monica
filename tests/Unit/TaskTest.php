@@ -3,78 +3,60 @@
 namespace Tests\Unit;
 
 use App\Task;
-use App\Contact;
-use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TaskTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testGetTitleReturnsNullIfUndefined()
+    public function test_it_belongs_to_an_account()
     {
-        $task = new Task;
-
-        $this->assertNull($task->getTitle());
-    }
-
-    public function testGetTitleReturnsTitle()
-    {
-        $task = new Task;
-        $task->title = 'This is a test';
-
-        $this->assertEquals(
-            'This is a test',
-            $task->getTitle()
-        );
-    }
-
-    public function testGetDescriptionReturnsNullIfUndefined()
-    {
-        $task = new Task;
-
-        $this->assertNull($task->getDescription());
-    }
-
-    public function testGetDescriptionReturnsDescription()
-    {
-        $task = new Task;
-        $task->description = 'This is a test';
-
-        $this->assertEquals(
-            'This is a test',
-            $task->getDescription()
-        );
-    }
-
-    public function testGetCreatedAtReturnsCarbonObject()
-    {
-        $task = factory(\App\Task::class)->make();
-
-        $this->assertInstanceOf(Carbon::class, $task->getCreatedAt());
-    }
-
-    public function testToggle()
-    {
-        $contact = factory(\App\Contact::class)->create();
-
-        $task = factory(\App\Task::class)->make([
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $task = factory('App\Task')->create([
+            'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $task->status == 'inprogress';
+        $this->assertTrue($task->account()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $task = factory('App\Task')->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($task->contact()->exists());
+    }
+
+    public function test_it_filters_by_completed_items()
+    {
+        $task = factory('App\Task')->create(['completed' => true]);
+        $task = factory('App\Task')->create(['completed' => true]);
+        $task = factory('App\Task')->create(['completed' => false]);
+        $task = factory('App\Task')->create(['completed' => true]);
 
         $this->assertEquals(
-            $task->status == 'complete',
-            $task->toggle()
+            3,
+            Task::completed()->count()
         );
+    }
+
+    public function test_it_filters_by_incomplete_items()
+    {
+        $task = factory('App\Task')->create(['completed' => false]);
+        $task = factory('App\Task')->create(['completed' => true]);
+        $task = factory('App\Task')->create(['completed' => true]);
+        $task = factory('App\Task')->create(['completed' => true]);
 
         $this->assertEquals(
-            $task->status == 'inprogress',
-            $task->toggle()
+            1,
+            Task::inProgress()->count()
         );
     }
 }

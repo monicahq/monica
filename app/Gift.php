@@ -2,60 +2,196 @@
 
 namespace App;
 
-use App\Helpers\DateHelper;
-use App\Events\Gift\GiftCreated;
-use App\Events\Gift\GiftDeleted;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @property Contact $recipient
+ * @method static Builder offered()
+ * @method static Builder isIdea()
+ */
 class Gift extends Model
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = [
-        'date_offered',
+        'offered_at',
+        'received_at',
     ];
 
-    protected $events = [
-        'created' => GiftCreated::class,
-        'deleted' => GiftDeleted::class,
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_an_idea' => 'boolean',
+        'has_been_offered' => 'boolean',
+        'has_been_received' => 'boolean',
     ];
 
-    public function getName()
+    /**
+     * Get the account record associated with the gift.
+     *
+     * @return BelongsTo
+     */
+    public function account()
     {
-        if (is_null($this->name)) {
-            return null;
-        }
-
-        return decrypt($this->name);
+        return $this->belongsTo(Account::class);
     }
 
-    public function getUrl()
+    /**
+     * Get the contact record associated with the gift.
+     *
+     * @return BelongsTo
+     */
+    public function contact()
     {
-        if (is_null($this->url)) {
-            return null;
-        }
-
-        return decrypt($this->url);
+        return $this->belongsTo(Contact::class);
     }
 
-    public function getComment()
+    /**
+     * Get the contact record associated with the gift.
+     *
+     * @return BelongsTo
+     */
+    public function recipient()
     {
-        if (is_null($this->comment)) {
-            return null;
-        }
-
-        return decrypt($this->comment);
+        return $this->hasOne(Contact::class, 'id', 'is_for');
     }
 
-    public function getValue()
+    /**
+     * Limit results to already offered gifts.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeOffered(Builder $query)
     {
-        if (is_null($this->value_in_dollars)) {
-            return null;
-        }
-
-        return $this->value_in_dollars;
+        return $query->where('has_been_offered', 1);
     }
 
-    public function getCreatedAt()
+    /**
+     * Limit results to gifts at the idea stage.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeIsIdea(Builder $query)
     {
-        return $this->created_at;
+        return $query->where('is_an_idea', 1);
+    }
+
+    /**
+     * Check whether the gift is meant for a particular member
+     * of the contact's family.
+     *
+     * @return bool
+     */
+    public function hasParticularRecipient()
+    {
+        return $this->is_for !== null;
+    }
+
+    /**
+     * Set the recipient for the gift.
+     *
+     * @param int $value
+     * @return string
+     */
+    public function setIsForAttribute($value)
+    {
+        $this->attributes['is_for'] = $value;
+    }
+
+    /**
+     * Get the name of the recipient for this gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getRecipientNameAttribute()
+    {
+        if ($this->hasParticularRecipient()) {
+            return $this->recipient->first_name;
+        }
+    }
+
+    /**
+     * Get the gift name.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the URL of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getUrlAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the comment of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCommentAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the value of the gift.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getValueAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Toggle a gift between the idea and offered state.
+     * @return void
+     */
+    public function toggle()
+    {
+        $this->has_been_received = false;
+
+        if ($this->is_an_idea == 1) {
+            $this->is_an_idea = false;
+            $this->has_been_offered = true;
+            $this->save();
+
+            return;
+        }
+
+        $this->is_an_idea = true;
+        $this->has_been_offered = false;
+        $this->save();
     }
 }

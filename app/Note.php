@@ -2,21 +2,99 @@
 
 namespace App;
 
+use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @property string $parsed_body
+ */
 class Note extends Model
 {
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'is_favorited' => 'boolean',
+    ];
+
+    protected $dates = [
+        'favorited_at',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'account_id',
+        'contact_id',
+        'body',
+        'is_favorited',
+    ];
+
+    /**
+     * Get the account record associated with the note.
+     *
+     * @return BelongsTo
+     */
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the contact record associated with the note.
+     *
+     * @return BelongsTo
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Limit notes to favorited ones.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeFavorited(Builder $query)
+    {
+        return $query->where('is_favorited', true);
+    }
+
+    /**
+     * Return the markdown parsed body.
+     *
+     * @return string
+     */
+    public function getParsedBodyAttribute()
+    {
+        return (new Parsedown())->text($this->body);
+    }
+
+    /**
      * Get the description of a note.
+     *
      * @return string
      */
     public function getBody()
     {
-        if (is_null($this->body)) {
-            return null;
-        }
-
         return $this->body;
     }
 
@@ -26,13 +104,14 @@ class Note extends Model
      * @param  string $locale
      * @return string
      */
-    public function getCreatedAt($locale)
+    public function getCreatedAt()
     {
-        return DateHelper::getShortDate($this->created_at, $locale);
+        return DateHelper::getShortDate($this->created_at);
     }
 
     /**
      * Gets the content of the activity and formats it for the email.
+     *
      * @return string
      */
     public function getContent()

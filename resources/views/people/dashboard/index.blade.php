@@ -1,11 +1,17 @@
-{{-- Section address, email, phone, contact --}}
-@include('people.dashboard.people-information.index')
+{{-- Pets --}}
+<pet v-bind:contact-id="{!! $contact->id !!}"></pet>
 
-{{-- Significant Other --}}
-@include('people.dashboard.significantother.index')
+{{-- Contact information --}}
+<contact-information v-bind:contact-id="{!! $contact->id !!}"></contact-information>
 
-{{-- Kids --}}
-@include('people.dashboard.kids.index')
+{{-- Address --}}
+<contact-address v-bind:contact-id="{!! $contact->id !!}"></contact-address>
+
+{{-- Introductions --}}
+@include('people.dashboard.introductions.index')
+
+{{-- Work --}}
+@include('people.dashboard.work.index')
 
 {{-- Food preferences --}}
 @include('people.dashboard.food-preferencies.index')

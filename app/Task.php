@@ -2,48 +2,81 @@
 
 namespace App;
 
-use Auth;
-use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Account $account
+ * @property Contact $contact
+ * @method static Builder completed()
+ * @method static Builder inProgress()
+ */
 class Task extends Model
 {
-    protected $dates = ['completed_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
 
-    public function getTitle()
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['completed_at', 'archived_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'completed' => 'boolean',
+        'archived' => 'boolean',
+    ];
+
+    /**
+     * Get the account record associated with the task.
+     *
+     * @return BelongsTo
+     */
+    public function account()
     {
-        if (is_null($this->title)) {
-            return null;
-        }
-
-        return $this->title;
-    }
-
-    public function getDescription()
-    {
-        if (is_null($this->description)) {
-            return null;
-        }
-
-        return $this->description;
-    }
-
-    public function getCreatedAt()
-    {
-        return $this->created_at;
+        return $this->belongsTo(Account::class);
     }
 
     /**
-     * Change the status of the task from in progress to complete, or the other
-     * way around.
+     * Get the contact record associated with the task.
+     *
+     * @return BelongsTo
      */
-    public function toggle()
+    public function contact()
     {
-        if ($this->status == 'completed') {
-            $this->status = 'inprogress';
-        } else {
-            $this->status = 'completed';
-        }
-        $this->save();
+        return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Limit tasks to completed ones.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeCompleted(Builder $query)
+    {
+        return $query->where('completed', true);
+    }
+
+    /**
+     * Limit tasks to in-progress ones.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeInProgress(Builder $query)
+    {
+        return $query->where('completed', false);
     }
 }

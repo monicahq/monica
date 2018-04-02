@@ -14,13 +14,17 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
-        'App\Console\Commands\ResetTestDB',
         'App\Console\Commands\SendNotifications',
+        'App\Console\Commands\SendReminders',
         'App\Console\Commands\CalculateStatistics',
-        //'App\Console\Commands\EncryptAllTheThings'
-        //'App\Console\Commands\MigrateActivities'
-        //'App\Console\Commands\MigratePeopleInformation',
-        //'App\Console\Commands\RemoveEncryption'
+        'App\Console\Commands\ImportCSV',
+        'App\Console\Commands\SetupProduction',
+        'App\Console\Commands\ImportVCards',
+        'App\Console\Commands\PingVersionServer',
+        'App\Console\Commands\SetupTest',
+        'App\Console\Commands\Deactivate2FA',
+        'App\Console\Commands\GetVersion',
+        'App\Console\Commands\LangGenerate',
     ];
 
     /**
@@ -31,7 +35,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('monica:sendnotifications')->hourly();
+        $schedule->command('send:notifications')->hourly();
+        $schedule->command('send:reminders')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
+        $schedule->command('monica:ping')->daily();
     }
 }

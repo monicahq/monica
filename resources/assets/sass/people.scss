@@ -4,15 +4,7 @@
   }
 
   .main-content {
-    margin-top: 50px;
-  }
-
-  #search-list {
-    .search {
-      margin-bottom: 20px;
-      padding: 15px;
-      width: 100%;
-    }
+    margin-top: 20px;
   }
 
   .sidebar {
@@ -34,6 +26,10 @@
         left: 0;
         position: absolute;
       }
+
+      .number-contacts-per-tag {
+        float: right;
+      }
     }
   }
 
@@ -42,12 +38,90 @@
     border-radius: 3px;
   }
 
+  .clear-filter {
+    border: 1px solid #eee;
+    position: relative;
+    padding: 6px;
+    border-radius: 3px;
+
+    a {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
   .people-list-item {
     border-bottom: 1px solid #eee;
     padding: 10px;
 
     &:hover {
       background-color: #f7fbfc;
+    }
+
+    &.sorting {
+      background-color: #f6f8fa;
+      position: relative;
+      padding: 10px;
+
+      .options {
+        display: inline;
+        position: absolute;
+        right: 10px;
+
+        .dropdown-btn {
+          &:after {
+            content: '\f0d7';
+            font-family: FontAwesome;
+            margin-left: 5px;
+          }
+        }
+
+        .dropdown-item {
+          padding: 3px 20px 3px 10px;
+
+          &:before {
+            content: '\f00c';
+            font-family: FontAwesome;
+            margin-right: 5px;
+            color: #fff;
+          }
+
+          &:hover {
+            background-color: #0366d6;
+            color: #fff;
+          }
+
+          &.selected {
+            &:before {
+              color: #999;
+            }
+          }
+        }
+      }
+    }
+
+    .avatar {
+      background-color: #93521e;
+      border-radius: 3px;
+      color: #fff;
+      display: inline-block;
+      font-size: 15px;
+      height: 43px;
+      margin-right: 5px;
+      padding-left: 5px;
+      padding-top: 10px;
+      vertical-align: middle;
+      width: 43px;
+
+      &.one-letter {
+        padding-left: 0;
+        text-align: center;
+      }
+    }
+
+    img {
+      border-radius: 3px;
+      margin-right: 5px;
     }
 
     a {
@@ -62,10 +136,12 @@
 
     .people-list-item-information {
       color: #999;
-      font-style: italic;
       float: right;
+      font-size: 12px;
+      font-style: italic;
       position: relative;
-      top: 3px;
+      text-align: right;
+      top: 16px;
     }
   }
 }
@@ -100,6 +176,7 @@
     background-color: #f9f9fb;
     border-bottom: 1px solid #eee;
     position: relative;
+    padding-bottom: 20px;
 
     .people-profile-information {
       margin-bottom: 10px;
@@ -130,32 +207,70 @@
       }
 
       h2 {
-        display: inline;
+        display: block;
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
         padding-left: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: calc(100% - 245px);
+        margin-right: -9999px;
+      }
+
+      @media (max-width: 480px) {
+        h2 {
+          width: 100%;
+        }
       }
 
       .profile-detail-summary {
         padding-left: 100px;
+        margin-top: 3px;
 
         li {
           &:not(:last-child) {
             margin-right: 10px;
-
-            &::after {
-              color: #ad8362;
-              content: '\f085';
-              font-family: octicons;
-              margin-left: 14px;
-            }
           }
+        }
+      }
+
+      #tagsForm {
+        padding-left: 100px;
+        position: relative;
+
+        #tags_tagsinput {
+          height: 40px!important;
+          min-height: 40px!important;
+          width: 370px!important;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .tagsFormActions {
+          display: inline;
+          position: relative;
+          top: -17px;
+        }
+      }
+
+      .tags {
+        padding: 0;
+        padding-left: 100px;
+        list-style: none;
+        line-height: 20px;
+        margin: 0;
+        overflow: hidden;
+        margin-top: 8px;
+
+        li {
+          float: left;
         }
       }
     }
 
-    .edit-information {
+    .quick-actions {
       position: absolute;
       right: 0;
       top: 14px;
@@ -166,12 +281,6 @@
     background-color: #fff;
     padding-bottom: 20px;
     padding-top: 40px;
-
-    .delete-contact {
-      font-size: 12px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
 
     .section-title {
       position: relative;
@@ -191,14 +300,6 @@
         position: absolute;
         top: 14px;
         width: 17px;
-        z-index: 1000;
-      }
-
-      span {
-        font-size: 14px;
-        position: absolute;
-        right: 0px;
-        top: 5px;
       }
     }
 
@@ -259,11 +360,12 @@
       }
     }
 
-    .people-information {
-      color: #999;
-      font-size: 12px;
-
+    .people-information,
+    .work,
+    .introductions {
       li {
+        color: #999;
+        font-size: 12px;
         margin-bottom: 10px;
 
         &:last-child {
@@ -281,8 +383,7 @@
       margin-bottom: 35px;
 
       &.kids,
-      &.food-preferencies,
-      &.notes {
+      &.food-preferencies {
         .section-heading img {
           position: relative;
           top: -3px;
@@ -323,59 +424,6 @@
         h3 {
           font-weight: 400;
           font-size: 14px;
-        }
-      }
-    }
-
-    .notes {
-      .blank-note-state {
-        text-align: center;
-
-        img {
-          background-color: #e3f7f7;
-          border: 1px solid #d2caca;
-          border-radius: 50%;
-          filter: grayscale(30%);
-          margin-bottom: 10px;
-          padding: 4px;
-          width: 60px;
-        }
-      }
-
-      .notes-add-box {
-        background-color: #f6f8f9;
-        border-radius: 3px;
-        margin-bottom: 30px;
-        padding: 10px;
-
-        .actions {
-          margin-top: 10px;
-
-          .btn {
-            width: 49%;
-          }
-        }
-      }
-
-      .note-item {
-        border: 1px solid #eee;
-        border-radius: 3px;
-        margin-bottom: 15px;
-
-        .note-item-body {
-          padding: 10px;
-        }
-      }
-
-      .note-item-actions {
-        background-color: #f9f9f9;
-        color: #666;
-        font-size: 12px;
-        margin-top: 10px;
-        padding: 5px 10px;
-
-        li {
-          margin-right: 10px;
         }
       }
     }
@@ -422,16 +470,6 @@
       padding: 5px 0 0;
     }
 
-    .gift-list-item-value {
-      background-color: #ecf9ff;
-      border: 1px solid #eee;
-      border-radius: 3px;
-      display: inline;
-      font-size: 12px;
-      margin-left: 10px;
-      padding: 0 6px;
-    }
-
     .gift-list-item-information {
       display: inline;
       margin-left: 10px;
@@ -458,36 +496,40 @@
     .gift-list-item-actions {
       margin-left: 5px;
     }
-  }
 
-  .notes {
-    .notes-list {
-      .note-date {
-        color: #777;
-        font-size: 12px;
-        margin-right: 10px;
-        margin-top: 5px;
-        margin-bottom: 20px;
-        display: block;
-      }
-
-      li {
-        margin-bottom: 10px;
-      }
+    .for {
+      font-style: italic;
+      margin-left: 10px;
     }
   }
 
   .activities,
+  .reminders,
   .tasks,
-  .debts {
-    .activity-date {
+  .debts,
+  .gifts,
+  .calls {
+    .date {
       color: #777;
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
     }
+    .pa2 li {
+      list-style: inside disc;
+    }
 
-    .activity-actions {
+    .frequency-type,
+    .value {
+      background-color: #ecf9ff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: inline;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+
+    .list-actions {
       position: relative;
       text-align: center;
       width: 60px;
@@ -501,16 +543,24 @@
         top: 1px;
       }
     }
+
+    .empty {
+      font-style: italic;
+    }
   }
 
   .reminders {
-    input[type="date"] {
+    .frequency-type {
+      white-space: nowrap;
+    }
+
+    input[type='date'] {
       margin-bottom: 20px;
       width: 170px;
     }
 
     .form-check {
-      input[type="number"] {
+      input[type='number'] {
         display: inline;
         width: 50px;
       }
@@ -526,10 +576,14 @@
   }
 }
 
+.create-people {
+  .import {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+}
 
-// MOBILE
 @media (max-width: 480px) {
-
   .people-list {
     margin-top: 20px;
 
@@ -538,6 +592,12 @@
 
       li {
         padding: 6px 0;
+      }
+    }
+
+    .people-list-item {
+      .people-list-item-information {
+        display: none;
       }
     }
   }
@@ -549,12 +609,32 @@
         margin-top: 10px;
 
         h2 {
+          padding-left: 80px;
+
           span {
             display: none;
           }
         }
 
+        #tagsForm {
+          display: block;
+          margin-top: 40px;
+          padding-left: 0;
+
+          #tags_tagsinput {
+            width: 100% !important;
+          }
+
+          .tagsFormActions {
+            display: block;
+            margin-top: 20px;
+          }
+        }
+
         .profile-detail-summary {
+          padding-left: 0;
+          margin-top: 10px;
+
           li {
             display: block;
             margin-right: 0;
@@ -566,6 +646,16 @@
               }
             }
           }
+        }
+
+        .avatar {
+          height: 67px;
+          width: 67px;
+          padding-top: 11px;
+        }
+
+        .tags {
+          padding-left: 80px;
         }
       }
 
@@ -579,26 +669,6 @@
     .main-content {
       &.modal {
         margin-top: 0;
-
-        .dates {
-          .form-inline {
-            input[type="number"] {
-              display: inline;
-            }
-
-            input[type="date"] {
-              margin-left: 0;
-            }
-          }
-        }
-
-        .form-group.actions {
-          .btn {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-          }
-        }
       }
 
       &.dashboard {

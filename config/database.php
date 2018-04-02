@@ -1,6 +1,6 @@
 <?php
 
-return [
+$db = [
 
     /*
     |--------------------------------------------------------------------------
@@ -49,33 +49,35 @@ return [
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
         ],
 
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
+            'prefix' => env('DB_PREFIX', ''),
             'strict' => false,
             'engine' => null,
         ],
 
         'testing' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_TEST_HOST'),
-            'database'  => env('DB_TEST_DATABASE'),
-            'username'  => env('DB_TEST_USERNAME'),
-            'password'  => env('DB_TEST_PASSWORD'),
+            'driver' => 'mysql',
+            'host' => env('DB_TEST_HOST'),
+            'unix_socket' => env('DB_TEST_UNIX_SOCKET', ''),
+            'database' => env('DB_TEST_DATABASE'),
+            'username' => env('DB_TEST_USERNAME'),
+            'password' => env('DB_TEST_PASSWORD'),
             'charset'   => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
+            'prefix' => '',
+            'strict' => false,
         ],
 
         'pgsql' => [
@@ -85,7 +87,21 @@ return [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => env('DB_PREFIX', ''),
+            'schema' => 'public',
+        ],
+
+        'pgsqltesting' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_TEST_HOST'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_TEST_DATABASE'),
+            'username' => env('DB_TEST_USERNAME'),
+            'password' => env('DB_TEST_PASSWORD'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'schema' => 'public',
         ],
@@ -130,3 +146,28 @@ return [
     ],
 
 ];
+
+/*
+ * If the instance is hosted on Heroku, then the database information
+ * needs to be parsed from the environment variable provided by Heroku.
+ * This is done below, added to the $db variable and then returned.
+ */
+if (env('HEROKU')) {
+    $url = parse_url(env('CLEARDB_DATABASE_URL'));
+
+    $db['connections']['heroku'] = [
+        'driver' => 'mysql',
+        'host' => $url['host'],
+        'port' => $url['port'],
+        'database' => substr($url['path'], 1),
+        'username' => $url['user'],
+        'password' => $url['pass'],
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix' => '',
+        'strict' => false,
+        'schema' => 'public',
+    ];
+}
+
+return $db;
