@@ -267,7 +267,7 @@ return [
     'personalization_genders_modal_edit' => 'Geschlechtstyp aktualisieren',
     'personalization_genders_modal_edit_question' => 'Wie soll dieses neue Geschlech umbenannt werden?',
     'personalization_genders_modal_delete' => 'Geschlechtstyp löschen',
-    'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
+    'personalization_genders_modal_delete_desc' => 'Möchten Sie {name} wirklich löschen?',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'Bitte wähle ein gültiges Geschlecht aus der Liste.',
 
