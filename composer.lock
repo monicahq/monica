@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5aa2f4806518188946b56ab87930126d",
+    "content-hash": "db3c391b74b6e59a6320f0c4a972b4bc",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2096,38 +2096,40 @@
             "time": "2017-12-23T23:33:42+00:00"
         },
         {
-            "name": "martinlindhe/laravel-vue-i18n-generator",
-            "version": "0.1.28",
+            "name": "mariuzzo/laravel-js-localization",
+            "version": "v1.4.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/martinlindhe/laravel-vue-i18n-generator.git",
-                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761"
+                "url": "https://github.com/rmariuzzo/Laravel-JS-Localization.git",
+                "reference": "e36ea8dadfa680d862262af2ea4abbe5697bc03e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/martinlindhe/laravel-vue-i18n-generator/zipball/0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
-                "reference": "0dcfb5a080137ea0eb8349b8f8f495c2779fa761",
+                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/e36ea8dadfa680d862262af2ea4abbe5697bc03e",
+                "reference": "e36ea8dadfa680d862262af2ea4abbe5697bc03e",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0|~5.6.0",
-                "illuminate/support": "~5.1.0|~5.2.0|~5.3.0|~5.4.0|~5.5.0|~5.6.0",
-                "php": ">=5.5.0"
+                "illuminate/config": ">=4.2",
+                "illuminate/console": ">=4.2",
+                "illuminate/filesystem": ">=4.2",
+                "php": ">=5.4.0",
+                "tedivm/jshrink": "1.0.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.7"
+                "phpunit/phpunit": "4.8.*"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "MartinLindhe\\VueInternationalizationGenerator\\GeneratorProvider"
+                        "Mariuzzo\\LaravelJsLocalization\\LaravelJsLocalizationServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "MartinLindhe\\VueInternationalizationGenerator\\": "src/"
+                    "Mariuzzo\\LaravelJsLocalization\\": "src/Mariuzzo/LaravelJsLocalization/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2136,17 +2138,45 @@
             ],
             "authors": [
                 {
-                    "name": "Martin Lindhe",
-                    "email": "martin@ubique.se"
+                    "name": "Rubens Mariuzzo",
+                    "email": "rubens@mariuzzo.com",
+                    "homepage": "https://github.com/rmariuzzo",
+                    "role": "Developer"
+                },
+                {
+                    "name": "German Popoter",
+                    "email": "me@gpopoteur.com",
+                    "homepage": "https://github.com/gpopoteur",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Galievskiy Dmitriy",
+                    "homepage": "https://github.com/xAockd",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Ramon Ackermann",
+                    "homepage": "https://github.com/sboo",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Pe Ell",
+                    "homepage": "https://github.com/a-komarev",
+                    "role": "Developer"
                 }
             ],
-            "description": "Generates a vue-i18n compatible include file from your Laravel translations.",
-            "homepage": "http://github.com/martinlindhe/laravel-vue-i18n-generator",
+            "description": "Laravel Localization in JavaScript",
+            "homepage": "https://github.com/rmariuzzo/laravel-js-localization",
             "keywords": [
+                "JS",
+                "i18n",
+                "javascript",
+                "lang",
                 "laravel",
-                "vue-i18n"
+                "laravel 5",
+                "localization"
             ],
-            "time": "2018-03-06T08:38:31+00:00"
+            "time": "2017-11-23T04:07:56+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4713,6 +4743,52 @@
                 "dump"
             ],
             "time": "2018-02-22T17:29:24+00:00"
+        },
+        {
+            "name": "tedivm/jshrink",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tedious/JShrink.git",
+                "reference": "7575d9d96f113bc7c1c28ec8231ee086751a9078"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tedious/JShrink/zipball/7575d9d96f113bc7c1c28ec8231ee086751a9078",
+                "reference": "7575d9d96f113bc7c1c28ec8231ee086751a9078",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "0.4.0",
+                "phpunit/phpunit": "4.0.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JShrink": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Hafner",
+                    "email": "tedivm@tedivm.com"
+                }
+            ],
+            "description": "Javascript Minifier built in PHP",
+            "homepage": "http://github.com/tedious/JShrink",
+            "keywords": [
+                "javascript",
+                "minifier"
+            ],
+            "time": "2014-11-11T03:54:14+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

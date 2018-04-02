@@ -52,7 +52,7 @@ install:
   - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs
 
   # Build js and css assets
-  - php artisan vue-i18n:generate
+  - php artisan lang:generate
   - npm install
   - npm run production
 
@@ -130,7 +130,7 @@ jobs:
         # Get packages without require-dev
         - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
         # Build js and css assets
-        - php artisan vue-i18n:generate
+        - php artisan lang:generate
         - npm install
         - npm run production
 
