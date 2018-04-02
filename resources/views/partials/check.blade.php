@@ -19,7 +19,7 @@
             </button>
           </div>
           <div class="modal-body">
-          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Instance::first()->number_of_versions_since_current_version ,['number' => \App\Instance::first()->number_of_versions_since_current_version]) }}</p>
+          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Instance::first()->number_of_versions_since_current_version, ['number' => \App\Instance::first()->number_of_versions_since_current_version]) }}</p>
           {!! \App\Instance::first()->latest_release_notes !!}
           </div>
           <div class="modal-footer">

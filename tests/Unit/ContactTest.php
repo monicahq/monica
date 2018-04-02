@@ -42,6 +42,18 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->notifications()->exists());
     }
 
+    public function test_it_has_many_relationships()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $relationship = factory('App\Relationship', 2)->create([
+            'account_id' => $account->id,
+            'contact_is' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->relationships()->exists());
+    }
+
     public function testGetFirstnameReturnsNullWhenUndefined()
     {
         $contact = new Contact;
@@ -540,45 +552,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    /**
-     * @group test
-     */
-    public function test_get_possible_offsprings_does_not_return_contacts_who_are_already_children_of_the_contact()
-    {
-        $account = factory(\App\Account::class)->create();
-        $franck = factory(\App\Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        // partner
-        $john = factory(\App\Contact::class)->create([
-            'id' => 2,
-            'account_id' => $account->id,
-            'is_partial' => 1,
-        ]);
-
-        $offspring = factory(\App\Offspring::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $franck->id,
-            'is_the_child_of' => $john->id,
-        ]);
-
-        // additional contacts
-        $jane = factory(\App\Contact::class)->create([
-            'id' => 3,
-            'account_id' => $account->id,
-        ]);
-        $marie = factory(\App\Contact::class)->create([
-            'id' => 4,
-            'account_id' => $account->id,
-        ]);
-
-        $this->assertEquals(
-            2,
-            $franck->getPotentialContacts()->count()
-        );
-    }
-
     public function testIsOwedMoney()
     {
         /** @var Contact $contact */
@@ -864,6 +837,252 @@ class ContactTest extends FeatureTestCase
         $this->assertEquals(
             2,
             $contact->tags()->count()
+        );
+    }
+
+    public function test_it_sets_a_relationship_between_two_contacts()
+    {
+        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $partner = factory(Contact::class)->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+
+        $contact->setRelationship($partner, $relationshipType->id);
+
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_is' => $partner->id,
+                'of_contact' => $contact->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+    }
+
+    public function test_it_updates_the_relationship_type_between_two_contacts()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
+        $oldRelationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
+        $newRelationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'name' => 'son',
+            'name_reverse_relationship' => 'father',
+        ]);
+        $reverseNewRelationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'name' => 'father',
+            'name_reverse_relationship' => 'son',
+        ]);
+
+        $contact->setRelationship($partner, $oldRelationshipType->id);
+        $contact->updateRelationship($partner, $oldRelationshipType->id, $newRelationshipType->id);
+
+        // relationships have been updated
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $newRelationshipType->id,
+            ]
+        );
+
+        $reverseRelationshipType = $account->getRelationshipTypeByType($newRelationshipType->name_reverse_relationship);
+
+        $this->assertDatabaseHas(
+            'relationships',
+            [
+                'contact_is' => $partner->id,
+                'of_contact' => $contact->id,
+                'relationship_type_id' => $reverseNewRelationshipType->id,
+            ]
+        );
+
+        // former relationships do not exist anymore
+        $this->assertDatabaseMissing(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $oldRelationshipType->id,
+            ]
+        );
+    }
+
+    public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
+    {
+        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => 1,
+            'is_partial' => true,
+        ]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+
+        $contact->setRelationship($partner, $relationshipType->id);
+
+        $contact->deleteRelationship($partner, $relationshipType->id);
+
+        $this->assertDatabaseMissing(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+    }
+
+    public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
+    {
+        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => 1,
+            'is_partial' => false,
+        ]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+
+        $contact->setRelationship($partner, $relationshipType->id);
+
+        $contact->deleteRelationship($partner, $relationshipType->id);
+
+        $this->assertDatabaseMissing(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contacts',
+            [
+                'id' => $partner->id,
+            ]
+        );
+    }
+
+    public function test_it_gets_the_relationship_between_two_contacts()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'name' => 'godfather',
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $partner->id,
+            'relationship_type_id' => $relationshipType->id,
+        ]);
+
+        $foundRelationship = $contact->getRelationshipNatureWith($partner);
+
+        $this->assertInstanceOf('App\Relationship', $foundRelationship);
+
+        $this->assertEquals(
+            $relationship->id,
+            $foundRelationship->id
+        );
+    }
+
+    public function test_it_gets_related_relationships_of_a_certain_relationshiptype_group_name()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $relatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $otherRelatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+            'account_id' => $account->id,
+            'name' => 'friend',
+        ]);
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $account->id,
+            'relationship_type_group_id' => $relationshipTypeGroup->id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $relatedContact->id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $otherRelatedContact->id,
+        ]);
+
+        $this->assertEquals(
+            2,
+            $contact->getRelationshipsByRelationshipTypeGroup('friend')->count()
+        );
+
+        $this->assertNull($contact->getRelationshipsByRelationshipTypeGroup('love'));
+    }
+
+    public function test_it_gets_the_right_number_of_birthdays_about_related_contacts()
+    {
+        $user = $this->signIn();
+
+        $contact = factory('App\Contact')->create(['account_id' => $user->account_id]);
+        $specialDate = factory('App\SpecialDate')->make();
+        $specialDate->account_id = $user->account_id;
+        $specialDate->contact_id = $contact->id;
+        $specialDate->save();
+        $specialDate->setReminder('year', 1, '');
+        $contact->birthday_special_date_id = $specialDate->id;
+        $contact->save();
+
+        $contactB = factory('App\Contact')->create(['account_id' => $user->account_id]);
+        $specialDate = factory('App\SpecialDate')->make();
+        $specialDate->account_id = $user->account_id;
+        $specialDate->contact_id = $contactB->id;
+        $specialDate->save();
+        $specialDate->setReminder('year', 1, '');
+        $contactB->birthday_special_date_id = $specialDate->id;
+        $contactB->save();
+
+        $contactC = factory('App\Contact')->create(['account_id' => $user->account_id]);
+        $specialDate = factory('App\SpecialDate')->make();
+        $specialDate->account_id = $user->account_id;
+        $specialDate->contact_id = $contactC->id;
+        $specialDate->save();
+        $specialDate->setReminder('year', 1, '');
+        $contactC->birthday_special_date_id = $specialDate->id;
+        $contactC->save();
+
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $user->account_id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $contactB->id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $user->account_id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $contactC->id,
+        ]);
+
+        $this->assertEquals(
+            2,
+            $contact->getBirthdayRemindersAboutRelatedContacts()->count()
         );
     }
 }

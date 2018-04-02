@@ -1,12 +1,3 @@
-{{-- Significant Other --}}
-@include('people.relationship.index')
-
-{{-- Kids --}}
-@include('people.dashboard.kids.index')
-
-{{-- Progenitors --}}
-@include('people.progenitors.index')
-
 {{-- Pets --}}
 <pet hash={!! $contact->hashID() !!}></pet>
 

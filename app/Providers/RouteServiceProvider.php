@@ -13,7 +13,6 @@ use App\Gender;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
-use App\Offspring;
 use App\ContactField;
 use App\Relationship;
 use App\ReminderRule;
@@ -101,27 +100,14 @@ class RouteServiceProvider extends ServiceProvider
                 ->firstOrFail();
         });
 
-        Route::bind('significant_other', function ($value, $route) {
+        Route::bind('relationships', function ($value, $route) {
             Contact::findOrFail($route->parameter('contact')->id);
 
             $value = app('idhasher')->decodeId($value);
 
             Relationship::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('with_contact_id', $value)
-                ->firstOrFail();
-
-            return Contact::findOrFail($value);
-        });
-
-        Route::bind('kid', function ($value, $route) {
-            Contact::findOrFail($route->parameter('contact')->id);
-
-            $value = app('idhasher')->decodeId($value);
-
-            Offspring::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $value)
-                ->where('is_the_child_of', $route->parameter('contact')->id)
+                ->where('contact_is', $route->parameter('contact')->id)
+                ->where('of_contact', $value)
                 ->firstOrFail();
 
             return Contact::findOrFail($value);
