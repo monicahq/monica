@@ -9,19 +9,18 @@ class CommandExecutor implements CommandExecutorInterface
 {
     /**
      * @var Command
-     */    
+     */
     protected $command;
 
     /**
      * Create a new CommandExecutor.
-     * 
+     *
      * @param Command
      */
     public function __construct(Command $command)
     {
         $this->command = $command;
     }
-    
 
     public function exec($message, $commandline)
     {

@@ -28,14 +28,14 @@ class Update extends Command
 
     /**
      * The Command Executor.
-     * 
+     *
      * @var CommandExecutorInterface
      */
     protected $commandExecutor;
 
     /**
      * Create a new command.
-     * 
+     *
      * @param CommandExecutorInterface
      */
     public function __construct(CommandExecutorInterface $commandExecutor = null)
@@ -43,7 +43,7 @@ class Update extends Command
         $this->commandExecutor = $commandExecutor ?: new CommandExecutor($this);
         parent::__construct();
     }
-    
+
     /**
      * Execute the console command.
      *

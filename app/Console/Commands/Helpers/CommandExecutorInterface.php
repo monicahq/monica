@@ -6,5 +6,5 @@ interface CommandExecutorInterface
 {
     public function exec($message, $command);
 
-    public function artisan($message, $command, array $arguments = []);    
+    public function artisan($message, $command, array $arguments = []);
 }

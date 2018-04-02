@@ -4,7 +4,6 @@ namespace Tests\Commands;
 
 use Tests\TestCase;
 use App\Console\Commands\Update;
-use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class UpdateCommandTest extends TestCase
 {
@@ -15,7 +14,7 @@ class UpdateCommandTest extends TestCase
         $command->setLaravel($this->createApplication());
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());
-        
+
         $this->assertCount(4, $commandExecutor->buffer);
         $this->assertCommandContains($commandExecutor->buffer[0], 'Resetting config cache', 'php artisan config:cache');
         $this->assertCommandContains($commandExecutor->buffer[1], 'Maintenance mode: on', 'php artisan down');
@@ -30,7 +29,7 @@ class UpdateCommandTest extends TestCase
         $command->setLaravel($this->createApplication());
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput(['--composer-install' => true]), new \Symfony\Component\Console\Output\NullOutput());
-        
+
         $this->assertCount(5, $commandExecutor->buffer);
         $this->assertCommandContains($commandExecutor->buffer[0], 'Resetting config cache', 'php artisan config:cache');
         $this->assertCommandContains($commandExecutor->buffer[1], 'Maintenance mode: on', 'php artisan down');
