@@ -52,13 +52,29 @@ class Update extends Command
     public function handle()
     {
         if ($this->confirmToProceed()) {
-            $this->commandExecutor->artisan('✓ Resetting config cache', 'config:cache');
+
             try {
                 $this->commandExecutor->artisan('✓ Maintenance mode: on', 'down', [
                     '--message' => 'Upgrading Monica v'.config('monica.app_version'),
                     '--retry' => '10',
                     ]);
 
+                // Clear or rebuild all cache
+                $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
+                if ($this->getLaravel()->environment() == 'production') {
+                    $this->commandExecutor->artisan('✓ Resetting config cache', 'config:cache');
+                    $this->commandExecutor->artisan('✓ Resetting route cache', 'route:cache');
+                    if ($this->getLaravel()->version() > '5.6'){
+                        $this->commandExecutor->artisan('✓ Resetting view cache', 'view:cache');
+                    } else {
+                        $this->commandExecutor->artisan('✓ Resetting view cache', 'view:clear');
+                    }
+                } else {
+                    $this->commandExecutor->artisan('✓ Clear config cache', 'config:clear');
+                    $this->commandExecutor->artisan('✓ Clear route cache', 'route:clear');
+                    $this->commandExecutor->artisan('✓ Clear view cache', 'view:clear');
+                }
+                    
                 if ($this->option('composer-install') === true) {
                     $this->commandExecutor->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('composer-install') === false ? '--no-dev' : ''));
                 }
@@ -74,6 +90,7 @@ class Update extends Command
                 if (! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
+
             } finally {
                 $this->commandExecutor->artisan('✓ Maintenance mode: off', 'up');
             }

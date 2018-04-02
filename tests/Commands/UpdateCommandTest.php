@@ -15,11 +15,11 @@ class UpdateCommandTest extends TestCase
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());
 
-        $this->assertCount(4, $commandExecutor->buffer);
-        $this->assertCommandContains($commandExecutor->buffer[0], 'Resetting config cache', 'php artisan config:cache');
-        $this->assertCommandContains($commandExecutor->buffer[1], 'Maintenance mode: on', 'php artisan down');
-        $this->assertCommandContains($commandExecutor->buffer[2], 'Performing migrations', 'php artisan migrate');
-        $this->assertCommandContains($commandExecutor->buffer[3], 'Maintenance mode: off', 'php artisan up');
+        $this->assertCount(7, $commandExecutor->buffer);
+        $this->assertCommandContains($commandExecutor->buffer[0], 'Maintenance mode: on', 'php artisan down');
+        $this->assertCommandContains($commandExecutor->buffer[1], 'Resetting application cache', 'php artisan cache:clear');
+        $this->assertCommandContains($commandExecutor->buffer[5], 'Performing migrations', 'php artisan migrate');
+        $this->assertCommandContains($commandExecutor->buffer[6], 'Maintenance mode: off', 'php artisan up');
     }
 
     public function test_update_command_composer()
@@ -30,12 +30,13 @@ class UpdateCommandTest extends TestCase
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput(['--composer-install' => true]), new \Symfony\Component\Console\Output\NullOutput());
 
-        $this->assertCount(5, $commandExecutor->buffer);
-        $this->assertCommandContains($commandExecutor->buffer[0], 'Resetting config cache', 'php artisan config:cache');
-        $this->assertCommandContains($commandExecutor->buffer[1], 'Maintenance mode: on', 'php artisan down');
-        $this->assertCommandContains($commandExecutor->buffer[2], 'Updating composer dependencies', 'composer install');
-        $this->assertCommandContains($commandExecutor->buffer[3], 'Performing migrations', 'php artisan migrate');
-        $this->assertCommandContains($commandExecutor->buffer[4], 'Maintenance mode: off', 'php artisan up');
+        $this->assertCount(8, $commandExecutor->buffer);
+        $this->assertCommandContains($commandExecutor->buffer[0], 'Maintenance mode: on', 'php artisan down');
+        $this->assertCommandContains($commandExecutor->buffer[1], 'Resetting application cache', 'php artisan cache:clear');
+        $this->assertCommandContains($commandExecutor->buffer[5], 'Updating composer dependencies', 'composer install');
+        $this->assertCommandContains($commandExecutor->buffer[6], 'Performing migrations', 'php artisan migrate');
+        $this->assertCommandContains($commandExecutor->buffer[7], 'Maintenance mode: off', 'php artisan up');
+
     }
 
     public function assertCommandContains($array, $message, $command)
