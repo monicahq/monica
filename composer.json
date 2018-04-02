@@ -4,6 +4,12 @@
     "license": "AGPL",
     "keywords": ["prm", "crm", "social"],
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/asbiin/live-code-coverage.git"
+        }
+    ],    
     "require": {
         "php": ">=7.0.0",
         "ext-intl": "*",
@@ -39,9 +45,9 @@
         "filp/whoops": "~2.1",
         "khanamiryan/qrcode-detector-decoder": "^1.0",
         "laravel/dusk": "^3.0",
-        "matthiasnoback/live-code-coverage": "^1.0",
+        "matthiasnoback/live-code-coverage": "dev-update-phpunit-7.0",
         "mockery/mockery": "~1.0",
-        "phpunit/phpcov": "^4.0",
+        "phpunit/phpcov": "^5.0",
         "phpunit/phpunit": "~7.0",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
