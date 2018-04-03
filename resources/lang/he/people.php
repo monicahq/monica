@@ -156,14 +156,14 @@ return [
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
-    'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
-    'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
-    'relationship_form_add_no_existing_contact' => 'You don\'t have any contacts who can be related to :name at the moment.',
-    'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
-    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted - only the relationship between the two.',
-    'relationship_form_add_success' => 'The relationship has been successfully set.',
-    'relationship_form_deletion_success' => 'The relationship has been deleted.',
+    'relationship_form_associate_dropdown' => 'נא לבחור איש קשר קיים מהרשימה הנגללת שלהלן',
+    'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
+    'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
+    'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
+    'relationship_delete_confirmation' => 'למחוק את הקשר הזה? מחיקה היא בלתי הפיכה.',
+    'relationship_unlink_confirmation' => 'למחוק את הקשר הזה? האדם לא יימחק - רק הקשר בין השניים.',
+    'relationship_form_add_success' => 'הקשר הוגדר בהצלחה.',
+    'relationship_form_deletion_success' => 'הקשר נמחק.',
 
     // tasks
     'tasks_blank_title' => 'אין לך משימות עדיין.',
@@ -265,7 +265,7 @@ return [
 
     // tags
     'tag_edit' => 'עריכת תגית',
-    'tag_add' => 'add a tag',
+    'tag_add' => 'הוספת תגית',
 
     // Introductions
     'introductions_sidebar_title' => 'איך נפגשתם',
