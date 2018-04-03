@@ -57,17 +57,17 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($reminder->next_expected_date)) {
-                if (! $account->hasLimitations()) {
+            //if ($user->shouldBeReminded($reminder->next_expected_date)) {
+                //if (! $account->hasLimitations()) {
                     dispatch(new SendReminderEmail($reminder, $user));
-                }
+                //}
 
-                if ($counter == $numberOfUsersInAccount) {
+                //if ($counter == $numberOfUsersInAccount) {
                     // We should only do this when we are sure that this is
                     // the last user who should be warned in this account.
                     dispatch(new SetNextReminderDate($reminder, $user->timezone));
-                }
-            }
+                //}
+            //}
             $counter++;
         }
     }
