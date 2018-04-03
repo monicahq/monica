@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "921c4d6f0edb2a28f4f8fa5790f0376a",
+    "content-hash": "62bc1ef6c5bbceb494e911d1fc2f67a2",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.53.0",
+            "version": "3.53.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5"
+                "reference": "6c225154ac6f767c8135fc13a35d0aab1399288d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/225593974bb6f6b1c13ddf946d3736d3e39119e5",
-                "reference": "225593974bb6f6b1c13ddf946d3736d3e39119e5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6c225154ac6f767c8135fc13a35d0aab1399288d",
+                "reference": "6c225154ac6f767c8135fc13a35d0aab1399288d",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-03-30T20:22:38+00:00"
+            "time": "2018-04-02T20:48:35+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
