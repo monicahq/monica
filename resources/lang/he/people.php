@@ -150,12 +150,12 @@ return [
     'reminders_free_plan_warning' => 'התכנית שלך היא התכנית החינמית. בתכנית הזאת לא נשלחות הודעות בדוא״ל. כדי לקבל תזכורות בדוא״ל יש לשדרג את החשבון שלך.',
 
     // relationships
-    'relationship_form_add' => 'Add a new relationship',
-    'relationship_form_edit' => 'Edit an existing relationship',
-    'relationship_form_is_with' => 'This person is...',
-    'relationship_form_add_choice' => 'Who is the relationship with?',
+    'relationship_form_add' => 'הוספת קשר חדש',
+    'relationship_form_edit' => 'עריכת קשר קיים',
+    'relationship_form_is_with' => 'איש הקשר הוא…',
+    'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
-    'relationship_form_associate_contact' => 'An existing contact',
+    'relationship_form_associate_contact' => 'איש קשר קיים',
     'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
     'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
