@@ -1,7 +1,10 @@
 // Code to manage tags in the contact view
 
+var vue = $('#app')[0].__vue__;
+
 $('#tags').tagsInput({
-   'maxChars' : 255,
+   maxChars : 255,
+   defaultText : vue.$t('people.tag_add')
 });
 
 $('#tagsForm').hide();

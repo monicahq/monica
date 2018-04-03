@@ -1085,4 +1085,37 @@ class ContactTest extends FeatureTestCase
             $contact->getBirthdayRemindersAboutRelatedContacts()->count()
         );
     }
+
+    public function test_it_fetches_the_partial_contact_who_belongs_to_a_real_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory('App\Contact')->create([
+            'account_id' => $user->account_id,
+            'is_partial' => false,
+        ]);
+        $otherContact = factory('App\Contact')->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $relationshipType = factory('App\RelationshipType')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $relationship = factory('App\Relationship')->create([
+            'account_id' => $user->account_id,
+            'relationship_type_id' => $relationshipType->id,
+            'contact_is' => $otherContact->id,
+            'of_contact' => $contact->id,
+        ]);
+
+        $foundContact = $otherContact->getRelatedRealContact();
+
+        $this->assertInstanceOf('App\Contact', $foundContact);
+
+        $this->assertEquals(
+            $contact->id,
+            $foundContact->id
+        );
+    }
 }
