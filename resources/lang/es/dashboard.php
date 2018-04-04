@@ -12,8 +12,8 @@ return [
     'tab_favorite_notes' => 'Favorite notes',
     'tab_calls_blank' => 'You haven\'t logged a call yet.',
 
-    'statistics_contacts' => 'Contactos',
-    'statistics_activities' => 'Actividades',
+    'statistics_contacts' => 'Contacts',
+    'statistics_activities' => 'Activities',
     'statistics_gifts' => 'Gifts',
 
     'reminders_next_months' => 'Events in the next 3 months',
