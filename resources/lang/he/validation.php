@@ -57,7 +57,7 @@ return [
         'array'   => 'תחת :attribute לא יכולים להיות יותר מ־:max פריטים.',
     ],
     'mimes'                => ':attribute חייב להיות קובץ מסוג: :values.',
-    'mimetypes'            => ':attribute חייב להיות קובץ מסוג: :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => ':attribute חייב להיות לפחות :min.',
         'file'    => ':attribute חייב להיות בגודל של לפחות :min קילובתים.',
@@ -65,7 +65,7 @@ return [
         'array'   => 'תחת :attribute חייבים להיות לפחות :min פריטים.',
     ],
     'not_in'               => ':attribute הנבחר שגוי.',
-    'not_regex'            => 'המבנה :attribute שגוי.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ':attribute חייב להיות מספר.',
     'present'              => 'השדה :attribute חייב להיות נוכח.',
     'regex'                => 'המבנה :attribute שגוי.',
