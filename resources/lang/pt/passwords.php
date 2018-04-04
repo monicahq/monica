@@ -15,9 +15,9 @@ return [
 
     'password' => 'A senha deve possuir no mínimo 6 caracteres e ser igual a confirmação.',
     'reset' => 'Sua senha foi redefinida!',
-    'sent' => 'O link para redefinição de senha foi enviado para o seu e-mail!',
+    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'token' => 'Token para recuperação de senha inválido.',
-    'user' => 'O link para redefinição de senha foi enviado para o seu e-mail!',
+    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'changed' => 'Senha alterada com sucesso.',
     'invalid' => 'A senha que introduziu não está correta.',
 
