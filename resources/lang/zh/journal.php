@@ -3,7 +3,7 @@
 return [
     'journal_rate' => '今天过得怎么样？你可以每天给它一次评价。',
     'journal_come_back' => '谢谢. 明天再来给你的一天评价一下。',
-    'journal_description' => '注意: 记录里列出了全部手动记录的条目, 以及您与您的联系人进行的活动等自动条目。虽然可以手动删除记录条目, 但必须直接在 "联系人" 页上进行删除。',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => '添加记录条目',
     'journal_created_automatically' => '自动创建',
     'journal_entry_type_journal' => '记录条目',
