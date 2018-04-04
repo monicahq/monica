@@ -14,10 +14,6 @@ matrix:
         - DB=mysql
         - SELENIUM=1
         - COVERAGE=1
-    - php: 7.0
-      env:
-        - DB=mysql
-        - SELENIUM=1
     - php: 7.2
       env:
         - DB=mysql
@@ -101,12 +97,6 @@ jobs:
         - DB=mysql
         - SELENIUM=1
         - COVERAGE=1
-
-    - stage: Tests
-      php: 7.0
-      env:
-        - DB=mysql
-        - SELENIUM=1
 
     - stage: Tests
       php: 7.2
