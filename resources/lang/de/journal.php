@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'Wie war dein Tag? Einmal am Tag kannst du ihn bewerten.',
     'journal_come_back' => 'Danke. Morgen kannst du wieder deinen Tag bewerten.',
-    'journal_description' => 'Hinweis: Das Journal zeigt sowohl manuelle Einträge, als auch Aktivitäten mit deinen Kontakten an. Manuelle Einträge kannst du hier löschen, Aktivitäten kannst du auf der jeweiligen Profilseite der beteiligten Person editieren oder löschen.',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Tagebucheintrag hinzufügen',
     'journal_created_automatically' => 'Autmatisch hinzugefügt',
     'journal_entry_type_journal' => 'Tagebucheintrag',
