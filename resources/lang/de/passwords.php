@@ -15,9 +15,9 @@ return [
 
     'password' => 'Passwörter müssen aus mindestens 6 Zeichen bestehen und übereinstimmen.',
     'reset' => 'Dein Passwort wurde zurückgesetzt!',
-    'sent' => 'Wenn die E-Mail-Adresse, die du eingegeben hast mit der in unserem System übereinstimmt, hast du eine E-Mail mit Reset-Link bekommen.',
+    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'token' => 'Der Passwort-Reset-Token ist ungültig.',
-    'user' => 'Wenn die E-Mail-Adresse, die du eingegeben hast mit der in unserem System übereinstimmt, hast du eine E-Mail mit Reset-Link bekommen.',
+    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'changed' => 'Dein Passwort wurde erfolgreich geändert.',
     'invalid' => 'Dein aktuelles Passwort stimmt nicht.',
 
