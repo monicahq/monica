@@ -24,7 +24,7 @@ return [
     '2fa_recuperation_code' => 'Entrez le code de récupération de deux facteurs',
 
     'login_to_account' => 'Connectez-vous à votre compte',
-    'email' => 'Couriel',
+    'email' => 'Courriel',
     'password' => 'Mot de passe',
     'login' => 'Connexion',
     'button_remember' => 'Se souvenir de moi',
@@ -35,7 +35,7 @@ return [
     'create_account' => 'Créer le premier compte en vous <a href=":url">enregistrant</a>',
 
     'password_reset_title' => 'Réinitialiser le mot de passe',
-    'password_reset_email' => 'Adresse couriel',
+    'password_reset_email' => 'Adresse courriel',
     'password_reset_send_link' => 'Envoyer un lien pour réinitialiser le mot de passe',
     'password_reset_password' => 'Mot de passe',
     'password_reset_password_confirm' => 'Confirmez le mot de passe',
@@ -46,7 +46,7 @@ return [
     'register_create_account' => 'Vous devez créer un compte pour utiliser Monica',
     'register_title_create' => 'Créez votre compte Monica',
     'register_login' => '<a href=":url">Connectez-vous</a> si vous avez déjà un compte.',
-    'register_email' => 'Entrez une adresse couriel valide',
+    'register_email' => 'Entrez une adresse courriel valide',
     'register_email_example' => 'vous@maison',
     'register_firstname' => 'Prénom',
     'register_firstname_example' => 'ex : Pierre',
