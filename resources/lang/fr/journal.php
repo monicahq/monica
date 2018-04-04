@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'Comment s\'est passé votre journée ? Vous pouvez voter une fois par jour.',
     'journal_come_back' => 'Merci. Revenez demain pour voter à nouveau.',
-    'journal_description' => 'Note : le journal liste les entrées manuelles, ainsi que les entrées automatiques comme les activités que vous faites avec vos contacts. Bien que vous puissiez supprimer les entrées manuelles, vous devrez supprimer les activités directement de la page du contact pour les supprimer du journal.',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Ajouter une entrée',
     'journal_created_automatically' => 'Créée automatiquement',
     'journal_entry_type_journal' => 'Note de journal',
