@@ -31,7 +31,7 @@ return [
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
-    'people_add_cta' => 'Añadir',
+    'people_add_cta' => 'Add',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
@@ -46,13 +46,13 @@ return [
 
     // show
     'section_contact_information' => 'Contact information',
-    'section_personal_activities' => 'Actividades',
+    'section_personal_activities' => 'Activities',
     'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tareas',
+    'section_personal_tasks' => 'Tasks',
     'section_personal_gifts' => 'Gifts',
 
     //
-    'link_to_list' => 'Lista de personas',
+    'link_to_list' => 'List of people',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
@@ -138,7 +138,7 @@ return [
     'reminder_frequency_year' => 'every year|every :number year',
     'reminder_frequency_one_time' => 'on :date',
     'reminders_delete_confirmation' => 'Are you sure you want to delete this reminder?',
-    'reminders_delete_cta' => 'Eliminar',
+    'reminders_delete_cta' => 'Delete',
     'reminders_next_expected_date' => 'on',
     'reminders_cta' => 'Add a reminder',
     'reminders_description' => 'We will send an email for each one of the reminders below. Reminders are sent every morning the day events will happen. Reminders automatically added for birthdates can not be deleted. If you want to change those dates, edit the birthdate of the contacts.',
@@ -174,7 +174,7 @@ return [
     'tasks_complete_success' => 'The task has changed status successfully',
 
     // activities
-    'activity_title' => 'Actividades',
+    'activity_title' => 'Activities',
     'activity_type_group_simple_activities' => 'Simple activities',
     'activity_type_group_sport' => 'Sport',
     'activity_type_group_food' => 'Food',
@@ -227,7 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
     'gifts_add_gift' => 'Add a gift',
     'gifts_link' => 'Link',
-    'gifts_delete_cta' => 'Eliminar',
+    'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',
     'gifts_add_gift_already_offered' => 'Gift offered',
