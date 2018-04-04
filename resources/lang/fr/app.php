@@ -47,7 +47,7 @@ return [
     'footer_version' => 'Version : :version',
     'footer_new_version' => 'Une nouvelle version est disponible',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => 'Quoi de neuf ?',
     'footer_modal_version_release_away' => 'Vous avez une version de retard par rapport à la dernière version disponible.|Vous avez :number versions de retard par rapport à la dernière version disponible. Vous devriez mettre à jour votre instance.',
 
     'breadcrumb_dashboard' => 'Tableau de bord',
@@ -77,7 +77,7 @@ return [
     'gender_none' => 'Aucun',
 
     'error_title' => 'Oups ! Une erreur est survenue.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -102,11 +102,11 @@ return [
     'relationship_type_partner_reverse_female_with_name' => ':name’s significant other',
 
     'relationship_type_spouse' => 'épouse',
-    'relationship_type_spouse_female' => 'spouse',
-    'relationship_type_spouse_reverse' => 'spouse',
-    'relationship_type_spouse_reverse_female' => 'spouse',
-    'relationship_type_spouse_with_name' => ':name’s spouse',
-    'relationship_type_spouse_female_with_name' => ':name’s spouse',
+    'relationship_type_spouse_female' => 'épouse',
+    'relationship_type_spouse_reverse' => 'épouse',
+    'relationship_type_spouse_reverse_female' => 'épouse',
+    'relationship_type_spouse_with_name' => 'épouse de :name',
+    'relationship_type_spouse_female_with_name' => 'épouse de :name',
     'relationship_type_spouse_reverse_with_name' => ':name’s spouse',
     'relationship_type_spouse_reverse_female_with_name' => ':name’s spouse',
 
