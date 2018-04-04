@@ -15,9 +15,9 @@ return [
 
     'password' => 'על הססמאות להיות באורך של 6 תווים לפחות ולהתאים לאילוצי האימות.',
     'reset' => 'הססמה שלך אופסה!',
-    'sent' => 'אם כתובת הדוא״ל שהזנת קיימת ברישומים שלנו, נשלח אליך קישור לאיפוס הססמה.',
+    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'token' => 'אסימון איפוס הססמה הזאת שגוי.',
-    'user' => 'אם כתובת הדוא״ל שהזנת קיימת ברישומים שלנו, נשלח אליך קישור לאיפוס הססמה.',
+    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'changed' => 'הססמה הוחלפה בהצלחה.',
     'invalid' => 'הססמה הנוכחית שהקלדת שגויה.',
 
