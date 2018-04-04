@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Modifier une relation existante',
     'relationship_form_is_with' => 'Cette personne est...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Add a new person',
+    'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
     'relationship_form_associate_dropdown' => 'Sélectionnez un contact existant dans la liste déroulante ci-dessous',
     'relationship_form_also_create_contact' => 'Créer un Contact pour cette personne.',
