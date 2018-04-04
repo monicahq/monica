@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'איך עבר עליך היום? ניתן לדרג פעם ביום.',
     'journal_come_back' => 'תודה. מזמינים אותך לדרג את יומך גם מחר.',
-    'journal_description' => 'לתשומת לבך: ביומן מופיעים רשומות ידניות לצד רשומות אוטומטיות כגון פעילויות שקיימת עם אנשי הקשר שלך. בעוד שניתן למחוק רשומות ביומן ידנית, יהיה עליך למחוק את הפעילות ישירות בעמוד של איש הקשר.',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'הוספת רשומה ביומן',
     'journal_created_automatically' => 'נוצרה אוטומטית',
     'journal_entry_type_journal' => 'רשומה ביומן',
