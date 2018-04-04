@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Вы пока ни кого ещё не добавили',
     'people_list_blank_cta' => 'Добавить кого нибудь',
     'people_list_sort' => 'Сортировка',
-    'people_list_stats' => ':count контакт|:count контакта|:count контактов',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Сортировать по имени А → Я',
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Добавить человека',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
     'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => 'Вы уверены что хотите удалить эту заметку? Восстановление невозможно.',
 
     // gifts
-    'gifts_title' => 'Подарки',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'Подарок был добавлен',
     'gifts_delete_success' => 'Подарок был удалён',
     'gifts_delete_confirmation' => 'Вы уверены что хотите удалить этот подарок?',
