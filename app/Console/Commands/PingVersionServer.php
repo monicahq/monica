@@ -34,7 +34,7 @@ class PingVersionServer extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed('Checking version deactivated', function() {
+        if (! $this->confirmToProceed('Checking version deactivated', function () {
             return ! config('monica.check_version') && $this->getLaravel()->environment() == 'production';
         })) {
             return false;
@@ -64,9 +64,11 @@ class PingVersionServer extends Command
             ]);
         } catch (\GuzzleHttp\Exception\ConnectException $e) {
             $this->log('ConnectException...');
+
             return;
         } catch (\GuzzleHttp\Exception\TransferException $e) {
             $this->log('TransferException...');
+
             return;
         }
 
@@ -77,6 +79,7 @@ class PingVersionServer extends Command
             // JSON is invalid
             // The function json_last_error returns the last error occurred during the JSON encoding and decoding
             $this->log('json error...');
+
             return;
         }
 
@@ -99,7 +102,8 @@ class PingVersionServer extends Command
         }
     }
 
-    public function log($string) {
+    public function log($string)
+    {
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->info($string);
         }
