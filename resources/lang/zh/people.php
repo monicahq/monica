@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => '您还没有任何联系人',
     'people_list_blank_cta' => '添加某人',
     'people_list_sort' => '排序',
-    'people_list_stats' => ':count 个联系人',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => '以名字A → Z排序',
     'people_list_firstnameZA' => '以名字 Z → A排序',
     'people_list_lastnameAZ' => '以姓A → Z排序',
@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => '添加新人员',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
     'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => '确实要删除此便笺吗？删除是永久性的',
 
     // gifts
-    'gifts_title' => '礼物',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => '已成功添加礼品',
     'gifts_delete_success' => '礼品已成功删除',
     'gifts_delete_confirmation' => '是否确实要删除此礼品？',
