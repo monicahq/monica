@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
-    'relationship_form_create_contact' => 'הוספת אדם חדש',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'איש קשר קיים',
     'relationship_form_associate_dropdown' => 'נא לבחור איש קשר קיים מהרשימה הנגללת שלהלן',
     'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => 'למחוק את ההערה הזאת? מחיקה אינה הפיכה',
 
     // gifts
-    'gifts_title' => 'מתנות',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'המתנה הזאת נוספה בהצלחה',
     'gifts_delete_success' => 'המתנה הזאת נמחקה בהצלחה',
     'gifts_delete_confirmation' => 'למחוק את המתנה הזאת?',
