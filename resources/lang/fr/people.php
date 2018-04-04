@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Modifier une relation existante',
     'relationship_form_is_with' => 'Cette personne est...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'Un contact existant',
     'relationship_form_associate_dropdown' => 'Sélectionnez un contact existant dans la liste déroulante ci-dessous',
     'relationship_form_also_create_contact' => 'Créer un Contact pour cette personne.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette note ? La suppression est permanente',
 
     // gifts
-    'gifts_title' => 'Cadeaux',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'Le cadeau a été ajouté avec succès',
     'gifts_delete_success' => 'Le cadeau a été supprimé',
     'gifts_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce cadeau ?',
