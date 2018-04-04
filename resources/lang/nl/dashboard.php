@@ -6,11 +6,11 @@ return [
     'dashboard_blank_cta' => 'Voeg je eerste contact toe',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
-    'notes_title' => 'Je hebt nog geen notities met een ster.',
+    'notes_title' => 'You don’t have any starred notes yet.',
 
     'tab_recent_calls' => 'Recente oproepen',
     'tab_favorite_notes' => 'Favoriete notities',
-    'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
+    'tab_calls_blank' => 'You haven’t logged a call yet.',
 
     'statistics_contacts' => 'Contacten',
     'statistics_activities' => 'Activiteiten',
