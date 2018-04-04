@@ -57,7 +57,7 @@ return [
         'array'   => ':attribute 的数量不能超过 :max 个。',
     ],
     'mimes'                => ':attribute 文件类型必须是 :values。',
-    'mimetypes'            => ':attribute 文件类型必须是 :values。',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => ':attribute 最少是 :min',
         'file'    => ':attribute 最小是 :min Kb',
@@ -65,7 +65,7 @@ return [
         'array'   => ':attribute 至少为 :min 个',
     ],
     'not_in'               => '选择的 :attribute 无效',
-    'not_regex'            => ':attribute 格式不对',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ':attribute 必须是数字。',
     'present'              => ':attribute 为必填项。',
     'regex'                => ':attribute 格式不对',
