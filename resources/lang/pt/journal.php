@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'Como foi o seu dia? Você pode avaliá-lo uma vez por dia.',
     'journal_come_back' => 'Obrigado. Volte amanhã para avaliar o seu dia novamente.',
-    'journal_description' => 'Nota: o diário agrega entradas manuais e entradas automáticas tais como Atividades feitas com seus contactos. Embora possa apagar manualmente as entradas de diário, no caso das Atividades terá que apagá-las na página de contacto.',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Adicionar um registro no diário',
     'journal_created_automatically' => 'Criado automaticamente',
     'journal_entry_type_journal' => 'Entrada de diário',
