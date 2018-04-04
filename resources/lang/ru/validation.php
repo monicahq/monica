@@ -57,7 +57,7 @@ return [
         'array'   => 'Количество элементов в поле :attribute не может превышать :max.',
     ],
     'mimes'                => 'Поле :attribute должно быть файлом одного из следующих типов: :values.',
-    'mimetypes'            => 'Поле :attribute должно быть файлом одного из следующих типов: :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'Поле :attribute должно быть не менее :min.',
         'file'    => 'Размер файла в поле :attribute должен быть не менее :min Килобайт(а).',
@@ -65,7 +65,7 @@ return [
         'array'   => 'Количество элементов в поле :attribute должно быть не менее :min.',
     ],
     'not_in'               => 'Выбранное значение для :attribute ошибочно.',
-    'not_regex'            => 'Поле :attribute имеет ошибочный формат.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => 'Поле :attribute должно быть числом.',
     'present'              => 'Поле :attribute должно присутствовать.',
     'regex'                => 'Поле :attribute имеет ошибочный формат.',
