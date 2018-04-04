@@ -57,7 +57,7 @@ return [
         'array'   => 'Le tableau :attribute ne peut contenir plus de :max éléments.',
     ],
     'mimes'                => 'Le champ :attribute doit être un fichier de type : :values.',
-    'mimetypes'            => 'Le champ :attribute doit être un fichier de type : :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'La valeur de :attribute doit être supérieure ou égale à :min.',
         'file'    => 'La taille du fichier de :attribute doit être supérieure à :min kilo-octets.',
@@ -65,7 +65,7 @@ return [
         'array'   => 'Le tableau :attribute doit contenir au moins :min éléments.',
     ],
     'not_in'               => 'Le champ :attribute sélectionné n\'est pas valide.',
-    'not_regex'            => 'Le format du champ :attribute est invalide.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => 'Le champ :attribute doit contenir un nombre.',
     'present'              => 'Le champ :attribute doit être présent.',
     'regex'                => 'Le format du champ :attribute est invalide.',
