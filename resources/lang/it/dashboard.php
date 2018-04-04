@@ -6,11 +6,11 @@ return [
     'dashboard_blank_cta' => 'Aggiungi il tuo primo contatto',
     'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
-    'notes_title' => 'Non hai alcuna nota.',
+    'notes_title' => 'You don’t have any starred notes yet.',
 
     'tab_recent_calls' => 'Recent calls',
     'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven\'t logged a call yet.',
+    'tab_calls_blank' => 'You haven’t logged a call yet.',
 
     'statistics_contacts' => 'Contatti',
     'statistics_activities' => 'Attività',
