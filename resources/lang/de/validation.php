@@ -57,7 +57,7 @@ return [
         'array'   => ':attribute darf nicht mehr als :max Elemente haben.',
     ],
     'mimes'                => ':attribute muss vom typ: :values sein.',
-    'mimetypes'            => ':attribute muss vom typ: :values sein.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => ':attribute muss mindestens :min sein.',
         'file'    => ':attribute muss mindestens :min Kilobytes sein.',
@@ -65,7 +65,7 @@ return [
         'array'   => ':attribute muss mindestens :min Elemente haben.',
     ],
     'not_in'               => ':attribute ist ungültig.',
-    'not_regex'            => 'Das :attribute Format ist ungültig.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ':attribute muss eine Zahl sein.',
     'present'              => 'Das :attribute Feld muss vorhanden sein.',
     'regex'                => 'Das :attribute Format ist ungültig.',
