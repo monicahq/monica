@@ -15,9 +15,9 @@ return [
 
     'password' => 'Hesla musí obsahovat alespoň šest znaků a oba zápisy se musí shodovat.',
     'reset' => 'Heslo bylo resetováno!',
-    'sent' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
+    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'token' => 'Toto není platný odkaz na reset hesla.',
-    'user' => 'Pokud byl zadaný email nalezen mezi uživateli, byl na něj odeslán odkaz na reset hesla!',
+    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 
