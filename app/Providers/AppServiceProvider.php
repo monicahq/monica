@@ -22,8 +22,6 @@ class AppServiceProvider extends ServiceProvider
         View::composer(
             'partials.components.date-select', 'App\Http\ViewComposers\DateSelectViewComposer'
         );
-
-        Schema::defaultStringLength(191);
     }
 
     /**
