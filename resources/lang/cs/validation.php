@@ -57,7 +57,7 @@ return [
         'array'   => ':attribute nesmí obsahovat více než :max položek.',
     ],
     'mimes'                => ':attribute musí být soubor typu: :values.',
-    'mimetypes'            => ':attribute musí být soubor typu: :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => ':attribute musí být alespoň :min.',
         'file'    => ':attribute musí být alespoň :min kilobajtů.',
@@ -65,7 +65,7 @@ return [
         'array'   => ':attribute musí obsahovat alespoň :min položek.',
     ],
     'not_in'               => 'Vybraný :attribute není platný.',
-    'not_regex'            => ':attribute formát není platný.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => ':attribute musí být číslice.',
     'present'              => ':attribute musí být dárek.',
     'regex'                => ':attribute formát není platný.',
