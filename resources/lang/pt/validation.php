@@ -57,7 +57,7 @@ return [
         'array'   => 'O campo :attribute deve conter no máximo :max itens.',
     ],
     'mimes'                => 'O campo :attribute deve conter um arquivo do tipo: :values.',
-    'mimetypes'            => 'O campo :attribute deve conter um arquivo do tipo: :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'O campo :attribute deve conter um número superior ou igual a :min.',
         'file'    => 'O campo :attribute deve conter um arquivo com no mínimo :min kilobytes.',
@@ -65,7 +65,7 @@ return [
         'array'   => 'O campo :attribute deve conter no mínimo :min itens.',
     ],
     'not_in'               => 'O campo :attribute contém um valor inválido.',
-    'not_regex'            => 'O formato do valor informado no campo :attribute é inválido.',
+    'not_regex'            => 'The :attribute format is invalid.',
     'numeric'              => 'O campo :attribute deve conter um valor numérico.',
     'present'              => 'O campo :attribute deve estar presente.',
     'regex'                => 'O formato do valor informado no campo :attribute é inválido.',
