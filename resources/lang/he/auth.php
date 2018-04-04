@@ -30,7 +30,7 @@ return [
     'button_remember' => 'לשמור את הפרטים שלי',
     'password_forget' => 'שכחת את הססמה שלך?',
     'password_reset' => 'איפוס הססמה שלך',
-    'signup_no_account' => 'אין לך חשבון?',
+    'signup_no_account' => 'Don’t have an account?',
     'signup' => 'הרשמה',
     'create_account' => 'ניתן ליצור את החשבון הראשון על ידי <a href=":url">הרשמה</a>',
 
@@ -57,6 +57,6 @@ return [
     'register_password_confirmation' => 'אימות ססמה',
     'register_action' => 'רישום',
     'register_policy' => 'עצם ההרשמה מאשרת שקראת והסכמת ל<a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> שלנו.',
-    'register_invitation_email' => 'מטעמי אבטחה, נא לציין את כתובת הדוא״ל של מי שהזמין אותך להצטרף לחשבון הזה. המידע הזה מופיע בהודעת ההזמנה.',
+    'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
 
 ];
