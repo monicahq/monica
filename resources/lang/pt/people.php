@@ -9,7 +9,7 @@ return [
     'people_list_blank_title' => 'Você ainda não tem ninguém em sua conta',
     'people_list_blank_cta' => 'Adicionar uma pessoa',
     'people_list_sort' => 'Ordenar',
-    'people_list_stats' => '1 contacto|:count contactos',
+    'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Classificar por primeiro nome A → Z',
     'people_list_firstnameZA' => 'Classificar por primeiro nome Z → A',
     'people_list_lastnameAZ' => 'Classificar por sobrenome A → Z',
@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Adicione uma nova pessoa',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
     'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => 'Tem certeza de que deseja excluir esta anotação? A exclusão é permanente',
 
     // gifts
-    'gifts_title' => 'Presentes',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'O presente foi adicionado com sucesso',
     'gifts_delete_success' => 'O presente foi excluído com sucesso',
     'gifts_delete_confirmation' => 'Tem certeza de que deseja excluir esse presente?',
@@ -292,7 +292,7 @@ return [
     'deceased_label_with_date' => 'Deceased on :date',
 
     // Contact information
-    'contact_info_title' => 'Informações de contacto',
+    'contact_info_title' => 'Contact information',
     'contact_info_form_content' => 'Content',
     'contact_info_form_contact_type' => 'Contact type',
     'contact_info_form_personalize' => 'Personalize',
