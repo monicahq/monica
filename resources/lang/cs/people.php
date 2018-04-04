@@ -154,7 +154,7 @@ return [
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
-    'relationship_form_create_contact' => 'Přidat novou osobu',
+    'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
     'relationship_form_associate_dropdown' => 'Select an existing contact from the dropdown below',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -221,7 +221,7 @@ return [
     'notes_delete_confirmation' => 'Opravdu chcete smazat tuto poznámku? Smazání je trvalé.',
 
     // gifts
-    'gifts_title' => 'Dárků',
+    'gifts_title' => 'Gifts',
     'gifts_add_success' => 'Dárek byl úspěšně přidán',
     'gifts_delete_success' => 'Dárek byl úspěšně smazán',
     'gifts_delete_confirmation' => 'Opravdu chcete smazat tento dárek?',
