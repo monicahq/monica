@@ -15,7 +15,6 @@ class ConvertMysqlEncoding extends Migration
         $connection = DB::connection();
 
         if ($connection instanceof MySqlConnection) {
-
             DB::statement('ALTER TABLE `accounts` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
             DB::statement('ALTER TABLE `activities` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
             DB::statement('ALTER TABLE `activity_contact` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
