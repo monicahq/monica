@@ -47,7 +47,7 @@ return [
     'footer_version' => 'Версия: :version',
     'footer_new_version' => 'Доступна новая версия',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => 'Что нового',
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
     'breadcrumb_dashboard' => 'Обзор',
