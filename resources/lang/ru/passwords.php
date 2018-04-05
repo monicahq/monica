@@ -15,9 +15,9 @@ return [
 
     'password' => 'Пароль должен быть не менее шести символов и совпадать с подтверждением.',
     'reset' => 'Ваш пароль был сброшен!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'sent' => 'Ссылка на сброс пароля была отправлена.',
     'token' => 'Ошибочный код сброса пароля.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'user' => 'Ссылка на сброс пароля была отправлена.',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 
