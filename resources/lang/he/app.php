@@ -301,9 +301,9 @@ return [
 
     'relationship_type_protege' => 'חניך',
     'relationship_type_protege_female' => 'חניכה',
-    'relationship_type_protege_reverse' => 'mentor',
+    'relationship_type_protege_reverse' => 'חונך',
     'relationship_type_protege_reverse_female' => 'חונכת',
-    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_with_name' => 'חניך של :name',
     'relationship_type_protege_female_with_name' => ':name’s protege',
     'relationship_type_protege_reverse_with_name' => ':name’s mentor',
     'relationship_type_protege_reverse_female_with_name' => ':name’s mentor',
