@@ -47,7 +47,7 @@ return [
     'footer_version' => 'גרסה: :version',
     'footer_new_version' => 'גרסה חדשה זמינה',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => 'מה חדש',
     'footer_modal_version_release_away' => 'גרסה זו יצאה לאור גרסה אחת לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.|גרסה זו יצאה לאור :number גרסאות לפני הגרסה העדכנית הנוכחית. עליך לעדכן את העותק שלך.',
 
     'breadcrumb_dashboard' => 'לוח מחוונים',
@@ -77,7 +77,7 @@ return [
     'gender_none' => 'שמור במערכת',
 
     'error_title' => 'אופס! משהו השתבש.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -94,19 +94,19 @@ return [
 
     'relationship_type_partner' => 'בן זוג',
     'relationship_type_partner_female' => 'בת זוג',
-    'relationship_type_partner_reverse' => 'significant other',
+    'relationship_type_partner_reverse' => 'בן זוג',
     'relationship_type_partner_reverse_female' => 'בת זוג',
-    'relationship_type_partner_with_name' => ':name’s significant other',
-    'relationship_type_partner_female_with_name' => ':name’s significant other',
-    'relationship_type_partner_reverse_with_name' => ':name’s significant other',
-    'relationship_type_partner_reverse_female_with_name' => ':name’s significant other',
+    'relationship_type_partner_with_name' => 'בן הזוג של :name',
+    'relationship_type_partner_female_with_name' => 'בת הזוג של :name',
+    'relationship_type_partner_reverse_with_name' => 'בן הזוג של :name',
+    'relationship_type_partner_reverse_female_with_name' => 'בת הזוג של :name',
 
     'relationship_type_spouse' => 'בעל',
     'relationship_type_spouse_female' => 'אישה',
-    'relationship_type_spouse_reverse' => 'spouse',
+    'relationship_type_spouse_reverse' => 'בעל',
     'relationship_type_spouse_reverse_female' => 'אישה',
-    'relationship_type_spouse_with_name' => ':name’s spouse',
-    'relationship_type_spouse_female_with_name' => ':name’s spouse',
+    'relationship_type_spouse_with_name' => 'בעלה של :name',
+    'relationship_type_spouse_female_with_name' => 'אשתו של :name',
     'relationship_type_spouse_reverse_with_name' => ':name’s spouse',
     'relationship_type_spouse_reverse_female_with_name' => ':name’s spouse',
 
