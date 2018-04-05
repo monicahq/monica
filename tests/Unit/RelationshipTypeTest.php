@@ -74,7 +74,7 @@ class RelationshipTypeTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Mark Twain&#39;s uncle',
+            'Mark Twain’s uncle',
             $relationshipType->getLocalizedName($contact, false, 'man')
         );
     }
@@ -94,7 +94,7 @@ class RelationshipTypeTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Mark Twain&#39;s aunt',
+            'Mark Twain’s aunt',
             $relationshipType->getLocalizedName($contact, false, 'woman')
         );
     }
@@ -114,7 +114,7 @@ class RelationshipTypeTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Mark Twain&#39;s uncle/aunt',
+            'Mark Twain’s uncle/aunt',
             $relationshipType->getLocalizedName($contact, true)
         );
     }
@@ -134,7 +134,7 @@ class RelationshipTypeTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'Mark Twain&#39;s significant other',
+            'Mark Twain’s significant other',
             $relationshipType->getLocalizedName($contact, true)
         );
     }
