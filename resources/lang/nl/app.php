@@ -47,7 +47,7 @@ return [
     'footer_version' => 'Versie: :version',
     'footer_new_version' => 'Er is een nieuwe versie beschikbaar',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => 'Wat is er nieuw',
     'footer_modal_version_release_away' => 'Je loopt 1 versie achter op de laatst beschikbare versie. Je zou je applicatie moeten bijwerken.|Je loopt :number versies achter op de laatst beschikbare versie. Je zou je applicatie moeten bijwerken.',
 
     'breadcrumb_dashboard' => 'Dashboard',
@@ -77,7 +77,7 @@ return [
     'gender_none' => 'Zeg ik liever niet',
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
