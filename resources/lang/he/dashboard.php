@@ -6,11 +6,11 @@ return [
     'dashboard_blank_cta' => 'נא להוסיף את איש הקשר הראשון שלך',
     'dashboard_blank_illustration' => 'ציור מאת <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'אין לך הערות שסימנת בכוכב עדיין.',
 
     'tab_recent_calls' => 'שיחות אחרונות',
     'tab_favorite_notes' => 'הערות מועדפות',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_calls_blank' => 'לא תיעדת אף שיחה עדיין.',
 
     'statistics_contacts' => 'אנשי קשר',
     'statistics_activities' => 'פעילויות',
