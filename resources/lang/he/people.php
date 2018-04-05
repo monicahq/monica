@@ -109,8 +109,8 @@ return [
 
     // food preferencies
     'food_preferencies_add_success' => 'העדפות המזון נשמרו',
-    'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
     'food_preferencies_edit_title' => 'ציון העדפות מזון',
     'food_preferencies_edit_cta' => 'שמירת העדפות מזון',
     'food_preferencies_title' => 'העדפות מזון',
@@ -161,7 +161,7 @@ return [
     'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
     'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
     'relationship_delete_confirmation' => 'למחוק את הקשר הזה? מחיקה היא בלתי הפיכה.',
-    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
+    'relationship_unlink_confirmation' => 'למחוק את הקשר הזה? האדם לא יימחק – רק הקשר בין השניים.',
     'relationship_form_add_success' => 'הקשר הוגדר בהצלחה.',
     'relationship_form_deletion_success' => 'הקשר נמחק.',
 
@@ -183,7 +183,7 @@ return [
     'activity_type_watched_movie_at_home' => 'צפיתם בסרט בבית',
     'activity_type_talked_at_home' => 'דיברתם בבית',
     'activity_type_did_sport_activities_together' => 'עשיתם ספורט יחד',
-    'activity_type_ate_at_his_place' => 'ate at their place',
+    'activity_type_ate_at_his_place' => 'אכלתם אצלם',
     'activity_type_went_bar' => 'הלכת לבר',
     'activity_type_ate_at_home' => 'אכלתם בבית',
     'activity_type_picknicked' => 'יצאתם לפיקניק',
