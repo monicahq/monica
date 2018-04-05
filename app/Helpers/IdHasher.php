@@ -30,7 +30,7 @@ class IdHasher
 
     public function decodeId($hash)
     {
-        if (str_contains($hash, $this->prefix)) {
+        if (starts_with($hash, $this->prefix)) {
             $result = Hashids::decode(str_after($hash, $this->prefix));
 
             return $result[0]; // result is always an array due to quirk in Hashids libary
