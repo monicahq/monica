@@ -544,6 +544,29 @@ class Account extends Model
     }
 
     /**
+     * Populate the account modules table based on the default ones.
+     *
+     * @param  bool $ignoreTableAlreadyMigrated
+     * @return void
+     */
+    public function populateModulesTable($ignoreTableAlreadyMigrated = false)
+    {
+        $defaultModules = DB::table('default_contact_modules')->get();
+
+        foreach ($defaultModules as $defaultModule) {
+            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
+                Module::create([
+                    'account_id' => $this->id,
+                    'key' => $defaultModule->key,
+                    'translation_key' => $defaultModule->translation_key,
+                    'delible' => $defaultModule->delible,
+                    'active' => $defaultModule->active,
+                ]);
+            }
+        }
+    }
+
+    /**
      * Get the reminders for the month given in parameter.
      * - 0 means current month
      * - 1 means month+1
@@ -648,6 +671,7 @@ class Account extends Model
         $account->populateDefaultReminderRulesTable();
         $account->populateRelationshipTypeGroupsTable();
         $account->populateRelationshipTypesTable();
+        $account->populateModulesTable();
     }
 
     /**

@@ -572,4 +572,34 @@ class AccountTest extends FeatureTestCase
             $statistics->contains(2)
         );
     }
+
+    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
+    {
+        $account = factory('App\Account')->create([]);
+        $id = DB::table('default_contact_modules')->insertGetId([
+            'key' => 'work_information',
+        ]);
+
+        $account->populateModulesTable();
+
+        $this->assertDatabaseHas('modules', [
+            'key' => 'work_information',
+        ]);
+    }
+
+    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
+    {
+        $account = factory('App\Account')->create([]);
+        $id = DB::table('default_contact_modules')->insertGetId([
+            'key' => 'work_information',
+            'migrated' => 1,
+        ]);
+
+        $account->populateModulesTable(true);
+
+        $this->assertDatabaseMissing('modules', [
+            'account_id' => $account->id,
+            'key' => 'work_information',
+        ]);
+    }
 }
