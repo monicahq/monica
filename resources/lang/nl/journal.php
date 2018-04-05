@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'Hoe was je dag? Je kunt hem eens per dag beoordelen.',
     'journal_come_back' => 'Bedankt. Kom morgen terug om je dag opnieuw te beoordelen.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
+    'journal_description' => 'Opmerking: het dagboek laat zowel handmatige invoeren en automatische invoeren, zoals Activiteiten gedaan met je contacten, zien. Je kunt dagboek invoeren handmatig wissen, maar Activiteiten kunnen alleen op de contact pagina verwijderd worden.',
     'journal_add' => 'Voeg een dagboek invoer toe',
     'journal_created_automatically' => 'Automatisch aangemaakt',
     'journal_entry_type_journal' => 'Dagboek invoer',
