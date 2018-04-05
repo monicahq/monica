@@ -15,9 +15,9 @@ return [
 
     'password' => 'Le password devono essere di almeno sei caratteri e devono combaciare con la conferma.',
     'reset' => 'La tua password è stata reimpostata!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'sent' => 'Se l\'email inserita esiste nei nostri archivi vi é stato inviato il link per reimpostare la tua password.',
     'token' => 'Questo token per reimpostare la password non è valido.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'user' => 'Se l\'email inserita esiste nei nostri archivi vi é stato inviato il link per reimpostare la tua password.',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 
