@@ -10,7 +10,7 @@ return [
 
     'tab_recent_calls' => 'Chamadas recentes',
     'tab_favorite_notes' => 'Notas favoritas',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_calls_blank' => 'Você ainda não registou chamadas.',
 
     'statistics_contacts' => 'Contatos',
     'statistics_activities' => 'Atividades',
