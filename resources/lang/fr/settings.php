@@ -137,7 +137,7 @@ return [
     'subscriptions_upgrade_zip' => 'Code postal',
     'subscriptions_upgrade_credit' => 'Carte de crédit ou de débit',
     'subscriptions_upgrade_submit' => 'Soumettre le Paiement',
-    'subscriptions_upgrade_charge' => 'Nous débiterons votre carte de :price$ USD maintenant. Le prochain paiement aura lieu le :date. Si jamais vous changez d’avis, vous pouvez annuler à tout moment, sans poser de questions.',
+    'subscriptions_upgrade_charge' => 'Nous débiterons votre carte de :price$ USD maintenant. Le prochain paiement aura lieu le :date. Si jamais vous changez d’avis, vous pourrez annuler à tout moment, sans poser de questions.',
     'subscriptions_upgrade_charge_handled' => 'Le paiement est géré par <a href=":url">Stripe</a>. Aucune information bancaire n\'arrive sur notre serveur.',
     'subscriptions_upgrade_success' => 'Merci ! Vous êtes maintenant inscrit.',
     'subscriptions_upgrade_thanks' => 'Bienvenue dans la communauté de personnes qui essaient de rendre le monde un peu meilleur.',
