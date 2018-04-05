@@ -47,7 +47,7 @@ return [
     'footer_version' => 'Versione: :version',
     'footer_new_version' => 'È disponibile una nuova versione',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => 'Novità',
     'footer_modal_version_release_away' => 'La tua versione è 1 versione indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.|La tua versione è :number versioni indietro rispetto all\'ultima disponibile. Dovresti aggiornare Monica.',
 
     'breadcrumb_dashboard' => 'Home',
@@ -77,7 +77,7 @@ return [
     'gender_none' => 'Preferisco non specificarlo',
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
