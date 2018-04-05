@@ -15,9 +15,9 @@ return [
 
     'password' => '密码必须至少为六个字符, 并一致。',
     'reset' => '您的密码已重置！',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'sent' => '如果您输入的电子邮件存在于我们的记录中, 密码重置链接将被发送至改邮箱。',
     'token' => '密码重置秘钥无效。',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'user' => '如果您输入的电子邮件存在于我们的记录中, 密码重置链接将被发送至改邮箱。',
     'changed' => '密码修改成功。',
     'invalid' => '您输入的密码不正确。',
 
