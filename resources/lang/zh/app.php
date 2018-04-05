@@ -47,7 +47,7 @@ return [
     'footer_version' => '版本::version',
     'footer_new_version' => '有新版本可用！',
 
-    'footer_modal_version_whats_new' => 'What’s new',
+    'footer_modal_version_whats_new' => '新增内容',
     'footer_modal_version_release_away' => '您有一个最新发布版本可更新。您应该更新实例. |您已经有:number个版本没有更新，应该更新了。',
 
     'breadcrumb_dashboard' => '仪表盘',
@@ -77,7 +77,7 @@ return [
     'gender_none' => '保密',
 
     'error_title' => '糟糕! 出错了。',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => '你没有权限编辑此页',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
