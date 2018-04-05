@@ -92,8 +92,8 @@ return [
     'relationship_type_group_work' => 'Relations de travail',
     'relationship_type_group_other' => 'Autre type de relations',
 
-    'relationship_type_partner' => 'significant other',
-    'relationship_type_partner_female' => 'significant other',
+    'relationship_type_partner' => 'conjoint',
+    'relationship_type_partner_female' => 'conjointe',
     'relationship_type_partner_reverse' => 'significant other',
     'relationship_type_partner_reverse_female' => 'significant other',
     'relationship_type_partner_with_name' => ':name’s significant other',
@@ -133,7 +133,7 @@ return [
     'relationship_type_inlovewith_reverse' => 'aimé par',
     'relationship_type_inlovewith_reverse_female' => 'aimée par',
     'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux·se',
-    'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith_female_with_name' => 'une personne dont :name est amoureuse',
     'relationship_type_inlovewith_reverse_with_name' => ':name’s secret lover',
     'relationship_type_inlovewith_reverse_female_with_name' => ':name’s secret lover',
 
