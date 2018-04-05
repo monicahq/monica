@@ -24,7 +24,7 @@ class UploadVCardTest extends DuskTestCase
                   ->assertSee('import your contacts');
 
             $browser->clickLink('import your contacts')
-                    ->assertSee('You haven\'t imported any contacts yet');
+                    ->assertSee('You haven’t imported any contacts yet');
         });
     }
 
