@@ -252,14 +252,14 @@ return [
     'relationship_type_friend_with_name' => 'חבר של :name',
     'relationship_type_friend_female_with_name' => 'חברה של :name',
     'relationship_type_friend_reverse_with_name' => 'חבר של :name',
-    'relationship_type_friend_reverse_female_with_name' => ':name’s friend',
+    'relationship_type_friend_reverse_female_with_name' => 'חברה של :name',
 
     'relationship_type_bestfriend' => 'החבר הטוב ביותר',
     'relationship_type_bestfriend_female' => 'החברה הטובה ביותר',
-    'relationship_type_bestfriend_reverse' => 'best friend',
+    'relationship_type_bestfriend_reverse' => 'החבר הטוב ביותר',
     'relationship_type_bestfriend_reverse_female' => 'החברה הטובה ביותר',
-    'relationship_type_bestfriend_with_name' => ':name’s best friend',
-    'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
+    'relationship_type_bestfriend_with_name' => 'החבר הכי טוב של :name',
+    'relationship_type_bestfriend_female_with_name' => 'החברה הכי טובה של :name',
     'relationship_type_bestfriend_reverse_with_name' => 'החבר הכי טוב של :name',
     'relationship_type_bestfriend_reverse_female_with_name' => 'החברה הכי טובה של :name',
 
