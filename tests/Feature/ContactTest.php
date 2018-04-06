@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Contact;
+use App\Reminder;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -51,6 +52,37 @@ class ContactTest extends FeatureTestCase
 
         $this->post(
             route('people.reminders.store', $contact),
+            $reminder
+        );
+
+        $this->assertDatabaseHas(
+            'reminders',
+            array_merge($reminder, [
+                'frequency_type' => 'one_time',
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+            ])
+        );
+    }
+
+    public function test_user_can_edit_reminder()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $old_reminder = factory(Reminder::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+        ]);
+
+        $reminder = [
+            'title' => $this->faker->sentence('5'),
+            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
+            'frequency_type' => 'once',
+            'description' => $this->faker->sentence(),
+        ];
+
+        $this->put(
+            route('people.reminders.update', $contact, $old_reminder),
             $reminder
         );
 
