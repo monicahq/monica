@@ -118,6 +118,38 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_user_can_edit_a_gift_()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $old_gift = factory('App\Gift')->create([]);
+
+        $gift = [
+            'offered' => 'idea',
+            'name' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1, 2000),
+            'comment' => $this->faker->sentence(),
+        ];
+
+        $this->post(
+            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/edit',
+            $gift
+        );
+
+        array_shift($gift);
+
+        $this->assertDatabaseHas(
+            'gifts',
+            $gift + [
+                'is_an_idea' => true,
+                'has_been_offered' => false,
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+            ]
+        );
+    }
+
     public function test_user_can_be_in_debt_to_a_contact()
     {
         list($user, $contact) = $this->fetchUser();
