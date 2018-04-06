@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use App\Gift;
+use App\Contact;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
