@@ -70,12 +70,12 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && 
   installSonar
   gitFetch
 
-  SONAR_PARAMS=$(CommonParams) \
+  SONAR_PARAMS="$(CommonParams) \
     -Dsonar.projectVersion=master \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG"
 
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -87,12 +87,12 @@ elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -
   installSonar
   gitFetch
 
-  SONAR_PARAMS=$(CommonParams) \
+  SONAR_PARAMS="$(CommonParams) \
     -Dsonar.projectVersion=$(php artisan monica:getversion) \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG"
   
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -140,7 +140,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 #  fi
 
   # analyse with GitHub token to add comment on the PR
-  SONAR_PARAMS=$(CommonParams) \
+  SONAR_PARAMS="$(CommonParams) \
     -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
     -Dsonar.branch.target=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
@@ -149,7 +149,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
-    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG"
 
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
