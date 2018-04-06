@@ -122,7 +122,10 @@ class ContactTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $old_gift = factory('App\Gift')->create([]);
+        $old_gift = factory(Gift::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+        ]);
 
         $gift = [
             'offered' => 'idea',
