@@ -167,7 +167,7 @@ return [
     'import_title' => 'Importer les contacts dans votre compte',
     'import_cta' => 'Importer des contacts',
     'import_stat' => 'Vous avez importé :number fichiers jusqu’à présent.',
-    'import_result_stat' => ':count contact vCard envoyé (:total_imported importé, :total_skipped passé)|:count contacts vCard envoyés (:total_imported importés, :total_skipped passés)',
+    'import_result_stat' => ':count contact vCard envoyé (:total_imported importé, :total_skipped ignoré)|:count contacts vCard envoyés (:total_imported importés, :total_skipped ignorés)',
     'import_view_report' => 'Voir le rapport',
     'import_in_progress' => 'L\'import est en cours. Veuillez recharger la page dans quelques minutes.',
     'import_upload_title' => 'Importer vos contacts depuis un fichier vCard',
