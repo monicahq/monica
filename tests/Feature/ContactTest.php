@@ -137,7 +137,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/edit',
+            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/update',
             $gift
         );
 
