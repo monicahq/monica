@@ -165,7 +165,7 @@ if (env('HEROKU')) {
         'strict' => false,
         'schema' => 'public',
     ];
-    if (array_key_exists( 'port',$url )) {
+    if (array_key_exists('port', $url)) {
         $db['connections']['heroku']['port'] = $url['port'];
     }
 }
