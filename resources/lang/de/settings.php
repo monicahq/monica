@@ -51,7 +51,7 @@ return [
     'locale_fr' => 'Französisch',
     'locale_he' => 'Hebräisch',
     'locale_it' => 'Italienisch',
-    'locale_nl' => 'Dutch',
+    'locale_nl' => 'Niederländisch',
     'locale_pt' => 'Portugiesisch',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Vereinfachtes Chinesisch',
