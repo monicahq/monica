@@ -65,8 +65,6 @@ class UploadVCardTest extends DuskTestCase
                   ->on(new ImportVCardUpload)
                   ->scrollTo('upload')
                   ->press('Upload')
-                  ->pause(2000)
-                  ->refresh()
                   ->assertSee('1 imported');
         });
     }
