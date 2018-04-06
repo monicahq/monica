@@ -102,7 +102,7 @@ return [
     'information_work_at' => 'bei :company',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
     'work_edit_success' => 'Arbeitsplatz-Informationen wurden erfolgreich aktualisiert',
-    'work_edit_title' => 'Ändere :name\'s Arbeitsplatz-Informationen',
+    'work_edit_title' => 'Ändere :name\'s Beruf-Informationen',
     'work_edit_job' => 'Position (optional)',
     'work_edit_company' => 'Firma (optional)',
     'work_information' => 'Arbeitsinformationen',
@@ -157,13 +157,13 @@ return [
     'relationship_form_create_contact' => 'Neue Person hinzufügen',
     'relationship_form_associate_contact' => 'Ein bestehender Kontakt',
     'relationship_form_associate_dropdown' => 'Wählen Sie einen vorhandenen Kontakt aus der Dropdown-Liste unten aus',
-    'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
-    'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
-    'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
-    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
-    'relationship_form_add_success' => 'The relationship has been successfully set.',
-    'relationship_form_deletion_success' => 'The relationship has been deleted.',
+    'relationship_form_also_create_contact' => 'Erstellen Sie einen Kontakt-Eintrag für diese Person.',
+    'relationship_form_add_description' => 'Auf diese Weise können Sie diese Lebensgefährten wie jeden anderen Kontakt zu behandeln.',
+    'relationship_form_add_no_existing_contact' => 'Sie haben zur Zeit keine Kontakte, die mit :name in Verbindung gebracht werden können.',
+    'relationship_delete_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Das Löschen ist dauerhaft.',
+    'relationship_unlink_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Diese Person wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
+    'relationship_form_add_success' => 'Die Beziehung wurde erfolgreich gesetzt.',
+    'relationship_form_deletion_success' => 'Die Beziehung wurde gelöscht.',
 
     // tasks
     'tasks_blank_title' => 'Du hast noch keine Aufgaben.',
@@ -183,7 +183,7 @@ return [
     'activity_type_watched_movie_at_home' => 'zu Hause einen Film gesehen',
     'activity_type_talked_at_home' => 'zu Hause geredet',
     'activity_type_did_sport_activities_together' => 'zusammen Sport gemacht',
-    'activity_type_ate_at_his_place' => 'ate at their place',
+    'activity_type_ate_at_his_place' => 'bei Ihnen gegessen',
     'activity_type_went_bar' => 'in eine Bar gegangen',
     'activity_type_ate_at_home' => 'zu Hause gegessen',
     'activity_type_picknicked' => 'Picknick gemacht',
@@ -199,7 +199,7 @@ return [
     'activities_item_information' => ':Activity. Fand am :date statt',
     'activities_add_title' => 'Was hast du mit :name gemacht?',
     'activities_summary' => 'Beschreibe, was ihr gemacht habt',
-    'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
+    'activities_add_pick_activity' => '(Optional) Möchten Sie diese Aktivität kategorisieren? Das müssen Sie nicht, aber es wird Ihnen später Statistiken liefern.',
     'activities_add_date_occured' => 'Datum der Aktivität',
     'activities_add_optional_comment' => 'Optionaler Kommentar',
     'activities_add_cta' => 'Aktivität aufzeichnen',
@@ -220,7 +220,7 @@ return [
     'notes_delete_confirmation' => 'Möchtest du diese Notiz wirklich löschen?',
 
     // gifts
-    'gifts_title' => 'Gifts',
+    'gifts_title' => 'Geschenke',
     'gifts_add_success' => 'Geschenk erfolgreich hinzugefügt',
     'gifts_delete_success' => 'Geschenk erfolgreich gelöscht',
     'gifts_delete_confirmation' => 'Möchtest du das Geschenk wirklich löschen?',
@@ -264,7 +264,7 @@ return [
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
-    'tag_add' => 'add a tag',
+    'tag_add' => 'Einen Tag hinzufügen',
 
     // Introductions
     'introductions_sidebar_title' => 'Wie ihr euch kennengelernt habt',
