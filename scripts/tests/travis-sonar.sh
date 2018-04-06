@@ -7,7 +7,7 @@ function installSonar {
   echo 'Setup sonar scanner'
 
   # set version of sonar scanner to use :
-  sonarversion=3.0.3.778
+  sonarversion=3.1.0.1141
 
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
@@ -33,7 +33,6 @@ function CommonParams {
        -Dsonar.organization=monicahq \
        -Dsonar.php.tests.reportPath=./results/junit.xml \
        -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
-       -Dsonar.projectVersion=$(php artisan monica:getversion) \
        $extra
 }
 
@@ -72,12 +71,14 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && 
   gitFetch
 
   echo sonar-scanner $(CommonParams) \
+    -Dsonar.projectVersion=master \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
 
   $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
+    -Dsonar.projectVersion=master \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
@@ -92,14 +93,14 @@ elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -
   gitFetch
 
   echo sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_BRANCH \
+    -Dsonar.projectVersion=$(php artisan monica:getversion) \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
   
   $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_BRANCH \
+    -Dsonar.projectVersion=$(php artisan monica:getversion) \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
