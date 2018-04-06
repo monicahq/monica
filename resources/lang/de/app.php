@@ -20,8 +20,8 @@ return [
     'loading' => 'Lade mehr...',
     'with' => 'mit',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_title' => 'Monica – eine CRM für Ihre Freunde und Familie',
+    'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
