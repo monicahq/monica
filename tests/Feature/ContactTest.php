@@ -82,7 +82,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->put(
-            route('people.reminders.update', $contact, $old_reminder),
+            '/people/'.$contact->id.'/reminders/'.$old_reminder->id,
             $reminder
         );
 
