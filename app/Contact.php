@@ -1283,4 +1283,22 @@ class Contact extends Model
             return \App\Contact::find($relatedContact->of_contact);
         }
     }
+
+    public function scopeTags($query, $tags)
+    {
+        if($tags == 'NONE') {
+            // get tagless contacts
+            $query = $query->has('tags', '<', 1);
+        }
+        elseif (!empty($tags)) {
+            // gets users who have all the tags
+            foreach ($tags as $tag) {
+                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+            }
+        }
+
+        return $query;
+    }
 }

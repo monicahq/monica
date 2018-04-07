@@ -42,6 +42,16 @@
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
+                  @if ($tagLess)
+                      <p class="clear-filter">
+                        {!! trans('people.people_list_filter_tag') !!}
+                            <span class="pretty-tag">
+                            Untagged
+                            </span>
+                        <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                      </p>
+                  @endif
+
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
                   <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
@@ -69,6 +79,15 @@
                         {!! $tag->name !!}
                         </span>
                     @endforeach
+                    <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                  </p>
+              @endif
+              @if ($tagLess)
+                  <p class="clear-filter">
+                    {!! trans('people.people_list_filter_tag') !!}
+                        <span class="pretty-tag">
+                        Untagged
+                        </span>
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
@@ -156,6 +175,10 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
+                  <li>
+                      <span class="pretty-tag"><a href="/people?no_tag=true">Untagged</a></span>
+                      <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $unTagged) }}</span>
+                  </li>
               @foreach (auth()->user()->account->tags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
