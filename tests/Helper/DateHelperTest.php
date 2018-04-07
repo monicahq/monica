@@ -316,7 +316,7 @@ class DateHelperTest extends FeatureTestCase
             $hours[13]['id']
         );
     }
-    
+
     public function test_it_returns_a_date_minus_a_number_of_days()
     {
         $date = Carbon::create(2017, 1, 1);
