@@ -291,7 +291,7 @@ class DateHelperTest extends FeatureTestCase
         $hours = DateHelper::getListOfHours();
 
         $this->assertEquals(
-            '01.00AM',
+            '01.00 AM',
             $hours[0]['name']
         );
 
@@ -301,6 +301,22 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function test_it_returns_a_list_of_hours_French()
+    {
+        DateHelper::setLocale('fr');
+        $hours = DateHelper::getListOfHours();
+
+        $this->assertEquals(
+            '01:00',
+            $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['id']
+        );
+    }
+    
     public function test_it_returns_a_date_minus_a_number_of_days()
     {
         $date = Carbon::create(2017, 1, 1);
