@@ -104,7 +104,7 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->is_for !== 0;
+        return $this->is_for !== null && $this->is_for !== 0;
     }
 
     /**
