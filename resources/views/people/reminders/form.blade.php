@@ -56,9 +56,9 @@
                            :disabled="reminders_frequency == 'once'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'once'">
-                            <option value="week">{{ trans('people.reminders_type_week') }}</option>
-                            <option value="month">{{ trans('people.reminders_type_month') }}</option>
-                            <option value="year">{{ trans('people.reminders_type_year') }}</option>
+                        <option value="week">{{ trans('people.reminders_type_week') }}</option>
+                        <option value="month">{{ trans('people.reminders_type_month') }}</option>
+                        <option value="year">{{ trans('people.reminders_type_year') }}</option>
                     </select>
 
                     {{ trans('people.reminders_add_starting_from') }}
