@@ -45,31 +45,20 @@ class ContactsController extends Controller
             //get tag less contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
             $contacts = $contacts->tags('NONE')->get();
-        }elseif ($request->get('tag1')) {
+        } elseif ($request->get('tag1')) {
             // get contacts with selected tags
 
-            $tags = Tag::where('name_slug', $request->get('tag1'))
-                        ->where('account_id', auth()->user()->account_id)
-                        ->get();
+            $tags = collect();
 
-            $url = $url.'tag'.$count.'='.$tags[0]->name_slug.'&';
+            while ($request->get('tag'.$count)) {
 
-            $count++;
+                $tag = Tag::where('name_slug', $request->get('tag'.$count))
+                            ->where('account_id', auth()->user()->account_id)
+                            ->get();
 
-            while (true) {
-                if ($request->get('tag'.$count)) {
+                $tags = $tags->concat($tag);
 
-                    $tag = Tag::where('name_slug', $request->get('tag'.$count))
-                                ->where('account_id', auth()->user()->account_id)
-                                ->get();
-
-                    $tags = $tags->concat($tag);
-
-                    $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
-                } else {
-                    break;
-                }
+                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
                 $count++;
             }
@@ -80,7 +69,7 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
 
             $contacts = $contacts->tags($tags)->get();
-        } elseif(!$request->get('tag1')) {
+        } elseif(! $request->get('tag1')) {
             // get all contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
