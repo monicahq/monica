@@ -1246,6 +1246,8 @@ class Contact extends Model
             }
         }
 
+        $this->delete();
+
         return true;
     }
 
