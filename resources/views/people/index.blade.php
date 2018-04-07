@@ -46,7 +46,7 @@
                       <p class="clear-filter">
                         {!! trans('people.people_list_filter_tag') !!}
                             <span class="pretty-tag">
-                            Untagged
+                                {!! trans('people.people_list_untagged') !!}
                             </span>
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
@@ -86,7 +86,7 @@
                   <p class="clear-filter">
                     {!! trans('people.people_list_filter_tag') !!}
                         <span class="pretty-tag">
-                        Untagged
+                        {!! trans('people.people_list_untagged') !!}
                         </span>
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
