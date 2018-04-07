@@ -42,7 +42,7 @@ class DateHelper
     public static function getShortDate($date)
     {
         $date = new Date($date);
-        $format = trans('format.short_date_year');
+        $format = trans('format.short_date_year', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -57,7 +57,7 @@ class DateHelper
     public static function getShortMonth($date)
     {
         $date = new Date($date);
-        $format = trans('format.short_month');
+        $format = trans('format.short_month', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -72,7 +72,7 @@ class DateHelper
     public static function getShortDay($date)
     {
         $date = new Date($date);
-        $format = trans('format.short_day');
+        $format = trans('format.short_day', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -87,7 +87,7 @@ class DateHelper
     public static function getShortDateWithoutYear($date)
     {
         $date = new Date($date);
-        $format = trans('format.short_date');
+        $format = trans('format.short_date', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -102,7 +102,7 @@ class DateHelper
     public static function getShortDateWithTime($date)
     {
         $date = new Date($date);
-        $format = trans('format.short_date_year_time');
+        $format = trans('format.short_date_year_time', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -139,7 +139,7 @@ class DateHelper
     public static function getMonthAndYear(int $month)
     {
         $date = Date::now()->addMonthsNoOverflow($month);
-        $format = trans('format.short_month_year');
+        $format = trans('format.short_month_year', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -170,7 +170,7 @@ class DateHelper
     {
         $months = collect([]);
         $currentDate = Date::parse('2000-01-01');
-        $format = trans('format.full_month');
+        $format = trans('format.full_month', [], Date::getLocale());
 
         for ($month = 1; $month <= 12; $month++) {
             $currentDate->month = $month;
@@ -205,8 +205,8 @@ class DateHelper
      */
     public static function getListOfHours()
     {
-        $format = trans('format.full_hour');
         $currentDate = Date::parse('2000-01-01 00:00:00');
+        $format = trans('format.full_hour', [], Date::getLocale());
 
         $hours = collect([]);
         for ($hour = 0; $hour < 24; $hour++) {
