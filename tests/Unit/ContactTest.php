@@ -1134,6 +1134,5 @@ class ContactTest extends FeatureTestCase
         $contact->deleteEverything();
 
         $this->assertEquals(0, Contact::where('id', $id)->count());
-        
     }
 }
