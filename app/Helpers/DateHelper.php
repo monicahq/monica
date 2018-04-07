@@ -209,7 +209,7 @@ class DateHelper
         $format = trans('format.full_hour', [], Date::getLocale());
 
         $hours = collect([]);
-        for ($hour = 0; $hour < 24; $hour++) {
+        for ($hour = 1; $hour <= 24; $hour++) {
             $currentDate->hour = $hour;
             $hours->push([
                 'id' => "$hour:00",

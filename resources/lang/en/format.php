@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'short_date_year_time' => 'M d, Y h:i',
+    'short_date_year_time' => 'M d, Y H:i',
     'short_date_year' => 'M d, Y',
     'short_date' => 'M d',
     'short_month' => 'M',
