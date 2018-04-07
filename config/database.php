@@ -157,8 +157,7 @@ if (env('HEROKU')) {
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
         'host' => $url['host'],
-        'port' => $url['port'],
-        'database' => substr($url['path'], 1),
+        'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
         'charset' => 'utf8',
@@ -166,6 +165,9 @@ if (env('HEROKU')) {
         'strict' => false,
         'schema' => 'public',
     ];
+    if (array_key_exists('port', $url)) {
+        $db['connections']['heroku']['port'] = $url['port'];
+    }
 }
 
 return $db;
