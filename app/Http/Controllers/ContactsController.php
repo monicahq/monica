@@ -51,7 +51,6 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
-
                 $tag = Tag::where('name_slug', $request->get('tag'.$count))
                             ->where('account_id', auth()->user()->account_id)
                             ->get();
