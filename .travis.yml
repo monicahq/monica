@@ -53,7 +53,8 @@ install:
   - npm run production
 
 before_script:
-  - php artisan monica:update --env=testing --no-interaction -vvv
+  - php artisan migrate --env=testing --no-interaction -vvv
+  - php artisan db:seed --env=testing --no-interaction -vvv
 
   # Start Xvfb
   - "export DISPLAY=:99.0"
