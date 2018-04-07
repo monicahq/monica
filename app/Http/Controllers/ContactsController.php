@@ -41,7 +41,7 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        if($request->get('no_tag')) {
+        if ($request->get('no_tag')) {
             //get tag less contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
             $contacts = $contacts->tags('NONE')->get();
@@ -69,7 +69,7 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
 
             $contacts = $contacts->tags($tags)->get();
-        } elseif(! $request->get('tag1')) {
+        } elseif (! $request->get('tag1')) {
             // get all contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }

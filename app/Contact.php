@@ -1291,7 +1291,7 @@ class Contact extends Model
         if ($tags == 'NONE') {
             // get tagless contacts
             $query = $query->has('tags', '<', 1);
-        } elseif (!empty($tags)) {
+        } elseif (! empty($tags)) {
             // gets users who have all the tags
             foreach ($tags as $tag) {
                 $query = $query->whereHas('tags', function ($query) use ($tag) {
