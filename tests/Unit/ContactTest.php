@@ -1121,4 +1121,18 @@ class ContactTest extends FeatureTestCase
             $foundContact->id
         );
     }
+
+    public function test_contact_deletion()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact->save();
+        $id = $contact->id;
+
+        $this->assertEquals(1, Contact::where('id', $id)->count());
+
+        $contact->deleteEverything();
+
+        $this->assertEquals(0, Contact::where('id', $id)->count());
+    }
 }
