@@ -209,7 +209,8 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
         activities_description_show: false,
         reminders_frequency: 'once',
         accept_invite_user: false,
-        date_met_the_contact: 'known'
+        date_met_the_contact: 'known',
+        global_relationship_form_new_contact: true,
       },
       methods: {
       },
