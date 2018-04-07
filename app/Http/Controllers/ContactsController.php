@@ -92,7 +92,7 @@ class ContactsController extends Controller
             ->withUrl($url)
             ->withTagCount($count)
             ->withUnTagged($user->account->contacts()->real()->has('tags', '<', 1)->count())
-            ->withTagLess($request->get('no_tag') ?? false);;
+            ->withTagLess($request->get('no_tag') ?? false);
     }
 
     /**
