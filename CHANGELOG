@@ -5,7 +5,7 @@ UNRELEASED CHANGES:
 * Add Linkedin URL in the Contact object returned by the API
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
-* Fixes #1072 Current selected reminder not saved when editing a reminder
+* Adds #1056 Add a view of contacts who do not have tags associated with them
 
 RELEASED VERSIONS:
 
