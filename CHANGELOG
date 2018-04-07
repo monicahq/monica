@@ -6,6 +6,8 @@ UNRELEASED CHANGES:
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
 * Fixes #1072 Current selected reminder not saved when editing a reminder
+* Add a new monica:update command
+
 
 RELEASED VERSIONS:
 
