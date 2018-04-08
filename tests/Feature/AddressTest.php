@@ -124,7 +124,5 @@ class AddressTest extends FeatureTestCase
         $params['id'] = $address->id;
 
         $this->assertDatabaseMissing('addresses', $params);
-
     }
-
 }
