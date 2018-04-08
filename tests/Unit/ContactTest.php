@@ -1268,6 +1268,5 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contacts->contains($contact));
 
         $this->assertFalse($contacts->contains($contact2));
-
     }
 }
