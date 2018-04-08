@@ -1219,7 +1219,7 @@ class ContactTest extends FeatureTestCase
         $contact->setTag($tag2->name);
 
         $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag2 = $contact2->setTag('test2');
+        $contact2->setTag($tag2->name);
 
         $this->assertDatabaseHas(
             'tags',
@@ -1253,8 +1253,10 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $tags = collect($tag, $tag2);
-        dd($tags);
+        $tags = collect($tag);
+
+        $tags = $tags->concat($tag2);
+
         $contacts = $user->account->contacts()->real()->tags($tags)->get();
 
         $this->assertTrue($contacts->contains($contact));
