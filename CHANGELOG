@@ -5,7 +5,11 @@ UNRELEASED CHANGES:
 * Add Linkedin URL in the Contact object returned by the API
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
+* Localize update tag message
+* Fix some messages syntax and ponctuation
 * Add a new monica:update command
+* Fix gifts handle
+* Remove old documentation from sources
 * Fix Bug when editing gift
 
 RELEASED VERSIONS:

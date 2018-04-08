@@ -26,7 +26,7 @@ class GiftsController extends Controller
                 'contact_hash' => $contact->hashID(),
                 'id' => $gift->id,
                 'name' => $gift->name,
-                'is_for' => $gift->recipient_name,
+                'recipient_name' => $gift->recipient_name,
                 'comment' => $gift->comment,
                 'url' => $gift->url,
                 'value' => MoneyHelper::format($gift->value),
@@ -100,7 +100,7 @@ class GiftsController extends Controller
         );
 
         if ($request->get('has_recipient')) {
-            $gift->is_for = $request->get('recipient');
+            $gift->recipient = $request->get('recipient');
             $gift->save();
         }
 
@@ -119,8 +119,11 @@ class GiftsController extends Controller
      */
     public function edit(Contact $contact, Gift $gift)
     {
+        $familyRelationships = $contact->getRelationshipsByRelationshipTypeGroup('family');
+
         return view('people.gifts.edit')
             ->withContact($contact)
+            ->withFamilyRelationships($familyRelationships)
             ->withGift($gift);
     }
 
@@ -143,14 +146,14 @@ class GiftsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'is_an_idea' =>  ($request->get('offered') == 'idea'),
-                'has_been_received' =>  ($request->get('offered') == 'received'),
-                'has_been_offered' => ($request->get('offered') == 'offered'),
+                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
+                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
+                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
             ]
         );
 
         if ($request->get('has_recipient')) {
-            $gift->is_for = $request->get('recipient');
+            $gift->recipient = $request->get('recipient');
             $gift->save();
         }
 
