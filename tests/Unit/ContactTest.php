@@ -1269,6 +1269,5 @@ class ContactTest extends FeatureTestCase
 
         $this->assertFalse($contacts->contains($contact2));
 
-        dd($tags);
     }
 }
