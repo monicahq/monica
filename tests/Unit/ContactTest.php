@@ -1260,7 +1260,7 @@ class ContactTest extends FeatureTestCase
         $tags = $tags->concat(Tag::where('id', $tag2->id)
                     ->where('account_id', $user->account->account_id)
                     ->get());
-
+        dd($tags);
         $contacts = $user->account->contacts()->real()->tags($tags)->get();
 
         $this->assertTrue($contacts->contains($contact));
