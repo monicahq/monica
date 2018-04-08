@@ -1237,15 +1237,15 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $tag = Tag::where('id', $tag->id)
+        $tags = Tag::where('id', $tag->id)
                     ->where('account_id', $user->account->account_id)
                     ->get();
 
-        $tag2 = Tag::where('id', $tag2->id)
+        $tags = $tags->concat(Tag::where('id', $tag2->id)
                     ->where('account_id', $user->account->account_id)
-                    ->get();
+                    ->get());
 
-        $contacts = $user->account->contacts()->real()->tags(collect($tag, $tag2))->get();
+        $contacts = $user->account->contacts()->real()->tags($tags)->get();
 
         $this->assertTrue($contacts->contains($contact));
 
