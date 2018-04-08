@@ -36,7 +36,6 @@ class CollectionHelper
         }
 
         return new \Illuminate\Support\Collection($results);
-        
     }
 
     /**

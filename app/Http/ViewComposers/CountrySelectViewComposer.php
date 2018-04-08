@@ -2,7 +2,6 @@
 
 namespace App\Http\ViewComposers;
 
-use App\Country;
 use Illuminate\View\View;
 
 class CountrySelectViewComposer
