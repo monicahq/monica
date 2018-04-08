@@ -1255,11 +1255,11 @@ class ContactTest extends FeatureTestCase
 
         $tags = collect();
 
-        $tags = $tags->concat( Tag::where('name_slug', $tag->name)
+        $tags = $tags->concat(Tag::where('name_slug', $tag->name)
                     ->where('account_id', auth()->user()->account_id)
                     ->get());
 
-        $tags = $tags->concat( Tag::where('name_slug', $tag2->name)
+        $tags = $tags->concat(Tag::where('name_slug', $tag2->name)
                     ->where('account_id', auth()->user()->account_id)
                     ->get());
 
