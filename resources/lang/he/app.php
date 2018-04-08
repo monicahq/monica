@@ -205,7 +205,7 @@ return [
     'relationship_type_uncle_reverse' => 'אחיין',
     'relationship_type_uncle_reverse_female' => 'אחיינית',
     'relationship_type_uncle_with_name' => 'דוד של :name',
-    'relationship_type_uncle_female_with_name' => 'דודה של :aunt',
+    'relationship_type_uncle_female_with_name' => 'דודה של :name',
     'relationship_type_uncle_reverse_with_name' => 'אחיין של :name',
     'relationship_type_uncle_reverse_female_with_name' => 'אחיינית של :name',
 
@@ -216,7 +216,7 @@ return [
     'relationship_type_nephew_with_name' => 'אחיין של :name',
     'relationship_type_nephew_female_with_name' => 'אחיינית של :name',
     'relationship_type_nephew_reverse_with_name' => 'דוד של :name',
-    'relationship_type_nephew_reverse_female_with_name' => 'דודה של :aunt',
+    'relationship_type_nephew_reverse_female_with_name' => 'דודה של :name',
 
     'relationship_type_cousin' => 'בן דוד',
     'relationship_type_cousin_female' => 'בת דודה',
