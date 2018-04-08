@@ -3,7 +3,7 @@
 @section('title', $contact->getCompleteName(auth()->user()->name_order) )
 
 @section('content')
-  <div class="people-show" data-contact-id="{{ $contact->id }}">
+  <div class="people-show" >
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
@@ -43,7 +43,7 @@
 
             @include('people.dashboard.index')
 
-            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">{{ trans('people.people_export') }}</a></p>
+            <p><a href="{{ url('/people/'.$contact->hashID().'/vcard') }}">{{ trans('people.people_export') }}</a></p>
             <p>
               {{ trans('people.people_delete_message') }}
               <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
@@ -57,7 +57,7 @@
           <div class="col-xs-12 col-sm-9">
             <div class="row section notes">
               <div class="col-xs-12 section-title">
-                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+                <contact-note hash={!! $contact->hashID() !!}></contact-note>
               </div>
             </div>
 

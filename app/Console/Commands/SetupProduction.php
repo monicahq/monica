@@ -38,21 +38,11 @@ class SetupProduction extends Command
          * If the .env file does not exist, then key generation
          * will fail. So we create one if it does not already exist.
          */
-        if (! file_exists('.env')) {
-            touch('.env');
+        if (! file_exists(__DIR__.'/../../../.env')) {
+            touch(__DIR__.'/../../../.env');
         }
 
-        $this->callSilent('migrate', ['--force' => true]);
-        $this->info('✓ Performed migrations');
-
-        $this->call('db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => true]);
-        $this->info('✓ Filled the Activity Types table');
-
-        $this->call('db:seed', ['--class' => 'CountriesSeederTable', '--force' => true]);
-        $this->info('✓ Filled the Countries table');
-
-        $this->callSilent('storage:link');
-        $this->info('✓ Symlinked the storage folder for the avatars');
+        $this->callSilent('monica:update', ['--force' => true]);
 
         $this->line('');
         $this->line('-----------------------------');

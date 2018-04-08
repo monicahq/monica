@@ -142,7 +142,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
@@ -182,7 +182,7 @@
             },
 
             getTasks() {
-                axios.get('/people/' + this.contactId + '/tasks')
+                axios.get('/people/' + this.hash + '/tasks')
                         .then(response => {
                             this.tasks = response.data;
                         });
@@ -190,7 +190,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/tasks',
+                    'post', '/people/' + this.hash + '/tasks',
                     this.createForm
                 );
 
@@ -198,7 +198,7 @@
             },
 
             toggleComplete(task) {
-                axios.post('/people/' + this.contactId + '/tasks/' + task.id + '/toggle')
+                axios.post('/people/' + this.hash + '/tasks/' + task.id + '/toggle')
                         .then(response => {
                             this.getTasks();
                         });
@@ -211,7 +211,7 @@
                 this.updateForm.completed = task.completed;
 
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/tasks/' + task.id,
+                    'put', '/people/' + this.hash + '/tasks/' + task.id,
                     this.updateForm
                 );
 
@@ -222,7 +222,7 @@
                 this.updateForm.id = task.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/tasks/' + task.id,
+                    'delete', '/people/' + this.hash + '/tasks/' + task.id,
                     this.updateForm
                 );
 
