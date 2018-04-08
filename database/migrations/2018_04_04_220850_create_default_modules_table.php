@@ -26,67 +26,67 @@ class CreateDefaultModulesTable extends Migration
         DB::table('default_contact_modules')->insert([
         [
             'key' => 'love_relationships',
-            'translation_key' => 'relationship_type_group_love',
+            'translation_key' => 'app.relationship_type_group_love',
         ],
         [
             'key' => 'family_relationships',
-            'translation_key' => 'relationship_type_group_family',
+            'translation_key' => 'app.relationship_type_group_family',
         ],
         [
             'key' => 'other_relationships',
-            'translation_key' => 'relationship_type_group_other',
+            'translation_key' => 'app.relationship_type_group_other',
         ],
         [
             'key' => 'pets',
-            'translation_key' => 'pets_title',
+            'translation_key' => 'people.pets_title',
         ],
         [
             'key' => 'contact_information',
-            'translation_key' => 'section_contact_information',
+            'translation_key' => 'people.section_contact_information',
         ],
         [
             'key' => 'addresses',
-            'translation_key' => 'contact_address_title',
+            'translation_key' => 'people.contact_address_title',
         ],
         [
             'key' => 'how_you_met',
-            'translation_key' => 'introductions_sidebar_title',
+            'translation_key' => 'people.introductions_sidebar_title',
         ],
         [
             'key' => 'work_information',
-            'translation_key' => 'work_information',
+            'translation_key' => 'people.work_information',
         ],
         [
             'key' => 'food_preferences',
-            'translation_key' => 'food_preferencies_title',
+            'translation_key' => 'people.food_preferencies_title',
         ],
         [
             'key' => 'notes',
-            'translation_key' => 'section_personal_notes',
+            'translation_key' => 'people.section_personal_notes',
         ],
         [
             'key' => 'phone_calls',
-            'translation_key' => 'call_title',
+            'translation_key' => 'people.call_title',
         ],
         [
             'key' => 'activities',
-            'translation_key' => 'activity_title',
+            'translation_key' => 'people.activity_title',
         ],
         [
             'key' => 'reminders',
-            'translation_key' => 'section_personal_reminders',
+            'translation_key' => 'people.section_personal_reminders',
         ],
         [
             'key' => 'tasks',
-            'translation_key' => 'section_personal_tasks',
+            'translation_key' => 'people.section_personal_tasks',
         ],
         [
             'key' => 'gifts',
-            'translation_key' => 'gifts_title',
+            'translation_key' => 'people.gifts_title',
         ],
         [
             'key' => 'debts',
-            'translation_key' => 'debt_title',
+            'translation_key' => 'people.debt_title',
         ], ]);
     }
 }

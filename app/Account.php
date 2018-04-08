@@ -302,6 +302,16 @@ class Account extends Model
     }
 
     /**
+     * Get the modules records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function modules()
+    {
+        return $this->hasMany('App\Module');
+    }
+
+    /**
      * Get the Notifications records associated with the account.
      *
      * @return HasMany

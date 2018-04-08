@@ -188,6 +188,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
 
+        Route::get('/settings/personalization/modules', 'Settings\\ModulesController@get');
+        Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
+
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('.upload');

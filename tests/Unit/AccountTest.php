@@ -68,6 +68,19 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->relationshipTypeGroups()->exists());
     }
 
+    public function test_it_has_many_modules()
+    {
+        $account = factory('App\Account')->create([]);
+        $module = factory('App\Module')->create([
+            'account_id' => $account->id,
+        ]);
+        $module = factory('App\Module')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->modules()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory('App\Account')->create();

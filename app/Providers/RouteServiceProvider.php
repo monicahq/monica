@@ -10,6 +10,7 @@ use App\Gift;
 use App\Note;
 use App\Task;
 use App\Gender;
+use App\Module;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
@@ -135,6 +136,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('reminderRule', function ($value) {
             return ReminderRule::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('module', function ($value) {
+            return Module::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });
