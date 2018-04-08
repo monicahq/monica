@@ -842,9 +842,11 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sets_a_relationship_between_two_contacts()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
-        $partner = factory(Contact::class)->create(['account_id' => 1]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -921,12 +923,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $user = $this->signIn();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $user->account->id,
             'is_partial' => true,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -944,12 +947,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $user = $this->signIn();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $user->account->id,
             'is_partial' => false,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
