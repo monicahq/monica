@@ -1253,7 +1253,7 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $tags = $tag->concat($tag2);
+        $tags = collect($tag, $tag2);
         dd($tags);
         $contacts = $user->account->contacts()->real()->tags($tags)->get();
 
