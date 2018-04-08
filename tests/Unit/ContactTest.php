@@ -1253,7 +1253,9 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $tags = collect($tag);
+        $tags = collect();
+
+        $tags = $tags->concat($tag);
 
         $tags = $tags->concat($tag2);
 
@@ -1262,5 +1264,7 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contacts->contains($contact));
 
         $this->assertFalse($contacts->contains($contact2));
+
+        dd($tags);
     }
 }
