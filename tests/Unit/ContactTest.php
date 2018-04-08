@@ -1246,7 +1246,7 @@ class ContactTest extends FeatureTestCase
                     ->get());
 
         $contacts = $user->account->contacts()->real()->tags($tags)->get();
-
+        dd($contacts);
         $this->assertTrue($contacts->contains($contact));
 
         $this->assertFalse($contacts->contains($contact2));
