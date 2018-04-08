@@ -842,11 +842,10 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sets_a_relationship_between_two_contacts()
     {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $partner = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -923,13 +922,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
     {
-        $user = $this->signIn();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $account->id,
             'is_partial' => true,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -947,13 +946,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
     {
-        $user = $this->signIn();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $account->id,
             'is_partial' => false,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $user->account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -1121,5 +1120,19 @@ class ContactTest extends FeatureTestCase
             $contact->id,
             $foundContact->id
         );
+    }
+
+    public function test_contact_deletion()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact->save();
+        $id = $contact->id;
+
+        $this->assertEquals(1, Contact::where('id', $id)->count());
+
+        $contact->deleteEverything();
+
+        $this->assertEquals(0, Contact::where('id', $id)->count());
     }
 }
