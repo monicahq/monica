@@ -119,7 +119,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         computed: {
             compiledMarkdown: function (text) {
@@ -159,14 +159,14 @@
             },
 
             getNotes() {
-                axios.get('/people/' + this.contactId + '/notes')
+                axios.get('/people/' + this.hash + '/notes')
                         .then(response => {
                             this.notes = response.data;
                         });
             },
 
             store() {
-                axios.post('/people/' + this.contactId + '/notes', this.newNote)
+                axios.post('/people/' + this.hash + '/notes', this.newNote)
                       .then(response => {
                           this.newNote.body = '';
                           this.getNotes();
@@ -182,14 +182,14 @@
             },
 
             toggleFavorite(note) {
-                axios.post('/people/' + this.contactId + '/notes/' + note.id + '/toggle')
+                axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
                       .then(response => {
                           this.getNotes();
                       });
             },
 
             update(note) {
-                axios.put('/people/' + this.contactId + '/notes/' + note.id, note)
+                axios.put('/people/' + this.hash + '/notes/' + note.id, note)
                       .then(response => {
                           Vue.set(note, 'edit', note.edit);
                           this.getNotes();
@@ -210,7 +210,7 @@
             },
 
             trash(note) {
-                axios.delete('/people/' + this.contactId + '/notes/' + note.id)
+                axios.delete('/people/' + this.hash + '/notes/' + note.id)
                       .then(response => {
                           this.getNotes();
 

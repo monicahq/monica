@@ -23,6 +23,7 @@ class GiftsController extends Controller
 
         foreach ($gifts as $gift) {
             $data = [
+                'contact_hash' => $contact->hashID(),
                 'id' => $gift->id,
                 'name' => $gift->name,
                 'is_for' => $gift->recipient_name,
@@ -105,7 +106,7 @@ class GiftsController extends Controller
 
         $contact->logEvent('gift', $gift->id, 'create');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_add_success'));
     }
 
@@ -154,7 +155,7 @@ class GiftsController extends Controller
 
         $contact->logEvent('gift', $gift->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_update_success'));
     }
 

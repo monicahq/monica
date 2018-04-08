@@ -18,7 +18,7 @@
 
     {{-- ACTIONS: EDIT/DELETE --}}
     @if ($relationship->ofContact->is_partial)
-    <a href="{{ route('people.relationships.edit', [$contact, $relationship->ofContact]) }}" class="action-link {{ $contact->id }}-edit-relationship">
+    <a href="{{ route('people.relationships.edit', [$contact, $relationship->ofContact]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
       {{ trans('app.edit') }}
     </a>
     <a href="#" onclick="if (confirm('{{ trans('people.relationship_delete_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
@@ -30,7 +30,7 @@
     </a>
     @endif
 
-    <form method="POST" action="/people/{{ $contact->id }}/relationships/{{ $relationship->ofContact->id }}" class="entry-delete-form hidden">
+    <form method="POST" action="/people/{{ $contact->hashID() }}/relationships/{{ $relationship->ofContact->hashID() }}" class="entry-delete-form hidden">
       {{ method_field('DELETE') }}
       {{ csrf_field() }}
     </form>
