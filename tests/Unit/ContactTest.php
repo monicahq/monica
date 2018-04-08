@@ -1207,16 +1207,16 @@ class ContactTest extends FeatureTestCase
         $user = $this->signIn();
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        factory(Tag::class)->create([
+        $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'friend',
         ]);
-        $tag = $contact->setTag('friend');
-        factory(Tag::class)->create([
+        $contact->setTag($tag->name);
+        $tag2 = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'test2',
         ]);
-        $tag2 = $contact->setTag('test2');
+        $contact->setTag($tag2->name);
 
         $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
         $tag2 = $contact2->setTag('test2');
@@ -1253,13 +1253,7 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $tags = Tag::where('id', $tag->id)
-                    ->where('account_id', $user->account->account_id)
-                    ->get();
-
-        $tags = $tags->concat(Tag::where('id', $tag2->id)
-                    ->where('account_id', $user->account->account_id)
-                    ->get());
+        $tags = $tag->concat($tag2);
         dd($tags);
         $contacts = $user->account->contacts()->real()->tags($tags)->get();
 
