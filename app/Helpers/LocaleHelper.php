@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Auth;
+use Matriphe\ISO639\ISO639;
 
 class LocaleHelper
 {
@@ -72,5 +73,31 @@ class LocaleHelper
             default:
                 return 'ltr';
         }
+    }
+
+    static $locales = [];
+
+    /**
+     * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code)
+     * 
+     * @param string
+     * @return string
+     */
+    public static function getLocaleAlpha($locale)
+    {
+        if (array_has(static::$locales, $locale))
+        {
+            return array_get(static::$locales, $locale);
+        }
+        $languages = (new ISO639)->allLanguages();
+        $lang = '';
+        foreach ($languages as $l) {
+            if ($l[0] == $locale) {
+                $lang = $l[1];
+                break;
+            }
+        }
+        $locales[$locale] = $lang;
+        return $lang;
     }
 }

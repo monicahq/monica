@@ -7,10 +7,6 @@ use Illuminate\View\View;
 
 class CountrySelectViewComposer
 {
-    public function __construct()
-    {
-    }
-
     /**
      * Bind data to the view.
      *
@@ -19,7 +15,8 @@ class CountrySelectViewComposer
      */
     public function compose(View $view)
     {
-        $countries = Country::orderBy('country', 'asc')->get();
+        $countries = CountriesHelper::getAll();
+
         $view->with('countries', $countries);
     }
 }
