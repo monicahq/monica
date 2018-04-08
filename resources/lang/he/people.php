@@ -75,7 +75,7 @@ return [
     // age - birthday
     'birthdate_not_set' => 'תאריך הלידה לא הוגדר',
     'age_approximate_in_years' => 'הגיל הוא בערך :age',
-    'age_exact_in_years' => ':age years old',
+    'age_exact_in_years' => '{1}בגיל שנה|{2}בגיל שנתיים|[3,*]בגיל :age שנים',
     'age_exact_birthdate' => 'לידה ב־:date',
 
     // Last called
