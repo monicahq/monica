@@ -1135,4 +1135,108 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(0, Contact::where('id', $id)->count());
     }
+
+    public function test_it_can_get_tagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $contacts = $user->account->contacts()->real()->tags($tag)->get();
+
+        $this->assertTrue($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_untagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $contacts = $user->account->contacts()->real()->tags('NONE')->get();
+
+        $this->assertFalse($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_multiple_tags()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('friend');
+        $tag2 = $contact->setTag('test2');
+
+        $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag2 = $contact2->setTag('test2');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+                'name' => 'test2',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact2->id,
+            ]
+        );
+
+        $contacts = $user->account->contacts()->real()->tags(collect($tag, $tag2))->get();
+
+        $this->assertTrue($contacts->contains($contact));
+
+        $this->assertFalse($contacts->contains($contact2));
+    }
 }
