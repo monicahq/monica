@@ -5,9 +5,12 @@ namespace Tests\BrowserFeature;
 use App\User;
 use Tests\DuskTestCase;
 use Tests\Browser\Pages\ImportVCardUpload;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UploadVCardTest extends DuskTestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Make sure that the Add contact view has the link to the upload screen,
      * and that the screen contains the blank view.

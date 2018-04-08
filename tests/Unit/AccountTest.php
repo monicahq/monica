@@ -589,7 +589,7 @@ class AccountTest extends FeatureTestCase
     public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
     {
         $account = factory('App\Account')->create([]);
-        $id = DB::table('default_contact_modules')->insertGetId([
+        DB::table('default_contact_modules')->insert([
             'key' => 'work_information',
         ]);
 
@@ -603,8 +603,8 @@ class AccountTest extends FeatureTestCase
     public function test_it_skips_default_account_modules_table_for_types_already_migrated()
     {
         $account = factory('App\Account')->create([]);
-        $id = DB::table('default_contact_modules')->insertGetId([
-            'key' => 'work_information',
+        DB::table('default_contact_modules')->insert([
+            'key' => 'awesome',
             'migrated' => 1,
         ]);
 
@@ -612,7 +612,7 @@ class AccountTest extends FeatureTestCase
 
         $this->assertDatabaseMissing('modules', [
             'account_id' => $account->id,
-            'key' => 'work_information',
+            'key' => 'awesome',
         ]);
     }
 }
