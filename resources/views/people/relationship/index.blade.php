@@ -7,8 +7,9 @@
 
    @include('people.relationship._relationship', ['relationships' => $loveRelationships])
 
+
   <p class="mb0">
-    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('partner')->id }}">{{ trans('app.add') }}</a>
+    <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('partner')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
 
@@ -19,10 +20,11 @@
     </div>
   </div>
 
+
    @include('people.relationship._relationship', ['relationships' => $familyRelationships])
 
    <p class="mb0">
-    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('child')->id }}">{{ trans('app.add') }}</a>
+    <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('child')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
 
@@ -38,6 +40,6 @@
    @include('people.relationship._relationship', ['relationships' => $workRelationships])
 
    <p class="mb0">
-    <a href="/people/{{ $contact->id }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('friend')->id }}">{{ trans('app.add') }}</a>
+    <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('friend')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
