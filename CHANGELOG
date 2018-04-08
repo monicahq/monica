@@ -10,6 +10,7 @@ UNRELEASED CHANGES:
 * Add a new monica:update command
 * Fix gifts handle
 * Remove old documentation from sources
+* Fix Bug when editing gift
 
 RELEASED VERSIONS:
 
