@@ -143,8 +143,9 @@ class GiftsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'is_an_idea' => ! (bool) $request->get('offered'),
-                'has_been_offered' => (bool) $request->get('offered'),
+                'is_an_idea' =>  ($request->get('offered') == 'idea'),
+                'has_been_received' =>  ($request->get('offered') == 'received'),
+                'has_been_offered' => ($request->get('offered') == 'offered'),
             ]
         );
 

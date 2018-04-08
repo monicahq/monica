@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
 * Add a new monica:update command
+* Fix Bug when editing gift
 
 RELEASED VERSIONS:
 
