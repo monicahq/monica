@@ -1,16 +1,16 @@
 {{-- Pets --}}
 @if ($modules->contains('key', 'pets'))
-<pet v-bind:contact-id="{!! $contact->id !!}"></pet>
+<pet v-bind:contact-id="{!! $contact->hashID() !!}"></pet>
 @endif
 
 {{-- Contact information --}}
 @if ($modules->contains('key', 'contact_information'))
-<contact-information v-bind:contact-id="{!! $contact->id !!}"></contact-information>
+<contact-information v-bind:contact-id="{!! $contact->hashID() !!}"></contact-information>
 @endif
 
 {{-- Address --}}
 @if ($modules->contains('key', 'addresses'))
-<contact-address v-bind:contact-id="{!! $contact->id !!}"></contact-address>
+<contact-address v-bind:contact-id="{!! $contact->hashID() !!}"></contact-address>
 @endif
 
 {{-- Introductions --}}

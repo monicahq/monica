@@ -32,6 +32,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testHasSettings2faEnableLink()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
@@ -47,6 +48,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testHas2faEnableBarCode()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
@@ -67,6 +69,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testBarCodeContent()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -116,6 +119,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2faWrongCode()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -142,6 +146,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2fa()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -189,6 +194,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2faLoginWrongCode()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -222,6 +228,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2faLogin()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -255,6 +262,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2faDisable2fa()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -289,6 +297,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function testEnable2faDisable2faWrongCode()
     {
         $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =

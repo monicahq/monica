@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use App\Traits\Hasher;
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,7 @@ use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 class Contact extends Model
 {
     use Searchable;
+    use Hasher;
 
     protected $dates = [
         'last_talked_to',
