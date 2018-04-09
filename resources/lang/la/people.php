@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'crwdns153:0crwdne153:0',
     'section_personal_tasks' => 'crwdns154:0crwdne154:0',
     'section_personal_gifts' => 'crwdns155:0crwdne155:0',
+    'section_personal_notes' => 'crwdns1185:0crwdne1185:0',
 
     //
     'link_to_list' => 'crwdns156:0crwdne156:0',
