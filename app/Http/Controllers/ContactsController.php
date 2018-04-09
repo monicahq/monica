@@ -155,7 +155,7 @@ class ContactsController extends Controller
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
-            return redirect()->route('people.show', ['id' => $contact->id]);
+            return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
                             ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
@@ -211,12 +211,16 @@ class ContactsController extends Controller
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
                                 ->sortBy('next_expected_date');
 
+        // list of active features
+        $modules = $contact->account->modules()->active()->get();
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
+            ->withModules($modules)
             ->withContact($contact);
     }
 
@@ -336,7 +340,7 @@ class ContactsController extends Controller
 
         $contact->updateGravatar();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -387,7 +391,7 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -417,7 +421,7 @@ class ContactsController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
@@ -461,6 +465,10 @@ class ContactsController extends Controller
         }
 
         if (count($results) !== 0) {
+            foreach ($results as $key => $result) {
+                $results[$key]->hash = $result->hashID();
+            }
+
             return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];

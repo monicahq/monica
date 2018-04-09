@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Gift;
 use App\Contact;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -102,6 +103,41 @@ class ContactTest extends FeatureTestCase
 
         $this->post(
             '/people/'.$contact->id.'/gifts/store',
+            $gift
+        );
+
+        array_shift($gift);
+
+        $this->assertDatabaseHas(
+            'gifts',
+            $gift + [
+                'is_an_idea' => true,
+                'has_been_offered' => false,
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+            ]
+        );
+    }
+
+    public function test_user_can_edit_a_gift_()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $old_gift = factory(Gift::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+        ]);
+
+        $gift = [
+            'offered' => 'idea',
+            'name' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1, 2000),
+            'comment' => $this->faker->sentence(),
+        ];
+
+        $this->post(
+            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/update',
             $gift
         );
 

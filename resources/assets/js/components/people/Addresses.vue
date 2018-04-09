@@ -199,7 +199,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
@@ -211,14 +211,14 @@
             },
 
             getAddresses() {
-                axios.get('/people/' + this.contactId + '/addresses')
+                axios.get('/people/' + this.hash + '/addresses')
                         .then(response => {
                             this.contactAddresses = response.data;
                         });
             },
 
             getCountries() {
-                axios.get('/people/' + this.contactId + '/countries')
+                axios.get('/people/' + this.hash + '/countries')
                         .then(response => {
                             this.countries = response.data;
                         });
@@ -251,7 +251,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/addresses',
+                    'post', '/people/' + this.hash + '/addresses',
                     this.createForm
                 );
 
@@ -260,7 +260,7 @@
 
             update(contactAddress) {
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
             },
@@ -269,7 +269,7 @@
                 this.updateForm.id = contactAddress.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
 

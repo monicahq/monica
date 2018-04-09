@@ -3,7 +3,7 @@
 @section('title', $contact->getCompleteName(auth()->user()->name_order) )
 
 @section('content')
-  <div class="people-show" data-contact-id="{{ $contact->id }}">
+  <div class="people-show" >
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
@@ -38,12 +38,11 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
 
-            {{-- Significant Other --}}
             @include('people.relationship.index')
 
             @include('people.dashboard.index')
 
-            <p><a href="{{ url('/people/'.$contact->id.'/vcard') }}">{{ trans('people.people_export') }}</a></p>
+            <p><a href="{{ url('/people/'.$contact->hashID().'/vcard') }}">{{ trans('people.people_export') }}</a></p>
             <p>
               {{ trans('people.people_delete_message') }}
               <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
@@ -55,35 +54,50 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
+
+            @if ($modules->contains('key', 'notes'))
             <div class="row section notes">
               <div class="col-xs-12 section-title">
-                <contact-note v-bind:contact-id="{!! $contact->id !!}"></contact-note>
+                <contact-note hash={!! $contact->hashID() !!}></contact-note>
               </div>
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'phone_calls'))
             <div class="row section calls">
               @include('people.calls.index')
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'activities'))
             <div class="row section activities">
               @include('activities.index')
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'reminders'))
             <div class="row section reminders">
               @include('people.reminders.index')
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'tasks'))
             <div class="row section">
               @include('people.tasks.index')
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'gifts'))
             <div class="row section">
               @include('people.gifts.index')
             </div>
+            @endif
 
+            @if ($modules->contains('key', 'debts'))
             <div class="row section debts">
               @include('people.debt.index')
             </div>
+            @endif
           </div>
         </div>
 

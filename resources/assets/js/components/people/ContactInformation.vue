@@ -126,7 +126,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash', 'contactId'],
 
         methods: {
             /**
@@ -138,14 +138,14 @@
             },
 
             getContactInformationData() {
-                axios.get('/people/' + this.contactId + '/contactfield')
+                axios.get('/people/' + this.hash + '/contactfield')
                         .then(response => {
                             this.contactInformationData = response.data;
                         });
             },
 
             getContactFieldTypes() {
-                axios.get('/people/' + this.contactId + '/contactfieldtypes')
+                axios.get('/people/' + this.hash + '/contactfieldtypes')
                         .then(response => {
                             this.contactFieldTypes = response.data;
                         });
@@ -153,7 +153,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/contactfield',
+                    'post', '/people/' + this.hash + '/contactfield',
                     this.createForm
                 );
 
@@ -175,7 +175,7 @@
 
             update(contactField) {
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/contactfield/' + contactField.id,
+                    'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
             },
@@ -184,7 +184,7 @@
                 this.updateForm.id = contactField.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/contactfield/' + contactField.id,
+                    'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
 
