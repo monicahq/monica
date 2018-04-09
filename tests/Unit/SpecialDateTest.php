@@ -139,23 +139,21 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_set_reminder_creates_notifications()
     {
-        $user = $this->signIn();
-
+        $user = factory('App\User')->create([]);
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        $account = factory('App\Account')->create();
 
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $user->account_id,
+            'account_id' => $user->account->id,
             'number_of_days_before' => 7,
             'active' => 1,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $user->account_id,
+            'account_id' => $user->account->id,
             'number_of_days_before' => 30,
             'active' => 1,
         ]);
 
-        $specialDate = factory('App\SpecialDate')->create(['account_id' => $user->account_id, 'date' => '2018-03-02']);
+        $specialDate = factory('App\SpecialDate')->create(['account_id' => $user->account->id, 'date' => '2018-03-02']);
 
         $reminder = $specialDate->setReminder('year', 1, '');
 
