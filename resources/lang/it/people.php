@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'Promemoria',
     'section_personal_tasks' => 'Cose da fare',
     'section_personal_gifts' => 'Regali',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'Lista dei contatti',
