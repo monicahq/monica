@@ -152,7 +152,7 @@ return [
     'subscriptions_plan_month_cost' => 'crwdns773:0crwdne773:0',
     'subscriptions_plan_month_bonus' => 'crwdns774:0crwdne774:0',
     'subscriptions_plan_include1' => 'crwdns775:0crwdne775:0',
-    'subscriptions_plan_include2' => 'crwdns776:0crwdne776:0',
+    'subscriptions_plan_include2' => 'crwdns1186:0crwdne1186:0',
     'subscriptions_plan_include3' => 'crwdns777:0crwdne777:0',
     'subscriptions_help_title' => 'crwdns778:0crwdne778:0',
     'subscriptions_help_opensource_title' => 'crwdns779:0crwdne779:0',
@@ -275,6 +275,12 @@ return [
     'personalization_reminder_rule_title' => 'crwdns621:0crwdne621:0',
     'personalization_reminder_rule_line' => 'crwdns1039:0{count}crwdnd1039:0{count}crwdne1039:0',
     'personalization_reminder_rule_desc' => 'crwdns623:0crwdne623:0',
+
+    'personalization_module_save' => 'crwdns1187:0crwdne1187:0',
+    'personalization_module_title' => 'crwdns1188:0crwdne1188:0',
+    'personalization_module_desc' => 'crwdns1189:0crwdne1189:0',
+
+    'personalisation_paid_upgrade' => 'crwdns1190:0crwdne1190:0',
 
     'reminder_time_to_send' => 'crwdns624:0crwdne624:0',
 ];
