@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Use UUID instead of actual ID to identify contacts
+* Add ability to show/hide sections on the Contact sheet view
 * Add many more relationship types to link contacts together
 * Fix called_at field in the Call object returned by the API
 * Add Linkedin URL in the Contact object returned by the API

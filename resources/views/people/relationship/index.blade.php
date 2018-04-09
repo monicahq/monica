@@ -1,3 +1,4 @@
+@if ($modules->contains('key', 'love_relationships'))
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
@@ -12,7 +13,9 @@
     <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('partner')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
+@endif
 
+@if ($modules->contains('key', 'family_relationships'))
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
@@ -27,7 +30,9 @@
     <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('child')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
+@endif
 
+@if ($modules->contains('key', 'other_relationships'))
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
@@ -43,3 +48,4 @@
     <a href="/people/{{ $contact->hashID() }}/relationships/new?type={{ $contact->account->getRelationshipTypeByType('friend')->id }}">{{ trans('app.add') }}</a>
   </p>
 </div>
+@endif

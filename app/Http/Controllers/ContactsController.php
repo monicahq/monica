@@ -211,12 +211,16 @@ class ContactsController extends Controller
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
                                 ->sortBy('next_expected_date');
 
+        // list of active features
+        $modules = $contact->account->modules()->active()->get();
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
+            ->withModules($modules)
             ->withContact($contact);
     }
 
