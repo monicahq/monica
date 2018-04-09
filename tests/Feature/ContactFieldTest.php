@@ -141,7 +141,7 @@ class ContactFieldTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id
+            'contact_field_type_id' => $feild->id,
         ]);
 
         $response = $this->delete('/people/'.$contact->id.'/contactfield/'.$contactField->id);
