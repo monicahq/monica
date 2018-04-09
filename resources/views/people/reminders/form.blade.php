@@ -63,27 +63,9 @@
                            :disabled="reminders_frequency == 'once'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'once'">
-                        @if($update_or_add == 'edit' && $reminder->frequency_number != 'one_time')
-
-                            @if($reminder->frequency_type == 'week')
-                                <option selected value="week">{{ trans('people.reminders_type_week') }}</option>
-                                <option value="month">{{ trans('people.reminders_type_month') }}</option>
-                                <option value="year">{{ trans('people.reminders_type_year') }}</option>
-                            @elseif ($reminder->frequency_type == 'month')
-                                <option value="week">{{ trans('people.reminders_type_week') }}</option>
-                                <option selected value="month">{{ trans('people.reminders_type_month') }}</option>
-                                <option value="year">{{ trans('people.reminders_type_year') }}</option>
-                            @elseif ($reminder->frequency_type == 'year')
-                                <option value="week">{{ trans('people.reminders_type_week') }}</option>
-                                <option value="month">{{ trans('people.reminders_type_month') }}</option>
-                                <option selected value="year">{{ trans('people.reminders_type_year') }}</option>
-                            @endif
-
-                        @else
-                            <option value="week">{{ trans('people.reminders_type_week') }}</option>
-                            <option value="month">{{ trans('people.reminders_type_month') }}</option>
-                            <option value="year">{{ trans('people.reminders_type_year') }}</option>
-                        @endif
+                        <option value="week" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'week' ? 'selected : '' }}>{{ trans('people.reminders_type_week') }}</option>
+                        <option value="month" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'month' ? 'selected : '' }}>{{ trans('people.reminders_type_month') }}</option>
+                        <option value="year" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'year' ? 'selected : '' }}>{{ trans('people.reminders_type_year') }}</option>
                     </select>
 
                     {{ trans('people.reminders_add_starting_from') }}
