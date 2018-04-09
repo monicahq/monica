@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'Upozornění',
     'section_personal_tasks' => 'Úkoly',
     'section_personal_gifts' => 'Dárky',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'Seznam osob',
