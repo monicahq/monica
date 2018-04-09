@@ -10,12 +10,9 @@ use Tests\Browser\Pages\SettingsSecurity;
 use Tests\Browser\Pages\DashboardValidate2fa;
 use Tests\Browser\Pages\SettingsSecurity2faEnable;
 use Tests\Browser\Pages\SettingsSecurity2faDisable;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MultiFAControllerTest extends DuskTestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Cleanup.
      */
