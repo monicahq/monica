@@ -273,7 +273,7 @@ return [
 
     'personalization_reminder_rule_save' => 'השינוי נשמר',
     'personalization_reminder_rule_title' => 'כללי תזכורות',
-    'personalization_reminder_rule_line' => '{0}באותו יום|{1}יום לפני|{2}יומיים לפני|[3,*]{count} ימים לפני',
+    'personalization_reminder_rule_line' => 'יום לפני|יומיים לפני|{count} ימים לפני',
     'personalization_reminder_rule_desc' => 'לכל תזכורת מוגדרת, נוכל לשלוח אליך הודעת דוא״ל כמה ימים לפני שהאירוע מתרחש. ניתן להחליף את מצב ההודעות האלה כאן. לתשומת לך: ההתרעות האלו חלות רק על תזכורות חודשיות ושנתיות.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
