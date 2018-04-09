@@ -152,7 +152,7 @@ return [
     'subscriptions_plan_month_cost' => '$5 לחודש',
     'subscriptions_plan_month_bonus' => 'ניתן לבטל בכל עת',
     'subscriptions_plan_include1' => 'כלול בשדרוג שלך:',
-    'subscriptions_plan_include2' => 'מספר בלתי מוגבל של משתמשים • תזכורות בדוא״ל • יבוא עם vCard',
+    'subscriptions_plan_include2' => 'Unlimited number of users • Reminders by email • Import with vCard • Personalization of the contact sheet',
     'subscriptions_plan_include3' => '100% מהרווחים מושקעים בפיתוח מיזם הקוד הפתוח הנהדר הזה.',
     'subscriptions_help_title' => 'פרטים נוספים שעשויים לעניין אותך',
     'subscriptions_help_opensource_title' => 'מה הוא מיזם בקוד פתוח?',
@@ -275,6 +275,12 @@ return [
     'personalization_reminder_rule_title' => 'כללי תזכורות',
     'personalization_reminder_rule_line' => 'יום לפני|יומיים לפני|{count} ימים לפני',
     'personalization_reminder_rule_desc' => 'לכל תזכורת מוגדרת, נוכל לשלוח אליך הודעת דוא״ל כמה ימים לפני שהאירוע מתרחש. ניתן להחליף את מצב ההודעות האלה כאן. לתשומת לך: ההתרעות האלו חלות רק על תזכורות חודשיות ושנתיות.',
+
+    'personalization_module_save' => 'The change has been saved',
+    'personalization_module_title' => 'Features',
+    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
 ];
