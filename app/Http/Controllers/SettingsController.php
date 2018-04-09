@@ -27,7 +27,6 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
-        'countries',
         'currencies',
         'default_contact_field_types',
         'failed_jobs',

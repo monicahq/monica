@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Contacts;
 use Auth;
 use App\Address;
 use App\Contact;
-use App\Country;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\AddressesRequest;
@@ -26,7 +25,7 @@ class AddressesController extends Controller
                 'googleMapAddress' => $address->getGoogleMapAddress(),
                 'address' => $address->getFullAddress(),
                 'country' => $address->country,
-                'country_name' => $address->country != null ? Countries::where('cca2', $address->country)->first()['name.common'] : '',
+                'country_name' => $address->country_name,
                 'street' => $address->street,
                 'city' => $address->city,
                 'province' => $address->province,
@@ -44,7 +43,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        return CountriesHelper::getAll();
+        return CountriesHelper::getAll()->all();
     }
 
     /**

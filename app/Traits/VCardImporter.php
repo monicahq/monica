@@ -98,15 +98,7 @@ trait VCardImporter
             $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
             $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-
-            $country = Country::where('country', $vcard->ADR->getParts()[6])
-                ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
-                ->first();
-
-            if ($country) {
-                $address->country_id = $country->id;
-            }
-
+            $address->country = mb_strtolower($vcard->ADR->getParts()[6]);
             $address->contact_id = $contact->id;
             $address->account_id = $contact->account_id;
             $address->save();

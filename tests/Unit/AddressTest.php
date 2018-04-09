@@ -50,7 +50,7 @@ class AddressTest extends TestCase
     public function testGetCountryCodeReturnsStreetWhenDefined()
     {
         $address = new Address;
-        $address->country_id = 1;
+        $address->country = 'US';
 
         $this->assertEquals(
             'United States',
@@ -61,7 +61,7 @@ class AddressTest extends TestCase
     public function testGetCountryISOReturnsNullIfISONotFound()
     {
         $address = new Address;
-        $address->country_id = null;
+        $address->country = null;
 
         $this->assertNull($address->getCountryISO());
     }
@@ -69,10 +69,10 @@ class AddressTest extends TestCase
     public function testGetCountryISOReturnsTheRightISO()
     {
         $address = new Address;
-        $address->country_id = 1;
+        $address->country = 'US';
 
         $this->assertEquals(
-            'us',
+            'US',
             $address->getCountryISO()
         );
     }
@@ -80,16 +80,15 @@ class AddressTest extends TestCase
     public function testGetGoogleMapsAddressReturnsLink()
     {
         $address = new Address;
-        $address->country_id = 1;
+        $address->country = 'US';
         $address->name = 'default';
         $address->street = '12';
         $address->city = 'Scranton';
         $address->province = null;
         $address->postal_code = '90210';
-        $address->country_id = 1;
 
         $this->assertEquals(
-            'https://www.google.ca/maps/place/'.urlencode($address->getFullAddress()),
+            'https://www.google.com/maps/place/'.urlencode($address->getFullAddress()),
             $address->getGoogleMapAddress()
         );
     }

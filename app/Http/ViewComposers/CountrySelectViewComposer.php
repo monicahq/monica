@@ -14,7 +14,7 @@ class CountrySelectViewComposer
      */
     public function compose(View $view)
     {
-        $countries = CountriesHelper::getAll();
+        $countries = CountriesHelper::getAll()->all();
 
         $view->with('countries', $countries);
     }

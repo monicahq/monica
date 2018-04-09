@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\CountriesHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -91,7 +92,7 @@ class Address extends Model
             $address .= ' '.$this->postal_code;
         }
 
-        if (! is_null($this->country_id)) {
+        if (! is_null($this->country)) {
             $address .= ' '.$this->getCountryName();
         }
 
@@ -113,7 +114,7 @@ class Address extends Model
     public function getCountryName()
     {
         if ($this->country) {
-            return $this->country->country;
+            return CountriesHelper::get($this->country);
         }
     }
 
@@ -125,7 +126,7 @@ class Address extends Model
     public function getCountryISO()
     {
         if ($this->country) {
-            return $this->country->iso;
+            return $this->country;
         }
     }
 
@@ -139,56 +140,6 @@ class Address extends Model
         $address = $this->getFullAddress();
         $address = urlencode($address);
 
-        return "https://www.google.ca/maps/place/{$address}";
-    }
-
-    /**
-     * Get the name of the address.
-     *
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the street of the address.
-     *
-     * @return string
-     */
-    public function getStreetAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the city of the address.
-     *
-     * @return string
-     */
-    public function getCityAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the province of the address.
-     *
-     * @return string
-     */
-    public function getProvinceAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the postal code of the address.
-     *
-     * @return string
-     */
-    public function getPostalCodeAttribute($value)
-    {
-        return $value;
+        return "https://www.google.com/maps/place/{$address}";
     }
 }

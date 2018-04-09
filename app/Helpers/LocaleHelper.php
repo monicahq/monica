@@ -43,7 +43,7 @@ class LocaleHelper
             ]);
         }
 
-        return $locales->sortBy('name');
+        return CollectionHelper::sortByCollator($locales, 'name');
     }
 
     /**
@@ -75,6 +75,9 @@ class LocaleHelper
         }
     }
 
+    /**
+     * Association ISO-639-1 => ISO-639-2
+     */
     private static $locales = [];
 
     /**
@@ -88,6 +91,7 @@ class LocaleHelper
         if (array_has(static::$locales, $locale)) {
             return array_get(static::$locales, $locale);
         }
+        $locale = mb_strtolower($locale);
         $languages = (new ISO639)->allLanguages();
         $lang = '';
         foreach ($languages as $l) {
@@ -96,7 +100,7 @@ class LocaleHelper
                 break;
             }
         }
-        $locales[$locale] = $lang;
+        static::$locales[$locale] = $lang;
 
         return $lang;
     }

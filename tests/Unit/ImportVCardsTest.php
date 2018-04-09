@@ -77,7 +77,7 @@ class ImportVCardsTest extends TestCase
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',
-            'country_id' => Country::where('country', 'United Kingdom')->first()->id,
+            'country' => 'UK',
         ]);
 
         $this->assertDatabaseHas('contact_fields', [
