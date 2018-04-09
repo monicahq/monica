@@ -31,7 +31,6 @@ class ContactFieldTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $feild = factory(\App\ContactFieldType::class)->create([
-            'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
@@ -53,7 +52,6 @@ class ContactFieldTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $feild = factory(\App\ContactFieldType::class)->create([
-            'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
@@ -69,7 +67,6 @@ class ContactFieldTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $feild = factory(\App\ContactFieldType::class)->create([
-            'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
@@ -102,7 +99,6 @@ class ContactFieldTest extends FeatureTestCase
         $params['data'] = 'test_data';
 
         $feild = factory(\App\ContactFieldType::class)->create([
-            'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
@@ -134,7 +130,6 @@ class ContactFieldTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $feild = factory(\App\ContactFieldType::class)->create([
-            'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
