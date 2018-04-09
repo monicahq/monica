@@ -30,6 +30,8 @@ RUN apk update && apk upgrade; \
         php7-mysqli php7-pdo_mysql \
         #- pgsql
         php7-pgsql php7-pdo_pgsql \
+        #- vinkla/hashids
+        php7-bcmath \
         #- sentry/sentry
         php7-curl; \
     # Create apache2 dir needed for httpd

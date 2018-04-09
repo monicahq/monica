@@ -147,7 +147,7 @@ class RelationshipsController extends Controller
             $partner->save();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -265,7 +265,7 @@ class RelationshipsController extends Controller
             $otherContact->save();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -288,15 +288,13 @@ class RelationshipsController extends Controller
 
         $type = $contact->getRelationshipNatureWith($otherContact);
 
-        $contact->deleteRelationship($otherContact, $type->relationship_type_id);
-
         // the contact is partial - if the relationship is deleted, the partial
         // contact has no reason to exist anymore
         if ($otherContact->is_partial) {
             $otherContact->deleteEverything();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_deletion_success'));
     }
 }
