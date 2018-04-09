@@ -33,10 +33,10 @@
               <div class="col-xs-12">
                   @if (! is_null($tags))
                       <p class="clear-filter">
-                        {!! trans('people.people_list_filter_tag') !!}
+                        {{ trans('people.people_list_filter_tag') }}
                         @foreach ($tags as $tag)
                             <span class="pretty-tag">
-                            {!! $tag->name !!}
+                            {{ $tag->name }}
                             </span>
                         @endforeach
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
@@ -63,10 +63,10 @@
 
               @if (! is_null($tags))
                   <p class="clear-filter">
-                    {!! trans('people.people_list_filter_tag') !!}
+                    {{ trans('people.people_list_filter_tag') }}
                     @foreach ($tags as $tag)
                         <span class="pretty-tag">
-                        {!! $tag->name !!}
+                        {{ $tag->name }}
                         </span>
                     @endforeach
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
