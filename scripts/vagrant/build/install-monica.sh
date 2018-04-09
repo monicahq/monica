@@ -50,7 +50,7 @@ apt-get install -y curl php7.1-cli >/dev/null
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 echo -e "\n\033[4;32mInstalling packages for Monica\033[0;40m"
-apt-get install -y php7.1-intl php7.1-simplexml php7.1-gd php7.1-mbstring php7.1-curl php7.1-zip php7.1-mysql >/dev/null
+apt-get install -y php7.1-intl php7.1-simplexml php7.1-gd php7.1-mbstring php7.1-curl php7.1-zip php7.1-mysql php7.1-bcmath >/dev/null
 
 echo -e "\n\033[4;32mGetting database ready\033[0;40m"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $MYSQL_DB_DATABASE;

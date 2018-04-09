@@ -6,7 +6,12 @@ UNRELEASED CHANGES:
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
 * Adds #1056 Add a view of contacts who do not have tags associated with them
+* Localize update tag message
+* Fix some messages syntax and ponctuation
 * Add a new monica:update command
+* Fix gifts handle
+* Remove old documentation from sources
+* Fix Bug when editing gift
 
 
 RELEASED VERSIONS:
