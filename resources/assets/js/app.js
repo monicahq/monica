@@ -161,6 +161,11 @@ Vue.component(
     require('./components/settings/ReminderRules.vue')
 );
 
+Vue.component(
+    'modules',
+    require('./components/settings/Modules.vue')
+);
+
 // axios
 import axios from 'axios';
 

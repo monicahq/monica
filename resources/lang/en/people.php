@@ -51,6 +51,7 @@ return [
     'section_personal_reminders' => 'Reminders',
     'section_personal_tasks' => 'Tasks',
     'section_personal_gifts' => 'Gifts',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'List of people',
