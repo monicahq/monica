@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Traits\Hasher;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -17,6 +18,7 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
+    use Hasher;
 
     /**
      * The table associated with the model.
