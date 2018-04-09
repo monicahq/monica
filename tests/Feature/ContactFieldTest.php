@@ -6,7 +6,7 @@ use App\Contact;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CallTest extends FeatureTestCase
+class ContactFieldTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
@@ -38,7 +38,7 @@ class CallTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id
+            'contact_field_type_id' => $feild->id,
         ]);
 
         $response = $this->get('/people/'.$contact->id.'/contactfield');
@@ -72,7 +72,6 @@ class CallTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
-
 
         $params = [
             'contact_field_type_id' => $feild->id,
@@ -110,7 +109,7 @@ class CallTest extends FeatureTestCase
         $contactField = factory(\App\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'contact_field_type_id' => $feild->id
+            'contact_field_type_id' => $feild->id,
         ]);
 
         $response = $this->put('/people/'.$contact->id.'/contactfield/'.$contactField->id, $params);
