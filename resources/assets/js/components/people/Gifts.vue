@@ -9,13 +9,8 @@
     <div>
       <img src="/img/people/gifts.svg" class="icon-section icon-tasks">
       <h3>
-
-        Gifts
-
         {{ $t('people.gifts_title') }}
-
         <a :href="'/people/' + hash + '/gifts/add'" class="btn fr f6 pt2">{{ $t('people.gifts_add_gift') }}</a>
-
       </h3>
     </div>
 
