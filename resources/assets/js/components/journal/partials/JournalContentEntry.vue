@@ -29,7 +29,7 @@
 
             <ul class="f7">
               <li class="di">
-                <a class="pointer" @click="trash()">Delete</a>
+                <a class="pointer" @click="trash()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>
