@@ -287,6 +287,7 @@ class RelationshipsController extends Controller
         }
 
         $type = $contact->getRelationshipNatureWith($otherContact);
+        $contact->deleteRelationship($otherContact, $type->relationship_type_id);
 
         // the contact is partial - if the relationship is deleted, the partial
         // contact has no reason to exist anymore
