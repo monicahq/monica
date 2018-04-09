@@ -37,7 +37,8 @@ class AddressTest extends FeatureTestCase
 
         $countires = Country::orderBy('country')->get();
 
-        $this->assertTrue($countires->contains($response));
+        $response->assertSee($countires[0]->country);
+
     }
 
     public function test_users_can_get_addresses()
@@ -47,13 +48,14 @@ class AddressTest extends FeatureTestCase
         $address = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
+            'name' => 'test',
         ]);
 
         $response = $this->get('/people/'.$contact->id.'/addresses');
 
         $response->assertStatus(200);
 
-        $this->assertTrue($address->contains($response));
+        $response->assertSee('test');
     }
 
     public function test_users_can_add_addresses()
@@ -66,7 +68,7 @@ class AddressTest extends FeatureTestCase
 
         $response = $this->post('/people/'.$contact->id.'/addresses', $params);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $params['account_id'] = $user->account_id;
         $params['contact_id'] = $contact->id;
@@ -96,7 +98,7 @@ class AddressTest extends FeatureTestCase
 
         $response = $this->put('/people/'.$contact->id.'/addresses/'.$address->id, $params);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $params['account_id'] = $user->account_id;
         $params['contact_id'] = $contact->id;
