@@ -33,7 +33,7 @@
               <div class="col-xs-12">
                   @if (! is_null($tags))
                       <p class="clear-filter">
-                        {!! trans('people.people_list_filter_tag') !!}
+                        { trans('people.people_list_filter_tag') }
                         @foreach ($tags as $tag)
                             <span class="pretty-tag">
                             {!! $tag->name !!}
@@ -44,9 +44,9 @@
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
-                        {!! trans('people.people_list_filter_tag') !!}
+                        { trans('people.people_list_filter_tag') }
                             <span class="pretty-tag">
-                                {!! trans('people.people_list_untagged') !!}
+                                { trans('people.people_list_untagged') }
                             </span>
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
@@ -84,9 +84,9 @@
               @endif
               @if ($tagLess)
                   <p class="clear-filter">
-                    {!! trans('people.people_list_filter_tag') !!}
+                    { trans('people.people_list_filter_tag') }
                         <span class="pretty-tag">
-                        {!! trans('people.people_list_untagged') !!}
+                        { trans('people.people_list_untagged') }
                         </span>
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
@@ -176,7 +176,7 @@
 
               <ul>
                   <li>
-                      <span class="pretty-tag"><a href="/people?no_tag=true">Untagged</a></span>
+                      <span class="pretty-tag"><a href="/people?no_tag=true">{ trans('people.people_list_untagged') }/a></span>
                       <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $unTagged) }}</span>
                   </li>
               @foreach (auth()->user()->account->tags as $dbtag)
