@@ -38,7 +38,6 @@ class AddressTest extends FeatureTestCase
         $countires = Country::orderBy('country')->get();
 
         $response->assertSee($countires[0]->country);
-
     }
 
     public function test_users_can_get_addresses()
