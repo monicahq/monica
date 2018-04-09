@@ -55,8 +55,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('contactfield', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return ContactField::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('contact_id', $value)
                 ->where('id', $value)
                 ->firstOrFail();
         });
