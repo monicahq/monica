@@ -10,6 +10,7 @@ use App\Gift;
 use App\Note;
 use App\Task;
 use App\Gender;
+use App\Module;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
@@ -54,8 +55,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('contactfield', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return ContactField::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('contact_id', $value)
                 ->where('id', $value)
                 ->firstOrFail();
         });
@@ -146,6 +149,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('reminderRule', function ($value) {
             return ReminderRule::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
+
+        Route::bind('module', function ($value) {
+            return Module::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });

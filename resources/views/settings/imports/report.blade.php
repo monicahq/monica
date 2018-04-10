@@ -59,11 +59,11 @@
                 </div>
                 <div class="table-cell reason">
                   @if (! is_null($importJobReport->skip_reason))
-                  {{
-                    trans('settings.'.$importJobReport->skip_reason)
-                    // settings.import_vcard_contact_exist
-                    // settings.import_vcard_contact_no_firstname
-                  }}
+                  {{--
+                    settings.import_vcard_contact_exist
+                    settings.import_vcard_contact_no_firstname
+                    --}}
+                  {{ trans('settings.'.$importJobReport->skip_reason) }}
                   @endif
                 </div>
               </li>

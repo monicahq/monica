@@ -6,8 +6,8 @@
     "type": "project",
     "require": {
         "php": "^7.1.3",
-        "ext-intl": "*",
         "ext-bcmath": "*",
+        "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
@@ -29,9 +29,9 @@
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
         "sabre/vobject": "^4.1",
-        "vinkla/hashids": "^5.0",
         "sentry/sentry-laravel": "^0.8",
         "symfony/translation": "^4.0",
+        "vinkla/hashids": "^5.0",
         "vluzrmos/language-detector": "^1.0"
     },
     "require-dev": {
