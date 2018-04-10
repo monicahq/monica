@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'You rated your day.',
     'entry_delete_success' => 'The journal entry has been successfully deleted.',
     'journal_add_title' => 'Title (optional)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Entry',
     'journal_add_cta' => 'Save',
     'journal_blank_cta' => 'Add your first journal entry',

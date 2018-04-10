@@ -39,6 +39,11 @@
               </div>
 
               <div class="form-group">
+                <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
+                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(Auth::user()->timezone)->format('Y-m-d') }}">
+              </div>
+
+              <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_post') }}</label>
                 <textarea class="form-control" id="field-entry" name="entry" required></textarea>
               </div>
