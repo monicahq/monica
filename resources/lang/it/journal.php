@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'You rated your day.',
     'entry_delete_success' => 'La pagina del diario è stata rimossa.',
     'journal_add_title' => 'Titolo (facoltativo)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Testo',
     'journal_add_cta' => 'Salva',
     'journal_blank_cta' => 'Scrivi qualcosa nel diario',
