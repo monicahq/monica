@@ -1230,10 +1230,6 @@ class Contact extends Model
      */
     public function deleteEverything()
     {
-        if ($this->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
-        }
-
         // I know: this is a really brutal way of deleting objects. I'm doing
         // this because I'll add more objects related to contacts in the future
         // and I don't want to have to think of deleting a row that matches a
