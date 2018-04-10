@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'Vous avez évalué votre journée.',
     'entry_delete_success' => 'L\'entrée a été supprimée avec succès.',
     'journal_add_title' => 'Titre (optionnel)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Entrée',
     'journal_add_cta' => 'Sauvegarder',
     'journal_blank_cta' => 'Ajouter votre première entrée dans le journal',
