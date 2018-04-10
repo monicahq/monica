@@ -30,14 +30,6 @@ class Day extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get all of the day's journal entries.
-     */
-    public function journalEntries()
-    {
-        return $this->morphMany('App\JournalEntry', 'journalable');
-    }
-
-    /**
      * Get the day's rate.
      *
      * @param  int  $value
