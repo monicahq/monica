@@ -353,6 +353,13 @@ class ContactsController extends Controller
      */
     public function delete(Request $request, Contact $contact)
     {
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
+
+        Relationship::where('contact_is', $contact->id)->delete();
+        Relationship::where('of_contact', $contact->id)->delete();
+
         $contact->deleteEverything();
 
         return redirect()->route('people.index')

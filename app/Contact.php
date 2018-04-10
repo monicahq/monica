@@ -1230,8 +1230,9 @@ class Contact extends Model
      */
     public function deleteEverything()
     {
-        Relationship::where('contact_is', $this->id)->delete();
-        Relationship::where('of_contact', $this->id)->delete();
+        if ($this->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
+        }
 
         // I know: this is a really brutal way of deleting objects. I'm doing
         // this because I'll add more objects related to contacts in the future
