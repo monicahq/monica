@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'crwdns90:0crwdne90:0',
     'entry_delete_success' => 'crwdns91:0crwdne91:0',
     'journal_add_title' => 'crwdns92:0crwdne92:0',
+    'journal_add_date' => 'crwdns1191:0crwdne1191:0',
     'journal_add_post' => 'crwdns93:0crwdne93:0',
     'journal_add_cta' => 'crwdns94:0crwdne94:0',
     'journal_blank_cta' => 'crwdns95:0crwdne95:0',
