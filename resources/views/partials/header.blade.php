@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-sm-7 padding-left-none">
-        <ul class="header-nav">
+        <ul class="header-nav {{ \App\Helpers\LocaleHelper::getDirection() }}">
           <li class="header-nav-item">
             <a href="/dashboard" class="header-nav-item-link">{{ trans('app.main_nav_dashboard') }}</a>
           </li>

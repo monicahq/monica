@@ -28,7 +28,12 @@
       }
 
       .number-contacts-per-tag {
-        float: right;
+        &.ltr {
+          float: right;
+        }
+        &.rtl {
+          float: left;
+        }
       }
     }
   }
@@ -46,7 +51,12 @@
 
     a {
       position: absolute;
-      right: 10px;
+      &.ltr {
+        right: 10px;
+      }
+      &.rtl {
+        left: 10px;
+      }
     }
   }
 
@@ -66,7 +76,12 @@
       .options {
         display: inline;
         position: absolute;
-        right: 10px;
+        &.ltr {
+          right: 10px;
+        }
+        &.rtl {
+          left: 10px;
+        }
 
         .dropdown-btn {
           &:after {
@@ -136,12 +151,17 @@
 
     .people-list-item-information {
       color: #999;
-      float: right;
       font-size: 12px;
       font-style: italic;
       position: relative;
       text-align: right;
       top: 16px;
+      &.ltr {
+        float: right;
+      }
+      &.rtl {
+        float: left;
+      }
     }
   }
 }
@@ -190,7 +210,6 @@
         font-size: 30px;
         height: 87px;
         margin-right: 5px;
-        padding-left: 5px;
         padding-top: 21px;
         position: absolute;
         width: 87px;
@@ -198,6 +217,13 @@
         &.one-letter {
           padding-left: 0;
           text-align: center;
+        }
+
+        &.ltr {
+          padding-left: 5px;
+        }
+        &.rtl {
+          padding-right: 5px;
         }
       }
 
@@ -211,12 +237,18 @@
         font-size: 24px;
         font-weight: 300;
         margin-bottom: 0;
-        padding-left: 100px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
         width: calc(100% - 245px);
-        margin-right: -9999px;
+        &.ltr {
+          padding-left: 100px;
+          margin-right: -9999px;
+        }
+        &.rtl {
+          padding-right: 100px;
+          margin-left: -9999px;
+        }
       }
 
       @media (max-width: 480px) {
@@ -226,8 +258,13 @@
       }
 
       .profile-detail-summary {
-        padding-left: 100px;
         margin-top: 3px;
+        &.ltr {
+          padding-left: 100px;
+        }
+        &.rtl {
+          padding-right: 100px;
+        }
 
         li {
           &:not(:last-child) {
@@ -253,27 +290,57 @@
           position: relative;
           top: -17px;
         }
+
+        #tags_tag {
+          width: 150px !important;
+        }
+
+        &.rtl #tags_addTag {
+          float: right;
+          overflow:true;
+        }
+        &.rtl #tags_tag {
+          float: left;
+        }
       }
 
       .tags {
         padding: 0;
-        padding-left: 100px;
         list-style: none;
         line-height: 20px;
         margin: 0;
         overflow: hidden;
         margin-top: 8px;
 
-        li {
-          float: left;
+        &.ltr {
+          padding-left: 100px;
+
+          li {
+            float: left;
+          }
+        }
+
+        &.rtl {
+          padding-right: 100px;
+
+          li {
+            float: right;
+          }
         }
       }
     }
 
     .quick-actions {
       position: absolute;
-      right: 0;
       top: 14px;
+
+      &.ltr {
+        right: 0;
+      }
+
+      &.rtl {
+        left: 0;
+      }
     }
   }
 
@@ -295,11 +362,18 @@
         padding-top: 10px;
         position: relative;
       }
-
+      
       .icon-section {
         position: absolute;
         top: 14px;
         width: 17px;
+      }
+
+      &.rtl {
+        h3 {
+          padding-left: 0 !important;
+          padding-right: 23px;
+        }
       }
     }
 
@@ -609,7 +683,12 @@
         margin-top: 10px;
 
         h2 {
-          padding-left: 80px;
+          &.ltr {
+            padding-left: 80px;
+          }
+          &.rtl {
+            padding-right: 80px;
+          }
 
           span {
             display: none;
@@ -628,6 +707,9 @@
           .tagsFormActions {
             display: block;
             margin-top: 20px;
+          }
+          .tags_tag {
+            width: 100% !important;
           }
         }
 

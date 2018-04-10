@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_contact_field_type_title') }}
-      <a class="btn fr nt2" @click="add">{{ $t('settings.personalization_contact_field_type_add') }}</a>
+      <a class="btn nt2" v-bind:class="[ dirltr ? fr: fl ]" @click="add">{{ $t('settings.personalization_contact_field_type_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_contact_field_type_description') }}</p>
 
@@ -36,7 +36,7 @@
             {{ $t('settings.personalization_contact_field_type_table_protocol') }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? tr: tl ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -56,7 +56,7 @@
             {{ contactFieldType.protocol }}
           </code>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? tr: tl ]" >
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></i>
             <i class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)" v-if="contactFieldType.delible"></i>
@@ -219,6 +219,12 @@
                     icon: '',
                     errors: []
                 },
+
+                dirltr: true,
+                tr: 'tr',
+                tl: 'tl',
+                fr: 'fr',
+                fl: 'fl',
             };
         },
 
@@ -241,6 +247,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getContactFieldTypes();
 
                 $('#modal-create-contact-field-type').on('shown.bs.modal', () => {

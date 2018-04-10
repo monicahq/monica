@@ -76,7 +76,12 @@
     }
 
     .table-cell.actions {
-      text-align: right;
+      &.ltr {
+        text-align: right;
+      }
+      &.rtl {
+        text-align: left;
+      }
     }
   }
 
@@ -264,7 +269,12 @@
     }
 
     .actions {
-      text-align: right;
+      &.ltr {
+        text-align: right;
+      }
+      &.rtl {
+        text-align: left;
+      }
     }
   }
 }

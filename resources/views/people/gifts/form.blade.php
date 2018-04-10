@@ -33,7 +33,7 @@
     {{-- URL --}}
     <div class="form-group">
         <label for="url">{{ trans('people.gifts_add_link') }}</label>
-        <input type="text" class="form-control" name="url" id="url" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
+        <input type="text" class="form-control" name="url" id="url" dir="ltr" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
     </div>
 
     {{-- Value --}}

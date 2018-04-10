@@ -44,14 +44,26 @@ header {
 .header-nav {
   margin-top: 24px;
   text-align: right;
-}
 
-.header-nav-item {
-  display: inline;
-  margin-right: 10px;
+  .header-nav-item {
+    display: inline;
+    margin-right: 10px;
 
-  &:last-child {
-    margin-right: 0;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &.rtl {
+    text-align: left;
+    .header-nav-item {
+      &:last-child {
+        margin-right: 10px;
+      }
+      &:first-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 
