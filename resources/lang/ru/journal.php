@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'You rated your day.',
     'entry_delete_success' => 'Запись была удалена.',
     'journal_add_title' => 'Заголовок (не обязательно)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Содержимое',
     'journal_add_cta' => 'Сохранить',
     'journal_blank_cta' => 'Добавить вашу первую запись в журнал',
