@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Tem certeza de que deseja excluir esse presente?',
     'gifts_add_gift' => 'Adicionar um presente',
     'gifts_link' => 'Ligar',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Deletar',
     'gifts_add_title' => 'Gerenciamento de presentes para :name',
     'gifts_add_gift_idea' => 'Ideia de presente',

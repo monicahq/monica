@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Etes-vous sûr de vouloir supprimer ce cadeau ?',
     'gifts_add_gift' => 'Ajouter un cadeau',
     'gifts_link' => 'Lien',
+    'gifts_for' => 'Pour :',
     'gifts_delete_cta' => 'Supprimer',
     'gifts_add_title' => 'Gestion des cadeaux pour :name',
     'gifts_add_gift_idea' => 'Idée de cadeau',
