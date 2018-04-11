@@ -44,9 +44,9 @@
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
-                        { trans('people.people_list_filter_tag') }
+                        {{ trans('people.people_list_filter_tag') }}
                             <span class="pretty-tag">
-                                { trans('people.people_list_untagged') }
+                                {{ trans('people.people_list_untagged') }}
                             </span>
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
@@ -86,7 +86,7 @@
                   <p class="clear-filter">
                     {{ trans('people.people_list_filter_tag') }}
                         <span class="pretty-tag">
-                        { trans('people.people_list_untagged') }
+                        {{ trans('people.people_list_untagged') }}
                         </span>
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
