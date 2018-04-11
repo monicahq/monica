@@ -176,7 +176,7 @@
 
               <ul>
                   <li>
-                      <span class="pretty-tag"><a href="/people?no_tag=true">{ trans('people.people_list_untagged') }/a></span>
+                      <span class="pretty-tag"><a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}/a></span>
                       <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $unTagged) }}</span>
                   </li>
               @foreach (auth()->user()->account->tags as $dbtag)
