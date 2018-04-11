@@ -35,7 +35,7 @@
 
                     <span v-if="gift.recipient_name">
                         <span class="mr1 black-50">•</span>
-                        For: {{ gift.recipient_name }}
+                        {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                     </span>
 
                     <span v-if="gift.url">
@@ -66,7 +66,7 @@
 
                 <span v-if="gift.recipient_name">
                     <span class="mr1 black-50">•</span>
-                    For: {{ gift.recipient_name }}
+                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                 </span>
 
                 <span v-if="gift.url">
@@ -95,7 +95,7 @@
 
                 <span v-if="gift.recipient_name">
                     <span class="mr1 black-50">•</span>
-                    For: {{ gift.recipient_name }}
+                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                 </span>
 
                 <span v-if="gift.url">

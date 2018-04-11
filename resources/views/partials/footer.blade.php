@@ -10,7 +10,7 @@
       </div>
 
       <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-20-ns w-100 pa2 tc bt b--gray-monica pt3">
-        <img src="/img/small-logo.png" width="20" height="21" />
+        <img src="/img/monica.svg" width="20" height="21" />
       </div>
 
       <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl tr' : 'fr tl' }} w-40-ns w-100 pa2 bt b--gray-monica pt3">
