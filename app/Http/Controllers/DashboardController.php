@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Debt;
+use App\User;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -23,6 +24,10 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
+        if ($account->contacts()->count() === 0) {
+            return view('dashboard.blank');
+        }
+
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
@@ -36,11 +41,6 @@ class DashboardController extends Controller
                 'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
             ];
             $lastUpdatedContactsCollection->push(json_encode($data));
-        }
-
-        // Latest statistics
-        if ($account->contacts()->count() === 0) {
-            return view('dashboard.blank');
         }
 
         $debt = $account->debts->where('status', 'inprogress');
