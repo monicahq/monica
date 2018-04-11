@@ -152,7 +152,7 @@ return [
     'subscriptions_plan_month_cost' => '$5/month',
     'subscriptions_plan_month_bonus' => 'Cancel any time',
     'subscriptions_plan_include1' => 'Included with your upgrade:',
-    'subscriptions_plan_include2' => 'Unlimited number of users • Reminders by email • Import with vCard',
+    'subscriptions_plan_include2' => 'Unlimited number of users • Reminders by email • Import with vCard • Personalization of the contact sheet',
     'subscriptions_plan_include3' => '100% of the profits go the development of this great open source project.',
     'subscriptions_help_title' => 'Additional details you may be curious about',
     'subscriptions_help_opensource_title' => 'What is an open source project?',
@@ -275,6 +275,12 @@ return [
     'personalization_reminder_rule_title' => '提醒规则',
     'personalization_reminder_rule_line' => '{count} day before|{count} days before',
     'personalization_reminder_rule_desc' => '对于您设置的每个提醒, 我们可以在事件发生前几天向您发送电子邮件。您可以在此处切换这些通知。请注意, 这些通知只适用于每月和每年的提醒。',
+
+    'personalization_module_save' => 'The change has been saved',
+    'personalization_module_title' => 'Features',
+    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
 
     'reminder_time_to_send' => '应发送每日提醒的时间',
 ];
