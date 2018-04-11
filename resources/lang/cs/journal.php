@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'You rated your day.',
     'entry_delete_success' => 'Záznam deníku byl úspěšně smazán.',
     'journal_add_title' => 'Title (optional)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Zápis',
     'journal_add_cta' => 'Uložit',
     'journal_blank_cta' => 'Přidej svůj první deníkový záznam',
