@@ -57,7 +57,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts_count,
+            'number_of_contacts' => $account->contacts()->real()->count(),
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,
