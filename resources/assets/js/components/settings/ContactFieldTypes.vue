@@ -72,7 +72,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -123,7 +123,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -174,7 +174,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
