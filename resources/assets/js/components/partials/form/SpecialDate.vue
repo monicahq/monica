@@ -5,7 +5,7 @@
 <template>
   <div>
     <div class="flex mb3">
-      <div class="mr2">
+      <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
         <input type="radio" id="" v-model="selectedOption" name="birthdate" selected value="unknown">
       </div>
       <div class="pointer" @click="selectedOption = 'unknown'">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="flex mb3">
-      <div class="mr2">
+      <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="approximate">
       </div>
       <div class="pointer" @click="selectedOption = 'approximate'">
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="flex mb3">
-      <div class="mr2">
+      <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="almost">
       </div>
       <div class="pointer" @click="selectedOption = 'almost'">
@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="flex">
-      <div class="mr2">
+      <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
         <input type="radio" id="" v-model="selectedOption" name="birthdate" value="exact">
       </div>
       <div class="pointer" @click="selectedOption = 'exact'">
