@@ -5,7 +5,7 @@
         <div class="row">
           <div class="logo">
             <a href="/dashboard">
-              <img src="/img/small-logo.png" width="40" height="43" />
+              <img src="/img/monica_reverse.svg" width="40" height="43" />
             </a>
           </div>
           <div class="col-sm-9 header-search">
