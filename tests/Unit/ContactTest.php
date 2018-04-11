@@ -388,6 +388,12 @@ class ContactTest extends FeatureTestCase
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'test@test.com',
         ]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test2@test.com',
+        ]);
 
         $email = $contact->getFirstEmail();
         $this->assertEquals($email, 'test@test.com');
