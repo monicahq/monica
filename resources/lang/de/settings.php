@@ -152,7 +152,7 @@ return [
     'subscriptions_plan_month_cost' => '$5/month',
     'subscriptions_plan_month_bonus' => 'Jederzeit kündbar',
     'subscriptions_plan_include1' => 'Included with your upgrade:',
-    'subscriptions_plan_include2' => 'Unlimited number of users • Reminders by email • Import with vCard',
+    'subscriptions_plan_include2' => 'Unlimited number of users • Reminders by email • Import with vCard • Personalization of the contact sheet',
     'subscriptions_plan_include3' => '100% of the profits go the development of this great open source project.',
     'subscriptions_help_title' => 'Additional details you may be curious about',
     'subscriptions_help_opensource_title' => 'Was ist ein Open-Source-Projekt?',
@@ -275,6 +275,12 @@ return [
     'personalization_reminder_rule_title' => 'Erinnerungs Regeln',
     'personalization_reminder_rule_line' => '{count} day before|{count} days before',
     'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
+
+    'personalization_module_save' => 'The change has been saved',
+    'personalization_module_title' => 'Features',
+    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+
+    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
 ];

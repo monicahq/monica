@@ -178,7 +178,7 @@ a {
 }
 
 a[hreflang]:after {
-  content: " (" attr(hreflang) ")"; 
+  content: " (" attr(hreflang) ")";
 }
 
 ul {
@@ -190,6 +190,16 @@ ul {
     li {
       display: inline;
     }
+  }
+}
+
+.markdown {
+  ul {
+    list-style-type: disc;
+    margin-left: 15px;
+    padding-left: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 

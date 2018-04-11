@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Parsedown;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Traits\Journalable;
@@ -84,6 +85,20 @@ class Activity extends Model implements IsJournalableInterface
     public function journalEntries()
     {
         return $this->morphMany('App\JournalEntry', 'journalable');
+    }
+
+    /**
+     * Return the markdown parsed body.
+     *
+     * @return string
+     */
+    public function getParsedContentAttribute()
+    {
+        if (is_null($this->description)) {
+            return;
+        }
+
+        return (new Parsedown())->text($this->description);
     }
 
     /**

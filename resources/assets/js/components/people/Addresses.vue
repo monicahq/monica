@@ -30,7 +30,7 @@
 
             <span v-if="editMode">{{ contactAddress.address }}</span>
 
-            <span class="light-silver">({{ contactAddress.name }})</span>
+            <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
             <div class="fr" v-if="editMode">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>

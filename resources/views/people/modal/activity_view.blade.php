@@ -33,7 +33,9 @@
                   <br>
 
                   <label for="description">{{ trans('people.activities_add_optional_comment') }}</label>
-                  <p>{{ $activity->description }}</p>
+                  <div class="markdown">
+                  {!! $activity->parsed_content !!}
+                  </div>
 
       </div>
       <div class="modal-footer">
