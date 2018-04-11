@@ -10,7 +10,7 @@
       </div>
 
       <div class="fl w-20-ns w-100 pa2 tc bt b--gray-monica pt3">
-        <img src="/img/small-logo.png" width="20" height="21" />
+        <img src="/img/monica.svg" width="20" height="21" />
       </div>
 
       <div class="fl w-40-ns w-100 pa2 tr bt b--gray-monica pt3">
