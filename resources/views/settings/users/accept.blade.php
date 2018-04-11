@@ -7,7 +7,11 @@
         <div class="col-xs-12 col-md-6 col-md-offset-3">
 
           <div class="signup-box">
-            <img class="logo" src="/img/small-logo.png" alt="">
+            <div class="dt w-100">
+              <div class="dtc tc">
+                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+              </div>
+            </div>
             <h2>{{ trans('settings.users_accept_title') }}</h2>
 
             @include ('partials.errors')
