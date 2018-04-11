@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Вы уверены что хотите удалить этот подарок?',
     'gifts_add_gift' => 'Добавить подарок',
     'gifts_link' => 'Ссылка',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Удалить',
     'gifts_add_title' => 'Управление подарками для :name',
     'gifts_add_gift_idea' => 'Идея подарка',
