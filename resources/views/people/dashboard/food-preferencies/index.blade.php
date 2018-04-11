@@ -19,7 +19,7 @@
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
       {{ $contact->food_preferencies }}
-      <a href="/people/{{ $contact->hashID() }}/food" class="action-link">{{ trans('app.edit') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/food" class="action-link {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans('app.edit') }}</a>
     </p>
 
   @endif

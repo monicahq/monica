@@ -28,9 +28,7 @@
       }
 
       .number-contacts-per-tag {
-        &.ltr {
-          float: right;
-        }
+        float: right;
         &.rtl {
           float: left;
         }
@@ -123,10 +121,14 @@
       font-size: 15px;
       height: 43px;
       margin-right: 5px;
-      padding-left: 5px;
       padding-top: 10px;
       vertical-align: middle;
       width: 43px;
+      padding-left: 5px;
+      &.rtl {
+        padding-left: 0px;
+        padding-right: 5px;
+      }
 
       &.one-letter {
         padding-left: 0;
@@ -156,9 +158,7 @@
       position: relative;
       text-align: right;
       top: 16px;
-      &.ltr {
-        float: right;
-      }
+      float: right;
       &.rtl {
         float: left;
       }
@@ -213,17 +213,15 @@
         padding-top: 21px;
         position: absolute;
         width: 87px;
+        padding-left: 5px;
+        &.rtl {
+          padding-left: 0px;
+          padding-right: 5px;
+        }
 
         &.one-letter {
           padding-left: 0;
           text-align: center;
-        }
-
-        &.ltr {
-          padding-left: 5px;
-        }
-        &.rtl {
-          padding-right: 5px;
         }
       }
 
@@ -241,11 +239,11 @@
         text-overflow: ellipsis;
         overflow: hidden;
         width: calc(100% - 245px);
-        &.ltr {
-          padding-left: 100px;
-          margin-right: -9999px;
-        }
+        padding-left: 100px;
+        margin-right: -9999px;
         &.rtl {
+          padding-left: 0;
+          margin-right: 0;
           padding-right: 100px;
           margin-left: -9999px;
         }
@@ -259,10 +257,9 @@
 
       .profile-detail-summary {
         margin-top: 3px;
-        &.ltr {
-          padding-left: 100px;
-        }
+        padding-left: 100px;
         &.rtl {
+          padding-left: 0;
           padding-right: 100px;
         }
 
@@ -297,7 +294,7 @@
 
         &.rtl #tags_addTag {
           float: right;
-          overflow:true;
+          overflow: true;
         }
         &.rtl #tags_tag {
           float: left;
@@ -311,20 +308,23 @@
         margin: 0;
         overflow: hidden;
         margin-top: 8px;
+        padding-left: 100px;
 
-        &.ltr {
-          padding-left: 100px;
-
-          li {
-            float: left;
-          }
+        li {
+          float: left;
         }
 
         &.rtl {
+          padding-left: 0;
           padding-right: 100px;
 
           li {
             float: right;
+          }
+
+          .pretty-tag {
+            margin-right: 0;
+            margin-left: 10px
           }
         }
       }
@@ -337,7 +337,6 @@
       &.ltr {
         right: 0;
       }
-
       &.rtl {
         left: 0;
       }
@@ -371,7 +370,7 @@
 
       &.rtl {
         h3 {
-          padding-left: 0 !important;
+          padding-left: 0;
           padding-right: 23px;
         }
       }
@@ -683,10 +682,9 @@
         margin-top: 10px;
 
         h2 {
-          &.ltr {
-            padding-left: 80px;
-          }
+          padding-left: 80px;
           &.rtl {
+            padding-left: 0;
             padding-right: 80px;
           }
 

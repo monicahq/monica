@@ -127,7 +127,7 @@
                           {{ $contact->getInitials() }}
                         </div>
                         @else
-                        <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                        <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                           {{ $contact->getInitials() }}
                         </div>
                         @endif

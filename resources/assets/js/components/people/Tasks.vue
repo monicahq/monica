@@ -8,7 +8,7 @@
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
-        <span class="f6 pt2" v-bind:class="[ dirltr ? fr: fl ]" v-if="tasks.length != 0">
+        <span class="f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
           <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
           <a class="pointer" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
         </span>
@@ -127,8 +127,6 @@
                 },
 
                 dirltr: true,
-                fr: 'fr',
-                fl: 'fl',
             };
         },
 

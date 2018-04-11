@@ -51,7 +51,7 @@
 
                             <!-- Secret -->
                             <td style="vertical-align: middle;">
-                                <code>{{ client.secret }}</code>
+                                <code dir="ltr">{{ client.secret }}</code>
                             </td>
 
                             <!-- Edit Button -->

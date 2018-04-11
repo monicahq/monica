@@ -7,7 +7,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_info_title') }}</h3>
       </div>
-      <div class="dtc" v-bind:class="[ dirltr ? tr: tl ]" v-if="contactInformationData.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactInformationData.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -28,7 +28,7 @@
             <a :href="contactInformation.protocol + contactInformation.data" v-if="contactInformation.protocol">{{ contactInformation.data }}</a>
             <a :href="contactInformation.data" v-if="!contactInformation.protocol">{{ contactInformation.data }}</a>
           </div>
-          <div class="dtc" v-bind:class="[ dirltr ? tr: tl ]" v-if="editMode">
+          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>
             <i class="fa fa-trash-o pointer" @click="trash(contactInformation)"></i>
           </div>
@@ -111,8 +111,6 @@
                 },
 
                 dirltr: true,
-                tr: 'tr',
-                tl: 'tl',
             };
         },
 
