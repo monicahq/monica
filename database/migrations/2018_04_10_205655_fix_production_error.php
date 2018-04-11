@@ -2,8 +2,6 @@
 
 use App\User;
 use App\Account;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class FixProductionError extends Migration
@@ -18,7 +16,7 @@ class FixProductionError extends Migration
         // this migration fixes a weird issue where we have a bunch of users
         // who don't have an account_id
         $usersWithoutAccount = collect();
-        User::chunk(200, function ($users) use($usersWithoutAccount) {
+        User::chunk(200, function ($users) use ($usersWithoutAccount) {
             foreach ($users as $user) {
                 $account = $user->account;
                 if (is_null($account)) {
