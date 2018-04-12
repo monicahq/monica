@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Opravdu chcete smazat tento dárek?',
     'gifts_add_gift' => 'Přidat dárek',
     'gifts_link' => 'Odkaz',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Smazat',
     'gifts_add_title' => 'Správa dárků pro :name',
     'gifts_add_gift_idea' => 'Nápad na dárek',
