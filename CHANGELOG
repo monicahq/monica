@@ -1,5 +1,13 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.0.0 - 2018-04-12
+-------------------
+
+* Add ability to set a journal entry date
 * Use UUID instead of actual ID to identify contacts
 * Add ability to show/hide sections on the Contact sheet view
 * Add many more relationship types to link contacts together
@@ -13,8 +21,6 @@ UNRELEASED CHANGES:
 * Fix gifts handle
 * Remove old documentation from sources
 * Fix Bug when editing gift
-
-RELEASED VERSIONS:
 
 v1.8.2 - 2018-03-20
 -------------------
