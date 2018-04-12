@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => '是否确实要删除此礼品？',
     'gifts_add_gift' => '添加礼品',
     'gifts_link' => '链接',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => '删除',
     'gifts_add_title' => ':name礼品管理',
     'gifts_add_gift_idea' => '礼品创意',
