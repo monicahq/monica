@@ -227,7 +227,7 @@ return [
     'gifts_delete_confirmation' => 'למחוק את המתנה הזאת?',
     'gifts_add_gift' => 'הוספת מתנה',
     'gifts_link' => 'קישור',
-    'gifts_for' => 'For:',
+    'gifts_for' => 'עבור:',
     'gifts_delete_cta' => 'מחיקה',
     'gifts_add_title' => 'ניהול מתנות עבור :name',
     'gifts_add_gift_idea' => 'רעיון למתנה',
