@@ -227,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Möchtest du das Geschenk wirklich löschen?',
     'gifts_add_gift' => 'Geschenk hinzufügen',
     'gifts_link' => 'Link',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Löschen',
     'gifts_add_title' => 'Geschenkverwaltung für :name',
     'gifts_add_gift_idea' => 'Geschenkidee',
