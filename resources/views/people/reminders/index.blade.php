@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title">
+<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
   <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
-    <span class="fr">
+    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="/people/{{ $contact->hashID() }}/reminders/add" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>
