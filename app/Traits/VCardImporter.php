@@ -80,7 +80,12 @@ trait VCardImporter
         }
 
         $contact->company = $this->formatValue($vcard->ORG);
-        $contact->job = $this->formatValue($vcard->TITLE);
+        if ($vcard->ROLE) {
+            $contact->job = $this->formatValue($vcard->ROLE);
+        }
+        if ($vcard->TITLE) {
+            $contact->job = $this->formatValue($vcard->TITLE);
+        }
 
         $contact->setAvatarColor();
 
