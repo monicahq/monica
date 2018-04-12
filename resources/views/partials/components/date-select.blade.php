@@ -2,7 +2,7 @@
 
 <div class="mt2">
 
-  <select id="{{ $class }}_month" name="{{ $class }}_month" class="mr2">
+  <select id="{{ $class }}_month" name="{{ $class }}_month" class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'mr2' : '' }}">
     @foreach($months as $month)
       <option value="{{ $month['id'] }}"
         {{ ($specialDate == null) ? '' : (($specialDate->date->month == $month['id']) ? 'selected="selected"': '') }}
@@ -22,7 +22,7 @@
     @endfor
   </select>
 
-    <select id="{{ $class }}_year" name="{{ $class }}_year">
+    <select id="{{ $class }}_year" name="{{ $class }}_year" class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'mr2' }}">
 
       @if ($specialDate)
         <option value="0" {{ ! $specialDate->is_year_unknown ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>

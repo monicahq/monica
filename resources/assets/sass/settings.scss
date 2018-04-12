@@ -77,6 +77,9 @@
 
     .table-cell.actions {
       text-align: right;
+      &.rtl {
+        text-align: left;
+      }
     }
   }
 
@@ -254,6 +257,13 @@
         margin-left: 20px;
         list-style-type: disc;
       }
+
+      &.rtl {
+        ul {
+          margin-left: 0;
+          margin-right: 20px;
+        }
+      }
     }
   }
 
@@ -265,6 +275,9 @@
 
     .actions {
       text-align: right;
+      &.rtl {
+        text-align: left;
+      }
     }
   }
 }
