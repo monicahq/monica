@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Commands;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
