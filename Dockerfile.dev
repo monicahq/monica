@@ -46,24 +46,21 @@ WORKDIR /var/www/monica
 # copy system files into their proper homes, and set file ownership
 # correctly
 ADD . .
-RUN rm -rf tests
-RUN cp .env.example .env; \
-    chown -R monica:monica . && \
+ADD .env.dev .env
+RUN chown -R monica:monica . && \
     chgrp -R apache bootstrap/cache storage && \
     chmod -R g+w bootstrap/cache storage && \
     # Apache2 conf
     cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
     # Composer installation
     scripts/docker/install-composer.sh; \
-    # Set crontab for schedules
-    echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -; \
     # Cleanup
     apk del .build-deps && rm -rf /var/cache/apk/*
 
+
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install --no-interaction --no-suggest --no-dev && \
-    composer clear-cache
+RUN composer install --no-interaction --no-suggest
 USER root
 
 # This is the command that the container will run by default
