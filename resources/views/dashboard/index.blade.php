@@ -5,7 +5,7 @@
 
     <section class="ph3 ph5-ns pv4 cf w-100 bg-gray-monica">
       <div class="mw9 center">
-        <div class="fl w-70 ph2">
+        <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-70 ph2">
           <div class="flex items-center">
             <div class="pr2">
               {{ trans('people.people_list_last_updated') }}
@@ -17,7 +17,7 @@
             @endforeach
           </div>
         </div>
-        <div class="fl w-30 tr ph2">
+        <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl tr' : 'fr tl' }} w-30 ph2">
           <a href="/people/add" class="btn btn-primary" style="padding: 15px 45px;">
             {{ trans('people.people_list_blank_cta') }}
           </a>
@@ -28,7 +28,7 @@
     {{-- Main section --}}
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica">
       <div class="mw9 center">
-        <div class="fl w-50-ns w-100 pa2">
+        <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa2">
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa3 bb b--gray-monica">
               <p class="mb0">
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class="fl w-50-ns w-100 pa2">
+        <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa2">
           <div class="br3 ba b--gray-monica bg-white mb3">
             <div class="pa3 bb b--gray-monica tc">
               <ul>
@@ -60,7 +60,7 @@
                   <span class="db f3 fw5 blue">{{ $number_of_activities }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_activities') }}</span>
                 </li>
-                <li class="tc dib">
+                <li class="tc dib mr5">
                   <span class="db f3 fw5 orange">{{ $number_of_gifts }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_gifts') }}</span>
                 </li>

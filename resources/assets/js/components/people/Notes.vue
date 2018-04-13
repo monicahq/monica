@@ -56,7 +56,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('people.notes_delete_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -97,7 +97,9 @@
                     id: 0,
                     body: '',
                     is_favorited: 0
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -132,6 +134,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getNotes();
             },
 
