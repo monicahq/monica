@@ -10,7 +10,7 @@ return [
 
     'tab_recent_calls' => 'Recent calls',
     'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven\'t logged a call yet.',
+    'tab_calls_blank' => 'Non hai ancora aggiunto nessuna etichetta.',
 
     'statistics_contacts' => 'Contatti',
     'statistics_activities' => 'Attività',

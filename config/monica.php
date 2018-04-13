@@ -27,11 +27,9 @@ return [
     | User and error tracking
     |--------------------------------------------------------------------------
     |
-    | We provide placeholders for Google Analytics, Intercom and Sentry.
+    | We provide placeholders for Sentry.
     |
     */
-    'google_analytics_app_id' => env('GOOGLE_ANALYTICS_APP_ID'),
-    'intercom_app_id' => env('INTERCOM_APP_ID'),
     'sentry_support' => env('SENTRY_SUPPORT', false),
 
     /*
@@ -90,6 +88,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | List of default relationship type group
+    |--------------------------------------------------------------------------
+    |
+    | This is used to populate the relationship type groups table.
+    |
+    */
+    'default_relationship_type_group' => [
+        'love',
+        'family',
+        'friend',
+        'work',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Version of the application that you run
     |--------------------------------------------------------------------------
     |
@@ -98,5 +111,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '1.8.2',
+    'app_version' => '2.0.0',
 ];

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -19,7 +18,7 @@ class ActivityTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
-        $contact = factory(Contact::class)->create([
+        $contact = factory('App\Contact')->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -69,7 +68,7 @@ class ActivityTest extends FeatureTestCase
         ];
 
         $response = $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the activity has been added
         $params['account_id'] = $user->account_id;

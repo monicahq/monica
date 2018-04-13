@@ -8,7 +8,7 @@
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
-        <span class="fr f6 pt2" v-if="tasks.length != 0">
+        <span class="f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
           <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
           <a class="pointer" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
         </span>
@@ -125,6 +125,8 @@
                     description: '',
                     completed: 0
                 },
+
+                dirltr: true,
             };
         },
 
@@ -142,13 +144,14 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getTasks();
             },
 
@@ -182,7 +185,7 @@
             },
 
             getTasks() {
-                axios.get('/people/' + this.contactId + '/tasks')
+                axios.get('/people/' + this.hash + '/tasks')
                         .then(response => {
                             this.tasks = response.data;
                         });
@@ -190,7 +193,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/tasks',
+                    'post', '/people/' + this.hash + '/tasks',
                     this.createForm
                 );
 
@@ -198,7 +201,7 @@
             },
 
             toggleComplete(task) {
-                axios.post('/people/' + this.contactId + '/tasks/' + task.id + '/toggle')
+                axios.post('/people/' + this.hash + '/tasks/' + task.id + '/toggle')
                         .then(response => {
                             this.getTasks();
                         });
@@ -211,7 +214,7 @@
                 this.updateForm.completed = task.completed;
 
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/tasks/' + task.id,
+                    'put', '/people/' + this.hash + '/tasks/' + task.id,
                     this.updateForm
                 );
 
@@ -222,7 +225,7 @@
                 this.updateForm.id = task.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/tasks/' + task.id,
+                    'delete', '/people/' + this.hash + '/tasks/' + task.id,
                     this.updateForm
                 );
 

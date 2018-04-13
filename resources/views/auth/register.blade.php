@@ -4,10 +4,14 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
 
           <div class="signup-box">
-            <img class="logo" src="/img/small-logo.png" alt="">
+            <div class="dt w-100">
+              <div class="dtc tc">
+                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+              </div>
+            </div>
             @if($first)
               <h1>{{ trans('auth.register_title_welcome') }}</h1>
               <h2>{{ trans('auth.register_create_account') }}</h2>

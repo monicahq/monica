@@ -33,7 +33,7 @@
     {{-- URL --}}
     <div class="form-group">
         <label for="url">{{ trans('people.gifts_add_link') }}</label>
-        <input type="text" class="form-control" name="url" id="url" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
+        <input type="text" class="form-control" name="url" id="url" dir="ltr" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
     </div>
 
     {{-- Value --}}
@@ -48,21 +48,21 @@
         <textarea class="form-control" id="comment" name="comment" rows="3">{{ old('comment') ?? $gift->comment }}</textarea>
     </div>
 
-    @if ($contact->getFamilyMembers()->count() !== 0)
+    @if ($familyRelationships->count() !== 0)
         <div class="form-group">
             <div class="form-check">
                 <label class="form-check-label" id="has_recipient">
-                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1">
+                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1" {{ $gift->hasParticularRecipient() ? 'checked' : '' }}>
                     {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
                 </label>
             </div>
             <select id="recipient" name="recipient" class="form-control">
-                @foreach($contact->getFamilyMembers() as $familyMember)
-                    <option value="{{ $familyMember->id }}"
-                        @if(old('recipient') && old('recipient') === $familyMember->id)
+                @foreach($familyRelationships as $familyRelationship)
+                    <option value="{{ $familyRelationship->ofContact->id }}"
+                        @if($gift->is_for === $familyRelationship->ofContact->id)
                             selected
                         @endif
-                    >{{ $familyMember->first_name }}</option>
+                    >{{ $familyRelationship->ofContact->first_name }}</option>
                 @endforeach
             </select>
         </div>

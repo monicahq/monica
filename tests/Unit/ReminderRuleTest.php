@@ -12,7 +12,7 @@ class ReminderRuleTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $reminderRule = factory('App\ReminderRule')->create(['account_id' => $account->id]);
 
         $this->assertTrue($reminderRule->account()->exists());

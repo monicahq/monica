@@ -7,7 +7,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_address_title') }}</h3>
       </div>
-      <div class="dtc tr" v-if="contactAddresses.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -30,7 +30,7 @@
 
             <span v-if="editMode">{{ contactAddress.address }}</span>
 
-            <span class="light-silver">({{ contactAddress.name }})</span>
+            <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
             <div class="fr" v-if="editMode">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
@@ -182,6 +182,8 @@
                     province: '',
                     postal_code: ''
                 },
+
+                dirltr: true,
             };
         },
 
@@ -199,26 +201,27 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getAddresses();
                 this.getCountries();
             },
 
             getAddresses() {
-                axios.get('/people/' + this.contactId + '/addresses')
+                axios.get('/people/' + this.hash + '/addresses')
                         .then(response => {
                             this.contactAddresses = response.data;
                         });
             },
 
             getCountries() {
-                axios.get('/people/' + this.contactId + '/countries')
+                axios.get('/people/' + this.hash + '/countries')
                         .then(response => {
                             this.countries = response.data;
                         });
@@ -251,7 +254,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/addresses',
+                    'post', '/people/' + this.hash + '/addresses',
                     this.createForm
                 );
 
@@ -260,7 +263,7 @@
 
             update(contactAddress) {
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
             },
@@ -269,7 +272,7 @@
                 this.updateForm.id = contactAddress.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
 

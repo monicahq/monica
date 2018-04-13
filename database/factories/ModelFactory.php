@@ -111,6 +111,18 @@ $factory->define(App\Relationship::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\RelationshipType::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\RelationshipTypeGroup::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
@@ -152,6 +164,13 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
+});
+
+$factory->define(App\Debt::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_id' => 1,
+        ];
 });
 
 $factory->define(App\Day::class, function (Faker\Generator $faker) {
@@ -213,6 +232,12 @@ $factory->define(App\ReminderRule::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Notification::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Module::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

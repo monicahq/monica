@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Auth;
 use App\Tag;
 use Validator;
 use App\Contact;
+use App\Relationship;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 
 class ContactsController extends Controller
@@ -157,7 +156,7 @@ class ContactsController extends Controller
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
-            return redirect()->route('people.show', ['id' => $contact->id]);
+            return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
                             ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
@@ -182,14 +181,48 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $reminders = $contact->getRemindersAboutRelatives();
-
-        $contact->last_consulted_at = now(auth()->user()->timezone);
+        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
         $contact->save();
 
+        $relationships = $contact->relationships;
+
+        // get love relationship type
+        $loveRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'love';
+        });
+
+        // get family relationship type
+        $familyRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'family';
+        });
+
+        // get friend relationship type
+        $friendRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'friend';
+        });
+
+        // get work relationship type
+        $workRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'work';
+        });
+
+        // reminders
+        $reminders = $contact->reminders;
+        $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
+        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
+                                ->sortBy('next_expected_date');
+
+        // list of active features
+        $modules = $contact->account->modules()->active()->get();
+
         return view('people.profile')
-            ->withContact($contact)
-            ->withReminders($reminders);
+            ->withLoveRelationships($loveRelationships)
+            ->withFamilyRelationships($familyRelationships)
+            ->withFriendRelationships($friendRelationships)
+            ->withWorkRelationships($workRelationships)
+            ->withReminders($reminders)
+            ->withModules($modules)
+            ->withContact($contact);
     }
 
     /**
@@ -308,7 +341,7 @@ class ContactsController extends Controller
 
         $contact->updateGravatar();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -321,23 +354,14 @@ class ContactsController extends Controller
      */
     public function delete(Request $request, Contact $contact)
     {
-        // I know: this is a really brutal way of deleting objects. I'm doing
-        // this because I'll add more objects related to contacts in the future
-        // and I don't want to have to think of deleting a row that matches a
-        // contact.
-        //
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            try {
-                DB::table($tableName)->where('contact_id', $contact->id)->delete();
-            } catch (QueryException $e) {
-                continue;
-            }
+        if ($contact->account_id != auth()->user()->account_id) {
+            return redirect('/people/');
         }
 
-        $contact->delete();
+        Relationship::where('contact_is', $contact->id)->delete();
+        Relationship::where('of_contact', $contact->id)->delete();
+
+        $contact->deleteEverything();
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
@@ -375,7 +399,7 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -405,7 +429,7 @@ class ContactsController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
@@ -449,6 +473,10 @@ class ContactsController extends Controller
         }
 
         if (count($results) !== 0) {
+            foreach ($results as $key => $result) {
+                $results[$key]->hash = $result->hashID();
+            }
+
             return $results;
         } else {
             return ['noResults' => trans('people.people_search_no_results')];

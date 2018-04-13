@@ -5,7 +5,7 @@
         <div class="row">
           <div class="logo">
             <a href="/dashboard">
-              <img src="/img/small-logo.png" width="40" height="43" />
+              <img src="/img/monica_reverse.svg" width="40" height="43" />
             </a>
           </div>
           <div class="col-sm-9 header-search">
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-sm-7 padding-left-none">
-        <ul class="header-nav">
+        <ul class="header-nav {{ \App\Helpers\LocaleHelper::getDirection() }}">
           <li class="header-nav-item">
             <a href="/dashboard" class="header-nav-item-link">{{ trans('app.main_nav_dashboard') }}</a>
           </li>
