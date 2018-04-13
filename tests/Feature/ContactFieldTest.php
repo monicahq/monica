@@ -108,6 +108,9 @@ class ContactFieldTest extends FeatureTestCase
             'contact_field_type_id' => $feild->id,
         ]);
 
+        $params['id'] = $contactField->id;
+        $params['contact_field_type_id'] = $feild->id;
+
         $response = $this->put('/people/'.$contact->id.'/contactfield/'.$contactField->id, $params);
 
         $response->assertStatus(200);
