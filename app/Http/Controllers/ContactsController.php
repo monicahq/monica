@@ -171,21 +171,6 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
-        $relationships = Relationship::select('id', 'relationship_type_id', 'contact_is', 'of_contact')->get();
-        $todelete = collect([]);
-        foreach ($relationships as $relationship) {
-            foreach ($relationships as $duplicateRelationship) {
-                if ($relationship->relationship_type_id == $duplicateRelationship->relationship_type_id 
-                    and $relationship->contact_is == $duplicateRelationship->contact_is
-                    and $relationship->of_contact == $duplicateRelationship->of_contact) {
-                    $todelete->push($duplicateRelationship);
-                }
-            }
-        }
-
-
-return $todelete->count();        
-
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
