@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Collection;
+
 class CollectionHelper
 {
     /**
@@ -12,7 +14,7 @@ class CollectionHelper
      * @param  bool  $descending
      * @return static
      */
-    public static function sortByCollator($collect, $callback)
+    public static function sortByCollator($collect, $callback, $options = \Collator::SORT_STRING, $descending = false)
     {
         $results = [];
 
@@ -25,8 +27,11 @@ class CollectionHelper
             $results[$key] = $callback($value, $key);
         }
 
-        $collator = \Collator::create(\App::getLocale());
-        $collator->asort($results, \Collator::SORT_STRING);
+        // Using Collator to sort the array, with locale-sensitive sort ordering support.
+        static::getCollator()->asort($results, $options);
+        if ($descending) {
+            $results = array_reverse($results);
+        }
 
         // Once we have sorted all of the keys in the array, we will loop through them
         // and grab the corresponding model so we can set the underlying items list
@@ -35,7 +40,28 @@ class CollectionHelper
             $results[$key] = $collect->get($key);
         }
 
-        return new \Illuminate\Support\Collection($results);
+        return new Collection($results);
+    }
+    
+    /**
+     * Get a Collator object for the locale or current locale.
+     * 
+     * @param string
+     * @return \Collator
+     */
+    public static function getCollator($locale = null)
+    {
+        static $collators = [];
+
+        if (! $locale) {
+            $locale = app()->getLocale();
+        }
+        if (! array_has($collators, $locale)) {
+            $collator = new \Collator($locale);
+            $collators[$locale] = $collator;
+            return $collator;
+        }
+        return $collators[$locale];
     }
 
     /**
