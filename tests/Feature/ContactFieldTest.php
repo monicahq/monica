@@ -68,6 +68,8 @@ class ContactFieldTest extends FeatureTestCase
 
         $feild = factory(\App\ContactFieldType::class)->create([
             'account_id' => $user->account_id,
+            'name' => 'Test Name',
+            'type' => 'test',
         ]);
 
         $params = [
@@ -100,6 +102,8 @@ class ContactFieldTest extends FeatureTestCase
 
         $feild = factory(\App\ContactFieldType::class)->create([
             'account_id' => $user->account_id,
+            'name' => 'Test Name',
+            'type' => 'test',
         ]);
 
         $contactField = factory(\App\ContactField::class)->create([
