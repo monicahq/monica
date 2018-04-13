@@ -5,7 +5,7 @@
 
     {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
-      <p><a href="{{ url('/people/'.$contact->id) }}">< {{ $contact->getCompleteName() }}</a></p>
+      <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
@@ -142,7 +142,7 @@
         <div class="ph4-ns ph3 pv3 bb b--gray-monica">
           <div class="flex-ns justify-between">
             <div class="">
-              <a href="{{ url('/people/'.$contact->id) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+              <a href="{{ url('/people/'.$contact->hashID()) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
             </div>
             <div class="">
               <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>

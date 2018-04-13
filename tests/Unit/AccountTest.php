@@ -68,6 +68,19 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->relationshipTypeGroups()->exists());
     }
 
+    public function test_it_has_many_modules()
+    {
+        $account = factory('App\Account')->create([]);
+        $module = factory('App\Module')->create([
+            'account_id' => $account->id,
+        ]);
+        $module = factory('App\Module')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->modules()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory('App\Account')->create();
@@ -571,5 +584,35 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue(
             $statistics->contains(2)
         );
+    }
+
+    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
+    {
+        $account = factory('App\Account')->create([]);
+        DB::table('default_contact_modules')->insert([
+            'key' => 'work_information',
+        ]);
+
+        $account->populateModulesTable();
+
+        $this->assertDatabaseHas('modules', [
+            'key' => 'work_information',
+        ]);
+    }
+
+    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
+    {
+        $account = factory('App\Account')->create([]);
+        DB::table('default_contact_modules')->insert([
+            'key' => 'awesome',
+            'migrated' => 1,
+        ]);
+
+        $account->populateModulesTable(true);
+
+        $this->assertDatabaseMissing('modules', [
+            'account_id' => $account->id,
+            'key' => 'awesome',
+        ]);
     }
 }

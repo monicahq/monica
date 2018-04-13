@@ -15,12 +15,10 @@ trait SignIn
     {
         if (is_null($user)) {
             $user = factory('App\User')->create();
+            $user->account->populateDefaultFields($user->account);
         }
 
         $this->be($user);
-
-        $user->account->populateRelationshipTypeGroupsTable();
-        $user->account->populateRelationshipTypesTable();
 
         return $user;
     }

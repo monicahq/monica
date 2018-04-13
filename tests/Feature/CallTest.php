@@ -70,7 +70,7 @@ class CallTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
         $params['account_id'] = $user->account_id;
@@ -102,7 +102,7 @@ class CallTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
         $params['account_id'] = $user->account_id;

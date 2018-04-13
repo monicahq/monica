@@ -68,7 +68,7 @@ class ActivityTest extends FeatureTestCase
         ];
 
         $response = $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the activity has been added
         $params['account_id'] = $user->account_id;

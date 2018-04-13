@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 trait Journalable
 {
     /**
+     * Get all journal entries.
+     */
+    public function journalEntries()
+    {
+        return $this->morphMany(JournalEntry::class, 'journalable');
+    }
+
+    /**
+     * Get the journal record associated.
+     */
+    public function journalEntry()
+    {
+        return $this->morphOne(JournalEntry::class, 'journalable');
+    }
+
+    /**
      * Delete the Journal Entry associated with the given object.
      */
     public function deleteJournalEntry()
