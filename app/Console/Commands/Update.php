@@ -61,7 +61,6 @@ class Update extends Command
                 // Clear or rebuild all cache
                 $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
                 if ($this->getLaravel()->environment() == 'production') {
-                    $this->commandExecutor->artisan('✓ Resetting config cache', 'config:cache');
                     $this->commandExecutor->artisan('✓ Resetting route cache', 'route:cache');
                     if ($this->getLaravel()->version() > '5.6') {
                         $this->commandExecutor->artisan('✓ Resetting view cache', 'view:cache');

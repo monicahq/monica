@@ -102,10 +102,10 @@ return [
     'relationship_type_spouse_with_name' => 'בעלה של :name',
     'relationship_type_spouse_female_with_name' => 'אשתו של :name',
 
-    'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
-    'relationship_type_date_with_name' => ':name’s date',
-    'relationship_type_date_female_with_name' => ':name’s date',
+    'relationship_type_date' => 'יוצא קבוע',
+    'relationship_type_date_female' => 'יוצאת קבוע',
+    'relationship_type_date_with_name' => 'יוצא קבוע עם :name',
+    'relationship_type_date_female_with_name' => 'יוצאת קבוע עם :name',
 
     'relationship_type_lover' => 'מאהב',
     'relationship_type_lover_female' => 'מאהבת',
@@ -114,8 +114,8 @@ return [
 
     'relationship_type_inlovewith' => 'מאוהב',
     'relationship_type_inlovewith_female' => 'מאוהבת',
-    'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
-    'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith_with_name' => 'מושא אהבתו של :name',
+    'relationship_type_inlovewith_female_with_name' => 'מושא אהבתה של :name',
 
     'relationship_type_lovedby' => 'נאהב על ידי',
     'relationship_type_lovedby_female' => 'נאהבת על ידי',

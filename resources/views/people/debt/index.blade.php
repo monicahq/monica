@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title">
+<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
   <img src="/img/people/debt/bill.svg" class="icon-section icon-money">
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span class="fr">
+    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="/people/{{ $contact->hashID() }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>

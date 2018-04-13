@@ -122,7 +122,7 @@ $border-color: #dfdfdf;
   text-decoration: none;
   -webkit-transition: color 0.2s;
 
-  &::before {
+  &:before {
     background: #fff;
     border-radius: 10px;
     box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
@@ -172,8 +172,11 @@ a {
   &.action-link {
     color: #999;
     font-size: 11px;
-    margin-right: 5px;
     text-decoration: underline;
+    margin-right: 5px;
+    &.rtl {
+      float: right;
+    }
   }
 }
 
@@ -227,6 +230,10 @@ input:disabled {
     font-weight: 400;
     margin-bottom: 20px;
     text-align: center;
+  }
+
+  .col-sm-offset-3-right {
+    margin-right: 25%;
   }
 
   .form-check-inline {

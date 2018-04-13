@@ -31,7 +31,7 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -44,7 +44,7 @@
             {{ module.name }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true" v-on:change="toggle(module)" />
           </div>
@@ -63,6 +63,7 @@
         data() {
             return {
                 modules: [],
+                dirltr: true,
             };
         },
 
@@ -87,6 +88,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getModules();
                 if (!this.limited) {
                   this.limited = 0
