@@ -31,7 +31,7 @@
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->first_name]) }}</h2>
 
               <form method="POST" action="{{ route('people.introductions.update', $contact) }}">

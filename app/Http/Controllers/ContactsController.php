@@ -6,6 +6,7 @@ use Auth;
 use App\Tag;
 use Validator;
 use App\Contact;
+use App\Relationship;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;

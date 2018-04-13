@@ -39,7 +39,7 @@
                             {{ $tag->name }}
                             </span>
                         @endforeach
-                        <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
                   @if ($tagLess)
@@ -79,7 +79,7 @@
                         {{ $tag->name }}
                         </span>
                     @endforeach
-                    <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
               @if ($tagLess)
@@ -98,7 +98,7 @@
                 <li class="people-list-item sorting">
                   {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
 
-                  <div class="options">
+                  <div class="options {{ \App\Helpers\LocaleHelper::getDirection() }}">
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
                       <div class="dropdown-menu" aria-labelledby="dropdownSort">
@@ -146,7 +146,7 @@
                           {{ $contact->getInitials() }}
                         </div>
                         @else
-                        <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                        <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                           {{ $contact->getInitials() }}
                         </div>
                         @endif
@@ -156,7 +156,7 @@
                       {{ $contact->getCompleteName(auth()->user()->name_order) }}
                     </span>
 
-                    <span class="people-list-item-information">
+                    <span class="people-list-item-information {{ \App\Helpers\LocaleHelper::getDirection() }}">
                       {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                     </span>
                   </a>
@@ -183,7 +183,7 @@
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
                     <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
-                    <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
+                    <span class="number-contacts-per-tag {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
               @endforeach

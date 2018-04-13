@@ -31,7 +31,7 @@
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             <div class="br3 ba b--gray-monica bg-white mb4">
               <div class="pa3 bb b--gray-monica">
                 <form method="POST" action="/settings/users/save">
