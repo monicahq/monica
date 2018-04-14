@@ -630,12 +630,12 @@ class AccountTest extends FeatureTestCase
 
         $account->addUnreadChangelogEntry($changelog->id);
 
-        $this->assertDatabaseHas('changelog_user',[
+        $this->assertDatabaseHas('changelog_user', [
             'changelog_id' => $changelog->id,
             'user_id' => $user->id,
         ]);
 
-        $this->assertDatabaseHas('changelog_user',[
+        $this->assertDatabaseHas('changelog_user', [
             'changelog_id' => $changelog->id,
             'user_id' => $user2->id,
         ]);

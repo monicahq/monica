@@ -254,7 +254,7 @@ class User extends Authenticatable
     /**
      * Check if user has one or more unread changelog entries.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasUnreadChangelogs()
     {
