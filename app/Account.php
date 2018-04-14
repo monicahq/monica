@@ -776,6 +776,12 @@ class Account extends Model
         return $activitiesStatistics;
     }
 
+    /**
+     * Add the given changelog entry and mark it unread for all users in this
+     * account.
+     *
+     * @param int $changelogId
+     */
     public function addUnreadChangelogEntry(int $changelogId)
     {
         foreach ($this->users as $user) {

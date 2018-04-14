@@ -20,10 +20,13 @@ There is a new header now in Monica. It shows a bell that slowly pulsate, with a
 
 ![image](/img/changelogs/2018-04-14-new-product-section.png)';
 
-        DB::table('changelogs')->insert([
+        $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
             'created_at' => '2018-04-15',
         ]);
+
+        $instance = \App\Instance::first();
+        $instance->addUnreadChangelogEntry($id);
 
         $description = '
 **New relationships**
@@ -34,9 +37,11 @@ Before you could only have parent/child relationships and significant other rela
 
 ![image](/img/changelogs/2018-04-14-relationships.png)';
 
-        DB::table('changelogs')->insert([
+        $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
             'created_at' => \Carbon\Carbon::now(),
         ]);
+
+        $instance->addUnreadChangelogEntry($id);
     }
 }
