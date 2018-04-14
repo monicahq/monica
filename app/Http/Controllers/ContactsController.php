@@ -171,12 +171,6 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
-        $accounts = \App\Account::all();
-        foreach ($accounts as $account) {
-
-        }
-
-        return true;
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
