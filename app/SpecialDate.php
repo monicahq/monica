@@ -217,4 +217,24 @@ class SpecialDate extends Model
         $this->contact_id = $contact->id;
         $this->save();
     }
+
+    public function getDeathAge()
+    {
+        if (is_null($this->date)) {
+            return;
+        }
+
+        if ($this->is_year_unknown) {
+            return;
+        }
+
+        $contact = Contact::findorfail($this->contact_id );
+
+        if((!$contact->birthdate->getAge()))
+        {
+            return;
+        }
+
+        return $contact->birthdate->date->diffInYears($this->date);
+    }
 }
