@@ -230,7 +230,7 @@ class SpecialDate extends Model
 
         $contact = Contact::findorfail($this->contact_id);
 
-        if ((! $contact->birthdate->getAge())) {
+        if (is_null($contact->birthdate)) {
             return;
         }
 

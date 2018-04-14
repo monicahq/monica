@@ -309,4 +309,57 @@ class SpecialDateTest extends FeatureTestCase
             $specialDate->toShortString()
         );
     }
+
+    public function test_get__death_age_returns_null_if_no_date_is_set()
+    {
+        $specialDate = new SpecialDate;
+        $this->assertNull($specialDate->getDeathAge());
+    }
+
+    public function test_get__death_age_returns_null_if_year_is_unknown()
+    {
+        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate->is_year_unknown = 1;
+        $specialDate->save();
+
+        $this->assertNull($specialDate->getDeathAge());
+    }
+
+    public function test_get__death_age_returns_null_if_birthDate_is_unknown()
+    {
+        $contact = factory(\App\Contact::class)->create();
+
+        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate->is_year_unknown = 0;
+        $specialDate->date = now()->subYears(5);
+        $specialDate->contact_id = $contact->id;
+        $specialDate->save();
+
+        $this->assertNull($specialDate->getDeathAge());
+    }
+
+    public function test_get_death_age_returns__death_age()
+    {
+        $contact = factory(\App\Contact::class)->create();
+
+        $birthDate = factory(\App\SpecialDate::class)->make();
+        $birthDate->is_year_unknown = 0;
+        $birthDate->date = now()->subYears(10);
+        $birthDate->contact_id = $contact->id;
+        $birthDate->save();
+
+        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate->is_year_unknown = 0;
+        $specialDate->date = now()->subYears(5);
+        $specialDate->contact_id = $contact->id;
+        $specialDate->save();
+
+        $contact->birthday_special_date_id = $birthDate->id;
+        $contact->save();
+
+        $this->assertEquals(
+            5,
+            $specialDate->getDeathAge()
+        );
+    }
 }
