@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add a changelog inside the application
 * Fix monica:calculatestatistics command
 
 RELEASED VERSIONS:
