@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix monica:calculatestatistics command
+* Feat Secured api oauth login
 
 RELEASED VERSIONS:
 
