@@ -3,6 +3,7 @@
 namespace App;
 
 use Parsedown;
+use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Changelog extends Model
@@ -30,5 +31,15 @@ class Changelog extends Model
     public function getDescriptionAttribute($value)
     {
         return (new Parsedown())->text($value);
+    }
+
+    /**
+     * Return the created_at date in a friendly format.
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return DateHelper::getShortDate($value);
     }
 }
