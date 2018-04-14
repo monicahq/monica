@@ -16,7 +16,9 @@ class ChangelogController extends Controller
      */
     public function index(Request $request)
     {
-        $changelogs = Changelog::orderBy('created_at', 'desc')->get();
+        $changelogs = auth()->user()->changelogs()->orderBy('created_at', 'desc')->get();
+
+        auth()->user()->markChangelogAsRead();
 
         return view('changelog.index')->withChangelogs($changelogs);
     }

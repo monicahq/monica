@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -257,6 +258,18 @@ class User extends Authenticatable
      */
     public function hasUnreadChangelogs()
     {
-        return $this->changelogs()->wherePivot('read', 0)->get();
+        return $this->changelogs()->wherePivot('read', 0)->count() > 0;
+    }
+
+    /**
+     * Mark all changelog entries as read.
+     *
+     * @return void
+     */
+    public function markChangelogAsRead()
+    {
+        DB::table('changelog_user')
+            ->where('user_id', $this->id)
+            ->update(['read' => 1]);
     }
 }

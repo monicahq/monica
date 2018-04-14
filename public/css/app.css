@@ -18072,7 +18072,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 .pulse:before {
   position: absolute;
   content: '';
-  background-color: #FF0000;
+  background-color: #19a974;
   border-radius: 50%;
   width: 9px;
   height: 9px;

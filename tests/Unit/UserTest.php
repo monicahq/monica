@@ -179,4 +179,26 @@ class UserTest extends TestCase
 
         $this->assertTrue($user->shouldBeReminded($reminder->next_expected_date));
     }
+
+    public function test_it_marks_all_changelog_entries_as_read()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $changelog->users()->sync($user->id);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 0,
+        ]);
+
+        $user->markChangelogAsRead();
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 1,
+        ]);
+    }
 }

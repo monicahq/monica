@@ -11,8 +11,11 @@
 
       @foreach ($changelogs as $changelog)
       <div class="mw7 center br3 ba b--gray-monica bg-white mb4 pa4">
-        <div class="">
-          <p>{{ $changelog->created_at }}</p>
+        <div class="f7 mb2">
+          {{ $changelog->created_at }}
+          @if ($changelog->pivot->read == 0)
+          <span class="f6 br-pill ph2 pv1 mb2 dib white bg-green">new</span>
+          @endif
         </div>
         <div>
           {!! $changelog->description !!}
