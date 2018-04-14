@@ -24,7 +24,7 @@ class OAuthController extends Controller
     public function login(LoginRequest $request)
     {
         if(\Antiflood::checkIp(5) === FALSE) {
-            return response()->json(['code' => 'too-many-attemps'], 403);
+            return response()->json(null, 403);
         }
         
         $email = $request->get('email');
