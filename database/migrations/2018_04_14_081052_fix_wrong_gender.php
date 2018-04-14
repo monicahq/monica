@@ -3,8 +3,6 @@
 use App\Gender;
 use App\Account;
 use App\Contact;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class FixWrongGender extends Migration
