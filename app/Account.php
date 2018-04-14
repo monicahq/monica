@@ -775,4 +775,11 @@ class Account extends Model
 
         return $activitiesStatistics;
     }
+
+    public function addUnreadChangelogEntry(int $changelogId)
+    {
+        foreach ($this->users as $user) {
+            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
+        }
+    }
 }

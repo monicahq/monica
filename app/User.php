@@ -249,4 +249,14 @@ class User extends Authenticatable
 
         return true;
     }
+
+    /**
+     * Check if user has one or more unread changelog entries.
+     *
+     * @return boolean
+     */
+    public function hasUnreadChangelogs()
+    {
+        return $this->changelogs()->wherePivot('read', 0)->get();
+    }
 }
