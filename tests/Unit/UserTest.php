@@ -19,6 +19,20 @@ class UserTest extends TestCase
         $this->assertTrue($user->account()->exists());
     }
 
+    public function test_it_belongs_to_many_changelogs()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $user->changelogs()->sync($changelog->id);
+
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $user->changelogs()->sync($changelog->id);
+
+        $this->assertTrue($user->changelogs()->exists());
+    }
+
     public function testUpdateContactViewPreference()
     {
         $user = new User;

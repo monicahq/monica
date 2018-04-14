@@ -74,6 +74,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the changelog records associated with the user.
+     */
+    public function changelogs()
+    {
+        return $this->belongsToMany('App\Changelog')->withPivot('read', 'upvote')->withTimestamps();
+    }
+
+    /**
      * Assigns a default value just in case the sort order is empty.
      *
      * @param string $value
