@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Parsedown;
 use Illuminate\Database\Eloquent\Model;
 
 class Changelog extends Model
@@ -19,5 +20,15 @@ class Changelog extends Model
     public function users()
     {
         return $this->belongsToMany('App\User')->withPivot('read', 'upvote')->withTimestamps();
+    }
+
+    /**
+     * Return the markdown parsed description.
+     *
+     * @return string
+     */
+    public function getDescriptionAttribute($value)
+    {
+        return (new Parsedown())->text($value);
     }
 }
