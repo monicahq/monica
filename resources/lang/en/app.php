@@ -30,6 +30,7 @@ return [
 
     'header_settings_link' => 'Settings',
     'header_logout_link' => 'Logout',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Add people',
     'main_nav_dashboard' => 'Dashboard',
@@ -37,7 +38,6 @@ return [
     'main_nav_journal' => 'Journal',
     'main_nav_activities' => 'Activities',
     'main_nav_tasks' => 'Tasks',
-    'main_nav_trash' => 'Trash',
 
     'footer_remarks' => 'Any remarks?',
     'footer_send_email' => 'Send me an email',
