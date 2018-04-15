@@ -15,6 +15,7 @@ return [
     'done' => 'Gereed',
     'verify' => 'Bevestigen',
     'for' => 'voor',
+    'new' => 'new',
     'unknown' => 'Ik weet het niet',
     'load_more' => 'Meer laden',
     'loading' => 'Laden...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Instellingen',
     'header_logout_link' => 'Uitloggen',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Personen toevoegen',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Dagboek',
     'main_nav_activities' => 'Activiteiten',
     'main_nav_tasks' => 'Taken',
-    'main_nav_trash' => 'Prullenbak',
 
     'footer_remarks' => 'Eventuele opmerkingen?',
     'footer_send_email' => 'Stuur me een e-mail',
