@@ -15,6 +15,7 @@ return [
     'done' => 'Hotovo',
     'verify' => 'Ověřit',
     'for' => 'pro',
+    'new' => 'new',
     'unknown' => 'Nevím',
     'load_more' => 'Načíst další',
     'loading' => 'Načítá se...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Nastavení',
     'header_logout_link' => 'Odhlásit',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Přidat osobu',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Deník',
     'main_nav_activities' => 'Aktivity',
     'main_nav_tasks' => 'Úkoly',
-    'main_nav_trash' => 'Koš',
 
     'footer_remarks' => 'Další poznámky?',
     'footer_send_email' => 'Poslat email',
