@@ -640,4 +640,20 @@ class AccountTest extends FeatureTestCase
             'user_id' => $user2->id,
         ]);
     }
+
+    public function test_it_populates_account_with_changelogs()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $changelog->users()->sync($user->id);
+
+        $account->populateChangelogsTable();
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 0,
+        ]);
+    }
 }

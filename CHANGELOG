@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix how you meet section not being shown
 * Add a changelog inside the application
 * Fix monica:calculatestatistics command
 
