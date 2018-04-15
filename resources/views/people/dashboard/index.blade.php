@@ -14,7 +14,7 @@
 @endif
 
 {{-- Introductions --}}
-@if ($modules->contains('key', 'introductions'))
+@if ($modules->contains('key', 'how_you_met'))
 @include('people.dashboard.introductions.index')
 @endif
 
