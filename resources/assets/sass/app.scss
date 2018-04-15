@@ -24,6 +24,7 @@ $border-color: #dfdfdf;
 @import "marketing";
 @import "settings";
 @import "modal";
+@import "changelog";
 
 // Custom colors
 // Extending Tachyions
@@ -31,11 +32,21 @@ $border-color: #dfdfdf;
   background-color: #f2f4f8;
 }
 
+.bg-blue-monica {
+  background-color: #325776;
+}
+
 .b--gray-monica {
   border-color: #dde2e9;
 }
-.w-5 { width: 5%; }
-.w-95 { width: 95%; }
+
+.w-5 {
+  width: 5%;
+}
+
+.w-95 {
+  width: 95%;
+}
 
 .form-error-message {
   border-top: 1px solid #ed6246;
