@@ -220,7 +220,7 @@ class SpecialDate extends Model
 
     /**
      * Returns the age that a contact died assuming we know when they were born
-     * and died
+     * and died.
      * @return int
      */
     public function getAgeAtDeath()
