@@ -218,7 +218,12 @@ class SpecialDate extends Model
         $this->save();
     }
 
-    public function getDeathAge()
+    /**
+     * Returns the age that a contact died assuming we know when they were born
+     * and died
+     * @return int
+     */
+    public function getAgeAtDeath()
     {
         if (is_null($this->date)) {
             return;
@@ -228,7 +233,7 @@ class SpecialDate extends Model
             return;
         }
 
-        $contact = Contact::findorfail($this->contact_id);
+        $contact = $this->contact;
 
         if (is_null($contact->birthdate)) {
             return;

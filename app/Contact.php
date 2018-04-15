@@ -1287,4 +1287,9 @@ class Contact extends Model
             return \App\Contact::find($relatedContact->of_contact);
         }
     }
+
+    public function getAgeAtDeath()
+    {
+        return $this->deceasedDate->getAgeAtDeath();
+    }
 }

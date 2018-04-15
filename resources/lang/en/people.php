@@ -291,6 +291,7 @@ return [
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
+    'deceased_age' => 'Age at Death',
 
     // Contact information
     'contact_info_title' => 'Contact information',

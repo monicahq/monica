@@ -33,7 +33,7 @@
               @endif
             @elseif ($contact->is_dead)
                 @if (! is_null($contact->deceasedDate))
-                  <span class="ml3 light-silver f4">(Age at Death {{ $contact->deceasedDate->getDeathAge() }})</span>
+                  <span class="ml3 light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
                 @endif
             @endif
           </h2>

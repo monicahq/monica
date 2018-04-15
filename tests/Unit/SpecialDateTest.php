@@ -313,7 +313,7 @@ class SpecialDateTest extends FeatureTestCase
     public function test_get__death_age_returns_null_if_no_date_is_set()
     {
         $specialDate = new SpecialDate;
-        $this->assertNull($specialDate->getDeathAge());
+        $this->assertNull($specialDate->getAgeAtDeath());
     }
 
     public function test_get__death_age_returns_null_if_year_is_unknown()
@@ -322,7 +322,7 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->is_year_unknown = 1;
         $specialDate->save();
 
-        $this->assertNull($specialDate->getDeathAge());
+        $this->assertNull($specialDate->getAgeAtDeath());
     }
 
     public function test_get__death_age_returns_null_if_birthDate_is_unknown()
@@ -335,10 +335,10 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
-        $this->assertNull($specialDate->getDeathAge());
+        $this->assertNull($specialDate->getAgeAtDeath());
     }
 
-    public function test_get_death_age_returns__death_age()
+    public function test_get_death_age_returns_death_age()
     {
         $contact = factory(\App\Contact::class)->create();
 
@@ -359,7 +359,33 @@ class SpecialDateTest extends FeatureTestCase
 
         $this->assertEquals(
             5,
-            $specialDate->getDeathAge()
+            $specialDate->getAgeAtDeath()
+        );
+    }
+
+    public function test_get_death_age_from_contact()
+    {
+        $contact = factory(\App\Contact::class)->create();
+
+        $birthDate = factory(\App\SpecialDate::class)->make();
+        $birthDate->is_year_unknown = 0;
+        $birthDate->date = now()->subYears(10);
+        $birthDate->contact_id = $contact->id;
+        $birthDate->save();
+
+        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate->is_year_unknown = 0;
+        $specialDate->date = now()->subYears(5);
+        $specialDate->contact_id = $contact->id;
+        $specialDate->save();
+
+        $contact->birthday_special_date_id = $birthDate->id;
+        $contact->deceased_special_date_id = $specialDate->id;
+        $contact->save();
+
+        $this->assertEquals(
+            $contact->getAgeAtDeath(),
+            $specialDate->getAgeAtDeath()
         );
     }
 }
