@@ -15,6 +15,7 @@ return [
     'done' => 'סיום',
     'verify' => 'אימות',
     'for' => 'for',
+    'new' => 'new',
     'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'הגדרות',
     'header_logout_link' => 'יציאה',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'הוספת אנשים',
     'main_nav_dashboard' => 'לוח מחוונים',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'יומן',
     'main_nav_activities' => 'פעילויות',
     'main_nav_tasks' => 'משימות',
-    'main_nav_trash' => 'אשפה',
 
     'footer_remarks' => 'יש הערות?',
     'footer_send_email' => 'ניתן לשלוח לי דוא״ל',
