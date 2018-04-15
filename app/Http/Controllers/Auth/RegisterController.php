@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Auth;
 use App\User;
+use Request;
 use Validator;
 use App\Account;
 use App\Jobs\SendNewUserAlert;
@@ -54,7 +55,9 @@ class RegisterController extends Controller
             abort(403, trans('auth.signup_disabled'));
         }
 
-        return view('auth.register', ['first' => $first]);
+        $locales = \App\Helpers\LocaleHelper::getLocaleList();
+
+        return view('auth.register', ['first' => $first, 'locales' => $locales]);
     }
 
     /**
@@ -82,7 +85,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
-        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password'], $data['locale']);
         $user = $account->users()->first();
 
         if (! $first) {

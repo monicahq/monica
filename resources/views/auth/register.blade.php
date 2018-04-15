@@ -55,6 +55,16 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
+              {{-- Locale --}}
+              <div class="form-group">
+                <label for="locale">{{ trans('settings.locale') }}</label>
+                <select class="form-control" name="locale" id="locale">
+                  @foreach($locales as $locale)
+                    <option value="{{ $locale['lang'] }}" {{ (app('language.detector')->detect() == $locale['lang']) ? 'selected' : '' }}>{{ $locale['name'] }}</option>
+                  @endforeach
+                </select>
+              </div>
+
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
