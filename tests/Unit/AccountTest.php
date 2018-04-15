@@ -615,4 +615,29 @@ class AccountTest extends FeatureTestCase
             'key' => 'awesome',
         ]);
     }
+
+    public function test_it_adds_an_unread_changelog_entry_to_all_users()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+        ]);
+        $user2 = factory('App\User')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $changelog = factory('App\Changelog')->create([]);
+
+        $account->addUnreadChangelogEntry($changelog->id);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'changelog_id' => $changelog->id,
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'changelog_id' => $changelog->id,
+            'user_id' => $user2->id,
+        ]);
+    }
 }
