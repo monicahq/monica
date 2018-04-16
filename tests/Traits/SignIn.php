@@ -15,6 +15,7 @@ trait SignIn
     {
         if (is_null($user)) {
             $user = factory('App\User')->create();
+            $user->account->populateDefaultFields($user->account);
         }
 
         $this->be($user);

@@ -14,12 +14,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ trans('app.footer_modal_version_whats_new') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close {{ \App\Helpers\LocaleHelper::getDirection() }}" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Instance::first()->number_of_versions_since_current_version ,['number' => \App\Instance::first()->number_of_versions_since_current_version]) }}</p>
+          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Instance::first()->number_of_versions_since_current_version, ['number' => \App\Instance::first()->number_of_versions_since_current_version]) }}</p>
           {!! \App\Instance::first()->latest_release_notes !!}
           </div>
           <div class="modal-footer">

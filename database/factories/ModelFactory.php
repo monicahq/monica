@@ -111,6 +111,18 @@ $factory->define(App\Relationship::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\RelationshipType::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\RelationshipTypeGroup::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
@@ -152,6 +164,13 @@ $factory->define(App\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
+});
+
+$factory->define(App\Debt::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+        'contact_id' => 1,
+        ];
 });
 
 $factory->define(App\Day::class, function (Faker\Generator $faker) {
@@ -218,6 +237,20 @@ $factory->define(App\Notification::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\Module::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\Changelog::class, function (Faker\Generator $faker) {
+    return [];
+});
+
+$factory->define(App\Instance::class, function (Faker\Generator $faker) {
+    return [];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;
@@ -230,6 +263,6 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'stripe_id' => $stripe_id,
         'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
-        'created_at' => \Carbon\Carbon::now(),
+        'created_at' => now(),
     ];
 });

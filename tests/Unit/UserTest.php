@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -14,10 +13,24 @@ class UserTest extends TestCase
 
     public function test_it_belongs_to_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
 
         $this->assertTrue($user->account()->exists());
+    }
+
+    public function test_it_belongs_to_many_changelogs()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $user->changelogs()->sync($changelog->id);
+
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $user->changelogs()->sync($changelog->id);
+
+        $this->assertTrue($user->changelogs()->exists());
     }
 
     public function testUpdateContactViewPreference()
@@ -66,7 +79,7 @@ class UserTest extends TestCase
 
     public function test_you_can_vote_if_you_havent_voted_yet_today()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
 
         $this->assertFalse($user->hasAlreadyRatedToday());
@@ -74,11 +87,11 @@ class UserTest extends TestCase
 
     public function test_you_cant_vote_if_you_have_already_voted_today()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $day = factory('App\Day')->create([
             'account_id' => $account->id,
-            'date' => \Carbon\Carbon::now(),
+            'date' => now(),
         ]);
 
         $this->assertTrue($user->hasAlreadyRatedToday());
@@ -165,5 +178,27 @@ class UserTest extends TestCase
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
         $this->assertTrue($user->shouldBeReminded($reminder->next_expected_date));
+    }
+
+    public function test_it_marks_all_changelog_entries_as_read()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $changelog->users()->sync($user->id);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 0,
+        ]);
+
+        $user->markChangelogAsRead();
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 1,
+        ]);
     }
 }

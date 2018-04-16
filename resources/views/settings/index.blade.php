@@ -47,12 +47,12 @@
 
               {{-- names --}}
               <div class="form-group">
-                <label for="firstname">First name</label>
+                <label for="firstname">{{ trans('settings.firstname') }}</label>
                 <input type="text" class="form-control" name="first_name" id="first_name" required value="{{ auth()->user()->first_name }}">
               </div>
 
               <div class="form-group">
-                <label for="firstname">Last name</label>
+                <label for="firstname">{{ trans('settings.lastname') }}</label>
                 <input type="text" class="form-control" name="last_name" id="last_name" required value="{{ auth()->user()->last_name }}">
               </div>
 
@@ -67,8 +67,8 @@
               <div class="form-group">
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
-                  @foreach(config('monica.langs') as $lang)
-                    <option value="{{ $lang }}" {{ (auth()->user()->locale == $lang)?'selected':'' }}>{{ trans('settings.locale_'.$lang) }}</option>
+                  @foreach($locales as $locale)
+                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
                   @endforeach
                 </select>
               </div>

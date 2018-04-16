@@ -3,12 +3,14 @@
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
-    /*
-     * CONTACTS
-     */
+    // Contacts
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    // Relationships
+    Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
+    Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
@@ -94,6 +96,16 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     // Debts
     Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
       'create', 'edit', 'patch',
+    ]]);
+
+    // Relationship Type Groups
+    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['except' => [
+      'create', 'store', 'destroy', 'edit', 'patch', 'update',
+    ]]);
+
+    // Relationship Types
+    Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['except' => [
+      'create', 'store', 'destroy', 'edit', 'patch', 'update',
     ]]);
 
     /*

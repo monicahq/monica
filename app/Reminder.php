@@ -4,6 +4,7 @@ namespace App;
 
 use Auth;
 use Carbon\Carbon;
+use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Reminder extends Model
 {
+    use Hasher;
     /**
      * The attributes that aren't mass assignable.
      *
@@ -180,7 +182,7 @@ class Reminder extends Model
     {
         $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
 
-        if ($date->lte(Carbon::now())) {
+        if ($date->lte(now())) {
             return;
         }
 

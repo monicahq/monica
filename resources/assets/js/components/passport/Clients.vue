@@ -11,11 +11,11 @@
             <div class="panel-heading">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span>
-                        OAuth Clients
+                        {{ $t('settings.api_oauth_title') }}
                     </span>
 
                     <a class="btn" @click="showCreateClientForm">
-                        Create New Client
+                        {{ $t('settings.api_oauth_create_new') }}
                     </a>
                 </div>
             </div>
@@ -23,15 +23,15 @@
             <div class="panel-body">
                 <!-- Current Clients -->
                 <p class="m-b-none" v-if="clients.length === 0">
-                    You have not created any OAuth clients.
+                    {{ $t('settings.api_oauth_not_created') }}
                 </p>
 
                 <table class="table table-borderless m-b-none" v-if="clients.length > 0">
                     <thead>
                         <tr>
-                            <th>Client ID</th>
-                            <th>Name</th>
-                            <th>Secret</th>
+                            <th>{{ $t('settings.api_oauth_clientid') }}</th>
+                            <th>{{ $t('settings.api_oauth_name') }}</th>
+                            <th>{{ $t('settings.api_oauth_secret') }}</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -51,20 +51,20 @@
 
                             <!-- Secret -->
                             <td style="vertical-align: middle;">
-                                <code>{{ client.secret }}</code>
+                                <code dir="ltr">{{ client.secret }}</code>
                             </td>
 
                             <!-- Edit Button -->
                             <td style="vertical-align: middle;">
                                 <a class="action-link" @click="edit(client)">
-                                    Edit
+                                    {{ $t('app.edit') }}
                                 </a>
                             </td>
 
                             <!-- Delete Button -->
                             <td style="vertical-align: middle;">
                                 <a class="action-link text-danger" @click="destroy(client)">
-                                    Delete
+                                    {{ $t('app.delete') }}
                                 </a>
                             </td>
                         </tr>
@@ -78,10 +78,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
-                            Create Client
+                            {{ $t('settings.api_oauth_create') }}
                         </h4>
                     </div>
 
@@ -101,28 +101,28 @@
                         <form class="form-horizontal" role="form">
                             <!-- Name -->
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Name</label>
+                                <label class="col-md-3 control-label">{{ $t('settings.api_oauth_name') }}</label>
 
                                 <div class="col-md-7">
                                     <input id="create-client-name" type="text" class="form-control"
                                                                 @keyup.enter="store" v-model="createForm.name">
 
                                     <span class="help-block">
-                                        Something your users will recognize and trust.
+                                        {{ $t('settings.api_oauth_name_help') }}
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Redirect URL -->
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Redirect URL</label>
+                                <label class="col-md-3 control-label">{{ $t('settings.api_oauth_redirecturl') }}</label>
 
                                 <div class="col-md-7">
                                     <input type="text" class="form-control" name="redirect"
                                                     @keyup.enter="store" v-model="createForm.redirect">
 
                                     <span class="help-block">
-                                        Your application's authorization callback URL.
+                                        {{ $t('settings.api_oauth_redirecturl_help') }}
                                     </span>
                                 </div>
                             </div>
@@ -131,11 +131,9 @@
 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ $t('app.close') }}</button>
 
-                        <button type="button" class="btn btn-primary" @click="store">
-                            Create
-                        </button>
+                        <button type="button" class="btn btn-primary" @click="store">{{ $t('app.create') }}</button>
                     </div>
                 </div>
             </div>
@@ -146,7 +144,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             Edit Client
@@ -169,28 +167,28 @@
                         <form class="form-horizontal" role="form">
                             <!-- Name -->
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Name</label>
+                                <label class="col-md-3 control-label">{{ $t('settings.api_oauth_name') }}</label>
 
                                 <div class="col-md-7">
                                     <input id="edit-client-name" type="text" class="form-control"
                                                                 @keyup.enter="update" v-model="editForm.name">
 
                                     <span class="help-block">
-                                        Something your users will recognize and trust.
+                                        {{ $t('settings.api_oauth_name_help') }}
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Redirect URL -->
                             <div class="form-group">
-                                <label class="col-md-3 control-label">Redirect URL</label>
+                                <label class="col-md-3 control-label">{{ $t('settings.api_oauth_redirecturl') }}</label>
 
                                 <div class="col-md-7">
                                     <input type="text" class="form-control" name="redirect"
                                                     @keyup.enter="update" v-model="editForm.redirect">
 
                                     <span class="help-block">
-                                        Your application's authorization callback URL.
+                                        {{ $t('settings.api_oauth_redirecturl_help') }}
                                     </span>
                                 </div>
                             </div>
@@ -199,11 +197,9 @@
 
                     <!-- Modal Actions -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ $t('app.close') }}</button>
 
-                        <button type="button" class="btn btn-primary" @click="update">
-                            Save Changes
-                        </button>
+                        <button type="button" class="btn btn-primary" @click="update">{{ $t('app.save') }}</button>
                     </div>
                 </div>
             </div>
@@ -230,7 +226,9 @@
                     errors: [],
                     name: '',
                     redirect: ''
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -253,6 +251,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getClients();
 
                 $('#modal-create-client').on('shown.bs.modal', () => {

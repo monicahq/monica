@@ -8,11 +8,11 @@
 
         @if ($reminder->contact->is_partial)
 
-        <a href="/people/{{ $reminder->contact->getRelatedRealContact()->id }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
+        <a href="/people/{{ $reminder->contact->getRelatedRealContact()->hashID() }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
 
         @else
 
-        <a href="/people/{{ $reminder->contact->id }}">{{ $reminder->contact->getIncompleteName() }}</a>
+        <a href="/people/{{ $reminder->contact->hashID() }}">{{ $reminder->contact->getIncompleteName() }}</a>
 
         @endif
       </span>
@@ -20,6 +20,6 @@
     </li>
     @endforeach
   @else
-  <p>No reminder for this month</p>
+  <p>{{ trans('dashboard.reminders_none') }}</p>
   @endif
 </ul>

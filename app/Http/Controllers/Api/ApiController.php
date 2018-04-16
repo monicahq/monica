@@ -31,6 +31,11 @@ class ApiController extends Controller
     /**
      * @var string
      */
+    protected $withParameter = null;
+
+    /**
+     * @var string
+     */
     protected $sortDirection = 'asc';
 
     public function __construct()
@@ -57,6 +62,10 @@ class ApiController extends Controller
                 }
 
                 $this->setLimitPerPage($request->get('limit'));
+            }
+
+            if ($request->has('with')) {
+                $this->setWithParameter($request->get('with'));
             }
 
             // make sure the JSON is well formatted if the given call sends a JSON
@@ -100,6 +109,25 @@ class ApiController extends Controller
     public function setHTTPStatusCode($statusCode)
     {
         $this->httpStatusCode = $statusCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWithParameter()
+    {
+        return $this->withParameter;
+    }
+
+    /**
+     * @param string $with
+     * @return $this
+     */
+    public function setWithParameter($with)
+    {
+        $this->withParameter = $with;
 
         return $this;
     }
@@ -170,6 +198,14 @@ class ApiController extends Controller
             'updated_at',
             '-created_at',
             '-updated_at',
+            'completed_at',
+            '-completed_at',
+            'called_at',
+            '-called_at',
+            'favorited_at',
+            '-favorited_at',
+            'next_expected_date',
+            '-next_expected_date',
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
@@ -219,6 +255,17 @@ class ApiController extends Controller
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
                     ->respondWithError($message);
+    }
+
+    /**
+     * Sends a response invalid query to the request.
+     * @param string $message
+     */
+    public function respondInvalidQuery($message = 'Invalid query')
+    {
+        return $this->setHTTPStatusCode(500)
+            ->setErrorCode(40)
+            ->respondWithError($message);
     }
 
     /**

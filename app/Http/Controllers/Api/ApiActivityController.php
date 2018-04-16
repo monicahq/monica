@@ -23,10 +23,17 @@ class ApiActivityController extends ApiController
      */
     public function index(Request $request)
     {
-        $activities = auth()->user()->account->activities()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $activities = auth()->user()->account->activities()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
-        return ActivityResource::collection($activities);
+        return ActivityResource::collection($activities)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+        ]]);
     }
 
     /**
@@ -237,10 +244,17 @@ class ApiActivityController extends ApiController
             return $this->respondNotFound();
         }
 
-        $activities = $contact->activities()
+        try {
+            $activities = $contact->activities()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
-        return ActivityResource::collection($activities);
+        return ActivityResource::collection($activities)->additional(['meta' => [
+            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
+        ]]);
     }
 
     /**

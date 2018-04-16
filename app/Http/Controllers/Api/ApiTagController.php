@@ -20,8 +20,13 @@ class ApiTagController extends ApiController
      */
     public function index(Request $request)
     {
-        $tags = auth()->user()->account->tags()
-                        ->paginate($this->getLimitPerPage());
+        try {
+            $tags = auth()->user()->account->tags()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return TagResource::collection($tags);
     }

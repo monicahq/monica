@@ -19,8 +19,13 @@ class ApiGiftController extends ApiController
      */
     public function index(Request $request)
     {
-        $gifts = auth()->user()->account->gifts()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $gifts = auth()->user()->account->gifts()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return GiftResource::collection($gifts);
     }
@@ -185,6 +190,7 @@ class ApiGiftController extends ApiController
         }
 
         $gifts = $contact->gifts()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return GiftResource::collection($gifts);

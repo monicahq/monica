@@ -56,7 +56,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('people.notes_delete_title') }}</h5>
-            <button type="button" class="close" data-dismiss="modal">
+            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -97,7 +97,9 @@
                     id: 0,
                     body: '',
                     is_favorited: 0
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -119,7 +121,7 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         computed: {
             compiledMarkdown: function (text) {
@@ -132,6 +134,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getNotes();
             },
 
@@ -159,14 +162,14 @@
             },
 
             getNotes() {
-                axios.get('/people/' + this.contactId + '/notes')
+                axios.get('/people/' + this.hash + '/notes')
                         .then(response => {
                             this.notes = response.data;
                         });
             },
 
             store() {
-                axios.post('/people/' + this.contactId + '/notes', this.newNote)
+                axios.post('/people/' + this.hash + '/notes', this.newNote)
                       .then(response => {
                           this.newNote.body = '';
                           this.getNotes();
@@ -174,7 +177,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_create_success'),
+                              title: this.$t('people.notes_create_success'),
                               text: '',
                               type: 'success'
                           });
@@ -182,21 +185,21 @@
             },
 
             toggleFavorite(note) {
-                axios.post('/people/' + this.contactId + '/notes/' + note.id + '/toggle')
+                axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
                       .then(response => {
                           this.getNotes();
                       });
             },
 
             update(note) {
-                axios.put('/people/' + this.contactId + '/notes/' + note.id, note)
+                axios.put('/people/' + this.hash + '/notes/' + note.id, note)
                       .then(response => {
                           Vue.set(note, 'edit', note.edit);
                           this.getNotes();
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_update_success'),
+                              title: this.$t('people.notes_update_success'),
                               text: '',
                               type: 'success'
                           });
@@ -210,7 +213,7 @@
             },
 
             trash(note) {
-                axios.delete('/people/' + this.contactId + '/notes/' + note.id)
+                axios.delete('/people/' + this.hash + '/notes/' + note.id)
                       .then(response => {
                           this.getNotes();
 
@@ -218,7 +221,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: _.get(window.trans, 'people.notes_delete_success'),
+                              title: this.$t('people.notes_delete_success'),
                               text: '',
                               type: 'success'
                           });

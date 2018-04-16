@@ -7,7 +7,7 @@ function installSonar {
   echo 'Setup sonar scanner'
 
   # set version of sonar scanner to use :
-  sonarversion=3.0.3.778
+  sonarversion=3.1.0.1141
 
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
@@ -33,7 +33,6 @@ function CommonParams {
        -Dsonar.organization=monicahq \
        -Dsonar.php.tests.reportPath=./results/junit.xml \
        -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
-       -Dsonar.projectVersion=$(php artisan monica:getversion) \
        $extra
 }
 
@@ -71,18 +70,15 @@ if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && 
   installSonar
   gitFetch
 
-  echo sonar-scanner $(CommonParams) \
+  SONAR_PARAMS="$(CommonParams) \
+    -Dsonar.projectVersion=master \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG"
 
-  $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-    -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
-    -Dsonar.login=$SONAR_TOKEN
+  echo sonar-scanner $SONAR_PARAMS
+  $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
 elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo '============================'
@@ -91,27 +87,28 @@ elif [ -n "${TRAVIS_BRANCH:-}" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -
   installSonar
   gitFetch
 
-  echo sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_BRANCH \
+  SONAR_PARAMS="$(CommonParams) \
+    -Dsonar.projectVersion=$(php artisan monica:getversion) \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG"
   
-  $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$TRAVIS_BRANCH \
-    -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.sha1=$TRAVIS_COMMIT \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
-    -Dsonar.login=$SONAR_TOKEN
+  echo sonar-scanner $SONAR_PARAMS
+  $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
 elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
-  PULL_REQUEST_BRANCH=
-  PULL_REQUEST_REPOSITORY=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.full_name)
+  REPOS_VALUES=($(curl -sSL https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r -c ".head.repo.full_name, .head.repo.owner.login"))
 
-  if [ "$PULL_REQUEST_REPOSITORY" == "$REPOSITORY_OWNER" ]; then
+  PULL_REQUEST_BRANCH=
+  PULL_REQUEST_REPOSITORY=${REPOS_VALUES[0]}
+  PULL_REQUEST_USER=${REPOS_VALUES[1]}
+
+  if [ -z "${PULL_REQUEST_REPOSITORY:-}" ] || [ "$PULL_REQUEST_REPOSITORY" == "null" ]; then
+    echo 'Error with github api call'
+    exit 1
+  elif [ "$PULL_REQUEST_REPOSITORY" == "$REPOSITORY_OWNER" ]; then
     echo '==================================='
     echo 'SONAR:Analyze internal pull request'
     echo '==================================='
@@ -120,51 +117,27 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     echo '==================================='
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
-    PULL_REQUEST_USER=$(curl --silent https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST | jq -r .head.repo.owner.login)
+    echo External repository: $PULL_REQUEST_REPOSITORY
     PULL_REQUEST_BRANCH="PR${TRAVIS_PULL_REQUEST}_($PULL_REQUEST_USER)_$TRAVIS_PULL_REQUEST_BRANCH"
   fi
 
   installSonar
   gitFetch
 
-#  if [ -n "${GITHUB_TOKEN:-}" ]; then
-#    # analyse with GitHub token to add comment on the PR
-#    echo sonar-scanner $(CommonParams) \
-#      -Dsonar.analysis.mode=preview \
-#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG
-#
-#    $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-#      -Dsonar.analysis.mode=preview \
-#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
-#      -Dsonar.github.oauth=$GITHUB_TOKEN \
-#      -Dsonar.login=$SONAR_TOKEN
-#  fi
-
-  # analyse with GitHub token to add comment on the PR
-  echo sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
-    -Dsonar.branch.target=$TRAVIS_BRANCH \
+  SONAR_PARAMS="$(CommonParams) \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
     -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
+    -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST \
+    -Dsonar.pullrequest.base=$TRAVIS_BRANCH \
+    -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
-    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG
+    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG"
 
-  $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-    -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
-    -Dsonar.branch.target=$TRAVIS_BRANCH \
-    -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
-    -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
-    -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
-    -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
-    -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
-    -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG \
-    -Dsonar.login=$SONAR_TOKEN
+  echo sonar-scanner $SONAR_PARAMS
+  $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
 elif [ ! -a "travis-sonarlauncher" ]; then
 

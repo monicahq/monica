@@ -11,10 +11,10 @@
               <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li class="di">
-              > <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
+              &gt; <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
             </li>
             <li class="di">
-              > {{ trans('journal.journal_add') }}
+              &gt; {{ trans('journal.journal_add') }}
             </li>
           </ul>
       </div>
@@ -24,7 +24,7 @@
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             <form method="POST" action="/journal/create">
               {{ csrf_field() }}
 
@@ -36,6 +36,11 @@
               <div class="form-group">
                 <label for="field-title">{{ trans('journal.journal_add_title') }}</label>
                 <input type="text" id="field-title" class="form-control" name="title" autofocus>
+              </div>
+
+              <div class="form-group">
+                <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
+                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(Auth::user()->timezone)->format('Y-m-d') }}">
               </div>
 
               <div class="form-group">
