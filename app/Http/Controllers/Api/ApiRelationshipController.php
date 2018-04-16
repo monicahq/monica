@@ -61,6 +61,35 @@ class ApiRelationshipController extends ApiController
     }
 
     /**
+     * Delete a relationship.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $relationshipId)
+    {
+        try {
+            $relationship = Relationship::where('account_id', auth()->user()->account_id)
+                ->where('id', $relationshipId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        $contact = $relationship->contactIs;
+        $otherContact = $relationship->ofContact;
+        $contact->deleteRelationship($otherContact, $relationship->relationship_type_id);
+
+        // the contact is partial - if the relationship is deleted, the partial
+        // contact has no reason to exist anymore
+        if ($otherContact->is_partial) {
+            $otherContact->deleteEverything();
+        }
+
+        return $this->respondObjectDeleted($relationshipId);
+    }
+
+    /**
      * Validate the parameters.
      *
      * @param  Request $request
