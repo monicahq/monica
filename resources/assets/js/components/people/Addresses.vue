@@ -7,7 +7,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_address_title') }}</h3>
       </div>
-      <div class="dtc tr" v-if="contactAddresses.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -30,7 +30,7 @@
 
             <span v-if="editMode">{{ contactAddress.address }}</span>
 
-            <span class="light-silver">({{ contactAddress.name }})</span>
+            <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
             <div class="fr" v-if="editMode">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
@@ -182,6 +182,8 @@
                     province: '',
                     postal_code: ''
                 },
+
+                dirltr: true,
             };
         },
 
@@ -206,6 +208,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getAddresses();
                 this.getCountries();
             },

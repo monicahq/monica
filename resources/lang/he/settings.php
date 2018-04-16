@@ -152,7 +152,7 @@ return [
     'subscriptions_plan_month_cost' => '$5 לחודש',
     'subscriptions_plan_month_bonus' => 'ניתן לבטל בכל עת',
     'subscriptions_plan_include1' => 'כלול בשדרוג שלך:',
-    'subscriptions_plan_include2' => 'מספר בלתי מוגבל של משתמשים • תזכורות בדוא״ל • יבוא עם vCard',
+    'subscriptions_plan_include2' => 'מספר בלתי מוגבל של משתמשים • תזכורות בדוא״ל • ייבוא עם vCard • התאמה אישית של גיליון אנשי הקשר',
     'subscriptions_plan_include3' => '100% מהרווחים מושקעים בפיתוח מיזם הקוד הפתוח הנהדר הזה.',
     'subscriptions_help_title' => 'פרטים נוספים שעשויים לעניין אותך',
     'subscriptions_help_opensource_title' => 'מה הוא מיזם בקוד פתוח?',
@@ -273,8 +273,14 @@ return [
 
     'personalization_reminder_rule_save' => 'השינוי נשמר',
     'personalization_reminder_rule_title' => 'כללי תזכורות',
-    'personalization_reminder_rule_line' => '{0}באותו יום|{1}יום לפני|{2}יומיים לפני|[3,*]{count} ימים לפני',
+    'personalization_reminder_rule_line' => 'יום לפני|יומיים לפני|{count} ימים לפני',
     'personalization_reminder_rule_desc' => 'לכל תזכורת מוגדרת, נוכל לשלוח אליך הודעת דוא״ל כמה ימים לפני שהאירוע מתרחש. ניתן להחליף את מצב ההודעות האלה כאן. לתשומת לך: ההתרעות האלו חלות רק על תזכורות חודשיות ושנתיות.',
+
+    'personalization_module_save' => 'השינוי נשמר',
+    'personalization_module_title' => 'תכונות',
+    'personalization_module_desc' => 'חלק מהאנשים לא זקוקים לכל התכונות. להלן ניתן לכבות או להפעיל תכונות בהן נעשה שימוש בגיליון אנשי הקשר. השינוי הזה ישפיע על כל אנשי הקשר שלך. נא לשים לב שכיבוי של תכונה אחת או יותר לא יגרום לאבדן מידע, התכונה פשוט תוסתר.',
+
+    'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
 ];

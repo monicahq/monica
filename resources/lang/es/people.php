@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'Reminders',
     'section_personal_tasks' => 'Tasks',
     'section_personal_gifts' => 'Gifts',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'List of people',
@@ -226,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Are you sure you want to delete this gift?',
     'gifts_add_gift' => 'Add a gift',
     'gifts_link' => 'Link',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Delete',
     'gifts_add_title' => 'Gift management for :name',
     'gifts_add_gift_idea' => 'Gift idea',

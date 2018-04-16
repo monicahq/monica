@@ -291,8 +291,44 @@ class DateHelperTest extends FeatureTestCase
         $hours = DateHelper::getListOfHours();
 
         $this->assertEquals(
-            '01.00AM',
+            '01.00 AM',
             $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '1:00',
+            $hours[0]['id']
+        );
+
+        $this->assertEquals(
+            '02.00 PM',
+            $hours[13]['name']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['id']
+        );
+    }
+
+    public function test_it_returns_a_list_of_hours_French()
+    {
+        DateHelper::setLocale('fr');
+        $hours = DateHelper::getListOfHours();
+
+        $this->assertEquals(
+            '01:00',
+            $hours[0]['name']
+        );
+
+        $this->assertEquals(
+            '1:00',
+            $hours[0]['id']
+        );
+
+        $this->assertEquals(
+            '14:00',
+            $hours[13]['name']
         );
 
         $this->assertEquals(

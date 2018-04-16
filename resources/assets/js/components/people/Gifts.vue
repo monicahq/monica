@@ -10,7 +10,7 @@
       <img src="/img/people/gifts.svg" class="icon-section icon-tasks">
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/add'" class="btn fr f6 pt2">{{ $t('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + hash + '/gifts/add'" class="btn f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -35,7 +35,7 @@
 
                     <span v-if="gift.recipient_name">
                         <span class="mr1 black-50">•</span>
-                        For: {{ gift.recipient_name }}
+                        {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                     </span>
 
                     <span v-if="gift.url">
@@ -66,7 +66,7 @@
 
                 <span v-if="gift.recipient_name">
                     <span class="mr1 black-50">•</span>
-                    For: {{ gift.recipient_name }}
+                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                 </span>
 
                 <span v-if="gift.url">
@@ -95,7 +95,7 @@
 
                 <span v-if="gift.recipient_name">
                     <span class="mr1 black-50">•</span>
-                    For: {{ gift.recipient_name }}
+                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
                 </span>
 
                 <span v-if="gift.url">
@@ -147,7 +147,8 @@
             return {
                 gifts: [],
                 activeTab: '',
-                giftToTrash: ''
+                giftToTrash: '',
+                dirltr: true,
             };
         },
 
@@ -197,6 +198,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getGifts();
                 this.setActiveTab(this.giftsActiveTab);
             },

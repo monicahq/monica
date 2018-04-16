@@ -14,18 +14,18 @@
               <img src="{{ $contact->gravatar_url }}" width="87">
             @else
               @if (strlen($contact->getInitials()) == 1)
-              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar one-letter {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @else
-              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @endif
             @endif
           @endif
 
-          <h2>
+          <h2 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
             @if ($contact->birthday_special_date_id)
               @if ($contact->birthdate->getAge())
@@ -34,7 +34,7 @@
             @endif
           </h2>
 
-          <ul class="horizontal profile-detail-summary">
+          <ul class="horizontal profile-detail-summary {{ \App\Helpers\LocaleHelper::getDirection() }}">
             @if ($contact->is_dead)
               <li>
                 @if (! is_null($contact->deceasedDate))
@@ -60,7 +60,7 @@
             </li>
           </ul>
 
-          <ul class="tags">
+          <ul class="tags {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
                 <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
@@ -69,7 +69,7 @@
             <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
-          <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm">
+          <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ csrf_field() }}
             <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
             <div class="tagsFormActions">
@@ -78,7 +78,7 @@
             </div>
           </form>
 
-          <ul class="horizontal quick-actions">
+          <ul class="horizontal quick-actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li>
               <a href="/people/{{ $contact->hashID() }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
             </li>

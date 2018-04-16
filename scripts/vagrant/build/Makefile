@@ -9,6 +9,7 @@ xenial:
 
 package: build
 	vagrant package monicahq-stable --output ./monicahq-stable.box
+	vagrant box remove monicahq/monicahq --box-version 0 || true
 	vagrant box add monicahq/monicahq ./monicahq-stable.box
 
 .PHONY: build xenial package

@@ -27,6 +27,12 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
+<<<<<<< HEAD
+=======
+        'changelog_user',
+        'changelogs',
+        'countries',
+>>>>>>> origin/master
         'currencies',
         'default_contact_field_types',
         'default_contact_modules',
@@ -118,7 +124,7 @@ class SettingsController extends Controller
 
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed()) {
+        if ($account->isSubscribed() && auth()->user()->has_access_to_paid_version_for_free == 0) {
             $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 

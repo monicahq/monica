@@ -42,20 +42,7 @@ class DateHelper
     public static function getShortDate($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();
-
-        switch ($locale) {
-            case 'en':
-                $format = 'M d, Y';
-                break;
-            case 'pt':
-            case 'fr':
-                $format = 'd M Y';
-                break;
-            default:
-                $format = 'M d, Y';
-                break;
-        }
+        $format = trans('format.short_date_year', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -70,7 +57,7 @@ class DateHelper
     public static function getShortMonth($date)
     {
         $date = new Date($date);
-        $format = 'M';
+        $format = trans('format.short_month', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -85,7 +72,7 @@ class DateHelper
     public static function getShortDay($date)
     {
         $date = new Date($date);
-        $format = 'D';
+        $format = trans('format.short_day', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -100,20 +87,7 @@ class DateHelper
     public static function getShortDateWithoutYear($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();
-
-        switch ($locale) {
-            case 'en':
-                $format = 'M d';
-                break;
-            case 'pt':
-            case 'fr':
-                $format = 'd M';
-                break;
-            default:
-                $format = 'M d';
-                break;
-        }
+        $format = trans('format.short_date', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -128,19 +102,7 @@ class DateHelper
     public static function getShortDateWithTime($date)
     {
         $date = new Date($date);
-        $locale = Date::getLocale();
-
-        switch ($locale) {
-            case 'en':
-                $format = 'M d, Y H:i';
-                break;
-            case 'pt':
-            case 'fr':
-                $format = 'd M Y H:i';
-                break;
-            default:
-                $format = 'M d, Y H:i';
-        }
+        $format = trans('format.short_date_year_time', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -177,7 +139,7 @@ class DateHelper
     public static function getMonthAndYear(int $month)
     {
         $date = Date::now()->addMonthsNoOverflow($month);
-        $format = 'M Y';
+        $format = trans('format.short_month_year', [], Date::getLocale());
 
         return $date->format($format);
     }
@@ -207,14 +169,14 @@ class DateHelper
     public static function getListOfMonths()
     {
         $months = collect([]);
-        $currentDate = Date::now();
-        $currentDate->day = 1;
+        $currentDate = Date::parse('2000-01-01');
+        $format = trans('format.full_month', [], Date::getLocale());
 
-        for ($month = 1; $month < 13; $month++) {
+        for ($month = 1; $month <= 12; $month++) {
             $currentDate->month = $month;
             $months->push([
                 'id' => $month,
-                'name' => mb_convert_case($currentDate->format('F'), MB_CASE_TITLE, 'UTF-8'),
+                'name' => mb_convert_case($currentDate->format($format), MB_CASE_TITLE, 'UTF-8'),
             ]);
         }
 
@@ -229,7 +191,7 @@ class DateHelper
     public static function getListOfDays()
     {
         $days = collect([]);
-        for ($day = 1; $day < 32; $day++) {
+        for ($day = 1; $day <= 31; $day++) {
             $days->push(['id' => $day, 'name' => $day]);
         }
 
@@ -243,11 +205,15 @@ class DateHelper
      */
     public static function getListOfHours()
     {
+        $currentDate = Date::parse('2000-01-01 00:00:00');
+        $format = trans('format.full_hour', [], Date::getLocale());
+
         $hours = collect([]);
         for ($hour = 1; $hour <= 24; $hour++) {
+            $currentDate->hour = $hour;
             $hours->push([
-                'id' => date('H:i', strtotime("$hour:00")),
-                'name' => date('h.iA', strtotime("$hour:00")),
+                'id' => "$hour:00",
+                'name' => $currentDate->format($format),
             ]);
         }
 
