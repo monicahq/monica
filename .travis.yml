@@ -82,6 +82,7 @@ after_script:
   - if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
 
 cache:
+  yarn: true
   directories:
     - $HOME/.composer/cache/files
     - node_modules
