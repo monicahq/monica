@@ -2,17 +2,23 @@ GIT_TAG := $(shell git describe --abbrev=0 --tags)
 GIT_COMMIT := $(shell git log --format="%h" -n 1)
 BUILD := $(GIT_TAG)
 ifeq ($(TRAVIS_TAG),)
+ifeq ($(TRAVIS_BRANCH),)
 # If we are not on travis or it's not a TAG build, we add "-dev" to the name
-BUILD := $(BUILD)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
-ifneq ($(GIT_TAG),$(BUILD))
-ifneq ($(GIT_COMMIT),)
-BUILD := $(BUILD)-$(GIT_COMMIT)
+BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+else
+ifneq ($(TRAVIS_PULL_REQUEST_BRANCH),)
+BUILD := $(TRAVIS_PULL_REQUEST_BRANCH)
+else
+BUILD := $(TRAVIS_BRANCH)
 endif
 endif
 endif
 
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
+
+test:
+	echo $(BUILD)
 
 default: build
 
@@ -103,6 +109,8 @@ $(ASSETS):
 	ln -s ../../public/fonts $@/public/
 
 dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2
+
+assets: results/$(ASSETS).tar.bz2
 
 COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
