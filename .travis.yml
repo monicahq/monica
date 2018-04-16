@@ -110,6 +110,40 @@ jobs:
       env: DB=postgres
 
     - stage: Deploy
+      if: branch = master
+      skip_cleanup: true
+      before_install:
+        - cp scripts/tests/.env.mysql.travis .env
+        - composer self-update
+
+      install:
+        # Get packages without require-dev
+        - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+        # Build js and css assets
+        - php artisan lang:generate
+        - npm install
+        - npm run production
+
+      before_script: skip
+
+      script:
+        - make dist
+
+      after_script: skip
+
+      before_deploy:
+        - DEPLOY_TEMPLATE=scripts/tests/master.travis.deploy.json.in make .travis.deploy.json
+
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        skip_cleanup: true
+        user: $BINTRAY_USER
+        key: $BINTRAY_APIKEY
+        on:
+          all_branches: true
+
+    - stage: Deploy
       if: tag IS present
       skip_cleanup: true
       before_install:
