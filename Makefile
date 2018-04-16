@@ -55,14 +55,14 @@ build: build-dev
 build-prod:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
 	php artisan lang:generate
-	npm install
-	npm run production
+	yarn install
+	yarn run production
 
 build-dev:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
 	php artisan lang:generate
-	npm install
-	npm run dev
+	yarn install
+	yarn run dev
 
 prepare: $(DESTDIR) $(ASSETS)
 	mkdir -p results
