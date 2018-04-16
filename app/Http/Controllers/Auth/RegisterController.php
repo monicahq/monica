@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use Auth;
 use Request;
+use App\User;
 use Validator;
 use App\Account;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller

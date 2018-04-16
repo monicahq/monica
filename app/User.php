@@ -5,11 +5,11 @@ namespace App;
 use DB;
 use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\App;
 
 class User extends Authenticatable
 {
