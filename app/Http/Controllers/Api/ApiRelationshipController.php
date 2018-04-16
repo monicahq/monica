@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use Validator;
+use App\Contact;
 use App\Relationship;
 use App\RelationshipType;
 use Illuminate\Http\Request;
@@ -37,35 +39,34 @@ class ApiRelationshipController extends ApiController
      */
     public function create(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
+        $validParameters = $this->validateParameters($request);
+        if ($validParameters !== true) {
+            return $validParameters;
         }
 
         $relationshipType = RelationshipType::find($request->get('relationship_type_id'));
 
-        // Create the contact
+        $contact = Contact::findOrFail($request->get('contact_is'));
+        $partner = Contact::find($request->get('of_contact'));
+
         try {
-            $relationship = Relationship::create(
-                $request->only([
-                    'contact_is',
-                    'relationship_type_id',
-                    'of_contact',
-                ]) + [
-                'relationship_type_name' => $relationshipType->name,
-            ]);
+            $contact->setRelationship($partner, $relationshipType->id);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
+
+        $relationship = $contact->getRelationshipNatureWith($partner);
+
+        return new RelationshipResource($relationship);
     }
 
     /**
-     * Validate the request for update.
+     * Validate the parameters.
      *
      * @param  Request $request
      * @return mixed
      */
-    private function validateUpdate(Request $request)
+    private function validateParameters(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
@@ -75,7 +76,7 @@ class ApiRelationshipController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
+            return $this->setErrorCode(41)
                         ->respondWithError($validator->errors()->all());
         }
 
