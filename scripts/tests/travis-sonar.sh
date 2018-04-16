@@ -132,7 +132,7 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
     -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST \
     -Dsonar.pullrequest.base=$TRAVIS_BRANCH \
-    -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
+    -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
     -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG"
 
