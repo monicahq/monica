@@ -124,22 +124,6 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   installSonar
   gitFetch
 
-#  if [ -n "${GITHUB_TOKEN:-}" ]; then
-#    # analyse with GitHub token to add comment on the PR
-#    echo sonar-scanner $(CommonParams) \
-#      -Dsonar.analysis.mode=preview \
-#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG
-#
-#    $SONAR_SCANNER_HOME/bin/sonar-scanner $(CommonParams) \
-#      -Dsonar.analysis.mode=preview \
-#      -Dsonar.github.pullRequest=$TRAVIS_PULL_REQUEST \
-#      -Dsonar.github.repository=$TRAVIS_REPO_SLUG \
-#      -Dsonar.github.oauth=$GITHUB_TOKEN \
-#      -Dsonar.login=$SONAR_TOKEN
-#  fi
-
-  # analyse with GitHub token to add comment on the PR
   SONAR_PARAMS="$(CommonParams) \
     -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
     -Dsonar.branch.target=$TRAVIS_BRANCH \
@@ -148,6 +132,9 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
     -Dsonar.analysis.prNumber=$TRAVIS_PULL_REQUEST \
     -Dsonar.analysis.repository=$TRAVIS_REPO_SLUG \
+    -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST \
+    -Dsonar.pullrequest.base=$TRAVIS_BRANCH \
+    -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.github.id=$TRAVIS_PULL_REQUEST \
     -Dsonar.pullrequest.github.repository=$TRAVIS_REPO_SLUG"
 
