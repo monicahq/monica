@@ -110,6 +110,8 @@ $(ASSETS):
 
 dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2
 
+assets: results/$(ASSETS).tar.bz2
+
 COMMIT_MESSAGE := $(shell echo "$$TRAVIS_COMMIT_MESSAGE" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
