@@ -27,12 +27,9 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
-<<<<<<< HEAD
-=======
         'changelog_user',
         'changelogs',
         'countries',
->>>>>>> origin/master
         'currencies',
         'default_contact_field_types',
         'default_contact_modules',

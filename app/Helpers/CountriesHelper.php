@@ -16,7 +16,7 @@ class CountriesHelper
         $countries = Countries::all()->map(function ($item, $key) {
             return [
                 'id' => $item->cca2,
-                'country' => static::getCommonNameLocale($item)
+                'country' => static::getCommonNameLocale($item),
             ];
         });
 
@@ -29,6 +29,7 @@ class CountriesHelper
         if ($country->count() === 0) {
             return '';
         }
+
         return static::getCommonNameLocale($country);
     }
 

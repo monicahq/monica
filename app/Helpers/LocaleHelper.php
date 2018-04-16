@@ -76,7 +76,7 @@ class LocaleHelper
     }
 
     /**
-     * Association ISO-639-1 => ISO-639-2
+     * Association ISO-639-1 => ISO-639-2.
      */
     private static $locales = [];
 
