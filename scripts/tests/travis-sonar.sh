@@ -126,7 +126,6 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
   SONAR_PARAMS="$(CommonParams) \
     -Dsonar.branch.name=$PULL_REQUEST_BRANCH \
-    -Dsonar.branch.target=$TRAVIS_BRANCH \
     -Dsonar.analysis.buildNumber=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.pipeline=$TRAVIS_BUILD_NUMBER \
     -Dsonar.analysis.sha1=$TRAVIS_PULL_REQUEST_SHA \
