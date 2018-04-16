@@ -111,6 +111,7 @@ jobs:
 
     - stage: Deploy
 #      if: type IN (push) AND branch = master
+      if: type IN (push, pull_request)
       skip_cleanup: true
       before_install:
         - cp scripts/tests/.env.mysql.travis .env
