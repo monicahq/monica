@@ -3,7 +3,6 @@
 namespace Tests\Browser\Settings;
 
 use App\User;
-use QrReader;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsSecurity;
