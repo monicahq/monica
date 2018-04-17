@@ -15,6 +15,7 @@ return [
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
+    'new' => 'new',
     'unknown' => 'Ich weiß es nicht',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Einstellungen',
     'header_logout_link' => 'Ausloggen',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Person hinzufügen',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Tagebuch',
     'main_nav_activities' => 'Aktivitäten',
     'main_nav_tasks' => 'Aufgaben',
-    'main_nav_trash' => 'Papierkorb',
 
     'footer_remarks' => 'Eine Anmerkung?',
     'footer_send_email' => 'Schick\' mir eine E-Mail',

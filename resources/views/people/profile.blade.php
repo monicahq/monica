@@ -57,7 +57,7 @@
 
             @if ($modules->contains('key', 'notes'))
             <div class="row section notes">
-              <div class="col-xs-12 section-title">
+              <div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
                 <contact-note hash={!! $contact->hashID() !!}></contact-note>
               </div>
             </div>

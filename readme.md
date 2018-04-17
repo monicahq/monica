@@ -47,7 +47,7 @@ Monica is a great open source personal relationship management system.
 Monica is an open-source web application to organize the interactions with your loved ones. I call it a PRM, or Personal Relationship Management. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management) (a popular tool used by sales teams in the corporate world) for your friends or family. This is what it currently looks like:
 
 <p align="center">
-<img src="https://app.monicahq.com/img/main-app.png" alt="screenshot of the application">
+<img src="docs/images/main-app.png" alt="screenshot of the application">
 </p>
 
 ### Purpose
@@ -57,7 +57,7 @@ Monica allows people to keep track of everything that's important about their fr
 ### Features
 
 * Add and manage contacts
-* Add significant others and children
+* Define relationships between contacts
 * Auto reminders for birthdays
 * Reminders are sent by email
 * Management of debts
@@ -76,6 +76,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Ability to set custom genders
 * Multi users
 * Labels to organize contacts
+* Ability to define what section should appear on the contact sheet
 * Multi currencies
 * Multi languages
 * An API that covers most of the data

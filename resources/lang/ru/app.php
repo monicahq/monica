@@ -15,6 +15,7 @@ return [
     'done' => 'Done',
     'verify' => 'Verify',
     'for' => 'for',
+    'new' => 'new',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Настройки',
     'header_logout_link' => 'Выйти',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Добавить людей',
     'main_nav_dashboard' => 'Обзор',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Журнал',
     'main_nav_activities' => 'Активности',
     'main_nav_tasks' => 'Задачи',
-    'main_nav_trash' => 'Корзина',
 
     'footer_remarks' => 'Есть предложения?',
     'footer_send_email' => 'Отправьте мне email',
