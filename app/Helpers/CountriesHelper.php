@@ -27,10 +27,26 @@ class CountriesHelper
     {
         $country = Countries::where('cca2', mb_strtoupper($iso))->first();
         if ($country->count() === 0) {
+            $country = Countries::where('alt_spellings', mb_strtoupper($iso))->first();
+        }
+        if ($country->count() === 0) {
             return '';
         }
 
         return static::getCommonNameLocale($country);
+    }
+
+    public static function find($name)
+    {
+        $country = Countries::where('name.common', $name)->first();
+        if ($country->count() === 0) {
+            $country = Countries::where('cca2', mb_strtoupper($name))->first();
+        }
+        if ($country->count() === 0) {
+            return '';
+        }
+
+        return $country->cca2;
     }
 
     private static function getCommonNameLocale($country)

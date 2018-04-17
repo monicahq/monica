@@ -58,6 +58,28 @@ class AddressTest extends TestCase
         );
     }
 
+    public function testGetCountryCodeReturnsUK()
+    {
+        $address = new Address;
+        $address->country = 'UK';
+
+        $this->assertEquals(
+            'United Kingdom',
+            $address->getCountryName()
+        );
+    }
+
+    public function testGetCountryCodeReturnsGB()
+    {
+        $address = new Address;
+        $address->country = 'GB';
+
+        $this->assertEquals(
+            'United Kingdom',
+            $address->getCountryName()
+        );
+    }
+    
     public function testGetCountryISOReturnsNullIfISONotFound()
     {
         $address = new Address;

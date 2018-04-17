@@ -8,6 +8,7 @@ use App\Contact;
 use App\ContactField;
 use App\ContactFieldType;
 use Sabre\VObject\Reader;
+use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 
 trait VCardImporter
@@ -97,7 +98,7 @@ trait VCardImporter
             $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
             $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-            $address->country = mb_strtolower($vcard->ADR->getParts()[6]);
+            $address->country = CountriesHelper::find($vcard->ADR->getParts()[6]);
             $address->contact_id = $contact->id;
             $address->account_id = $contact->account_id;
             $address->save();
