@@ -14,7 +14,7 @@
         "attributes": []
     },
     "version": {
-        "name": "$(version)",
+        "name": "master",
         "desc": "$(description)",
         "released": "$(released)",
         "vcs_tag": "$(travis_tag)",
@@ -25,7 +25,13 @@
         ]
     },
     "files": [
-        {"includePattern": "results/(monica.*)", "uploadPattern": "$1"}
+        {
+            "includePattern": "results/(monica-assets.*)",
+            "uploadPattern": "$1",
+            "matrixParams": {
+                "override": 1
+            }
+        }
     ],
     "publish": true
 }
