@@ -12,6 +12,7 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
     Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
     Route::post('/relationships', 'Api\\ApiRelationshipController@create');
+    Route::put('/relationships/{id}', 'Api\\ApiRelationshipController@update');
     Route::delete('/relationships/{id}', 'Api\\ApiRelationshipController@destroy');
 
     // Sets tags
