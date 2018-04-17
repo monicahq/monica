@@ -7,7 +7,7 @@
 
     <h3 class="mb3">
       {{ $t('settings.personalization_genders_title') }}
-      <a class="btn fr nt2" @click="showCreateModal">{{ $t('settings.personalization_genders_add') }}</a>
+      <a class="btn nt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateModal">{{ $t('settings.personalization_genders_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_genders_desc') }}</p>
 
@@ -19,7 +19,7 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -33,7 +33,7 @@
             <span class="i">({{ gender.numberOfContacts }} contacts)</span>
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></i>
             <i class="fa fa-trash-o pointer" @click="showDelete(gender)" v-if="genders.length > 1"></i>
@@ -155,6 +155,8 @@
                     name: '',
                     newId: 0
                 },
+
+                dirltr: true,
             };
         },
 
@@ -182,6 +184,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getGenders();
             },
 

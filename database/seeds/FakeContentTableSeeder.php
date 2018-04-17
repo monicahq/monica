@@ -3,8 +3,8 @@
 use App\Account;
 use App\Contact;
 use GuzzleHttp\Client;
-use App\Helpers\CountriesHelper;
 use Illuminate\Database\Seeder;
+use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -333,6 +333,7 @@ class FakeContentTableSeeder extends Seeder
         if ($this->countries == null) {
             $this->countries = CountriesHelper::getAll();
         }
+
         return $this->countries->random()->id;
     }
 

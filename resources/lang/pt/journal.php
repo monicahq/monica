@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'Você avaliou o seu dia.',
     'entry_delete_success' => 'O registro no diário foi eliminada com sucesso.',
     'journal_add_title' => 'Título (Opcional)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Registro',
     'journal_add_cta' => 'Salvar',
     'journal_blank_cta' => 'Adicione seu primeiro registro no diário',

@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'Promemoria',
     'section_personal_tasks' => 'Cose da fare',
     'section_personal_gifts' => 'Regali',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'Lista dei contatti',
@@ -226,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Rimuovere regalo?',
     'gifts_add_gift' => 'Aggiungi regalo',
     'gifts_link' => 'Link',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Rimuovi',
     'gifts_add_title' => 'Gestione dei regali a :name',
     'gifts_add_gift_idea' => 'Idea regalo',

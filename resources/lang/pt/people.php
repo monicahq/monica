@@ -50,6 +50,7 @@ return [
     'section_personal_reminders' => 'Lembretes',
     'section_personal_tasks' => 'Tarefas',
     'section_personal_gifts' => 'Presentes',
+    'section_personal_notes' => 'Notes',
 
     //
     'link_to_list' => 'Lista de pessoas',
@@ -226,6 +227,7 @@ return [
     'gifts_delete_confirmation' => 'Tem certeza de que deseja excluir esse presente?',
     'gifts_add_gift' => 'Adicionar um presente',
     'gifts_link' => 'Ligar',
+    'gifts_for' => 'For:',
     'gifts_delete_cta' => 'Deletar',
     'gifts_add_title' => 'Gerenciamento de presentes para :name',
     'gifts_add_gift_idea' => 'Ideia de presente',
