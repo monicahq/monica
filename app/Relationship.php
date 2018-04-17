@@ -16,9 +16,9 @@ class Relationship extends Model
      */
     protected $fillable = [
         'account_id',
-        'contact_id',
-        'with_contact_id',
-        'is_active',
+        'contact_is',
+        'of_contact',
+        'relationship_type_id',
     ];
 
     public function account()

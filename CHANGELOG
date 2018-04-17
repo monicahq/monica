@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to set relationships through the API
 * Fix ordering of activites in journal
 * Fix how you meet section not being shown
 * Add a changelog inside the application

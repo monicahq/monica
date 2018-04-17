@@ -31,7 +31,6 @@
 }
 
 .header-nav {
-  margin-top: 24px;
   text-align: right;
 
   .header-nav-item {
@@ -45,6 +44,7 @@
 
   &.rtl {
     text-align: left;
+
     .header-nav-item {
       &:last-child {
         margin-right: 10px;
