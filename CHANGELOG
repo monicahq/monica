@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix ordering of activites in journal
 * Fix how you meet section not being shown
 * Add a changelog inside the application
 * Fix monica:calculatestatistics command
@@ -24,6 +25,7 @@ v2.0.0 - 2018-04-12
 * Fix gifts handle
 * Remove old documentation from sources
 * Fix Bug when editing gift
+
 
 v1.8.2 - 2018-03-20
 -------------------
