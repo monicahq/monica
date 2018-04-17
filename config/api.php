@@ -40,5 +40,6 @@ return [
         '38' => 'Date should be in the future',
         '39' => 'The sorting criteria is invalid',
         '40' => 'Invalid query',
+        '42' => 'Not authorized.',
     ],
 ];
