@@ -3,8 +3,8 @@
 namespace App;
 
 use Carbon\Carbon;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -9,8 +9,8 @@ use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
