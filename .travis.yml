@@ -49,8 +49,8 @@ install:
 
   # Build js and css assets
   - php artisan lang:generate
-  - npm install
-  - npm run production
+  - yarn install
+  - yarn run production
 
 before_script:
   - php artisan migrate --env=testing --no-interaction -vvv
@@ -82,6 +82,7 @@ after_script:
   - if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
 
 cache:
+  yarn: true
   directories:
     - $HOME/.composer/cache/files
     - node_modules
@@ -108,6 +109,40 @@ jobs:
       allow_failure: true 
       php: 7.1
       env: DB=postgres
+
+    - stage: Deploy
+      if: type = push AND branch = master
+      skip_cleanup: true
+      before_install:
+        - cp scripts/tests/.env.mysql.travis .env
+        - composer self-update
+
+      install:
+        # Get packages without require-dev
+        - travis_retry composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+        # Build js and css assets
+        - php artisan lang:generate
+        - yarn install
+        - yarn run production
+
+      before_script: skip
+
+      script:
+        - make assets
+
+      after_script: skip
+
+      before_deploy:
+        - DEPLOY_TEMPLATE=scripts/tests/master.travis.deploy.json.in make .travis.deploy.json
+
+      deploy:
+        provider: bintray
+        file: .travis.deploy.json
+        skip_cleanup: true
+        user: $BINTRAY_USER
+        key: $BINTRAY_APIKEY
+        on:
+          all_branches: true
 
     - stage: Deploy
       if: tag IS present
@@ -159,25 +194,25 @@ jobs:
 
       after_script: skip
 
-    - stage: Deploy
-      if: tag IS present
-      before_install:
-        - scripts/vagrant/install-vagrant.sh
-
-      install: skip
-      before_script: skip
-
-      script:
-        - make vagrant_build
-      after_script: skip
-
-      before_deploy:
-        - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
-      deploy:
-        provider: bintray
-        file: .travis.deploy.json
-        skip_cleanup: true
-        user: $BINTRAY_USER
-        key: $BINTRAY_APIKEY
-        on:
-          all_branches: true
+#    - stage: Deploy
+#      if: tag IS present
+#      before_install:
+#        - scripts/vagrant/install-vagrant.sh
+#
+#      install: skip
+#      before_script: skip
+#
+#      script:
+#        - make vagrant_build
+#      after_script: skip
+#
+#      before_deploy:
+#        - DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
+#      deploy:
+#        provider: bintray
+#        file: .travis.deploy.json
+#        skip_cleanup: true
+#        user: $BINTRAY_USER
+#        key: $BINTRAY_APIKEY
+#        on:
+#          all_branches: true
