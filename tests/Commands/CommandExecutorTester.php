@@ -7,7 +7,7 @@ use App\Console\Commands\Helpers\CommandExecutorInterface;
 class CommandExecutorTester implements CommandExecutorInterface
 {
     /**
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
     public $buffer;
 

@@ -83,6 +83,7 @@
         <!-- level 6 issues - bad stuff here -->
 
         <InvalidNullableReturnType errorLevel="info" />
+        <NullableReturnStatement errorLevel="info" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <UnresolvableInclude errorLevel="info" />
         <InvalidReturnStatement errorLevel="info" />

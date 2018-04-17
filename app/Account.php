@@ -653,7 +653,7 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($first_name, $last_name, $email, $password)
     {
@@ -711,7 +711,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyCallStatistics()
     {
@@ -746,7 +746,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyActivitiesStatistics()
     {

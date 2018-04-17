@@ -29,19 +29,19 @@ class ContactWithContactFields extends Resource
                 'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
                         'total' => $this->getRelationshipsByRelationshipTypeGroup('love')->count(),
-                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love')),
+                        'contacts' => \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love')),
                     ],
                     'family' => [
                         'total' => $this->getRelationshipsByRelationshipTypeGroup('family')->count(),
-                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family')),
+                        'contacts' => \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family')),
                     ],
                     'friend' => [
                         'total' => $this->getRelationshipsByRelationshipTypeGroup('friend')->count(),
-                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend')),
+                        'contacts' => \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend')),
                     ],
                     'work' => [
                         'total' => $this->getRelationshipsByRelationshipTypeGroup('work')->count(),
-                        'contacts' => Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work')),
+                        'contacts' => \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work')),
                     ],
                 ]),
                 'dates' => [

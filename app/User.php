@@ -2,9 +2,10 @@
 
 namespace App;
 
-use DB;
 use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,7 +59,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = \App::getLocale();
+        $user->locale = App::getLocale();
         $user->save();
 
         return $user;

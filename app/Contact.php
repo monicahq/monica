@@ -2,10 +2,10 @@
 
 namespace App;
 
-use DB;
 use App\Traits\Hasher;
 use App\Traits\Searchable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
@@ -414,7 +414,7 @@ class Contact extends Model
     /**
      * Mutator last_consulted_at.
      *
-     * @param datetime $value
+     * @param \DateTime $value
      */
     public function setLastConsultedAtAttribute($value)
     {
