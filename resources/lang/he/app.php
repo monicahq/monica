@@ -30,7 +30,7 @@ return [
 
     'header_settings_link' => 'הגדרות',
     'header_logout_link' => 'יציאה',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => 'שינויים במוצר',
 
     'main_nav_cta' => 'הוספת אנשים',
     'main_nav_dashboard' => 'לוח מחוונים',
