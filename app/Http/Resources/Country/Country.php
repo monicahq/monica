@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Country;
 
+use App\Helpers\CountriesHelper;
 use Illuminate\Http\Resources\Json\Resource;
 
 class Country extends Resource
@@ -17,8 +18,8 @@ class Country extends Resource
         return [
             'id' => $this->id,
             'object' => 'country',
-            'name' => $this->country,
-            'iso' => $this->iso,
+            'name' => CountriesHelper::get($this->id),
+            'iso' => $this->id,
         ];
     }
 }

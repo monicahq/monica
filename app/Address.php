@@ -38,16 +38,6 @@ class Address extends Model
     }
 
     /**
-     * Get the Country records associated with the contact.
-     *
-     * @return BelongsTo
-     */
-    public function country()
-    {
-        return $this->belongsTo('App\Country');
-    }
-
-    /**
      * Get the address in a format like 'Lives in Scranton, MS'.
      *
      * @return string

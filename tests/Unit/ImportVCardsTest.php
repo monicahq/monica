@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\User;
 use App\Account;
 use App\Contact;
-use App\Country;
 use Mockery as m;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
