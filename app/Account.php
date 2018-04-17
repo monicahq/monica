@@ -133,16 +133,6 @@ class Account extends Model
     }
 
     /**
-     * Get the offspring records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function offpsrings()
-    {
-        return $this->hasMany(Offspring::class);
-    }
-
-    /**
      * Get the progenitor records associated with the account.
      *
      * @return HasMany
