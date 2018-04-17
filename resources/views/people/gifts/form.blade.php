@@ -33,7 +33,7 @@
     {{-- URL --}}
     <div class="form-group">
         <label for="url">{{ trans('people.gifts_add_link') }}</label>
-        <input type="text" class="form-control" name="url" id="url" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
+        <input type="text" class="form-control" name="url" id="url" dir="ltr" value="{{ old('url') ?? $gift->url }}" placeholder="https://">
     </div>
 
     {{-- Value --}}
@@ -52,14 +52,14 @@
         <div class="form-group">
             <div class="form-check">
                 <label class="form-check-label" id="has_recipient">
-                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1">
+                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1" {{ $gift->hasParticularRecipient() ? 'checked' : '' }}>
                     {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
                 </label>
             </div>
             <select id="recipient" name="recipient" class="form-control">
                 @foreach($familyRelationships as $familyRelationship)
                     <option value="{{ $familyRelationship->ofContact->id }}"
-                        @if(old('recipient') && old('recipient') === $familyRelationship->ofContact->id)
+                        @if($gift->is_for === $familyRelationship->ofContact->id)
                             selected
                         @endif
                     >{{ $familyRelationship->ofContact->first_name }}</option>

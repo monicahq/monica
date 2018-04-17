@@ -10,7 +10,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.pets_title') }}</h3>
       </div>
-      <div class="dtc tr" v-if="pets.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="pets.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -30,7 +30,7 @@
             {{ $t('people.pets_' + pet.category_name) }}
             <span v-if="pet.name">- {{ pet.name }}</span>
           </div>
-          <div class="dtc tr" v-if="editMode">
+          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(pet)"></i>
             <i class="fa fa-trash-o pointer" @click="trash(pet)"></i>
           </div>
@@ -122,7 +122,9 @@
                     name: '',
                     edit: false,
                     errors: []
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -140,13 +142,14 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getPetCategories();
                 this.getPets();
             },
@@ -159,14 +162,14 @@
             },
 
             getPets() {
-                axios.get('/people/' + this.contactId + '/pets')
+                axios.get('/people/' + this.hash + '/pets')
                         .then(response => {
                             this.pets = response.data;
                         });
             },
 
             store() {
-                axios.post('/people/' + this.contactId + '/pet', this.createForm)
+                axios.post('/people/' + this.hash + '/pet', this.createForm)
                       .then(response => {
                           this.addMode = false;
                           this.pets.push(response.data);
@@ -195,7 +198,7 @@
             },
 
             update(pet) {
-                axios.put('/people/' + this.contactId + '/pet/' + pet.id, this.updateForm)
+                axios.put('/people/' + this.hash + '/pet/' + pet.id, this.updateForm)
                       .then(response => {
                           Vue.set(pet, 'edit', !pet.edit);
                           Vue.set(pet, 'name', response.data.name);
@@ -212,7 +215,7 @@
             },
 
             trash(pet) {
-                axios.delete('/people/' + this.contactId + '/pet/' + pet.id)
+                axios.delete('/people/' + this.hash + '/pet/' + pet.id)
                       .then(response => {
                           this.getPets();
 

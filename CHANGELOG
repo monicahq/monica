@@ -1,13 +1,23 @@
 UNRELEASED CHANGES:
 
+* Fix ordering of activites in journal
+* Fix how you meet section not being shown
+* Add a changelog inside the application
+* Fix monica:calculatestatistics command
+
+RELEASED VERSIONS:
+
+v2.0.0 - 2018-04-12
+-------------------
+
+* Add ability to set a journal entry date
+* Use UUID instead of actual ID to identify contacts
+* Add ability to show/hide sections on the Contact sheet view
 * Add many more relationship types to link contacts together
 * Fix called_at field in the Call object returned by the API
 * Add Linkedin URL in the Contact object returned by the API
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
-* Fix ordering of activites in journal
-
-RELEASED VERSIONS:
 
 v1.8.2 - 2018-03-20
 -------------------

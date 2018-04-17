@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Be right back.</title>
+        <title>Maintenance in progress. Be right back.</title>
 
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -40,7 +40,10 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <div class="title">Maintenance in progress.</div>
+                <div>
+                    <p>We'll be right back. Follow <a href="twitter.com/monicaHQ_app">our Twitter account</a> to be alerted when it's up again.</p>
+                </div>
             </div>
         </div>
     </body>

@@ -94,7 +94,7 @@ class RelationshipsController extends Controller
         $partner = new Contact;
         $partner->account_id = $contact->account->id;
 
-        if (! $partner->setName($request->input('first_name'), null, $request->input('last_name'))) {
+        if (! $partner->setName($request->input('first_name'), $request->input('last_name'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -147,7 +147,7 @@ class RelationshipsController extends Controller
             $partner->save();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -216,7 +216,7 @@ class RelationshipsController extends Controller
         }
 
         // set the name of the contact
-        if (! $otherContact->setName($request->input('first_name'), null, $request->input('last_name'))) {
+        if (! $otherContact->setName($request->input('first_name'), $request->input('last_name'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -265,7 +265,7 @@ class RelationshipsController extends Controller
             $otherContact->save();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -287,7 +287,6 @@ class RelationshipsController extends Controller
         }
 
         $type = $contact->getRelationshipNatureWith($otherContact);
-
         $contact->deleteRelationship($otherContact, $type->relationship_type_id);
 
         // the contact is partial - if the relationship is deleted, the partial
@@ -296,7 +295,7 @@ class RelationshipsController extends Controller
             $otherContact->deleteEverything();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.relationship_form_deletion_success'));
     }
 }

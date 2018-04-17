@@ -57,7 +57,7 @@ class DebtController extends Controller
 
         $contact->logEvent('debt', $debt->id, 'create');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.debt_add_success'));
     }
 
@@ -111,7 +111,7 @@ class DebtController extends Controller
 
         $contact->logEvent('debt', $debt->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.debt_edit_success'));
     }
 
@@ -128,7 +128,7 @@ class DebtController extends Controller
 
         $contact->events()->forObject($debt)->get()->each->delete();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.debt_delete_success'));
     }
 }

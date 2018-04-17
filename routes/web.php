@@ -36,6 +36,8 @@ Route::middleware(['auth', '2fa'])->group(function () {
     });
     Route::post('/validate2fa', 'DashboardController@index');
 
+    Route::get('/changelog', 'ChangelogController@index');
+
     Route::group(['as' => 'people'], function () {
         Route::get('/people', 'ContactsController@index')->name('.index');
         Route::get('/people/add', 'ContactsController@create')->name('.create');
@@ -187,6 +189,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
+
+        Route::get('/settings/personalization/modules', 'Settings\\ModulesController@get');
+        Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');
