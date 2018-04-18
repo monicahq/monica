@@ -13,7 +13,7 @@ class CountriesHelper
      */
     public static function getAll()
     {
-        $countries = Countries::all()->map(function ($item, $key) {
+        $countries = Countries::all()->map(function ($item) {
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
