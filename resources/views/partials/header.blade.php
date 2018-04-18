@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="w-50-l w-100 ph2 dtc-l v-mid tl tr-l">
-        <div class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
+        <div class="{{ \App\Helpers\LocaleHelper::getDirection() }} header-nav">
           <a href="/dashboard" class="header-nav-item-link dib">{{ trans('app.main_nav_dashboard') }}</a>
           <a href="/people" class="header-nav-item-link dib">{{ trans('app.main_nav_family') }}</a>
           <a href="/journal" class="header-nav-item-link dib">{{ trans('app.main_nav_journal') }}</a>
