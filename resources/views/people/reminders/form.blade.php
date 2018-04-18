@@ -63,9 +63,9 @@
                            :disabled="reminders_frequency == 'once'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'once'">
-                        <option value="week" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'week' ? 'selected : '' }}>{{ trans('people.reminders_type_week') }}</option>
-                        <option value="month" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'month' ? 'selected : '' }}>{{ trans('people.reminders_type_month') }}</option>
-                        <option value="year" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'year' ? 'selected : '' }}>{{ trans('people.reminders_type_year') }}</option>
+                        <option value="week" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'week' ? 'selected' : '' }}>{{ trans('people.reminders_type_week') }}</option>
+                        <option value="month" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'month' ? 'selected' : '' }}>{{ trans('people.reminders_type_month') }}</option>
+                        <option value="year" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'year' ? 'selected' : '' }}>{{ trans('people.reminders_type_year') }}</option>
                     </select>
 
                     {{ trans('people.reminders_add_starting_from') }}
