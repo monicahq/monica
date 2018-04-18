@@ -6695,12 +6695,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "2b28787651b69de2b14ae222737deb05befbb33b"
+                "reference": "bf3a473c42c3640103645f9477fd425749341780"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/2b28787651b69de2b14ae222737deb05befbb33b",
-                "reference": "2b28787651b69de2b14ae222737deb05befbb33b",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bf3a473c42c3640103645f9477fd425749341780",
+                "reference": "bf3a473c42c3640103645f9477fd425749341780",
                 "shasum": ""
             },
             "conflict": {
@@ -6850,7 +6850,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-04-18T09:24:34+00:00"
+            "time": "2018-04-14T07:19:11+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
