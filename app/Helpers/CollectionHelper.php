@@ -42,10 +42,10 @@ class CollectionHelper
 
         return new Collection($results);
     }
-    
+
     /**
      * Get a Collator object for the locale or current locale.
-     * 
+     *
      * @param string
      * @return \Collator
      */
@@ -59,8 +59,10 @@ class CollectionHelper
         if (! array_has($collators, $locale)) {
             $collator = new \Collator($locale);
             $collators[$locale] = $collator;
+
             return $collator;
         }
+
         return $collators[$locale];
     }
 

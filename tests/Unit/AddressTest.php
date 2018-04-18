@@ -68,7 +68,7 @@ class AddressTest extends TestCase
             $address->getCountryName()
         );
     }
-    
+
     public function testGetGoogleMapsAddressReturnsLink()
     {
         $address = new Address;
