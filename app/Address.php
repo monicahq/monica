@@ -109,18 +109,6 @@ class Address extends Model
     }
 
     /**
-     * Get the country ISO of the contact.
-     *
-     * @return string or null
-     */
-    public function getCountryISO()
-    {
-        if ($this->country) {
-            return $this->country;
-        }
-    }
-
-    /**
      * Get an URL for Google Maps for the address.
      *
      * @return string

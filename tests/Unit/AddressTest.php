@@ -80,25 +80,6 @@ class AddressTest extends TestCase
         );
     }
     
-    public function testGetCountryISOReturnsNullIfISONotFound()
-    {
-        $address = new Address;
-        $address->country = null;
-
-        $this->assertNull($address->getCountryISO());
-    }
-
-    public function testGetCountryISOReturnsTheRightISO()
-    {
-        $address = new Address;
-        $address->country = 'US';
-
-        $this->assertEquals(
-            'US',
-            $address->getCountryISO()
-        );
-    }
-
     public function testGetGoogleMapsAddressReturnsLink()
     {
         $address = new Address;
