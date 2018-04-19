@@ -33,6 +33,13 @@
                            v-model="reminders_frequency"
                            v-bind:value="'once'"
                            :checked="'once'"
+                           @if($update_or_add == 'edit')
+
+                               @if($reminder->frequency_number != 'one_time')
+                                   :onload="reminders_frequency = 'recurrent'"
+                               @endif
+
+                           @endif
                     >
                     {{ trans('people.reminders_add_once') }}
                 </label>
@@ -50,15 +57,15 @@
                     {{ trans('people.reminders_add_recurrent') }}
 
                     <input type="number" class="form-control frequency-type" name="frequency_number"
-                           value="1"
+                           value="{{$reminder->frequency_number ?? '1'}}"
                            min="1"
                            max="115"
                            :disabled="reminders_frequency == 'once'">
 
                     <select name="frequency_type" :disabled="reminders_frequency == 'once'">
-                        <option value="week">{{ trans('people.reminders_type_week') }}</option>
-                        <option value="month">{{ trans('people.reminders_type_month') }}</option>
-                        <option value="year">{{ trans('people.reminders_type_year') }}</option>
+                        <option value="week" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'week' ? 'selected' : '' }}>{{ trans('people.reminders_type_week') }}</option>
+                        <option value="month" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'month' ? 'selected' : '' }}>{{ trans('people.reminders_type_month') }}</option>
+                        <option value="year" {{ $update_or_add == 'edit' && $reminder->frequency_type == 'year' ? 'selected' : '' }}>{{ trans('people.reminders_type_year') }}</option>
                     </select>
 
                     {{ trans('people.reminders_add_starting_from') }}
