@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use App\Http\Requests\LoginRequest;
+use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Application;
 use App\Auth\Exceptions\InvalidCredentialsException;
@@ -20,24 +21,35 @@ class OAuthController extends Controller
     /**
      * Log in a user and returns an accessToken
      */
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
         if(\Antiflood::checkIp(5) === FALSE) {
             return $this->handleError(true);
         }
 
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'email' => 'email|required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->handleError();
+        }
+
         $email = $request->get('email');
         $password = $request->get('password');
 
-        $count = DB::table('users')->where('email', $email)->count();
+        $count = User::where('email', $email)->count();
         if ($count === 0) {
             return $this->handleError();
         }
 
         try {
-            return response()->json($this->proxy('password', [
+            return response()->json($this->proxy([
                 'username' => $email,
-                'password' => $password
+                'password' => $password,
+                'grantType' => 'password',
             ]));
         } catch(Exception $e) {
             return $this->handleError();
@@ -49,15 +61,15 @@ class OAuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function handleError($putIp = false) {
+    private function handleError($putIp = false, $errorCode = 42) {
         if ($putIp) {
             \Antiflood::putIp(5);
         }
 
         return response()->json([
             'error' => [
-                'message' => config('api.error_code.42'),
-                'error_code' => 42,
+                'message' => config('api.error_codes.'.$errorCode),
+                'error_code' => $errorCode,
             ],
         ], 403);
     }
@@ -68,22 +80,21 @@ class OAuthController extends Controller
      * @param string $grantType what type of grant type should be proxied
      * @param array $data the data to send to the server
      */
-    private function proxy($grantType, array $data = [])
+    private function proxy(array $data = [])
     {
-        $data = array_merge($data, [
-            'client_id'     => env('PASSWORD_CLIENT_ID'),
-            'client_secret' => env('PASSWORD_CLIENT_SECRET'),
-            'grant_type'    => $grantType
+        $http = new \GuzzleHttp\Client;
+        $response = $http->post(config('app.url').'/oauth/token', [
+            'form_params' => [
+                'grant_type' => $data['grantType'],
+                'client_id' => config('monica.mobile_client_id'),
+                'client_secret' => config('monica.mobile_client_secret'),
+                'username' => $data['username'],
+                'password' => $data['password'],
+                'scope' => '',
+            ],
         ]);
 
-
-        $response = $this->app->make('apiconsumer')->post('/oauth/token', $data);
-
-        if (! $response->isSuccessful()) {
-            throw new Exception();
-        }
-
-        $data = json_decode($response->getContent());
+        $data = json_decode($response->getBody());
 
         return [
             'access_token' => $data->access_token,

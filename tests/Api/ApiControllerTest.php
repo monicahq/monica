@@ -124,7 +124,7 @@ class ApiControllerTest extends ApiTestCase
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => 'The limit parameter is too big.',
+            'message' => 'The limit parameter is too big',
             'error_code' => 30,
         ]);
     }
