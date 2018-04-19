@@ -15,6 +15,7 @@ return [
     'done' => 'Concluído',
     'verify' => 'Verificar',
     'for' => 'para',
+    'new' => 'new',
     'unknown' => 'Não sei',
     'load_more' => 'Carregar mais',
     'loading' => 'A carregar...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Configurações',
     'header_logout_link' => 'Sair',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Adicionar Pessoa',
     'main_nav_dashboard' => 'Painel',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Diário',
     'main_nav_activities' => 'Atividades',
     'main_nav_tasks' => 'Tarefas',
-    'main_nav_trash' => 'Lixo',
 
     'footer_remarks' => 'Alguma observação?',
     'footer_send_email' => 'Mande-me um email',

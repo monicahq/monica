@@ -11,8 +11,6 @@
         "github_release_notes_file": "CHANGELOG",
         "licenses": ["AGPL-V3"],
         "labels": [],
-        "public_download_numbers": false,
-        "public_stats": false,
         "attributes": []
     },
     "version": {

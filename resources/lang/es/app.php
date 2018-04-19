@@ -15,6 +15,7 @@ return [
     'done' => 'Done',
     'verify' => 'Verify',
     'for' => 'for',
+    'new' => 'new',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Configuración',
     'header_logout_link' => 'Salir',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Add people',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Journal',
     'main_nav_activities' => 'Actividades',
     'main_nav_tasks' => 'Tareas',
-    'main_nav_trash' => 'Trash',
 
     'footer_remarks' => 'Any remarks?',
     'footer_send_email' => 'Enviarme un email',

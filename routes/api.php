@@ -11,19 +11,14 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     // Relationships
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
     Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
+    Route::post('/relationships', 'Api\\ApiRelationshipController@create');
+    Route::put('/relationships/{id}', 'Api\\ApiRelationshipController@update');
+    Route::delete('/relationships/{id}', 'Api\\ApiRelationshipController@destroy');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
     Route::get('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
-
-    // Set a partner to the contact
-    Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
-    Route::post('/contacts/{contact}/partners/unset', 'Api\\ApiContactController@unsetPartners');
-
-    // Set a kid to the contact
-    Route::post('/contacts/{contact}/kids', 'Api\\ApiContactController@kids');
-    Route::post('/contacts/{contact}/kids/unset', 'Api\\ApiContactController@unsetKids');
 
     // Addresses
     Route::resource('addresses', 'Api\\ApiAddressController', ['except' => [
