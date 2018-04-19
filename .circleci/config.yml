@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run: mkdir -p results/coverage
       - run: cp scripts/tests/.env.mysql.travis .env
-      - run: mysql -v -e 'CREATE DATABASE monica;'; fi
+      - run: mysql -v -e 'CREATE DATABASE monica;'
 
     ## COMPOSER
       - run: sudo composer self-update
