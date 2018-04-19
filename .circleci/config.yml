@@ -23,8 +23,19 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+          name: Install packages
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libzip-dev
+            sudo apt-get install -y zlib1g-dev libicu-dev g++
+            sudo apt-get install mysql-client
+      - run:
+          name: Install PHP extensions
+          command: |
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install intl
+            sudo docker-php-ext-install pdo_mysql
 
       - run: mkdir -p results/coverage
       - run: cp scripts/tests/.env.mysql.travis .env
@@ -56,15 +67,26 @@ jobs:
             - node_modules
 
   # Build js and css assets
-      - run: php artisan lang:generate
-      - run: yarn run production
+      - run:
+          name: Build assets
+          command: |
+            php artisan lang:generate
+            yarn run production
 
   # Prepare
-      - run: php artisan migrate --env=testing --no-interaction -vvv
-      - run: php artisan db:seed --env=testing --no-interaction -vvv
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
 
   # Run unit tests
-      - run: vendor/bin/phpunit -c phpunit.xml
+      - run:
+          name: Run unit tests
+          command: vendor/bin/phpunit -c phpunit.xml
 
   # Reports
 #      - run: if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
