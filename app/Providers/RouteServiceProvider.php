@@ -172,6 +172,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes($router);
 
+        $this->mapOAuthRoutes($router);
         //
     }
 
@@ -189,6 +190,22 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace, 'middleware' => 'web',
         ], function ($router) {
             require base_path('routes/web.php');
+        });
+    }
+
+    /**
+     * Define the custom oauth routes for the API.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    protected function mapOAuthRoutes(Router $router)
+    {
+        $router->group([
+            'prefix' => 'oauth',
+            'namespace' => $this->namespace,
+        ], function () {
+            require base_path('routes/oauth.php');
         });
     }
 

@@ -148,6 +148,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
+        Ircop\Antiflood\AntifloodServiceProvider::class,
     ],
 
     /*
@@ -199,6 +200,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
+        'Antiflood' => Ircop\Antiflood\Facade\Antiflood::class,
     ],
 
 ];
