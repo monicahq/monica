@@ -1,0 +1,65 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/php:7.1-node
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      #- image: circleci/mysql:latest
+      #- image: circleci/node:latest
+
+    working_directory: ~/work
+
+    steps:
+      - checkout
+      - run: mkdir -p results/coverage
+      - run: cp scripts/tests/.env.mysql.travis .env
+      - run: mysql -v -e 'CREATE DATABASE monica;'; fi
+
+    ## COMPOSER
+      - run: sudo composer self-update
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - composer-v1-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - composer-v1-
+      # Get packages
+      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - save_cache:
+          paths:
+            - ./vendor
+          key: composer-v1-{{ checksum "composer.json" }}
+
+    ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+      - run: yarn install
+      - save_cache:
+          key: node-v1-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+  # Build js and css assets
+      - run: php artisan lang:generate
+      - run: yarn run production
+
+  # Prepare
+      - run: php artisan migrate --env=testing --no-interaction -vvv
+      - run: php artisan db:seed --env=testing --no-interaction -vvv
+
+  # Run unit tests
+      - run: vendor/bin/phpunit -c phpunit.xml
+
+  # Reports
+#      - run: if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
+#      - run: if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
