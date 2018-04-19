@@ -103,4 +103,3 @@ class OAuthController extends Controller
         ];
     }
 }
-
