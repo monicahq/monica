@@ -196,7 +196,7 @@ class RouteServiceProvider extends ServiceProvider
 
 
     /**
-     * Define the custom oauth routes for the API
+     * Define the custom oauth routes for the API.
      *
      * @param  \Illuminate\Routing\Router  $router
      * @return void

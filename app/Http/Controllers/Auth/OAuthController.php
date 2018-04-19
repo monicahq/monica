@@ -8,22 +8,22 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Application;
-use App\Auth\Exceptions\InvalidCredentialsException;
 
 class OAuthController extends Controller
 {
     private $app;
 
-    public function __construct(Application $app) {
+    public function __construct(Application $app)
+    {
         $this->app = $app;
     }
 
     /**
-     * Log in a user and returns an accessToken
+     * Log in a user and returns an accessToken.
      */
     public function login(Request $request)
     {
-        if(\Antiflood::checkIp(5) === FALSE) {
+        if(\Antiflood::checkIp(5) === false) {
             return $this->handleError(true);
         }
 
@@ -51,7 +51,7 @@ class OAuthController extends Controller
                 'password' => $password,
                 'grantType' => 'password',
             ]));
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->handleError();
         }
     }
@@ -61,7 +61,8 @@ class OAuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function handleError($putIp = false, $errorCode = 42) {
+    private function handleError($putIp = false, $errorCode = 42)
+    {
         if ($putIp) {
             \Antiflood::putIp(5);
         }
