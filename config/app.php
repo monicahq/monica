@@ -148,7 +148,6 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
-        Optimus\ApiConsumer\Provider\LaravelServiceProvider::class,
         Ircop\Antiflood\AntifloodServiceProvider::class,
     ],
 
