@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9daa87e41d5263e810cf5054e512a2dd",
+    "content-hash": "7e850f8c23f230c15ed62c2ba525480b",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2587,47 +2587,6 @@
                 "time"
             ],
             "time": "2018-04-16T14:54:26+00:00"
-        },
-        {
-            "name": "optimus/api-consumer",
-            "version": "0.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/esbenp/laravel-api-consumer.git",
-                "reference": "d41b6910e71037be0dd017064ae12c1570008d38"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/esbenp/laravel-api-consumer/zipball/d41b6910e71037be0dd017064ae12c1570008d38",
-                "reference": "d41b6910e71037be0dd017064ae12c1570008d38",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "~5.2"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "~4.7",
-                "satooshi/php-coveralls": "dev-master@dev"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Optimus\\ApiConsumer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache"
-            ],
-            "authors": [
-                {
-                    "name": "Esben Petersen",
-                    "email": "esbenspetersen@gmail.com"
-                }
-            ],
-            "time": "2016-01-10T13:06:32+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -5970,6 +5929,47 @@
                 "object graph"
             ],
             "time": "2017-10-19T19:58:43+00:00"
+        },
+        {
+            "name": "optimus/api-consumer",
+            "version": "0.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/esbenp/laravel-api-consumer.git",
+                "reference": "d41b6910e71037be0dd017064ae12c1570008d38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/esbenp/laravel-api-consumer/zipball/d41b6910e71037be0dd017064ae12c1570008d38",
+                "reference": "d41b6910e71037be0dd017064ae12c1570008d38",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.7",
+                "satooshi/php-coveralls": "dev-master@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Optimus\\ApiConsumer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache"
+            ],
+            "authors": [
+                {
+                    "name": "Esben Petersen",
+                    "email": "esbenspetersen@gmail.com"
+                }
+            ],
+            "time": "2016-01-10T13:06:32+00:00"
         },
         {
             "name": "phar-io/manifest",
