@@ -26,16 +26,12 @@ jobs:
           name: Install packages
           command: |
             sudo apt-get update
-            sudo apt-get install -y libzip-dev
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo apt-get install mysql-client
+            sudo apt-get install -y libzip-dev zlib1g-dev libicu-dev g++ mysql-client
       - run:
           name: Install PHP extensions
           command: |
-            sudo docker-php-ext-install zip
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
-            sudo docker-php-ext-install pdo_mysql
+            sudo docker-php-ext-install zip intl bcmath pdo_mysql
 
       - run: mkdir -p results/coverage
       - run: cp scripts/tests/.env.mysql.travis .env
@@ -87,6 +83,8 @@ jobs:
       - run:
           name: Run unit tests
           command: vendor/bin/phpunit -c phpunit.xml
+      - store_test_results:
+          path: results/junit.xml
 
   # Reports
 #      - run: if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
