@@ -193,8 +193,6 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-
-
     /**
      * Define the custom oauth routes for the API.
      *

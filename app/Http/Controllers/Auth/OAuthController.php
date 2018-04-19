@@ -23,7 +23,7 @@ class OAuthController extends Controller
      */
     public function login(Request $request)
     {
-        if(\Antiflood::checkIp(5) === false) {
+        if (\Antiflood::checkIp(5) === false) {
             return $this->handleError(true);
         }
 
