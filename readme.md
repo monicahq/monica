@@ -57,7 +57,7 @@ Monica allows people to keep track of everything that's important about their fr
 ### Features
 
 * Add and manage contacts
-* Add significant others and children
+* Define relationships between contacts
 * Auto reminders for birthdays
 * Reminders are sent by email
 * Management of debts
@@ -76,6 +76,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Ability to set custom genders
 * Multi users
 * Labels to organize contacts
+* Ability to define what section should appear on the contact sheet
 * Multi currencies
 * Multi languages
 * An API that covers most of the data

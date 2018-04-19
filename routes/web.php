@@ -36,6 +36,8 @@ Route::middleware(['auth', '2fa'])->group(function () {
     });
     Route::post('/validate2fa', 'DashboardController@index');
 
+    Route::get('/changelog', 'ChangelogController@index');
+
     Route::group(['as' => 'people'], function () {
         Route::get('/people', 'ContactsController@index')->name('.index');
         Route::get('/people/add', 'ContactsController@create')->name('.create');

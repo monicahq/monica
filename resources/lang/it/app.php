@@ -15,6 +15,7 @@ return [
     'done' => 'Fatto',
     'verify' => 'Verify',
     'for' => 'per',
+    'new' => 'new',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Impostazioni',
     'header_logout_link' => 'Logout',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Aggiungi contatti',
     'main_nav_dashboard' => 'Home',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Diario',
     'main_nav_activities' => 'Attività',
     'main_nav_tasks' => 'Compiti',
-    'main_nav_trash' => 'Cestino',
 
     'footer_remarks' => 'Commenti?',
     'footer_send_email' => 'Inviami una email',

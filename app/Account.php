@@ -4,6 +4,7 @@ namespace App;
 
 use DB;
 use Laravel\Cashier\Billable;
+use App\Jobs\AddChangelogEntry;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -682,6 +683,7 @@ class Account extends Model
         $account->populateRelationshipTypeGroupsTable();
         $account->populateRelationshipTypesTable();
         $account->populateModulesTable();
+        $account->populateChangelogsTable();
     }
 
     /**
@@ -774,5 +776,32 @@ class Account extends Model
         }
 
         return $activitiesStatistics;
+    }
+
+    /**
+     * Add the given changelog entry and mark it unread for all users in this
+     * account.
+     *
+     * @param int $changelogId
+     */
+    public function addUnreadChangelogEntry(int $changelogId)
+    {
+        foreach ($this->users as $user) {
+            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
+        }
+    }
+
+    /**
+     * Populate the changelog_user table, which contains all the new changes
+     * made on the application.
+     *
+     * @return void
+     */
+    public function populateChangelogsTable()
+    {
+        $changelogs = \App\Changelog::all();
+        foreach ($changelogs as $changelog) {
+            AddChangelogEntry::dispatch($this, $changelog->id);
+        }
     }
 }

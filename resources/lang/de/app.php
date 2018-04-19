@@ -15,6 +15,7 @@ return [
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
+    'new' => 'new',
     'unknown' => 'Ich weiß es nicht',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
@@ -29,6 +30,7 @@ return [
 
     'header_settings_link' => 'Einstellungen',
     'header_logout_link' => 'Ausloggen',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Person hinzufügen',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +38,6 @@ return [
     'main_nav_journal' => 'Tagebuch',
     'main_nav_activities' => 'Aktivitäten',
     'main_nav_tasks' => 'Aufgaben',
-    'main_nav_trash' => 'Papierkorb',
 
     'footer_remarks' => 'Eine Anmerkung?',
     'footer_send_email' => 'Schick\' mir eine E-Mail',
@@ -127,20 +128,20 @@ return [
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
-    'relationship_type_parent' => 'father',
+    'relationship_type_parent' => 'Vater',
     'relationship_type_parent_female' => 'mother',
-    'relationship_type_parent_with_name' => ':name’s father',
+    'relationship_type_parent_with_name' => ':names Vater',
     'relationship_type_parent_female_with_name' => ':name’s mother',
 
     'relationship_type_child' => 'son',
-    'relationship_type_child_female' => 'daughter',
-    'relationship_type_child_with_name' => ':name’s son',
-    'relationship_type_child_female_with_name' => ':name’s daughter',
+    'relationship_type_child_female' => 'Tochter',
+    'relationship_type_child_with_name' => ':names Sohn',
+    'relationship_type_child_female_with_name' => ':names Tochter',
 
-    'relationship_type_sibling' => 'brother',
-    'relationship_type_sibling_female' => 'sister',
-    'relationship_type_sibling_with_name' => ':name’s brother',
-    'relationship_type_sibling_female_with_name' => ':name’s sister',
+    'relationship_type_sibling' => 'Bruder',
+    'relationship_type_sibling_female' => 'Schwester',
+    'relationship_type_sibling_with_name' => ':names Bruder',
+    'relationship_type_sibling_female_with_name' => ':names Schwester',
 
     'relationship_type_grandparent' => 'grand parent',
     'relationship_type_grandparent_female' => 'grand parent',
@@ -167,10 +168,10 @@ return [
     'relationship_type_cousin_with_name' => ':name’s cousin',
     'relationship_type_cousin_female_with_name' => ':name’s cousin',
 
-    'relationship_type_godfather' => 'godfather',
-    'relationship_type_godfather_female' => 'godmother',
-    'relationship_type_godfather_with_name' => ':name’s godfather',
-    'relationship_type_godfather_female_with_name' => ':name’s godmother',
+    'relationship_type_godfather' => 'Pate',
+    'relationship_type_godfather_female' => 'Patin',
+    'relationship_type_godfather_with_name' => ':names Pate',
+    'relationship_type_godfather_female_with_name' => ':names Patin',
 
     'relationship_type_godson' => 'godson',
     'relationship_type_godson_female' => 'goddaughter',

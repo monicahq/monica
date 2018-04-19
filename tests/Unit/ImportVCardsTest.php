@@ -72,6 +72,11 @@ class ImportVCardsTest extends TestCase
             'first_name' => 'Johnny',
         ]);
 
+        $this->assertDatabaseHas('contacts', [
+            'company' => 'U2',
+            'job' => 'Lead vocalist',
+        ]);
+
         // Allows checking addresses are correctly saved
         $this->assertDatabaseHas('addresses', [
             'street' => '17 Shakespeare Ave.',
