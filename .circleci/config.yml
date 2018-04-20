@@ -223,7 +223,7 @@ jobs:
         at: ~/monica
 
 # Reports
-#      - run: scripts/tests/sonar.sh
+    - run: scripts/tests/runsonar.sh
 
 workflows:
   version: 2
