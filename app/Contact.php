@@ -1287,4 +1287,27 @@ class Contact extends Model
             return \App\Contact::find($relatedContact->of_contact);
         }
     }
+
+    /**
+     * Update the frequency for which user has to be warned to stay in touch
+     * with the contact.
+     *
+     * @param  int $frequency
+     * @return bool
+     */
+    public function updateStayInTouchFrequency($frequency)
+    {
+        if (! is_int($frequency)) {
+            return false;
+        }
+
+        $this->stay_in_touch_frequency = $frequency;
+
+        if ($frequency == 0) {
+            $this->stay_in_touch_frequency = null;
+        }
+
+        $this->save();
+        return true;
+    }
 }

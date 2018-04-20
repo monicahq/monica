@@ -18368,7 +18368,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   position: absolute;
 }
 
-.people-show .pagehead .people-profile-information h2 {
+.people-show .pagehead .people-profile-information h3 {
   display: block;
   font-size: 24px;
   font-weight: 300;
@@ -18381,7 +18381,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   margin-right: -9999px;
 }
 
-.people-show .pagehead .people-profile-information h2.rtl {
+.people-show .pagehead .people-profile-information h3.rtl {
   padding-left: 0;
   margin-right: 0;
   padding-right: 100px;

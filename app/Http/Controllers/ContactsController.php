@@ -498,4 +498,16 @@ class ContactsController extends Controller
 
         return  $vcard->download();
     }
+
+    public function stayInTouch(Request $request, Contact $contact)
+    {
+        $frequency = $request->get('frequency');
+        $result = $contact->updateStayInTouchFrequency($frequency);
+
+        if (! $result) {
+            throw new Exception(trans('settings.personalization_genders_modal_error'));
+        }
+
+        return $frequency;
+    }
 }
