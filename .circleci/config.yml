@@ -222,8 +222,8 @@ jobs:
       - attach_workspace:
         at: ~/monica
 
-# Reports
-    - run: scripts/tests/runsonar.sh
+  # Reports
+      - run: scripts/tests/runsonar.sh
 
 workflows:
   version: 2
