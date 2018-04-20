@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Tag;
+use Exception;
 use Validator;
 use App\Contact;
 use App\Relationship;
@@ -501,7 +502,12 @@ class ContactsController extends Controller
 
     public function stayInTouch(Request $request, Contact $contact)
     {
-        $frequency = $request->get('frequency');
+        $frequency = intval($request->get('frequency'));
+        $state = $request->get('state');
+
+        if (! $state) {
+            $frequency = 0;
+        }
         $result = $contact->updateStayInTouchFrequency($frequency);
 
         if (! $result) {

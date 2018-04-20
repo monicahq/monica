@@ -83,7 +83,7 @@
         <div class="mb4">
           <p class="mt3 b mb3">We can remind you by email to keep in touch with Karen at a regular interval.</p>
           <div class="mb2">
-            <toggle-button class="mr2" :sync="true" :labels="true" v-on:change="state = !state" />
+            <toggle-button class="mr2" :sync="true" :labels="true" v-on:change="isActive = !isActive" />
             <div class="dib relative" style="top: -2px;">
               <span>Send me an email every...</span>
               <div class="dib">
@@ -127,7 +127,7 @@
         data() {
             return {
                 frequency: '0',
-                state: false,
+                isActive: false,
                 dirltr: true,
                 errorMessage: '',
             };
@@ -174,6 +174,7 @@
             },
 
             showUpdate() {
+                this.errorMessage = '';
                 this.$refs.updateModal.open();
             },
 
@@ -182,7 +183,13 @@
             },
 
             update() {
-                axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.state})
+                this.errorMessage = '';
+                if (this.frequency == '' && this.isActive == true) {
+                    this.errorMessage = 'no';
+                    return;
+                }
+
+                axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
                       .then(response => {
                           this.$refs.updateModal.close();
                       })
