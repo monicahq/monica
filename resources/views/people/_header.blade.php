@@ -66,7 +66,10 @@
                 <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
-            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+            <li class="mr3"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+            <li>
+              <a href="#" id="showTagForm">Stay in touch</a>
+            </li>
           </ul>
 
           <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
