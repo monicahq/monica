@@ -156,14 +156,6 @@ jobs:
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
 
-      - run:
-          name: Download Selenium
-          command: curl -O https://selenium-release.storage.googleapis.com/3.11/selenium-server-standalone-3.11.0.jar
-      - run:
-          name: Start Selenium
-          command: java -jar selenium-server-standalone-3.11.0.jar
-          background: true
-
     ## COMPOSER
       - restore_cache:
           keys:
@@ -188,6 +180,11 @@ jobs:
           command: |
             php artisan migrate --env=testing --no-interaction -vvv
             php artisan db:seed --env=testing --no-interaction -vvv
+
+      - run:
+          name: Run selenium chromedriver
+          command: vendor/bin/chromedriver
+          background: true
 
       - run:
           name: Run http server
