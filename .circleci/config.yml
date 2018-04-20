@@ -8,16 +8,21 @@ jobs:
     docker:
       - image: circleci/php:7.1-node
 
-    working_directory: ~/work
+    working_directory: ~/monica
 
     steps:
       - checkout
       - run:
-          name: Install PHP extensions
+          name: Install extensions
           command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev g++
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl bcmath pdo_mysql
-      - run: cp scripts/tests/.env.mysql.travis .env
+            sudo docker-php-ext-install zip intl bcmath
+      - run:
+          name: Prepare environment
+          command: |
+            cp scripts/tests/.env.mysql.travis .env
 
     ## COMPOSER
       - run: sudo composer self-update
@@ -58,7 +63,7 @@ jobs:
 
   tests:
     docker:
-      - image: circleci/php:7.1-node
+      - image: circleci/php:7.1-node-browsers
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -69,17 +74,20 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: monica
 
-    working_directory: ~/work
+    working_directory: ~/monica
 
     steps:
       - checkout
       - run:
-          name: Prepare
+          name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install mysql-client
+            sudo apt-get install -y zlib1g-dev libicu-dev g++ mysql-client
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl bcmath pdo_mysql
+            sudo docker-php-ext-install zip intl bcmath pdo_mysql
+      - run:
+          name: Prepare environment
+          command: |
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
 
@@ -87,7 +95,6 @@ jobs:
       - restore_cache:
           keys:
           - composer-v1-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
           - composer-v1-
     ## NODE.JS
       - restore_cache:
