@@ -28,22 +28,22 @@ jobs:
       - run: sudo composer self-update
       - restore_cache:
           keys:
-          - composer-v1-{{ checksum "composer.json" }}
-          - composer-v1-
+          - composer-v2-{{ checksum "composer.json" }}
+          - composer-v2-
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
+          key: composer-v2-{{ checksum "composer.json" }}
           paths:
-            - ./vendor
-          key: composer-v1-{{ checksum "composer.json" }}
+            - vendor
 
     ## NODE.JS
       - restore_cache:
           keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
       - run: yarn install
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}
+          key: node-v2-{{ checksum "package.json" }}
           paths:
             - node_modules
 
@@ -54,7 +54,7 @@ jobs:
             php artisan lang:generate
             yarn run production
       - save_cache:
-          key: assets-v1
+          key: assets-v2-{{ .Revision }}
           paths:
             - public/mix-manifest.json
             - public/css
@@ -94,17 +94,18 @@ jobs:
     ## COMPOSER
       - restore_cache:
           keys:
-          - composer-v1-{{ checksum "composer.json" }}
-          - composer-v1-
+          - composer-v2-{{ checksum "composer.json" }}
+          - composer-v2-
     ## NODE.JS
       - restore_cache:
           keys:
-            - node-v1-{{ checksum "package.json" }}
-            - node-v1-
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
     ## ASSETS
       - restore_cache:
           keys:
-            - assets-v1
+            - assets-v2-{{ .Revision }}
+            - assets-v2
 
       - run:
           name: Wait for DB
@@ -120,7 +121,9 @@ jobs:
           name: Run unit tests
           command: vendor/bin/phpunit -c phpunit.xml
       - store_test_results:
-          path: results/junit.xml
+          path: results
+      - store_artifacts:
+          path: results
 
   # Reports
 #      - run: if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
