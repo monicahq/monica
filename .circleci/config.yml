@@ -28,13 +28,12 @@ jobs:
       - run: sudo composer self-update
       - restore_cache:
           keys:
-          - composer-v2-{{ checksum "composer.json" }}
-          - composer-v2-
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: composer-v2-{{ checksum "composer.json" }}
-          paths:
-            - vendor
+          paths: vendor
 
     ## NODE.JS
       - restore_cache:
@@ -44,8 +43,7 @@ jobs:
       - run: yarn install
       - save_cache:
           key: node-v2-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+          paths: node_modules
 
   # Build js and css assets
       - run:
@@ -94,8 +92,8 @@ jobs:
     ## COMPOSER
       - restore_cache:
           keys:
-          - composer-v2-{{ checksum "composer.json" }}
-          - composer-v2-
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
     ## NODE.JS
       - restore_cache:
           keys:
@@ -124,10 +122,111 @@ jobs:
           path: results
       - store_artifacts:
           path: results
+      - persist_to_workspace:
+          root: ~/monica
+          paths: results
 
-  # Reports
-#      - run: if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
+  browsertests:
+    docker:
+      - image: circleci/php:7.1-node-browsers
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
 
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev g++ mysql-client
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install zip intl bcmath pdo_mysql
+      - run:
+          name: Prepare environment
+          command: |
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+      - run:
+          name: Download Selenium
+          command: curl -O https://selenium-release.storage.googleapis.com/3.11/selenium-server-standalone-3.11.0.jar
+      - run:
+          name: Start Selenium
+          command: java -jar selenium-server-standalone-3.11.0.jar
+          background: true
+
+    ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+    ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+    ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
+
+      - run:
+          name: Run http server
+          command: |
+            php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+          background: true
+      - run:
+          name: Wait for http server
+          command: dockerize -wait tcp://localhost:8000 -timeout 120s
+
+  # Run browser tests
+      - run:
+          name: Run unit tests
+          command: php artisan dusk --log-junit results/junit2.xml
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path:
+            - results
+            - tests/Browser/screenshots
+      - persist_to_workspace:
+          root: ~/monica
+          paths:
+            - results
+            - tests/Browser/screenshots
+
+  reporting:
+    docker:
+      - image: circleci/php:7.1
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - attach_workspace:
+        at: ~/monica
+
+# Reports
+#      - run: scripts/tests/sonar.sh
 
 workflows:
   version: 2
@@ -137,3 +236,10 @@ workflows:
       - tests:
           requires:
             - build
+      - browsertests:
+          requires:
+            - build
+      - reporting:
+          requires:
+            - tests
+            - browsertests
