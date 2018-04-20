@@ -205,9 +205,9 @@ jobs:
       - store_test_results:
           path: results
       - store_artifacts:
-          path:
-            - results
-            - tests/Browser/screenshots
+          path: results
+      - store_artifacts:
+          path: tests/Browser/screenshots
       - persist_to_workspace:
           root: ~/monica
           paths:
