@@ -6,45 +6,25 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/php:7.1-node-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
+      - image: circleci/php:7.1-node
 
     working_directory: ~/work
 
     steps:
       - checkout
       - run:
-          name: Install packages
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libzip-dev zlib1g-dev libicu-dev g++ mysql-client
-      - run:
           name: Install PHP extensions
           command: |
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath pdo_mysql
-
-      - run: mkdir -p results/coverage
+            sudo docker-php-ext-install intl bcmath pdo_mysql
       - run: cp scripts/tests/.env.mysql.travis .env
 
     ## COMPOSER
       - run: sudo composer self-update
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - composer-v1-{{ checksum "composer.json" }}
-          # fallback to using the latest cache if no exact match is found
           - composer-v1-
-      # Get packages
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           paths:
@@ -68,8 +48,57 @@ jobs:
           command: |
             php artisan lang:generate
             yarn run production
+      - save_cache:
+          key: assets-v1
+          paths:
+            - public/mix-manifest.json
+            - public/css
+            - public/fonts
+            - public/js
 
-  # Prepare
+  tests:
+    docker:
+      - image: circleci/php:7.1-node
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    working_directory: ~/work
+
+    steps:
+      - checkout
+      - run:
+          name: Prepare
+          command: |
+            sudo apt-get update
+            sudo apt-get install mysql-client
+            sudo docker-php-ext-configure intl
+            sudo docker-php-ext-install intl bcmath pdo_mysql
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+    ## COMPOSER
+      - restore_cache:
+          keys:
+          - composer-v1-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - composer-v1-
+    ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package.json" }}
+            - node-v1-
+    ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v1
+
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
@@ -87,5 +116,14 @@ jobs:
           path: results/junit.xml
 
   # Reports
-#      - run: if [[ "$COVERAGE" == "1" ]]; then vendor/bin/phpcov merge --clover=$TRAVIS_BUILD_DIR/results/coverage2.xml $TRAVIS_BUILD_DIR/results/coverage/; fi
 #      - run: if [[ "$COVERAGE" == "1" ]]; then scripts/tests/travis-sonar.sh; fi
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - tests:
+          requires:
+            - build
