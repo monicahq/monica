@@ -16,9 +16,9 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++
+            sudo apt-get install -y libicu-dev g++
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath gd
+            sudo docker-php-ext-install intl
       - run:
           name: Prepare environment
           command: |
@@ -62,10 +62,6 @@ jobs:
   tests:
     docker:
       - image: circleci/php:7.1-node-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -80,9 +76,9 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev g++ mysql-client
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath pdo_mysql
+            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
       - run:
           name: Prepare environment
           command: |
@@ -129,10 +125,6 @@ jobs:
   browsertests:
     docker:
       - image: circleci/php:7.1-node-browsers
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -147,9 +139,9 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev g++ mysql-client
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath pdo_mysql
+            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
       - run:
           name: Prepare environment
           command: |
