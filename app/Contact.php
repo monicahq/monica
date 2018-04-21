@@ -5,7 +5,9 @@ namespace App;
 use DB;
 use App\Traits\Hasher;
 use App\Traits\Searchable;
+use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
@@ -1328,5 +1330,16 @@ class Contact extends Model
             $this->stay_in_touch_trigger_date = null;
         }
         $this->save();
+    }
+
+    /**
+     * Send the email about staying in touch with the contact.
+     *
+     * @param  User $user
+     * @return void
+     */
+    public function sendStayInTouchEmail(User $user)
+    {
+        Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
     }
 }

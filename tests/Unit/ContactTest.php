@@ -9,6 +9,8 @@ use App\Contact;
 use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
+use App\Mail\StayInTouchEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
@@ -1223,5 +1225,27 @@ class ContactTest extends FeatureTestCase
         $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
+    }
+
+    public function test_it_sends_the_stay_in_touch_email()
+    {
+        Mail::fake();
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+            'email' => 'john@doe.com',
+            'locale' => 'US\Eastern',
+        ]);
+
+        $contact->sendStayInTouchEmail($user);
+
+        Mail::assertSent(StayInTouchEmail::class, function ($mail) {
+            return $mail->hasTo('john@doe.com');
+        });
     }
 }

@@ -9,11 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-/**
- * Check if a user can be sent a notification and if that's the case,
- * actually send it. It also indicates how many emails will be necessary to
- * delete the notification.
- */
 class ScheduleStayInTouch implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -38,12 +33,19 @@ class ScheduleStayInTouch implements ShouldQueue
     public function handle()
     {
         $account = $this->contact->account;
+        $mailSent = false;
 
         foreach ($account->users as $user) {
             if ($user->shouldBeReminded($this->contact->stay_in_touch_trigger_date)
                 && ! $account->hasLimitations()) {
-                dispatch(new SendStayInTouchEmail($this->contact, $user));
+                $this->contact->sendStayInTouchEmail($user);
+                $mailSent = true;
+                $timezone = $user->timezone;
             }
+        }
+
+        if ($mailSent) {
+            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency, $timezone);
         }
     }
 }
