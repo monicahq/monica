@@ -71,7 +71,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found.',
+            'message' => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -88,7 +88,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found.',
+            'message' => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -105,7 +105,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found.',
+            'message' => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -257,7 +257,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found.',
+            'message' => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
