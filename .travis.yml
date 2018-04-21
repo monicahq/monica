@@ -29,6 +29,8 @@ branches:
   only:
   - master
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
+branches:
   except:
   - circle-ci
 
