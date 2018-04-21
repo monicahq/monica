@@ -16,9 +16,9 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++
             sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath
+            sudo docker-php-ext-install zip intl bcmath gd
       - run:
           name: Prepare environment
           command: |
@@ -199,6 +199,11 @@ jobs:
       - run:
           name: Run unit tests
           command: php artisan dusk --log-junit results/junit2.xml
+      - run:
+          name: Fix coverage
+          command: |
+            vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+            rm -rf results/coverage          
       - store_test_results:
           path: results
       - store_artifacts:
