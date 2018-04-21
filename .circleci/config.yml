@@ -217,7 +217,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: ~/monica
+          at: ~/monica
 
   # Reports
       - run: scripts/tests/runsonar.sh
