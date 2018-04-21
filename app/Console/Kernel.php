@@ -37,6 +37,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('send:notifications')->hourly();
         $schedule->command('send:reminders')->hourly();
+        $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
         $schedule->command('monica:ping')->daily();
     }

@@ -15,7 +15,7 @@ class StayInTouch extends Migration
     {
         Schema::table('contacts', function (Blueprint $table) {
             $table->integer('stay_in_touch_frequency')->nullable()->after('last_talked_to');
-            $table->datetime('last_stay_in_touch_date')->nullable()->after('stay_in_touch_frequency');
+            $table->datetime('stay_in_touch_trigger_date')->nullable()->after('stay_in_touch_frequency');
         });
     }
 }

@@ -6,6 +6,7 @@ use App\Tag;
 use App\Call;
 use App\Debt;
 use App\Contact;
+use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -1188,5 +1189,39 @@ class ContactTest extends FeatureTestCase
         $result = $contact->updateStayInTouchFrequency('not an integer');
 
         $this->assertFalse($result);
+    }
+
+    public function test_it_updates_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
+
+        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+
+        $this->assertEquals(
+            '2017-01-04',
+            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+        );
+    }
+
+    public function it_resets_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
+        ]);
+
+        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
     }
 }

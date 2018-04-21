@@ -522,6 +522,8 @@ class ContactsController extends Controller
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
+        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+
         return $frequency;
     }
 }

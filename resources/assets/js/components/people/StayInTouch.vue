@@ -225,7 +225,7 @@
                           });
                       })
                       .catch(error => {
-                          this.errorMessage = 'fuckher';
+                          this.errorMessage = this.$t('app.error_save');
                       });
             },
         }

@@ -81,6 +81,7 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_save' => 'We had an error trying to save the data.',
 
     'default_save_success' => 'The data has been saved.',
 

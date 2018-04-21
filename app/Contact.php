@@ -1310,4 +1310,22 @@ class Contact extends Model
         $this->save();
         return true;
     }
+
+    /**
+     * Update the date the notification about staying in touch should be sent.
+     *
+     * @param int $frequency
+     * @param string $timezone
+     */
+    public function setStayInTouchTriggerDate($frequency, $timezone)
+    {
+        $now = \Carbon\Carbon::now($timezone);
+        $newTriggerDate = $now->addDays($frequency);
+        $this->stay_in_touch_trigger_date = $newTriggerDate;
+
+        if ($frequency == 0) {
+            $this->stay_in_touch_trigger_date = null;
+        }
+        $this->save();
+    }
 }
