@@ -29,7 +29,7 @@ function installSonar {
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
   if [ ! -d "sonar-scanner-$sonarversion" ]; then
-    java_path=$(which java)
+    java_path=$(which java || true)
     if [ -x "$java_path" ]; then
       wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
       unzip -q sonar-scanner-cli-$sonarversion.zip
@@ -38,7 +38,7 @@ function installSonar {
       wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion-linux.zip
       unzip -q sonar-scanner-cli-$sonarversion-linux.zip
       rm sonar-scanner-cli-$sonarversion-linux.zip
-      mv sonar-scanner-cli-$sonarversion-linux sonar-scanner-cli-$sonarversion
+      mv sonar-scanner-$sonarversion-linux sonar-scanner-$sonarversion
     fi
   fi
   export SONAR_SCANNER_HOME=$HOME/sonarscanner/sonar-scanner-$sonarversion
