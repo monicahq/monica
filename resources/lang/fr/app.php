@@ -20,8 +20,10 @@ return [
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
+    'day' => 'day',
+    'days' => 'days',
 
-    'application_title' => 'Monica – un GRC pour vos amis et votre famille',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
     'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
 
@@ -79,6 +81,9 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
