@@ -513,6 +513,11 @@ class ContactsController extends Controller
         $frequency = intval($request->get('frequency'));
         $state = $request->get('state');
 
+        if (auth()->user()->account->hasLimitations()) {
+            throw new Exception(trans('people.stay_in_touch_invalid'));
+        }
+
+        // if not active, set frequency to 0
         if (! $state) {
             $frequency = 0;
         }
