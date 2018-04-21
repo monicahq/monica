@@ -27,6 +27,7 @@ class Contact extends Model
     protected $dates = [
         'last_talked_to',
         'last_consulted_at',
+        'stay_in_touch_trigger_date',
         'created_at',
         'updated_at',
     ];

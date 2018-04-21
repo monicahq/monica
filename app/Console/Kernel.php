@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\PingVersionServer',
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\SendReminders',
+        'App\Console\Commands\SendStayInTouch',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\SetupTest',
         'App\Console\Commands\Update',

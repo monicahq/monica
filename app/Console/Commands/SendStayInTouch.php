@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Contact;
 use Illuminate\Console\Command;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 
 class SendStayInTouch extends Command
 {
@@ -37,7 +39,12 @@ class SendStayInTouch extends Command
      */
     public function handle()
     {
+        // we had two days to make sure we cover all timezones
         $contacts = Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
                                 ->orderBy('stay_in_touch_trigger_date', 'asc')->get();
+
+        foreach ($contacts as $contact) {
+            ScheduleStayInTouch::dispatch($contact);
+        }
     }
 }
