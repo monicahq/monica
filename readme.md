@@ -58,8 +58,9 @@ Monica allows people to keep track of everything that's important about their fr
 
 * Add and manage contacts
 * Define relationships between contacts
+* Reminders
 * Auto reminders for birthdays
-* Reminders are sent by email
+* Stay in touch with a contact by sending reminders at a given interval
 * Management of debts
 * Ability to add notes to a contact
 * Ability to indicate how you've met someone

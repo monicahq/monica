@@ -119,6 +119,11 @@ Vue.component(
     require('./components/people/Pets.vue')
 );
 
+Vue.component(
+    'stay-in-touch',
+    require('./components/people/StayInTouch.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',
