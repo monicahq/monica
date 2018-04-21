@@ -59,6 +59,14 @@ return [
     'edit_contact_information' => 'Upravit informace kontaktu',
     'call_button' => 'Zaznamenat telefonát',
 
+    // Stay in touch
+    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch_frequency' => 'Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
+    'stay_in_touch_modal_label' => 'Send me an email every...',
+
     // Calls
     'modal_call_title' => 'Zaznamenat telefonát',
     'modal_call_comment' => 'O čem byla řeč? (volitelné)',
