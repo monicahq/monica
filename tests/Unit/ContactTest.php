@@ -1141,4 +1141,52 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(0, Contact::where('id', $id)->count());
     }
+
+    public function test_it_updates_stay_in_touch_frequency()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(3);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+    }
+
+    public function test_it_resets_stay_in_touch_frequency_if_set_to_0()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(0);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+    }
+
+    public function test_it_returns_false_if_frequency_is_not_an_integer()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency('not an integer');
+
+        $this->assertFalse($result);
+    }
 }
