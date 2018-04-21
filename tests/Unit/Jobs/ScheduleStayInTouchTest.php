@@ -6,9 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
-use App\Jobs\StayInTouch\SendStayInTouchEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ScheduleStayInTouchTest extends TestCase

@@ -1329,6 +1329,7 @@ class Contact extends Model
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
         }
+
         $this->save();
     }
 
