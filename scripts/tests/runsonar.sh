@@ -78,7 +78,7 @@ function getSonarlauncher {
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then
-    echo "Download travis-sonarlauncher"
+    echo "Download sonarlauncher"
     mkdir -p ~/sonarlauncher/$sonarlauncherversion
     curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/travis-sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
   fi
@@ -122,7 +122,7 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
 
 elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
-  REPOS_VALUES=($(curl -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login"))
+  REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login"))
 
   PULL_REQUEST_BRANCH=
   PULL_REQUEST_REPOSITORY=${REPOS_VALUES[0]}
