@@ -219,8 +219,15 @@ jobs:
       - attach_workspace:
           at: ~/monica
 
-  # Reports
+    # Run sonar scanner
+      - restore_cache:
+          keys:
+            - sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+            - sonarscanner-v1-
       - run: scripts/tests/runsonar.sh
+      - save_cache:
+          key: sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+          paths: $HOME/sonarscanner
 
 workflows:
   version: 2
