@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateChangelog extends Migration
+class UpdateChangelogWithStayInTouch extends Migration
 {
     /**
      * Run the migrations.

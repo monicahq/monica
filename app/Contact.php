@@ -1311,6 +1311,7 @@ class Contact extends Model
         }
 
         $this->save();
+
         return true;
     }
 
