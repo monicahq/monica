@@ -1,7 +1,24 @@
 #!/bin/bash
+
+if [ "$CIRCLECI" == "true" ]; then
+  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi  
+  REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+  BRANCH=$CIRCLE_BRANCH
+  PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
+  BUILD=$CIRCLE_BUILD_NUM
+  SHA1=$CIRCLE_SHA1
+else
+  REPO=$TRAVIS_REPO_SLUG
+  BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  PR_NUMBER=$TRAVIS_PULL_REQUEST
+  BUILD=$TRAVIS_BUILD_NUMBER
+  SHA1=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
+fi
+
 set -euo pipefail
 
 REPOSITORY_OWNER=monicahq/monica
+SONAR_ORGANIZATION=monicahq
 
 function installSonar {
   echo 'Setup sonar scanner'
@@ -30,7 +47,7 @@ function CommonParams {
   fi
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
-       -Dsonar.organization=monicahq \
+       -Dsonar.organization=$SONAR_ORGANIZATION \
        -Dsonar.php.tests.reportPath=./results/junit.xml \
        -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
        -Dsonar.analysis.buildNumber=$BUILD \
@@ -64,21 +81,6 @@ function getSonarlauncher {
 if [ -z "${SONAR_HOST_URL:-}" ]; then
   export SONAR_HOST_URL=https://sonarcloud.io
 fi
-
-if [ "$CIRCLECI" == "true" ]; then
-  REPO=$CIRCLE_PR_USERNAME/$CIRCLE_PR_REPONAME
-  BRANCH=$CIRCLE_BRANCH
-  PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
-  BUILD=$CIRCLE_BUILD_NUM
-  SHA1=$CIRCLE_SHA1
-else
-  REPO=$TRAVIS_REPO_SLUG
-  BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
-  PR_NUMBER=$TRAVIS_PULL_REQUEST
-  BUILD=$TRAVIS_BUILD_NUMBER
-  SHA1=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
-fi
-
 
 if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo '===================='
