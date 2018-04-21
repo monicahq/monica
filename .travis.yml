@@ -29,6 +29,8 @@ branches:
   only:
   - master
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+  except:
+  - circle-ci
 
 addons:
   postgresql: "9.6"
