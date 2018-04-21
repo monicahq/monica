@@ -500,6 +500,14 @@ class ContactsController extends Controller
         return  $vcard->download();
     }
 
+    /**
+     * Set or change the frequency of which the user wants to stay in touch with
+     * the given contact.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return [type]
+     */
     public function stayInTouch(Request $request, Contact $contact)
     {
         $frequency = intval($request->get('frequency'));
@@ -511,7 +519,7 @@ class ContactsController extends Controller
         $result = $contact->updateStayInTouchFrequency($frequency);
 
         if (! $result) {
-            throw new Exception(trans('settings.personalization_genders_modal_error'));
+            throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
         return $frequency;

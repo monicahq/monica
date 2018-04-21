@@ -5,12 +5,23 @@
   <div>
     <notifications group="main" position="bottom right" />
 
-    <a class="pointer" @click="showUpdate">Stay in touch</a>
+    <!-- Contact doesn't have a frequency set -->
+    <a class="pointer" @click="showUpdate" v-if="!isActive">Stay in touch</a>
+
+    <!-- Contact has a frequency set -->
+    <div v-if="isActive">
+      <span>
+        <span class="mr1 relative" style="top: 3px;">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" width="16" height="16" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.79 6.11c.25-.25.25-.67 0-.92-.32-.33-.48-.76-.48-1.19 0-.43.16-.86.48-1.19.25-.26.25-.67 0-.92a.613.613 0 0 0-.45-.19c-.16 0-.33.06-.45.19-.57.58-.85 1.35-.85 2.11 0 .76.29 1.53.85 2.11.25.25.66.25.9 0zM2.33.52a.651.651 0 0 0-.92 0C.48 1.48.01 2.74.01 3.99c0 1.26.47 2.52 1.4 3.48.25.26.66.26.91 0s.25-.68 0-.94c-.68-.7-1.02-1.62-1.02-2.54 0-.92.34-1.84 1.02-2.54a.66.66 0 0 0 .01-.93zm5.69 5.1A1.62 1.62 0 1 0 6.4 4c-.01.89.72 1.62 1.62 1.62zM14.59.53a.628.628 0 0 0-.91 0c-.25.26-.25.68 0 .94.68.7 1.02 1.62 1.02 2.54 0 .92-.34 1.83-1.02 2.54-.25.26-.25.68 0 .94a.651.651 0 0 0 .92 0c.93-.96 1.4-2.22 1.4-3.48A5.048 5.048 0 0 0 14.59.53zM8.02 6.92c-.41 0-.83-.1-1.2-.3l-3.15 8.37h1.49l.86-1h4l.84 1h1.49L9.21 6.62c-.38.2-.78.3-1.19.3zm-.01.48L9.02 11h-2l.99-3.6zm-1.99 5.59l1-1h2l1 1h-4zm5.19-11.1c-.25.25-.25.67 0 .92.32.33.48.76.48 1.19 0 .43-.16.86-.48 1.19-.25.26-.25.67 0 .92a.63.63 0 0 0 .9 0c.57-.58.85-1.35.85-2.11 0-.76-.28-1.53-.85-2.11a.634.634 0 0 0-.9 0z" fill="#219653"/></svg>
+        </span>
+        {{ $t('people.stay_in_touch_frequency', { count: frequency.toString() }) }}</span>
+      <a class="pointer" @click="showUpdate">Change</a>
+    </div>
 
     <!-- Create Gender type -->
     <sweet-modal ref="updateModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_add')">
       <div class="tc mw-100">
-        <svg width="423px" height="74px" viewBox="0 0 423 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg viewBox="0 0 423 74" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs></defs>
           <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
               <g id="Group-6" transform="translate(2.000000, 2.000000)">
@@ -83,20 +94,21 @@
         <div class="mb4">
           <p class="mt3 b mb3">We can remind you by email to keep in touch with Karen at a regular interval.</p>
           <div class="mb2">
-            <toggle-button class="mr2" :sync="true" :labels="true" v-on:change="isActive = !isActive" />
+            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" v-on:change="isActive = !isActive" />
             <div class="dib relative" style="top: -2px;">
               <span>Send me an email every...</span>
               <div class="dib">
                 <form-input
                   :value="frequency"
                   v-bind:input-type="'number'"
-                  v-model="frequency"
                   v-bind:id="'frequency'"
+                  v-model="frequency"
                   v-bind:width="50"
                   v-bind:required="true">
                 ></form-input>
               </div>
-              <span>days</span>
+              <span v-if="frequency > 1">days</span>
+              <span v-if="frequency <= 1">day</span>
             </div>
           </div>
 
@@ -130,6 +142,8 @@
                 isActive: false,
                 dirltr: true,
                 errorMessage: '',
+                initialFrequency: '0',
+                initialState: false,
             };
         },
 
@@ -160,17 +174,17 @@
             prepareComponent() {
                 this.dirltr = $('html').attr('dir') == 'ltr';
 
-                this.frequency = this.contact.stay_in_touch_frequency;
+                this.frequency = this.contact.stay_in_touch_frequency.toString();
+                this.isActive = (this.frequency > 0);
                 if (this.contact.stay_in_touch_frequency == null) {
                   this.frequency = '0';
                 }
-            },
 
-            getStayInTouchInfo() {
-                axios.get('/settings/personalization/genders')
-                        .then(response => {
-                            this.genders = response.data;
-                        });
+                // record initial values when the component loads so we can
+                // put those values back if user puts wrong values when updating
+                // the counter
+                this.initialState = this.isActive;
+                this.initialFrequency = this.frequency
             },
 
             showUpdate() {
@@ -179,19 +193,36 @@
             },
 
             closeModal() {
+                this.frequency = this.initialFrequency;
+                this.isActive = this.initialState;
                 this.$refs.updateModal.close();
             },
 
             update() {
                 this.errorMessage = '';
-                if (this.frequency == '' && this.isActive == true) {
-                    this.errorMessage = 'no';
+
+                // make sure we can't press update if the frequency is invalid
+                // and if the feature is activated
+                if ((this.frequency == '' || this.frequency < 1) && this.isActive == true) {
+                    this.errorMessage = this.$t('people.stay_in_touch_invalid');
+                    this.frequency = this.initialFrequency;
+                    this.isActive = this.initialState;
                     return;
                 }
 
                 axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
                       .then(response => {
                           this.$refs.updateModal.close();
+                          this.initialState = this.isActive;
+                          this.initialFrequency = this.frequency;
+
+                          this.$notify({
+                              group: 'main',
+                              title: this.$t('app.default_save_success'),
+                              text: '',
+                              width: '500px',
+                              type: 'success'
+                          });
                       })
                       .catch(error => {
                           this.errorMessage = 'fuckher';

@@ -58,6 +58,9 @@ return [
     // Header
     'edit_contact_information' => 'Edit contact information',
     'call_button' => 'Log a call',
+    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch_frequency' => 'Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
 
     // Calls
     'modal_call_title' => 'Log a call',
