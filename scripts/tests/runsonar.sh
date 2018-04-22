@@ -56,7 +56,7 @@ function CommonParams {
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=$SONAR_ORGANIZATION \
-       -Dsonar.php.tests.reportPath=./results/junit.xml \
+       -Dsonar.php.tests.reportPath=./results/result.xml \
        -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
        -Dsonar.analysis.buildNumber=$BUILD \
        -Dsonar.analysis.pipeline=$BUILD \
