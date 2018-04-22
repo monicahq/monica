@@ -59,7 +59,7 @@ jobs:
             - public/fonts
             - public/js
 
-  tests:
+  tests-7.1:
     docker:
       - image: circleci/php:7.1-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -76,9 +76,8 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
       - run:
           name: Prepare environment
           command: |
@@ -139,9 +138,8 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
       - run:
           name: Prepare environment
           command: |
@@ -182,7 +180,7 @@ jobs:
       - store_artifacts:
           path: results
 
-  tests-browser:
+  tests-browser-7.1:
     docker:
       - image: circleci/php:7.1-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -199,9 +197,8 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
       - run:
           name: Prepare environment
           command: |
@@ -284,9 +281,8 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng12-dev g++ mysql-client
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install zip intl bcmath gd pdo_mysql
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
       - run:
           name: Prepare environment
           command: |
@@ -442,13 +438,13 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - tests:
+      - tests-7.1:
           requires:
             - build
       - tests-7.2:
           requires:
             - build
-      - tests-browser:
+      - tests-browser-7.1:
           requires:
             - build
       - tests-browser-7.2:
@@ -456,13 +452,23 @@ workflows:
             - build
       - reporting:
           requires:
-            - tests
+            - tests-7.1
             - tests-7.2
-            - tests-browser
+            - tests-browser-7.1
             - tests-browser-7.2
+  deploy:
+    jobs:
+      - build
+          filters:
+            branches:
+              only:
+                - master
+                - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       - deploy-assets:
           requires:
-            - reporting
+            - build
           filters:
             branches:
               only:
@@ -470,13 +476,17 @@ workflows:
                 - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       - deploy-dist:
           requires:
-            - reporting
+            - build
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       - deploy-docker:
           requires:
-            - reporting
+            - build
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
