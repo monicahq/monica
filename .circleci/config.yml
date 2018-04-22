@@ -394,6 +394,7 @@ jobs:
             - assets-v2
 
       - run: make assets
+      - run: make push_bintray_assets
 
   deploy-dist:
     docker:
@@ -409,6 +410,7 @@ jobs:
             - assets-v2
 
       - run: make dist
+      - run: make push_bintray_dist
 
   deploy-docker:
     machine: true
@@ -426,11 +428,11 @@ jobs:
       - run:
           name: Make docker image
           command: make docker_build
-#      - run:
-#          name: Publish docker image
-#          command: |
-#            echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-#            make docker_push_bintray
+      - run:
+          name: Publish docker image
+          command: |
+            echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+            make docker_push_bintray
 
 workflows:
   version: 2
