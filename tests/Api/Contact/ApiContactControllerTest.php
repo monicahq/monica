@@ -313,7 +313,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => $this->jsonStructureContact,
-            ]
+            ],
         ]);
     }
 }
