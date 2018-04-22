@@ -12,8 +12,8 @@ class ActivityTypesTableSeeder extends Seeder
     public function run()
     {
         $now = now();
-        DB::table('activity_types')->truncate();
-        DB::table('activity_type_groups')->truncate();
+        DB::table('activity_types')->delete();
+        DB::table('activity_type_groups')->delete();
 
         // SIMPLE ACTIVITIES
         DB::table('activity_type_groups')->insert([
