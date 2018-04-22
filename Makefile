@@ -1,17 +1,32 @@
+ifeq ($(CIRCLECI),true)
+  ifneq ($(CIRCLE_PULL_REQUEST),)
+    CIRCLE_PR_NUMBER ?= $(shell echo $${CIRCLE_PULL_REQUEST##*/})
+  endif
+  REPO := $(CIRCLE_PROJECT_USERNAME)/$(CIRCLE_PROJECT_REPONAME)
+  BRANCH := $(CIRCLE_BRANCH)
+  PR_NUMBER=$(if $(CIRCLE_PR_NUMBER),$(CIRCLE_PR_NUMBER),false)
+  BUILD := $(CIRCLE_BUILD_NUM)
+  SHA1 := $(CIRCLE_SHA1)
+  TAG := $(CIRCLE_TAG)
+else
+  REPO := $(TRAVIS_REPO_SLUG)
+  BRANCH := $(if $(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_BRANCH))
+  PR_NUMBER := $(TRAVIS_PULL_REQUEST)
+  BUILD := $(TRAVIS_BUILD_NUMBER)
+  SHA1 := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
+  TAG := $(TRAVIS_TAG)
+endif
+
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
 GIT_COMMIT := $(shell git log --format="%h" -n 1)
 BUILD := $(GIT_TAG)
-ifeq ($(TRAVIS_TAG),)
-ifeq ($(TRAVIS_BRANCH),)
-# If we are not on travis or it's not a TAG build, we add "-dev" to the name
-BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
-else
-ifneq ($(TRAVIS_PULL_REQUEST_BRANCH),)
-BUILD := $(TRAVIS_PULL_REQUEST_BRANCH)
-else
-BUILD := $(TRAVIS_BRANCH)
-endif
-endif
+ifeq ($(TAG),)
+  ifeq ($(BRANCH),)
+    # If we are not on travis or it's not a TAG build, we add "-dev" to the name
+    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+  else
+    BUILD := $(BRANCH)
+  endif
 endif
 
 DESTDIR := monica-$(BUILD)
@@ -163,3 +178,8 @@ update: .env build-dev
 vagrant_build:
 	make -C scripts/vagrant/build package
 
+push_bintray_assets: results/$(ASSETS).tar.bz2 .travis.deploy.json
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+
+push_bintray_dist: results/$(DESTDIR).tar.bz2 .travis.deploy.json
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
