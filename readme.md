@@ -2,7 +2,7 @@
 <h1 align="center">Personal Relationship Manager</h1>
 
 <p align="center">
-<a href="https://travis-ci.org/monicahq/monica"><img src="https://travis-ci.org/monicahq/monica.svg?branch=master" alt="Build Status"></a>
+<a href="https://circleci.com/gh/monicahq/monica"><img src="https://img.shields.io/circleci/project/github/monicahq/monica/master.svg" alt="Build Status"></a>
 <a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://codecov.io/gh/monicahq/monica"><img src="https://codecov.io/gh/monicahq/monica/branch/master/graph/badge.svg" /></a>
