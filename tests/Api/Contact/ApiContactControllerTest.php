@@ -45,12 +45,12 @@ class ApiContactControllerTest extends ApiTestCase
                 'birthdate' => [
                     'is_age_based',
                     'is_year_unknown',
-                    'date'
+                    'date',
                 ],
                 'deceased_date' => [
                     'is_age_based',
                     'is_year_unknown',
-                    'date'
+                    'date',
                 ],
             ],
             'career',
