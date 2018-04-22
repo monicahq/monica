@@ -17,8 +17,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y libicu-dev g++
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
+            sudo docker-php-ext-install intl json iconv
       - run:
           name: Prepare environment
           command: |
@@ -77,7 +76,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
       - run:
           name: Prepare environment
           command: |
@@ -139,7 +138,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
       - run:
           name: Prepare environment
           command: |
@@ -198,7 +197,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
       - run:
           name: Prepare environment
           command: |
@@ -252,7 +251,7 @@ jobs:
           name: Fix coverage
           command: |
             vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-            rm -rf results/coverage          
+            rm -rf results/coverage
       - store_test_results:
           path: results
       - store_artifacts:
@@ -282,7 +281,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo pdo_mysql mysqli mbstring fileinfo
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
       - run:
           name: Prepare environment
           command: |
@@ -336,7 +335,7 @@ jobs:
           name: Fix coverage
           command: |
             vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-            rm -rf results/coverage          
+            rm -rf results/coverage
       - store_test_results:
           path: results
       - store_artifacts:
@@ -346,7 +345,7 @@ jobs:
 
   reporting:
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.1-node
 
     working_directory: ~/monica
 
