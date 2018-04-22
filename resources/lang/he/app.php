@@ -23,7 +23,7 @@ return [
     'day' => 'day',
     'days' => 'days',
 
-    'application_title' => 'Monica – personal relationship manager',
+    'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
     'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול מקוונת בחינם לקשרים עם חברים ומשפחה.',
 
@@ -81,9 +81,9 @@ return [
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'הנתונים נשמרו.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
