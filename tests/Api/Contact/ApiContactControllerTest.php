@@ -9,6 +9,95 @@ class ApiContactControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
+    protected $jsonStructureContact = [
+        'id',
+        'object',
+        'hash_id',
+        'first_name',
+        'last_name',
+        'gender',
+        'is_partial',
+        'is_dead',
+        'last_called',
+        'last_activity_together',
+        'stay_in_touch_frequency',
+        'stay_in_touch_trigger_date',
+        'information' => [
+            'relationships' => [
+                'love' => [
+                    'total',
+                    'contacts',
+                ],
+                'family' => [
+                    'total',
+                    'contacts',
+                ],
+                'friend' => [
+                    'total',
+                    'contacts',
+                ],
+                'work' => [
+                    'total',
+                    'contacts',
+                ]
+            ],
+            'dates' => [
+                'birthdate' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date'
+                ],
+                'deceased_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date'
+                ]
+            ],
+            'career',
+            'avatar',
+            'food_preferencies',
+            'how_you_met'
+        ],
+        'addresses',
+        'tags',
+        'statistics',
+        'account' => [
+            'id'
+        ],
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $jsonStructureContactShort = [
+        'id',
+        'object',
+        'hash_id',
+        'first_name',
+        'last_name',
+        'gender',
+        'is_partial',
+        'is_dead',
+        'information' => [
+            'dates' => [
+                'birthdate' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date'
+                ],
+                'deceased_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date'
+                ]
+            ],
+        ],
+        'account' => [
+            'id'
+        ],
+        'created_at',
+        'updated_at',
+    ];
+
     public function test_it_gets_a_list_of_contacts()
     {
         $user = $this->signin();
@@ -185,63 +274,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'data' => [
-                'id',
-                'object',
-                'first_name',
-                'last_name',
-                'gender',
-                'is_partial',
-                'is_dead',
-                'last_called',
-                'last_activity_together',
-                'stay_in_touch_frequency',
-                'stay_in_touch_trigger_date',
-                'information' => [
-                    'relationships' => [
-                        'love' => [
-                            'total',
-                            'contacts',
-                        ],
-                        'family' => [
-                            'total',
-                            'contacts',
-                        ],
-                        'friend' => [
-                            'total',
-                            'contacts',
-                        ],
-                        'work' => [
-                            'total',
-                            'contacts',
-                        ]
-                    ],
-                    'dates' => [
-                        'birthdate' => [
-                            'is_age_based',
-                            'is_year_unknown',
-                            'date'
-                        ],
-                        'deceased_date' => [
-                            'is_age_based',
-                            'is_year_unknown',
-                            'date'
-                        ]
-                    ],
-                    'career',
-                    'avatar',
-                    'food_preferencies',
-                    'how_you_met'
-                ],
-                'addresses',
-                'tags',
-                'statistics',
-                'account' => [
-                    'id'
-                ],
-                'created_at',
-                'updated_at'
-            ]
+            'data' => $this->jsonStructureContact,
         ]);
     }
 
@@ -260,34 +293,26 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
+            'data' => $this->jsonStructureContactShort,
+        ]);
+    }
+
+    public function test_getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
+    {
+        $user = $this->signin();
+
+        $contact = factory('App\Contact')->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'roger',
+        ]);
+
+        $response = $this->json('GET', '/api/contacts?with=contactfields');
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
             'data' => [
-                'id',
-                'hash_ID',
-                'object',
-                'first_name',
-                'last_name',
-                'gender',
-                'is_partial',
-                'is_dead',
-                'information' => [
-                    'dates' => [
-                        'birthdate' => [
-                            'is_age_based',
-                            'is_year_unknown',
-                            'date'
-                        ],
-                        'deceased_date' => [
-                            'is_age_based',
-                            'is_year_unknown',
-                            'date'
-                        ]
-                    ],
-                ],
-                'account' => [
-                    'id'
-                ],
-                'created_at',
-                'updated_at',
+                '*' => $this->jsonStructureContact,
             ]
         ]);
     }
