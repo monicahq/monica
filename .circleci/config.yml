@@ -458,7 +458,7 @@ workflows:
             - tests-browser-7.2
   deploy:
     jobs:
-      - build
+      - build:
           filters:
             branches:
               only:
