@@ -179,9 +179,7 @@ vagrant_build:
 	make -C scripts/vagrant/build package
 
 push_bintray_assets: results/$(ASSETS).tar.bz2 .travis.deploy.json
-	curl -sS --user "$(BINTRAY_USER):$(BINTRAY_APIKEY)" -X PUT -T results/$(ASSETS).tar.bz2 https://api.bintray.com/content/monicahq/builds/monica/$(BUILD)/$(ASSETS).tar.bz2?publish=1&override=1
-	BUILD=$(BUILD) REPO=builds scripts/tests/fix-bintray.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
 
 push_bintray_dist: results/$(DESTDIR).tar.bz2 .travis.deploy.json
-	curl -sS --user "$(BINTRAY_USER):$(BINTRAY_APIKEY)" -X PUT -T results/$(DESTDIR).tar.bz2 https://api.bintray.com/content/monicahq/builds/monica/$(BUILD)/$(DESTDIR).tar.bz2?publish=1&override=1
-	BUILD=$(BUILD) REPO=builds scripts/tests/fix-bintray.sh
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
