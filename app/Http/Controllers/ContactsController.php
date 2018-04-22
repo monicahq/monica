@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Tag;
+use Exception;
 use Validator;
 use App\Contact;
 use App\Relationship;
@@ -497,5 +498,37 @@ class ContactsController extends Controller
         $vcard = VCardHelper::prepareVCard($contact);
 
         return  $vcard->download();
+    }
+
+    /**
+     * Set or change the frequency of which the user wants to stay in touch with
+     * the given contact.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return [type]
+     */
+    public function stayInTouch(Request $request, Contact $contact)
+    {
+        $frequency = intval($request->get('frequency'));
+        $state = $request->get('state');
+
+        if (auth()->user()->account->hasLimitations()) {
+            throw new Exception(trans('people.stay_in_touch_invalid'));
+        }
+
+        // if not active, set frequency to 0
+        if (! $state) {
+            $frequency = 0;
+        }
+        $result = $contact->updateStayInTouchFrequency($frequency);
+
+        if (! $result) {
+            throw new Exception(trans('people.stay_in_touch_invalid'));
+        }
+
+        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+
+        return $frequency;
     }
 }
