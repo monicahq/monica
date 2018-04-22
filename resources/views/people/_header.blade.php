@@ -25,14 +25,14 @@
             @endif
           @endif
 
-          <h2 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
+          <h3 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
             @if ($contact->birthday_special_date_id)
               @if ($contact->birthdate->getAge())
                 <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
               @endif
             @endif
-          </h2>
+          </h3>
 
           <ul class="horizontal profile-detail-summary {{ \App\Helpers\LocaleHelper::getDirection() }}">
             @if ($contact->is_dead)
@@ -61,12 +61,15 @@
           </ul>
 
           <ul class="tags {{ \App\Helpers\LocaleHelper::getDirection() }}">
+            <li class="mr3">
+              <stay-in-touch :contact="{{ $contact }}" hash="{!! $contact->hashID() !!}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
+            </li>
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
                 <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
-            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+            <li class="mr3"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
           <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
