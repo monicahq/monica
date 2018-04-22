@@ -1,0 +1,493 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1-node
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libicu-dev g++
+            sudo docker-php-ext-install intl json iconv
+      - run:
+          name: Prepare environment
+          command: |
+            cp scripts/tests/.env.mysql.travis .env
+
+      ## COMPOSER
+      - run: sudo composer self-update
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - save_cache:
+          key: composer-v2-{{ checksum "composer.json" }}
+          paths: vendor
+
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      - run: yarn install
+      - save_cache:
+          key: node-v2-{{ checksum "package.json" }}
+          paths: node_modules
+
+      # Build js and css assets
+      - run:
+          name: Build assets
+          command: |
+            php artisan lang:generate
+            yarn run production
+      - save_cache:
+          key: assets-v2-{{ .Revision }}
+          paths:
+            - public/mix-manifest.json
+            - public/css
+            - public/fonts
+            - public/js
+
+  tests-7.1:
+    docker:
+      - image: circleci/php:7.1-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      - run:
+          name: Prepare environment
+          command: |
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+      ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
+
+      # Run unit tests
+      - run:
+          name: Run unit tests
+          command: vendor/bin/phpunit -c phpunit.xml
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+      - persist_to_workspace:
+          root: ~/monica
+          paths: results
+
+  tests-7.2:
+    docker:
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      - run:
+          name: Prepare environment
+          command: |
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+      ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
+
+      # Run unit tests
+      - run:
+          name: Run unit tests
+          command: vendor/bin/phpunit -c phpunit.xml
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+
+  tests-browser-7.1:
+    docker:
+      - image: circleci/php:7.1-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      - run:
+          name: Prepare environment
+          command: |
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+      ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
+
+      - run:
+          name: Run selenium chromedriver
+          command: vendor/bin/chromedriver
+          background: true
+
+      - run:
+          name: Run http server
+          command: |
+            php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+          background: true
+      - run:
+          name: Wait for http server
+          command: dockerize -wait tcp://localhost:8000 -timeout 120s
+
+      # Run browser tests
+      - run:
+          name: Run unit tests
+          command: php artisan dusk --log-junit results/junit2.xml
+      - run:
+          name: Fix coverage
+          command: |
+            vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+            rm -rf results/coverage
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+      - store_artifacts:
+          path: tests/Browser/screenshots
+      - persist_to_workspace:
+          root: ~/monica
+          paths:
+            - results
+
+  tests-browser-7.2:
+    docker:
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      - run:
+          name: Prepare environment
+          command: |
+            mkdir -p results/coverage
+            cp scripts/tests/.env.mysql.travis .env
+
+      ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv
+            php artisan db:seed --env=testing --no-interaction -vvv
+
+      - run:
+          name: Run selenium chromedriver
+          command: vendor/bin/chromedriver
+          background: true
+
+      - run:
+          name: Run http server
+          command: |
+            php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+          background: true
+      - run:
+          name: Wait for http server
+          command: dockerize -wait tcp://localhost:8000 -timeout 120s
+
+      # Run browser tests
+      - run:
+          name: Run unit tests
+          command: php artisan dusk --log-junit results/junit2.xml
+      - run:
+          name: Fix coverage
+          command: |
+            vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+            rm -rf results/coverage
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+      - store_artifacts:
+          path: tests/Browser/screenshots
+
+  reporting:
+    docker:
+      - image: circleci/php:7.1-node
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/monica
+
+      ## NODE.JS
+      - restore_cache:
+          keys:
+            - node-v2-{{ checksum "package.json" }}
+            - node-v2-
+      - restore_cache:
+          keys:
+            - sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+            - sonarscanner-v1-
+
+      - run:
+          name: Merge junit files
+          command: node_modules/.bin/junit-merge --dir results --out results/result.xml
+      - run:
+          name: Run sonar scanner
+          command: scripts/tests/runsonar.sh
+
+      - save_cache:
+          key: sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+          paths: ~/sonarscanner
+
+  deploy-assets:
+    docker:
+      - image: circleci/php:7.1
+
+    working_directory: ~/monica
+
+    steps:
+      ## COMPOSER
+      - restore_cache:
+          keys:
+            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run: make assets
+      - run: make push_bintray_assets
+
+  deploy-dist:
+    docker:
+      - image: circleci/php:7.1
+
+    working_directory: ~/monica
+
+    steps:
+      ## ASSETS
+      - restore_cache:
+          keys:
+            - assets-v2-{{ .Revision }}
+            - assets-v2
+
+      - run: make dist
+      - run: make push_bintray_dist
+
+  deploy-docker:
+    machine: true
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+
+      - run:
+          name: Prepare
+          command: |
+            cp scripts/tests/.env.mysql.travis .env
+            docker-compose --version
+      - run:
+          name: Make docker image
+          command: make docker_build
+      - run:
+          name: Publish docker image
+          command: |
+            echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+            make docker_push_bintray
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - tests-7.1:
+          requires:
+            - build
+      - tests-7.2:
+          requires:
+            - build
+      - tests-browser-7.1:
+          requires:
+            - build
+      - tests-browser-7.2:
+          requires:
+            - build
+      - reporting:
+          requires:
+            - tests-7.1
+            - tests-7.2
+            - tests-browser-7.1
+            - tests-browser-7.2
+  deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-assets:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-dist:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-docker:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
