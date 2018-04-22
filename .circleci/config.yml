@@ -382,6 +382,7 @@ jobs:
     working_directory: ~/monica
 
     steps:
+      - checkout
       ## COMPOSER
       - restore_cache:
           keys:
@@ -403,6 +404,7 @@ jobs:
     working_directory: ~/monica
 
     steps:
+      - checkout
       ## ASSETS
       - restore_cache:
           keys:
@@ -419,7 +421,6 @@ jobs:
 
     steps:
       - checkout
-
       - run:
           name: Prepare
           command: |
