@@ -1278,7 +1278,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertFalse($contacts->contains($contact2));
     }
-  
+
     public function test_it_updates_stay_in_touch_frequency()
     {
         $account = factory('App\Account')->create([]);
