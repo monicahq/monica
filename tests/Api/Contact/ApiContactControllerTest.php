@@ -39,7 +39,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'work' => [
                     'total',
                     'contacts',
-                ]
+                ],
             ],
             'dates' => [
                 'birthdate' => [
@@ -51,21 +51,21 @@ class ApiContactControllerTest extends ApiTestCase
                     'is_age_based',
                     'is_year_unknown',
                     'date'
-                ]
+                ],
             ],
             'career',
             'avatar',
             'food_preferencies',
-            'how_you_met'
+            'how_you_met',
         ],
         'addresses',
         'tags',
         'statistics',
         'account' => [
-            'id'
+            'id',
         ],
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $jsonStructureContactShort = [
@@ -82,17 +82,17 @@ class ApiContactControllerTest extends ApiTestCase
                 'birthdate' => [
                     'is_age_based',
                     'is_year_unknown',
-                    'date'
+                    'date',
                 ],
                 'deceased_date' => [
                     'is_age_based',
                     'is_year_unknown',
-                    'date'
-                ]
+                    'date',
+                ],
             ],
         ],
         'account' => [
-            'id'
+            'id',
         ],
         'created_at',
         'updated_at',

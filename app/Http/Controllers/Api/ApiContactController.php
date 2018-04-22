@@ -41,7 +41,7 @@ class ApiContactController extends ApiController
             return $collection->additional([
                 'meta' => [
                     'query' => $needle,
-                ]
+                ],
             ]);
         }
 
@@ -367,9 +367,9 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Apply the `?with=` parameter
-     * @param  Collection $contacts [description]
-     * @return [type]               [description]
+     * Apply the `?with=` parameter.
+     * @param  Collection $contacts
+     * @return Collection
      */
     private function applyWithParameter($contacts, string $parameter = null)
     {
