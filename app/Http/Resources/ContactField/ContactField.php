@@ -19,7 +19,7 @@ class ContactField extends Resource
         return [
             'id' => $this->id,
             'object' => 'contactfield',
-            'data' => $this->data,
+            'content' => $this->data,
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
             'account' => [
                 'id' => $this->account->id,
