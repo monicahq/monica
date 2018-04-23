@@ -227,8 +227,11 @@ $factory->define(App\JournalEntry::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Pet::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Contact::class)->create();
     return [
-        'account_id' => factory(App\Account::class)->create(),
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
+        'pet_category_id' => factory(App\PetCategory::class)->create()->id
     ];
 });
 
