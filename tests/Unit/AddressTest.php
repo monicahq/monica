@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Address;
+use App\Country;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,8 +50,9 @@ class AddressTest extends TestCase
 
     public function testGetCountryCodeReturnsStreetWhenDefined()
     {
+        $country = factory(Country::class)->create(['country' => 'United States']);
         $address = new Address;
-        $address->country_id = 1;
+        $address->country_id = $country->id;
 
         $this->assertEquals(
             'United States',
@@ -68,8 +70,9 @@ class AddressTest extends TestCase
 
     public function testGetCountryISOReturnsTheRightISO()
     {
+        $country = factory(Country::class)->create(['iso' => 'us']);
         $address = new Address;
-        $address->country_id = 1;
+        $address->country_id = $country->id;
 
         $this->assertEquals(
             'us',
