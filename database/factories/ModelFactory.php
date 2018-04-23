@@ -119,8 +119,10 @@ $factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Note::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Contact::class)->create();
     return [
-        'account_id' => factory(App\Account::class)->create(),
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
         'body' => encrypt($faker->text(200)),
     ];
 });
