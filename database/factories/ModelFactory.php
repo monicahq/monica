@@ -82,7 +82,10 @@ $factory->define(App\Contact::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Gift::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Contact::class)->create();
     return [
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
         'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
     ];
 });
@@ -125,6 +128,9 @@ $factory->define(App\Note::class, function (Faker\Generator $faker) {
 $factory->define(App\Relationship::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create(),
+        'relationship_type_id' => function () {
+            return factory(App\RelationshipType::class)->create()->id;
+        },
     ];
 });
 
