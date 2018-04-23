@@ -1083,7 +1083,7 @@ class Contact extends Model
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+        $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1114,7 +1114,7 @@ class Contact extends Model
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromAge($age)->setToContact($this);
+        $specialDate->setToContact($this)->createFromAge($age);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;

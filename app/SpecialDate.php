@@ -216,5 +216,7 @@ class SpecialDate extends Model
         $this->account_id = $contact->account_id;
         $this->contact_id = $contact->id;
         $this->save();
+
+        return $this;
     }
 }
