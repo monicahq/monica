@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "1ec467f380d26a349f883a40fffca6d6",
@@ -2002,7 +2002,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -5369,16 +5369,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.37",
+            "version": "2.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6"
+                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6",
-                "reference": "00a3f41de81d0af3cf86a9e3b30e3c48c4ccaaf6",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f269e7f58e3e0c8b52a1396b64b679949973f76a",
+                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a",
                 "shasum": ""
             },
             "bin": [
@@ -5403,7 +5403,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-03-17T21:19:04+00:00"
+            "time": "2018-04-20T19:02:08+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -6695,12 +6695,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "bf3a473c42c3640103645f9477fd425749341780"
+                "reference": "9deddd9fc64853356d688a1514318abb2d9f3d4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bf3a473c42c3640103645f9477fd425749341780",
-                "reference": "bf3a473c42c3640103645f9477fd425749341780",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9deddd9fc64853356d688a1514318abb2d9f3d4b",
+                "reference": "9deddd9fc64853356d688a1514318abb2d9f3d4b",
                 "shasum": ""
             },
             "conflict": {
@@ -6850,7 +6850,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-04-14T07:19:11+00:00"
+            "time": "2018-04-22T05:30:14+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
