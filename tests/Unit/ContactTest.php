@@ -6,8 +6,11 @@ use App\Tag;
 use App\Call;
 use App\Debt;
 use App\Contact;
+use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
+use App\Mail\StayInTouchEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
@@ -387,6 +390,12 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'test@test.com',
+        ]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test2@test.com',
         ]);
 
         $email = $contact->getFirstEmail();
@@ -842,9 +851,10 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sets_a_relationship_between_two_contacts()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
-        $partner = factory(Contact::class)->create(['account_id' => 1]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -921,12 +931,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $account->id,
             'is_partial' => true,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -944,12 +955,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $account->id,
             'is_partial' => false,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -1117,5 +1129,123 @@ class ContactTest extends FeatureTestCase
             $contact->id,
             $foundContact->id
         );
+    }
+
+    public function test_contact_deletion()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact->save();
+        $id = $contact->id;
+
+        $this->assertEquals(1, Contact::where('id', $id)->count());
+
+        $contact->deleteEverything();
+
+        $this->assertEquals(0, Contact::where('id', $id)->count());
+    }
+
+    public function test_it_updates_stay_in_touch_frequency()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(3);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+    }
+
+    public function test_it_resets_stay_in_touch_frequency_if_set_to_0()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(0);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+    }
+
+    public function test_it_returns_false_if_frequency_is_not_an_integer()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency('not an integer');
+
+        $this->assertFalse($result);
+    }
+
+    public function test_it_updates_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
+
+        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+
+        $this->assertEquals(
+            '2017-01-04',
+            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+        );
+    }
+
+    public function it_resets_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
+        ]);
+
+        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
+    }
+
+    public function test_it_sends_the_stay_in_touch_email()
+    {
+        Mail::fake();
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+            'email' => 'john@doe.com',
+            'locale' => 'US\Eastern',
+        ]);
+
+        $contact->sendStayInTouchEmail($user);
+
+        Mail::assertSent(StayInTouchEmail::class, function ($mail) {
+            return $mail->hasTo('john@doe.com');
+        });
     }
 }

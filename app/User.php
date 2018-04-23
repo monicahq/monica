@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -71,6 +72,14 @@ class User extends Authenticatable
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the changelog records associated with the user.
+     */
+    public function changelogs()
+    {
+        return $this->belongsToMany('App\Changelog')->withPivot('read', 'upvote')->withTimestamps();
     }
 
     /**
@@ -226,7 +235,7 @@ class User extends Authenticatable
 
         $currentDate = now($this->timezone);
 
-        $currentHourOnUserTimezone = $currentDate->format('H:00');
+        $currentHourOnUserTimezone = $currentDate->format('G:00');
         $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
 
         $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
@@ -240,5 +249,27 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    /**
+     * Check if user has one or more unread changelog entries.
+     *
+     * @return bool
+     */
+    public function hasUnreadChangelogs()
+    {
+        return $this->changelogs()->wherePivot('read', 0)->count() > 0;
+    }
+
+    /**
+     * Mark all changelog entries as read.
+     *
+     * @return void
+     */
+    public function markChangelogAsRead()
+    {
+        DB::table('changelog_user')
+            ->where('user_id', $this->id)
+            ->update(['read' => 1]);
     }
 }

@@ -1,12 +1,38 @@
 UNRELEASED CHANGES:
 
+* Add many unit tests on the API
+* Add ability to display contact fields for each contact in the contact list through the API
+* Add ability to stay in touch with a contact by sending reminders at a given interval
+* Add secure Oauth route for the API login
+
+RELEASED VERSIONS:
+
+v2.0.1 - 2018-04-17
+-------------------
+
+* Add ability to set relationships through the API
+* Fix ordering of activites in journal
+* Fix how you meet section not being shown
+* Add a changelog inside the application
+* Fix monica:calculatestatistics command
+
+v2.0.0 - 2018-04-12
+-------------------
+
+* Add ability to set a journal entry date
+* Use UUID instead of actual ID to identify contacts
+* Add ability to show/hide sections on the Contact sheet view
 * Add many more relationship types to link contacts together
 * Fix called_at field in the Call object returned by the API
 * Add Linkedin URL in the Contact object returned by the API
 * Improve localization: add plural forms, localize every needed messages
 * Split app.js in 3 files, and load translations files for Vue in separate files
-
-RELEASED VERSIONS:
+* Localize update tag message
+* Fix some messages syntax and ponctuation
+* Add a new monica:update command
+* Fix gifts handle
+* Remove old documentation from sources
+* Fix Bug when editing gift
 
 v1.8.2 - 2018-03-20
 -------------------

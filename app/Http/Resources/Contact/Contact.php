@@ -18,6 +18,7 @@ class Contact extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
+            'hash_id' => $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender->name,
@@ -25,6 +26,8 @@ class Contact extends Resource
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
+            'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
+            'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, (is_null($this->stay_in_touch_trigger_date) ? null : $this->stay_in_touch_trigger_date->format(config('api.timestamp_format')))),
             'information' => [
                 'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
