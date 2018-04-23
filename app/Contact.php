@@ -644,7 +644,7 @@ class Contact extends Model
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
-        $event = $this->events()->create([]);
+        $event = $this->events()->make();
         $event->account_id = $this->account_id;
         $event->object_type = $objectType;
         $event->object_id = $objectId;
