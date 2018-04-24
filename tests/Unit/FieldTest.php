@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Field;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

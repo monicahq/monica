@@ -263,6 +263,12 @@ $factory->define(App\Field::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\FieldChoice::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Instance::class, function (Faker\Generator $faker) {
     return [];
 });
