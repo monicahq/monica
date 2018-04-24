@@ -12,42 +12,52 @@ class ContactFieldValueTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $contactCustomField = factory('App\ContactCustomField')->create([
+        $contactFieldValue = factory('App\ContactFieldValue')->create([
             'account_id' => $account->id,
         ]);
 
-        $this->assertTrue($contactCustomField->account()->exists());
+        $this->assertTrue($contactFieldValue->account()->exists());
     }
 
     public function test_it_belongs_to_one_custom_field()
     {
-        $customField = factory('App\CustomField')->create([]);
-        $contactCustomField = factory('App\ContactCustomField')->create([
-            'custom_field_id' => $customField->id,
+        $contactCustomField = factory('App\ContactCustomField')->create([]);
+        $contactFieldValue = factory('App\ContactFieldValue')->create([
+            'contact_custom_field_id' => $contactCustomField->id,
         ]);
 
-        $this->assertTrue($contactCustomField->customField()->exists());
+        $this->assertTrue($contactFieldValue->contactCustomField()->exists());
     }
 
     public function test_it_belongs_to_one_contact()
     {
         $contact = factory('App\Contact')->create([]);
-        $contactCustomField = factory('App\ContactCustomField')->create([
+        $contactFieldValue = factory('App\ContactFieldValue')->create([
             'contact_id' => $contact->id,
         ]);
 
-        $this->assertTrue($contactCustomField->contact()->exists());
+        $this->assertTrue($contactFieldValue->contact()->exists());
+    }
+
+    public function test_it_belongs_to_one_field()
+    {
+        $field = factory('App\Field')->create([]);
+        $contactFieldValue = factory('App\ContactFieldValue')->create([
+            'field_id' => $field->id,
+        ]);
+
+        $this->assertTrue($contactFieldValue->field()->exists());
     }
 
     public function test_it_retrieves_the_value()
     {
-        $fieldChoice = factory('App\FieldChoice')->make([
+        $contactFieldValue = factory('App\ContactFieldValue')->create([
             'value' => 'Flirt',
         ]);
 
         $this->assertEquals(
             'Flirt',
-            $fieldChoice->value
+            $contactFieldValue->value
         );
     }
 }

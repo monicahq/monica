@@ -55,4 +55,14 @@ class ContactFieldValue extends Model
     {
         return $this->belongsTo(Field::class);
     }
+
+    /**
+     * Get the value of the contact field value.
+     *
+     * @return bool
+     */
+    public function getValueAttribute($value)
+    {
+        return $value;
+    }
 }
