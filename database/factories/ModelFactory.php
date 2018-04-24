@@ -247,6 +247,22 @@ $factory->define(App\Changelog::class, function (Faker\Generator $faker) {
     return [];
 });
 
+$factory->define(App\CustomField::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\CustomFieldType::class, function (Faker\Generator $faker) {
+    return [];
+});
+
+$factory->define(App\Field::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
 $factory->define(App\Instance::class, function (Faker\Generator $faker) {
     return [];
 });
