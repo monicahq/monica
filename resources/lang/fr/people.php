@@ -60,12 +60,12 @@ return [
     'call_button' => 'Enregistrer un appel téléphonique',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every {count} days',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_modal_title' => 'Stay in touch',
-    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch' => 'Restez en contact',
+    'stay_in_touch_frequency' => 'Rester en contact tous les {count} jours',
+    'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
+    'stay_in_touch_modal_title' => 'Restez en contact',
+    'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
+    'stay_in_touch_modal_label' => 'Envoyez-moi un courriel tous les ...',
 
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
