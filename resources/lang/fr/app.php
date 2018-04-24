@@ -23,7 +23,7 @@ return [
     'day' => 'day',
     'days' => 'days',
 
-    'application_title' => 'Monica – personal relationship manager',
+    'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
     'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
 
@@ -32,7 +32,7 @@ return [
 
     'header_settings_link' => 'Paramètres',
     'header_logout_link' => 'Déconnexion',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => 'Évolutions du produit',
 
     'main_nav_cta' => 'Ajouter des gens',
     'main_nav_dashboard' => 'Tableau de bord',
