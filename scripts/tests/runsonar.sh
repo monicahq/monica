@@ -74,16 +74,16 @@ function gitFetch {
 }
 
 function getSonarlauncher {
-  sonarlauncherversion=0.3.0
+  sonarlauncherversion=0.4.1
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then
     echo "Download sonarlauncher"
     mkdir -p ~/sonarlauncher/$sonarlauncherversion
-    curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/travis-sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
+    curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
   fi
   popd > /dev/null
-  cp ~/sonarlauncher/$sonarlauncherversion/travis-sonarlauncher .
+  cp ~/sonarlauncher/$sonarlauncherversion/sonarlauncher .
 }
 
 if [ -z "${SONAR_HOST_URL:-}" ]; then
@@ -161,9 +161,9 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
-elif [ ! -a "travis-sonarlauncher" ]; then
+elif [ ! -a "sonarlauncher" ]; then
 
   getSonarlauncher
-  ./travis-sonarlauncher
+  ./sonarlauncher
 
 fi
