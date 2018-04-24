@@ -17,7 +17,7 @@ class ContactFieldType extends Model
     protected $table = 'contact_field_types';
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the record.
      *
      * @return BelongsTo
      */

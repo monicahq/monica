@@ -23,7 +23,7 @@ class Call extends Model
     protected $dates = ['called_at'];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the record.
      *
      * @return BelongsTo
      */

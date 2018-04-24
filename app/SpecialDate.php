@@ -51,7 +51,7 @@ class SpecialDate extends Model
     ];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the record.
      *
      * @return BelongsTo
      */

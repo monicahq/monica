@@ -5,14 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * @property Account $account
- * @property User $user
- */
-class ImportJobReport extends Model
+class ContactCustomField extends Model
 {
-    protected $table = 'import_job_reports';
-
     /**
      * The attributes that aren't mass assignable.
      *
@@ -20,8 +14,10 @@ class ImportJobReport extends Model
      */
     protected $guarded = ['id'];
 
+    protected $table = 'contact_custom_fields';
+
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the contact custom field.
      *
      * @return BelongsTo
      */
@@ -31,22 +27,22 @@ class ImportJobReport extends Model
     }
 
     /**
-     * Get the user record associated with the gift.
+     * Get the custom field record associated with the contact custom field.
      *
      * @return BelongsTo
      */
-    public function user()
+    public function customField()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(CustomField::class);
     }
 
     /**
-     * Get the import job record associated with the gift.
+     * Get the contact record associated with the contact custom field.
      *
      * @return BelongsTo
      */
-    public function importJob()
+    public function contact()
     {
-        return $this->belongsTo(ImportJob::class);
+        return $this->belongsTo(Contact::class);
     }
 }

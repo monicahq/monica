@@ -29,7 +29,7 @@ class ImportJob extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the record.
      *
      * @return BelongsTo
      */

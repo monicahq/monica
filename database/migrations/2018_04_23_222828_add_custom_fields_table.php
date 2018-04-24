@@ -47,7 +47,7 @@ class AddCustomFieldsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('contacts_custom_fields', function (Blueprint $table) {
+        Schema::create('contact_custom_fields', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('custom_field_id');
@@ -55,7 +55,7 @@ class AddCustomFieldsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('contacts_field_value', function (Blueprint $table) {
+        Schema::create('contact_field_values', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
             $table->integer('contact_custom_field_id');
