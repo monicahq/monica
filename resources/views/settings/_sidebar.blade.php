@@ -28,12 +28,12 @@
     @if (Route::currentRouteName() == 'settings.customfields')
     <li class="selected">
       <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_personalization') }}</strong>
+      <strong>{{ trans('settings.sidebar_customfields') }}</strong>
     </li>
     @else
     <li class="bg-white">
       <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <a href="/settings/personalization">{{ trans('settings.sidebar_personalization') }}</a>
+      <a href="/settings/customfields">{{ trans('settings.sidebar_customfields') }}</a>
     </li>
     @endif
 

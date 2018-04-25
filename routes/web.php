@@ -190,7 +190,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::delete('/settings/personalization/genders/{gender}/replaceby/{gender_id}', 'Settings\\GendersController@destroyAndReplaceGender');
         Route::delete('/settings/personalization/genders/{gender}', 'Settings\\GendersController@destroyGender');
 
-        Route::get('/settings/customfields', 'Settings\\CustomFieldsController@index').name('.customfields');
+        Route::get('/settings/customfields', 'Settings\\CustomFieldsController@index')->name('.customfields');
 
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');

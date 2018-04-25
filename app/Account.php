@@ -323,6 +323,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function customFields()
+    {
+        return $this->hasMany('App\CustomField');
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
