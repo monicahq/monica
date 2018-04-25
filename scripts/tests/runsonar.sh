@@ -122,12 +122,13 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
 
 elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
-  REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login, .base.ref"))
+  REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login, .base.ref, .head.ref"))
 
   PULL_REQUEST_BRANCH=
   PULL_REQUEST_REPOSITORY=${REPOS_VALUES[0]}
   PULL_REQUEST_USER=${REPOS_VALUES[1]}
   PULL_REQUEST_BASEBRANCH=${REPOS_VALUES[2]}
+  PULL_REQUEST_HEADBRANCH=${REPOS_VALUES[3]}
 
   if [ -z "${PULL_REQUEST_REPOSITORY:-}" ] || [ "$PULL_REQUEST_REPOSITORY" == "null" ]; then
     echo 'Error with github api call'
@@ -136,13 +137,13 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     echo '==================================='
     echo 'SONAR:Analyze internal pull request'
     echo '==================================='
-    PULL_REQUEST_BRANCH=$BRANCH
+    PULL_REQUEST_BRANCH=$PULL_REQUEST_HEADBRANCH
   else
     echo '==================================='
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
     echo External repository: $PULL_REQUEST_REPOSITORY
-    PULL_REQUEST_BRANCH="PR${PR_NUMBER}_($PULL_REQUEST_USER)_$BRANCH"
+    PULL_REQUEST_BRANCH="PR${PR_NUMBER}_($PULL_REQUEST_USER)_$PULL_REQUEST_HEADBRANCH"
   fi
 
   installSonar
