@@ -18,16 +18,30 @@ class ApiStatisticsController extends ApiController
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
-        try {
-            $activities = auth()->user()->account->activities()
-                ->orderBy($this->sort, $this->sortDirection)
-                ->paginate($this->getLimitPerPage());
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
-        }
+        // Collecting statistics
+        $statistic = \App\Statistic::order_by('created_at', 'desc')->first();
+        $instance = Instance::first();
 
-        return ActivityResource::collection($activities)->additional(['meta' => [
-            'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
-        ]]);
+        // Get the date of the monday of last week
+        $dateMondayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateMondayLastWeek = $dateMondayLastWeek->startOfWeek();
+
+        // Get the date of the sunday of last week
+        $dateSundayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
+
+        // Get the number of users last monday
+        $instanceLastMonday = \App\Statistic::whereDate('created_at', '=', $dateMondayLastWeek->format('Y-m-d'))->first();
+        $instanceLastSunday = \App\Statistic::whereDate('created_at', '=', $dateSundayLastWeek->format('Y-m-d'))->first();
+
+        $statistics = collect();
+        $statistics->push([
+            'instance_creation_date' => $instance->created_at,
+            'number_of_contacts' => $statistic->number_of_contacts,
+            'number_of_users' => $statistic->number_of_users,
+            'number_of_activities' => $statistic->number_of_activities,
+            'number_of_reminders' => $statistic->number_of_reminders,
+            'number_of_new_users_last_week' => ,
+        ]);
     }
 }
