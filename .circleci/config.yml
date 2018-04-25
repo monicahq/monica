@@ -27,11 +27,11 @@ jobs:
       - run: sudo composer self-update
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
-          key: composer-v2-{{ checksum "composer.json" }}
+          key: composer-v2-{{ checksum "composer.lock" }}
           paths: vendor
 
       ## NODE.JS
@@ -86,7 +86,7 @@ jobs:
       ## COMPOSER
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       ## NODE.JS
       - restore_cache:
@@ -148,7 +148,7 @@ jobs:
       ## COMPOSER
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       ## NODE.JS
       - restore_cache:
@@ -203,11 +203,12 @@ jobs:
           command: |
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
+            scripts/tests/install-chrome.sh
 
       ## COMPOSER
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       ## NODE.JS
       - restore_cache:
@@ -287,11 +288,12 @@ jobs:
           command: |
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
+            scripts/tests/install-chrome.sh
 
       ## COMPOSER
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       ## NODE.JS
       - restore_cache:
@@ -386,7 +388,7 @@ jobs:
       ## COMPOSER
       - restore_cache:
           keys:
-            - composer-v2-{{ checksum "composer.json" }}
+            - composer-v2-{{ checksum "composer.lock" }}
             - composer-v2-
       ## ASSETS
       - restore_cache:
