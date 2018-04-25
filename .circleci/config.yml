@@ -203,6 +203,7 @@ jobs:
           command: |
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
+            scripts/tests/install-chrome.sh
 
       ## COMPOSER
       - restore_cache:
@@ -287,6 +288,7 @@ jobs:
           command: |
             mkdir -p results/coverage
             cp scripts/tests/.env.mysql.travis .env
+            scripts/tests/install-chrome.sh
 
       ## COMPOSER
       - restore_cache:
