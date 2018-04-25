@@ -25,6 +25,30 @@
     </li>
     @endif
 
+    @if (Route::currentRouteName() == 'settings.customfields')
+    <li class="selected">
+      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+      <strong>{{ trans('settings.sidebar_personalization') }}</strong>
+    </li>
+    @else
+    <li class="bg-white">
+      <i class="fa fa-handshake-o" aria-hidden="true"></i>
+      <a href="/settings/personalization">{{ trans('settings.sidebar_personalization') }}</a>
+    </li>
+    @endif
+
+    @if (Route::currentRouteName() == 'settings.tags')
+    <li class="selected">
+      <i class="fa fa-tags" aria-hidden="true"></i>
+      <strong>{{ trans('settings.sidebar_settings_tags') }}</strong>
+    </li>
+    @else
+    <li class="bg-white">
+      <i class="fa fa-tags" aria-hidden="true"></i>
+      <a href="/settings/tags">{{ trans('settings.sidebar_settings_tags') }}</a>
+    </li>
+    @endif
+
     @if (Route::currentRouteName() == 'settings.export')
     <li class="selected">
       <i class="fa fa-cloud-download" aria-hidden="true"></i>
@@ -73,18 +97,6 @@
         <a href="/settings/subscriptions">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
       </li>
       @endif
-    @endif
-
-    @if (Route::currentRouteName() == 'settings.tags')
-    <li class="selected">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings_tags') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-      <a href="/settings/tags">{{ trans('settings.sidebar_settings_tags') }}</a>
-    </li>
     @endif
 
     @if (Route::currentRouteName() == 'settings.api')
