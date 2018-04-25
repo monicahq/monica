@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add ability to stay in touch with a contact by sending reminders at a given interval
 * Add secure Oauth route for the API login
+* Add foreign key constraints to all tables missing them
 
 RELEASED VERSIONS:
 
