@@ -143,6 +143,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('people.search');
+
+        // Stay in touch information
+        Route::post('/people/{contact}/stayintouch', 'ContactsController@stayInTouch');
     });
 
     // Activities

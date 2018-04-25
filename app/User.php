@@ -235,7 +235,7 @@ class User extends Authenticatable
 
         $currentDate = now($this->timezone);
 
-        $currentHourOnUserTimezone = $currentDate->format('H:00');
+        $currentHourOnUserTimezone = $currentDate->format('G:00');
         $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
 
         $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
