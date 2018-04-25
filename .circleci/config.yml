@@ -435,6 +435,26 @@ jobs:
             echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
             make docker_push_bintray
 
+  deploy-vagrant:
+    machine: true
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Prepare
+          command: |
+            scripts/vagrant/install-vagrant.sh
+      - run:
+          name: Make vagrant image
+          command: make vagrant_build
+      - run:
+          name: Publish vagrant image
+          command: |
+            DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
+            INPUT=scripts/vagrant/build/monicahq-stable.box FILE=monicahq-$CIRCLE_TAG.box scripts/tests/bintray-upload.sh
+
 workflows:
   version: 2
   build_and_test:
@@ -485,6 +505,14 @@ workflows:
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       - deploy-docker:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-vagrant:
           requires:
             - build
           filters:
