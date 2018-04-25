@@ -143,7 +143,7 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
     echo External repository: $PULL_REQUEST_REPOSITORY
-    PULL_REQUEST_BRANCH="PR${PR_NUMBER}_($PULL_REQUEST_USER)_$PULL_REQUEST_HEADBRANCH"
+    PULL_REQUEST_BRANCH="$PULL_REQUEST_USER:$PULL_REQUEST_HEADBRANCH"
   fi
 
   installSonar
