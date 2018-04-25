@@ -738,8 +738,9 @@ class Contact extends Model
         // Create the statistics again
         $this->activities->groupBy('date_it_happened.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->create([]);
+                $activityStatistic = $this->activityStatistics()->make();
                 $activityStatistic->account_id = $this->account_id;
+                $activityStatistic->contact_id = $this->id;
                 $activityStatistic->year = $year;
                 $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
