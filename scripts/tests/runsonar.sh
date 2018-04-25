@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$CIRCLECI" == "true" ]; then
-  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi  
+  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi
   REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
   BRANCH=$CIRCLE_BRANCH
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
@@ -22,7 +22,7 @@ SONAR_ORGANIZATION=monicahq
 
 function installSonar {
   echo 'Setup sonar scanner'
-
+  
   # set version of sonar scanner to use :
   sonarversion=3.1.0.1141
 
@@ -161,9 +161,10 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
-elif [ ! -a "sonarlauncher" ]; then
+elif [ ! -x "sonarlauncher" ]; then
 
   getSonarlauncher
+  echo '===== Run sonar launcher ====='
   ./sonarlauncher
 
 fi
