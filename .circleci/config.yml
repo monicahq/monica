@@ -457,11 +457,29 @@ jobs:
             DEPLOY_TEMPLATE=scripts/vagrant/build/.travis.deploy.json.in make .travis.deploy.json
             INPUT=scripts/vagrant/build/monicahq-stable.box FILE=monicahq-$CIRCLE_TAG.box scripts/tests/bintray-upload.sh
 
+  build-vagrant:
+    machine: true
+
+    working_directory: ~/monica
+
+    steps:
+      - checkout
+      - run:
+          name: Prepare
+          command: |
+            scripts/vagrant/install-vagrant.sh
+      - run:
+          name: Make vagrant image
+          command: make vagrant_build
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
+      - build-vagrant:
+          requires:
+            - build
       - tests-7.1:
           requires:
             - build
