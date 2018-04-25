@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Jobs;
 
+use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Bus;
@@ -52,13 +53,16 @@ class SendNotificationsTest extends TestCase
             'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $reminder = factory('App\Reminder')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
             'next_expected_date' => '2018-01-01',
         ]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
             'reminder_id' => $reminder->id,
             'trigger_date' => '2017-01-01',
         ]);
