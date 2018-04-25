@@ -34,7 +34,7 @@ class IntroductionsController extends Controller
     {
         // Store the contact that allowed this encounter to happen in the first
         // place
-        if ($request->get('metThroughId') != 0) {
+        if ($request->get('metThroughId') !== null) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->get('metThroughId'))

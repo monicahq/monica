@@ -1079,7 +1079,7 @@ class Contact extends Model
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
@@ -1141,36 +1141,39 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         switch ($occasion) {
             case 'birthdate':
                 if ($this->birthday_special_date_id) {
-                    $this->birthdate->deleteReminder();
-                    $this->birthdate->delete();
-
+                    $birthdate = $this->birthdate;
                     $this->birthday_special_date_id = null;
                     $this->save();
+
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
                 }
             break;
             case 'deceased_date':
                 if ($this->deceased_special_date_id) {
-                    $this->deceasedDate->deleteReminder();
-                    $this->deceasedDate->delete();
-
+                    $deceasedDate = $this->deceasedDate;
                     $this->deceased_special_date_id = null;
                     $this->save();
+
+                    $deceasedDate->deleteReminder();
+                    $deceasedDate->delete();
                 }
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $this->firstMetDate->deleteReminder();
-                    $this->firstMetDate->delete();
-
+                    $firstMetDate =$this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
+
+                    $firstMetDate->deleteReminder();
+                    $firstMetDate->delete();
                 }
             break;
         }
