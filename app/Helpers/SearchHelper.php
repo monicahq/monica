@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Auth;
 use App\Contact;
+use App\ContactFieldType;
 
 class SearchHelper
 {

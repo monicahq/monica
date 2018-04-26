@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Note;
-use Validator;
 use App\Contact;
 use App\Activity;
 use App\ActivityType;
 use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;

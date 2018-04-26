@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use DB;
 use App\Account;
 use App\Statistic;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class CalculateStatistics extends Command
 {

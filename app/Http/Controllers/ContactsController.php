@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Tag;
 use Exception;
-use Validator;
 use App\Contact;
 use App\Relationship;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {
@@ -32,6 +32,8 @@ class ContactsController extends Controller
         }
 
         $dateFlag = false;
+
+        $date_sort = null;
 
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
@@ -492,7 +494,7 @@ class ContactsController extends Controller
     public function vCard(Contact $contact)
     {
         if (config('app.debug')) {
-            \Debugbar::disable();
+            Debugbar::disable();
         }
 
         $vcard = VCardHelper::prepareVCard($contact);

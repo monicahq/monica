@@ -2,9 +2,10 @@
 
 namespace App;
 
-use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,7 +46,7 @@ class User extends Authenticatable
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password)
     {
@@ -58,7 +59,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = \App::getLocale();
+        $user->locale = App::getLocale();
         $user->save();
 
         return $user;
@@ -208,7 +209,7 @@ class User extends Authenticatable
     /**
      * Decrypt the user's google_2fa secret.
      *
-     * @param  string  $value
+     * @param  string|null  $value
      * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)

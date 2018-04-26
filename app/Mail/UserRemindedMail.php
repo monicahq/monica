@@ -7,6 +7,7 @@ use App\Contact;
 use App\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 
 class UserRemindedMail extends Mailable
@@ -36,7 +37,7 @@ class UserRemindedMail extends Mailable
     {
         $contact = Contact::findOrFail($this->reminder->contact_id);
 
-        \App::setLocale($this->user->locale);
+        App::setLocale($this->user->locale);
 
         return $this->text('emails.reminder.reminder')
                     ->subject(trans('mail.subject_line', ['contact' => $contact->getCompleteName($this->user->name_order)]))
