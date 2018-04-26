@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
