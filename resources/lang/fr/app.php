@@ -15,7 +15,7 @@ return [
     'done' => 'Terminé',
     'verify' => 'Vérifier',
     'for' => 'pour',
-    'new' => 'new',
+    'new' => 'nouveau',
     'unknown' => 'Je ne sais pas',
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
@@ -81,9 +81,9 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'Les modifications ont été enregistrées.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
