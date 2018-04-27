@@ -1291,6 +1291,11 @@ class Contact extends Model
         }
     }
 
+    public function getAgeAtDeath()
+    {
+        return $this->deceasedDate->getAgeAtDeath();
+    }
+
     /**
      * Update the frequency for which user has to be warned to stay in touch
      * with the contact.

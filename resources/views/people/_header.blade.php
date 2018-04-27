@@ -27,10 +27,14 @@
 
           <h3 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
-            @if ($contact->birthday_special_date_id)
+            @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
                 <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
               @endif
+            @elseif ($contact->is_dead)
+                @if (! is_null($contact->deceasedDate))
+                  <span class="ml3 light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+                @endif
             @endif
           </h3>
 
