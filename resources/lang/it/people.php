@@ -299,7 +299,7 @@ return [
     'deceased_add_reminder' => 'Aggiungi un promemoria per questa data',
     'deceased_label' => 'Deceduto/a',
     'deceased_label_with_date' => 'Decesso il :date',
-    'deceased_age' => 'Age at Death',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => 'Informazioni di contatto',
