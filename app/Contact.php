@@ -1291,6 +1291,11 @@ class Contact extends Model
         }
     }
 
+    /**
+     * Indicates the age of the contact at death.
+     *
+     * @return Carbon
+     */
     public function getAgeAtDeath()
     {
         return $this->deceasedDate->getAgeAtDeath();
