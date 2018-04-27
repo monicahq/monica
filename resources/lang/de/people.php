@@ -299,7 +299,7 @@ return [
     'deceased_add_reminder' => 'Erstelle eine Erinnerung für den Todestag',
     'deceased_label' => 'Verstorben',
     'deceased_label_with_date' => 'Verstorben am :date',
-    'deceased_age' => 'Age at Death',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => 'Kontaktinformationen',
