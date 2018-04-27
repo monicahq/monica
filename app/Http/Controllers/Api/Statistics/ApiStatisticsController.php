@@ -42,7 +42,7 @@ class ApiStatisticsController extends ApiController
 
         $statistics = collect();
         $statistics->push([
-            'instance_creation_date' => $instance->created_at,
+            'instance_creation_date' => $instance->created_at->format(config('api.timestamp_format')),
             'number_of_contacts' => ($statistic ? $statistic->number_of_contacts : 0),
             'number_of_users' => ($statistic ? $statistic->number_of_users : 0),
             'number_of_activities' => ($statistic ? $statistic->number_of_activities : 0),
