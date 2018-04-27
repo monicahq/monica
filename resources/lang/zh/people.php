@@ -299,6 +299,7 @@ return [
     'deceased_add_reminder' => '为此日期添加提醒',
     'deceased_label' => '世者',
     'deceased_label_with_date' => '在:date去世',
+    'deceased_age' => 'Age at Death',
 
     // Contact information
     'contact_info_title' => '联系信息',
