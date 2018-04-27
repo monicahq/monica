@@ -7,10 +7,6 @@
     <div class="mt4 mw7 center mb3">
       <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
-
-      @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
-      @endif
     </div>
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">

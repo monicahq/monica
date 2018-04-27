@@ -171,6 +171,11 @@ Vue.component(
     require('./components/settings/Modules.vue')
 );
 
+Vue.component(
+    'custom-fields',
+    require('./components/settings/CustomFields.vue')
+);
+
 // axios
 import axios from 'axios';
 

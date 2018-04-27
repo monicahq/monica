@@ -64,5 +64,15 @@ class AddCustomFieldsTable extends Migration
             $table->mediumText('value');
             $table->timestamps();
         });
+
+        DB::table('default_custom_field_types')->insert([
+            'type' => 'text',
+        ]);
+        DB::table('default_custom_field_types')->insert([
+            'type' => 'textarea',
+        ]);
+        DB::table('default_custom_field_types')->insert([
+            'type' => 'date',
+        ]);
     }
 }
