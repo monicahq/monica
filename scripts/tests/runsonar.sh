@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$CIRCLECI" == "true" ]; then
-  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi  
+  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi
   REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
   BRANCH=$CIRCLE_BRANCH
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
@@ -22,7 +22,7 @@ SONAR_ORGANIZATION=monicahq
 
 function installSonar {
   echo 'Setup sonar scanner'
-
+  
   # set version of sonar scanner to use :
   sonarversion=3.1.0.1141
 
@@ -74,16 +74,16 @@ function gitFetch {
 }
 
 function getSonarlauncher {
-  sonarlauncherversion=0.3.0
+  sonarlauncherversion=0.4.1
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then
     echo "Download sonarlauncher"
     mkdir -p ~/sonarlauncher/$sonarlauncherversion
-    curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/travis-sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
+    curl -sSL https://github.com/monicahq/sonarlauncher/releases/download/$sonarlauncherversion/sonarlauncher.tar | tar x -C ~/sonarlauncher/$sonarlauncherversion
   fi
   popd > /dev/null
-  cp ~/sonarlauncher/$sonarlauncherversion/travis-sonarlauncher .
+  cp ~/sonarlauncher/$sonarlauncherversion/sonarlauncher .
 }
 
 if [ -z "${SONAR_HOST_URL:-}" ]; then
@@ -122,12 +122,13 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
 
 elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
-  REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login, .base.ref"))
+  REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login, .base.ref, .head.ref"))
 
   PULL_REQUEST_BRANCH=
   PULL_REQUEST_REPOSITORY=${REPOS_VALUES[0]}
   PULL_REQUEST_USER=${REPOS_VALUES[1]}
   PULL_REQUEST_BASEBRANCH=${REPOS_VALUES[2]}
+  PULL_REQUEST_HEADBRANCH=${REPOS_VALUES[3]}
 
   if [ -z "${PULL_REQUEST_REPOSITORY:-}" ] || [ "$PULL_REQUEST_REPOSITORY" == "null" ]; then
     echo 'Error with github api call'
@@ -136,13 +137,13 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     echo '==================================='
     echo 'SONAR:Analyze internal pull request'
     echo '==================================='
-    PULL_REQUEST_BRANCH=$BRANCH
+    PULL_REQUEST_BRANCH=$PULL_REQUEST_HEADBRANCH
   else
     echo '==================================='
     echo 'SONAR:Analyze external pull request'
     echo '==================================='
     echo External repository: $PULL_REQUEST_REPOSITORY
-    PULL_REQUEST_BRANCH="PR${PR_NUMBER}_($PULL_REQUEST_USER)_$BRANCH"
+    PULL_REQUEST_BRANCH="$PULL_REQUEST_USER:$PULL_REQUEST_HEADBRANCH"
   fi
 
   installSonar
@@ -161,9 +162,10 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
-elif [ ! -a "travis-sonarlauncher" ]; then
+elif [ ! -x "sonarlauncher" ]; then
 
   getSonarlauncher
-  ./travis-sonarlauncher
+  echo '===== Run sonar launcher ====='
+  ./sonarlauncher
 
 fi
