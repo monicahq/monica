@@ -299,7 +299,7 @@ return [
     'deceased_add_reminder' => 'הוספת תזכורת לתאריך הזה',
     'deceased_label' => 'פטירה',
     'deceased_label_with_date' => 'פטירה ב־:date',
-    'deceased_age' => 'Age at death',
+    'deceased_age' => 'גיל בעת הפטירה',
 
     // Contact information
     'contact_info_title' => 'פרטי קשר',
