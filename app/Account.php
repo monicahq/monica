@@ -197,7 +197,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function importjobreports()
+    public function importJobReports()
     {
         return $this->hasMany(ImportJobReport::class);
     }
