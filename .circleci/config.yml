@@ -441,25 +441,43 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              ignore: /l10n_master.*/
       - tests-7.1:
           requires:
             - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
       - tests-7.2:
           requires:
             - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
       - tests-browser-7.1:
           requires:
             - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
       - tests-browser-7.2:
           requires:
             - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
       - reporting:
           requires:
             - tests-7.1
             - tests-7.2
             - tests-browser-7.1
             - tests-browser-7.2
+          filters:
+            branches:
+              ignore: /l10n_master.*/
   deploy:
     jobs:
       - build:
