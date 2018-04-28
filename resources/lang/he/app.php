@@ -20,8 +20,7 @@ return [
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
-    'day' => 'day',
-    'days' => 'days',
+    'days' => 'day|days',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
