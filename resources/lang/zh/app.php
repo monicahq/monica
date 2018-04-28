@@ -20,8 +20,7 @@ return [
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
-    'day' => 'day',
-    'days' => 'days',
+    'days' => 'day|days',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
