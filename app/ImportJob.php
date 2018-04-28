@@ -37,7 +37,7 @@ class ImportJob extends Model
      *
      * @var \App\Gender
      */
-    protected $gender;
+    public $gender;
 
     /**
      * The current entry that is being processed.

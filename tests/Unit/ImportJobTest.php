@@ -55,8 +55,40 @@ class ImportJobTest extends TestCase
         $this->assertNotNull($importJob->ended_at);
     }
 
+    public function test_it_creates_a_new_specific_gender()
+    {
+        $account = factory('App\Account')->create([]);
+        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+
+        $existingNumberOfGenders = \App\Gender::all()->count();
+
+        $importJob->getSpecialGender();
+
+        $this->assertInstanceOf('App\Gender', $importJob->gender);
+
+        $this->assertEquals(
+            $existingNumberOfGenders + 1,
+            \App\Gender::all()->count()
+        );
+    }
+
     public function test_it_gets_an_existing_gender()
     {
+        $account = factory('App\Account')->create([]);
+        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $gender = factory('App\Gender')->create([
+            'account_id' => $account->id,
+            'name' => 'vCard',
+        ]);
+        $existingNumberOfGenders = \App\Gender::all()->count();
 
+        $importJob->getSpecialGender();
+
+        $this->assertInstanceOf('App\Gender', $importJob->gender);
+
+        $this->assertEquals(
+            $existingNumberOfGenders,
+            \App\Gender::all()->count()
+        );
     }
 }
