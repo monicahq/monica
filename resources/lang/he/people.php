@@ -61,7 +61,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
-    'stay_in_touch_frequency' => 'לשמור על קשר בכל {count} ימים',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
     'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
