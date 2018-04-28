@@ -61,7 +61,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'Restez en contact',
-    'stay_in_touch_frequency' => 'Rester en contact tous les {count} jours',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
     'stay_in_touch_modal_title' => 'Restez en contact',
     'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
