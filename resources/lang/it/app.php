@@ -20,8 +20,7 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
-    'day' => 'day',
-    'days' => 'days',
+    'days' => 'day|days',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
