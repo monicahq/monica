@@ -20,7 +20,7 @@ return [
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
-    'days' => 'day|days',
+    'days' => 'jour|jours',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
