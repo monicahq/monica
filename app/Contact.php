@@ -1294,7 +1294,7 @@ class Contact extends Model
     /**
      * Indicates the age of the contact at death.
      *
-     * @return Carbon
+     * @return int
      */
     public function getAgeAtDeath()
     {
