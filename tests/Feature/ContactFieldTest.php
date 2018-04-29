@@ -98,7 +98,7 @@ class ContactFieldTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $params['data'] = 'test_data';
+        $params = ['data' => 'test_data'];
 
         $feild = factory(\App\ContactFieldType::class)->create([
             'account_id' => $user->account_id,
@@ -149,7 +149,7 @@ class ContactFieldTest extends FeatureTestCase
         $response = $this->delete('/people/'.$contact->id.'/contactfield/'.$contactField->id);
         $response->assertStatus(200);
 
-        $params['id'] = $contactField->id;
+        $params = ['id' => $contactField->id];
 
         $this->assertDatabaseMissing('contact_fields', $params);
     }

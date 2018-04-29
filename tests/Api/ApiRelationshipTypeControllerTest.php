@@ -56,10 +56,6 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $relationshipType->id,
-            'object' => 'relationshiptype',
-            'name' => 'father',
-            'delible' => false,
             'id' => $relationshipType2->id,
             'object' => 'relationshiptype',
             'name' => 'son',

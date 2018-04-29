@@ -112,6 +112,10 @@ jobs:
       - run:
           name: Run unit tests
           command: vendor/bin/phpunit -c phpunit.xml
+      # Run Psalm
+      - run:
+          name: Run psalm
+          command: vendor/bin/psalm --show-info=false
       - store_test_results:
           path: results
       - store_artifacts:
@@ -174,6 +178,10 @@ jobs:
       - run:
           name: Run unit tests
           command: vendor/bin/phpunit -c phpunit.xml
+      # Run Psalm
+      - run:
+          name: Run psalm
+          command: vendor/bin/psalm --show-info=false
       - store_test_results:
           path: results
       - store_artifacts:

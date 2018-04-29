@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class LocaleHelper
 {

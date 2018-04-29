@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
 
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
