@@ -4,9 +4,10 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Http\Testing\File;
+use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Filesystem\FileNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase
 {
@@ -35,19 +36,6 @@ FN:
 N:;;;;
 NICKNAME:Johnny
 ADR:;;17 Shakespeare Ave.;Southampton;;SO17 2HB;United Kingdom
-END:VCARD
-    ';
-
-    public $vcfContentWithoutName = 'BEGIN:VCARD
-VERSION:3.0
-FN:Bono
-N:;;;;
-EMAIL;TYPE=INTERNET:bono@example.com
-TEL:+1 202-555-0191
-ORG:U2
-TITLE:Lead vocalist
-BDAY:1960-05-10
-NOTE:Lorem ipsum dolor sit amet
 END:VCARD
     ';
 
@@ -218,7 +206,7 @@ END:VCARD
         );
     }
 
-    public function test_it_calculates_how_many_entries_there_are()
+    public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
         $importJob = factory('App\ImportJob')->create([
@@ -246,7 +234,152 @@ END:VCARD
 
     public function test_it_doesnt_process_an_entry_if_import_is_not_feasible()
     {
-        $importJob = factory('App\ImportJob')->create([]);
+        $importJob = $this->createImportJob();
 
+        $vcard = new VCard([
+            'TEL' => '+1 555 34567 455',
+            'N'   => ['', '', '', '', ''],
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        $importJob->processSingleEntry();
+        $this->assertEquals(
+            1,
+            $importJob->contacts_skipped
+        );
+    }
+
+    public function test_it_doesnt_process_an_entry_if_contact_already_exists()
+    {
+        $importJob = $this->createImportJob();
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $contactFieldType = factory('App\ContactFieldType')->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'email',
+        ]);
+        $contactField = factory('App\ContactField')->create([
+            'account_id' => $importJob->account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'john@doe.com',
+        ]);
+
+        $vcard = new VCard([
+            'N'   => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        $importJob->processSingleEntry();
+        $this->assertEquals(
+            1,
+            $importJob->contacts_skipped
+        );
+    }
+
+    public function test_skipping_entries_increments_counter_and_file_job_report()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'N'   => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+        $importJob->currentEntry = $vcard;
+
+        $importJob->skipEntry();
+
+        $this->assertEquals(
+            1,
+            $importJob->contacts_skipped
+        );
+
+        $this->assertDatabaseHas('import_job_reports', [
+            'account_id' => $importJob->account->id,
+            'import_job_id' => $importJob->id,
+        ]);
+    }
+
+    public function test_it_checks_import_feasibility()
+    {
+        $importJob = $this->createImportJob();
+
+        // false because no N entry in the vcard
+        $vcard = new VCard([]);
+        $importJob->currentEntry = $vcard;
+        $this->assertFalse($importJob->checkImportFeasibility());
+
+        // false because no firstname
+        $vcard = new VCard([
+            'N'   => ['John', '', '', '', ''],
+        ]);
+        $importJob->currentEntry = $vcard;
+        $this->assertFalse($importJob->checkImportFeasibility());
+
+        // false because no nickname
+        $vcard = new VCard([
+            'NICKNAME'   => '',
+            'N'   => '',
+        ]);
+        $importJob->currentEntry = $vcard;
+
+        // false because no firstname
+        $this->assertFalse($importJob->checkImportFeasibility());
+    }
+
+    public function test_it_validates_email()
+    {
+        $importJob = $this->createImportJob();
+
+        $invalidEmail = 'test@';
+
+        $this->assertFalse($importJob->isValidEmail($invalidEmail));
+
+        $validEmail = 'john@doe.com';
+
+        $this->assertTrue($importJob->isValidEmail($validEmail));
+    }
+
+    public function test_it_checks_if_a_contact_exists()
+    {
+        $importJob = $this->createImportJob();
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $contactFieldType = factory('App\ContactFieldType')->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'email',
+        ]);
+        $contactField = factory('App\ContactField')->create([
+            'account_id' => $importJob->account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'john@doe.com',
+        ]);
+
+        $vcard = new VCard([
+            'N'   => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $this->assertFalse($importJob->contactExists());
+    }
+
+    private function createImportJob()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+        ]);
+        $importJob = factory('App\ImportJob')->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
+
+        return $importJob;
     }
 }

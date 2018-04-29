@@ -46,7 +46,7 @@ class ImportJob extends Model
      *
      * @var VCard
      */
-    protected $currentEntry;
+    public $currentEntry;
 
     /**
      * The attributes that aren't mass assignable.
@@ -267,6 +267,10 @@ class ImportJob extends Model
      */
     public function checkImportFeasibility(): bool
     {
+        if (is_null($this->currentEntry->N)) {
+            return false;
+        }
+
         return ! empty($this->currentEntry->N->getParts()[1]) || ! empty((string) $this->currentEntry->NICKNAME);
     }
 
@@ -290,7 +294,7 @@ class ImportJob extends Model
     {
         $email = (string) $this->currentEntry->EMAIL;
 
-        if ($this->isValidEmail($email)) {
+        if ($this->isValidEmail($email) == false) {
             return false;
         }
 
@@ -321,10 +325,10 @@ class ImportJob extends Model
      */
     public function fileImportJobReport($status, $reason = null): void
     {
-        $name = $this->formatValue($currentEntry->N->getParts()[1]);
-        $name .= ' '.$this->formatValue($currentEntry->N->getParts()[2]);
-        $name .= ' '.$this->formatValue($currentEntry->N->getParts()[0]);
-        $name .= ' '.$this->formatValue($currentEntry->EMAIL);
+        $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
+        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
+        $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
 
         $importJobReport = new \App\ImportJobReport;
         $importJobReport->account_id = $this->account_id;
