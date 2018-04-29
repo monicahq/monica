@@ -23,7 +23,7 @@ class LocaleHelper
     }
 
     /**
-     * Get the list of avalaible languages.
+     * Get the list of available languages.
      *
      * @return \Illuminate\Support\Collection
      */

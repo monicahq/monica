@@ -5,6 +5,7 @@ namespace App;
 use DB;
 use Carbon\Carbon;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -45,9 +46,10 @@ class User extends Authenticatable
      * @param string $last_name
      * @param string $email
      * @param string $password
+     * @param string $locale
      * @return this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $locale = null)
     {
         // create the user
         $user = new self;
@@ -58,7 +60,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = \App::getLocale();
+        $user->locale = $locale ?? App::getLocale();
         $user->save();
 
         return $user;
