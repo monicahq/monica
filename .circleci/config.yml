@@ -38,7 +38,7 @@ jobs:
       ## NODE.JS
       - run:
           name: Update yarn lockfile
-          command: $(yarn global bin)/greenkeeper-lockfile-update
+          command: CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
       - restore_cache:
           keys:
             - node-v2-{{ checksum "yarn.lock" }}
