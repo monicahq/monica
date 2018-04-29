@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddColorsToUsers extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -14,7 +17,7 @@ class AddColorsToUsers extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('default_avatar_color');
+            $this->default($table->string('default_avatar_color'), '');
         });
     }
 

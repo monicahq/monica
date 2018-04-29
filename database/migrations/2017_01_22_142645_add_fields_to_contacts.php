@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddFieldsToContacts extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -14,10 +17,10 @@ class AddFieldsToContacts extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('has_kids')->default('false')->after('gender');
-            $table->integer('number_of_kids')->default('0')->after('has_kids');
+            $this->default($table->string('has_kids'), 'false')->after('gender');
+            $this->default($table->integer('number_of_kids'), 0)->after('has_kids');
             $table->date('last_talked_to')->nullable()->after('number_of_kids');
-            $table->integer('number_of_reminders')->default('0')->after('last_talked_to');
+            $this->default($table->integer('number_of_reminders'), 0)->after('last_talked_to');
         });
 
         Schema::table('contacts', function (Blueprint $table) {
@@ -27,7 +30,7 @@ class AddFieldsToContacts extends Migration
         });
 
         Schema::table('activities', function (Blueprint $table) {
-            $table->integer('contact_id')->after('account_id');
+            $this->default($table->integer('contact_id'), 0)->after('account_id');
         });
 
         Schema::table('activities', function (Blueprint $table) {

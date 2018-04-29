@@ -20,8 +20,11 @@ matrix:
         - SELENIUM=1
     - php: 7.1
       env: DB=postgres
+    - php: 7.2
+      env: DB=sqlite
   allow_failures:
     - env: DB=postgres
+    - env: DB=sqlite
   fast_finish: true
 
 # Run pushed branches build on master and tagged version
@@ -41,6 +44,7 @@ before_install:
   - cp scripts/tests/.env.$DB.travis .env
   - if [[ "$DB" == "mysql" ]]; then mysql -v -e 'CREATE DATABASE monica;'; fi
   - if [[ "$DB" == "postgres" ]]; then psql -e -c 'CREATE DATABASE monica;' -U postgres; fi
+  - if [[ "$DB" == "sqlite" ]]; then touch database/database.sqlite; fi
   - composer self-update
 
 install:
@@ -109,6 +113,11 @@ jobs:
       allow_failure: true 
       php: 7.1
       env: DB=postgres
+
+    - stage: Tests
+      allow_failure: true 
+      php: 7.2
+      env: DB=sqlite
 
     - stage: Deploy
       if: type = push AND branch = master

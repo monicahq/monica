@@ -1,12 +1,15 @@
 <?php
 
 use App\Contact;
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class MoveKidsToContacts extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -16,7 +19,7 @@ class MoveKidsToContacts extends Migration
     {
         // Create the new tables
         Schema::table('kids', function ($table) {
-            $table->integer('temp_contact_id');
+            $this->default($table->integer('temp_contact_id'), 0);
         });
 
         Schema::create('offsprings', function (Blueprint $table) {

@@ -15,6 +15,8 @@ class ChangeGiftsTable extends Migration
     {
         Schema::table('gifts', function (Blueprint $table) {
             $table->renameColumn('title', 'name');
+        });
+        Schema::table('gifts', function (Blueprint $table) {
             $table->renameColumn('description', 'comment');
         });
     }

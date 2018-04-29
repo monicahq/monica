@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddTitleToActivities extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -14,7 +17,7 @@ class AddTitleToActivities extends Migration
     public function up()
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->string('summary')->after('activity_type_id');
+            $this->default($table->string('summary'), '')->after('activity_type_id');
         });
     }
 }

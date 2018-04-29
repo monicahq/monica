@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveTypeFromNotes extends Migration
@@ -12,9 +13,13 @@ class RemoveTypeFromNotes extends Migration
      */
     public function up()
     {
-        Schema::table('notes', function ($table) {
+        Schema::table('notes', function (Blueprint $table) {
             $table->dropColumn('type');
+        });
+        Schema::table('notes', function (Blueprint $table) {
             $table->dropColumn('activity_type_id');
+        });
+        Schema::table('notes', function (Blueprint $table) {
             $table->dropColumn('sticky');
         });
     }

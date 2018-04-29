@@ -1,11 +1,14 @@
 <?php
 
+use App\Traits\MigrationHelper;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class ChangeGiftColumnStructure extends Migration
 {
+    use MigrationHelper;
+
     /**
      * Run the migrations.
      *
@@ -24,8 +27,8 @@ class ChangeGiftColumnStructure extends Migration
         });
 
         Schema::table('gifts', function ($table) {
-            $table->boolean('is_is_an_idea')->after('is_an_idea');
-            $table->boolean('is_has_been_offered')->after('has_been_offered');
+            $this->default($table->boolean('is_is_an_idea'), 0)->after('is_an_idea');
+            $this->default($table->boolean('is_has_been_offered'), 0)->after('has_been_offered');
         });
 
         $gifts = DB::table('gifts')->get();
@@ -54,11 +57,15 @@ class ChangeGiftColumnStructure extends Migration
 
         Schema::table('gifts', function (Blueprint $table) {
             $table->dropColumn('is_an_idea');
+        });
+        Schema::table('gifts', function (Blueprint $table) {
             $table->dropColumn('has_been_offered');
         });
 
         Schema::table('gifts', function ($table) {
             $table->renameColumn('is_is_an_idea', 'is_an_idea');
+        });
+        Schema::table('gifts', function ($table) {
             $table->renameColumn('is_has_been_offered', 'has_been_offered');
         });
     }

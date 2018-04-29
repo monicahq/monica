@@ -15,6 +15,8 @@ class ChangeGiftStructure extends Migration
     {
         Schema::table('gifts', function (Blueprint $table) {
             $table->renameColumn('about_object_id', 'is_for');
+        });
+        Schema::table('gifts', function (Blueprint $table) {
             $table->renameColumn('value_in_dollars', 'value');
         });
     }
