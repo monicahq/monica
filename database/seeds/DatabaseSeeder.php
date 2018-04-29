@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        switch (\App::environment()) {
+        switch (\Illuminate\Support\Facades\App::environment()) {
             case 'local':
                 $this->call(ActivityTypesTableSeeder::class);
                 $this->call(CountriesSeederTable::class);

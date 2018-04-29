@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Exception;
-use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Ircop\Antiflood\Facade\Antiflood;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Validator;
 
 class OAuthController extends Controller
 {
@@ -23,7 +24,7 @@ class OAuthController extends Controller
      */
     public function login(Request $request)
     {
-        if (\Antiflood::checkIp(5) === false) {
+        if (Antiflood::checkIp(5) === false) {
             return $this->handleError(true);
         }
 
@@ -64,7 +65,7 @@ class OAuthController extends Controller
     private function handleError($putIp = false, $errorCode = 42)
     {
         if ($putIp) {
-            \Antiflood::putIp(5);
+            Antiflood::putIp(5);
         }
 
         return response()->json([

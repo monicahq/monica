@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entry;
-use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

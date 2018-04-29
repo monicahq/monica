@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Pet;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Pet\Pet as PetResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
