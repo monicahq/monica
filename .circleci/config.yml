@@ -22,9 +22,10 @@ jobs:
           name: Prepare environment
           command: |
             cp scripts/tests/.env.mysql.travis .env
+            sudo composer self-update
+            yarn global add greenkeeper-lockfile@1
 
       ## COMPOSER
-      - run: sudo composer self-update
       - restore_cache:
           keys:
             - composer-v2-{{ checksum "composer.lock" }}
@@ -35,14 +36,20 @@ jobs:
           paths: vendor
 
       ## NODE.JS
+      - run:
+          name: Update yarn lockfile
+          command: $(yarn global bin)/greenkeeper-lockfile-update
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       - run: yarn install
       - save_cache:
-          key: node-v2-{{ checksum "package.json" }}
+          key: node-v2-{{ checksum "yarn.lock" }}
           paths: node_modules
+      - run:
+          name: Upload yarn lockfile
+          command: $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
@@ -91,7 +98,7 @@ jobs:
       ## NODE.JS
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       ## ASSETS
       - restore_cache:
@@ -157,7 +164,7 @@ jobs:
       ## NODE.JS
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       ## ASSETS
       - restore_cache:
@@ -221,7 +228,7 @@ jobs:
       ## NODE.JS
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       ## ASSETS
       - restore_cache:
@@ -306,7 +313,7 @@ jobs:
       ## NODE.JS
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       ## ASSETS
       - restore_cache:
@@ -367,7 +374,7 @@ jobs:
       ## NODE.JS
       - restore_cache:
           keys:
-            - node-v2-{{ checksum "package.json" }}
+            - node-v2-{{ checksum "yarn.lock" }}
             - node-v2-
       - restore_cache:
           keys:
@@ -415,6 +422,7 @@ jobs:
 
     steps:
       - checkout
+      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       ## ASSETS
       - restore_cache:
           keys:
