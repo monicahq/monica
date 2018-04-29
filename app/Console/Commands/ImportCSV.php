@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\User;
+use App\Gender;
 use App\Contact;
 use Illuminate\Console\Command;
 

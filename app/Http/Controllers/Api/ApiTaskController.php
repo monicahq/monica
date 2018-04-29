@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Task;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
