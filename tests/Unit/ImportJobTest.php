@@ -268,7 +268,7 @@ END:VCARD
         ]);
 
         $vcard = new VCard([
-            'N'   => ['John', 'Doe', '', '', ''],
+            'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
 
@@ -285,7 +285,7 @@ END:VCARD
     {
         $importJob = $this->createImportJob();
         $vcard = new VCard([
-            'N'   => ['John', 'Doe', '', '', ''],
+            'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
         $importJob->currentEntry = $vcard;
@@ -361,12 +361,269 @@ END:VCARD
         ]);
 
         $vcard = new VCard([
-            'N'   => ['John', 'Doe', '', '', ''],
+            'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@',
         ]);
 
         $importJob->currentEntry = $vcard;
         $this->assertFalse($importJob->contactExists());
+    }
+
+    public function test_it_returns_an_unknown_name_if_no_name_is_in_entry()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'EMAIL' => 'john@',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        $this->assertEquals(
+            trans('settings.import_vcard_unknown_entry'),
+            $importJob->name()
+        );
+    }
+
+    public function test_it_returns_a_name_of_the_current_entry()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        $this->assertEquals(
+            'Doe  John john@doe.com',
+            $importJob->name()
+        );
+    }
+
+    public function test_it_files_an_import_job_report()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        $importJob->fileImportJobReport($importJob::VCARD_SKIPPED);
+        $this->assertDatabaseHas('import_job_reports', [
+            'account_id' => $importJob->account_id,
+            'user_id' => $importJob->user_id,
+            'import_job_id' => $importJob->id,
+            'contact_information' => 'Doe  John john@doe.com',
+            'skipped' => 1,
+            'skip_reason' => null,
+        ]);
+
+        $importJob->fileImportJobReport($importJob::VCARD_IMPORTED);
+        $this->assertDatabaseHas('import_job_reports', [
+            'account_id' => $importJob->account_id,
+            'user_id' => $importJob->user_id,
+            'import_job_id' => $importJob->id,
+            'contact_information' => 'Doe  John john@doe.com',
+            'skipped' => 0,
+            'skip_reason' => null,
+        ]);
+
+        $importJob->fileImportJobReport($importJob::VCARD_SKIPPED, 'the reason why');
+        $this->assertDatabaseHas('import_job_reports', [
+            'account_id' => $importJob->account_id,
+            'user_id' => $importJob->user_id,
+            'import_job_id' => $importJob->id,
+            'contact_information' => 'Doe  John john@doe.com',
+            'skipped' => 1,
+            'skip_reason' => 'the reason why',
+        ]);
+    }
+
+    public function test_it_formats_value()
+    {
+        $importJob = new \App\ImportJob;
+
+        $result = $this->invokePrivateMethod($importJob, 'formatValue', array(''));
+        $this->assertNull($result);
+
+        $result = $this->invokePrivateMethod($importJob, 'formatValue', array('This is a value'));
+        $this->assertEquals(
+            'This is a value',
+            $result
+        );
+    }
+
+    public function test_it_creates_a_contact()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+
+        // we need the gender - otherwise the contact can't be created
+        // as it requires the gender 'vCard'
+        $importJob->getSpecialGender();
+        $numberOfContacts = \App\Contact::all()->count();
+        $numberOfFiledJobReport = \App\ImportJobReport::all()->count();
+
+        $importJob->createContactFromCurrentEntry();
+
+        // have we increased the counter
+        $this->assertEquals(
+            1,
+            $importJob->contacts_imported
+        );
+
+        // have we actually added a new contact in the database
+        $newNumberOfContacts = \App\Contact::all()->count();
+        $this->assertEquals(
+            $numberOfContacts + 1,
+            $newNumberOfContacts
+        );
+
+        // have we actually created a new import job report
+        $newNumberOfFiledJobReport = \App\ImportJobReport::all()->count();
+        $this->assertEquals(
+            $numberOfFiledJobReport + 1,
+            $newNumberOfFiledJobReport
+        );
+    }
+
+    public function test_it_imports_names()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = new \App\Contact;
+        $importJob->importNames($contact);
+
+        $this->assertEquals(
+            'Doe',
+            $contact->first_name
+        );
+        $this->assertEquals(
+            'John',
+            $contact->last_name
+        );
+
+        $vcard = new VCard([
+            'NICKNAME' => 'John',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = new \App\Contact;
+        $importJob->importNames($contact);
+
+        $this->assertEquals(
+            'John',
+            $contact->first_name
+        );
+    }
+
+    public function test_it_imports_work_information()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'ORG' => 'Company',
+            'ROLE' => 'Branleur',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = new \App\Contact;
+        $importJob->importWorkInformation($contact);
+
+        $this->assertEquals(
+            'Company',
+            $contact->company
+        );
+
+        $this->assertEquals(
+            'Branleur',
+            $contact->job
+        );
+    }
+
+    public function test_it_imports_birthday()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'BDAY' => '1990-01-01',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $importJob->importBirthday($contact);
+
+        $this->assertNotNull($contact->birthday_special_date_id);
+    }
+
+    public function test_it_imports_address()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'ADR' => ['data', 'data', 'data', 'data', 'data', 'data', 'us'],
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $importJob->importAddress($contact);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $importJob->account_id,
+            'contact_id' => $contact->id,
+        ]);
+    }
+
+    public function test_it_imports_email()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $importJob->importEmail($contact);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $importJob->account_id,
+            'contact_id' => $contact->id,
+            'data' => 'john@doe.com',
+        ]);
+    }
+
+    public function test_it_imports_phone()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'TEL' => '01010101010',
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = factory('App\Contact')->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $importJob->importTel($contact);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $importJob->account_id,
+            'contact_id' => $contact->id,
+            'data' => '01010101010',
+        ]);
     }
 
     private function createImportJob()

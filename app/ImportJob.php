@@ -63,6 +63,20 @@ class ImportJob extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
+     * The contact field email object.
+     *
+     * @var array
+     */
+    public $contactFieldEmailId;
+
+    /**
+     * The contact field phone object.
+     *
+     * @var array
+     */
+    public $contactFieldPhoneId;
+
+    /**
      * Get the account record associated with the gift.
      *
      * @return BelongsTo
@@ -243,7 +257,7 @@ class ImportJob extends Model
             return;
         }
 
-        $this->importEntryFromVCard();
+        $this->createContactFromCurrentEntry();
     }
 
     /**
@@ -325,10 +339,7 @@ class ImportJob extends Model
      */
     public function fileImportJobReport($status, $reason = null): void
     {
-        $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
-        $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+        $name = $this->name();
 
         $importJobReport = new \App\ImportJobReport;
         $importJobReport->account_id = $this->account_id;
@@ -338,6 +349,26 @@ class ImportJob extends Model
         $importJobReport->skipped = $status;
         $importJobReport->skip_reason = $reason;
         $importJobReport->save();
+    }
+
+    /**
+     * Return the name and email address of the current entry.
+     * John Doe Johnny john@doe.com
+     *
+     * @return string
+     */
+    public function name(): string
+    {
+        if (is_null($this->currentEntry->N)) {
+            return trans('settings.import_vcard_unknown_entry');
+        }
+
+        $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
+        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
+        $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+
+        return $name;
     }
 
     /**
@@ -351,11 +382,17 @@ class ImportJob extends Model
         return ! empty((string) $value) ? (string) $value : null;
     }
 
-    public function importEntryFromVCard()
+    /**
+     * Create the Contact object matching the current entry.
+     *
+     * @return Contact
+     */
+    public function createContactFromCurrentEntry()
     {
         $contact = new \App\Contact;
         $contact->account_id = $this->account_id;
         $contact->gender_id = $this->gender->id;
+        $contact->save();
 
         $this->importNames($contact);
         $this->importWorkInformation($contact);
@@ -366,6 +403,10 @@ class ImportJob extends Model
 
         $this->contacts_imported++;
         $this->fileImportJobReport(self::VCARD_IMPORTED);
+
+        $contact->save();
+
+        return $contact;
     }
 
     /**
@@ -376,12 +417,12 @@ class ImportJob extends Model
      */
     public function importNames(\App\Contact $contact): void
     {
-        if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
-            $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
-            $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
-            $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
+        if ($this->currentEntry->N && ! empty($this->currentEntry->N->getParts()[1])) {
+            $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+            $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
+            $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
         } else {
-            $contact->first_name = $this->formatValue($vcard->NICKNAME);
+            $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
         }
     }
 

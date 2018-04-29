@@ -191,6 +191,7 @@ return [
     'import_vcard_contact_exist' => 'Contact already exists',
     'import_vcard_contact_no_firstname' => 'No firstname (mandatory)',
     'import_vcard_file_not_found' => 'File not found',
+    'import_vcard_unknown_entry' => 'Unknown contact name',
     'import_vcard_file_no_entries' => 'File contains no entries',
     'import_blank_title' => 'You haven’t imported any contacts yet.',
     'import_blank_question' => 'Would you like to import contacts now?',
