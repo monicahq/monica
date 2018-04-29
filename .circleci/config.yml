@@ -36,7 +36,7 @@ jobs:
           paths: vendor
 
       ## NODE.JS
-      - run: greenkeeper-lockfile-update
+      - run: $(yarn global bin)/greenkeeper-lockfile-update
       - restore_cache:
           keys:
             - node-v2-{{ checksum "yarn.lock" }}
@@ -45,7 +45,7 @@ jobs:
       - save_cache:
           key: node-v2-{{ checksum "yarn.lock" }}
           paths: node_modules
-      - run: greenkeeper-lockfile-upload
+      - run: $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
