@@ -136,6 +136,7 @@ class ImportJob extends Model
     public function initJob(): void
     {
         $this->started_at = now();
+        $this->save();
     }
 
     /**
@@ -218,6 +219,8 @@ class ImportJob extends Model
         $this->contacts_found = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s',
                                                 $this->physicalFile,
                                                 $this->entries);
+
+        $this->contacts_found = count($this->entries[0]);
 
         if ($this->contacts_found == 0) {
             $this->fail(trans('settings.import_vcard_file_no_entries'));
@@ -306,6 +309,10 @@ class ImportJob extends Model
      */
     public function contactExists(): bool
     {
+        if (is_null($this->currentEntry->EMAIL)) {
+            return false;
+        }
+
         $email = (string) $this->currentEntry->EMAIL;
 
         if ($this->isValidEmail($email) == false) {
@@ -404,6 +411,7 @@ class ImportJob extends Model
         $this->contacts_imported++;
         $this->fileImportJobReport(self::VCARD_IMPORTED);
 
+        $contact->setAvatarColor();
         $contact->save();
 
         return $contact;
@@ -494,6 +502,10 @@ class ImportJob extends Model
      */
     public function importEmail(\App\Contact $contact): void
     {
+        if (is_null($this->currentEntry->EMAIL)) {
+            return;
+        }
+
         if ($this->isValidEmail($this->currentEntry->EMAIL)) {
             $contactField = new \App\ContactField;
             $contactField->contact_id = $contact->id;
