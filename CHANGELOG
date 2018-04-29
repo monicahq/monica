@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Refactor vCard import
 * Add many unit tests on the API
 * Add ability to display contact fields for each contact in the contact list through the API
 * Add ability to stay in touch with a contact by sending reminders at a given interval

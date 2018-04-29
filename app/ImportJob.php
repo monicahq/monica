@@ -192,7 +192,7 @@ class ImportJob extends Model
             $this->physicalFile = Storage::disk('public')->get($this->filename);
         } catch (\Illuminate\Filesystem\FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
-        };
+        }
 
         return $this;
     }
@@ -252,11 +252,13 @@ class ImportJob extends Model
     {
         if (! $this->checkImportFeasibility()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
+
             return;
         }
 
         if ($this->contactExists()) {
             $this->skipEntry(self::ERROR_CONTACT_EXIST);
+
             return;
         }
 
@@ -295,7 +297,7 @@ class ImportJob extends Model
      * Check whether the email is valid.
      *
      * @param string $email
-     * @return boolean
+     * @return bool
      */
     public function isValidEmail(string $email): bool
     {
@@ -360,7 +362,7 @@ class ImportJob extends Model
 
     /**
      * Return the name and email address of the current entry.
-     * John Doe Johnny john@doe.com
+     * John Doe Johnny john@doe.com.
      *
      * @return string
      */

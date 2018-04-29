@@ -3,10 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Illuminate\Http\Testing\File;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Filesystem\FileNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase
@@ -158,8 +156,8 @@ END:VCARD
     }
 
     /**
-    * @expectedException Illuminate\Contracts\Filesystem\FileNotFoundException
-    */
+     * @expectedException Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function test_it_throws_an_exception_if_file_doesnt_exist()
     {
         Storage::fake('public');
@@ -445,10 +443,10 @@ END:VCARD
     {
         $importJob = new \App\ImportJob;
 
-        $result = $this->invokePrivateMethod($importJob, 'formatValue', array(''));
+        $result = $this->invokePrivateMethod($importJob, 'formatValue', ['']);
         $this->assertNull($result);
 
-        $result = $this->invokePrivateMethod($importJob, 'formatValue', array('This is a value'));
+        $result = $this->invokePrivateMethod($importJob, 'formatValue', ['This is a value']);
         $this->assertEquals(
             'This is a value',
             $result

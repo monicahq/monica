@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase
      * @param  array  $parameters
      * @return mixed
      */
-    public function invokePrivateMethod(&$object, $methodName, array $parameters = array())
+    public function invokePrivateMethod(&$object, $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
