@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Storage;
+use Exception;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;
@@ -25,12 +27,12 @@ class ImportJob extends Model
     /**
      * The physical vCard file on disk.
      */
-    protected $physicalFile;
+    public $physicalFile;
 
     /**
      * All individual entries in the vCard file.
      */
-    protected $entries;
+    public $entries;
 
     /**
      * The "Vcard" gender that will be associated with all imported contacts.
@@ -162,37 +164,40 @@ class ImportJob extends Model
         $this->failed = true;
         $this->failed_reason = $reason;
         $this->endJob();
-
-        throw new Exception($reason);
     }
 
     /**
      * Get the physical file (the vCard file).
      *
-     * @return void
+     * @return $this
      */
     public function getPhysicalFile()
     {
         try {
             $this->physicalFile = Storage::disk('public')->get($this->filename);
-        } catch (Illuminate\Filesystem\FileNotFoundException $exception) {
+        } catch (\Illuminate\Filesystem\FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
         };
+
+        return $this;
     }
 
+    /**
+     * Delete the physical file from the disk.
+     *
+     * @return $this
+     */
     public function deletePhysicalFile()
     {
-        try {
-            Storage::disk('public')->delete($this->importJob->filename);
-        } catch (Illuminate\Filesystem\FileNotFoundException $exception) {
+        if (! Storage::disk('public')->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
-        };
+        }
     }
 
     /**
      * Get the number of matches in the vCard file.
      *
-     * @return [type] [description]
+     * @return void
      */
     public function getEntries()
     {
@@ -201,7 +206,7 @@ class ImportJob extends Model
                                                 $this->entries);
 
         if ($this->contacts_found == 0) {
-            $this->fail('the file contains no entries');
+            $this->fail(trans('settings.import_vcard_file_no_entries'));
         }
     }
 
