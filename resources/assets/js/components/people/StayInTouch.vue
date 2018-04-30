@@ -146,7 +146,7 @@
          */
         data() {
             return {
-                frequency: 0,
+                frequency: '0',
                 isActive: false,
                 dirltr: true,
                 errorMessage: '',
@@ -183,9 +183,9 @@
                 this.dirltr = $('html').attr('dir') == 'ltr';
 
                 if (this.contact.stay_in_touch_frequency == null) {
-                    this.frequency = 0;
+                    this.frequency = '0';
                 } else {
-                    this.frequency = this.contact.stay_in_touch_frequency;
+                    this.frequency = this.contact.stay_in_touch_frequency.toString();
                 }
                 this.isActive = (this.frequency > 0);
 
