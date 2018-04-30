@@ -155,9 +155,6 @@ END:VCARD
         );
     }
 
-    /**
-     * @expectedException Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
     public function test_it_throws_an_exception_if_file_doesnt_exist()
     {
         Storage::fake('public');
