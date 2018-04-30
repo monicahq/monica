@@ -51,12 +51,12 @@ return [
     'register_firstname' => 'Nome',
     'register_firstname_example' => 'es. Giovanni',
     'register_lastname' => 'Cognome',
-    'register_lastname_example' => 'eg. Doe',
+    'register_lastname_example' => 'es. Bianchi',
     'register_password' => 'Password',
-    'register_password_example' => 'Enter a secure password',
-    'register_password_confirmation' => 'Password confirmation',
-    'register_action' => 'Register',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a>.',
-    'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
+    'register_password_example' => 'Inserire una password sicura',
+    'register_password_confirmation' => 'Conferma password',
+    'register_action' => 'Registrati',
+    'register_policy' => 'Registrarsi significa hai letto e sei d\'accordo con la nostra</a> informativa sulla privacy<a href=":url" hreflang=":hreflang">.',
+    'register_invitation_email' => 'Per ragioni di sicurezza, inserisci l\'indirizzo email della persona che ti ha invitato. Trovi questa informazione nella mail di invito.',
 
 ];
