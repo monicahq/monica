@@ -63,6 +63,7 @@ return [
     'stay_in_touch' => 'Stay in touch',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
     'stay_in_touch_modal_label' => 'Send me an email every...',
