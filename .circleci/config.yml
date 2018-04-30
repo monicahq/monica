@@ -113,7 +113,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - run:
           name: Install extensions
           command: |
@@ -175,7 +175,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *install-extensions
       - *prepare-environment
       - *restore_composer
@@ -205,7 +205,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *install-extensions
       - *prepare-environment
       - *restore_composer
@@ -232,7 +232,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *install-extensions
       - *prepare-environment
       - *update-chrome
@@ -268,7 +268,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *install-extensions
       - *prepare-environment
       - *update-chrome
@@ -296,7 +296,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - attach_workspace:
           at: *root
       - *restore_node
@@ -321,7 +321,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *restore_composer
       - *restore_assets
 
@@ -335,7 +335,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - *restore_assets
 
@@ -348,7 +348,7 @@ jobs:
 
     steps:
       - checkout:
-        <<: *post_checkout
+          <<: *post_checkout
       - *prepare-environment
       - run:
           name: Make docker image
