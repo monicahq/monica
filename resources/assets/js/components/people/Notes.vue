@@ -21,8 +21,8 @@
       <ul>
         <li v-for="note in notes" class="note">
           <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit">
-            <div class="pa2">
-              {{ note.body }}
+            <div class="pa2 markdown">
+              <span v-html="note.parsed_body"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
