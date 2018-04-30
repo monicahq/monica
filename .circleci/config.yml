@@ -65,7 +65,7 @@ command7: &wait-for-server
 command8: &unit-tests
   run:
     name: Run unit tests
-    command: vendor/bin/phpunit -c phpunit.xml
+    command: phpdbg -qrr vendor/bin/phpunit -c phpunit.xml
 command9: &psalm
   run:
     name: Run psalm
@@ -85,6 +85,10 @@ command12: &selenium
     name: Run selenium chromedriver
     command: vendor/bin/chromedriver
     background: true
+command13: &remove-xdebug
+  run:
+    name: Remove xdebug
+    command: sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 restore_cache1: &restore_composer
   restore_cache:
@@ -101,7 +105,6 @@ restore_cache3: &restore_assets
     keys:
       - *assets_key
       - assets-v2-
-
 
 
 version: 2
@@ -176,6 +179,7 @@ jobs:
           <<: *post_checkout
       - *install-extensions
       - *prepare-environment
+      - *remove-xdebug
       - *restore_composer
       - *restore_node
       - *restore_assets
@@ -206,6 +210,7 @@ jobs:
           <<: *post_checkout
       - *install-extensions
       - *prepare-environment
+      - *remove-xdebug
       - *restore_composer
       - *restore_node
       - *restore_assets
