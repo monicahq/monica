@@ -67,12 +67,12 @@ return [
     'breadcrumb_add_significant_other' => 'Aggiungi partner',
     'breadcrumb_edit_significant_other' => 'Modifica partner',
     'breadcrumb_add_note' => 'Aggiungi una nota',
-    'breadcrumb_edit_note' => 'Edit a note',
+    'breadcrumb_edit_note' => 'Modifica nota',
     'breadcrumb_api' => 'API',
     'breadcrumb_edit_introductions' => 'Come vi siete conosciuti',
-    'breadcrumb_settings_personalization' => 'Personalization',
-    'breadcrumb_settings_security' => 'Security',
-    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
+    'breadcrumb_settings_personalization' => 'Personalizzazione',
+    'breadcrumb_settings_security' => 'Sicurezza',
+    'breadcrumb_settings_security_2fa' => 'Autenticazione due fattori',
 
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
@@ -80,9 +80,9 @@ return [
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => 'Abbiamo avuto un errore cercando di salvare i dati.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'I dati sono stati salvati.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -91,11 +91,11 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => 'Relazioni d\'amore',
+    'relationship_type_group_family' => 'Relazioni familiari',
+    'relationship_type_group_friend' => 'Rapporti di amicizia',
+    'relationship_type_group_work' => 'Rapporti di lavoro',
+    'relationship_type_group_other' => 'Altri tipi di relazioni',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -112,14 +112,14 @@ return [
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 
-    'relationship_type_lover' => 'lover',
-    'relationship_type_lover_female' => 'lover',
-    'relationship_type_lover_with_name' => ':name’s lover',
-    'relationship_type_lover_female_with_name' => ':name’s lover',
+    'relationship_type_lover' => 'amante',
+    'relationship_type_lover_female' => 'amante',
+    'relationship_type_lover_with_name' => ': nome amante',
+    'relationship_type_lover_female_with_name' => ': nome amante',
 
-    'relationship_type_inlovewith' => 'in love with',
-    'relationship_type_inlovewith_female' => 'in love with',
-    'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith' => 'innamorati di',
+    'relationship_type_inlovewith_female' => 'innamorati di',
+    'relationship_type_inlovewith_with_name' => 'qualcuno: è innamorato di',
     'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
 
     'relationship_type_lovedby' => 'loved by',
@@ -168,27 +168,27 @@ return [
     'relationship_type_nephew_female_with_name' => ':name’s niece',
 
     'relationship_type_cousin' => 'cousin',
-    'relationship_type_cousin_female' => 'cousin',
-    'relationship_type_cousin_with_name' => ':name’s cousin',
-    'relationship_type_cousin_female_with_name' => ':name’s cousin',
+    'relationship_type_cousin_female' => 'cugino',
+    'relationship_type_cousin_with_name' => ': nome del cugino',
+    'relationship_type_cousin_female_with_name' => ': nome del cugino',
 
-    'relationship_type_godfather' => 'godfather',
-    'relationship_type_godfather_female' => 'godmother',
-    'relationship_type_godfather_with_name' => ':name’s godfather',
-    'relationship_type_godfather_female_with_name' => ':name’s godmother',
+    'relationship_type_godfather' => 'padrino',
+    'relationship_type_godfather_female' => 'madrina',
+    'relationship_type_godfather_with_name' => ': nome del padrino',
+    'relationship_type_godfather_female_with_name' => ': nome della madrina',
 
     'relationship_type_godson' => 'godson',
     'relationship_type_godson_female' => 'goddaughter',
     'relationship_type_godson_with_name' => ':name’s godson',
     'relationship_type_godson_female_with_name' => ':name’s goddaughter',
 
-    'relationship_type_friend' => 'friend',
-    'relationship_type_friend_female' => 'friend',
+    'relationship_type_friend' => 'amico',
+    'relationship_type_friend_female' => 'amico',
     'relationship_type_friend_with_name' => ':name’s friend',
     'relationship_type_friend_female_with_name' => ':name’s friend',
 
-    'relationship_type_bestfriend' => 'best friend',
-    'relationship_type_bestfriend_female' => 'best friend',
+    'relationship_type_bestfriend' => 'miglior amico',
+    'relationship_type_bestfriend_female' => 'miglior amico',
     'relationship_type_bestfriend_with_name' => ':name’s best friend',
     'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
 
