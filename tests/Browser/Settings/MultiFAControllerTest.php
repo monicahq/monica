@@ -18,7 +18,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function cleanup()
     {
         exec('php artisan 2fa:deactivate --force --email=admin@admin.com', $output);
-        $this->log(implode($output));
+        //$this->log(implode($output));
     }
 
     /**

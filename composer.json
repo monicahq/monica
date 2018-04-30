@@ -48,7 +48,8 @@
         "phpunit/phpunit": "^7.0",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
-        "symfony/dom-crawler": "~4.0"
+        "symfony/dom-crawler": "~4.0",
+        "vimeo/psalm": "^1.1"
     },
     "suggest": {
         "ext-apcu": "*"
