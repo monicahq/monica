@@ -90,17 +90,17 @@ restore_cache1: &restore_composer
   restore_cache:
     keys:
       - *composer_key
-      - composer-v2
+      - composer-v2-
 restore_cache2: &restore_node
   restore_cache:
     keys:
       - *node_key
-      - node-v2
+      - node-v2-
 restore_cache3: &restore_assets
   restore_cache:
     keys:
       - *assets_key
-      - assets-v2
+      - assets-v2-
 
 
 
@@ -128,8 +128,7 @@ jobs:
             yarn global add greenkeeper-lockfile@1
 
       ## COMPOSER
-      - restore_cache:
-          keys: *composer_key
+      - *restore_composer
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: *composer_key
@@ -139,8 +138,7 @@ jobs:
       - run:
           name: Update yarn lockfile
           command: CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
-      - restore_cache:
-          keys: *node_key
+      - *restore_node
       - run: yarn install
       - save_cache:
           key: *node_key
