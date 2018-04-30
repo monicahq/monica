@@ -210,6 +210,14 @@
             update() {
                 this.errorMessage = '';
 
+                // check if you need a subscription to access this feature
+                if (this.limited) {
+                    this.errorMessage = this.$t('people.stay_in_touch_premium');
+                    this.frequency = this.initialFrequency;
+                    this.isActive = this.initialState;
+                    return;
+                }
+
                 // make sure we can't press update if the frequency is invalid
                 // and if the feature is activated
                 if ((this.frequency == '' || this.frequency < 1) && this.isActive) {
