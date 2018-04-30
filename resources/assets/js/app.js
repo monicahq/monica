@@ -30,10 +30,6 @@ Vue.use(Tooltip);
 import ToggleButton from 'vue-js-toggle-button';
 Vue.use(ToggleButton);
 
-// Calendar
-//import Datepicker from 'vuejs-datepicker';
-//Vue.use(Datepicker);
-
 // Radio buttons
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
