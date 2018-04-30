@@ -5,8 +5,8 @@ namespace App;
 use Exception;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
