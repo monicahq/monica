@@ -88,7 +88,9 @@ command12: &selenium
 command13: &remove-xdebug
   run:
     name: Remove xdebug
-    command: sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    command: |
+      sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      echo "memory_limit=512M" | sudo tee /usr/local/etc/php/php.ini
 
 restore_cache1: &restore_composer
   restore_cache:
