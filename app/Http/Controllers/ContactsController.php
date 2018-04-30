@@ -516,7 +516,7 @@ class ContactsController extends Controller
         $state = $request->get('state');
 
         if (auth()->user()->account->hasLimitations()) {
-            throw new Exception(trans('people.stay_in_touch_invalid'));
+            throw new Exception(trans('people.stay_in_touch_premium'));
         }
 
         // if not active, set frequency to 0

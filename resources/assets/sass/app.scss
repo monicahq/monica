@@ -345,7 +345,7 @@ input:disabled {
   appearance: none;
   text-decoration: none;
 
-  &:hover, &:visited {
+  &:hover {
     text-decoration: none;
     background-color: #e6ebf1;
     background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
