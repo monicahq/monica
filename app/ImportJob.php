@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * @property Account $account
@@ -190,7 +191,7 @@ class ImportJob extends Model
     {
         try {
             $this->physicalFile = Storage::disk('public')->get($this->filename);
-        } catch (\Illuminate\Filesystem\FileNotFoundException $exception) {
+        } catch (FileNotFoundException $exception) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
         }
 
