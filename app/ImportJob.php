@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Storage;
 use Exception;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -154,7 +154,7 @@ class ImportJob extends Model
      * Get or create the gender called "Vcard" that is associated with all
      * imported contacts.
      *
-     * @return App\Gender
+     * @return \App\Gender
      */
     public function getSpecialGender()
     {
