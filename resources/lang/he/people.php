@@ -63,7 +63,7 @@ return [
     'stay_in_touch' => 'לשמור על קשר',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
     'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
     'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל בכל…',
