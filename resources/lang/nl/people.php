@@ -59,6 +59,15 @@ return [
     'edit_contact_information' => 'Edit contact information',
     'call_button' => 'Log a call',
 
+    // Stay in touch
+    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
+    'stay_in_touch_modal_label' => 'Send me an email every...',
+
     // Calls
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'What did you talk about? (optional)',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => 'Contact information',
