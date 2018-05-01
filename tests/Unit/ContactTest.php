@@ -1233,8 +1233,14 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas(
             'tags',
             [
-                'name' => 'friend',
-                'name' => 'test2',
+                'name' => 'friend', 
+            ]
+        );
+        
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'test2', 
             ]
         );
 
