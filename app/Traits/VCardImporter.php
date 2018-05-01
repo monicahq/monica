@@ -120,12 +120,17 @@ trait VCardImporter
 
         if (! is_null($this->formatValue($vcard->EMAIL))) {
             // Saves the email
-            $contactField = new ContactField;
-            $contactField->contact_id = $contact->id;
-            $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($vcard->EMAIL);
-            $contactField->contact_field_type_id = $this->contactFieldEmailId();
-            $contactField->save();
+
+            $isValidEmail = filter_var($this->formatValue($vcard->EMAIL), FILTER_VALIDATE_EMAIL);
+
+            if ($isValidEmail) {
+                $contactField = new ContactField;
+                $contactField->contact_id = $contact->id;
+                $contactField->account_id = $contact->account_id;
+                $contactField->data = $this->formatValue($vcard->EMAIL);
+                $contactField->contact_field_type_id = $this->contactFieldEmailId();
+                $contactField->save();
+            }
         }
 
         if (! is_null($this->formatValue($vcard->TEL))) {
@@ -205,6 +210,12 @@ trait VCardImporter
     private function contactExists(VCard $vcard, int $account_id)
     {
         $email = (string) $vcard->EMAIL;
+
+        $isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (! $isValidEmail) {
+            return false;
+        }
 
         $contactFieldType = ContactFieldType::where([
             ['account_id', $account_id],
