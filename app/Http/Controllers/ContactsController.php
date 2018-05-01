@@ -72,7 +72,7 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
 
             $contacts = $contacts->tags($tags)->get();
-        } elseif (! $request->get('tag1')) {
+        } else {
             // get all contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
