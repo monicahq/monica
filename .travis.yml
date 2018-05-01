@@ -67,6 +67,9 @@ script:
   # Run unit tests
   - phpdbg -qrr vendor/bin/phpunit -c phpunit${DB/mysql/}.xml
 
+  # Run Psalm
+  - vendor/bin/psalm --show-info=false
+
   # Start http server
   - phpenv config-add xdebug.ini
   - bash -c "if [[ \"$SELENIUM\" == \"1\" ]]; then php -S localhost:8000 -t $TRAVIS_BUILD_DIR/public $TRAVIS_BUILD_DIR/scripts/tests/server-cc.php 2>/dev/null; fi" &

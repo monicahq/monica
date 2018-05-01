@@ -251,6 +251,14 @@ $factory->define(App\Instance::class, function (Faker\Generator $faker) {
     return [];
 });
 
+$factory->define(App\ImportJob::class, function (Faker\Generator $faker) {
+    return [];
+});
+
+$factory->define(App\ImportJobReport::class, function (Faker\Generator $faker) {
+    return [];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;
