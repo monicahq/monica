@@ -59,6 +59,15 @@ return [
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'call_button' => 'תיעוד שיחה',
 
+    // Stay in touch
+    'stay_in_touch' => 'לשמור על קשר',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
+    'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
+    'stay_in_touch_modal_title' => 'לשמור על קשר',
+    'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
+    'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל בכל…',
+
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
     'modal_call_comment' => 'על מה דיברתם? (רשות)',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => 'הוספת תזכורת לתאריך הזה',
     'deceased_label' => 'פטירה',
     'deceased_label_with_date' => 'פטירה ב־:date',
+    'deceased_age' => 'גיל בעת הפטירה',
 
     // Contact information
     'contact_info_title' => 'פרטי קשר',

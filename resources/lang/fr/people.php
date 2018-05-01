@@ -59,6 +59,15 @@ return [
     'edit_contact_information' => 'Mettre à jour les informations',
     'call_button' => 'Enregistrer un appel téléphonique',
 
+    // Stay in touch
+    'stay_in_touch' => 'Restez en contact',
+    'stay_in_touch_frequency' => 'Rester en contact chaque jour | Rester en contact tous les {count} jours',
+    'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_modal_title' => 'Restez en contact',
+    'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
+    'stay_in_touch_modal_label' => 'Envoyez-moi un courriel tous les ...',
+
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
     'deceased_label_with_date' => 'Décédé le :date',
+    'deceased_age' => 'Age au moment du décès',
 
     // Contact information
     'contact_info_title' => 'Information sur le contact',
