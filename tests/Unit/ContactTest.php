@@ -1236,7 +1236,7 @@ class ContactTest extends FeatureTestCase
                 'name' => 'friend', 
             ]
         );
-        
+
         $this->assertDatabaseHas(
             'tags',
             [
