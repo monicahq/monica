@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Route;
 use App\Day;
 use App\Pet;
 use App\Debt;
@@ -19,6 +18,7 @@ use App\Relationship;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -221,7 +221,6 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'prefix' => 'api',
             'namespace' => $this->namespace,
-            'middleware' => 'auth:api',
         ], function ($router) {
             require base_path('routes/api.php');
         });

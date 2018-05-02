@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -31,7 +33,7 @@ class AddCustomGender extends Migration
             if (! $user) {
                 continue;
             }
-            \App::setLocale($user->locale);
+            App::setLocale($user->locale);
 
             $male = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => trans('app.gender_male')]);
             $female = DB::table('genders')->insertGetId(['account_id' => $account->id, 'name' => trans('app.gender_female')]);

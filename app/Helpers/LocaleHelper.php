@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use Auth;
 use Matriphe\ISO639\ISO639;
+use Illuminate\Support\Facades\Auth;
 
 class LocaleHelper
 {
