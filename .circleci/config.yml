@@ -356,10 +356,17 @@ jobs:
           <<: *post_checkout
       - *prepare-environment
       - run:
+          name: Install docker_squash
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python-pip
+            pip install docker-squash "docker < 3"
+      - run:
           name: Make docker image
           command: |
             docker-compose --version
             make docker_build
+            make docker_squash
       - run:
           name: Publish docker image
           command: |
