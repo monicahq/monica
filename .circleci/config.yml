@@ -374,6 +374,28 @@ jobs:
             echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
             make docker_push_bintray
 
+  sim-deploy-docker:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+      - run:
+          name: Install docker_squash
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python-pip
+            pip install docker-squash
+            pip uninstall -y docker
+      - run:
+          name: Make docker image
+          command: |
+            docker-compose --version
+            sudo make docker_build
+            sudo make docker_squash
+
 workflows:
   version: 2
   build_and_test:
@@ -415,6 +437,9 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
+      - sim-deploy-docker:
+          requires:
+            - build
   deploy:
     jobs:
       - build:
