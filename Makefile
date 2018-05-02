@@ -28,6 +28,7 @@ docker:
 
 docker_build:
 	docker-compose build
+	docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
 	docker images
 
 docker_tag:
