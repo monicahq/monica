@@ -333,6 +333,16 @@ class Account extends Model
     }
 
     /**
+     * Get the custom field pattern records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function customFieldPatterns()
+    {
+        return $this->hasMany('App\CustomFieldPattern');
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value

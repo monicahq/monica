@@ -110,6 +110,10 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    Route::resource('customfieldpatterns', 'Api\\Settings\\CustomFields\\ApiCustomFieldPatternController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     /*
      * MISC
      */

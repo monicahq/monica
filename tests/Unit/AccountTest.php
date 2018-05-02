@@ -91,6 +91,16 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->customFields()->exists());
     }
 
+    public function test_it_has_many_customfieldpatterns()
+    {
+        $account = factory('App\Account')->create([]);
+        $customFieldPattern = factory('App\CustomFieldPattern', 3)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->customFieldPatterns()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $account = factory('App\Account')->create();
