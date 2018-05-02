@@ -358,8 +358,8 @@ jobs:
       - run:
           name: Install docker_squash
           command: |
-            apt-get update
-            apt-get install -y python-pip
+            sudo apt-get update
+            sudo apt-get install -y python-pip
             pip install docker-squash "docker < 3"
       - run:
           name: Make docker image
@@ -372,27 +372,6 @@ jobs:
           command: |
             echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
             make docker_push_bintray
-
-  sim-deploy-docker:
-    <<: *defaults
-    machine: true
-
-    steps:
-      - checkout:
-          <<: *post_checkout
-      - *prepare-environment
-      - run:
-          name: Install docker_squash
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip
-            pip install docker-squash "docker < 3"
-      - run:
-          name: Make docker image
-          command: |
-            docker-compose --version
-            make docker_build
-            make docker_squash
 
 workflows:
   version: 2
