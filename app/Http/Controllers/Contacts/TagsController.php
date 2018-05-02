@@ -32,9 +32,8 @@ class TagsController extends Controller
         }
 
         // remove old tags if there are not to keep
-        foreach ($contact->tags()->get() as $tag)
-        {
-            if (!in_array($tag->name, $tags)) {
+        foreach ($contact->tags()->get() as $tag) {
+            if (! in_array($tag->name, $tags)) {
                 $contact->unsetTag($tag);
             }
         }
