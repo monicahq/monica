@@ -356,10 +356,18 @@ jobs:
           <<: *post_checkout
       - *prepare-environment
       - run:
+          name: Install docker_sqhash
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python-pip
+            pip install docker-squash
+            pip uninstall -y docker
+      - run:
           name: Make docker image
           command: |
             docker-compose --version
             make docker_build
+            make docker_squash
       - run:
           name: Publish docker image
           command: |

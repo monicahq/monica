@@ -52,6 +52,10 @@ docker_build:
 	docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
 	docker images
 
+docker_squash:
+	~/.local/bin/docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
+	docker images
+
 docker_tag:
 	docker tag monicahq/monicahq monicahq/monicahq:$(GIT_TAG)
 
