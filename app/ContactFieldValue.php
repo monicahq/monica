@@ -27,16 +27,6 @@ class ContactFieldValue extends Model
     }
 
     /**
-     * Get the custom field record associated with the contact field value.
-     *
-     * @return BelongsTo
-     */
-    public function contactCustomField()
-    {
-        return $this->belongsTo(ContactCustomField::class);
-    }
-
-    /**
      * Get the contact record associated with the contact field value.
      *
      * @return BelongsTo

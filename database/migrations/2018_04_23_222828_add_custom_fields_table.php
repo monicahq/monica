@@ -13,10 +13,20 @@ class AddCustomFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('custom_fields', function (Blueprint $table) {
+        Schema::create('custom_field_patterns', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
             $table->string('name');
+            $table->string('icon_name');
+            $table->timestamps();
+        });
+
+        Schema::create('custom_fields', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('account_id');
+            $table->integer('custom_field_pattern_id');
+            $table->string('name');
+            $table->string('fields_order');
             $table->boolean('is_list')->default(0);
             $table->boolean('is_important')->default(0);
             $table->timestamps();
@@ -47,10 +57,10 @@ class AddCustomFieldsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('contact_custom_fields', function (Blueprint $table) {
+        Schema::create('contact_custom_field_patterns', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->integer('custom_field_id');
+            $table->integer('custom_field_pattern_id');
             $table->integer('contact_id');
             $table->timestamps();
         });
@@ -58,7 +68,6 @@ class AddCustomFieldsTable extends Migration
         Schema::create('contact_field_values', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('account_id');
-            $table->integer('contact_custom_field_id');
             $table->integer('contact_id');
             $table->integer('field_id');
             $table->mediumText('value');

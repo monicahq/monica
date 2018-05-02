@@ -269,7 +269,13 @@ $factory->define(App\FieldChoice::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\ContactCustomField::class, function (Faker\Generator $faker) {
+$factory->define(App\CustomFieldPattern::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => 1,
+    ];
+});
+
+$factory->define(App\ContactCustomFieldPattern::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

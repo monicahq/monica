@@ -37,6 +37,16 @@ class CustomField extends Model
     }
 
     /**
+     * Get the custom field pattern record associated with the custom field.
+     *
+     * @return BelongsTo
+     */
+    public function customFieldPattern()
+    {
+        return $this->belongsTo('App\CustomFieldPattern');
+    }
+
+    /**
      * Get the field records associated with the custom field.
      *
      * @return HasMany
@@ -52,6 +62,16 @@ class CustomField extends Model
      * @return string
      */
     public function getNameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Indicate the order of the fields for this custom field.
+     *
+     * @return bool
+     */
+    public function getFieldsOrderAttribute($value)
     {
         return $value;
     }

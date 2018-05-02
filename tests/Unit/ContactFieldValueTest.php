@@ -19,16 +19,6 @@ class ContactFieldValueTest extends TestCase
         $this->assertTrue($contactFieldValue->account()->exists());
     }
 
-    public function test_it_belongs_to_one_custom_field()
-    {
-        $contactCustomField = factory('App\ContactCustomField')->create([]);
-        $contactFieldValue = factory('App\ContactFieldValue')->create([
-            'contact_custom_field_id' => $contactCustomField->id,
-        ]);
-
-        $this->assertTrue($contactFieldValue->contactCustomField()->exists());
-    }
-
     public function test_it_belongs_to_one_contact()
     {
         $contact = factory('App\Contact')->create([]);

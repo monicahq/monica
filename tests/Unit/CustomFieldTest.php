@@ -30,6 +30,16 @@ class CustomFieldTest extends TestCase
         $this->assertTrue($customField->fields()->exists());
     }
 
+    public function test_it_belongs_to_a_custom_field_pattern()
+    {
+        $account = factory('App\Account')->create([]);
+        $customFieldPattern = factory('App\CustomFieldPattern')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($customFieldPattern->account()->exists());
+    }
+
     public function test_it_retrieves_the_name_of_the_custom_field()
     {
         $customField = factory('App\CustomField')->make([
@@ -63,6 +73,18 @@ class CustomFieldTest extends TestCase
         $this->assertEquals(
             0,
             $customField->is_important
+        );
+    }
+
+    public function test_it_retrieves_the_field_order_attribute()
+    {
+        $customField = factory('App\CustomField')->make([
+            'fields_order' => '1;3;4;1;4',
+        ]);
+
+        $this->assertEquals(
+            '1;3;4;1;4',
+            $customField->fields_order
         );
     }
 }

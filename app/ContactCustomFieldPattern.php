@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ContactCustomField extends Model
+class ContactCustomFieldPattern extends Model
 {
     /**
      * The attributes that aren't mass assignable.
@@ -14,7 +14,7 @@ class ContactCustomField extends Model
      */
     protected $guarded = ['id'];
 
-    protected $table = 'contact_custom_fields';
+    protected $table = 'contact_custom_field_patterns';
 
     /**
      * Get the account record associated with the contact custom field.
@@ -31,9 +31,9 @@ class ContactCustomField extends Model
      *
      * @return BelongsTo
      */
-    public function customField()
+    public function customFieldPattern()
     {
-        return $this->belongsTo(CustomField::class);
+        return $this->belongsTo(CustomFieldPattern::class);
     }
 
     /**
