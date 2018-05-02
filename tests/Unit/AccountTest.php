@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use DB;
 use App\User;
 use App\Account;
+use App\Contact;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
