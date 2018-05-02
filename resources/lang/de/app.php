@@ -20,8 +20,9 @@ return [
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – eine CRM für Ihre Freunde und Familie',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
@@ -79,6 +80,9 @@ return [
 
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

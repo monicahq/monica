@@ -1,55 +1,156 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
+# CircleCI build for https://circleci.com/gh/monicahq/monica
+
+# Largely adapted, with the help of https://github.com/angular/angular/blob/master/.circleci/config.yml
+
+# Note: YAML anchors allow an object to be re-used, reducing duplication.
+# The ampersand declares an alias for an object, then later the `<<: *name`
+# syntax dereferences it.
+# See http://blog.daemonl.com/2016/02/yaml.html
+# To validate changes, use an online parser, eg.
+# http://yaml-online-parser.appspot.com/
+
+# Some variables
+var1: &composer_key composer-v2-{{ checksum "composer.lock" }}
+var2: &node_key node-v2-{{ checksum "yarn.lock" }}
+var3: &assets_key assets-v2-{{ .Revision }}
+var4: &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+var5: &root ~/monica
+
+# Defaults env
+defaults: &defaults
+  working_directory: *root
+
+# After checkout, rebase on top of master.
+# Similar to travis behavior, but not quite the same.
+# See https://discuss.circleci.com/t/1662
+checkout0: &post_checkout
+  post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
+
+command1: &install-extensions
+  run:
+    name: Install extensions
+    command: |
+      sudo apt-get update
+      sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
+      sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+command2: &prepare-environment
+  run:
+    name: Prepare environment
+    command: |
+      mkdir -p results/coverage
+      cp scripts/tests/.env.mysql.travis .env
+command3: &update-chrome
+  run:
+    name: Install chrome
+    command: scripts/tests/install-chrome.sh
+command4: &wait-for-db
+  run:
+    name: Wait for DB
+    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+command5: &prepare-db
+  run:
+    name: Prepare database
+    command: |
+      php artisan migrate --env=testing --no-interaction -vvv
+      php artisan db:seed --env=testing --no-interaction -vvv
+command6: &http-server
+  run:
+    name: Run http server
+    command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+    background: true
+command7: &wait-for-server
+  run:
+    name: Wait for http server
+    command: dockerize -wait tcp://localhost:8000 -timeout 120s
+command8: &unit-tests
+  run:
+    name: Run unit tests
+    command: phpdbg -qrr vendor/bin/phpunit -c phpunit.xml
+command9: &psalm
+  run:
+    name: Run psalm
+    command: vendor/bin/psalm --show-info=false
+command10: &browser-tests
+  run:
+    name: Run unit tests
+    command: php artisan dusk --log-junit results/junit2.xml
+command11: &fix-coverage
+  run:
+    name: Fix coverage
+    command: |
+      vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+      rm -rf results/coverage
+command12: &selenium
+  run:
+    name: Run selenium chromedriver
+    command: vendor/bin/chromedriver
+    background: true
+command13: &remove-xdebug
+  run:
+    name: Remove xdebug
+    command: |
+      sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      echo "memory_limit=512M" | sudo tee /usr/local/etc/php/php.ini
+
+restore_cache1: &restore_composer
+  restore_cache:
+    keys:
+      - *composer_key
+      - composer-v2-
+restore_cache2: &restore_node
+  restore_cache:
+    keys:
+      - *node_key
+      - node-v2-
+restore_cache3: &restore_assets
+  restore_cache:
+    keys:
+      - *assets_key
+      - assets-v2-
+
+
 version: 2
 jobs:
   build:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1-node
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
+      - checkout:
+          <<: *post_checkout
       - run:
           name: Install extensions
           command: |
             sudo apt-get update
             sudo apt-get install -y libicu-dev g++
             sudo docker-php-ext-install intl json iconv
+      - *prepare-environment
       - run:
           name: Prepare environment
           command: |
-            cp scripts/tests/.env.mysql.travis .env
             sudo composer self-update
             yarn global add greenkeeper-lockfile@1
 
       ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
+      - *restore_composer
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
-          key: composer-v2-{{ checksum "composer.lock" }}
+          key: *composer_key
           paths: vendor
 
       ## NODE.JS
       - run:
           name: Update yarn lockfile
           command: CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
-      - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
+      - *restore_node
       - run: yarn install
       - save_cache:
-          key: node-v2-{{ checksum "yarn.lock" }}
+          key: *node_key
           paths: node_modules
       - run:
           name: Upload yarn lockfile
-          command: $(yarn global bin)/greenkeeper-lockfile-upload
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(git rev-list --no-merges --count HEAD ^${CIRCLE_BRANCH}) $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
@@ -58,7 +159,7 @@ jobs:
             php artisan lang:generate
             yarn run production
       - save_cache:
-          key: assets-v2-{{ .Revision }}
+          key: *assets_key
           paths:
             - public/mix-manifest.json
             - public/css
@@ -66,6 +167,7 @@ jobs:
             - public/js
 
   tests-7.1:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -74,64 +176,29 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: monica
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
-      - run:
-          name: Prepare environment
-          command: |
-            mkdir -p results/coverage
-            cp scripts/tests/.env.mysql.travis .env
-
-      ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      ## NODE.JS
-      - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
-
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-      - run:
-          name: Prepare database
-          command: |
-            php artisan migrate --env=testing --no-interaction -vvv
-            php artisan db:seed --env=testing --no-interaction -vvv
-
-      # Run unit tests
-      - run:
-          name: Run unit tests
-          command: vendor/bin/phpunit -c phpunit.xml
-      # Run Psalm
-      - run:
-          name: Run psalm
-          command: vendor/bin/psalm --show-info=false
+      - checkout:
+          <<: *post_checkout
+      - *install-extensions
+      - *prepare-environment
+      - *remove-xdebug
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *unit-tests
+      - *psalm
       - store_test_results:
           path: results
       - store_artifacts:
           path: results
       - persist_to_workspace:
-          root: ~/monica
+          root: *root
           paths: results
 
   tests-7.2:
+    <<: *defaults
     docker:
       - image: circleci/php:7.2-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -140,61 +207,26 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: monica
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
-      - run:
-          name: Prepare environment
-          command: |
-            mkdir -p results/coverage
-            cp scripts/tests/.env.mysql.travis .env
-
-      ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      ## NODE.JS
-      - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
-
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-      - run:
-          name: Prepare database
-          command: |
-            php artisan migrate --env=testing --no-interaction -vvv
-            php artisan db:seed --env=testing --no-interaction -vvv
-
-      # Run unit tests
-      - run:
-          name: Run unit tests
-          command: vendor/bin/phpunit -c phpunit.xml
-      # Run Psalm
-      - run:
-          name: Run psalm
-          command: vendor/bin/psalm --show-info=false
+      - checkout:
+          <<: *post_checkout
+      - *install-extensions
+      - *prepare-environment
+      - *remove-xdebug
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *unit-tests
+      - *psalm
       - store_test_results:
           path: results
       - store_artifacts:
           path: results
 
   tests-browser-7.1:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -203,71 +235,22 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: monica
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
-      - run:
-          name: Prepare environment
-          command: |
-            mkdir -p results/coverage
-            cp scripts/tests/.env.mysql.travis .env
-            scripts/tests/install-chrome.sh
-
-      ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      ## NODE.JS
-      - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
-
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-      - run:
-          name: Prepare database
-          command: |
-            php artisan migrate --env=testing --no-interaction -vvv
-            php artisan db:seed --env=testing --no-interaction -vvv
-
-      - run:
-          name: Run selenium chromedriver
-          command: vendor/bin/chromedriver
-          background: true
-
-      - run:
-          name: Run http server
-          command: |
-            php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
-          background: true
-      - run:
-          name: Wait for http server
-          command: dockerize -wait tcp://localhost:8000 -timeout 120s
-
-      # Run browser tests
-      - run:
-          name: Run unit tests
-          command: php artisan dusk --log-junit results/junit2.xml
-      - run:
-          name: Fix coverage
-          command: |
-            vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-            rm -rf results/coverage
+      - checkout:
+          <<: *post_checkout
+      - *install-extensions
+      - *prepare-environment
+      - *update-chrome
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *selenium
+      - *http-server
+      - *wait-for-server
+      - *browser-tests
+      - *fix-coverage
       - store_test_results:
           path: results
       - store_artifacts:
@@ -275,11 +258,11 @@ jobs:
       - store_artifacts:
           path: tests/Browser/screenshots
       - persist_to_workspace:
-          root: ~/monica
-          paths:
-            - results
+          root: *root
+          paths: results
 
   tests-browser-7.2:
+    <<: *defaults
     docker:
       - image: circleci/php:7.2-node-browsers
       - image: circleci/mysql:5.7-ram
@@ -288,71 +271,22 @@ jobs:
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: monica
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-            sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
-      - run:
-          name: Prepare environment
-          command: |
-            mkdir -p results/coverage
-            cp scripts/tests/.env.mysql.travis .env
-            scripts/tests/install-chrome.sh
-
-      ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      ## NODE.JS
-      - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
-
-      - run:
-          name: Wait for DB
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
-      - run:
-          name: Prepare database
-          command: |
-            php artisan migrate --env=testing --no-interaction -vvv
-            php artisan db:seed --env=testing --no-interaction -vvv
-
-      - run:
-          name: Run selenium chromedriver
-          command: vendor/bin/chromedriver
-          background: true
-
-      - run:
-          name: Run http server
-          command: |
-            php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
-          background: true
-      - run:
-          name: Wait for http server
-          command: dockerize -wait tcp://localhost:8000 -timeout 120s
-
-      # Run browser tests
-      - run:
-          name: Run unit tests
-          command: php artisan dusk --log-junit results/junit2.xml
-      - run:
-          name: Fix coverage
-          command: |
-            vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-            rm -rf results/coverage
+      - checkout:
+          <<: *post_checkout
+      - *install-extensions
+      - *prepare-environment
+      - *update-chrome
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *selenium
+      - *http-server
+      - *wait-for-server
+      - *browser-tests
+      - *fix-coverage
       - store_test_results:
           path: results
       - store_artifacts:
@@ -361,25 +295,18 @@ jobs:
           path: tests/Browser/screenshots
 
   reporting:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1-node
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
+      - checkout:
+          <<: *post_checkout
       - attach_workspace:
-          at: ~/monica
-
-      ## NODE.JS
+          at: *root
+      - *restore_node
       - restore_cache:
-          keys:
-            - node-v2-{{ checksum "yarn.lock" }}
-            - node-v2-
-      - restore_cache:
-          keys:
-            - sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
-            - sonarscanner-v1-
+          keys: *sonar_key
 
       - run:
           name: Merge junit files
@@ -389,64 +316,50 @@ jobs:
           command: scripts/tests/runsonar.sh
 
       - save_cache:
-          key: sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+          key: *sonar_key
           paths: ~/sonarscanner
 
   deploy-assets:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      ## COMPOSER
-      - restore_cache:
-          keys:
-            - composer-v2-{{ checksum "composer.lock" }}
-            - composer-v2-
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
+      - checkout:
+          <<: *post_checkout
+      - *restore_composer
+      - *restore_assets
 
       - run: make assets
       - run: make push_bintray_assets
 
   deploy-dist:
+    <<: *defaults
     docker:
       - image: circleci/php:7.1
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
+      - checkout:
+          <<: *post_checkout
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
-      ## ASSETS
-      - restore_cache:
-          keys:
-            - assets-v2-{{ .Revision }}
-            - assets-v2
+      - *restore_assets
 
       - run: make dist
       - run: make push_bintray_dist
 
   deploy-docker:
+    <<: *defaults
     machine: true
 
-    working_directory: ~/monica
-
     steps:
-      - checkout
-      - run:
-          name: Prepare
-          command: |
-            cp scripts/tests/.env.mysql.travis .env
-            docker-compose --version
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
       - run:
           name: Make docker image
-          command: make docker_build
+          command: |
+            docker-compose --version
+            make docker_build
       - run:
           name: Publish docker image
           command: |
