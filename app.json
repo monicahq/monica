@@ -19,7 +19,7 @@
     }
   ],
   "scripts": {
-    "postdeploy": "php artisan setup:production --force"
+    "postdeploy": "php artisan monica:update --force"
   },
   "env": {
     "APP_KEY": {
