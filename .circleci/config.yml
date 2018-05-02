@@ -414,9 +414,6 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
-      - sim-deploy-docker:
-          requires:
-            - build
   deploy:
     jobs:
       - build:
