@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Contracts\Console\Kernel;
 
 trait CreatesApplication
@@ -17,7 +18,7 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        \App::setLocale('en');
+        App::setLocale('en');
         \App\Helpers\DateHelper::setLocale('en');
 
         return $app;

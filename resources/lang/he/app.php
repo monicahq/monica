@@ -15,12 +15,14 @@ return [
     'done' => 'סיום',
     'verify' => 'אימות',
     'for' => 'for',
+    'new' => 'new',
     'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
+    'days' => 'day|days',
 
-    'application_title' => 'מוניקה - ניהול קשרים עם חברים ומשפחה',
+    'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
     'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול מקוונת בחינם לקשרים עם חברים ומשפחה.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => 'הגדרות',
     'header_logout_link' => 'יציאה',
+    'header_changelog_link' => 'שינויים במוצר',
 
     'main_nav_cta' => 'הוספת אנשים',
     'main_nav_dashboard' => 'לוח מחוונים',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'יומן',
     'main_nav_activities' => 'פעילויות',
     'main_nav_tasks' => 'משימות',
-    'main_nav_trash' => 'אשפה',
 
     'footer_remarks' => 'יש הערות?',
     'footer_send_email' => 'ניתן לשלוח לי דוא״ל',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
+    'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
+
+    'default_save_success' => 'הנתונים נשמרו.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

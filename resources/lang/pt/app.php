@@ -15,12 +15,14 @@ return [
     'done' => 'Concluído',
     'verify' => 'Verificar',
     'for' => 'para',
+    'new' => 'new',
     'unknown' => 'Não sei',
     'load_more' => 'Carregar mais',
     'loading' => 'A carregar...',
     'with' => 'com',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => 'Configurações',
     'header_logout_link' => 'Sair',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Adicionar Pessoa',
     'main_nav_dashboard' => 'Painel',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'Diário',
     'main_nav_activities' => 'Atividades',
     'main_nav_tasks' => 'Tarefas',
-    'main_nav_trash' => 'Lixo',
 
     'footer_remarks' => 'Alguma observação?',
     'footer_send_email' => 'Mande-me um email',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

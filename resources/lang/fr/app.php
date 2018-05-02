@@ -15,12 +15,14 @@ return [
     'done' => 'Terminé',
     'verify' => 'Vérifier',
     'for' => 'pour',
+    'new' => 'nouveau',
     'unknown' => 'Je ne sais pas',
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
+    'days' => 'jour|jours',
 
-    'application_title' => 'Monica – un GRC pour vos amis et votre famille',
+    'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
     'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => 'Paramètres',
     'header_logout_link' => 'Déconnexion',
+    'header_changelog_link' => 'Évolutions du produit',
 
     'main_nav_cta' => 'Ajouter des gens',
     'main_nav_dashboard' => 'Tableau de bord',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'Journal',
     'main_nav_activities' => 'Activités',
     'main_nav_tasks' => 'Tâches',
-    'main_nav_trash' => 'Poubelle',
 
     'footer_remarks' => 'Une remarque ?',
     'footer_send_email' => 'Envoyez moi un courriel',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
+    'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
+
+    'default_save_success' => 'Les modifications ont été enregistrées.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

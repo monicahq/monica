@@ -15,12 +15,14 @@ return [
     'done' => 'Hotovo',
     'verify' => 'Ověřit',
     'for' => 'pro',
+    'new' => 'new',
     'unknown' => 'Nevím',
     'load_more' => 'Načíst další',
     'loading' => 'Načítá se...',
     'with' => 's',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => 'Nastavení',
     'header_logout_link' => 'Odhlásit',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Přidat osobu',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'Deník',
     'main_nav_activities' => 'Aktivity',
     'main_nav_tasks' => 'Úkoly',
-    'main_nav_trash' => 'Koš',
 
     'footer_remarks' => 'Další poznámky?',
     'footer_send_email' => 'Poslat email',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

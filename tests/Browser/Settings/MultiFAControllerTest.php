@@ -3,7 +3,7 @@
 namespace Tests\Browser\Settings;
 
 use App\User;
-use QrReader;
+use Zxing\QrReader;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsSecurity;
@@ -19,7 +19,7 @@ class MultiFAControllerTest extends DuskTestCase
     public function cleanup()
     {
         exec('php artisan 2fa:deactivate --force --email=admin@admin.com', $output);
-        $this->log(implode($output));
+        //$this->log(implode($output));
     }
 
     /**

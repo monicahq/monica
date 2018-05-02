@@ -15,12 +15,14 @@ return [
     'done' => 'Gereed',
     'verify' => 'Bevestigen',
     'for' => 'voor',
+    'new' => 'new',
     'unknown' => 'Ik weet het niet',
     'load_more' => 'Meer laden',
     'loading' => 'Laden...',
     'with' => 'met',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => 'Instellingen',
     'header_logout_link' => 'Uitloggen',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Personen toevoegen',
     'main_nav_dashboard' => 'Dashboard',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'Dagboek',
     'main_nav_activities' => 'Activiteiten',
     'main_nav_tasks' => 'Taken',
-    'main_nav_trash' => 'Prullenbak',
 
     'footer_remarks' => 'Eventuele opmerkingen?',
     'footer_send_email' => 'Stuur me een e-mail',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Auth;
 use App\Tag;
 use App\User;
 use App\ImportJob;
@@ -13,6 +11,8 @@ use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
@@ -27,6 +27,8 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
+        'changelog_user',
+        'changelogs',
         'countries',
         'currencies',
         'default_contact_field_types',
@@ -119,7 +121,7 @@ class SettingsController extends Controller
 
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed()) {
+        if ($account->isSubscribed() && auth()->user()->has_access_to_paid_version_for_free == 0) {
             $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 

@@ -2,8 +2,9 @@
 
 namespace App;
 
-use DB;
 use Laravel\Cashier\Billable;
+use App\Jobs\AddChangelogEntry;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -132,16 +133,6 @@ class Account extends Model
     }
 
     /**
-     * Get the offspring records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function offpsrings()
-    {
-        return $this->hasMany(Offspring::class);
-    }
-
-    /**
      * Get the progenitor records associated with the account.
      *
      * @return HasMany
@@ -196,7 +187,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function importjobreports()
+    public function importJobReports()
     {
         return $this->hasMany(ImportJobReport::class);
     }
@@ -652,7 +643,7 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($first_name, $last_name, $email, $password)
     {
@@ -682,6 +673,7 @@ class Account extends Model
         $account->populateRelationshipTypeGroupsTable();
         $account->populateRelationshipTypesTable();
         $account->populateModulesTable();
+        $account->populateChangelogsTable();
     }
 
     /**
@@ -709,7 +701,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyCallStatistics()
     {
@@ -744,7 +736,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyActivitiesStatistics()
     {
@@ -774,5 +766,32 @@ class Account extends Model
         }
 
         return $activitiesStatistics;
+    }
+
+    /**
+     * Add the given changelog entry and mark it unread for all users in this
+     * account.
+     *
+     * @param int $changelogId
+     */
+    public function addUnreadChangelogEntry(int $changelogId)
+    {
+        foreach ($this->users as $user) {
+            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
+        }
+    }
+
+    /**
+     * Populate the changelog_user table, which contains all the new changes
+     * made on the application.
+     *
+     * @return void
+     */
+    public function populateChangelogsTable()
+    {
+        $changelogs = \App\Changelog::all();
+        foreach ($changelogs as $changelog) {
+            AddChangelogEntry::dispatch($this, $changelog->id);
+        }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use DB;
 use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase
@@ -613,6 +613,47 @@ class AccountTest extends FeatureTestCase
         $this->assertDatabaseMissing('modules', [
             'account_id' => $account->id,
             'key' => 'awesome',
+        ]);
+    }
+
+    public function test_it_adds_an_unread_changelog_entry_to_all_users()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+        ]);
+        $user2 = factory('App\User')->create([
+            'account_id' => $account->id,
+        ]);
+
+        $changelog = factory('App\Changelog')->create([]);
+
+        $account->addUnreadChangelogEntry($changelog->id);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'changelog_id' => $changelog->id,
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertDatabaseHas('changelog_user', [
+            'changelog_id' => $changelog->id,
+            'user_id' => $user2->id,
+        ]);
+    }
+
+    public function test_it_populates_account_with_changelogs()
+    {
+        $account = factory('App\Account')->create([]);
+        $user = factory('App\User')->create(['account_id' => $account->id]);
+        $changelog = factory('App\Changelog')->create([]);
+        $changelog->users()->sync($user->id);
+
+        $account->populateChangelogsTable();
+
+        $this->assertDatabaseHas('changelog_user', [
+            'user_id' => $user->id,
+            'changelog_id' => $changelog->id,
+            'read' => 0,
         ]);
     }
 }

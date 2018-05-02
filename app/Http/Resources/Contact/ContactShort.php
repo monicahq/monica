@@ -16,8 +16,8 @@ class ContactShort extends Resource
     {
         return [
             'id' => $this->id,
-            'hash_ID' => $this->hashID(),
             'object' => 'contact',
+            'hash_id' => $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'complete_name' => $this->getCompleteName(),

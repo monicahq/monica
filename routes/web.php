@@ -1,4 +1,10 @@
 <?php
+
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +41,8 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
     Route::post('/validate2fa', 'DashboardController@index');
+
+    Route::get('/changelog', 'ChangelogController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people', 'ContactsController@index')->name('.index');
@@ -141,6 +149,9 @@ Route::middleware(['auth', '2fa'])->group(function () {
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('people.search');
+
+        // Stay in touch information
+        Route::post('/people/{contact}/stayintouch', 'ContactsController@stayInTouch');
     });
 
     // Activities

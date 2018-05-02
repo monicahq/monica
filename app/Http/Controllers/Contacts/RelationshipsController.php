@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Validator;
 use App\Contact;
 use App\Relationship;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
 {
@@ -196,7 +196,7 @@ class RelationshipsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param RelationshipsRequest $request
+     * @param Request $request
      * @param Contact $contact
      * @param SignificantOther $significantOther
      * @return \Illuminate\Http\Response

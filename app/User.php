@@ -3,7 +3,9 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,7 +46,7 @@ class User extends Authenticatable
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password)
     {
@@ -57,7 +59,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = \App::getLocale();
+        $user->locale = App::getLocale();
         $user->save();
 
         return $user;
@@ -71,6 +73,14 @@ class User extends Authenticatable
     public function account()
     {
         return $this->belongsTo('App\Account');
+    }
+
+    /**
+     * Get the changelog records associated with the user.
+     */
+    public function changelogs()
+    {
+        return $this->belongsToMany('App\Changelog')->withPivot('read', 'upvote')->withTimestamps();
     }
 
     /**
@@ -199,7 +209,7 @@ class User extends Authenticatable
     /**
      * Decrypt the user's google_2fa secret.
      *
-     * @param  string  $value
+     * @param  string|null  $value
      * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)
@@ -226,7 +236,7 @@ class User extends Authenticatable
 
         $currentDate = now($this->timezone);
 
-        $currentHourOnUserTimezone = $currentDate->format('H:00');
+        $currentHourOnUserTimezone = $currentDate->format('G:00');
         $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
 
         $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
@@ -240,5 +250,27 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    /**
+     * Check if user has one or more unread changelog entries.
+     *
+     * @return bool
+     */
+    public function hasUnreadChangelogs()
+    {
+        return $this->changelogs()->wherePivot('read', 0)->count() > 0;
+    }
+
+    /**
+     * Mark all changelog entries as read.
+     *
+     * @return void
+     */
+    public function markChangelogAsRead()
+    {
+        DB::table('changelog_user')
+            ->where('user_id', $this->id)
+            ->update(['read' => 1]);
     }
 }

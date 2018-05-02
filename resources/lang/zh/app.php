@@ -15,12 +15,14 @@ return [
     'done' => '完成',
     'verify' => '验证',
     'for' => '为',
+    'new' => 'new',
     'unknown' => '我不知道',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
@@ -29,6 +31,7 @@ return [
 
     'header_settings_link' => '设置',
     'header_logout_link' => '注销',
+    'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => '添加人员',
     'main_nav_dashboard' => '仪表盘',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => '记录',
     'main_nav_activities' => '活动',
     'main_nav_tasks' => '任务',
-    'main_nav_trash' => '回收站',
 
     'footer_remarks' => '有什么意见吗？',
     'footer_send_email' => '给我发电子邮件',
@@ -78,6 +80,9 @@ return [
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

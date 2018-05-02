@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Tag;
-use Validator;
+use Exception;
 use App\Contact;
 use App\Relationship;
 use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {
@@ -31,6 +32,8 @@ class ContactsController extends Controller
         }
 
         $dateFlag = false;
+
+        $date_sort = null;
 
         if (str_contains($sort, 'lastactivitydate')) {
             $date_sort = str_after($sort, 'lastactivitydate');
@@ -491,11 +494,43 @@ class ContactsController extends Controller
     public function vCard(Contact $contact)
     {
         if (config('app.debug')) {
-            \Debugbar::disable();
+            Debugbar::disable();
         }
 
         $vcard = VCardHelper::prepareVCard($contact);
 
         return  $vcard->download();
+    }
+
+    /**
+     * Set or change the frequency of which the user wants to stay in touch with
+     * the given contact.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return [type]
+     */
+    public function stayInTouch(Request $request, Contact $contact)
+    {
+        $frequency = intval($request->get('frequency'));
+        $state = $request->get('state');
+
+        if (auth()->user()->account->hasLimitations()) {
+            throw new Exception(trans('people.stay_in_touch_premium'));
+        }
+
+        // if not active, set frequency to 0
+        if (! $state) {
+            $frequency = 0;
+        }
+        $result = $contact->updateStayInTouchFrequency($frequency);
+
+        if (! $result) {
+            throw new Exception(trans('people.stay_in_touch_invalid'));
+        }
+
+        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+
+        return $frequency;
     }
 }
