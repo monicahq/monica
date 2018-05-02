@@ -10,16 +10,6 @@ ARTISAN="php ${MONICADIR}/artisan"
 echo -e "\n\033[4;32mConfiguring Monica\033[0;40m"
 
 cd $MONICADIR
-# Ensure storage directories are present
-STORAGE=${MONICADIR}/storage
-mkdir -p ${STORAGE}/logs
-mkdir -p ${STORAGE}/app/public
-mkdir -p ${STORAGE}/framework/views
-mkdir -p ${STORAGE}/framework/cache
-mkdir -p ${STORAGE}/framework/sessions
-chown -R monica:apache ${STORAGE}
-chmod -R g+rw ${STORAGE}
-
 APP_KEY=$(source .env 2>/dev/null || echo $APP_KEY)
 if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; then
   ${ARTISAN} key:generate --no-interaction
@@ -37,6 +27,7 @@ SCRIPT
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "monicahq/monicahq"
   config.vm.hostname = "monica"
+  config.vm.define "monica"
 
   config.vm.network "forwarded_port", guest: 80, host: 8080
 
