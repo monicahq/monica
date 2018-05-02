@@ -7,6 +7,7 @@ UNRELEASED CHANGES:
 * Add ability to display contact fields for each contact in the contact list through the API
 * Add ability to stay in touch with a contact by sending reminders at a given interval
 * Add secure Oauth route for the API login
+* Fix removing tags
 
 RELEASED VERSIONS:
 
