@@ -130,7 +130,7 @@ jobs:
           name: Prepare environment
           command: |
             sudo composer self-update
-            yarn global add greenkeeper-lockfile@1
+            yarn global add greenkeeper-lockfile
 
       ## COMPOSER
       - *restore_composer
@@ -310,7 +310,7 @@ jobs:
 
       - run:
           name: Merge junit files
-          command: node_modules/.bin/junit-merge --dir results --out results/result.xml
+          command: $(yarn bin)/junit-merge --dir results --out results/result.xml
       - run:
           name: Run sonar scanner
           command: scripts/tests/runsonar.sh
