@@ -391,8 +391,8 @@ jobs:
           name: Make docker image
           command: |
             docker-compose --version
-            sudo make docker_build
-            sudo make docker_squash
+            make docker_build
+            make docker_squash
 
 workflows:
   version: 2
