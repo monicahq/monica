@@ -60,7 +60,7 @@ class Update extends Command
                     ]);
 
                 // Clear or rebuild all cache
-                if (config('cache.default') == 'database' && Schema::hasTable('cache')) {
+                if (config('cache.default') != 'database' || Schema::hasTable('cache')) {
                   $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
                 }
 
