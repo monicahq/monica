@@ -356,12 +356,11 @@ jobs:
           <<: *post_checkout
       - *prepare-environment
       - run:
-          name: Install docker_sqhash
+          name: Install docker_squash
           command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip
-            pip install docker-squash
-            pip uninstall -y docker
+            apt-get update
+            apt-get install -y python-pip
+            pip install docker-squash "docker < 3"
       - run:
           name: Make docker image
           command: |
@@ -385,10 +384,9 @@ jobs:
       - run:
           name: Install docker_squash
           command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip
-            pip install docker-squash
-            pip uninstall -y docker
+            apt-get update
+            apt-get install -y python-pip
+            pip install docker-squash "docker < 3"
       - run:
           name: Make docker image
           command: |

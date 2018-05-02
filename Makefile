@@ -51,8 +51,13 @@ docker_build:
 	docker-compose build
 	docker images
 
+DOCKER_SQUASH := $(shell which docker-squash)
+ifeq ($(TAG),)
+  DOCKER_SQUASH := ~/.local/bin/docker-squash
+endif
+
 docker_squash:
-	~/.local/bin/docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
+	docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
 	docker images
 
 docker_tag:
