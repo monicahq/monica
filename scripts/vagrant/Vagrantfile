@@ -4,9 +4,21 @@
 VAGRANTFILE_API_VERSION ||= "2"
 
 $script = <<SCRIPT
-cd /var/www/html/monica
+MONICADIR=/var/www/html/monica
+ARTISAN="php ${MONICADIR}/artisan"
 
 echo -e "\n\033[4;32mConfiguring Monica\033[0;40m"
+
+cd $MONICADIR
+# Ensure storage directories are present
+STORAGE=${MONICADIR}/storage
+mkdir -p ${STORAGE}/logs
+mkdir -p ${STORAGE}/app/public
+mkdir -p ${STORAGE}/framework/views
+mkdir -p ${STORAGE}/framework/cache
+mkdir -p ${STORAGE}/framework/sessions
+chown -R monica:apache ${STORAGE}
+chmod -R g+rw ${STORAGE}
 
 APP_KEY=$(source .env 2>/dev/null || echo $APP_KEY)
 if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; then
@@ -14,8 +26,9 @@ if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; th
 else
   echo "APP_KEY already set"
 fi
-sudo -u www-data php artisan setup:production --force
-sudo -u www-data php artisan passport:install
+
+# Run migrations
+${ARTISAN} monica:update --force
 
 echo -e "\n\n\033[1;32mDone! You can access Monica by visiting \033[4;96mhttp://localhost:8080\033[0;40m\033[1;32m from your host machine\033[0;40m"
 
