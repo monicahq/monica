@@ -9,7 +9,6 @@ A clear and concise description of what the bug is.
 
 **Screenshots**
 If you can, add screenshots to help explain your problem. An image is always helpful.
-
 **Which version are you using:**
  - Hosting version on https://app.monicahq.com
  - Mobile version

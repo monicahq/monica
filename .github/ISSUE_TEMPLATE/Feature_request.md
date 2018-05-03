@@ -7,7 +7,7 @@ about: Suggest an idea for this project
 (Note: you don't need to follow this template, nor to keep headlines or bold sentences - they are just there to guide you. Feel free to delete everything. We review every issue even if we don't immediately respond.)
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. 
+A clear and concise description of what the problem is. Ex.
 * I'm always frustrated when [...]
 * Current feature X is awesome but doesn't fill the need of [...]
 
