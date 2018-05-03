@@ -19,7 +19,7 @@ services:
       - ./database:/var/www/monica/database
 
   mysql:
-    image: mysql
+    image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=sekret_root_password
       - MYSQL_DATABASE=monica
