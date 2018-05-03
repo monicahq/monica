@@ -2,7 +2,7 @@
   "name": "Monica",
   "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
   "repository": "https://github.com/monicahq/monica",
-  "logo": "https://raw.githubusercontent.com/monicahq/monica/master/public/img/small-logo.png",
+  "logo": "https://app.monicahq.com/img/monica.svg",
   "keywords": [
     "CRM",
     "family",
@@ -19,7 +19,7 @@
     }
   ],
   "scripts": {
-    "postdeploy": "php artisan setup:production --force"
+    "postdeploy": "php artisan monica:update --force"
   },
   "env": {
     "APP_KEY": {
