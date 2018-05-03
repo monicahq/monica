@@ -1,1 +1,5 @@
 preset: laravel
+
+finder:
+  exclude:
+    - ".github"
