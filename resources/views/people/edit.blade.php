@@ -60,7 +60,7 @@
               </div>
               <div class="dtc">
                 <form-input
-                  value="{{ $contact->first_naem }}"
+                  value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"

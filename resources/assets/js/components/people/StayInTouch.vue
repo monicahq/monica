@@ -146,7 +146,7 @@
          */
         data() {
             return {
-                frequency: 0,
+                frequency: '0',
                 isActive: false,
                 dirltr: true,
                 errorMessage: '',
@@ -183,9 +183,9 @@
                 this.dirltr = $('html').attr('dir') == 'ltr';
 
                 if (this.contact.stay_in_touch_frequency == null) {
-                    this.frequency = 0;
+                    this.frequency = '0';
                 } else {
-                    this.frequency = this.contact.stay_in_touch_frequency;
+                    this.frequency = this.contact.stay_in_touch_frequency.toString();
                 }
                 this.isActive = (this.frequency > 0);
 
@@ -209,6 +209,14 @@
 
             update() {
                 this.errorMessage = '';
+
+                // check if you need a subscription to access this feature
+                if (this.limited) {
+                    this.errorMessage = this.$t('people.stay_in_touch_premium');
+                    this.frequency = this.initialFrequency;
+                    this.isActive = this.initialState;
+                    return;
+                }
 
                 // make sure we can't press update if the frequency is invalid
                 // and if the feature is activated

@@ -2,6 +2,7 @@
 
 use App\Account;
 use App\Instance;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateContactsInformation extends Migration

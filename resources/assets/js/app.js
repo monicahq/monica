@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
+require('jquery-tags-input/dist/jquery.tagsinput.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,10 +29,6 @@ Vue.use(Tooltip);
 // Toggle Buttons
 import ToggleButton from 'vue-js-toggle-button';
 Vue.use(ToggleButton);
-
-// Calendar
-import Datepicker from 'vuejs-datepicker';
-Vue.use(Datepicker);
 
 // Radio buttons
 import PrettyCheckbox from 'pretty-checkbox-vue';

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class UpdateChangelog extends Migration
@@ -37,7 +38,7 @@ Before you could only have parent/child relationships and significant other rela
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => \Carbon\Carbon::now(),
+            'created_at' => '2018-04-20',
         ]);
 
         $instance->addUnreadChangelogEntry($id);
