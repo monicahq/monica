@@ -173,7 +173,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes($router);
 
         $this->mapOAuthRoutes($router);
-        //
+        
+        $this->mapCardDAVRoutes($router);
     }
 
     /**
@@ -223,6 +224,23 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/api.php');
+        });
+    }
+
+    /**
+     * Define the "carddav" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapCardDAVRoutes(Router $router)
+    {
+        $router->group([
+            'prefix' => 'carddav',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            require base_path('routes/carddav.php');
         });
     }
 }
