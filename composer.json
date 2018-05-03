@@ -29,7 +29,7 @@
         "pragmarx/google2fa-laravel": "^0.2",
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
-        "sabre/vobject": "^4.1",
+        "sabre/dav": "~3.2.0",
         "sentry/sentry-laravel": "^0.8",
         "symfony/translation": "^4.0",
         "vinkla/hashids": "^5.0",
