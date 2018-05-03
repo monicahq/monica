@@ -68,6 +68,66 @@ class ApiContactControllerTest extends ApiTestCase
         'updated_at',
     ];
 
+    protected $jsonStructureContactWithContactFields = [
+        'id',
+        'object',
+        'hash_id',
+        'first_name',
+        'last_name',
+        'gender',
+        'is_partial',
+        'is_dead',
+        'last_called',
+        'last_activity_together',
+        'stay_in_touch_frequency',
+        'stay_in_touch_trigger_date',
+        'information' => [
+            'relationships' => [
+                'love' => [
+                    'total',
+                    'contacts',
+                ],
+                'family' => [
+                    'total',
+                    'contacts',
+                ],
+                'friend' => [
+                    'total',
+                    'contacts',
+                ],
+                'work' => [
+                    'total',
+                    'contacts',
+                ],
+            ],
+            'dates' => [
+                'birthdate' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+                'deceased_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+            ],
+            'career',
+            'avatar',
+            'food_preferencies',
+            'how_you_met',
+        ],
+        'addresses',
+        'tags',
+        'statistics',
+        'contactFields' => [],
+        'account' => [
+            'id',
+        ],
+        'created_at',
+        'updated_at',
+    ];
+
     protected $jsonStructureContactShort = [
         'id',
         'object',
@@ -306,13 +366,89 @@ class ApiContactControllerTest extends ApiTestCase
             'first_name' => 'roger',
         ]);
 
+        $field = factory('App\ContactFieldType')->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $contactField = factory('App\ContactField')->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
         $response = $this->json('GET', '/api/contacts?with=contactfields');
 
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->jsonStructureContact,
+                '*' => $this->jsonStructureContactWithContactFields,
+            ],
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $contactField->id,
+            'object' => 'contactfield',
+            'account' => [
+                'id' => $user->account_id,
+            ],
+        ]);
+    }
+
+    public function test_it_gets_list_of_contacts_with_parameter_and_limit_and_page()
+    {
+        $user = $this->signin();
+
+        $initialContact = factory('App\Contact')->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'roger',
+        ]);
+
+        $field = factory('App\ContactFieldType')->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $initialContactField = factory('App\ContactField')->create([
+            'contact_id' => $initialContact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $i = 1;
+        while ($i < 100) {
+            $contact = factory('App\Contact')->create([
+                'account_id' => $user->account_id,
+                'first_name' => 'roger',
+            ]);
+
+            $field = factory('App\ContactFieldType')->create([
+                'account_id' => $user->account_id,
+            ]);
+
+            $contactField = factory('App\ContactField')->create([
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+                'contact_field_type_id' => $field->id,
+            ]);
+
+            $i++;
+        }
+
+        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=10');
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => $this->jsonStructureContactWithContactFields,
+            ],
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $initialContact->id,
+            'object' => 'contactfield',
+            'account' => [
+                'id' => $user->account_id,
             ],
         ]);
     }
