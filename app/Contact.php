@@ -1294,9 +1294,9 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags
-     * @param Query $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      * @param Mixed $tags string or Tag
-     * @return Query
+     * @return \Illuminate\Database\Eloquent\Builder $query
      */
 
     public function scopeTags($query, $tags)
