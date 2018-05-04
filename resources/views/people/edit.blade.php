@@ -111,6 +111,19 @@
           </div>
         </div>
 
+        {{-- Add reminder? --}}
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" id="addReminder" name="addReminder" type="checkbox" value="addReminder"
+                {{ $contact->is_dead ? 'checked' : '' }}>
+                Create an annual reminder for the birthday
+              </label>
+            </div>
+          </div>
+        </div>
+
         {{-- Is the contact deceased? --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
