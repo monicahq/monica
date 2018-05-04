@@ -1291,6 +1291,14 @@ class Contact extends Model
         }
     }
 
+    /**
+     * Get the contacts that have all the provided $tags
+     * or if $tags is NONE get contacts that have no tags
+     * @param Query $query
+     * @param Mixed $tags string or Tag
+     * @return Query
+     */
+
     public function scopeTags($query, $tags)
     {
         if ($tags == 'NONE') {
