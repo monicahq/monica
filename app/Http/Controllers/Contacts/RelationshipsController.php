@@ -107,7 +107,6 @@ class RelationshipsController extends Controller
         $partner->save();
 
         // Handling the case of the birthday
-        $addReminder = false;
         $partner->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
             case 'unknown':
@@ -122,7 +121,11 @@ class RelationshipsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $addReminder = true;
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                }
+
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -133,12 +136,12 @@ class RelationshipsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $addReminder = true;
-                break;
-        }
 
-        if ($request->input('addReminder') != '' && $addReminder == true) {
-            $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                }
+
+                break;
         }
 
         // set avatar color
@@ -236,7 +239,6 @@ class RelationshipsController extends Controller
         $otherContact->save();
 
         // Handling the case of the birthday
-        $addReminder = false;
         $otherContact->removeSpecialDate('birthdate');
         switch ($request->input('birthdate')) {
             case 'unknown':
@@ -251,7 +253,11 @@ class RelationshipsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $addReminder = true;
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                }
+
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -262,12 +268,12 @@ class RelationshipsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $addReminder = true;
-                break;
-        }
 
-        if ($request->input('addReminder') != '' && $addReminder == true) {
-            $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $otherContact->first_name]));
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
+                }
+
+                break;
         }
 
         // update the relationship

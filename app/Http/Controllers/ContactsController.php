@@ -313,7 +313,6 @@ class ContactsController extends Controller
 
         // Handling the case of the birthday
         $contact->removeSpecialDate('birthdate');
-        $addReminder = false;
         switch ($request->input('birthdate')) {
             case 'unknown':
                 break;
@@ -327,7 +326,11 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $addReminder = true;
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -338,12 +341,12 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $addReminder = true;
-                break;
-        }
 
-        if ($request->input('addReminder') != '' && $addReminder == true) {
-            $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
+                break;
         }
 
         $contact->logEvent('contact', $contact->id, 'update');
