@@ -137,7 +137,7 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        if ($request->input('addReminder') != '' && $specialDate && $addReminder == true) {
+        if ($request->input('addReminder') != '' && $addReminder == true) {
             $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
         }
 
@@ -266,7 +266,7 @@ class RelationshipsController extends Controller
                 break;
         }
 
-        if ($request->input('addReminder') != '' && $specialDate && $addReminder == true) {
+        if ($request->input('addReminder') != '' && $addReminder == true) {
             $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $otherContact->first_name]));
         }
 
