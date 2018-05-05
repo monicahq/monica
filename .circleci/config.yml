@@ -306,7 +306,9 @@ jobs:
           at: *root
       - *restore_node
       - restore_cache:
-          keys: *sonar_key
+          keys:
+            - *sonar_key
+            - sonarscanner-v1-
 
       - run:
           name: Merge junit files
