@@ -106,15 +106,12 @@
         </div>
 
         {{-- Birthdate --}}
-        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <form-specialdate
-              v-bind:months="{{ $months }}"
-              v-bind:days="{{ $days }}"
-              v-bind:locale="'{{ auth()->user()->locale }}'"
-            ></form-specialdate>
-          </div>
-        </div>
+        <form-specialdate
+          v-bind:months="{{ $months }}"
+          v-bind:days="{{ $days }}"
+          v-bind:default-date="'{{ $birthdate }}'"
+          v-bind:locale="'{{ auth()->user()->locale }}'"
+        ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
