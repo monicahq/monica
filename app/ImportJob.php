@@ -528,20 +528,22 @@ class ImportJob extends Model
         if (! is_null($this->formatValue($this->currentEntry->TEL))) {
             $tel =  (string) $this->currentEntry->TEL;
 
-            $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
-                ->orwhere('country', ucwords($this->currentEntry->ADR->getParts()[6]))
-                ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
-                ->first();
+            if (! is_null($this->formatValue($this->currentEntry->ADR))) {
+                $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
+                    ->orwhere('country', ucwords($this->currentEntry->ADR->getParts()[6]))
+                    ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
+                    ->first();
 
-            if ($country) {
-                try {
-                    $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+                if ($country) {
+                    try {
+                        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
 
-                    $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
-                    // International phone number format eg : +41 44 201 19 20
-                    $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
-                } catch (\libphonenumber\NumberParseException $e) {
-                    // Do nothing if the number cannot be parsed successfully
+                        $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
+                        // International phone number format eg : +41 44 201 19 20
+                        $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+                    } catch (\libphonenumber\NumberParseException $e) {
+                        // Do nothing if the number cannot be parsed successfully
+                    }
                 }
             }
 
