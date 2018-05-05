@@ -108,7 +108,7 @@ trait VCardImporter
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
 
             $country = Country::where('country', $vcard->ADR->getParts()[6])
-                ->orwhere('country', ucwords($this->currentEntry->ADR->getParts()[6]))
+                ->orwhere('country', ucwords($vcard->ADR->getParts()[6]))
                 ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
                 ->first();
 
