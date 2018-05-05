@@ -16,7 +16,7 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesUser()
     {
-        $path = 'tests/stubs/vcard_stub.vcf';
+        $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
 
@@ -47,7 +47,7 @@ class ImportVCardsTest extends TestCase
     public function testItImportsContacts()
     {
         $user = $this->getUser();
-        $path = 'tests/stubs/vcard_stub.vcf';
+        $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
