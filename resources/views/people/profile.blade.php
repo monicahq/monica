@@ -40,7 +40,7 @@
 
             @include('people.relationship.index')
 
-            @include('people.dashboard.index')
+            @include('people.sidebar')
 
             <p><a href="{{ url('/people/'.$contact->hashID().'/vcard') }}">{{ trans('people.people_export') }}</a></p>
             <p>
