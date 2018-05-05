@@ -306,7 +306,9 @@ jobs:
           at: *root
       - *restore_node
       - restore_cache:
-          keys: *sonar_key
+          keys:
+            - *sonar_key
+            - sonarscanner-v1-
 
       - run:
           name: Merge junit files
@@ -381,30 +383,40 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-7.1:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-7.2:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-browser-7.1:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-browser-7.2:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - reporting:
           requires:
             - tests-7.1
@@ -414,6 +426,8 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
   deploy:
     jobs:
       - build:
