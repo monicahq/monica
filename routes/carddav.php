@@ -15,8 +15,11 @@ $verbs = [
     'COPY',
     'MOVE',
     'LOCK',
-    'UNLOCK'
+    'UNLOCK',
+    'OPTIONS',
+    'REPORT',
 ];
 
 Illuminate\Routing\Router::$verbs = $verbs;
-Route::match($verbs, '{path?}', 'CardDAV\\CardDAVController@init')->where('path', '(.)*')->middleware('auth.basic.once');
+
+Route::match($verbs, '{path?}', 'CardDAV\\CardDAVController@init')->where('path', '(.)*');
