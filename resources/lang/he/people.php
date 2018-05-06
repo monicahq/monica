@@ -43,7 +43,7 @@ return [
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_add_reminder_for_birthday' => 'יצירת תזכורת שנתית ליום ההולדת',
 
     // show
     'section_contact_information' => 'פרטי קשר',
