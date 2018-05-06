@@ -16,12 +16,12 @@ class CardDAVController extends Controller
 {
     /**
      * Display the specified resource.
-     *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
      */
     public function init()
     {
+        // Disable debugger for caldav output
+        \Debugbar::disable();
+
         // TODO: Not sure if this is needed, check later
         date_default_timezone_set('Europe/Berlin');
 
@@ -31,8 +31,7 @@ class CardDAVController extends Controller
         $carddavBackend = new MonicaCardDAVBackend();       // Contacts
 
         $nodes = [
-                // Not sure if this is needed
-                //new \Sabre\DAVACL\PrincipalCollection($principalBackend),
+                new \Sabre\DAVACL\PrincipalCollection($principalBackend),
                 new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend)
         ];
 
@@ -42,20 +41,23 @@ class CardDAVController extends Controller
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
-        //$server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+        $server->addPlugin(new \Sabre\DAV\Browser\Plugin());
         $server->addPlugin(new \Sabre\CardDAV\Plugin());
-        $server->addPlugin(new \Sabre\DAVACL\Plugin());
+        $aclPlugin = new \Sabre\DAVACL\Plugin();
+        $aclPlugin->allowUnauthenticatedAccess = false;
+        $server->addPlugin($aclPlugin);
         $server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
         // Execute requests and catch output
-        // We do this because laravel always sends a 200 back, but we need to statuscode of Sabre
+        // We do this because laravel always sends a 200 back, but we need to use the StatusCode and of Sabre
         ob_start();
         $server->exec();
         $status = $server->httpResponse->getStatus();
         $content = ob_get_contents();
+        $headers = $server->httpResponse->getHeaders();
         ob_end_clean();
 
         // Return response through laravel
-        return response($content, $status);
+        return response($content, $status)->withHeaders($headers);
     }
 }
