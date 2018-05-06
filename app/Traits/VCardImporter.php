@@ -98,6 +98,8 @@ trait VCardImporter
             $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
         }
 
+        $country = null;
+
         if ($vcard->ADR) {
             $address = new Address();
             $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
@@ -106,6 +108,7 @@ trait VCardImporter
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
 
             $country = Country::where('country', $vcard->ADR->getParts()[6])
+                ->orwhere('country', ucwords($vcard->ADR->getParts()[6]))
                 ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
                 ->first();
 
@@ -134,11 +137,26 @@ trait VCardImporter
         }
 
         if (! is_null($this->formatValue($vcard->TEL))) {
+            $tel = (string) $vcard->TEL;
+
+            if ($country) {
+                try {
+                    $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+                    $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
+
+                    // International phone number format eg : +41 44 201 19 20
+                    $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+                } catch (\libphonenumber\NumberParseException $e) {
+                    // Do nothing if the number cannot be parsed successfully
+                }
+            }
+
             // Saves the phone number
             $contactField = new ContactField;
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($vcard->TEL);
+            $contactField->data = $this->formatValue($tel);
             $contactField->contact_field_type_id = $this->contactFieldPhoneId();
             $contactField->save();
         }

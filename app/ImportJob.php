@@ -526,10 +526,31 @@ class ImportJob extends Model
     public function importTel(\App\Contact $contact): void
     {
         if (! is_null($this->formatValue($this->currentEntry->TEL))) {
+            $tel =  (string) $this->currentEntry->TEL;
+
+            if (! is_null($this->formatValue($this->currentEntry->ADR))) {
+                $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
+                    ->orwhere('country', ucwords($this->currentEntry->ADR->getParts()[6]))
+                    ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
+                    ->first();
+
+                if ($country) {
+                    try {
+                        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+                        $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
+                        // International phone number format eg : +41 44 201 19 20
+                        $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
+                    } catch (\libphonenumber\NumberParseException $e) {
+                        // Do nothing if the number cannot be parsed successfully
+                    }
+                }
+            }
+
             $contactField = new \App\ContactField;
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($this->currentEntry->TEL);
+            $contactField->data = $this->formatValue($tel);
             $contactField->contact_field_type_id = $this->contactFieldPhoneId();
             $contactField->save();
         }
