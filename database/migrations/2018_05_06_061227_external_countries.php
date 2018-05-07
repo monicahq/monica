@@ -15,13 +15,13 @@ class ExternalCountries extends Migration
     public function up()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->char('country', 2)->after('country_id')->nullable();
+            $table->char('country', 3)->after('country_id')->nullable();
         });
 
         Address::chunk(200, function ($addresses) {
             foreach ($addresses as $addresse) {
                 $iso = DB::table('countries')->where('id', $addresse->country_id)->value('iso');
-                $addresse->update(['country' => mb_strtoupper($iso)]);
+                $addresse->update(['country' => mb_strtoupper(CountriesSeederTable::fixIso($iso))]);
             }
         });
 
