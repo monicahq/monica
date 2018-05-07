@@ -241,6 +241,8 @@ class ContactsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
 
+        $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
+
         return view('people.edit')
             ->withContact($contact)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
@@ -250,6 +252,7 @@ class ContactsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
+            ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withGenders(auth()->user()->account->genders);
     }
 
@@ -323,7 +326,11 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -334,7 +341,11 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
                 break;
         }
 

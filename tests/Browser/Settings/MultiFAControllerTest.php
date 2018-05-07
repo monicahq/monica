@@ -3,6 +3,7 @@
 namespace Tests\Browser\Settings;
 
 use App\User;
+use Zxing\QrReader;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsSecurity;
@@ -92,7 +93,7 @@ class MultiFAControllerTest extends DuskTestCase
 
         $imgcode = str_replace('data:image/png;base64,', '', $imgsrc);
 
-        $qrcode = new \QrReader(base64_decode($imgcode), \QrReader::SOURCE_TYPE_BLOB);
+        $qrcode = new QrReader(base64_decode($imgcode), QrReader::SOURCE_TYPE_BLOB);
         $text = $qrcode->text();
         $this->assertStringStartsWith('otpauth://totp/', $text);
 

@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
+require('jquery-tags-input/dist/jquery.tagsinput.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
