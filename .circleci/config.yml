@@ -32,7 +32,7 @@ command1: &install-extensions
     command: |
       sudo apt-get update
       sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-      sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_mysql mysqli mbstring
 command2: &prepare-environment
   run:
     name: Prepare environment
@@ -46,7 +46,7 @@ command3: &update-chrome
 command4: &wait-for-db
   run:
     name: Wait for DB
-    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
 command5: &prepare-db
   run:
     name: Prepare database
@@ -61,7 +61,7 @@ command6: &http-server
 command7: &wait-for-server
   run:
     name: Wait for http server
-    command: dockerize -wait tcp://localhost:8000 -timeout 120s
+    command: dockerize -wait tcp://localhost:8000 -timeout 60s
 command8: &unit-tests
   run:
     name: Run unit tests
