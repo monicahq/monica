@@ -55,4 +55,15 @@ class ReminderRule extends Model
     {
         $this->attributes['number_of_days_before'] = $value;
     }
+
+    /**
+     * Toggle the active status.
+     *
+     * @return void
+     */
+    public function toggle(): void
+    {
+        $this->active = ! $this->active;
+        $this->save();
+    }
 }

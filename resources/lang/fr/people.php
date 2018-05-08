@@ -63,7 +63,7 @@ return [
     'stay_in_touch' => 'Restez en contact',
     'stay_in_touch_frequency' => 'Rester en contact chaque jour | Rester en contact tous les {count} jours',
     'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
     'stay_in_touch_modal_desc' => 'Nous pouvons vous rappeler par courriel pour rester en contact avec {firstname} à intervalle régulier.',
     'stay_in_touch_modal_label' => 'Envoyez-moi un courriel tous les ...',
