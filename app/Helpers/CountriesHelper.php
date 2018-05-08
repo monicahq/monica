@@ -10,7 +10,7 @@ class CountriesHelper
     /**
      * Get list of countries.
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public static function getAll()
     {
