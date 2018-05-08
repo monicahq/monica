@@ -86,9 +86,6 @@ class Update extends Command
                 if (DB::table('activity_types')->count() == 0) {
                     $this->commandExecutor->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => 'true']);
                 }
-                if (DB::table('countries')->count() == 0) {
-                    $this->commandExecutor->artisan('✓ Filling the Countries table', 'db:seed', ['--class' => 'CountriesSeederTable', '--force' => 'true']);
-                }
                 if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }

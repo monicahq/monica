@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\User;
 use App\Account;
 use App\Contact;
-use App\Country;
 use Mockery as m;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -82,7 +81,7 @@ class ImportVCardsTest extends TestCase
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',
-            'country_id' => Country::where('country', 'United Kingdom')->first()->id,
+            'country' => 'GB',
         ]);
 
         $this->assertDatabaseHas('contact_fields', [

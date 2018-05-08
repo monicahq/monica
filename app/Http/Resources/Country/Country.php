@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Country;
 
+use App\Helpers\CountriesHelper;
 use Illuminate\Http\Resources\Json\Resource;
 
 class Country extends Resource
@@ -15,10 +16,10 @@ class Country extends Resource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->resource,
             'object' => 'country',
-            'name' => $this->country,
-            'iso' => $this->iso,
+            'name' => CountriesHelper::get($this->resource),
+            'iso' => $this->resource,
         ];
     }
 }
