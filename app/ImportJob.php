@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 
 /**
  * @property Account $account
@@ -486,7 +487,7 @@ class ImportJob extends Model
         $address->province = $this->formatValue($this->currentEntry->ADR->getParts()[4]);
         $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
 
-        $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
+        $country = Country::where('country', $this->currentEntry->ADR->getParts()[6])
             ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
             ->first();
 
