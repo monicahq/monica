@@ -17,7 +17,6 @@ class ExportAccountAsSQL
         'activity_types',
         'api_usage',
         'cache',
-        'countries',
         'currencies',
         'default_contact_field_types',
         'default_contact_modules',

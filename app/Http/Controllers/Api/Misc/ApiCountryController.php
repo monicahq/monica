@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Misc;
 
-use App\Country;
 use Illuminate\Http\Request;
+use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Country\Country as CountryResource;
 
@@ -16,7 +16,7 @@ class ApiCountryController extends ApiController
      */
     public function index(Request $request)
     {
-        $countries = Country::orderBy('country', 'asc')->get();
+        $countries = CountriesHelper::getAll();
 
         return CountryResource::collection($countries);
     }

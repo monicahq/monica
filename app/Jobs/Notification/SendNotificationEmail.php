@@ -36,7 +36,11 @@ class SendNotificationEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
+        // send notification only if the reminder rule is ON
+        if ($this->notification->shouldBeSent()) {
+            Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
+        }
+
         $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
     }
 }

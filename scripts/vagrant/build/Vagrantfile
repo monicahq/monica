@@ -7,6 +7,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder ".", "/vagrant"
   
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
+  end
+
   # Create a box with the latest version available
   config.vm.define "monicahq-latest", primary: true do |monicahq|
     monicahq.vm.box = "ubuntu/xenial64"
@@ -19,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "monicahq-stable" do |monicahq|
     monicahq.vm.box = "ubuntu/xenial64"
     monicahq.vm.hostname = "monica"
-  
+
     monicahq.vm.provision "shell", path: "install-monica.sh", keep_color: true, env: {"GIT_TAG" => "#{ENV['GIT_TAG']}"}
   end
 
