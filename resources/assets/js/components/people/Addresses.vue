@@ -76,7 +76,7 @@
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.contact_address_form_country') }}
               </label>
-              <select class="db w-100 h2" v-model="updateForm.country_id">
+              <select class="db w-100 h2" v-model="updateForm.country">
                 <option v-for="country in countries" v-bind:value="country.id">
                   {{ country.country }}
                 </option>
@@ -135,7 +135,7 @@
           <label class="db fw6 lh-copy f6">
             {{ $t('people.contact_address_form_country') }}
           </label>
-          <select class="db w-100 h2" v-model="createForm.country_id">
+          <select class="db w-100 h2" v-model="createForm.country">
             <option value="0"></option>
             <option v-for="country in countries" v-bind:value="country.id">
               {{ country.country }}
@@ -165,7 +165,7 @@
                 addMode: false,
 
                 createForm: {
-                    country_id: 0,
+                    country: 0,
                     name: '',
                     street: '',
                     city: '',
@@ -175,7 +175,7 @@
 
                 updateForm: {
                     id: '',
-                    country_id: 0,
+                    country: 0,
                     name: '',
                     street: '',
                     city: '',
@@ -228,7 +228,7 @@
             },
 
             reinitialize() {
-                this.createForm.country_id = '';
+                this.createForm.country = '';
                 this.createForm.name = '';
                 this.createForm.street = '';
                 this.createForm.city = '';
@@ -244,7 +244,7 @@
             toggleEdit(contactAddress) {
                 Vue.set(contactAddress, 'edit', !contactAddress.edit);
                 this.updateForm.id = contactAddress.id;
-                this.updateForm.country_id = contactAddress.country_id;
+                this.updateForm.country = contactAddress.country;
                 this.updateForm.name = contactAddress.name;
                 this.updateForm.street = contactAddress.street;
                 this.updateForm.city = contactAddress.city;

@@ -129,13 +129,6 @@ $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Country::class, function (Faker\Generator $faker) {
-    return [
-        'iso' => 'ca',
-        'country' => 'Mali',
-    ];
-});
-
 $factory->define(App\Call::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,

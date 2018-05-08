@@ -383,7 +383,7 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
-        return view('people.dashboard.work.edit')
+        return view('people.work.edit')
             ->withContact($contact);
     }
 
@@ -419,7 +419,7 @@ class ContactsController extends Controller
      */
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
-        return view('people.dashboard.food-preferencies.edit')
+        return view('people.food-preferencies.edit')
             ->withContact($contact);
     }
 

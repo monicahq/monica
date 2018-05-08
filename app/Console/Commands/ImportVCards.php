@@ -36,7 +36,7 @@ class ImportVCards extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->path = './'.$this->argument('path');
+        $this->path = $this->argument('path');
 
         $user = User::where('email', $this->argument('user'))->first();
 

@@ -65,7 +65,7 @@ command7: &wait-for-server
 command8: &unit-tests
   run:
     name: Run unit tests
-    command: phpdbg -qrr vendor/bin/phpunit -c phpunit.xml
+    command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
 command9: &psalm
   run:
     name: Run psalm
@@ -90,7 +90,6 @@ command13: &remove-xdebug
     name: Remove xdebug
     command: |
       sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-      echo "memory_limit=512M" | sudo tee /usr/local/etc/php/php.ini
 
 restore_cache1: &restore_composer
   restore_cache:
