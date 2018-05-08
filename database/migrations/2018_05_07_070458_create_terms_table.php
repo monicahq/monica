@@ -26,6 +26,7 @@ class CreateTermsTable extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('term_id');
+            $table->string('ip_address');
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Term;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
@@ -62,6 +63,8 @@ class User extends Authenticatable
         $user->created_at = now();
         $user->locale = App::getLocale();
         $user->save();
+
+        $user->acceptGDPR();
 
         return $user;
     }
@@ -285,14 +288,29 @@ class User extends Authenticatable
 
     /**
      * Indicate if the user has accepted the most current terms and privacy.
+     * This is related to the European GDPR law.
      *
      * @return boolean
      */
-    public function hasAcceptedLatestTerm()
+    public function isGDPRCompliant(): bool
     {
         $latestTerm = Term::latest()->first();
         $lastAcceptedTerm = $this->terms()->latest()->first();
 
         return $latestTerm === $lastAcceptedTerm;
+    }
+
+    /**
+     * Accept the GPDR rules.
+     *
+     * @return void
+     */
+    public function acceptGDPR(): void
+    {
+        $latestTerm = Term::latest()->first();
+        $this->terms()->syncWithoutDetaching([$term->id => [
+            'account_id' => $this->account->id,
+            'ip_address' => Request::ip(),
+        ]]);
     }
 }

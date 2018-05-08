@@ -55,12 +55,16 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
+              <!-- GDPR compliance -->
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" id="gdpr" name="gdpr" type="checkbox" value="gdpr">
+                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
+                </label>
               </div>
 
-              <div class="help">
-                {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
+              <div class="form-group actions">
+                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
 
             </form>
