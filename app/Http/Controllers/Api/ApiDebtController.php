@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Debt;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Debt\Debt as DebtResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

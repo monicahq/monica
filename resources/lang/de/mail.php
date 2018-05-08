@@ -11,4 +11,6 @@ return [
     'notification_subject_line' => 'Du hast ein bevorstehendes Ereignis',
     'notification_description' => 'In :count Tagen (am :date), findet folgendes Ereignis statt:',
 
+    'stay_in_touch_subject_line' => 'Stay in touch with :name',
+    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency days.',
 ];

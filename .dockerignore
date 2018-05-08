@@ -1,3 +1,4 @@
+.circleci/
 .git/
 .gitattributes
 .github/
@@ -8,7 +9,6 @@ bootstrap/cache/*
 database/*.sqlite
 .env
 CODE_OF_CONDUCT.md
-CONTRIBUTING.md
 docker-compose.yml
 Dockerfile
 .dockerignore
@@ -35,12 +35,5 @@ storage/framework/sessions/*
 storage/framework/views/*
 storage/logs/*
 .styleci.yml
-storage/app/public/*
-storage/debugbar/*
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-storage/logs/*
-tests/
 .travis.yml*
 vendor/

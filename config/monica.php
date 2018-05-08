@@ -77,6 +77,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allow access through the API of the public statistics
+    |--------------------------------------------------------------------------
+    |
+    | Your Monica instance has some statistics (number of users, number of
+    | contacts,...). Those data can be public (they are on MonicaHQ.com).
+    | This setting lets you access those data through a public API call.
+    |
+    */
+    'allow_statistics_through_public_api_access' => env('ALLOW_STATISTICS_THROUGH_PUBLIC_API_ACCESS', false),
+    /*
+    |--------------------------------------------------------------------------
     | URL of the server for the version check
     |--------------------------------------------------------------------------
     |
@@ -126,5 +137,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.0.1',
+    'app_version' => '2.1.0',
 ];

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Auth;
 use App\Address;
 use App\Contact;
 use App\Country;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\AddressesRequest;
 
 class AddressesController extends Controller

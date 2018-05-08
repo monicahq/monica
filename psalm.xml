@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<psalm
+    name="Example Psalm config with recommended defaults"
+    stopOnFirstError="false"
+    useDocblockTypes="true"
+    totallyTyped="false"
+>
+    <projectFiles>
+        <directory name="database/seeds" />
+        <directory name="database/migrations" />
+        <directory name="app" />
+        <directory name="routes" />
+        <directory name="tests" />
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+
+        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
+
+        <DeprecatedMethod errorLevel="info" />
+
+        <MissingClosureReturnType errorLevel="info" />
+        <MissingReturnType errorLevel="info" />
+        <MissingPropertyType errorLevel="info" />
+        <InvalidDocblock errorLevel="info" />
+        <MisplacedRequiredParam errorLevel="info" />
+
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="info" />
+        <MissingParamType errorLevel="info" />
+        <MissingClosureParamType errorLevel="info" />
+
+        <DocblockTypeContradiction errorLevel="info" />
+        <RedundantConditionGivenDocblockType errorLevel="info" />
+
+        <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
+
+        <MismatchingDocblockReturnType errorLevel="info" />
+        <MismatchingDocblockParamType errorLevel="info" />
+
+        <MoreSpecificReturnType errorLevel="info" />
+        <LessSpecificReturnStatement errorLevel="info" />
+        <TypeCoercion errorLevel="info" />
+        <RedundantCondition errorLevel="info" />
+
+        <PossiblyFalseArgument errorLevel="info" />
+        <PossiblyFalsePropertyAssignmentValue errorLevel="info" />
+        <PossiblyFalseReference errorLevel="info" />
+        <PossiblyInvalidArgument errorLevel="info" />
+        <PossiblyInvalidArrayAccess errorLevel="info" />
+        <PossiblyInvalidArrayAssignment errorLevel="info" />
+        <PossiblyInvalidMethodCall errorLevel="info" />
+        <PossiblyInvalidPropertyAssignment errorLevel="info" />
+        <PossiblyInvalidPropertyAssignmentValue errorLevel="info" />
+        <PossiblyInvalidPropertyFetch errorLevel="info" />
+        <PossiblyNullArgument errorLevel="info" />
+        <PossiblyNullArrayAccess errorLevel="info" />
+        <PossiblyNullArrayAssignment errorLevel="info" />
+        <PossiblyNullArrayOffset errorLevel="info" />
+        <PossiblyNullFunctionCall errorLevel="info" />
+        <PossiblyNullIterator errorLevel="info" />
+        <PossiblyNullOperand errorLevel="info" />
+        <PossiblyNullPropertyAssignment errorLevel="info" />
+        <PossiblyNullPropertyAssignmentValue errorLevel="info" />
+        <PossiblyNullPropertyFetch errorLevel="info" />
+        <PossiblyNullReference errorLevel="info" />
+
+        <!-- level 5 issues - should be avoided at mosts costs... -->
+
+        <ForbiddenCode errorLevel="info" />
+        <ImplicitToStringCast errorLevel="info" />
+        <InvalidScalarArgument errorLevel="info" />
+        <InvalidToString errorLevel="info" />
+        <MethodSignatureMismatch errorLevel="info" />
+        <NoInterfaceProperties errorLevel="info" />
+        <TooManyArguments errorLevel="info" />
+        <TypeDoesNotContainType errorLevel="info" />
+        <InvalidOperand errorLevel="info" />
+        <MoreSpecificImplementedReturnType errorLevel="info" />
+        <MoreSpecificImplementedParamType errorLevel="info" />
+
+        <!-- level 6 issues - bad stuff here -->
+
+        <InvalidNullableReturnType errorLevel="info" />
+        <NullableReturnStatement errorLevel="info" />
+        <ImplementedReturnTypeMismatch errorLevel="info" />
+        <UnresolvableInclude errorLevel="info" />
+        <InvalidReturnStatement errorLevel="info" />
+        <InvalidReturnType errorLevel="info" />
+        <UndefinedThisPropertyAssignment errorLevel="info" />
+
+        <InvalidArgument errorLevel="info" />
+
+        <PossiblyUndefinedMethod errorLevel="info" />
+        <ReservedWord errorLevel="info" />
+
+        <UndefinedGlobalVariable>
+            <errorLevel type="suppress">
+                <directory name="resources/views" />
+            </errorLevel>
+        </UndefinedGlobalVariable>
+    </issueHandlers>
+</psalm>

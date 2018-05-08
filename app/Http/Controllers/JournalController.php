@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Day;
 use App\Entry;
-use Validator;
 use App\JournalEntry;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller

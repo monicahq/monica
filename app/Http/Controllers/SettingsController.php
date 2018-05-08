@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Auth;
 use App\Tag;
 use App\User;
 use App\ImportJob;
@@ -13,6 +11,8 @@ use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;

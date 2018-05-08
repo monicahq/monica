@@ -124,7 +124,7 @@ class AddressTest extends FeatureTestCase
         $response = $this->delete('/people/'.$contact->id.'/addresses/'.$address->id);
         $response->assertStatus(200);
 
-        $params['id'] = $address->id;
+        $params = ['id' => $address->id];
 
         $this->assertDatabaseMissing('addresses', $params);
     }

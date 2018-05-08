@@ -74,4 +74,35 @@ class NotificationTest extends TestCase
             'id' => $notification->id,
         ]);
     }
+
+    public function test_it_indicates_if_a_notification_should_be_sent()
+    {
+        $account = factory('App\Account')->create([]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'scheduled_number_days_before' => 7,
+        ]);
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 8,
+            'active' => true,
+        ]);
+        $this->assertFalse($notification->shouldBeSent());
+        $reminderRule->delete();
+
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 7,
+            'active' => true,
+        ]);
+        $this->assertTrue($notification->shouldBeSent());
+        $reminderRule->delete();
+
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 7,
+            'active' => false,
+        ]);
+        $this->assertFalse($notification->shouldBeSent());
+    }
 }

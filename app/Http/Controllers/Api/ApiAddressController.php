@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use Validator;
 use App\Address;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 

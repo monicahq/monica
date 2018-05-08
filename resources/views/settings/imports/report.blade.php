@@ -45,7 +45,7 @@
 
             <ul class="table">
 
-              @foreach ($importJob->importjobreports as $importJobReport)
+              @foreach ($importJob->importJobReports as $importJobReport)
               <li class="table-row">
                 <div class="table-cell status">
                   @if ($importJobReport->skipped == 0)

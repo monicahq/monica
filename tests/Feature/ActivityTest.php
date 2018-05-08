@@ -86,6 +86,8 @@ class ActivityTest extends FeatureTestCase
             'activity_id' => $latestActivity->id,
         ]);
 
+        $eventParams = [];
+
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
@@ -126,12 +128,16 @@ class ActivityTest extends FeatureTestCase
 
         $this->put('/activities/'.$activity->id.'/'.$contact->id, $params);
 
+        $newParams = [];
+
         // see if the change is in the database
         $newParams['account_id'] = $user->account_id;
         $newParams['id'] = $activity->id;
         $newParams['summary'] = 'this is another test';
 
         $this->assertDatabaseHas('activities', $newParams);
+
+        $eventParams = [];
 
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;

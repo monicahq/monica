@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Settings;
 
 use Exception;
-use Validator;
 use App\Gender;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Settings\GendersRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

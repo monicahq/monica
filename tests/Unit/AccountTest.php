@@ -3,12 +3,12 @@
 namespace Tests\Unit;
 
 use App\Contact;
-use DB;
 use App\User;
 use App\Account;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase

@@ -44,6 +44,8 @@ class NoteTest extends FeatureTestCase
             'body' => $noteBody,
         ]);
 
+        $eventParams = [];
+
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
@@ -76,6 +78,8 @@ class NoteTest extends FeatureTestCase
             'body' => 'this is another test',
         ]);
 
+        $eventParams = [];
+
         // make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
         $eventParams['contact_id'] = $contact->id;
@@ -98,9 +102,12 @@ class NoteTest extends FeatureTestCase
 
         $response = $this->delete('/people/'.$contact->id.'/notes/'.$note->id);
 
+        $params = [];
         $params['id'] = $note->id;
 
         $this->assertDatabaseMissing('notes', $params);
+
+        $eventParams = [];
 
         // make sure no event is in the database about this object
         $eventParams['account_id'] = $user->account_id;

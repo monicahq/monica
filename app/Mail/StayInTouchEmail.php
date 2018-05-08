@@ -6,6 +6,7 @@ use App\User;
 use App\Contact;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 
 class StayInTouchEmail extends Mailable
@@ -33,7 +34,7 @@ class StayInTouchEmail extends Mailable
      */
     public function build()
     {
-        \App::setLocale($this->user->locale);
+        App::setLocale($this->user->locale);
 
         return $this->text('emails.reminder.stayintouch')
                     ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->getCompleteName($this->user->name_order)]))
