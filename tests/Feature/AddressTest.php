@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use App\Country;
 use Tests\FeatureTestCase;
+use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddressTest extends FeatureTestCase
@@ -35,9 +35,9 @@ class AddressTest extends FeatureTestCase
 
         $response->assertStatus(200);
 
-        $countires = Country::orderBy('country')->get();
+        $countries = CountriesHelper::getAll();
 
-        $response->assertSee($countires[0]->country);
+        $response->assertSee($countries->first()->country);
     }
 
     public function test_users_can_get_addresses()
