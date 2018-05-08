@@ -19,7 +19,7 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        return view('people.dashboard.introductions.edit')
+        return view('people.introductions.edit')
             ->withContact($contact);
     }
 
