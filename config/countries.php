@@ -13,9 +13,9 @@ return [
     ],
 
     'hydrate' => [
-        'before' => true,
+        'before' => false,
 
-        'after' => true,
+        'after' => false,
 
         'elements' => [
             'borders' => false,
@@ -37,7 +37,7 @@ return [
     ],
 
     'validation' => [
-        'enabled' => true,
+        'enabled' => false,
         'rules' => [
             'country'           => 'name.common',
             'name'              => 'name.common',

@@ -24,9 +24,9 @@ class CountriesTest extends FeatureTestCase
 
             foreach (DB::table('countries')->get() as $country) {
                 $iso = \CountriesSeederTable::fixIso($country->iso);
-                $name = CountriesHelper::find($iso);
+                $cca2 = CountriesHelper::find($iso);
 
-                $this->assertNotEmpty($name, "Country not found for ".$iso);
+                $this->assertNotEmpty($cca2, "Country not found for ".$iso);
             }
         }
         finally {
