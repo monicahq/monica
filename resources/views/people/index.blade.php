@@ -44,10 +44,8 @@
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
-                        {{ trans('people.people_list_filter_tag') }}
-                            <span class="pretty-tag">
-                                {{ trans('people.people_list_untagged') }}
-                            </span>
+                        {{ trans('people.people_list_filter_untag') }}
+                        &nbsp
                         <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
@@ -84,10 +82,8 @@
               @endif
               @if ($tagLess)
                   <p class="clear-filter">
-                    {{ trans('people.people_list_filter_tag') }}
-                        <span class="pretty-tag">
-                        {{ trans('people.people_list_untagged') }}
-                        </span>
+                    {{ trans('people.people_list_filter_untag') }}
+                    &nbsp
                     <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
@@ -175,10 +171,6 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-                  <li>
-                      <span class="pretty-tag"><a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a></span>
-                      <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $unTagged) }}</span>
-                  </li>
               @foreach (auth()->user()->account->tags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
@@ -187,6 +179,9 @@
                 </li>
                 @endif
               @endforeach
+                <li class="f7 mt3">
+                    <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
+                </li>
               </ul>
             </div>
 
