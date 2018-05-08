@@ -487,7 +487,7 @@ class ImportJob extends Model
         $address->province = $this->formatValue($this->currentEntry->ADR->getParts()[4]);
         $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
 
-        $country = Country::where('country', $this->currentEntry->ADR->getParts()[6])
+        $country = Countries::where('country', $this->currentEntry->ADR->getParts()[6])
             ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
             ->first();
 
