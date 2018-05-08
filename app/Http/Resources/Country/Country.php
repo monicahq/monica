@@ -16,10 +16,10 @@ class Country extends Resource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->resource,
             'object' => 'country',
-            'name' => CountriesHelper::get($this->id),
-            'iso' => $this->id,
+            'name' => CountriesHelper::get($this->resource),
+            'iso' => $this->resource,
         ];
     }
 }
