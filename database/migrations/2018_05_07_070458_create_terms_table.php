@@ -26,8 +26,6 @@ class CreateTermsTable extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('term_id');
-            $table->boolean('read')->default(0);
-            $table->dateTime('accepted_at')->nullable();
             $table->timestamps();
         });
     }

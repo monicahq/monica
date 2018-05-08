@@ -17,7 +17,7 @@ class Term extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the users record associated with the term.
+     * Get the user record associated with the term.
      */
     public function users()
     {

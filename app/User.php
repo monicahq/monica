@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Term;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -81,6 +82,14 @@ class User extends Authenticatable
     public function changelogs()
     {
         return $this->belongsToMany('App\Changelog')->withPivot('read', 'upvote')->withTimestamps();
+    }
+
+    /**
+     * Get the term records associated with the user.
+     */
+    public function terms()
+    {
+        return $this->belongsToMany(Term::class)->withTimestamps();
     }
 
     /**
@@ -272,5 +281,18 @@ class User extends Authenticatable
         DB::table('changelog_user')
             ->where('user_id', $this->id)
             ->update(['read' => 1]);
+    }
+
+    /**
+     * Indicate if the user has accepted the most current terms and privacy.
+     *
+     * @return boolean
+     */
+    public function hasAcceptedLatestTerm()
+    {
+        $latestTerm = Term::latest()->first();
+        $lastAcceptedTerm = $this->terms()->latest()->first();
+
+        return $latestTerm === $lastAcceptedTerm;
     }
 }
