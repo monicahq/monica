@@ -55,10 +55,10 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
-              <!-- GDPR compliance -->
+              <!-- Policy acceptance check -->
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" id="gdpr" name="gdpr" type="checkbox" value="gdpr">
+                  <input class="form-check-input" id="policy" name="policy" type="checkbox" value="polict">
                   {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
                 </label>
               </div>

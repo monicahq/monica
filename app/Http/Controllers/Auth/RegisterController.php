@@ -70,7 +70,7 @@ class RegisterController extends Controller
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'gdpr' => 'required',
+            'policy' => 'required',
         ]);
     }
 

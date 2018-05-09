@@ -64,7 +64,7 @@ class User extends Authenticatable
         $user->locale = App::getLocale();
         $user->save();
 
-        $user->acceptGDPR();
+        $user->acceptPolicy();
 
         return $user;
     }
@@ -288,11 +288,10 @@ class User extends Authenticatable
 
     /**
      * Indicate if the user has accepted the most current terms and privacy.
-     * This is related to the European GDPR law.
      *
      * @return boolean
      */
-    public function isGDPRCompliant(): bool
+    public function isPolicyCompliant(): bool
     {
         $latestTerm = Term::latest()->first();
         $lastAcceptedTerm = $this->terms()->latest()->first();
@@ -301,11 +300,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Accept the GPDR rules.
+     * Accept the policy.
      *
      * @return void
      */
-    public function acceptGDPR(String $ipAddress): void
+    public function acceptPolicy(String $ipAddress): void
     {
         $latestTerm = Term::latest()->first();
 

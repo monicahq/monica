@@ -224,7 +224,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_indicates_user_is_gdpr_compliant()
+    public function test_it_indicates_user_is_compliant()
     {
         $term = factory(Term::class)->create([]);
         $account = factory(Account::class)->create([]);
@@ -232,10 +232,10 @@ class UserTest extends TestCase
 
         $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
-        $this->assertTrue($user->isGDPRCompliant());
+        $this->assertTrue($user->isPolicyCompliant());
     }
 
-    public function test_it_indicates_user_is_not_gdpr_compliant()
+    public function test_it_indicates_user_is_not_compliant()
     {
         $term = factory(Term::class)->create([]);
         $account = factory(Account::class)->create([]);
@@ -246,7 +246,7 @@ class UserTest extends TestCase
         $term = factory(Term::class)->create([]);
         $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
-        $this->assertFalse($user->isGDPRCompliant());
+        $this->assertFalse($user->isPolicyCompliant());
     }
 
     public function test_it_accepts_the_latest_terms_and_privacy()
@@ -256,7 +256,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $ipAddress = '12.12.12.12';
 
-        $user->acceptGDPR($ipAddress);
+        $user->acceptPolicy($ipAddress);
 
         $this->assertDatabaseHas('term_user', [
             'user_id' => $user->id,
