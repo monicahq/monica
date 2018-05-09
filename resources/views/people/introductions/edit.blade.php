@@ -48,7 +48,7 @@
                 <div class="form-group">
                   <label for="metThroughId">{{ trans('people.introductions_edit_met_through') }}</label>
                   <select class="form-control" name="metThroughId" id="metThroughId">
-                    <option value="0">{{ trans('people.introductions_no_met_through') }}</option>
+                    <option value="">{{ trans('people.introductions_no_met_through') }}</option>
                     @foreach (auth()->user()->account->contacts()->real()->get() as $metThroughContact)
 
                       @if ($metThroughContact->id != $contact->id)
@@ -86,7 +86,7 @@
                       >
 
                       {{ trans('people.introductions_first_met_date_known') }}
-                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate, 'class' => 'first_met'])
+                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate ?? Carbon\Carbon::now(), 'class' => 'first_met'])
                     </label>
                   </div>
                 </fieldset>

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Console\ConfirmableTrait;
 use App\Console\Commands\Helpers\CommandExecutor;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
@@ -59,7 +60,10 @@ class Update extends Command
                     ]);
 
                 // Clear or rebuild all cache
-                $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
+                if (config('cache.default') != 'database' || Schema::hasTable('cache')) {
+                    $this->commandExecutor->artisan('✓ Resetting application cache', 'cache:clear');
+                }
+
                 if ($this->getLaravel()->environment() == 'production') {
                     $this->commandExecutor->artisan('✓ Resetting route cache', 'route:cache');
                     if ($this->getLaravel()->version() > '5.6') {
@@ -81,9 +85,6 @@ class Update extends Command
 
                 if (DB::table('activity_types')->count() == 0) {
                     $this->commandExecutor->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => 'true']);
-                }
-                if (DB::table('countries')->count() == 0) {
-                    $this->commandExecutor->artisan('✓ Filling the Countries table', 'db:seed', ['--class' => 'CountriesSeederTable', '--force' => 'true']);
                 }
                 if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');

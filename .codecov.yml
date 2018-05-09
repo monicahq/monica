@@ -1,7 +1,0 @@
-coverage:
-  precision: 1
-  round: up
-  range: 50..80
-ignore:
-  - bootstrap/cache/*
-  - public/storage/*

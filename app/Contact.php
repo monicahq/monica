@@ -2,11 +2,11 @@
 
 namespace App;
 
-use DB;
 use App\Traits\Hasher;
 use App\Traits\Searchable;
 use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -417,7 +417,7 @@ class Contact extends Model
     /**
      * Mutator last_consulted_at.
      *
-     * @param datetime $value
+     * @param \DateTime $value
      */
     public function setLastConsultedAtAttribute($value)
     {
@@ -1168,7 +1168,7 @@ class Contact extends Model
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $firstMetDate = $this->firstMetDate;
+                    $firstMetDate =$this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
 
@@ -1293,6 +1293,16 @@ class Contact extends Model
         if ($relatedContact) {
             return \App\Contact::find($relatedContact->of_contact);
         }
+    }
+
+    /**
+     * Indicates the age of the contact at death.
+     *
+     * @return int
+     */
+    public function getAgeAtDeath()
+    {
+        return $this->deceasedDate->getAgeAtDeath();
     }
 
     /**

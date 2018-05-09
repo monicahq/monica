@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Parsedown;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -56,7 +57,7 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getPostAttribute($value)
     {
-        return $value;
+        return (new Parsedown())->text($value);
     }
 
     /**
@@ -69,7 +70,7 @@ class Entry extends Model implements IsJournalableInterface
         $entryDate = $this->journalEntry ? $this->journalEntry->date : $this->created_at;
 
         return [
-            'type' => 'activity',
+            'type' => 'entry',
             'id' => $this->id,
             'title' => $this->title,
             'post' => $this->post,

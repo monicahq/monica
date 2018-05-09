@@ -29,7 +29,7 @@ class SendNotifications extends Command
      */
     public function handle()
     {
-        // we had two days to make sure we cover all timezones
+        // we add two days to make sure we cover all timezones
         $notifications = Notification::where('trigger_date', '<', now()->addDays(2))
                                 ->orderBy('trigger_date', 'asc')->get();
 

@@ -4,6 +4,7 @@
  * Dataset taken from.
  * @see https://github.com/wiredmax/world-currencies
  */
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class AddWorldCurrencies extends Migration

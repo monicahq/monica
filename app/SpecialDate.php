@@ -148,9 +148,17 @@ class SpecialDate extends Model
             return;
         }
 
-        $this->reminder->purgeNotifications();
+        $reminder = $this->reminder;
 
-        return $this->reminder->delete();
+        // Unlink the reminder so we can delete it
+        // (otherwise we still depend on it, thus the delete will fail
+        // due to a foreign key constraint)
+        $this->reminder_id = null;
+        $this->save();
+
+        $reminder->purgeNotifications();
+
+        return $reminder->delete();
     }
 
     /**
@@ -216,5 +224,31 @@ class SpecialDate extends Model
         $this->account_id = $contact->account_id;
         $this->contact_id = $contact->id;
         $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Returns the age that a contact died assuming we know when they were born
+     * and died.
+     * @return int
+     */
+    public function getAgeAtDeath()
+    {
+        if (is_null($this->date)) {
+            return;
+        }
+
+        if ($this->is_year_unknown) {
+            return;
+        }
+
+        $contact = $this->contact;
+
+        if (is_null($contact->birthdate)) {
+            return;
+        }
+
+        return $contact->birthdate->date->diffInYears($this->date);
     }
 }

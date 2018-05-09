@@ -1,6 +1,7 @@
 <?php
 
 use App\Account;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class PopulateRelationshipTypeTablesWithDefaultValues extends Migration

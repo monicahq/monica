@@ -2,9 +2,9 @@
 
 namespace App;
 
-use DB;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -133,16 +133,6 @@ class Account extends Model
     }
 
     /**
-     * Get the offspring records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function offpsrings()
-    {
-        return $this->hasMany(Offspring::class);
-    }
-
-    /**
      * Get the progenitor records associated with the account.
      *
      * @return HasMany
@@ -197,7 +187,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function importjobreports()
+    public function importJobReports()
     {
         return $this->hasMany(ImportJobReport::class);
     }
@@ -653,7 +643,7 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @return $this
      */
     public static function createDefault($first_name, $last_name, $email, $password)
     {
@@ -711,7 +701,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyCallStatistics()
     {
@@ -746,7 +736,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyActivitiesStatistics()
     {

@@ -35,7 +35,7 @@ class UserTest extends TestCase
 
     public function testUpdateContactViewPreference()
     {
-        $user = new User;
+        $user = factory(User::class)->create();
         $user->contacts_sort_order = 'firstnameAZ';
 
         $this->assertEquals(
