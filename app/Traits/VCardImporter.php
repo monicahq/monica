@@ -100,8 +100,6 @@ trait VCardImporter
             $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
         }
 
-        $country = null;
-
         if ($vcard->ADR) {
             $address = new Address();
             $address->street = $this->formatValue($vcard->ADR->getParts()[2]);

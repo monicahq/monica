@@ -490,8 +490,11 @@ class ImportJob extends Model
         $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
 
         $iso = CountriesHelper::find($this->currentEntry->ADR->getParts()[6]);
-    
-        $address->country = $iso;
+
+        if ($iso) {
+            $address->country = $iso;
+        }
+
         $address->contact_id = $contact->id;
         $address->account_id = $contact->account_id;
         $address->save();
