@@ -16,6 +16,7 @@ class PetTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $pet = factory('App\Pet')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
         ]);
 
         $this->assertTrue($pet->account()->exists());
@@ -25,6 +26,7 @@ class PetTest extends TestCase
     {
         $contact = factory('App\Contact')->create([]);
         $pet = factory('App\Pet')->create([
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
