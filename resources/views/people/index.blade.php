@@ -44,9 +44,8 @@
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
-                        {{ trans('people.people_list_filter_untag') }}
-                        &nbsp
-                        <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                        <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
+                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
 
@@ -82,9 +81,8 @@
               @endif
               @if ($tagLess)
                   <p class="clear-filter">
-                    {{ trans('people.people_list_filter_untag') }}
-                    &nbsp
-                    <a href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                    <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
+                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
 
