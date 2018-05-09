@@ -13,7 +13,7 @@ class GiftTest extends TestCase
 
     public function test_toggle_a_gift_idea()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->is_an_idea = true;
         $gift->toggle();
 
@@ -35,7 +35,7 @@ class GiftTest extends TestCase
 
     public function test_toggle_a_gift_offered()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->has_been_offered = true;
         $gift->toggle();
 
@@ -57,7 +57,7 @@ class GiftTest extends TestCase
 
     public function test_has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
 
         $this->assertEquals(
             false,
@@ -67,7 +67,7 @@ class GiftTest extends TestCase
 
     public function test_has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
 
         $this->assertEquals(
@@ -78,7 +78,7 @@ class GiftTest extends TestCase
 
     public function test_it_sets_is_for_attribute()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
 
         $this->assertEquals(
@@ -89,7 +89,7 @@ class GiftTest extends TestCase
 
     public function test_it_gets_the_recipient_name()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
         $gift->contact_id = 1;
 
@@ -103,7 +103,7 @@ class GiftTest extends TestCase
 
     public function test_it_gets_the_gift_name()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->name = 'Maison de folie';
 
         $this->assertEquals(
@@ -114,7 +114,7 @@ class GiftTest extends TestCase
 
     public function test_it_gets_the_gift_url()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->url = 'https://facebook.com';
 
         $this->assertEquals(
@@ -125,7 +125,7 @@ class GiftTest extends TestCase
 
     public function test_it_gets_the_comment()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->comment = 'This is just a comment';
 
         $this->assertEquals(
@@ -136,7 +136,7 @@ class GiftTest extends TestCase
 
     public function test_it_gets_the_value()
     {
-        $gift = new Gift;
+        $gift = factory(Gift::class)->make();
         $gift->value = '100$';
 
         $this->assertEquals(

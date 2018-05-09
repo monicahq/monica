@@ -94,6 +94,9 @@ class RelationshipsController extends Controller
         // set the name of the contact
         $partner = new Contact;
         $partner->account_id = $contact->account->id;
+        // set gender
+        $partner->gender_id = $request->input('gender_id');
+        $partner->is_partial = true;
 
         if (! $partner->setName($request->input('first_name'), $request->input('last_name'))) {
             return back()
@@ -101,9 +104,6 @@ class RelationshipsController extends Controller
                 ->withErrors('There has been a problem with saving the name.');
         }
 
-        // set gender
-        $partner->gender_id = $request->input('gender_id');
-        $partner->is_partial = true;
         $partner->save();
 
         // Handling the case of the birthday

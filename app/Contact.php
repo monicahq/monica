@@ -644,7 +644,7 @@ class Contact extends Model
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
-        $event = $this->events()->create([]);
+        $event = $this->events()->make();
         $event->account_id = $this->account_id;
         $event->object_type = $objectType;
         $event->object_id = $objectId;
@@ -738,8 +738,9 @@ class Contact extends Model
         // Create the statistics again
         $this->activities->groupBy('date_it_happened.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->create([]);
+                $activityStatistic = $this->activityStatistics()->make();
                 $activityStatistic->account_id = $this->account_id;
+                $activityStatistic->contact_id = $this->id;
                 $activityStatistic->year = $year;
                 $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
@@ -1078,12 +1079,12 @@ class Contact extends Model
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+        $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1114,7 +1115,7 @@ class Contact extends Model
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromAge($age)->setToContact($this);
+        $specialDate->setToContact($this)->createFromAge($age);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1140,36 +1141,39 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         switch ($occasion) {
             case 'birthdate':
                 if ($this->birthday_special_date_id) {
-                    $this->birthdate->deleteReminder();
-                    $this->birthdate->delete();
-
+                    $birthdate = $this->birthdate;
                     $this->birthday_special_date_id = null;
                     $this->save();
+
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
                 }
             break;
             case 'deceased_date':
                 if ($this->deceased_special_date_id) {
-                    $this->deceasedDate->deleteReminder();
-                    $this->deceasedDate->delete();
-
+                    $deceasedDate = $this->deceasedDate;
                     $this->deceased_special_date_id = null;
                     $this->save();
+
+                    $deceasedDate->deleteReminder();
+                    $deceasedDate->delete();
                 }
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $this->firstMetDate->deleteReminder();
-                    $this->firstMetDate->delete();
-
+                    $firstMetDate =$this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
+
+                    $firstMetDate->deleteReminder();
+                    $firstMetDate->delete();
                 }
             break;
         }
