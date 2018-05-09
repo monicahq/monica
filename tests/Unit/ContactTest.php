@@ -539,7 +539,7 @@ class ContactTest extends FeatureTestCase
     public function test_update_last_called_info_method()
     {
         $date = '2017-01-22 17:56:03';
-        $contact = new Contact;
+        $contact = factory(Contact::class)->create();
         $call = new Call;
         $call->called_at = $date;
 
@@ -550,7 +550,7 @@ class ContactTest extends FeatureTestCase
             $contact->last_talked_to
         );
 
-        $otherContact = new Contact;
+        $otherContact = factory(Contact::class)->create();
         $otherContact->last_talked_to = '1990-01-01 01:01:01';
 
         $otherContact->updateLastCalledInfo($call);
@@ -566,7 +566,12 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertTrue($contact->isOwedMoney());
     }
@@ -576,7 +581,12 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertFalse($contact->isOwedMoney());
     }
@@ -586,20 +596,46 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(200, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 300,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300, 'status' => 'complete']));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 300,
+            'status' => 'complete',
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
     }
@@ -661,16 +697,14 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_approximate_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create([
             'is_age_based' => 1,
         ]);
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(
@@ -681,9 +715,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_almost_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create([
             'is_age_based' => 0,
             'is_year_unknown' => 1,
@@ -691,7 +723,7 @@ class ContactTest extends FeatureTestCase
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(
@@ -702,14 +734,12 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_exact_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create();
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(

@@ -16,6 +16,7 @@ class NoteTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $note = factory('App\Note')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
         ]);
 
         $this->assertTrue($note->account()->exists());

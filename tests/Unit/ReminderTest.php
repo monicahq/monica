@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -161,8 +162,8 @@ class ReminderTest extends TestCase
         $notification = $reminder->scheduleSingleNotification(3);
 
         $this->assertDatabaseHas('notifications', [
-            'account_id' => 1,
-            'contact_id' => 1,
+            'account_id' => $reminder->account_id,
+            'contact_id' => $reminder->contact_id,
             'reminder_id' => $reminder->id,
             'trigger_date' => '2017-01-29 00:00:00',
         ]);
@@ -218,9 +219,10 @@ class ReminderTest extends TestCase
 
     public function test_it_purge_existing_notifications()
     {
-        $reminder = factory('App\Reminder')->create(['account_id' => 3]);
-        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
-        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
+        $account = factory(Account::class)->create();
+        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
 
         $reminder->purgeNotifications();
 

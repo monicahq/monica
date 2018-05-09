@@ -12,7 +12,7 @@ class EntryTest extends TestCase
 
     public function test_get_info_for_journal_entry()
     {
-        $entry = new Entry;
+        $entry = factory(Entry::class)->make();
         $entry->id = 1;
         $entry->title = 'This is the title';
         $entry->post = 'this is a post';

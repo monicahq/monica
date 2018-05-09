@@ -26,11 +26,11 @@ class TagTest extends TestCase
         $account = factory('App\Account')->create([]);
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $tag = factory('App\Tag')->create(['account_id' => $account->id]);
-        $contact->tags()->sync($tag->id);
+        $contact->tags()->sync([$tag->id => ['account_id' => $account->id]]);
 
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $tag = factory('App\Tag')->create(['account_id' => $account->id]);
-        $contact->tags()->sync($tag->id);
+        $contact->tags()->sync([$tag->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($tag->contacts()->exists());
     }
