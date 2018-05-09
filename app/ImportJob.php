@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Helpers\LocaleHelper;
+use App\Helpers\VCardHelper;
 use Exception;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
@@ -528,24 +530,9 @@ class ImportJob extends Model
         if (! is_null($this->formatValue($this->currentEntry->TEL))) {
             $tel =  (string) $this->currentEntry->TEL;
 
-            if (! is_null($this->formatValue($this->currentEntry->ADR))) {
-                $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
-                    ->orwhere('country', ucwords($this->currentEntry->ADR->getParts()[6]))
-                    ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
-                    ->first();
+            $countryISO = VCardHelper::getCountryISOFromSabreVCard($this->currentEntry);
 
-                if ($country) {
-                    try {
-                        $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-
-                        $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
-                        // International phone number format eg : +41 44 201 19 20
-                        $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
-                    } catch (\libphonenumber\NumberParseException $e) {
-                        // Do nothing if the number cannot be parsed successfully
-                    }
-                }
-            }
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
 
             $contactField = new \App\ContactField;
             $contactField->contact_id = $contact->id;
