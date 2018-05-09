@@ -2,9 +2,9 @@
 
 namespace App;
 
-use App\Term;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Settings\Term;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
@@ -297,7 +297,7 @@ class User extends Authenticatable
         $latestTerm = Term::latest()->first();
         $lastAcceptedTerm = $this->terms()->latest()->first();
 
-        return $latestTerm === $lastAcceptedTerm;
+        return $latestTerm->id == $lastAcceptedTerm->id;
     }
 
     /**
@@ -305,12 +305,13 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public function acceptGDPR(): void
+    public function acceptGDPR(String $ipAddress): void
     {
         $latestTerm = Term::latest()->first();
-        $this->terms()->syncWithoutDetaching([$term->id => [
+
+        $this->terms()->syncWithoutDetaching([$latestTerm->id => [
             'account_id' => $this->account->id,
-            'ip_address' => Request::ip(),
+            'ip_address' => $ipAddress,
         ]]);
     }
 }

@@ -287,6 +287,15 @@ $factory->define(App\ImportJobReport::class, function (Faker\Generator $faker) {
     return [];
 });
 
+$factory->define(App\Models\Settings\Term::class, function (Faker\Generator $faker) {
+    return [
+        'term_version' => $faker->realText(50),
+        'term_content' => $faker->realText(50),
+        'privacy_version' => $faker->realText(50),
+        'privacy_content' => $faker->realText(50),
+    ];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;

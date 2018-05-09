@@ -9,7 +9,7 @@ class ChangelogTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_many_changelogs()
+    public function test_it_belongs_to_many_users()
     {
         $account = factory('App\Account')->create([]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
