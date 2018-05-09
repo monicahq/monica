@@ -6,6 +6,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\VCardHelper;
 use Exception;
 use Sabre\VObject\Reader;
+use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -488,14 +489,9 @@ class ImportJob extends Model
         $address->province = $this->formatValue($this->currentEntry->ADR->getParts()[4]);
         $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
 
-        $country = \App\Country::where('country', $this->currentEntry->ADR->getParts()[6])
-            ->orWhere('iso', mb_strtolower($this->currentEntry->ADR->getParts()[6]))
-            ->first();
-
-        if ($country) {
-            $address->country_id = $country->id;
-        }
-
+        $iso = CountriesHelper::find($this->currentEntry->ADR->getParts()[6]);
+    
+        $address->country_id = $iso;
         $address->contact_id = $contact->id;
         $address->account_id = $contact->account_id;
         $address->save();

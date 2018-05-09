@@ -203,7 +203,7 @@ class VCardHelperTest extends FeatureTestCase
         $iso = VCardHelper::getCountryISOFromSabreVCard($vcard);
 
         $this->assertEquals(
-            'gb',
+            'GB',
             $iso
         );
     }

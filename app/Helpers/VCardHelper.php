@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Contact;
-use App\Country;
 use JeroenDesloovere\VCard\VCard;
 
 class VCardHelper
@@ -134,15 +133,8 @@ class VCardHelper
             return null;
         }
 
-        $country = \App\Country::where('country', $VCardAddress->getParts()[6])
-            ->orwhere('country', ucwords($VCardAddress->getParts()[6]))
-            ->orWhere('iso', mb_strtolower($VCardAddress->getParts()[6]))
-            ->first();
+        $iso = CountriesHelper::find($VCardAddress->getParts()[6]);
 
-        if (empty($country)) {
-            return null;
-        }
-
-        return $country->iso;
+        return $iso;
     }
 }

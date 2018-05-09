@@ -5,10 +5,12 @@ namespace App\Traits;
 use App\Gender;
 use App\Address;
 use App\Contact;
-use App\Country;
 use App\ContactField;
 use App\ContactFieldType;
+use App\Helpers\LocaleHelper;
+use App\Helpers\VCardHelper;
 use Sabre\VObject\Reader;
+use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 
 trait VCardImporter
@@ -106,16 +108,7 @@ trait VCardImporter
             $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
             $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-
-            $country = Country::where('country', $vcard->ADR->getParts()[6])
-                ->orwhere('country', ucwords($vcard->ADR->getParts()[6]))
-                ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
-                ->first();
-
-            if ($country) {
-                $address->country_id = $country->id;
-            }
-
+            $address->country = CountriesHelper::find($vcard->ADR->getParts()[6]);
             $address->contact_id = $contact->id;
             $address->account_id = $contact->account_id;
             $address->save();
@@ -139,18 +132,8 @@ trait VCardImporter
         if (! is_null($this->formatValue($vcard->TEL))) {
             $tel = (string) $vcard->TEL;
 
-            if ($country) {
-                try {
-                    $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-
-                    $phoneInstance = $phoneUtil->parse($tel, strtoupper($country->iso));
-
-                    // International phone number format eg : +41 44 201 19 20
-                    $tel = $phoneUtil->format($phoneInstance, \libphonenumber\PhoneNumberFormat::INTERNATIONAL);
-                } catch (\libphonenumber\NumberParseException $e) {
-                    // Do nothing if the number cannot be parsed successfully
-                }
-            }
+            $countryISO = VCardHelper::getCountryISOFromSabreVCard($vcard);
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
 
             // Saves the phone number
             $contactField = new ContactField;

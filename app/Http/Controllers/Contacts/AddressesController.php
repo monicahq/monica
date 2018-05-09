@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Address;
 use App\Contact;
-use App\Country;
+use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\AddressesRequest;
@@ -24,7 +24,8 @@ class AddressesController extends Controller
                 'name' => $address->name,
                 'googleMapAddress' => $address->getGoogleMapAddress(),
                 'address' => $address->getFullAddress(),
-                'country_id' => $address->country_id,
+                'country' => $address->country,
+                'country_name' => $address->country_name,
                 'street' => $address->street,
                 'city' => $address->city,
                 'province' => $address->province,
@@ -42,7 +43,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        return Country::orderBy('country')->get();
+        return CountriesHelper::getAll()->all();
     }
 
     /**
@@ -52,7 +53,7 @@ class AddressesController extends Controller
     {
         return $contact->addresses()->create([
             'account_id' => auth()->user()->account->id,
-            'country_id' => ($request->get('country_id') == 0 ? null : $request->get('country_id')),
+            'country' => ($request->get('country') == '0' ? null : $request->get('country')),
             'name' => ($request->get('name') == '' ? null : $request->get('name')),
             'street' => ($request->get('street') == '' ? null : $request->get('street')),
             'city' => ($request->get('city') == '' ? null : $request->get('city')),
@@ -67,7 +68,7 @@ class AddressesController extends Controller
     public function edit(AddressesRequest $request, Contact $contact, Address $address)
     {
         $address->update([
-            'country_id' => ($request->get('country_id') == 0 ? null : $request->get('country_id')),
+            'country' => ($request->get('country') == '' ? null : $request->get('country')),
             'name' => ($request->get('name') == '' ? null : $request->get('name')),
             'street' => ($request->get('street') == '' ? null : $request->get('street')),
             'city' => ($request->get('city') == '' ? null : $request->get('city')),
