@@ -491,7 +491,7 @@ class ImportJob extends Model
 
         $iso = CountriesHelper::find($this->currentEntry->ADR->getParts()[6]);
     
-        $address->country_id = $iso;
+        $address->country = $iso;
         $address->contact_id = $contact->id;
         $address->account_id = $contact->account_id;
         $address->save();
