@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SimpleMessage;
 
 class ConfirmEmail extends Notification implements ShouldQueue
 {
@@ -19,9 +18,6 @@ class ConfirmEmail extends Notification implements ShouldQueue
      */
     public function via()
     {
-        if (! config('monica.signup_double_optin')) {
-            return [];
-        }
         return ['mail'];
     }
 
