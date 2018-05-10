@@ -12,6 +12,16 @@ return [
     */
     'disable_signup' => env('APP_DISABLE_SIGNUP', false),
 
+   /*
+    |--------------------------------------------------------------------------
+    | Disable User registration
+    |--------------------------------------------------------------------------
+    |
+    | Disables registration of new users
+    |
+    */
+    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', true),
+
     /*
     |--------------------------------------------------------------------------
     | New User Email Notification
