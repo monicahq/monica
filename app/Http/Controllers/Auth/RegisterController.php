@@ -100,4 +100,25 @@ class RegisterController extends Controller
 
         return $user;
     }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        if (! config('monica.signup_double_optin')) {
+            // if signup_double_optin is disabled, skip the confirm email part
+            $user->confirmation_code = null;
+            $user->confirmed = true;
+            $user->save();
+
+            $this->guard()->login($user);
+
+            return redirect(route('login'));
+        }
+    }
 }
