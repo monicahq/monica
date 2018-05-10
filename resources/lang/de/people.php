@@ -43,7 +43,7 @@ return [
     'people_add_import' => 'Möchtest du Kontakte <a href=":url">importieren</a>?',
     'people_edit_email_error' => 'Es gibt bereits ein Kontakt in deinem Konto mit dieser e-Mail-Adresse. Bitte wähle eine anderen.',
     'people_export' => 'Als vCard exportieren',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_add_reminder_for_birthday' => 'Jährliche Geburtstagserinnerung erstellen',
 
     // show
     'section_contact_information' => 'Kontaktinformationen',
@@ -51,7 +51,7 @@ return [
     'section_personal_reminders' => 'Erinnerungen',
     'section_personal_tasks' => 'Aufgaben',
     'section_personal_gifts' => 'Geschenke',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => 'Notizen',
 
     //
     'link_to_list' => 'Personenliste',
@@ -61,13 +61,13 @@ return [
     'call_button' => 'Telefonat vermerken',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch' => 'In Kontakt bleiben',
+    'stay_in_touch_frequency' => 'Jeden Tag in Kontakt bleiben|Alle {count} Tage in Kontakt bleiben',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
-    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch_modal_title' => 'In Kontakt bleiben',
+    'stay_in_touch_modal_desc' => 'Wir können dich per E-Mail daran erinnern, in regelmäßigen Abständen mit {firstname} in Kontakt zu bleiben.',
+    'stay_in_touch_modal_label' => 'Schicke mir eine E-Mail jede...',
 
     // Calls
     'modal_call_title' => 'Telefonat vermerken',
@@ -236,7 +236,7 @@ return [
     'gifts_delete_confirmation' => 'Möchtest du das Geschenk wirklich löschen?',
     'gifts_add_gift' => 'Geschenk hinzufügen',
     'gifts_link' => 'Link',
-    'gifts_for' => 'For:',
+    'gifts_for' => 'Für:',
     'gifts_delete_cta' => 'Löschen',
     'gifts_add_title' => 'Geschenkverwaltung für :name',
     'gifts_add_gift_idea' => 'Geschenkidee',
@@ -300,7 +300,7 @@ return [
     'deceased_add_reminder' => 'Erstelle eine Erinnerung für den Todestag',
     'deceased_label' => 'Verstorben',
     'deceased_label_with_date' => 'Verstorben am :date',
-    'deceased_age' => 'Age at death',
+    'deceased_age' => 'Alter bei Tod',
 
     // Contact information
     'contact_info_title' => 'Kontaktinformationen',
