@@ -643,9 +643,10 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
+     * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress)
     {
         // create new account
         $account = new self;
@@ -656,7 +657,7 @@ class Account extends Model
         $account->populateDefaultFields($account);
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
 
         return $account;
     }

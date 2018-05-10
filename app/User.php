@@ -48,9 +48,10 @@ class User extends Authenticatable
      * @param string $last_name
      * @param string $email
      * @param string $password
+     * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress)
     {
         // create the user
         $user = new self;
@@ -64,7 +65,7 @@ class User extends Authenticatable
         $user->locale = App::getLocale();
         $user->save();
 
-        $user->acceptPolicy();
+        $user->acceptPolicy($ipAddress);
 
         return $user;
     }
