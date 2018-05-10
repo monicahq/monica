@@ -63,8 +63,8 @@ return [
     // Stay in touch
     'stay_in_touch' => 'In Kontakt bleiben',
     'stay_in_touch_frequency' => 'Jeden Tag in Kontakt bleiben|Alle {count} Tage in Kontakt bleiben',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_invalid' => 'Die Zahl muss größer als 0 sein.',
+    'stay_in_touch_premium' => 'Du musst dein Konto hochstufen um diese Funktion nutzen zu können',
     'stay_in_touch_modal_title' => 'In Kontakt bleiben',
     'stay_in_touch_modal_desc' => 'Wir können dich per E-Mail daran erinnern, in regelmäßigen Abständen mit {firstname} in Kontakt zu bleiben.',
     'stay_in_touch_modal_label' => 'Schicke mir eine E-Mail jede...',
