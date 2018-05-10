@@ -103,7 +103,7 @@ return [
     'users_invitation_deleted_confirmation_message' => 'Die Einladung wurde erfolgreich gelöscht',
     'users_invitations_delete_confirmation' => 'Möchtest du die Einladung wirklich löschen?',
     'users_list_delete_confirmation' => 'Möchtest du den Benutzer wirklich aus deinem Konto entfernen?',
-    'users_invitation_need_subscription' => 'Adding more users requires a subscription.',
+    'users_invitation_need_subscription' => 'Das Hinzufügen von mehr Benutzern erfordert ein Abonnement.',
 
     'subscriptions_account_current_plan' => 'Dein aktuelles Abonnement',
     'subscriptions_account_current_paid_plan' => 'You are on the :name plan. Thanks so much for being a subscriber.',
