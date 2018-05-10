@@ -43,7 +43,7 @@ return [
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
     'people_edit_email_error' => 'Il y a déjà quelqu’un dans votre compte avec cette adresse courriel. Merci d’en choisir une autre.',
     'people_export' => 'Exporter en tant que vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_add_reminder_for_birthday' => 'Créer un rappel annuel pour l’anniversaire',
 
     // show
     'section_contact_information' => 'Information de contact',
