@@ -15,12 +15,12 @@ return [
     'done' => 'Fertig',
     'verify' => 'Überprüfe',
     'for' => 'für',
-    'new' => 'new',
+    'new' => 'Neu',
     'unknown' => 'Ich weiß es nicht',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
-    'days' => 'day|days',
+    'days' => 'Tag|Tage',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
@@ -31,7 +31,7 @@ return [
 
     'header_settings_link' => 'Einstellungen',
     'header_logout_link' => 'Ausloggen',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => 'Produktänderungen',
 
     'main_nav_cta' => 'Person hinzufügen',
     'main_nav_dashboard' => 'Dashboard',
@@ -80,7 +80,7 @@ return [
 
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
 
     'default_save_success' => 'The data has been saved.',
 
