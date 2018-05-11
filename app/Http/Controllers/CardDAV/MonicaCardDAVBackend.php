@@ -31,7 +31,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
             [
                 "id" => '0',
                 "uri" => 'Contacts',
-                "principaluri" => 'principals/user'.Auth::user()->id,
+                "principaluri" => 'principals/'.Auth::user()->email,
             ]
         ];
     }
@@ -146,7 +146,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      */
     function getCard($addressBookId, $cardUri) {
         Log::debug(__CLASS__.' getCard', func_get_args());
-        
+
         $contact = \App\Contact::where('account_id', Auth::user()->account_id)->where('id', $cardUri)->firstOrFail();
 
         return $this->prepareCard($contact);
