@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::post('/emailhook', 'InBoundEmailController@new');
+
 Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
 
 Route::group(['middleware' => ['auth:api']], function () {
