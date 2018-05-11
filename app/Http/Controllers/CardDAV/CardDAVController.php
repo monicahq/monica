@@ -3,21 +3,16 @@
 namespace App\Http\Controllers\CardDAV;
 
 use App\Http\Controllers\Controller;
-
-// https://github.com/sabre-io/dav/blob/master/tests/Sabre/DAVACL/PrincipalBackend/AbstractPDOTest.php
-// https://github.com/sabre-io/dav/blob/master/lib/DAVACL/PrincipalBackend/PDO.php
-// https://github.com/sabre-io/dav/tree/master/lib/DAV/Browser
-// https://github.com/sabre-io/dav/blob/master/lib/CardDAV/Backend/PDO.php
-// http://sabre.io/dav/caldav-carddav-integration-guide/
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class CardDAVController extends Controller
 {
     /**
      * Display the specified resource.
      */
-    public function init()
+    public function init(Request $request)
     {
         // Disable debugger for caldav output
         \Debugbar::disable();
@@ -38,6 +33,11 @@ class CardDAVController extends Controller
         // Initiate Sabre server
         $server = new \Sabre\DAV\Server($nodes);
         $server->setBaseUri('/carddav');
+        $server->debugExceptions = true;
+
+        // Modify Laravel request to include trailing slash. Laravel removes it by default, Sabre needs it.
+        $server->httpRequest->setUrl(str_replace('/carddav', '/carddav/', $server->httpRequest->getUrl()));
+        $server->httpRequest->setBaseUrl('/carddav/');
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
@@ -46,7 +46,6 @@ class CardDAVController extends Controller
         $aclPlugin = new \Sabre\DAVACL\Plugin();
         $aclPlugin->allowUnauthenticatedAccess = false;
         $server->addPlugin($aclPlugin);
-        $server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
         // Execute requests and catch output
         // We do this because laravel always sends a 200 back, but we need to use the StatusCode and of Sabre
@@ -58,6 +57,7 @@ class CardDAVController extends Controller
         ob_end_clean();
 
         // Return response through laravel
+        Log::debug(__CLASS__.' init', ['status' => $status, 'content' => $content]);
         return response($content, $status)->withHeaders($headers);
     }
 }
