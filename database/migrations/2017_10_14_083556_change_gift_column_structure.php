@@ -15,7 +15,12 @@ class ChangeGiftColumnStructure extends Migration
     public function up()
     {
         Schema::table('gifts', function (Blueprint $table) {
+          if (get_class(DB::connection()) == "Illuminate\Database\PostgresConnection") {
+            //Postgresql does not implicitly convert varchar's to integers, therefore add USING ...
+            DB::statement('ALTER TABLE gifts ALTER about_object_id TYPE INT USING about_object_id::integer');
+          } else {
             $table->integer('about_object_id')->change();
+          }
         });
 
         Schema::table('gifts', function ($table) {
