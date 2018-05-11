@@ -102,6 +102,18 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
         ];
     }
 
+    function prepareCards($contacts) {
+        $results = [];
+        
+        foreach($contacts as $contact) {
+            $results[] = $this->prepareCard($contact);
+        }
+
+        Log::debug(__CLASS__.' prepareCards', $results);
+
+        return $results;
+    }
+
     /**
      * Returns all cards for a specific addressbook id.
      *
@@ -125,15 +137,8 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
         Log::debug(__CLASS__.' getCards', func_get_args());
 
         $contacts = Auth::user()->account->contacts()->real()->get();
-
-        $results = [];
-        foreach($contacts as $contact) {
-            $results[] = $this->prepareCard($contact);
-        }
-
-        //dd($results);
-
-        return $results;
+        
+        return $this->prepareCards($contacts);
     }
 
     /**
@@ -166,6 +171,10 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      */
     function getMultipleCards($addressBookId, array $uris) {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
+
+        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->where('id', $uris)->get();
+
+        return $this->prepareCards($contacts);
     }
 
     /**
