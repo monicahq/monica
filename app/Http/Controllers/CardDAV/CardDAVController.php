@@ -18,7 +18,7 @@ class CardDAVController extends Controller
         \Debugbar::disable();
 
         // TODO: Not sure if this is needed, check later
-        date_default_timezone_set('Europe/Berlin');
+        date_default_timezone_set('UTC');
 
         // Initiate custom backends for link between Sabra and Monica
         $authBackend = new MonicaSabreBackend();            // Authentication
