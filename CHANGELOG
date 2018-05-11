@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Remove automatic birthday reminder creation when editing a contact
 * Use external list of countries, with translations and reliability
+* Fixes 1209 Add journal entry with date != today does not work
 
 RELEASED VERSIONS:
 
