@@ -56,6 +56,7 @@ class Contact extends Model
         'account_id',
         'created_at',
         'updated_at',
+        'is_partial',
     ];
 
     /**

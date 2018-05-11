@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Remove automatic birthday reminder creation when editing a contact
 * Use external list of countries, with translations and reliability
+* Fixes Contact search dropdown shows non-contacts that link to nowhere
 
 RELEASED VERSIONS:
 
