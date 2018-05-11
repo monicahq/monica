@@ -173,7 +173,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes($router);
 
         $this->mapOAuthRoutes($router);
-        
+
         $this->mapCardDAVRoutes($router);
     }
 

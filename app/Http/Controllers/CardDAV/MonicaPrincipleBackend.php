@@ -28,11 +28,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
         Log::debug(__CLASS__.' getPrincipalsByPrefix', func_get_args());
         $principals = [
             [
-                'uri'               => 'principals/user',
-                '{DAV:}displayname' => 'Users',
-            ],
-            [
-                'uri'                                   => 'principals/user'.Auth::user()->id,
+                'uri'                                   => 'principals/'.Auth::user()->email,
                 '{http://sabredav.org/ns}email-address' => Auth::user()->email,
                 '{DAV:}displayname'                     => Auth::user()->name,
             ]
@@ -40,7 +36,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
 
         $prefixPath = trim($prefixPath, '/');
         if ($prefixPath) $prefixPath .= '/';
-        
+
         $return = [];
         foreach ($principals as $principal) {
             if ($prefixPath && strpos($principal['uri'], $prefixPath) !== 0) continue;
@@ -60,7 +56,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     function getPrincipalByPath($path) {
         Log::debug(__CLASS__.' getPrincipalByPath', func_get_args());
-            
+
         foreach ($this->getPrincipalsByPrefix('principals') as $principal) {
             if ($principal['uri'] === $path) return $principal;
         }
@@ -149,7 +145,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
     function getGroupMemberSet($principal) {
         debug('getGroupMemberSet');
         return [
-            'principals/user'.Auth::user()->id,
+            'principals/'.Auth::user()->email,
         ];
     }
 
@@ -162,7 +158,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
     function getGroupMembership($principal) {
         debug('getGroupMembership');
         return [
-            'principals/user'.Auth::user()->id,
+            'principals/'.Auth::user()->email,
         ];
     }
 
