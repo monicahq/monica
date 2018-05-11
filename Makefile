@@ -63,10 +63,10 @@ docker_squash:
 	docker images
 
 docker_tag:
-	docker tag monicahq/monicahq monicahq/monicahq:$(GIT_TAG)
+	docker tag monicahq/monicahq monicahq/monicahq:$(BUILD)
 
 docker_push:
-	docker push monicahq/monicahq:$(GIT_TAG)
+	docker push monicahq/monicahq:$(BUILD)
 	docker push monicahq/monicahq:latest
 
 docker_push_bintray: .travis.deploy.json
