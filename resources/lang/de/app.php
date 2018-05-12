@@ -125,7 +125,7 @@ return [
     'relationship_type_lovedby' => 'geliebt von',
     'relationship_type_lovedby_female' => 'geliebt von',
     'relationship_type_lovedby_with_name' => ':names heimlicher Verehrer',
-    'relationship_type_lovedby_female_with_name' => ':names heimlicher Verehrer',
+    'relationship_type_lovedby_female_with_name' => ':names heimliche Verehrerin',
 
     'relationship_type_ex' => 'Ex-Freund',
     'relationship_type_ex_female' => 'Ex-Freundin',
