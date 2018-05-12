@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\DB;
+
 class StringHelper
 {
     /**
@@ -12,16 +14,17 @@ class StringHelper
      */
     public static function buildQuery(array $array, string $searchTerm)
     {
-        $count = count($array);
-        $counter = 1;
+        $first = true;
         $queryString = '';
+        $searchTerm = DB::connection()->getPdo()->quote('%'.$searchTerm.'%');
 
         foreach ($array as $column) {
-            $queryString .= $column.' LIKE \'%'.$searchTerm.'%\'';
-            if ($counter != $count) {
+            if ($first) {
+                $first = false;
+            } else {
                 $queryString .= ' or ';
             }
-            $counter++;
+            $queryString .= $column.' LIKE '.$searchTerm;
         }
 
         return $queryString;
