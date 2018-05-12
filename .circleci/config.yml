@@ -480,9 +480,8 @@ workflows:
               only: /.*/
       - reporting:
           requires:
-            - tests-7.1
-            - tests-7.2
-            - tests-browser-7.1
+            - tests-7.1-mysql
+            - tests-7.2-mysql
             - tests-browser-7.2
           filters:
             branches:
