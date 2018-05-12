@@ -20,6 +20,7 @@ class InstanceHelper
      * Get the plan information for the given time period.
      *
      * @param  string Accepted values: 'monthly', 'annual'
+     *
      * @return array
      */
     public static function getPlanInformationFromConfig(String $timePeriod)
@@ -29,10 +30,10 @@ class InstanceHelper
         }
 
         return [
-            'type' => $timePeriod,
-            'name' => config('monica.paid_plan_'.$timePeriod.'_friendly_name'),
-            'id' => config('monica.paid_plan_'.$timePeriod.'_id'),
-            'price' => config('monica.paid_plan_'.$timePeriod.'_price'),
+            'type'          => $timePeriod,
+            'name'          => config('monica.paid_plan_'.$timePeriod.'_friendly_name'),
+            'id'            => config('monica.paid_plan_'.$timePeriod.'_id'),
+            'price'         => config('monica.paid_plan_'.$timePeriod.'_price'),
             'friendlyPrice' => config('monica.paid_plan_'.$timePeriod.'_price') / 100,
         ];
     }

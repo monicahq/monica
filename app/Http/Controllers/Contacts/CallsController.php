@@ -13,7 +13,8 @@ class CallsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CallsRequest $request
-     * @param Contact $contact
+     * @param Contact      $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(CallsRequest $request, Contact $contact)
@@ -23,7 +24,7 @@ class CallsController extends Controller
                 'called_at',
             ])
             + [
-                'content' => ($request->get('content') == '' ? null : $request->get('content')),
+                'content'    => ($request->get('content') == '' ? null : $request->get('content')),
                 'account_id' => $contact->account_id,
             ]
         );
@@ -40,7 +41,8 @@ class CallsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Call $call
+     * @param Call    $call
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Call $call)

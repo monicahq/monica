@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class RelationshipTest extends TestCase
 {
@@ -46,7 +46,7 @@ class RelationshipTest extends TestCase
             'account_id' => $account->id,
         ]);
         $relationship = factory('App\Relationship')->create([
-            'account_id' => $account->id,
+            'account_id'           => $account->id,
             'relationship_type_id' => $relationshipType->id,
         ]);
 

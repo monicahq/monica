@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Jobs\SetNextReminderDate;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class SetNextReminderDateTest extends TestCase
 {
@@ -21,24 +21,24 @@ class SetNextReminderDateTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => 1,
+            'active'                => 1,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 30,
-            'active' => 1,
+            'active'                => 1,
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
-            'frequency_type' => 'month',
-            'frequency_number' => '1',
+            'frequency_type'     => 'month',
+            'frequency_number'   => '1',
         ]);
 
         dispatch(new SetNextReminderDate($reminder, $user->timezone));
@@ -64,13 +64,13 @@ class SetNextReminderDateTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
-            'frequency_type' => 'one_time',
+            'frequency_type'     => 'one_time',
         ]);
 
         $this->assertDatabaseHas('reminders', [

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Bus;
+use Tests\TestCase;
 
 class InstanceTest extends TestCase
 {

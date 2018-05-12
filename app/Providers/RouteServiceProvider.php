@@ -2,25 +2,25 @@
 
 namespace App\Providers;
 
-use App\Day;
-use App\Pet;
-use App\Debt;
-use App\Gift;
-use App\Note;
-use App\Task;
-use App\Gender;
-use App\Module;
-use App\Contact;
 use App\Activity;
-use App\Reminder;
+use App\Contact;
 use App\ContactField;
-use App\Relationship;
-use App\ReminderRule;
+use App\Day;
+use App\Debt;
+use App\Gender;
+use App\Gift;
 use App\Helpers\IdHasher;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
+use App\Module;
+use App\Note;
+use App\Pet;
+use App\Relationship;
+use App\Reminder;
+use App\ReminderRule;
+use App\Task;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -163,7 +163,8 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
+     *
      * @return void
      */
     public function map(Router $router)
@@ -181,14 +182,15 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
+     *
      * @return void
      */
     protected function mapWebRoutes(Router $router)
     {
         $router->group([
             'middleware' => 'web',
-            'namespace' => $this->namespace,
+            'namespace'  => $this->namespace,
         ], function ($router) {
             require base_path('routes/web.php');
         });
@@ -197,13 +199,14 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the custom oauth routes for the API.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
+     *
      * @return void
      */
     protected function mapOAuthRoutes(Router $router)
     {
         $router->group([
-            'prefix' => 'oauth',
+            'prefix'    => 'oauth',
             'namespace' => $this->namespace,
         ], function () {
             require base_path('routes/oauth.php');
@@ -220,9 +223,9 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes(Router $router)
     {
         $router->group([
-            'prefix' => 'api',
+            'prefix'     => 'api',
             'middleware' => 'api',
-            'namespace' => $this->namespace,
+            'namespace'  => $this->namespace,
         ], function ($router) {
             require base_path('routes/api.php');
         });

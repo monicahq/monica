@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Changelog;
+use Auth;
 use Illuminate\Http\Request;
 
 class ChangelogController extends Controller
@@ -12,6 +12,7 @@ class ChangelogController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)

@@ -32,14 +32,14 @@ class Deactivate2FA extends Command
         $email = $this->option('email');
 
         // if no email was passed to the option, prompt the user to enter the email
-        if (! $email) {
+        if (!$email) {
             $email = $this->ask('what is the user\'s email?');
         }
 
         // retrieve the user with the specified email
         $user = User::where('email', $email)->first();
 
-        if (! $user) {
+        if (!$user) {
             // show an error and exist if the user does not exist
             $this->error('No user with that email.');
 
@@ -57,7 +57,7 @@ class Deactivate2FA extends Command
         $this->info('This action can\'t be cancelled.');
 
         // ask for confirmation if not forced
-        if (! $this->option('force') && ! $this->confirm('Do you wish to continue?')) {
+        if (!$this->option('force') && !$this->confirm('Do you wish to continue?')) {
             return;
         }
 

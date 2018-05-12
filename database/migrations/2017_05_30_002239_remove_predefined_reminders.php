@@ -1,9 +1,9 @@
 <?php
 
 use App\Reminder;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class RemovePredefinedReminders extends Migration
 {
@@ -17,11 +17,11 @@ class RemovePredefinedReminders extends Migration
         $reminders = Reminder::all();
         foreach ($reminders as $reminder) {
             echo $reminder->id.' ';
-            if (! is_null($reminder->title)) {
+            if (!is_null($reminder->title)) {
                 $reminder->title = decrypt($reminder->title);
             }
 
-            if (! is_null($reminder->description)) {
+            if (!is_null($reminder->description)) {
                 $reminder->description = decrypt($reminder->description);
             }
 

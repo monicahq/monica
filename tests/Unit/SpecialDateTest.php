@@ -5,10 +5,10 @@ namespace Tests\Unit;
 use App\Account;
 use App\Contact;
 use App\Reminder;
-use Carbon\Carbon;
 use App\SpecialDate;
-use Tests\FeatureTestCase;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class SpecialDateTest extends FeatureTestCase
 {
@@ -41,7 +41,7 @@ class SpecialDateTest extends FeatureTestCase
         $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create([]);
         $specialDate = factory('App\SpecialDate')->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'reminder_id' => $reminder->id,
         ]);
 
@@ -50,14 +50,14 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_reminder_id_getter_returns_null_if_undefined()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
 
         $this->assertNull($reminder->reminder_id);
     }
 
     public function test_reminder_id_getter_returns_correct_string()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->reminder_id = 3;
 
         $this->assertInternalType('integer', $reminder->reminder_id);
@@ -66,7 +66,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_delete_reminder_returns_null_if_no_reminder_is_set()
     {
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
 
         $this->assertNull($specialDate->deleteReminder());
     }
@@ -114,7 +114,7 @@ class SpecialDateTest extends FeatureTestCase
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
 
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->account_id = $user->account_id;
         $reminder->contact_id = $contact->id;
         $reminder->id = 1;
@@ -149,14 +149,14 @@ class SpecialDateTest extends FeatureTestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $user->account->id,
+            'account_id'            => $user->account->id,
             'number_of_days_before' => 7,
-            'active' => 1,
+            'active'                => 1,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $user->account->id,
+            'account_id'            => $user->account->id,
             'number_of_days_before' => 30,
-            'active' => 1,
+            'active'                => 1,
         ]);
 
         $specialDate = factory('App\SpecialDate')->create(['account_id' => $user->account->id, 'date' => '2018-03-02']);
@@ -171,7 +171,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_age_returns_null_if_no_date_is_set()
     {
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $this->assertNull($specialDate->getAge());
     }
 
@@ -294,7 +294,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_to_short_string_returns_date_with_year()
     {
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $specialDate->is_year_unknown = false;
         $specialDate->date = Carbon::create(2001, 5, 21);
 
@@ -306,7 +306,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_to_short_string_returns_date_without_year()
     {
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $specialDate->is_year_unknown = true;
         $specialDate->date = Carbon::create(2001, 5, 21);
 
@@ -318,7 +318,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get__death_age_returns_null_if_no_date_is_set()
     {
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $this->assertNull($specialDate->getAgeAtDeath());
     }
 

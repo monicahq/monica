@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Task;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;
+use App\Task;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiTaskController extends ApiController
 {
@@ -32,7 +32,9 @@ class ApiTaskController extends ApiController
 
     /**
      * Get the detail of a given task.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $taskId)
@@ -50,7 +52,9 @@ class ApiTaskController extends ApiController
 
     /**
      * Store the task.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,8 +78,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Update the task.
-     * @param  Request $request
-     * @param  int $taskId
+     *
+     * @param Request $request
+     * @param int     $taskId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $taskId)
@@ -105,18 +111,19 @@ class ApiTaskController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'description' => 'string|max:1000000',
+            'title'        => 'required|max:255',
+            'description'  => 'string|max:1000000',
             'completed_at' => 'date',
-            'completed' => 'boolean|required',
-            'contact_id' => 'required|integer',
+            'completed'    => 'boolean|required',
+            'contact_id'   => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -137,7 +144,9 @@ class ApiTaskController extends ApiController
 
     /**
      * Delete a task.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $taskId)

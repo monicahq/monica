@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\Contact;
-use App\User;
 use App\Account;
-use App\Reminder;
+use App\Contact;
 use App\Invitation;
-use Tests\FeatureTestCase;
-use Illuminate\Support\Facades\DB;
+use App\Reminder;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
+use Tests\FeatureTestCase;
 
 class AccountTest extends FeatureTestCase
 {
@@ -20,11 +20,11 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
-            'name' => 'test',
+            'name'       => 'test',
         ]);
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
-            'name' => 'test',
+            'name'       => 'test',
         ]);
 
         $this->assertTrue($account->genders()->exists());
@@ -164,10 +164,10 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'stripe_plan' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+            'stripe_id'   => 'sub_C0R444pbxddhW7',
+            'name'        => 'fakePlan',
         ]);
 
         config(['monica.paid_plan_monthly_friendly_name' => 'fakePlan']);
@@ -183,10 +183,10 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'stripe_plan' => 'chandler_annual',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'annualPlan',
+            'stripe_id'   => 'sub_C0R444pbxddhW7',
+            'name'        => 'annualPlan',
         ]);
 
         config(['monica.paid_plan_annual_friendly_name' => 'annualPlan']);
@@ -237,12 +237,12 @@ class AccountTest extends FeatureTestCase
 
         $user1 = factory(User::class)->create([
             'account_id' => $account->id,
-            'timezone' => 'EN_en',
+            'timezone'   => 'EN_en',
         ]);
 
         $user2 = factory(User::class)->create([
             'account_id' => $account->id,
-            'timezone' => 'DE_de',
+            'timezone'   => 'DE_de',
         ]);
 
         $this->assertEquals(
@@ -256,10 +256,10 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'stripe_plan' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+            'stripe_id'   => 'sub_C0R444pbxddhW7',
+            'name'        => 'fakePlan',
         ]);
 
         $this->assertTrue($account->hasInvoices());
@@ -302,7 +302,7 @@ class AccountTest extends FeatureTestCase
         // add 3 reminders for the month of March
         for ($i = 0; $i < 3; $i++) {
             $reminder = factory(Reminder::class)->create([
-                'account_id' => $account->id,
+                'account_id'         => $account->id,
                 'next_expected_date' => '2017-03-03 00:00:00',
             ]);
         }
@@ -320,10 +320,10 @@ class AccountTest extends FeatureTestCase
         $account = $user->account;
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'stripe_plan' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+            'stripe_id'   => 'sub_C0R444pbxddhW7',
+            'name'        => 'fakePlan',
         ]);
 
         $this->assertEquals(
@@ -339,10 +339,10 @@ class AccountTest extends FeatureTestCase
         $account = $user->account;
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'stripe_plan' => 'chandler_5',
-            'stripe_id' => 'sub_C0R444pbxddhW7',
-            'name' => 'fakePlan',
+            'stripe_id'   => 'sub_C0R444pbxddhW7',
+            'name'        => 'fakePlan',
         ]);
 
         $this->assertEquals(
@@ -416,7 +416,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_sets_default_time_reminder_is_sent_attribute()
     {
-        $account = new Account;
+        $account = new Account();
         $account->default_time_reminder_is_sent = '14:00';
 
         $this->assertEquals(
@@ -457,7 +457,7 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $account->id,
-            'name' => 'partner',
+            'name'       => 'partner',
         ]);
 
         $this->assertInstanceOf('App\RelationshipType', $account->getRelationshipTypeByType('partner'));
@@ -468,7 +468,7 @@ class AccountTest extends FeatureTestCase
         $account = factory('App\Account')->create();
         $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
-            'name' => 'love',
+            'name'       => 'love',
         ]);
 
         $this->assertInstanceOf('App\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
@@ -494,7 +494,7 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory('App\Account')->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
-            'name' => 'friend_and_family',
+            'name'     => 'friend_and_family',
             'migrated' => 1,
         ]);
 
@@ -513,7 +513,7 @@ class AccountTest extends FeatureTestCase
         ]);
 
         DB::table('default_relationship_types')->insert([
-            'name' => 'fuckfriend',
+            'name'                       => 'fuckfriend',
             'relationship_type_group_id' => $id,
         ]);
 
@@ -533,9 +533,9 @@ class AccountTest extends FeatureTestCase
         ]);
 
         DB::table('default_relationship_types')->insert([
-            'name' => 'fuckfriend',
+            'name'                       => 'fuckfriend',
             'relationship_type_group_id' => $id,
-            'migrated' => 1,
+            'migrated'                   => 1,
         ]);
 
         $account->populateRelationshipTypeGroupsTable();
@@ -552,13 +552,13 @@ class AccountTest extends FeatureTestCase
         $calls = factory('App\Call', 4)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
-            'called_at' => '2018-03-02',
+            'called_at'  => '2018-03-02',
         ]);
 
         $calls = factory('App\Call', 2)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
-            'called_at' => '1992-03-02',
+            'called_at'  => '1992-03-02',
         ]);
 
         $statistics = $contact->account->getYearlyCallStatistics();
@@ -576,12 +576,12 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory('App\Account')->create();
         $contact = factory('App\Activity', 4)->create([
-            'account_id' => $account->id,
+            'account_id'       => $account->id,
             'date_it_happened' => '2018-03-02',
         ]);
 
         $contact = factory('App\Activity', 2)->create([
-            'account_id' => $account->id,
+            'account_id'       => $account->id,
             'date_it_happened' => '1992-03-02',
         ]);
 
@@ -614,7 +614,7 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory('App\Account')->create();
         DB::table('default_contact_modules')->insert([
-            'key' => 'awesome',
+            'key'      => 'awesome',
             'migrated' => 1,
         ]);
 
@@ -622,7 +622,7 @@ class AccountTest extends FeatureTestCase
 
         $this->assertDatabaseMissing('modules', [
             'account_id' => $account->id,
-            'key' => 'awesome',
+            'key'        => 'awesome',
         ]);
     }
 
@@ -642,12 +642,12 @@ class AccountTest extends FeatureTestCase
 
         $this->assertDatabaseHas('changelog_user', [
             'changelog_id' => $changelog->id,
-            'user_id' => $user->id,
+            'user_id'      => $user->id,
         ]);
 
         $this->assertDatabaseHas('changelog_user', [
             'changelog_id' => $changelog->id,
-            'user_id' => $user2->id,
+            'user_id'      => $user2->id,
         ]);
     }
 
@@ -661,9 +661,9 @@ class AccountTest extends FeatureTestCase
         $account->populateChangelogsTable();
 
         $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
+            'user_id'      => $user->id,
             'changelog_id' => $changelog->id,
-            'read' => 0,
+            'read'         => 0,
         ]);
     }
 }

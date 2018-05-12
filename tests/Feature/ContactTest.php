@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Gift;
 use App\Contact;
-use Tests\FeatureTestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Gift;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\FeatureTestCase;
 
 class ContactTest extends FeatureTestCase
 {
@@ -15,6 +15,7 @@ class ContactTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -44,10 +45,10 @@ class ContactTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $reminder = [
-            'title' => $this->faker->sentence('5'),
+            'title'              => $this->faker->sentence('5'),
             'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
-            'frequency_type' => 'once',
-            'description' => $this->faker->sentence(),
+            'frequency_type'     => 'once',
+            'description'        => $this->faker->sentence(),
         ];
 
         $this->post(
@@ -59,8 +60,8 @@ class ContactTest extends FeatureTestCase
             'reminders',
             array_merge($reminder, [
                 'frequency_type' => 'one_time',
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
+                'contact_id'     => $contact->id,
+                'account_id'     => $user->account_id,
             ])
         );
     }
@@ -70,9 +71,9 @@ class ContactTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $task = [
-            'title' => $this->faker->sentence(),
+            'title'       => $this->faker->sentence(),
             'description' => $this->faker->sentence(3),
-            'completed' => 0,
+            'completed'   => 0,
         ];
 
         $this->post(
@@ -95,9 +96,9 @@ class ContactTest extends FeatureTestCase
 
         $gift = [
             'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
+            'name'    => $this->faker->word,
+            'url'     => $this->faker->url,
+            'value'   => $this->faker->numberBetween(1, 2000),
             'comment' => $this->faker->sentence(),
         ];
 
@@ -111,10 +112,10 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas(
             'gifts',
             $gift + [
-                'is_an_idea' => true,
+                'is_an_idea'       => true,
                 'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
+                'contact_id'       => $contact->id,
+                'account_id'       => $user->account_id,
             ]
         );
     }
@@ -130,9 +131,9 @@ class ContactTest extends FeatureTestCase
 
         $gift = [
             'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
+            'name'    => $this->faker->word,
+            'url'     => $this->faker->url,
+            'value'   => $this->faker->numberBetween(1, 2000),
             'comment' => $this->faker->sentence(),
         ];
 
@@ -146,10 +147,10 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas(
             'gifts',
             $gift + [
-                'is_an_idea' => true,
+                'is_an_idea'       => true,
                 'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
+                'contact_id'       => $contact->id,
+                'account_id'       => $user->account_id,
             ]
         );
     }
@@ -160,8 +161,8 @@ class ContactTest extends FeatureTestCase
 
         $debt = [
             'in_debt' => 'yes',
-            'amount' => $this->faker->numberBetween(1, 5000),
-            'reason' => $this->faker->sentence(),
+            'amount'  => $this->faker->numberBetween(1, 5000),
+            'reason'  => $this->faker->sentence(),
         ];
 
         $this->post(
@@ -182,8 +183,8 @@ class ContactTest extends FeatureTestCase
 
         $debt = [
             'in_debt' => 'no',
-            'amount' => $this->faker->numberBetween(1, 5000),
-            'reason' => $this->faker->sentence(),
+            'amount'  => $this->faker->numberBetween(1, 5000),
+            'reason'  => $this->faker->sentence(),
         ];
 
         $this->post(

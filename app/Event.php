@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account
  * @property Contact $contact
+ *
  * @method static Builder forObject(Model $object, string $key = null)
  */
 class Event extends Model
@@ -36,14 +37,15 @@ class Event extends Model
     /**
      * Limits the results to a specific object.
      *
-     * @param Builder $query
-     * @param Model $object
+     * @param Builder     $query
+     * @param Model       $object
      * @param string|null $key
+     *
      * @return Builder
      */
     public function scopeForObject(Builder $query, Model $object, string $key = null)
     {
-        if (! $key) {
+        if (!$key) {
             $key = strtolower(class_basename($object));
         }
 

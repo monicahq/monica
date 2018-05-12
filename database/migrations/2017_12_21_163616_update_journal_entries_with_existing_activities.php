@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class UpdateJournalEntriesWithExistingActivities extends Migration
 {
@@ -16,11 +16,11 @@ class UpdateJournalEntriesWithExistingActivities extends Migration
 
         foreach ($activities as $activity) {
             $journalEntryID = DB::table('journal_entries')->insertGetId([
-                'account_id' => $activity->account_id,
-                'date' => $activity->date_it_happened,
-                'journalable_id' => $activity->id,
+                'account_id'       => $activity->account_id,
+                'date'             => $activity->date_it_happened,
+                'journalable_id'   => $activity->id,
                 'journalable_type' => 'App\Activity',
-                'created_at' => $activity->created_at,
+                'created_at'       => $activity->created_at,
             ]);
         }
 
@@ -28,11 +28,11 @@ class UpdateJournalEntriesWithExistingActivities extends Migration
 
         foreach ($entries as $entry) {
             $journalEntryID = DB::table('journal_entries')->insertGetId([
-                'account_id' => $entry->account_id,
-                'date' => $entry->created_at,
-                'journalable_id' => $entry->id,
+                'account_id'       => $entry->account_id,
+                'date'             => $entry->created_at,
+                'journalable_id'   => $entry->id,
                 'journalable_type' => 'App\Entry',
-                'created_at' => $entry->created_at,
+                'created_at'       => $entry->created_at,
             ]);
         }
     }

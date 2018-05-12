@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
 {
@@ -34,13 +34,13 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
 
         $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $user->account_id,
-            'name' => 'love',
-            'delible' => 0,
+            'name'       => 'love',
+            'delible'    => 0,
         ]);
         $relationshipTypeGroup2 = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $user->account_id,
-            'name' => 'hate',
-            'delible' => 0,
+            'name'       => 'hate',
+            'delible'    => 0,
         ]);
 
         $response = $this->json('GET', '/api/relationshiptypegroups');
@@ -48,9 +48,9 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $relationshipTypeGroup2->id,
-            'object' => 'relationshiptypegroup',
-            'name' => 'hate',
+            'id'      => $relationshipTypeGroup2->id,
+            'object'  => 'relationshiptypegroup',
+            'name'    => 'hate',
             'delible' => false,
         ]);
     }
@@ -61,8 +61,8 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
 
         $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $user->account_id,
-            'name' => 'love',
-            'delible' => 0,
+            'name'       => 'love',
+            'delible'    => 0,
         ]);
 
         $response = $this->json('GET', '/api/relationshiptypegroups/'.$relationshipTypeGroup->id);
@@ -70,9 +70,9 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $relationshipTypeGroup->id,
-            'object' => 'relationshiptypegroup',
-            'name' => 'love',
+            'id'      => $relationshipTypeGroup->id,
+            'object'  => 'relationshiptypegroup',
+            'name'    => 'love',
             'delible' => false,
         ]);
     }

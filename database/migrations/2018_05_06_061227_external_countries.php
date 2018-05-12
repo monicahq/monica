@@ -1,9 +1,9 @@
 <?php
 
 use App\Address;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class ExternalCountries extends Migration
 {
@@ -47,7 +47,7 @@ class ExternalCountries extends Migration
             $table->string('iso');
             $table->string('country');
         });
-        (new CountriesSeederTable)->run();
+        (new CountriesSeederTable())->run();
 
         Address::chunk(200, function ($addresses) {
             foreach ($addresses as $addresse) {

@@ -2,11 +2,11 @@
 
 namespace App;
 
-use Parsedown;
 use App\Helpers\DateHelper;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Parsedown;
 
 /**
  * @property Account $account
@@ -71,6 +71,7 @@ class Note extends Model
      * Limit notes to favorited ones.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeFavorited(Builder $query)
@@ -101,7 +102,8 @@ class Note extends Model
     /**
      * Gets the activity date for this note.
      *
-     * @param  string $locale
+     * @param string $locale
+     *
      * @return string
      */
     public function getCreatedAt()

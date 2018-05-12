@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class ActivityTest extends FeatureTestCase
 {
@@ -12,6 +12,7 @@ class ActivityTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -63,7 +64,7 @@ class ActivityTest extends FeatureTestCase
         $activityDate = now();
 
         $params = [
-            'summary' => $activityTitle,
+            'summary'          => $activityTitle,
             'date_it_happened' => $activityDate,
         ];
 
@@ -82,7 +83,7 @@ class ActivityTest extends FeatureTestCase
         $latestActivity = \App\Activity::all('id')->last();
 
         $this->assertDatabaseHas('activity_contact', [
-            'contact_id' => $contact->id,
+            'contact_id'  => $contact->id,
             'activity_id' => $latestActivity->id,
         ]);
 
@@ -105,8 +106,8 @@ class ActivityTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $activity = factory(\App\Activity::class)->create([
-            'account_id' => $user->account_id,
-            'summary' => 'This is the title',
+            'account_id'       => $user->account_id,
+            'summary'          => 'This is the title',
             'date_it_happened' => now(),
         ]);
 
@@ -119,11 +120,11 @@ class ActivityTest extends FeatureTestCase
 
         // now edit the activity
         $params = [
-            'contacts' => [$contact->id],
-            'summary' => 'this is another test',
+            'contacts'         => [$contact->id],
+            'summary'          => 'this is another test',
             'date_it_happened' => now(),
             'activity_type_id' => null,
-            'description' => null,
+            'description'      => null,
         ];
 
         $this->put('/activities/'.$activity->id.'/'.$contact->id, $params);

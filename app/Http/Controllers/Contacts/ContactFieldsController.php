@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Contacts;
 use App\Contact;
 use App\ContactField;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ContactFieldsController extends Controller
 {
@@ -19,13 +19,13 @@ class ContactFieldsController extends Controller
 
         foreach ($contact->contactFields as $contactField) {
             $data = [
-                'id' => $contactField->id,
-                'data' => $contactField->data,
-                'name' => $contactField->contactFieldType->name,
-                'fontawesome_icon' => (is_null($contactField->contactFieldType->fontawesome_icon) ? null : $contactField->contactFieldType->fontawesome_icon),
-                'protocol' =>  (is_null($contactField->contactFieldType->protocol) ? null : $contactField->contactFieldType->protocol),
+                'id'                    => $contactField->id,
+                'data'                  => $contactField->data,
+                'name'                  => $contactField->contactFieldType->name,
+                'fontawesome_icon'      => (is_null($contactField->contactFieldType->fontawesome_icon) ? null : $contactField->contactFieldType->fontawesome_icon),
+                'protocol'              => (is_null($contactField->contactFieldType->protocol) ? null : $contactField->contactFieldType->protocol),
                 'contact_field_type_id' => $contactField->contact_field_type_id,
-                'edit' => false,
+                'edit'                  => false,
             ];
             $contactInformationData->push($data);
         }
@@ -35,7 +35,8 @@ class ContactFieldsController extends Controller
 
     /**
      * Get all the contact field types.
-     * @param  Contact $contact
+     *
+     * @param Contact $contact
      */
     public function getContactFieldTypes(Contact $contact)
     {

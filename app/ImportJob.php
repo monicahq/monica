@@ -2,15 +2,15 @@
 
 namespace App;
 
-use Exception;
-use Sabre\VObject\Reader;
 use App\Helpers\CountriesHelper;
-use Sabre\VObject\Component\VCard;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
+use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Reader;
 
 /**
  * @property Account $account
@@ -162,8 +162,8 @@ class ImportJob extends Model
     {
         $this->gender = \App\Gender::where('name', 'vCard')->first();
 
-        if (! $this->gender) {
-            $this->gender = new \App\Gender;
+        if (!$this->gender) {
+            $this->gender = new \App\Gender();
             $this->gender->account_id = $this->account_id;
             $this->gender->name = 'vCard';
             $this->gender->save();
@@ -173,7 +173,8 @@ class ImportJob extends Model
     /**
      * Mark the import job as failed.
      *
-     * @param  string $reason
+     * @param string $reason
+     *
      * @return Exception
      */
     public function fail(string $reason)
@@ -206,7 +207,7 @@ class ImportJob extends Model
      */
     public function deletePhysicalFile()
     {
-        if (! Storage::disk('public')->delete($this->filename)) {
+        if (!Storage::disk('public')->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
         }
     }
@@ -247,12 +248,13 @@ class ImportJob extends Model
     /**
      * Process a single vCard entry.
      *
-     * @param  VCard  $vCard
-     * @return [type]        [description]
+     * @param VCard $vCard
+     *
+     * @return [type] [description]
      */
     public function processSingleEntry()
     {
-        if (! $this->checkImportFeasibility()) {
+        if (!$this->checkImportFeasibility()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
 
             return;
@@ -270,7 +272,8 @@ class ImportJob extends Model
     /**
      * Skip the current entry.
      *
-     * @param  string $reason
+     * @param string $reason
+     *
      * @return void
      */
     public function skipEntry($reason = null): void
@@ -284,6 +287,7 @@ class ImportJob extends Model
      * can not be imported.
      *
      * @param VCard $vcard
+     *
      * @return bool
      */
     public function checkImportFeasibility(): bool
@@ -292,13 +296,14 @@ class ImportJob extends Model
             return false;
         }
 
-        return ! empty($this->currentEntry->N->getParts()[1]) || ! empty((string) $this->currentEntry->NICKNAME);
+        return !empty($this->currentEntry->N->getParts()[1]) || !empty((string) $this->currentEntry->NICKNAME);
     }
 
     /**
      * Check whether the email is valid.
      *
      * @param string $email
+     *
      * @return bool
      */
     public function isValidEmail(string $email): bool
@@ -344,15 +349,16 @@ class ImportJob extends Model
     /**
      * File an import job report for the current entry.
      *
-     * @param  bool $status
-     * @param  string $reason
+     * @param bool   $status
+     * @param string $reason
+     *
      * @return void
      */
     public function fileImportJobReport($status, $reason = null): void
     {
         $name = $this->name();
 
-        $importJobReport = new \App\ImportJobReport;
+        $importJobReport = new \App\ImportJobReport();
         $importJobReport->account_id = $this->account_id;
         $importJobReport->user_id = $this->user_id;
         $importJobReport->import_job_id = $this->id;
@@ -386,11 +392,12 @@ class ImportJob extends Model
      * Formats and returns a string for the contact.
      *
      * @param null|string $value
+     *
      * @return null|string
      */
     private function formatValue($value)
     {
-        return ! empty((string) $value) ? (string) $value : null;
+        return !empty((string) $value) ? (string) $value : null;
     }
 
     /**
@@ -400,7 +407,7 @@ class ImportJob extends Model
      */
     public function createContactFromCurrentEntry()
     {
-        $contact = new \App\Contact;
+        $contact = new \App\Contact();
         $contact->account_id = $this->account_id;
         $contact->gender_id = $this->gender->id;
         $contact->save();
@@ -425,11 +432,12 @@ class ImportJob extends Model
      * Import names of the contact.
      *
      * @param Contact $contact
+     *
      * @return void
      */
     public function importNames(\App\Contact $contact): void
     {
-        if ($this->currentEntry->N && ! empty($this->currentEntry->N->getParts()[1])) {
+        if ($this->currentEntry->N && !empty($this->currentEntry->N->getParts()[1])) {
             $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
             $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
             $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
@@ -440,6 +448,7 @@ class ImportJob extends Model
 
     /**
      * @param Contact $contact
+     *
      * @return void
      */
     public function importWorkInformation(\App\Contact $contact): void
@@ -459,11 +468,12 @@ class ImportJob extends Model
 
     /**
      * @param Contact $contact
+     *
      * @return void
      */
     public function importBirthday(\App\Contact $contact): void
     {
-        if ($this->currentEntry->BDAY && ! empty((string) $this->currentEntry->BDAY)) {
+        if ($this->currentEntry->BDAY && !empty((string) $this->currentEntry->BDAY)) {
             $birthdate = new \DateTime((string) $this->currentEntry->BDAY);
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
@@ -473,11 +483,12 @@ class ImportJob extends Model
 
     /**
      * @param Contact $contact
+     *
      * @return void
      */
     public function importAddress(\App\Contact $contact): void
     {
-        if (! $this->currentEntry->ADR) {
+        if (!$this->currentEntry->ADR) {
             return;
         }
 
@@ -488,7 +499,7 @@ class ImportJob extends Model
         $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
 
         $iso = CountriesHelper::find($this->currentEntry->ADR->getParts()[6]);
-    
+
         if ($iso) {
             $address->country = $iso;
         }
@@ -500,6 +511,7 @@ class ImportJob extends Model
 
     /**
      * @param Contact $contact
+     *
      * @return void
      */
     public function importEmail(\App\Contact $contact): void
@@ -509,7 +521,7 @@ class ImportJob extends Model
         }
 
         if ($this->isValidEmail($this->currentEntry->EMAIL)) {
-            $contactField = new \App\ContactField;
+            $contactField = new \App\ContactField();
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
             $contactField->data = $this->formatValue($this->currentEntry->EMAIL);
@@ -520,12 +532,13 @@ class ImportJob extends Model
 
     /**
      * @param Contact $contact
+     *
      * @return void
      */
     public function importTel(\App\Contact $contact): void
     {
-        if (! is_null($this->formatValue($this->currentEntry->TEL))) {
-            $contactField = new \App\ContactField;
+        if (!is_null($this->formatValue($this->currentEntry->TEL))) {
+            $contactField = new \App\ContactField();
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
             $contactField->data = $this->formatValue($this->currentEntry->TEL);
@@ -536,7 +549,7 @@ class ImportJob extends Model
 
     private function contactFieldEmailId()
     {
-        if (! $this->contactFieldEmailId) {
+        if (!$this->contactFieldEmailId) {
             $contactFieldType = \App\ContactFieldType::where('type', 'email')->first();
             $this->contactFieldEmailId = $contactFieldType->id;
         }
@@ -546,7 +559,7 @@ class ImportJob extends Model
 
     private function contactFieldPhoneId()
     {
-        if (! $this->contactFieldPhoneId) {
+        if (!$this->contactFieldPhoneId) {
             $contactFieldType = \App\ContactFieldType::where('type', 'phone')->first();
             $this->contactFieldPhoneId = $contactFieldType->id;
         }

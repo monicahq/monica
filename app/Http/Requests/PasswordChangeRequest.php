@@ -23,7 +23,7 @@ class PasswordChangeRequest extends Request
     {
         return [
             'password_current' => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password'         => 'required|confirmed|min:6',
         ];
     }
 }

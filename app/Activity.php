@@ -2,14 +2,14 @@
 
 namespace App;
 
-use Parsedown;
-use Carbon\Carbon;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Interfaces\IsJournalableInterface;
 use App\Traits\Hasher;
 use App\Traits\Journalable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Parsedown;
 
 /**
  * @property Account $account
@@ -105,6 +105,7 @@ class Activity extends Model implements IsJournalableInterface
      * Get the date_it_happened field according to user's timezone.
      *
      * @param string $value
+     *
      * @return string
      */
     public function getDateItHappenedAttribute($value)
@@ -173,22 +174,23 @@ class Activity extends Model implements IsJournalableInterface
 
     /**
      * Gets the information about the activity for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()
     {
         return [
-            'type' => 'activity',
-            'id' => $this->id,
-            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
-            'summary' => $this->summary,
-            'description' => $this->description,
-            'day' => $this->date_it_happened->day,
-            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date_it_happened)),
-            'month' => $this->date_it_happened->month,
-            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date_it_happened)),
-            'year' => $this->date_it_happened->year,
-            'attendees' => $this->getContactsForAPI(),
+            'type'          => 'activity',
+            'id'            => $this->id,
+            'activity_type' => (!is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'summary'       => $this->summary,
+            'description'   => $this->description,
+            'day'           => $this->date_it_happened->day,
+            'day_name'      => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date_it_happened)),
+            'month'         => $this->date_it_happened->month,
+            'month_name'    => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date_it_happened)),
+            'year'          => $this->date_it_happened->year,
+            'attendees'     => $this->getContactsForAPI(),
         ];
     }
 }

@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\User;
 use Carbon\Carbon;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -46,7 +46,7 @@ class UserTest extends TestCase
 
     public function test_name_accessor_returns_name_in_the_user_preferred_way()
     {
-        $user = new User;
+        $user = new User();
         $user->first_name = 'John';
         $user->last_name = 'Doe';
         $user->name_order = 'firstname_first';
@@ -64,7 +64,7 @@ class UserTest extends TestCase
 
     public function test_it_gets_the_right_metric_symbol()
     {
-        $user = new User;
+        $user = new User();
         $user->metric = 'fahrenheit';
 
         $this->assertEquals(
@@ -91,7 +91,7 @@ class UserTest extends TestCase
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $day = factory('App\Day')->create([
             'account_id' => $account->id,
-            'date' => now(),
+            'date'       => now(),
         ]);
 
         $this->assertTrue($user->hasAlreadyRatedToday());
@@ -99,7 +99,7 @@ class UserTest extends TestCase
 
     public function test_it_gets_2fa_secret_attribute()
     {
-        $user = new User;
+        $user = new User();
 
         $this->assertNull($user->getGoogle2faSecretAttribute(null));
 
@@ -113,7 +113,7 @@ class UserTest extends TestCase
 
     public function test_it_gets_fluid_layout()
     {
-        $user = new User;
+        $user = new User();
         $user->fluid_container = true;
 
         $this->assertEquals(
@@ -131,7 +131,7 @@ class UserTest extends TestCase
 
     public function test_it_gets_the_locale()
     {
-        $user = new User;
+        $user = new User();
         $user->locale = 'en';
 
         $this->assertEquals(
@@ -188,17 +188,17 @@ class UserTest extends TestCase
         $changelog->users()->sync($user->id);
 
         $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
+            'user_id'      => $user->id,
             'changelog_id' => $changelog->id,
-            'read' => 0,
+            'read'         => 0,
         ]);
 
         $user->markChangelogAsRead();
 
         $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
+            'user_id'      => $user->id,
             'changelog_id' => $changelog->id,
-            'read' => 1,
+            'read'         => 1,
         ]);
     }
 }

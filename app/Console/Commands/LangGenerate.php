@@ -31,7 +31,7 @@ class LangGenerate extends Command
         $dirs = new DirectoryIterator(resource_path('lang').'/');
 
         foreach ($dirs as $dir) {
-            if (! $dir->isDir()) {
+            if (!$dir->isDir()) {
                 continue;
             }
 
@@ -41,9 +41,9 @@ class LangGenerate extends Command
             }
 
             $this->call('lang:js', [
-                '--json' => true,
+                '--json'   => true,
                 '--source' => $dir->getPathname(),
-                'target' => 'public/js/langs/'.$lang.'.json',
+                'target'   => 'public/js/langs/'.$lang.'.json',
             ]);
         }
     }

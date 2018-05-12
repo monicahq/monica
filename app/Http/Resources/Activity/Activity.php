@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources\Activity;
 
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Activity extends Resource
 {
@@ -11,19 +11,20 @@ class Activity extends Resource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
+     *
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'object' => 'activity',
-            'summary' => $this->summary,
-            'description' => $this->description,
+            'id'               => $this->id,
+            'object'           => 'activity',
+            'summary'          => $this->summary,
+            'description'      => $this->description,
             'date_it_happened' => $this->date_it_happened->format(config('api.timestamp_format')),
-            'activity_type' => new ActivityTypeResource($this->type),
-            'attendees' => [
-                'total' => $this->contacts()->count(),
+            'activity_type'    => new ActivityTypeResource($this->type),
+            'attendees'        => [
+                'total'    => $this->contacts()->count(),
                 'contacts' => $this->getContactsForAPI(),
             ],
             'account' => [

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\ApiUsage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -41,7 +41,7 @@ class ApiController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            (new ApiUsage)->log($request);
+            (new ApiUsage())->log($request);
 
             if ($request->has('sort')) {
                 $this->setSortCriteria($request->get('sort'));
@@ -85,6 +85,7 @@ class ApiController extends Controller
 
     /**
      * Default request to the API.
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function success()
@@ -106,6 +107,7 @@ class ApiController extends Controller
 
     /**
      * @param int $statusCode
+     *
      * @return $this
      */
     public function setHTTPStatusCode($statusCode)
@@ -125,6 +127,7 @@ class ApiController extends Controller
 
     /**
      * @param string $with
+     *
      * @return $this
      */
     public function setWithParameter($with)
@@ -144,6 +147,7 @@ class ApiController extends Controller
 
     /**
      * @param int $errorCode
+     *
      * @return $this
      */
     public function setErrorCode($errorCode)
@@ -163,6 +167,7 @@ class ApiController extends Controller
 
     /**
      * @param int $limit
+     *
      * @return $this
      */
     public function setLimitPerPage($limit)
@@ -174,6 +179,7 @@ class ApiController extends Controller
 
     /**
      * Get the sort direction parameter.
+     *
      * @return string
      */
     public function getSortDirection()
@@ -191,6 +197,7 @@ class ApiController extends Controller
 
     /**
      * @param string $criteria
+     *
      * @return $this
      */
     public function setSortCriteria($criteria)
@@ -239,8 +246,10 @@ class ApiController extends Controller
 
     /**
      * Sends a JSON to the consumer.
-     * @param  array $data
-     * @param  array  $headers [description]
+     *
+     * @param array $data
+     * @param array $headers [description]
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function respond($data, $headers = [])
@@ -250,6 +259,7 @@ class ApiController extends Controller
 
     /**
      * Sends a response not found (404) to the request.
+     *
      * @param string $message
      */
     public function respondNotFound()
@@ -261,6 +271,7 @@ class ApiController extends Controller
 
     /**
      * Sends a response invalid query to the request.
+     *
      * @param string $message
      */
     public function respondInvalidQuery($message = 'Invalid query')
@@ -273,6 +284,7 @@ class ApiController extends Controller
     /**
      * Sends an error when the query didn't have the right parameters for
      * creating an object.
+     *
      * @param string $message
      */
     public function respondNotTheRightParameters($message = 'Too many parameters')
@@ -284,13 +296,14 @@ class ApiController extends Controller
 
     /**
      * Sends a response with error.
+     *
      * @param string message
      */
     public function respondWithError($message)
     {
         return $this->respond([
             'error' => [
-                'message' => $message,
+                'message'    => $message,
                 'error_code' => $this->getErrorCode(),
             ],
         ]);
@@ -299,13 +312,14 @@ class ApiController extends Controller
     /**
      * Sends a response that the object has been deleted, and also indicates
      * the id of the object that has been deleted.
-     * @param  int $id
+     *
+     * @param int $id
      */
     public function respondObjectDeleted($id)
     {
         return $this->respond([
             'deleted' => true,
-            'id' => $id,
+            'id'      => $id,
         ]);
     }
 }

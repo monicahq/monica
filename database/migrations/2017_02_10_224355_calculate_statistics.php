@@ -1,11 +1,11 @@
 <?php
 
+use App\Activity;
+use App\Contact;
 use App\Gift;
 use App\Note;
-use App\Task;
-use App\Contact;
-use App\Activity;
 use App\Reminder;
+use App\Task;
 use Illuminate\Database\Migrations\Migration;
 
 class CalculateStatistics extends Migration

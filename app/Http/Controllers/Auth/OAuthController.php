@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\User;
 use Exception;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Ircop\Antiflood\Facade\Antiflood;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Ircop\Antiflood\Facade\Antiflood;
 
 class OAuthController extends Controller
 {
@@ -30,7 +30,7 @@ class OAuthController extends Controller
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'email' => 'email|required',
+            'email'    => 'email|required',
             'password' => 'required',
         ]);
 
@@ -48,8 +48,8 @@ class OAuthController extends Controller
 
         try {
             return response()->json($this->proxy([
-                'username' => $email,
-                'password' => $password,
+                'username'  => $email,
+                'password'  => $password,
                 'grantType' => 'password',
             ]));
         } catch (Exception $e) {
@@ -70,7 +70,7 @@ class OAuthController extends Controller
 
         return response()->json([
             'error' => [
-                'message' => config('api.error_codes.'.$errorCode),
+                'message'    => config('api.error_codes.'.$errorCode),
                 'error_code' => $errorCode,
             ],
         ], 403);
@@ -80,19 +80,19 @@ class OAuthController extends Controller
      * Proxy a request to the OAuth server.
      *
      * @param string $grantType what type of grant type should be proxied
-     * @param array $data the data to send to the server
+     * @param array  $data      the data to send to the server
      */
     private function proxy(array $data = [])
     {
-        $http = new \GuzzleHttp\Client;
+        $http = new \GuzzleHttp\Client();
         $response = $http->post(config('app.url').'/oauth/token', [
             'form_params' => [
-                'grant_type' => $data['grantType'],
-                'client_id' => config('monica.mobile_client_id'),
+                'grant_type'    => $data['grantType'],
+                'client_id'     => config('monica.mobile_client_id'),
                 'client_secret' => config('monica.mobile_client_secret'),
-                'username' => $data['username'],
-                'password' => $data['password'],
-                'scope' => '',
+                'username'      => $data['username'],
+                'password'      => $data['password'],
+                'scope'         => '',
             ],
         ]);
 
@@ -100,7 +100,7 @@ class OAuthController extends Controller
 
         return [
             'access_token' => $data->access_token,
-            'expires_in' => $data->expires_in,
+            'expires_in'   => $data->expires_in,
         ];
     }
 }

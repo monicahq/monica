@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Debt;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use App\Debt;
 use App\Http\Resources\Debt\Debt as DebtResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ApiDebtController extends ApiController
 {
@@ -33,7 +33,9 @@ class ApiDebtController extends ApiController
 
     /**
      * Get the detail of a given debt.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $debtId)
@@ -51,7 +53,9 @@ class ApiDebtController extends ApiController
 
     /**
      * Store the debt.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -75,8 +79,10 @@ class ApiDebtController extends ApiController
 
     /**
      * Update the debt.
-     * @param  Request $request
-     * @param  int $debtId
+     *
+     * @param Request $request
+     * @param int     $debtId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $debtId)
@@ -106,7 +112,8 @@ class ApiDebtController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
@@ -123,8 +130,8 @@ class ApiDebtController extends ApiController
                 'string',
                 Rule::in(['inprogress', 'completed']),
             ],
-            'amount' => 'required|numeric',
-            'reason' => 'string|max:1000000|nullable',
+            'amount'     => 'required|numeric',
+            'reason'     => 'string|max:1000000|nullable',
             'contact_id' => 'required|integer',
         ]);
 
@@ -146,7 +153,9 @@ class ApiDebtController extends ApiController
 
     /**
      * Delete a debt.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $debtId)

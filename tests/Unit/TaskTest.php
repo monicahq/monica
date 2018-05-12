@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Task;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class TaskTest extends TestCase
 {

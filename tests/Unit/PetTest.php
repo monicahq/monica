@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Pet;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PetTest extends TestCase
 {
@@ -45,7 +45,7 @@ class PetTest extends TestCase
 
     public function test_it_sets_name()
     {
-        $pet = new Pet;
+        $pet = new Pet();
         $this->assertNull($pet->name);
 
         $pet->name = 'henri';

@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Migrations\Migration;
 
 class MoveAgesData extends Migration
 {
@@ -22,12 +22,12 @@ class MoveAgesData extends Migration
 
             if ($contact->deceased_date) {
                 $specialDateDeceasedDateId = DB::table('special_dates')->insertGetId([
-                    'account_id' => $contact->account_id,
-                    'contact_id' => $contact->id,
+                    'account_id'   => $contact->account_id,
+                    'contact_id'   => $contact->id,
                     'is_age_based' => false,
-                    'date' => $contact->deceased_date,
-                    'reminder_id' => null,
-                    'created_at' => now(),
+                    'date'         => $contact->deceased_date,
+                    'reminder_id'  => null,
+                    'created_at'   => now(),
                 ]);
             }
 
@@ -39,23 +39,23 @@ class MoveAgesData extends Migration
                         break;
                     case 'approximate':
                         $specialDateBirthdateId = DB::table('special_dates')->insertGetId([
-                            'account_id' => $contact->account_id,
-                            'contact_id' => $contact->id,
+                            'account_id'   => $contact->account_id,
+                            'contact_id'   => $contact->id,
                             'is_age_based' => true,
-                            'date' => $contact->birthdate,
-                            'reminder_id' => $contact->birthday_reminder_id,
-                            'created_at' => now(),
+                            'date'         => $contact->birthdate,
+                            'reminder_id'  => $contact->birthday_reminder_id,
+                            'created_at'   => now(),
                         ]);
 
                         break;
                     case 'exact':
                         $specialDateBirthdateId = DB::table('special_dates')->insertGetId([
-                            'account_id' => $contact->account_id,
-                            'contact_id' => $contact->id,
+                            'account_id'   => $contact->account_id,
+                            'contact_id'   => $contact->id,
                             'is_age_based' => false,
-                            'date' => $contact->birthdate,
-                            'reminder_id' => $contact->birthday_reminder_id,
-                            'created_at' => now(),
+                            'date'         => $contact->birthdate,
+                            'reminder_id'  => $contact->birthday_reminder_id,
+                            'created_at'   => now(),
                         ]);
 
                         break;
@@ -64,12 +64,12 @@ class MoveAgesData extends Migration
 
             if ($contact->first_met) {
                 $specialDateFirstMetDateId = DB::table('special_dates')->insertGetId([
-                    'account_id' => $contact->account_id,
-                    'contact_id' => $contact->id,
+                    'account_id'   => $contact->account_id,
+                    'contact_id'   => $contact->id,
                     'is_age_based' => false,
-                    'date' => $contact->first_met,
-                    'reminder_id' => null,
-                    'created_at' => now(),
+                    'date'         => $contact->first_met,
+                    'reminder_id'  => null,
+                    'created_at'   => now(),
                 ]);
             }
 
@@ -90,7 +90,7 @@ class MoveAgesData extends Migration
                             ->where('id', $contact->birthday_reminder_id)
                             ->update([
                                 'special_date_id' => $specialDateBirthdateId,
-                                'title' => 'Wish happy birthday to '.$contact->first_name,
+                                'title'           => 'Wish happy birthday to '.$contact->first_name,
                             ]);
                 }
             }
@@ -98,8 +98,8 @@ class MoveAgesData extends Migration
             DB::table('contacts')
                     ->where('id', $contact->id)
                     ->update([
-                        'deceased_special_date_id' => $specialDateDeceasedDateId,
-                        'birthday_special_date_id' => $specialDateBirthdateId,
+                        'deceased_special_date_id'  => $specialDateDeceasedDateId,
+                        'birthday_special_date_id'  => $specialDateBirthdateId,
                         'first_met_special_date_id' => $specialDateFirstMetDateId,
                     ]);
         }

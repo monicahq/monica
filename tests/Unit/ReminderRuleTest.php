@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ReminderRuleTest extends TestCase
 {
@@ -30,7 +30,7 @@ class ReminderRuleTest extends TestCase
 
     public function test_it_sets_number_of_days_before_attribute()
     {
-        $reminderRule = new ReminderRule;
+        $reminderRule = new ReminderRule();
         $reminderRule->number_of_days_before = '14';
 
         $this->assertEquals(
@@ -41,7 +41,7 @@ class ReminderRuleTest extends TestCase
 
     public function test_it_toggles_the_status()
     {
-        $reminderRule = new ReminderRule;
+        $reminderRule = new ReminderRule();
         $reminderRule->active = true;
         $reminderRule->save();
 

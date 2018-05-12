@@ -5,8 +5,8 @@ namespace Tests\Unit;
 use App\Account;
 use App\Reminder;
 use Carbon\Carbon;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ReminderTest extends TestCase
 {
@@ -37,11 +37,11 @@ class ReminderTest extends TestCase
         $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'reminder_id' => $reminder->id,
         ]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'reminder_id' => $reminder->id,
         ]);
 
@@ -50,14 +50,14 @@ class ReminderTest extends TestCase
 
     public function test_title_getter_returns_null_if_undefined()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
 
         $this->assertNull($reminder->title);
     }
 
     public function test_title_getter_returns_correct_string()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->title = 'this is a test';
 
         $this->assertInternalType('string', $reminder->title);
@@ -66,14 +66,14 @@ class ReminderTest extends TestCase
 
     public function test_description_getter_returns_null_if_undefined()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
 
         $this->assertNull($reminder->description);
     }
 
     public function test_description_getter_returns_correct_string()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->description = 'this is a test';
 
         $this->assertInternalType('string', $reminder->description);
@@ -82,7 +82,7 @@ class ReminderTest extends TestCase
 
     public function testGetNextExpectedDateReturnsString()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->next_expected_date = '2017-01-01 10:10:10';
 
         $this->assertEquals(
@@ -94,7 +94,7 @@ class ReminderTest extends TestCase
     public function test_calculate_next_expected_date()
     {
         $timezone = 'US/Eastern';
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->next_expected_date = '1980-01-01 10:10:10';
         $reminder->frequency_number = 1;
 
@@ -162,9 +162,9 @@ class ReminderTest extends TestCase
         $notification = $reminder->scheduleSingleNotification(3);
 
         $this->assertDatabaseHas('notifications', [
-            'account_id' => $reminder->account_id,
-            'contact_id' => $reminder->contact_id,
-            'reminder_id' => $reminder->id,
+            'account_id'   => $reminder->account_id,
+            'contact_id'   => $reminder->contact_id,
+            'reminder_id'  => $reminder->id,
             'trigger_date' => '2017-01-29 00:00:00',
         ]);
     }
@@ -180,7 +180,7 @@ class ReminderTest extends TestCase
 
     public function test_it_cant_schedule_a_notification_for_a_weekly_reminder()
     {
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->frequency_type = 'week';
 
         $this->assertNull($reminder->scheduleNotifications());
@@ -192,19 +192,19 @@ class ReminderTest extends TestCase
 
         $account = factory('App\Account')->create();
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 3,
-            'active' => 0,
+            'active'                => 0,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => 1,
+            'active'                => 1,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 30,
-            'active' => 1,
+            'active'                => 1,
         ]);
 
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);

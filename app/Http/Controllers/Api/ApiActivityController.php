@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Note;
-use App\Contact;
 use App\Activity;
 use App\ActivityType;
-use App\JournalEntry;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Contact;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use App\JournalEntry;
+use App\Note;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiActivityController extends ApiController
 {
@@ -38,7 +38,9 @@ class ApiActivityController extends ApiController
 
     /**
      * Get the detail of a given activity.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $activityId)
@@ -56,13 +58,15 @@ class ApiActivityController extends ApiController
 
     /**
      * Store the activity.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $contact = $this->validateUpdate($request);
-        if (! $contact instanceof Contact) {
+        if (!$contact instanceof Contact) {
             return $contact;
         }
 
@@ -81,7 +85,7 @@ class ApiActivityController extends ApiController
         }
 
         // Log a journal entry
-        (new JournalEntry)->add($activity);
+        (new JournalEntry())->add($activity);
 
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
@@ -97,8 +101,10 @@ class ApiActivityController extends ApiController
 
     /**
      * Update the activity.
-     * @param  Request $request
-     * @param  int $activityId
+     *
+     * @param Request $request
+     * @param int     $activityId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $activityId)
@@ -132,7 +138,7 @@ class ApiActivityController extends ApiController
 
         // Log a journal entry but need to delete the previous one first
         $activity->deleteJournalEntry();
-        (new JournalEntry)->add($activity);
+        (new JournalEntry())->add($activity);
 
         // Get the attendees
         $attendees = $request->get('contacts');
@@ -142,7 +148,7 @@ class ApiActivityController extends ApiController
 
         foreach ($existing as $contact) {
             // Has an existing attendee been removed?
-            if (! in_array($contact->id, $attendees)) {
+            if (!in_array($contact->id, $attendees)) {
                 $contact->activities()->detach($activity);
                 $contact->logEvent('activity', $activity->id, 'delete');
             } else {
@@ -172,18 +178,19 @@ class ApiActivityController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'summary' => 'required|max:100000',
-            'description' => 'required|max:1000000',
+            'summary'          => 'required|max:100000',
+            'description'      => 'required|max:1000000',
             'date_it_happened' => 'required|date',
             'activity_type_id' => 'integer',
-            'contacts' => 'required|array',
+            'contacts'         => 'required|array',
         ]);
 
         if ($validator->fails()) {
@@ -209,7 +216,9 @@ class ApiActivityController extends ApiController
 
     /**
      * Delete an activity.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $activityId)

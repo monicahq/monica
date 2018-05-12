@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class PopulateDefaultRelationshipTypeTables extends Migration
 {
@@ -21,39 +21,39 @@ class PopulateDefaultRelationshipTypeTables extends Migration
 
         DB::table('default_relationship_types')->insert([
         [
-            'name' => 'partner',
-            'name_reverse_relationship' => 'partner',
+            'name'                       => 'partner',
+            'name_reverse_relationship'  => 'partner',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'spouse',
-            'name_reverse_relationship' => 'spouse',
+            'name'                       => 'spouse',
+            'name_reverse_relationship'  => 'spouse',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'date',
-            'name_reverse_relationship' => 'date',
+            'name'                       => 'date',
+            'name_reverse_relationship'  => 'date',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'lover',
-            'name_reverse_relationship' => 'lover',
+            'name'                       => 'lover',
+            'name_reverse_relationship'  => 'lover',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'inlovewith',
-            'name_reverse_relationship' => 'lovedby',
+            'name'                       => 'inlovewith',
+            'name_reverse_relationship'  => 'lovedby',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'lovedby',
-            'name_reverse_relationship' => 'inlovewith',
+            'name'                       => 'lovedby',
+            'name_reverse_relationship'  => 'inlovewith',
             'relationship_type_group_id' => $id,
         ], ]);
 
         DB::table('default_relationship_types')->insertGetId([
-            'name' => 'ex',
-            'name_reverse_relationship' => 'ex',
+            'name'                       => 'ex',
+            'name_reverse_relationship'  => 'ex',
             'relationship_type_group_id' => $id,
         ]);
 
@@ -64,53 +64,53 @@ class PopulateDefaultRelationshipTypeTables extends Migration
 
         DB::table('default_relationship_types')->insert([
         [
-            'name' => 'parent',
-            'name_reverse_relationship' => 'child',
+            'name'                       => 'parent',
+            'name_reverse_relationship'  => 'child',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'child',
-            'name_reverse_relationship' => 'parent',
+            'name'                       => 'child',
+            'name_reverse_relationship'  => 'parent',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'sibling',
-            'name_reverse_relationship' => 'sibling',
+            'name'                       => 'sibling',
+            'name_reverse_relationship'  => 'sibling',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'grandparent',
-            'name_reverse_relationship' => 'grandchild',
+            'name'                       => 'grandparent',
+            'name_reverse_relationship'  => 'grandchild',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'grandchild',
-            'name_reverse_relationship' => 'grandparent',
+            'name'                       => 'grandchild',
+            'name_reverse_relationship'  => 'grandparent',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'uncle',
-            'name_reverse_relationship' => 'nephew',
+            'name'                       => 'uncle',
+            'name_reverse_relationship'  => 'nephew',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'nephew',
-            'name_reverse_relationship' => 'uncle',
+            'name'                       => 'nephew',
+            'name_reverse_relationship'  => 'uncle',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'cousin',
-            'name_reverse_relationship' => 'cousin',
+            'name'                       => 'cousin',
+            'name_reverse_relationship'  => 'cousin',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'godfather',
-            'name_reverse_relationship' => 'godson',
+            'name'                       => 'godfather',
+            'name_reverse_relationship'  => 'godson',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'godson',
-            'name_reverse_relationship' => 'godfather',
+            'name'                       => 'godson',
+            'name_reverse_relationship'  => 'godfather',
             'relationship_type_group_id' => $id,
         ], ]);
 
@@ -121,13 +121,13 @@ class PopulateDefaultRelationshipTypeTables extends Migration
 
         DB::table('default_relationship_types')->insert([
         [
-            'name' => 'friend',
-            'name_reverse_relationship' => 'friend',
+            'name'                       => 'friend',
+            'name_reverse_relationship'  => 'friend',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'bestfriend',
-            'name_reverse_relationship' => 'bestfriend',
+            'name'                       => 'bestfriend',
+            'name_reverse_relationship'  => 'bestfriend',
             'relationship_type_group_id' => $id,
         ], ]);
 
@@ -138,28 +138,28 @@ class PopulateDefaultRelationshipTypeTables extends Migration
 
         DB::table('default_relationship_types')->insert([
         [
-            'name' => 'colleague',
-            'name_reverse_relationship' => 'colleague',
+            'name'                       => 'colleague',
+            'name_reverse_relationship'  => 'colleague',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'boss',
-            'name_reverse_relationship' => 'subordinate',
+            'name'                       => 'boss',
+            'name_reverse_relationship'  => 'subordinate',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'subordinate',
-            'name_reverse_relationship' => 'boss',
+            'name'                       => 'subordinate',
+            'name_reverse_relationship'  => 'boss',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'mentor',
-            'name_reverse_relationship' => 'protege',
+            'name'                       => 'mentor',
+            'name_reverse_relationship'  => 'protege',
             'relationship_type_group_id' => $id,
         ],
         [
-            'name' => 'protege',
-            'name_reverse_relationship' => 'mentor',
+            'name'                       => 'protege',
+            'name_reverse_relationship'  => 'mentor',
             'relationship_type_group_id' => $id,
         ], ]);
     }

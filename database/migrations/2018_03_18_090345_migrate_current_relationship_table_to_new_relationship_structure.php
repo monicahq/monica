@@ -2,9 +2,9 @@
 
 use App\Account;
 use App\Relationship;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Migrations\Migration;
 
 class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migration
 {
@@ -32,18 +32,18 @@ class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migratio
 
                     DB::table('temp_relationships_table')->insert([
                         [
-                            'account_id' => $account->id,
-                            'contact_is' => $relationship->contact_id,
+                            'account_id'             => $account->id,
+                            'contact_is'             => $relationship->contact_id,
                             'relationship_type_name' => 'partner',
-                            'of_contact' => $relationship->with_contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
+                            'of_contact'             => $relationship->with_contact_id,
+                            'relationship_type_id'   => $relationshipTypeId,
                         ],
                         [
-                            'account_id' => $account->id,
-                            'contact_is' => $relationship->with_contact_id,
+                            'account_id'             => $account->id,
+                            'contact_is'             => $relationship->with_contact_id,
                             'relationship_type_name' => 'partner',
-                            'of_contact' => $relationship->contact_id,
-                            'relationship_type_id' => $relationshipTypeId,
+                            'of_contact'             => $relationship->contact_id,
+                            'relationship_type_id'   => $relationshipTypeId,
                         ],
                     ]);
                 }

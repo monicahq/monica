@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Gift;
 use App\Contact;
+use App\Gift;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\IntroductionsRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,7 +14,8 @@ class IntroductionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param Gift $gift
+     * @param Gift    $gift
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact)
@@ -27,7 +28,8 @@ class IntroductionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param IntroductionsRequest $request
-     * @param Contact $contact
+     * @param Contact              $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(IntroductionsRequest $request, Contact $contact)
@@ -76,7 +78,8 @@ class IntroductionsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Gift $gift
+     * @param Gift    $gift
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Gift $gift)

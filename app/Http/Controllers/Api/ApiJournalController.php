@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entry;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiJournalController extends ApiController
 {
@@ -31,7 +31,9 @@ class ApiJournalController extends ApiController
 
     /**
      * Get the detail of a given journal entry.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $entryId)
@@ -49,7 +51,9 @@ class ApiJournalController extends ApiController
 
     /**
      * Store the call.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,7 +61,7 @@ class ApiJournalController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'post' => 'required|max:1000000',
+            'post'  => 'required|max:1000000',
         ]);
 
         if ($validator->fails()) {
@@ -79,8 +83,10 @@ class ApiJournalController extends ApiController
 
     /**
      * Update the note.
-     * @param  Request $request
-     * @param  int $entryId
+     *
+     * @param Request $request
+     * @param int     $entryId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $entryId)
@@ -96,7 +102,7 @@ class ApiJournalController extends ApiController
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'post' => 'required|max:1000000',
+            'post'  => 'required|max:1000000',
         ]);
 
         if ($validator->fails()) {
@@ -115,7 +121,9 @@ class ApiJournalController extends ApiController
 
     /**
      * Delete a journal entry.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $entryId)

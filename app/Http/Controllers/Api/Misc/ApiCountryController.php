@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Misc;
 
-use Illuminate\Http\Request;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Country\Country as CountryResource;
+use Illuminate\Http\Request;
 
 class ApiCountryController extends ApiController
 {

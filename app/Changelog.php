@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
+use Parsedown;
 
 class Changelog extends Model
 {

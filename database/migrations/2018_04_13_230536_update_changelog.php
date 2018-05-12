@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class UpdateChangelog extends Migration
 {
@@ -21,7 +21,7 @@ There is a new header now in Monica. It shows a bell that slowly pulsate, with a
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => '2018-04-15',
+            'created_at'  => '2018-04-15',
         ]);
 
         $instance = \App\Instance::first();
@@ -38,7 +38,7 @@ Before you could only have parent/child relationships and significant other rela
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => '2018-04-20',
+            'created_at'  => '2018-04-20',
         ]);
 
         $instance->addUnreadChangelogEntry($id);

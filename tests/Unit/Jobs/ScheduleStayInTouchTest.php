@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Mail\StayInTouchEmail;
-use Illuminate\Support\Facades\Mail;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use App\Mail\StayInTouchEmail;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class ScheduleStayInTouchTest extends TestCase
 {
@@ -20,18 +20,18 @@ class ScheduleStayInTouchTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory('App\Account')->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent'       => '7:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
         $contact = factory('App\Contact')->create([
-            'account_id' => $account->id,
+            'account_id'                 => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
-            'stay_in_touch_frequency' => 5,
+            'stay_in_touch_frequency'    => 5,
         ]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
-            'locale' => 'US\Eastern',
+            'email'      => 'john@doe.com',
+            'locale'     => 'US\Eastern',
         ]);
 
         dispatch(new ScheduleStayInTouch($contact));
@@ -54,18 +54,18 @@ class ScheduleStayInTouchTest extends TestCase
         config(['monica.requires_subscription' => true]);
 
         $account = factory('App\Account')->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent'       => '7:00',
             'has_access_to_paid_version_for_free' => 0,
         ]);
         $contact = factory('App\Contact')->create([
-            'account_id' => $account->id,
+            'account_id'                 => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
-            'stay_in_touch_frequency' => 5,
+            'stay_in_touch_frequency'    => 5,
         ]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
-            'locale' => 'US\Eastern',
+            'email'      => 'john@doe.com',
+            'locale'     => 'US\Eastern',
         ]);
 
         dispatch(new ScheduleStayInTouch($contact));

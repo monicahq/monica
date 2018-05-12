@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use Matriphe\ISO639\ISO639;
 use Illuminate\Support\Facades\Auth;
+use Matriphe\ISO639\ISO639;
 
 class LocaleHelper
 {
@@ -84,6 +84,7 @@ class LocaleHelper
      * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code).
      *
      * @param string
+     *
      * @return string
      */
     public static function getLocaleAlpha($locale)
@@ -92,7 +93,7 @@ class LocaleHelper
             return array_get(static::$locales, $locale);
         }
         $locale = mb_strtolower($locale);
-        $languages = (new ISO639)->allLanguages();
+        $languages = (new ISO639())->allLanguages();
         $lang = '';
         foreach ($languages as $l) {
             if ($l[0] == $locale) {

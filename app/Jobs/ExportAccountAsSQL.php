@@ -2,10 +2,10 @@
 
 namespace App\Jobs;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ExportAccountAsSQL
 {
@@ -117,14 +117,14 @@ class ExportAccountAsSQL
 
                     if (is_null($value)) {
                         $value = 'NULL';
-                    } elseif (! is_numeric($value)) {
+                    } elseif (!is_numeric($value)) {
                         $value = "'".addslashes($value)."'";
                     }
 
                     array_push($tableValues, $value);
                 }
 
-                if (! $skipLine) {
+                if (!$skipLine) {
                     $newSQLLine .= implode(',', $tableValues).');'.PHP_EOL;
                     $sql .= $newSQLLine;
                 }

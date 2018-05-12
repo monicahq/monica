@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 class CreateDefaultModulesTable extends Migration
 {
@@ -26,67 +26,67 @@ class CreateDefaultModulesTable extends Migration
 
         DB::table('default_contact_modules')->insert([
         [
-            'key' => 'love_relationships',
+            'key'             => 'love_relationships',
             'translation_key' => 'app.relationship_type_group_love',
         ],
         [
-            'key' => 'family_relationships',
+            'key'             => 'family_relationships',
             'translation_key' => 'app.relationship_type_group_family',
         ],
         [
-            'key' => 'other_relationships',
+            'key'             => 'other_relationships',
             'translation_key' => 'app.relationship_type_group_other',
         ],
         [
-            'key' => 'pets',
+            'key'             => 'pets',
             'translation_key' => 'people.pets_title',
         ],
         [
-            'key' => 'contact_information',
+            'key'             => 'contact_information',
             'translation_key' => 'people.section_contact_information',
         ],
         [
-            'key' => 'addresses',
+            'key'             => 'addresses',
             'translation_key' => 'people.contact_address_title',
         ],
         [
-            'key' => 'how_you_met',
+            'key'             => 'how_you_met',
             'translation_key' => 'people.introductions_sidebar_title',
         ],
         [
-            'key' => 'work_information',
+            'key'             => 'work_information',
             'translation_key' => 'people.work_information',
         ],
         [
-            'key' => 'food_preferences',
+            'key'             => 'food_preferences',
             'translation_key' => 'people.food_preferencies_title',
         ],
         [
-            'key' => 'notes',
+            'key'             => 'notes',
             'translation_key' => 'people.section_personal_notes',
         ],
         [
-            'key' => 'phone_calls',
+            'key'             => 'phone_calls',
             'translation_key' => 'people.call_title',
         ],
         [
-            'key' => 'activities',
+            'key'             => 'activities',
             'translation_key' => 'people.activity_title',
         ],
         [
-            'key' => 'reminders',
+            'key'             => 'reminders',
             'translation_key' => 'people.section_personal_reminders',
         ],
         [
-            'key' => 'tasks',
+            'key'             => 'tasks',
             'translation_key' => 'people.section_personal_tasks',
         ],
         [
-            'key' => 'gifts',
+            'key'             => 'gifts',
             'translation_key' => 'people.gifts_title',
         ],
         [
-            'key' => 'debts',
+            'key'             => 'debts',
             'translation_key' => 'people.debt_title',
         ], ]);
     }

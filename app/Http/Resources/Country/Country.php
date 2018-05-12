@@ -11,25 +11,24 @@ class Country extends Resource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
+     *
      * @return array
      */
     public function toArray($request)
     {
-        if ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection)
-        {
+        if ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection) {
             $id = $this->resource->id;
             $name = $this->resource->country;
-        }
-        else
-        {
+        } else {
             $id = $this->resource;
             $name = CountriesHelper::get($this->resource);
         }
+
         return [
-            'id' => $id,
+            'id'     => $id,
             'object' => 'country',
-            'name' => $name,
-            'iso' => $id,
+            'name'   => $name,
+            'iso'    => $id,
         ];
     }
 }

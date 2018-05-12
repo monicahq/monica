@@ -34,8 +34,8 @@ class PingVersionServer extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed('Checking version deactivated', function () {
-            return ! config('monica.check_version') && $this->getLaravel()->environment() == 'production';
+        if (!$this->confirmToProceed('Checking version deactivated', function () {
+            return !config('monica.check_version') && $this->getLaravel()->environment() == 'production';
         })) {
             return false;
         }
@@ -44,14 +44,14 @@ class PingVersionServer extends Command
 
         // Prepare the json to query version.monicahq.com
         $json = [
-            'uuid' => $instance->uuid,
-            'version' => $instance->current_version,
+            'uuid'     => $instance->uuid,
+            'version'  => $instance->current_version,
             'contacts' => Contact::count(),
         ];
 
         $data = [
-            'uuid' => $instance->uuid,
-            'version' => $instance->current_version,
+            'uuid'     => $instance->uuid,
+            'version'  => $instance->current_version,
             'contacts' => Contact::all()->count(),
         ];
 
@@ -84,7 +84,7 @@ class PingVersionServer extends Command
         }
 
         // make sure the JSON has all the fields we need
-        if (! isset($json['latest_version']) || ! isset($json['new_version']) || ! isset($json['number_of_versions_since_user_version'])) {
+        if (!isset($json['latest_version']) || !isset($json['new_version']) || !isset($json['number_of_versions_since_user_version'])) {
             return;
         }
 

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
 use App\Account;
-use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendNewUserAlert;
+use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -49,8 +49,8 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        $first = ! Account::hasAny();
-        if (config('monica.disable_signup') == 'true' && ! $first) {
+        $first = !Account::hasAny();
+        if (config('monica.disable_signup') == 'true' && !$first) {
             abort(403, trans('auth.signup_disabled'));
         }
 
@@ -60,32 +60,34 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'last_name' => 'required|max:255',
+            'last_name'  => 'required|max:255',
             'first_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'email'      => 'required|email|max:255|unique:users',
+            'password'   => 'required|min:6|confirmed',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return User
      */
     protected function create(array $data)
     {
-        $first = ! Account::hasAny();
+        $first = !Account::hasAny();
         $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
         $user = $account->users()->first();
 
-        if (! $first) {
+        if (!$first) {
             // send me an alert
             dispatch(new SendNewUserAlert($user));
         }

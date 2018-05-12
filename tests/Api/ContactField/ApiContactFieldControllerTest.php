@@ -2,8 +2,8 @@
 
 namespace Tests\Api\Contact;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiContactFieldControllerTest extends ApiTestCase
 {
@@ -35,8 +35,8 @@ class ApiContactFieldControllerTest extends ApiTestCase
         ]);
 
         $contactField = factory('App\ContactField')->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $user->account_id,
             'contact_field_type_id' => $field->id,
         ]);
 
@@ -45,7 +45,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $contactField->id,
+            'id'     => $contactField->id,
             'object' => 'contactfield',
         ]);
 

@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class NoteTest extends FeatureTestCase
 {
@@ -13,6 +13,7 @@ class NoteTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -33,7 +34,7 @@ class NoteTest extends FeatureTestCase
         $noteBody = 'This is a note that I would like to see';
 
         $params = [
-            'body' => $noteBody,
+            'body'         => $noteBody,
             'is_favorited' => 0,
         ];
 
@@ -59,15 +60,15 @@ class NoteTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         $note = factory(\App\Note::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-            'body' => 'this is a test',
+            'contact_id'   => $contact->id,
+            'account_id'   => $user->account_id,
+            'body'         => 'this is a test',
             'is_favorited' => 1,
         ]);
 
         // now edit the note
         $params = [
-            'body' => 'this is another test',
+            'body'         => 'this is another test',
             'is_favorited' => 0,
         ];
 
@@ -97,7 +98,7 @@ class NoteTest extends FeatureTestCase
         $note = factory(\App\Note::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'body' => 'this is a test',
+            'body'       => 'this is a test',
         ]);
 
         $response = $this->delete('/people/'.$contact->id.'/notes/'.$note->id);

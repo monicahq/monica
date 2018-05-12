@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class ContactFieldTest extends FeatureTestCase
 {
@@ -13,6 +13,7 @@ class ContactFieldTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -35,8 +36,8 @@ class ContactFieldTest extends FeatureTestCase
         ]);
 
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $user->account_id,
             'contact_field_type_id' => $feild->id,
         ]);
 
@@ -68,13 +69,13 @@ class ContactFieldTest extends FeatureTestCase
 
         $feild = factory(\App\ContactFieldType::class)->create([
             'account_id' => $user->account_id,
-            'name' => 'Test Name',
-            'type' => 'test',
+            'name'       => 'Test Name',
+            'type'       => 'test',
         ]);
 
         $params = [
             'contact_field_type_id' => $feild->id,
-            'data' => 'test_data',
+            'data'                  => 'test_data',
         ];
 
         $response = $this->post('/people/'.$contact->id.'/contactfield', $params);
@@ -102,13 +103,13 @@ class ContactFieldTest extends FeatureTestCase
 
         $feild = factory(\App\ContactFieldType::class)->create([
             'account_id' => $user->account_id,
-            'name' => 'Test Name',
-            'type' => 'test',
+            'name'       => 'Test Name',
+            'type'       => 'test',
         ]);
 
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $user->account_id,
             'contact_field_type_id' => $feild->id,
         ]);
 
@@ -141,8 +142,8 @@ class ContactFieldTest extends FeatureTestCase
         ]);
 
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $user->account_id,
             'contact_field_type_id' => $feild->id,
         ]);
 

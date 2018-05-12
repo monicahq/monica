@@ -2,11 +2,11 @@
 
 namespace App;
 
-use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
+use Laravel\Cashier\Billable;
 
 class Account extends Model
 {
@@ -315,7 +315,8 @@ class Account extends Model
     /**
      * Get the default time reminder is sent.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getDefaultTimeReminderIsSentAttribute($value)
@@ -326,7 +327,8 @@ class Account extends Model
     /**
      * Set the default time a reminder is sent.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return void
      */
     public function setDefaultTimeReminderIsSentAttribute($value)
@@ -423,7 +425,7 @@ class Account extends Model
             return false;
         }
 
-        if (! config('monica.requires_subscription')) {
+        if (!config('monica.requires_subscription')) {
             return false;
         }
 
@@ -437,6 +439,7 @@ class Account extends Model
     /**
      * Get the timezone of the user. In case an account has multiple timezones,
      * takes the first it finds.
+     *
      * @return string
      */
     public function timezone()
@@ -460,14 +463,14 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
+            if (!$ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
                 ContactFieldType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultContactFieldType->name,
+                    'account_id'       => $this->id,
+                    'name'             => $defaultContactFieldType->name,
                     'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                    'delible' => $defaultContactFieldType->delible,
-                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
+                    'protocol'         => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
+                    'delible'          => $defaultContactFieldType->delible,
+                    'type'             => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
                 ]);
             }
         }
@@ -505,11 +508,11 @@ class Account extends Model
     {
         $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
         foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
-            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
+            if (!$ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
                 DB::table('relationship_type_groups')->insert([
                     'account_id' => $this->id,
-                    'name' => $defaultRelationshipTypeGroup->name,
-                    'delible' => $defaultRelationshipTypeGroup->delible,
+                    'name'       => $defaultRelationshipTypeGroup->name,
+                    'delible'    => $defaultRelationshipTypeGroup->delible,
                 ]);
             }
         }
@@ -518,7 +521,8 @@ class Account extends Model
     /**
      * Populate the relationship types table based on the default ones.
      *
-     * @param  bool $ignoreTableAlreadyMigrated
+     * @param bool $ignoreTableAlreadyMigrated
+     *
      * @return void
      */
     public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
@@ -526,7 +530,7 @@ class Account extends Model
         $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
+            if (!$ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
                 $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
                                         ->where('id', $defaultRelationshipType->relationship_type_group_id)
                                         ->first();
@@ -534,11 +538,11 @@ class Account extends Model
                 $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
                 RelationshipType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultRelationshipType->name,
-                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                    'account_id'                 => $this->id,
+                    'name'                       => $defaultRelationshipType->name,
+                    'name_reverse_relationship'  => $defaultRelationshipType->name_reverse_relationship,
                     'relationship_type_group_id' => $relationshipTypeGroup->id,
-                    'delible' => $defaultRelationshipType->delible,
+                    'delible'                    => $defaultRelationshipType->delible,
                 ]);
             }
         }
@@ -547,7 +551,8 @@ class Account extends Model
     /**
      * Populate the account modules table based on the default ones.
      *
-     * @param  bool $ignoreTableAlreadyMigrated
+     * @param bool $ignoreTableAlreadyMigrated
+     *
      * @return void
      */
     public function populateModulesTable($ignoreTableAlreadyMigrated = false)
@@ -555,13 +560,13 @@ class Account extends Model
         $defaultModules = DB::table('default_contact_modules')->get();
 
         foreach ($defaultModules as $defaultModule) {
-            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
+            if (!$ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
                 Module::create([
-                    'account_id' => $this->id,
-                    'key' => $defaultModule->key,
+                    'account_id'      => $this->id,
+                    'key'             => $defaultModule->key,
                     'translation_key' => $defaultModule->translation_key,
-                    'delible' => $defaultModule->delible,
-                    'active' => $defaultModule->active,
+                    'delible'         => $defaultModule->delible,
+                    'active'          => $defaultModule->active,
                 ]);
             }
         }
@@ -572,7 +577,8 @@ class Account extends Model
      * - 0 means current month
      * - 1 means month+1
      * - 2 means month+2...
-     * @param  int    $month
+     *
+     * @param int $month
      */
     public function getRemindersForMonth(int $month)
     {
@@ -613,8 +619,9 @@ class Account extends Model
      * Replaces a specific gender of all the contacts in the account with another
      * gender.
      *
-     * @param  Gender $genderToDelete
-     * @param  Gender $genderToReplaceWith
+     * @param Gender $genderToDelete
+     * @param Gender $genderToReplaceWith
+     *
      * @return bool
      */
     public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
@@ -643,12 +650,13 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
+     *
      * @return $this
      */
     public static function createDefault($first_name, $last_name, $email, $password)
     {
         // create new account
-        $account = new self;
+        $account = new self();
         $account->api_key = str_random(30);
         $account->created_at = now();
         $account->save();
@@ -679,7 +687,8 @@ class Account extends Model
     /**
      * Gets the RelationshipType object matching the given type.
      *
-     * @param  string $relationshipTypeName
+     * @param string $relationshipTypeName
+     *
      * @return RelationshipType
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
@@ -690,7 +699,8 @@ class Account extends Model
     /**
      * Gets the RelationshipType object matching the given type.
      *
-     * @param  string $relationshipTypeGroupName
+     * @param string $relationshipTypeGroupName
+     *
      * @return RelationshipTypeGroup
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
@@ -721,7 +731,7 @@ class Account extends Model
                 }
             }
 
-            if (! $foundInYear) {
+            if (!$foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }
@@ -756,7 +766,7 @@ class Account extends Model
                 }
             }
 
-            if (! $foundInYear) {
+            if (!$foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }

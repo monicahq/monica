@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiRelationshipControllerTest extends ApiTestCase
 {
@@ -21,40 +21,40 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure contact_is is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 'a',
+                            'contact_is'           => 'a',
                             'relationship_type_id' => 1,
-                            'of_contact' => 1,
+                            'of_contact'           => 1,
                         ]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => ['The contact is must be an integer.'],
+            'message'    => ['The contact is must be an integer.'],
             'error_code' => 41,
         ]);
 
         // make sure relationship type id is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 1,
+                            'contact_is'           => 1,
                             'relationship_type_id' => 'a',
-                            'of_contact' => 1,
+                            'of_contact'           => 1,
                         ]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => ['The relationship type id must be an integer.'],
+            'message'    => ['The relationship type id must be an integer.'],
             'error_code' => 41,
         ]);
 
         // make sure of_contact is an integer
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 1,
+                            'contact_is'           => 1,
                             'relationship_type_id' => 1,
-                            'of_contact' => 'a',
+                            'of_contact'           => 'a',
                         ]);
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => ['The of contact must be an integer.'],
+            'message'    => ['The of contact must be an integer.'],
             'error_code' => 41,
         ]);
     }
@@ -64,14 +64,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 1,
+                            'contact_is'           => 1,
                             'relationship_type_id' => 1,
-                            'of_contact' => 1,
+                            'of_contact'           => 1,
                         ]);
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
+            'message'    => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -81,14 +81,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 1,
+                            'contact_is'           => 1,
                             'relationship_type_id' => 1,
-                            'of_contact' => 1,
+                            'of_contact'           => 1,
                         ]);
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
+            'message'    => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -98,14 +98,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => 1,
+                            'contact_is'           => 1,
                             'relationship_type_id' => 1,
-                            'of_contact' => 1,
+                            'of_contact'           => 1,
                         ]);
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
+            'message'    => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -116,36 +116,36 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'uncle',
+            'account_id'                => $user->account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'nephew',
+            'account_id'                => $user->account->id,
+            'name'                      => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $response = $this->json('POST', '/api/relationships', [
-                            'contact_is' => $contactA->id,
+                            'contact_is'           => $contactA->id,
                             'relationship_type_id' => $relationshipType->id,
-                            'of_contact' => $contactB->id,
+                            'of_contact'           => $contactB->id,
                         ]);
 
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('relationships', [
-            'account_id' => auth()->user()->account_id,
-            'contact_is' => $contactA->id,
-            'of_contact' => $contactB->id,
+            'account_id'           => auth()->user()->account_id,
+            'contact_is'           => $contactA->id,
+            'of_contact'           => $contactB->id,
             'relationship_type_id' => $relationshipType->id,
         ]);
 
         $this->assertDatabaseHas('relationships', [
-            'account_id' => auth()->user()->account_id,
-            'contact_is' => $contactB->id,
-            'of_contact' => $contactA->id,
+            'account_id'           => auth()->user()->account_id,
+            'contact_is'           => $contactB->id,
+            'of_contact'           => $contactA->id,
             'relationship_type_id' => auth()->user()->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship)->id,
         ]);
     }
@@ -156,29 +156,29 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'uncle',
+            'account_id'                => $user->account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'nephew',
+            'account_id'                => $user->account->id,
+            'name'                      => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory('App\Relationship')->create([
-            'account_id' => $user->account->id,
+            'account_id'           => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
-            'contact_is' => $contactA->id,
-            'of_contact' => $contactB->id,
+            'contact_is'           => $contactA->id,
+            'of_contact'           => $contactB->id,
         ]);
 
         $response = $this->json('GET', '/api/relationships/'.$relationship->id);
 
         $response->assertStatus(200)
                     ->assertJsonFragment([
-                        'id' => $relationship->id,
+                        'id'     => $relationship->id,
                         'object' => 'relationship',
                     ]);
     }
@@ -189,29 +189,29 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'uncle',
+            'account_id'                => $user->account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'nephew',
+            'account_id'                => $user->account->id,
+            'name'                      => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory('App\Relationship')->create([
-            'account_id' => $user->account->id,
+            'account_id'           => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
-            'contact_is' => $contactA->id,
-            'of_contact' => $contactB->id,
+            'contact_is'           => $contactA->id,
+            'of_contact'           => $contactB->id,
         ]);
 
         $relationshipB = factory('App\Relationship')->create([
-            'account_id' => $user->account->id,
+            'account_id'           => $user->account->id,
             'relationship_type_id' => $relationshipTypeB->id,
-            'contact_is' => $contactB->id,
-            'of_contact' => $contactA->id,
+            'contact_is'           => $contactB->id,
+            'of_contact'           => $contactA->id,
         ]);
 
         $response = $this->delete('/api/relationships/'.$relationship->id);
@@ -219,7 +219,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $response->assertStatus(200)
                     ->assertJson([
                         'deleted' => true,
-                        'id' => $relationship->id,
+                        'id'      => $relationship->id,
                     ]);
 
         $this->assertDatabaseMissing('relationships', [
@@ -242,7 +242,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'message' => ['The relationship type id must be an integer.'],
+            'message'    => ['The relationship type id must be an integer.'],
             'error_code' => 41,
         ]);
     }
@@ -257,7 +257,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
+            'message'    => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }
@@ -268,22 +268,22 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'uncle',
+            'account_id'                => $user->account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeC = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'fuckfriend',
+            'account_id'                => $user->account->id,
+            'name'                      => 'fuckfriend',
             'name_reverse_relationship' => 'funnysituation',
         ]);
 
         $relationship = factory('App\Relationship')->create([
-            'account_id' => $user->account->id,
+            'account_id'           => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
-            'contact_is' => $contactA->id,
-            'of_contact' => $contactB->id,
+            'contact_is'           => $contactA->id,
+            'of_contact'           => $contactB->id,
         ]);
 
         $response = $this->json('PUT', '/api/relationships/'.$relationship->id, [
@@ -292,12 +292,12 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         $response->assertStatus(200)
                     ->assertJsonFragment([
-                        'id' => $relationship->id,
+                        'id'   => $relationship->id,
                         'name' => 'fuckfriend',
                     ]);
 
         $this->assertDatabaseHas('relationships', [
-            'id' => $relationship->id,
+            'id'                   => $relationship->id,
             'relationship_type_id' => $relationshipTypeC->id,
         ]);
     }
@@ -308,22 +308,22 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'uncle',
+            'account_id'                => $user->account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
         $relationshipTypeB = factory('App\RelationshipType')->create([
-            'account_id' => $user->account->id,
-            'name' => 'nephew',
+            'account_id'                => $user->account->id,
+            'name'                      => 'nephew',
             'name_reverse_relationship' => 'uncle',
         ]);
 
         $relationship = factory('App\Relationship', 3)->create([
-            'account_id' => $user->account->id,
+            'account_id'           => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
-            'contact_is' => $contactA->id,
-            'of_contact' => $contactB->id,
+            'contact_is'           => $contactA->id,
+            'of_contact'           => $contactB->id,
         ]);
 
         $response = $this->json('GET', '/api/contacts/'.$contactA->id.'/relationships');

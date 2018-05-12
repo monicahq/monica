@@ -63,7 +63,8 @@ class Notification extends Model
      * multiple users in the same account. The number of of emails will match
      * the number of users in the account.
      *
-     * @param  int $number
+     * @param int $number
+     *
      * @return void
      */
     public function setNumberOfEmailsNeededForDeletion($number)
@@ -96,7 +97,7 @@ class Notification extends Model
      * Indicate whether a notification should be sent, as this should be
      * dictated by the reminder rule (on or off).
      *
-     * @return boolean
+     * @return bool
      */
     public function shouldBeSent()
     {
@@ -104,7 +105,7 @@ class Notification extends Model
                             ->where('number_of_days_before', $this->scheduled_number_days_before)
                             ->first();
 
-        if (! $reminderRule) {
+        if (!$reminderRule) {
             return false;
         }
 

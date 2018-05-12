@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Tag;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Tag\Tag as TagResource;
+use App\Tag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiTagController extends ApiController
 {
@@ -33,7 +33,9 @@ class ApiTagController extends ApiController
 
     /**
      * Get the detail of a given tag.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -51,7 +53,9 @@ class ApiTagController extends ApiController
 
     /**
      * Store the tag.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -76,7 +80,9 @@ class ApiTagController extends ApiController
 
     /**
      * Update the tag.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -108,7 +114,8 @@ class ApiTagController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
@@ -128,7 +135,9 @@ class ApiTagController extends ApiController
 
     /**
      * Delete a tag.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)

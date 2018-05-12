@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use Tests\FeatureTestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\FeatureTestCase;
 
 class TaskTest extends FeatureTestCase
 {
@@ -14,6 +14,7 @@ class TaskTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -35,9 +36,9 @@ class TaskTest extends FeatureTestCase
         $taskDescription = $this->faker->realText();
 
         $params = [
-            'title' => $taskTitle,
+            'title'       => $taskTitle,
             'description' => $taskDescription,
-            'completed' => 0,
+            'completed'   => 0,
         ];
 
         $response = $this->post('/people/'.$contact->id.'/tasks', $params);

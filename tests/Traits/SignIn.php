@@ -9,6 +9,7 @@ trait SignIn
      * object is passed, then sign in as that user.
      *
      * @param null $user
+     *
      * @return mixed
      */
     public function signIn($user = null)

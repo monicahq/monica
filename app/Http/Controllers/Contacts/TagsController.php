@@ -12,7 +12,7 @@ class TagsController extends Controller
      * Update the specified resource in storage.
      *
      * @param TagsRequest $request
-     * @param Contact $contact
+     * @param Contact     $contact
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,7 +33,7 @@ class TagsController extends Controller
 
         // remove old tags if there are not to keep
         foreach ($contact->tags()->get() as $tag) {
-            if (! in_array($tag->name, $tags)) {
+            if (!in_array($tag->name, $tags)) {
                 $contact->unsetTag($tag);
             }
         }
@@ -44,7 +44,7 @@ class TagsController extends Controller
 
             // this is passed back in json to JS
             array_push($tagsWithIdAndSlug, [
-              'id' => $tag->id,
+              'id'   => $tag->id,
               'slug' => $tag->name_slug,
               'name' => $tag->name,
             ]);
@@ -52,7 +52,7 @@ class TagsController extends Controller
 
         $response = [
           'status' => 'yes',
-          'tags' => $tagsWithIdAndSlug,
+          'tags'   => $tagsWithIdAndSlug,
         ];
 
         return response()->json($response);

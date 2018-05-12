@@ -2,9 +2,9 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiControllerTest extends ApiTestCase
 {
@@ -12,7 +12,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_get_http_status_code_returns_the_status_code()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $this->assertEquals(
             200,
@@ -29,7 +29,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_get_error_code_returns_the_error_code()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $this->assertEquals(
             null,
@@ -46,7 +46,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_get_with_parameter_returns_the_parameter()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $this->assertEquals(
             null,
@@ -63,7 +63,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_get_limit_per_page_code_returns_the_limit_per_page()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $this->assertEquals(
             0,
@@ -80,7 +80,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_it_gets_the_sort_criteria()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $this->assertEquals(
             'created_at',
@@ -97,7 +97,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_it_only_accepts_some_sorting_parameters()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $apiController->setSortCriteria('created_at');
 
@@ -124,7 +124,7 @@ class ApiControllerTest extends ApiTestCase
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => 'The limit parameter is too big',
+            'message'    => 'The limit parameter is too big',
             'error_code' => 30,
         ]);
     }
@@ -140,14 +140,14 @@ class ApiControllerTest extends ApiTestCase
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => 'The sorting criteria is invalid',
+            'message'    => 'The sorting criteria is invalid',
             'error_code' => 39,
         ]);
     }
 
     public function test_it_sets_the_order_by_parameters()
     {
-        $apiController = new ApiController;
+        $apiController = new ApiController();
 
         $apiController->setSortCriteria('created_at');
 

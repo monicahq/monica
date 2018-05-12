@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Illuminate\Support\Str;
-use UnexpectedValueException;
-use App\Http\Requests\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PasswordChangeRequest;
+use App\Http\Requests\Request;
+use App\User;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use App\Http\Requests\PasswordChangeRequest;
-use Illuminate\Foundation\Auth\RedirectsUsers;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Str;
+use UnexpectedValueException;
 
 class PasswordChangeController extends Controller
 {
@@ -24,6 +24,7 @@ class PasswordChangeController extends Controller
      * Get usefull parameters from request.
      *
      * @param \App\Http\Requests\PasswordChangeRequest $request
+     *
      * @return array
      */
     protected function credentials(PasswordChangeRequest $request)
@@ -53,12 +54,13 @@ class PasswordChangeController extends Controller
      * Validate a password change request and update password of the user.
      *
      * @param array $credentials
+     *
      * @return string
      */
     protected function validateAndPasswordChange($credentials)
     {
         $user = $this->validateChange($credentials);
-        if (! $user instanceof CanResetPasswordContract) {
+        if (!$user instanceof CanResetPasswordContract) {
             return $user;
         }
 
@@ -71,9 +73,10 @@ class PasswordChangeController extends Controller
      * Validate a password change request with the given credentials.
      *
      * @param array $credentials
-     * @return \Illuminate\Contracts\Auth\CanResetPassword|string
      *
      * @throws \UnexpectedValueException
+     *
+     * @return \Illuminate\Contracts\Auth\CanResetPassword|string
      */
     protected function validateChange(array $credentials)
     {
@@ -81,11 +84,11 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-        if (! Password::broker()->validateNewPassword($credentials)) {
+        if (!Password::broker()->validateNewPassword($credentials)) {
             return 'passwords.password';
         }
 
-        if ($user && ! $user instanceof CanResetPasswordContract) {
+        if ($user && !$user instanceof CanResetPasswordContract) {
             throw new UnexpectedValueException('User must implement CanResetPassword interface.');
         }
 
@@ -96,6 +99,7 @@ class PasswordChangeController extends Controller
      * Get the user with the given credentials.
      *
      * @param array $credentials
+     *
      * @return \Illuminate\Contracts\Auth\CanResetPassword|null
      */
     protected function getUser(array $credentials)
@@ -103,7 +107,7 @@ class PasswordChangeController extends Controller
         $user = Auth::user();
 
         // Using current email from user, and current password sent with the request to authenticate the user
-        if (! Auth::attempt(['email' => $user->email, 'password' => $credentials['password_current']])) {
+        if (!Auth::attempt(['email' => $user->email, 'password' => $credentials['password_current']])) {
             // authentication fails
             return;
         }
@@ -114,8 +118,9 @@ class PasswordChangeController extends Controller
     /**
      * Set the new password if all validations have passed.
      *
-     * @param User $user
+     * @param User   $user
      * @param string $password
+     *
      * @return void
      */
     protected function setNewPassword($user, $password)
@@ -133,6 +138,7 @@ class PasswordChangeController extends Controller
      * Get the response for a successful password changed.
      *
      * @param string $response
+     *
      * @return \Illuminate\Http\Response
      */
     protected function sendChangedResponse($response)
@@ -145,6 +151,7 @@ class PasswordChangeController extends Controller
      * Get the response for a failed password changed.
      *
      * @param string $response
+     *
      * @return \Illuminate\Http\Response
      */
     protected function sendChangedFailedResponse($response)

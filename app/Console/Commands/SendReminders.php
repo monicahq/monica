@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Account;
-use App\Reminder;
 use App\Jobs\SendReminderEmail;
-use Illuminate\Console\Command;
 use App\Jobs\SetNextReminderDate;
+use App\Reminder;
+use App\User;
+use Illuminate\Console\Command;
 
 class SendReminders extends Command
 {
@@ -42,7 +42,7 @@ class SendReminders extends Command
         foreach ($reminders as $reminder) {
             // Skip the reminder if the contact has been deleted (and for some
             // reasons, the reminder hasn't)
-            if (! $reminder->contact) {
+            if (!$reminder->contact) {
                 $reminder->delete();
                 continue;
             }
@@ -58,7 +58,7 @@ class SendReminders extends Command
 
         foreach ($account->users as $user) {
             if ($user->shouldBeReminded($reminder->next_expected_date)) {
-                if (! $account->hasLimitations()) {
+                if (!$account->hasLimitations()) {
                     dispatch(new SendReminderEmail($reminder, $user));
                 }
 

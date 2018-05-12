@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
-use App\User;
+use App\Http\Requests\ImportsRequest;
+use App\Http\Requests\InvitationRequest;
+use App\Http\Requests\SettingsRequest;
 use App\ImportJob;
 use App\Invitation;
-use Illuminate\Http\Request;
-use App\Jobs\SendNewUserAlert;
-use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
+use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\SendInvitationEmail;
-use Illuminate\Support\Facades\DB;
+use App\Jobs\SendNewUserAlert;
+use App\Tag;
+use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ImportsRequest;
-use App\Http\Requests\SettingsRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\InvitationRequest;
 use PragmaRX\Google2FALaravel\Google2FA;
 
 class SettingsController extends Controller
@@ -68,6 +68,7 @@ class SettingsController extends Controller
      * Save user settings.
      *
      * @param SettingsRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function save(SettingsRequest $request)
@@ -97,6 +98,7 @@ class SettingsController extends Controller
      * Delete user account.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request)
@@ -135,6 +137,7 @@ class SettingsController extends Controller
      * Reset user account.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function reset(Request $request)
@@ -206,7 +209,7 @@ class SettingsController extends Controller
      */
     public function upload()
     {
-        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+        if (config('monica.requires_subscription') && !auth()->user()->account->isSubscribed()) {
             return redirect('/settings/subscriptions');
         }
 
@@ -218,8 +221,8 @@ class SettingsController extends Controller
         $filename = $request->file('vcard')->store('imports', 'public');
 
         $importJob = auth()->user()->account->importjobs()->create([
-            'user_id' => auth()->user()->id,
-            'type' => 'vcard',
+            'user_id'  => auth()->user()->id,
+            'type'     => 'vcard',
             'filename' => $filename,
         ]);
 
@@ -267,7 +270,7 @@ class SettingsController extends Controller
      */
     public function addUser()
     {
-        if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
+        if (config('monica.requires_subscription') && !auth()->user()->account->isSubscribed()) {
             return redirect('/settings/subscriptions');
         }
 
@@ -278,12 +281,13 @@ class SettingsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param InvitationRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function inviteUser(InvitationRequest $request)
     {
         // Make sure the confirmation to invite has not been bypassed
-        if (! $request->get('confirmation')) {
+        if (!$request->get('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 
@@ -305,8 +309,8 @@ class SettingsController extends Controller
             ])
             + [
                 'invited_by_user_id' => auth()->user()->id,
-                'account_id' => auth()->user()->account_id,
-                'invitation_key' => str_random(100),
+                'account_id'         => auth()->user()->account_id,
+                'invitation_key'     => str_random(100),
             ]
         );
 
@@ -324,6 +328,7 @@ class SettingsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Invitation $invitation
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroyInvitation(Invitation $invitation)
@@ -338,6 +343,7 @@ class SettingsController extends Controller
      * Display the specified resource.
      *
      * @param string $key
+     *
      * @return \Illuminate\Http\Response
      */
     public function acceptInvitation($key)
@@ -356,7 +362,8 @@ class SettingsController extends Controller
      * Store the specified resource.
      *
      * @param Request $request
-     * @param string $key
+     * @param string  $key
+     *
      * @return \Illuminate\Http\Response
      */
     public function storeAcceptedInvitation(Request $request, $key)
@@ -390,6 +397,7 @@ class SettingsController extends Controller
      * Delete additional user account.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function deleteAdditionalUser(Request $request, $userID)

@@ -55,7 +55,8 @@ class Gender extends Model
     /**
      * Get the name of the gender.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getNameAttribute($value)

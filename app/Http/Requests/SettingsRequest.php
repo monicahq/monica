@@ -24,12 +24,12 @@ class SettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email' => 'required|email|max:2083|unique:users,email,'.$this->id,
-            'timezone' => '',
-            'layout' => '',
-            'locale' => '',
+            'first_name'  => 'required|max:255',
+            'last_name'   => 'required|max:255',
+            'email'       => 'required|email|max:2083|unique:users,email,'.$this->id,
+            'timezone'    => '',
+            'layout'      => '',
+            'locale'      => '',
             'currency_id' => '',
         ];
     }

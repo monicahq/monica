@@ -2,14 +2,14 @@
 
 namespace App\Mail;
 
-use App\User;
 use App\Contact;
-use App\Reminder;
 use App\Notification;
+use App\Reminder;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class NotificationEmail extends Mailable
 {
@@ -45,10 +45,10 @@ class NotificationEmail extends Mailable
         return $this->text('emails.reminder.notification')
                     ->subject(trans('mail.notification_subject_line'))
                     ->with([
-                        'contact' => $contact,
-                        'reminder' => $this->reminder,
+                        'contact'      => $contact,
+                        'reminder'     => $this->reminder,
                         'notification' => $this->notification,
-                        'user' => $this->user,
+                        'user'         => $this->user,
                     ]);
     }
 }

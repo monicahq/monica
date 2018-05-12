@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ContactFieldTest extends TestCase
 {
@@ -12,7 +12,7 @@ class ContactFieldTest extends TestCase
 
     public function test_it_fetches_data_field()
     {
-        $contactField = new ContactField;
+        $contactField = new ContactField();
         $contactField->data = 'this is a test';
 
         $this->assertEquals(

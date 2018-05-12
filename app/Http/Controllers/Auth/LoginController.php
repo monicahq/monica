@@ -40,7 +40,7 @@ class LoginController extends Controller
 
     public function showLoginOrRegister()
     {
-        $first = ! Account::hasAny();
+        $first = !Account::hasAny();
         if ($first) {
             return redirect('/register');
         }

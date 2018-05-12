@@ -1,10 +1,10 @@
 <?php
 
 use App\Contact;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 class MoveKidsToContacts extends Migration
 {
@@ -39,7 +39,7 @@ class MoveKidsToContacts extends Migration
         // Kids are now contacts - they need to be moved to the contacts table
         $kids = DB::table('kids')->get();
         foreach ($kids as $kid) {
-            $contact = new Contact;
+            $contact = new Contact();
             $contact->account_id = $kid->account_id;
             $contact->first_name = $kid->first_name;
             $contact->gender = $kid->gender;
@@ -66,8 +66,8 @@ class MoveKidsToContacts extends Migration
             }
 
             DB::table('offsprings')->insert([
-                'account_id' => $kid->account_id,
-                'contact_id' => $contact->id,
+                'account_id'      => $kid->account_id,
+                'contact_id'      => $contact->id,
                 'is_the_child_of' => $kid->child_of_contact_id,
             ]);
         }

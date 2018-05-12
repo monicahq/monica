@@ -11,6 +11,7 @@ class DateHelper
      * Set the locale of the instance for Date frameworks.
      *
      * @param string
+     *
      * @return string
      */
     public static function setLocale($locale)
@@ -25,6 +26,7 @@ class DateHelper
      *
      * @param string date
      * @param string timezone
+     *
      * @return Carbon
      */
     public static function createDateFromFormat($date, $timezone)
@@ -37,6 +39,7 @@ class DateHelper
      * like "Oct 29, 1981".
      *
      * @param Carbon $date
+     *
      * @return string
      */
     public static function getShortDate($date)
@@ -52,6 +55,7 @@ class DateHelper
      * like "Oct", or "Dec.
      *
      * @param Carbon $date
+     *
      * @return string
      */
     public static function getShortMonth($date)
@@ -67,6 +71,7 @@ class DateHelper
      * like "Mon", or "Wed.
      *
      * @param Carbon $date
+     *
      * @return string
      */
     public static function getShortDay($date)
@@ -82,6 +87,7 @@ class DateHelper
      * like "Oct 29".
      *
      * @param Carbon $date
+     *
      * @return string
      */
     public static function getShortDateWithoutYear($date)
@@ -97,6 +103,7 @@ class DateHelper
      * like "Oct 29, 1981 19:32".
      *
      * @param Carbon $date
+     *
      * @return string
      */
     public static function getShortDateWithTime($date)
@@ -109,9 +116,10 @@ class DateHelper
 
     /**
      * Add a given number of week/month/year to a date.
+     *
      * @param Carbon $date      the start date
      * @param string $frequency week/month/year
-     * @param int $number    the number of week/month/year to increment to
+     * @param int    $number    the number of week/month/year to increment to
      */
     public static function addTimeAccordingToFrequencyType(Carbon $date, $frequency, $number)
     {
@@ -133,7 +141,9 @@ class DateHelper
     /**
      * Get the name of the month and year of a given date with a given number
      * of months more.
-     * @param  int    $month
+     *
+     * @param int $month
+     *
      * @return string
      */
     public static function getMonthAndYear(int $month)
@@ -150,6 +160,7 @@ class DateHelper
      * date would be if he subscribed.
      *
      * @param  string
+     *
      * @return Carbon
      */
     public static function getNextTheoriticalBillingDate(String $interval)
@@ -175,7 +186,7 @@ class DateHelper
         for ($month = 1; $month <= 12; $month++) {
             $currentDate->month = $month;
             $months->push([
-                'id' => $month,
+                'id'   => $month,
                 'name' => mb_convert_case($currentDate->format($format), MB_CASE_TITLE, 'UTF-8'),
             ]);
         }
@@ -212,7 +223,7 @@ class DateHelper
         for ($hour = 1; $hour <= 24; $hour++) {
             $currentDate->hour = $hour;
             $hours->push([
-                'id' => "$hour:00",
+                'id'   => "$hour:00",
                 'name' => $currentDate->format($format),
             ]);
         }
@@ -223,8 +234,9 @@ class DateHelper
     /**
      * Removes a given number of days of a date given in parameter.
      *
-     * @param  Carbon  $date
-     * @param  int    $numberOfDaysBefore
+     * @param Carbon $date
+     * @param int    $numberOfDaysBefore
+     *
      * @return Carbon
      */
     public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)

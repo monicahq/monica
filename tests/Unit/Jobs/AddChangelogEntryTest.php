@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Jobs;
 
-use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AddChangelogEntryTest extends TestCase
 {
@@ -19,7 +19,7 @@ class AddChangelogEntryTest extends TestCase
         dispatch(new AddChangelogEntry($account, $changelog->id));
 
         $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
+            'user_id'      => $user->id,
             'changelog_id' => $changelog->id,
         ]);
     }

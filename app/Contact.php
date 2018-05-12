@@ -2,24 +2,24 @@
 
 namespace App;
 
-use App\Traits\Hasher;
-use App\Traits\Searchable;
-use App\Mail\StayInTouchEmail;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\Tag\Tag as TagResource;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Http\Resources\Tag\Tag as TagResource;
+use App\Mail\StayInTouchEmail;
+use App\Traits\Hasher;
+use App\Traits\Searchable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class Contact extends Model
 {
@@ -101,7 +101,7 @@ class Contact extends Model
      */
     protected $casts = [
         'is_partial' => 'boolean',
-        'is_dead' => 'boolean',
+        'is_dead'    => 'boolean',
         'has_avatar' => 'boolean',
     ];
 
@@ -327,8 +327,10 @@ class Contact extends Model
 
     /**
      * Sort the contacts according a given criteria.
+     *
      * @param Builder $builder
-     * @param string $criteria
+     * @param string  $criteria
+     *
      * @return Builder
      */
     public function scopeSortedBy(Builder $builder, $criteria)
@@ -351,7 +353,8 @@ class Contact extends Model
      * Scope a query to only include contacts who are not only a kid or a
      * significant other without being a contact.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeReal($query)
@@ -446,19 +449,19 @@ class Contact extends Model
         if ($nameOrder == 'firstname_first') {
             $completeName = $this->first_name;
 
-            if (! is_null($this->middle_name)) {
+            if (!is_null($this->middle_name)) {
                 $completeName = $completeName.' '.$this->middle_name;
             }
 
-            if (! is_null($this->last_name)) {
+            if (!is_null($this->last_name)) {
                 $completeName = $completeName.' '.$this->last_name;
             }
         } else {
-            if (! is_null($this->last_name)) {
+            if (!is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 
-            if (! is_null($this->middle_name)) {
+            if (!is_null($this->middle_name)) {
                 $completeName = $completeName.' '.$this->middle_name;
             }
 
@@ -482,7 +485,7 @@ class Contact extends Model
         $incompleteName = '';
         $incompleteName = $this->first_name;
 
-        if (! is_null($this->last_name)) {
+        if (!is_null($this->last_name)) {
             $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
         }
 
@@ -557,14 +560,15 @@ class Contact extends Model
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
-     * @param  string $type
+     * @param string $type
+     *
      * @return Collection|null
      */
     public function getRelationshipsByRelationshipTypeGroup(String $type)
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
-        if (! $relationshipTypeGroup) {
+        if (!$relationshipTypeGroup) {
             return;
         }
 
@@ -577,8 +581,9 @@ class Contact extends Model
      * Translate a collection of relationships into a collection that the API can
      * parse.
      *
-     * @param  Collection $collection
-     * @param  bool       $shortVersion Indicates whether the collection should include how contacts are related
+     * @param Collection $collection
+     * @param bool       $shortVersion Indicates whether the collection should include how contacts are related
+     *
      * @return Collection
      */
     public static function translateForAPI(Collection $collection)
@@ -590,7 +595,7 @@ class Contact extends Model
 
             $contacts->push([
                 'relationship' => [
-                    'id' => $relationship->id,
+                    'id'   => $relationship->id,
                     'name' => $relationship->relationship_type_name,
                 ],
                 'contact' => new ContactShortResource($contact),
@@ -614,6 +619,7 @@ class Contact extends Model
      * Set the default avatar color for this object.
      *
      * @param string|null $color
+     *
      * @return void
      */
     public function setAvatarColor($color = null)
@@ -637,10 +643,11 @@ class Contact extends Model
     /**
      * Log an event in the Event table about this contact.
      *
-     * @param  string $objectType Contact, Activity, Kid,...
-     * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'update', 'delete'
-     * @return int                          Id of the created event
+     * @param string $objectType        Contact, Activity, Kid,...
+     * @param int    $objectId          ID of the object
+     * @param string $natureOfOperation 'add', 'update', 'delete'
+     *
+     * @return int Id of the created event
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
@@ -657,9 +664,10 @@ class Contact extends Model
     /**
      * Set the name of the contact.
      *
-     * @param  string $firstName
-     * @param  string $middleName
-     * @param  string $lastName
+     * @param string $firstName
+     * @param string $middleName
+     * @param string $lastName
+     *
      * @return bool
      */
     public function setName(String $firstName, String $lastName = null, String $middleName = null)
@@ -670,11 +678,11 @@ class Contact extends Model
 
         $this->first_name = $firstName;
 
-        if (! is_null($middleName)) {
+        if (!is_null($middleName)) {
             $this->middle_name = $middleName;
         }
 
-        if (! is_null($lastName)) {
+        if (!is_null($lastName)) {
             $this->last_name = $lastName;
         }
 
@@ -692,7 +700,7 @@ class Contact extends Model
      */
     public function getBirthdayState()
     {
-        if (! $this->birthday_special_date_id) {
+        if (!$this->birthday_special_date_id) {
             return 'unknown';
         }
 
@@ -711,7 +719,8 @@ class Contact extends Model
     /**
      * Update the name of the contact.
      *
-     * @param  string $foodPreferencies
+     * @param string $foodPreferencies
+     *
      * @return void
      */
     public function updateFoodPreferencies($foodPreferencies)
@@ -782,13 +791,14 @@ class Contact extends Model
     /**
      * Returns the URL of the avatar with the given size.
      *
-     * @param  int $size
+     * @param int $size
+     *
      * @return string
      */
     public function getAvatarURL($size = 110)
     {
         // it either returns null or the gravatar url if it's defined
-        if (! $this->has_avatar) {
+        if (!$this->has_avatar) {
             return $this->gravatar_url;
         }
 
@@ -809,7 +819,7 @@ class Contact extends Model
      */
     public function getAvatarSource()
     {
-        if (! $this->has_avatar) {
+        if (!$this->has_avatar) {
             return;
         }
 
@@ -842,7 +852,8 @@ class Contact extends Model
     /**
      * Get the gravatar, if it exits.
      *
-     * @param  int $size
+     * @param int $size
+     *
      * @return string|bool
      */
     public function getGravatar($size)
@@ -853,12 +864,12 @@ class Contact extends Model
             return false;
         }
 
-        if (! app('gravatar')->exists($email)) {
+        if (!app('gravatar')->exists($email)) {
             return false;
         }
 
         return app('gravatar')->get($email, [
-            'size' => $size,
+            'size'   => $size,
             'secure' => config('app.env') === 'production',
         ]);
     }
@@ -930,7 +941,8 @@ class Contact extends Model
      * Update the last called info on the contact, if the call has been made
      * in the most recent date.
      *
-     * @param  Call   $call
+     * @param Call $call
+     *
      * @return void
      */
     public function updateLastCalledInfo(Call $call)
@@ -948,14 +960,14 @@ class Contact extends Model
      * Set a relationship between two contacts.
      *
      * @param Contact $otherContact
-     * @param int $relationshipTypeId
+     * @param int     $relationshipTypeId
      */
     public function setRelationship(self $otherContact, $relationshipTypeId)
     {
         $relationshipType = RelationshipType::find($relationshipTypeId);
 
         // Contact A is linked to Contact B
-        $relationship = new Relationship;
+        $relationship = new Relationship();
         $relationship->account_id = $this->account_id;
         $relationship->relationship_type_id = $relationshipType->id;
         $relationship->contact_is = $this->id;
@@ -967,7 +979,7 @@ class Contact extends Model
         $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
         // Contact B is linked to Contact A
-        $relationship = new Relationship;
+        $relationship = new Relationship();
         $relationship->account_id = $this->account_id;
         $relationship->relationship_type_id = $reverseRelationshipType->id;
         $relationship->contact_is = $otherContact->id;
@@ -980,7 +992,7 @@ class Contact extends Model
      * Update the relationship between two contacts.
      *
      * @param Contact $otherContact
-     * @param int $relationshipTypeId
+     * @param int     $relationshipTypeId
      */
     public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
     {
@@ -992,7 +1004,7 @@ class Contact extends Model
     /**
      * Delete a relationship between two contacts.
      *
-     * @param  self   $otherContact
+     * @param self $otherContact
      */
     public function deleteRelationship(self $otherContact, int $relationshipTypeId)
     {
@@ -1019,6 +1031,7 @@ class Contact extends Model
 
     /**
      * Is this contact owed money?
+     *
      * @return bool
      */
     public function isOwedMoney()
@@ -1028,6 +1041,7 @@ class Contact extends Model
 
     /**
      * How much is the debt.
+     *
      * @return int
      */
     public function totalOutstandingDebtAmount()
@@ -1043,20 +1057,22 @@ class Contact extends Model
 
     /**
      * Indicates whether the contact has information about how they first met.
+     *
      * @return bool
      */
     public function hasFirstMetInformation()
     {
-        return ! is_null($this->first_met_additional_info) || ! is_null($this->firstMetDate) || ! is_null($this->first_met_through_contact_id);
+        return !is_null($this->first_met_additional_info) || !is_null($this->firstMetDate) || !is_null($this->first_met_through_contact_id);
     }
 
     /**
      * Gets the contact who introduced this person to the user.
+     *
      * @return Contact
      */
     public function getIntroducer()
     {
-        if (! $this->first_met_through_contact_id) {
+        if (!$this->first_met_through_contact_id) {
             return;
         }
 
@@ -1083,7 +1099,7 @@ class Contact extends Model
             return;
         }
 
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
         if ($occasion == 'birthdate') {
@@ -1114,7 +1130,7 @@ class Contact extends Model
             return;
         }
 
-        $specialDate = new SpecialDate;
+        $specialDate = new SpecialDate();
         $specialDate->setToContact($this)->createFromAge($age);
 
         if ($occasion == 'birthdate') {
@@ -1137,6 +1153,7 @@ class Contact extends Model
     /**
      * Removes the date that is set for a specific occasion (like a birthdate,
      * the deceased date,...).
+     *
      * @param string $occasion
      */
     public function removeSpecialDate($occasion)
@@ -1168,7 +1185,7 @@ class Contact extends Model
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $firstMetDate =$this->firstMetDate;
+                    $firstMetDate = $this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
 
@@ -1183,6 +1200,7 @@ class Contact extends Model
      * Sets a tag to the contact.
      *
      * @param string $tag
+     *
      * @return Tag
      */
     public function setTag(string $name)
@@ -1201,6 +1219,7 @@ class Contact extends Model
 
     /**
      * Unset all the tags associated with the contact.
+     *
      * @return bool
      */
     public function unsetTags()
@@ -1210,6 +1229,7 @@ class Contact extends Model
 
     /**
      * Unset one tag associated with the contact.
+     *
      * @return bool
      */
     public function unsetTag(Tag $tag)
@@ -1220,7 +1240,8 @@ class Contact extends Model
     /**
      * Get the Relationship object representing the relation between two contacts.
      *
-     * @param  Contact $otherContact
+     * @param Contact $otherContact
+     *
      * @return Relationship|null
      */
     public function getRelationshipNatureWith(self $otherContact)
@@ -1268,7 +1289,7 @@ class Contact extends Model
     {
         $reminders = collect();
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact->birthday_special_date_id);
+            return !is_null($item->ofContact->birthday_special_date_id);
         });
 
         foreach ($relationships as $relationship) {
@@ -1309,12 +1330,13 @@ class Contact extends Model
      * Update the frequency for which user has to be warned to stay in touch
      * with the contact.
      *
-     * @param  int $frequency
+     * @param int $frequency
+     *
      * @return bool
      */
     public function updateStayInTouchFrequency($frequency)
     {
-        if (! is_int($frequency)) {
+        if (!is_int($frequency)) {
             return false;
         }
 
@@ -1332,7 +1354,7 @@ class Contact extends Model
     /**
      * Update the date the notification about staying in touch should be sent.
      *
-     * @param int $frequency
+     * @param int    $frequency
      * @param string $timezone
      */
     public function setStayInTouchTriggerDate($frequency, $timezone)
@@ -1351,7 +1373,8 @@ class Contact extends Model
     /**
      * Send the email about staying in touch with the contact.
      *
-     * @param  User $user
+     * @param User $user
+     *
      * @return void
      */
     public function sendStayInTouchEmail(User $user)

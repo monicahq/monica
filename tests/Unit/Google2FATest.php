@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\User;
-use Tests\TestCase;
-use Illuminate\Session\Store;
 use App\Http\Requests\Request;
+use App\User;
 use Illuminate\Session\NullSessionHandler;
+use Illuminate\Session\Store;
+use Tests\TestCase;
 
 class Google2FATest extends TestCase
 {
@@ -61,7 +61,7 @@ class Google2FATest extends TestCase
 
         $request = $this->app['request'];
         // Avoid "Session store not set on request." - Exception!
-        $request->setLaravelSession(new Store('test', new NullSessionHandler));
+        $request->setLaravelSession(new Store('test', new NullSessionHandler()));
         $request->getSession()->start();
 
         $authenticator = new \PragmaRX\Google2FALaravel\Support\Authenticator($request);

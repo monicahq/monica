@@ -2,8 +2,8 @@
 
 namespace Tests\Helper;
 
-use Tests\TestCase;
 use App\Helpers\StringHelper;
+use Tests\TestCase;
 
 class StringHelperTest extends TestCase
 {

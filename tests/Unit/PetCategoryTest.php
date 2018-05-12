@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class PetCategoryTest extends TestCase
 {
@@ -12,7 +12,7 @@ class PetCategoryTest extends TestCase
 
     public function test_it_gets_only_common_pets()
     {
-        $petCategory = new PetCategory;
+        $petCategory = new PetCategory();
 
         $this->assertEquals(
           3,
@@ -22,7 +22,7 @@ class PetCategoryTest extends TestCase
 
     public function test_it_gets_pet_category_name()
     {
-        $petCategory = new PetCategory;
+        $petCategory = new PetCategory();
         $petCategory->name = 'Rgis';
 
         $this->assertEquals(

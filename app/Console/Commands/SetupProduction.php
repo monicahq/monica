@@ -30,7 +30,7 @@ class SetupProduction extends Command
      */
     public function handle()
     {
-        if ((! $this->option('force')) && (! $this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
+        if ((!$this->option('force')) && (!$this->confirm('You are about to setup and configure Monica. Do you wish to continue?'))) {
             return;
         }
 
@@ -38,7 +38,7 @@ class SetupProduction extends Command
          * If the .env file does not exist, then key generation
          * will fail. So we create one if it does not already exist.
          */
-        if (! file_exists(__DIR__.'/../../../.env')) {
+        if (!file_exists(__DIR__.'/../../../.env')) {
             touch(__DIR__.'/../../../.env');
         }
 
@@ -53,7 +53,7 @@ class SetupProduction extends Command
 
         $email = $this->option('email');
         $password = $this->option('password');
-        if (! empty($email) && ! empty($password)) {
+        if (!empty($email) && !empty($password)) {
             Account::createDefault('John', 'Doe', $email, $password);
 
             $this->info('| You can now sign in to your account:');

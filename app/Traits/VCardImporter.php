@@ -2,14 +2,14 @@
 
 namespace App\Traits;
 
-use App\Gender;
 use App\Address;
 use App\Contact;
 use App\ContactField;
 use App\ContactFieldType;
-use Sabre\VObject\Reader;
+use App\Gender;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
+use Sabre\VObject\Reader;
 
 trait VCardImporter
 {
@@ -22,7 +22,7 @@ trait VCardImporter
     {
         $matchCount = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s', $subject, $matches);
 
-        if (! $this->workInit($matchCount)) {
+        if (!$this->workInit($matchCount)) {
             return;
         }
 
@@ -30,8 +30,8 @@ trait VCardImporter
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we
         // can't guess whether they are men, women or else.
         $gender = Gender::where('name', 'vCard')->first();
-        if (! $gender) {
-            $gender = new Gender;
+        if (!$gender) {
+            $gender = new Gender();
             $gender->account_id = $account_id;
             $gender->name = 'vCard';
             $gender->save();
@@ -48,7 +48,7 @@ trait VCardImporter
             }
 
             // Skip contact if there isn't a first name or a nickname
-            if (! $this->contactHasName($vcard)) {
+            if (!$this->contactHasName($vcard)) {
                 $this->workContactNoFirstname($vcard);
                 $this->skippedContacts++;
 
@@ -71,7 +71,7 @@ trait VCardImporter
         $contact->account_id = $account_id;
         $contact->gender_id = $gender_id;
 
-        if ($vcard->N && ! empty($vcard->N->getParts()[1])) {
+        if ($vcard->N && !empty($vcard->N->getParts()[1])) {
             $contact->first_name = $this->formatValue($vcard->N->getParts()[1]);
             $contact->middle_name = $this->formatValue($vcard->N->getParts()[2]);
             $contact->last_name = $this->formatValue($vcard->N->getParts()[0]);
@@ -91,7 +91,7 @@ trait VCardImporter
 
         $contact->save();
 
-        if ($vcard->BDAY && ! empty((string) $vcard->BDAY)) {
+        if ($vcard->BDAY && !empty((string) $vcard->BDAY)) {
             $birthdate = new \DateTime((string) $vcard->BDAY);
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
@@ -110,13 +110,13 @@ trait VCardImporter
             $address->save();
         }
 
-        if (! is_null($this->formatValue($vcard->EMAIL))) {
+        if (!is_null($this->formatValue($vcard->EMAIL))) {
             // Saves the email
 
             $isValidEmail = filter_var($this->formatValue($vcard->EMAIL), FILTER_VALIDATE_EMAIL);
 
             if ($isValidEmail) {
-                $contactField = new ContactField;
+                $contactField = new ContactField();
                 $contactField->contact_id = $contact->id;
                 $contactField->account_id = $contact->account_id;
                 $contactField->data = $this->formatValue($vcard->EMAIL);
@@ -125,9 +125,9 @@ trait VCardImporter
             }
         }
 
-        if (! is_null($this->formatValue($vcard->TEL))) {
+        if (!is_null($this->formatValue($vcard->TEL))) {
             // Saves the phone number
-            $contactField = new ContactField;
+            $contactField = new ContactField();
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
             $contactField->data = $this->formatValue($vcard->TEL);
@@ -142,7 +142,7 @@ trait VCardImporter
 
     private function contactFieldEmailId()
     {
-        if (! $this->contactFieldEmailId) {
+        if (!$this->contactFieldEmailId) {
             $contactFieldType = ContactFieldType::where('type', 'email')->first();
             $this->contactFieldEmailId = $contactFieldType->id;
         }
@@ -152,7 +152,7 @@ trait VCardImporter
 
     private function contactFieldPhoneId()
     {
-        if (! $this->contactFieldPhoneId) {
+        if (!$this->contactFieldPhoneId) {
             $contactFieldType = ContactFieldType::where('type', 'phone')->first();
             $this->contactFieldPhoneId = $contactFieldType->id;
         }
@@ -185,18 +185,20 @@ trait VCardImporter
      * Formats and returns a string for the contact.
      *
      * @param null|string $value
+     *
      * @return null|string
      */
     private function formatValue($value)
     {
-        return ! empty((string) $value) ? (string) $value : null;
+        return !empty((string) $value) ? (string) $value : null;
     }
 
     /**
      * Checks whether a contact already exists for a given account.
      *
      * @param VCard $vcard
-     * @param int $account_id
+     * @param int   $account_id
+     *
      * @return bool
      */
     private function contactExists(VCard $vcard, int $account_id)
@@ -205,7 +207,7 @@ trait VCardImporter
 
         $isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
 
-        if (! $isValidEmail) {
+        if (!$isValidEmail) {
             return false;
         }
 
@@ -232,10 +234,11 @@ trait VCardImporter
      * Nickname is used as a fallback if no first name is provided.
      *
      * @param VCard $vcard
+     *
      * @return bool
      */
     public function contactHasName(VCard $vcard): bool
     {
-        return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
+        return !empty($vcard->N->getParts()[1]) || !empty((string) $vcard->NICKNAME);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class UpdateChangelogWithStayInTouch extends Migration
 {
@@ -21,7 +21,7 @@ You can now indicate if you want to stay in touch with someone at a regular inte
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => '2018-04-21',
+            'created_at'  => '2018-04-21',
         ]);
 
         $instance = \App\Instance::first();

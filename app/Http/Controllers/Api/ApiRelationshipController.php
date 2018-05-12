@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Contact;
+use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 use App\Relationship;
 use App\RelationshipType;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Relationship\Relationship as RelationshipResource;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiRelationshipController extends ApiController
 {
     /**
      * Get all of relationships of a contact.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request, $contactId)
@@ -35,7 +36,8 @@ class ApiRelationshipController extends ApiController
     /**
      * Get the detail of a given relationship.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -54,7 +56,8 @@ class ApiRelationshipController extends ApiController
     /**
      * Create a new relationship.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -83,7 +86,8 @@ class ApiRelationshipController extends ApiController
     /**
      * Update an existing relationship.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $relationshipId)
@@ -104,7 +108,8 @@ class ApiRelationshipController extends ApiController
     /**
      * Delete a relationship.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $relationshipId)
@@ -133,16 +138,17 @@ class ApiRelationshipController extends ApiController
     /**
      * Validate the parameters.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateParameters(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'contact_is' => 'integer|required',
+            'contact_is'           => 'integer|required',
             'relationship_type_id' => 'required|integer',
-            'of_contact' => 'integer|required',
+            'of_contact'           => 'integer|required',
         ]);
 
         if ($validator->fails()) {
@@ -186,7 +192,8 @@ class ApiRelationshipController extends ApiController
     /**
      * Validate the update parameters.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdateParameters(Request $request, $relationshipId)

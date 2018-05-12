@@ -4,10 +4,10 @@ namespace App\Jobs\StayInTouch;
 
 use App\Contact;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ScheduleStayInTouch implements ShouldQueue
 {
@@ -37,7 +37,7 @@ class ScheduleStayInTouch implements ShouldQueue
 
         foreach ($account->users as $user) {
             if ($user->shouldBeReminded($this->contact->stay_in_touch_trigger_date)
-                && ! $account->hasLimitations()) {
+                && !$account->hasLimitations()) {
                 $this->contact->sendStayInTouchEmail($user);
                 $mailSent = true;
                 $timezone = $user->timezone;

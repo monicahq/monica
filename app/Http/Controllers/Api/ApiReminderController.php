@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Contact;
-use App\Reminder;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Reminder\Reminder as ReminderResource;
+use App\Reminder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ApiReminderController extends ApiController
 {
@@ -33,7 +33,9 @@ class ApiReminderController extends ApiController
 
     /**
      * Get the detail of a given reminder.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $reminderId)
@@ -51,7 +53,9 @@ class ApiReminderController extends ApiController
 
     /**
      * Store the reminder.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -75,8 +79,10 @@ class ApiReminderController extends ApiController
 
     /**
      * Update the reminder.
-     * @param  Request $request
-     * @param  int $reminderId
+     *
+     * @param Request $request
+     * @param int     $reminderId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $reminderId)
@@ -106,22 +112,23 @@ class ApiReminderController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'title' => 'required|max:100000',
-            'description' => 'required|max:1000000',
+            'title'              => 'required|max:100000',
+            'description'        => 'required|max:1000000',
             'next_expected_date' => 'required|date',
-            'frequency_type' => [
+            'frequency_type'     => [
                 'required',
                 Rule::in(['one_time', 'day', 'month', 'year']),
             ],
             'frequency_number' => 'integer',
-            'contact_id' => 'required|integer',
+            'contact_id'       => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -148,7 +155,9 @@ class ApiReminderController extends ApiController
 
     /**
      * Delete a reminder.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $reminderId)

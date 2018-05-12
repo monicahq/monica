@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
-use Exception;
 use App\Contact;
-use App\Relationship;
 use App\ContactFieldType;
-use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
+use App\Jobs\ResizeAvatars;
+use App\Relationship;
+use App\Tag;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
@@ -20,6 +20,7 @@ class ContactsController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -127,15 +128,16 @@ class ContactsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
-            'last_name' => 'nullable|max:100',
-            'gender' => 'required|integer',
+            'last_name'  => 'nullable|max:100',
+            'gender'     => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -144,7 +146,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        $contact = new Contact;
+        $contact = new Contact();
         $contact->account_id = Auth::user()->account_id;
         $contact->gender_id = $request->input('gender');
 
@@ -158,7 +160,7 @@ class ContactsController extends Controller
         $contact->logEvent('contact', $contact->id, 'create');
 
         // Did the user press "Save" or "Submit and add another person"
-        if (! is_null($request->get('save'))) {
+        if (!is_null($request->get('save'))) {
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
@@ -169,7 +171,8 @@ class ContactsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Contact $contact
+     * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Contact $contact)
@@ -232,16 +235,17 @@ class ContactsController extends Controller
      * Display the Edit people's view.
      *
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact)
     {
-        $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
+        $age = (string) (!is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
+        $birthdate = !is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
+        $day = !is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
+        $month = !is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
 
-        $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
+        $hasBirthdayReminder = !is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
 
         return view('people.edit')
             ->withContact($contact)
@@ -259,17 +263,18 @@ class ContactsController extends Controller
     /**
      * Update the identity and address of the People object.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Contact $contact)
     {
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
-            'lastname' => 'max:100',
-            'gender' => 'required',
-            'file' => 'max:10240',
+            'lastname'  => 'max:100',
+            'gender'    => 'required',
+            'file'      => 'max:10240',
             'birthdate' => 'required|string',
         ]);
 
@@ -279,7 +284,7 @@ class ContactsController extends Controller
                 ->withErrors($validator);
         }
 
-        if (! $contact->setName($request->input('firstname'), $request->input('lastname'))) {
+        if (!$contact->setName($request->input('firstname'), $request->input('lastname'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -364,6 +369,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function delete(Request $request, Contact $contact)
@@ -384,8 +390,9 @@ class ContactsController extends Controller
     /**
      * Show the Edit work view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function editWork(Request $request, Contact $contact)
@@ -399,6 +406,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function updateWork(Request $request, Contact $contact)
@@ -407,9 +415,9 @@ class ContactsController extends Controller
         $company = $request->input('company');
         $linkedin = $request->input('linkedin');
 
-        $contact->job = ! empty($job) ? $job : null;
-        $contact->company = ! empty($company) ? $company : null;
-        $contact->linkedin_profile_url = ! empty($linkedin) ? $linkedin : null;
+        $contact->job = !empty($job) ? $job : null;
+        $contact->company = !empty($company) ? $company : null;
+        $contact->linkedin_profile_url = !empty($linkedin) ? $linkedin : null;
 
         $contact->save();
 
@@ -420,8 +428,9 @@ class ContactsController extends Controller
     /**
      * Show the Edit food preferencies view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function editFoodPreferencies(Request $request, Contact $contact)
@@ -435,11 +444,12 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function updateFoodPreferencies(Request $request, Contact $contact)
     {
-        $food = ! empty($request->get('food')) ? $request->get('food') : null;
+        $food = !empty($request->get('food')) ? $request->get('food') : null;
 
         $contact->updateFoodPreferencies($food);
 
@@ -449,7 +459,8 @@ class ContactsController extends Controller
 
     /**
      * Search used in the header.
-     * @param  Request $request
+     *
+     * @param Request $request
      */
     public function search(Request $request)
     {
@@ -499,7 +510,9 @@ class ContactsController extends Controller
 
     /**
      * Download the contact as vCard.
-     * @param  Contact $contact
+     *
+     * @param Contact $contact
+     *
      * @return
      */
     public function vCard(Contact $contact)
@@ -517,8 +530,9 @@ class ContactsController extends Controller
      * Set or change the frequency of which the user wants to stay in touch with
      * the given contact.
      *
-     * @param  Request $request
-     * @param  Contact $contact
+     * @param Request $request
+     * @param Contact $contact
+     *
      * @return [type]
      */
     public function stayInTouch(Request $request, Contact $contact)
@@ -531,12 +545,12 @@ class ContactsController extends Controller
         }
 
         // if not active, set frequency to 0
-        if (! $state) {
+        if (!$state) {
             $frequency = 0;
         }
         $result = $contact->updateStayInTouchFrequency($frequency);
 
-        if (! $result) {
+        if (!$result) {
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 

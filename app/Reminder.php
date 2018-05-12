@@ -2,13 +2,13 @@
 
 namespace App;
 
-use Carbon\Carbon;
-use App\Traits\Hasher;
 use App\Helpers\DateHelper;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\Hasher;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property Account $account
@@ -74,6 +74,7 @@ class Reminder extends Model
      * Get the next_expected_date field according to user's timezone.
      *
      * @param string $value
+     *
      * @return string
      */
     public function getNextExpectedDateAttribute($value)
@@ -97,6 +98,7 @@ class Reminder extends Model
 
     /**
      * Get the title of a reminder.
+     *
      * @return string
      */
     public function getTitleAttribute($value)
@@ -106,6 +108,7 @@ class Reminder extends Model
 
     /**
      * Set the title of a reminder.
+     *
      * @return string
      */
     public function setTitleAttribute($title)
@@ -115,6 +118,7 @@ class Reminder extends Model
 
     /**
      * Get the description of a reminder.
+     *
      * @return string
      */
     public function getDescriptionAttribute($value)
@@ -176,7 +180,8 @@ class Reminder extends Model
     /**
      * Schedules a notification for the given reminder.
      *
-     * @param  int  $numberOfDaysBefore
+     * @param int $numberOfDaysBefore
+     *
      * @return Notification
      */
     public function scheduleSingleNotification(int $numberOfDaysBefore)
@@ -187,7 +192,7 @@ class Reminder extends Model
             return;
         }
 
-        $notification = new Notification;
+        $notification = new Notification();
         $notification->account_id = $this->account_id;
         $notification->contact_id = $this->contact_id;
         $notification->reminder_id = $this->id;

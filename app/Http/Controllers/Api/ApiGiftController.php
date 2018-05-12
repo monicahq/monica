@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Gift;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use App\Gift;
 use App\Http\Resources\Gift\Gift as GiftResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiGiftController extends ApiController
 {
@@ -32,7 +32,9 @@ class ApiGiftController extends ApiController
 
     /**
      * Get the detail of a given gift.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -50,7 +52,9 @@ class ApiGiftController extends ApiController
 
     /**
      * Store the gift.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,8 +78,10 @@ class ApiGiftController extends ApiController
 
     /**
      * Update the gift.
-     * @param  Request $request
-     * @param  int $giftId
+     *
+     * @param Request $request
+     * @param int     $giftId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $giftId)
@@ -110,22 +116,23 @@ class ApiGiftController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'is_for' => 'integer|nullable',
-            'name' => 'required|string|max:255',
-            'comment' => 'string|max:1000000|nullable',
-            'url' => 'string|max:1000000|nullable',
-            'value' => 'string|max:255',
-            'is_an_idea' => 'boolean',
+            'is_for'           => 'integer|nullable',
+            'name'             => 'required|string|max:255',
+            'comment'          => 'string|max:1000000|nullable',
+            'url'              => 'string|max:1000000|nullable',
+            'value'            => 'string|max:255',
+            'is_an_idea'       => 'boolean',
             'has_been_offered' => 'boolean',
-            'date_offered' => 'date|nullable',
-            'contact_id' => 'required|integer',
+            'date_offered'     => 'date|nullable',
+            'contact_id'       => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -141,7 +148,7 @@ class ApiGiftController extends ApiController
             return $this->respondNotFound();
         }
 
-        if (! is_null($request->input('is_for'))) {
+        if (!is_null($request->input('is_for'))) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('is_for'))
@@ -156,7 +163,9 @@ class ApiGiftController extends ApiController
 
     /**
      * Delete a gift.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $giftId)

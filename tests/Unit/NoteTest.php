@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Note;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class NoteTest extends TestCase
 {
@@ -47,7 +47,7 @@ class NoteTest extends TestCase
 
     public function test_it_returns_body_in_markdown()
     {
-        $note = new Note;
+        $note = new Note();
         $note->body = '# Test';
 
         $this->assertEquals(
@@ -58,14 +58,14 @@ class NoteTest extends TestCase
 
     public function testGetBodyReturnsNullIfUndefined()
     {
-        $note = new Note;
+        $note = new Note();
 
         $this->assertNull($note->getBody());
     }
 
     public function testGetBodyReturnsTextIfDefined()
     {
-        $note = new Note;
+        $note = new Note();
         $note->body = 'This is a text';
 
         $this->assertEquals(
@@ -76,7 +76,7 @@ class NoteTest extends TestCase
 
     public function testGetCreatedAtReturnsAFormattedDate()
     {
-        $note = new Note;
+        $note = new Note();
         $note->created_at = '2017-01-22 17:56:03';
 
         $this->assertEquals(
@@ -87,7 +87,7 @@ class NoteTest extends TestCase
 
     public function testGetCreatedAtReturnsAString()
     {
-        $note = new Note;
+        $note = new Note();
         $note->created_at = '2017-01-22 17:56:03';
 
         $this->assertInternalType('string', $note->getCreatedAt());

@@ -2,9 +2,9 @@
 
 namespace Tests\Helper;
 
+use App\Helpers\DateHelper;
 use Carbon\Carbon;
 use Tests\FeatureTestCase;
-use App\Helpers\DateHelper;
 
 class DateHelperTest extends FeatureTestCase
 {

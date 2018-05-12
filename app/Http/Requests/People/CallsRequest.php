@@ -24,7 +24,7 @@ class CallsRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => '',
+            'content'   => '',
             'called_at' => 'date|nullable',
         ];
     }

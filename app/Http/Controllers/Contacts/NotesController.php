@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Note;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\NotesRequest;
 use App\Http\Requests\People\NoteToggleRequest;
+use App\Note;
 
 class NotesController extends Controller
 {
@@ -20,15 +20,15 @@ class NotesController extends Controller
 
         foreach ($notes as $note) {
             $data = [
-                'id' => $note->id,
-                'parsed_body' => $note->parsedbody,
-                'body' => $note->body,
-                'is_favorited' => $note->is_favorited,
-                'favorited_at' => $note->favorited_at,
+                'id'                 => $note->id,
+                'parsed_body'        => $note->parsedbody,
+                'body'               => $note->body,
+                'is_favorited'       => $note->is_favorited,
+                'favorited_at'       => $note->favorited_at,
                 'favorited_at_short' => \App\Helpers\DateHelper::getShortDate($note->favorited_at),
-                'created_at' => $note->created_at,
-                'created_at_short' => \App\Helpers\DateHelper::getShortDate($note->created_at),
-                'edit' => false,
+                'created_at'         => $note->created_at,
+                'created_at_short'   => \App\Helpers\DateHelper::getShortDate($note->created_at),
+                'edit'               => false,
             ];
             $notesCollection->push($data);
         }
@@ -43,7 +43,7 @@ class NotesController extends Controller
     {
         $note = $contact->notes()->create([
             'account_id' => auth()->user()->account->id,
-            'body' => $request->get('body'),
+            'body'       => $request->get('body'),
         ]);
 
         $contact->logEvent('note', $note->id, 'create');
@@ -71,8 +71,9 @@ class NotesController extends Controller
      * Update the specified resource in storage.
      *
      * @param NotesRequest $request
-     * @param Contact $contact
-     * @param Note $note
+     * @param Contact      $contact
+     * @param Note         $note
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(NotesRequest $request, Contact $contact, Note $note)
@@ -93,7 +94,8 @@ class NotesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Note $note
+     * @param Note    $note
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Note $note)

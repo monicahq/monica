@@ -2,8 +2,8 @@
 
 namespace Tests\Api\Contact;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiContactControllerTest extends ApiTestCase
 {
@@ -127,7 +127,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response = $this->json('GET', '/api/contacts');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total'        => 10,
             'current_page' => 1,
         ]);
     }
@@ -143,19 +143,19 @@ class ApiContactControllerTest extends ApiTestCase
         $response = $this->json('GET', '/api/contacts?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total'        => 10,
             'current_page' => 1,
-            'per_page' => '1',
-            'last_page' => 10,
+            'per_page'     => '1',
+            'last_page'    => 10,
         ]);
 
         $response = $this->json('GET', '/api/contacts?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total'        => 10,
             'current_page' => 1,
-            'per_page' => '2',
-            'last_page' => 5,
+            'per_page'     => '2',
+            'last_page'    => 5,
         ]);
     }
 
@@ -180,8 +180,8 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'first_name' => 'roger',
-            'total' => 1,
-            'query' => 'ro',
+            'total'      => 1,
+            'query'      => 'ro',
         ]);
     }
 
@@ -205,10 +205,10 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'first_name' => 'roger',
-            'total' => 2,
-            'query' => 'ro',
-            'per_page' => '1',
+            'first_name'   => 'roger',
+            'total'        => 2,
+            'query'        => 'ro',
+            'per_page'     => '1',
             'current_page' => 1,
         ]);
     }
@@ -233,10 +233,10 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'first_name' => 'roger',
-            'total' => 2,
-            'query' => 'ro',
-            'per_page' => '1',
+            'first_name'   => 'roger',
+            'total'        => 2,
+            'query'        => 'ro',
+            'per_page'     => '1',
             'current_page' => 2,
         ]);
     }
@@ -256,7 +256,7 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'first_name' => 'roger',
-            'object' => 'contact',
+            'object'     => 'contact',
         ]);
     }
 

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use App\Account;
 use App\Contact;
+use App\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Mockery as m;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase
 {
@@ -54,7 +54,7 @@ class ImportVCardsTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'John',
-            'last_name' => 'Doe',
+            'last_name'  => 'Doe',
         ]);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -73,15 +73,15 @@ class ImportVCardsTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'company' => 'U2',
-            'job' => 'Lead vocalist',
+            'job'     => 'Lead vocalist',
         ]);
 
         // Allows checking addresses are correctly saved
         $this->assertDatabaseHas('addresses', [
-            'street' => '17 Shakespeare Ave.',
+            'street'      => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
-            'city' => 'Southampton',
-            'country' => 'GB',
+            'city'        => 'Southampton',
+            'country'     => 'GB',
         ]);
 
         $this->assertDatabaseHas('contact_fields', [

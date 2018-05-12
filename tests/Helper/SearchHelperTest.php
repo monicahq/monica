@@ -2,9 +2,9 @@
 
 namespace Tests\Helper;
 
-use Tests\FeatureTestCase;
 use App\Helpers\SearchHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class SearchHelperTest extends FeatureTestCase
 {

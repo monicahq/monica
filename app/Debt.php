@@ -3,12 +3,13 @@
 namespace App;
 
 use App\Traits\Hasher;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property Account $account
  * @property Contact $contact
+ *
  * @method static Builder due()s
  * @method static Builder owed()
  * @method static Builder inProgress()
@@ -43,6 +44,7 @@ class Debt extends Model
      * Limit results to unpaid/unreceived debt.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeInProgress(Builder $query)
@@ -54,6 +56,7 @@ class Debt extends Model
      * Limit results to due debt.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeDue(Builder $query)
@@ -65,6 +68,7 @@ class Debt extends Model
      * Limit results to owed debt.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeOwed(Builder $query)

@@ -3,13 +3,13 @@
 namespace App;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Support\Facades\App;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -41,17 +41,18 @@ class User extends Authenticatable
     /**
      * Create a new User.
      *
-     * @param int $account_id
+     * @param int    $account_id
      * @param string $first_name
      * @param string $last_name
      * @param string $email
      * @param string $password
+     *
      * @return $this
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password)
     {
         // create the user
-        $user = new self;
+        $user = new self();
         $user->account_id = $account_id;
         $user->first_name = $first_name;
         $user->last_name = $last_name;
@@ -87,15 +88,17 @@ class User extends Authenticatable
      * Assigns a default value just in case the sort order is empty.
      *
      * @param string $value
+     *
      * @return string
      */
     public function getContactsSortOrderAttribute($value)
     {
-        return ! empty($value) ? $value : 'firstnameAZ';
+        return !empty($value) ? $value : 'firstnameAZ';
     }
 
     /**
      * Indicates if the layout is fluid or not for the UI.
+     *
      * @return string
      */
     public function getFluidLayout()
@@ -122,7 +125,8 @@ class User extends Authenticatable
     /**
      * Get the user's locale.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getLocaleAttribute($value)
@@ -143,11 +147,11 @@ class User extends Authenticatable
         if ($this->name_order == 'firstname_first') {
             $completeName = $this->first_name;
 
-            if (! is_null($this->last_name)) {
+            if (!is_null($this->last_name)) {
                 $completeName = $completeName.' '.$this->last_name;
             }
         } else {
-            if (! is_null($this->last_name)) {
+            if (!is_null($this->last_name)) {
                 $completeName = $this->last_name;
             }
 
@@ -170,7 +174,7 @@ class User extends Authenticatable
     /**
      * Set the contact view preference.
      *
-     * @param  string $preference
+     * @param string $preference
      */
     public function updateContactViewPreference($preference)
     {
@@ -180,6 +184,7 @@ class User extends Authenticatable
 
     /**
      * Indicates whether the user has already rated the current day.
+     *
      * @return bool
      */
     public function hasAlreadyRatedToday()
@@ -198,7 +203,8 @@ class User extends Authenticatable
     /**
      * Ecrypt the user's google_2fa secret.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function setGoogle2faSecretAttribute($value)
@@ -209,7 +215,8 @@ class User extends Authenticatable
     /**
      * Decrypt the user's google_2fa secret.
      *
-     * @param  string|null  $value
+     * @param string|null $value
+     *
      * @return string|null
      */
     public function getGoogle2faSecretAttribute($value)
@@ -228,6 +235,7 @@ class User extends Authenticatable
      * wants to be reminded.
      *
      * @param Carbon $date
+     *
      * @return bool
      */
     public function shouldBeReminded(Carbon $date)

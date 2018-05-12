@@ -3,10 +3,10 @@
 namespace Tests\Helper;
 
 use App\Contact;
-use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
-use JeroenDesloovere\VCard\VCard;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use JeroenDesloovere\VCard\VCard;
+use Tests\FeatureTestCase;
 
 class VCardHelperTest extends FeatureTestCase
 {
@@ -20,8 +20,8 @@ class VCardHelperTest extends FeatureTestCase
         // populate a bunch of contact fields and contact field types
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $account->id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 
@@ -79,8 +79,8 @@ class VCardHelperTest extends FeatureTestCase
 
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $account->id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 
@@ -113,19 +113,19 @@ class VCardHelperTest extends FeatureTestCase
 
         $contactFieldType = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
-            'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
+            'name'       => 'Home',
+            'street'     => '123 st',
+            'city'       => 'Montreal',
+            'province'   => 'Quebec',
             'account_id' => $account->id,
         ]);
 
         $contactFieldType = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
-            'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
+            'name'       => 'Home',
+            'street'     => '123 st',
+            'city'       => 'Montreal',
+            'province'   => 'Quebec',
             'account_id' => $account->id,
         ]);
 
@@ -162,26 +162,26 @@ class VCardHelperTest extends FeatureTestCase
 
         $contactFieldType = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
-            'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
+            'name'       => 'Home',
+            'street'     => '123 st',
+            'city'       => 'Montreal',
+            'province'   => 'Quebec',
             'account_id' => $account->id,
         ]);
 
         $contactFieldType = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
-            'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
+            'name'       => 'Home',
+            'street'     => '123 st',
+            'city'       => 'Montreal',
+            'province'   => 'Quebec',
             'account_id' => $account->id,
         ]);
 
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
         $contactField = factory(\App\ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $account->id,
+            'contact_id'            => $contact->id,
+            'account_id'            => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 

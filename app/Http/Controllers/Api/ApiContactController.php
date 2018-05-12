@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Contact;
-use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ApiContactController extends ApiController
 {
@@ -61,7 +61,9 @@ class ApiContactController extends ApiController
 
     /**
      * Get the detail of a given contact.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -83,7 +85,9 @@ class ApiContactController extends ApiController
 
     /**
      * Store the contact.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -183,7 +187,9 @@ class ApiContactController extends ApiController
 
     /**
      * Update the contact.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $contactId)
@@ -275,37 +281,38 @@ class ApiContactController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:50',
-            'last_name' => 'nullable|max:100',
-            'gender_id' => 'integer|required',
-            'birthdate' => 'nullable|date',
-            'birthdate_is_age_based' => 'boolean',
-            'birthdate_is_year_unknown' => 'boolean',
-            'birthdate_age' => 'nullable|integer',
-            'job' => 'nullable|max:255',
-            'company' => 'nullable|max:255',
-            'food_preferencies' => 'nullable|max:100000',
-            'linkedin_profile_url' => 'nullable|max:255',
-            'first_met_information' => 'nullable|max:1000000',
-            'first_met_date' => 'nullable|date',
-            'first_met_date_is_age_based' => 'boolean',
+            'first_name'                     => 'required|max:50',
+            'last_name'                      => 'nullable|max:100',
+            'gender_id'                      => 'integer|required',
+            'birthdate'                      => 'nullable|date',
+            'birthdate_is_age_based'         => 'boolean',
+            'birthdate_is_year_unknown'      => 'boolean',
+            'birthdate_age'                  => 'nullable|integer',
+            'job'                            => 'nullable|max:255',
+            'company'                        => 'nullable|max:255',
+            'food_preferencies'              => 'nullable|max:100000',
+            'linkedin_profile_url'           => 'nullable|max:255',
+            'first_met_information'          => 'nullable|max:1000000',
+            'first_met_date'                 => 'nullable|date',
+            'first_met_date_is_age_based'    => 'boolean',
             'first_met_date_is_year_unknown' => 'boolean',
-            'first_met_date_age' => 'nullable|integer',
-            'first_met_through_contact_id' => 'nullable|integer',
-            'is_partial' => 'required|boolean',
-            'is_dead' => 'required|boolean',
-            'deceased_date' => 'nullable|date',
-            'deceased_date_is_age_based' => 'boolean',
-            'deceased_date_is_year_unknown' => 'boolean',
-            'deceased_date_age' => 'nullable|integer',
-            'avatar_url' => 'nullable|max:400',
+            'first_met_date_age'             => 'nullable|integer',
+            'first_met_through_contact_id'   => 'nullable|integer',
+            'is_partial'                     => 'required|boolean',
+            'is_dead'                        => 'required|boolean',
+            'deceased_date'                  => 'nullable|date',
+            'deceased_date_is_age_based'     => 'boolean',
+            'deceased_date_is_year_unknown'  => 'boolean',
+            'deceased_date_age'              => 'nullable|integer',
+            'avatar_url'                     => 'nullable|max:400',
         ]);
 
         if ($validator->fails()) {
@@ -330,7 +337,9 @@ class ApiContactController extends ApiController
 
     /**
      * Delete a contact.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
@@ -369,7 +378,9 @@ class ApiContactController extends ApiController
 
     /**
      * Apply the `?with=` parameter.
-     * @param  Collection $contacts
+     *
+     * @param Collection $contacts
+     *
      * @return Collection
      */
     private function applyWithParameter($contacts, string $parameter = null)

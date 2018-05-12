@@ -50,7 +50,7 @@ class Address extends Model
             return;
         }
 
-        if (! is_null($this->province)) {
+        if (!is_null($this->province)) {
             $address = $address.', '.$this->province;
         }
 
@@ -66,23 +66,23 @@ class Address extends Model
     {
         $address = '';
 
-        if (! is_null($this->street)) {
+        if (!is_null($this->street)) {
             $address = $this->street;
         }
 
-        if (! is_null($this->city)) {
+        if (!is_null($this->city)) {
             $address .= ' '.$this->city;
         }
 
-        if (! is_null($this->province)) {
+        if (!is_null($this->province)) {
             $address .= ' '.$this->province;
         }
 
-        if (! is_null($this->postal_code)) {
+        if (!is_null($this->postal_code)) {
             $address .= ' '.$this->postal_code;
         }
 
-        if (! is_null($this->country)) {
+        if (!is_null($this->country)) {
             $address .= ' '.$this->getCountryName();
         }
 

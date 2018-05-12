@@ -25,7 +25,7 @@ class GendersRequest extends FormRequest
     {
         return [
             'name' => 'max:255',
-            'id' => 'integer',
+            'id'   => 'integer',
         ];
     }
 }

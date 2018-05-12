@@ -2,17 +2,18 @@
 
 namespace App\Helpers;
 
-use Auth;
 use App\Contact;
 use App\ContactFieldType;
+use Auth;
 
 class SearchHelper
 {
     /**
      * Search contacts by the given query.
      *
-     * @param  string $query
-     * @param  int $limitPerPage
+     * @param string $query
+     * @param int    $limitPerPage
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function searchContacts($query, $limitPerPage, $order)

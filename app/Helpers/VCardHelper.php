@@ -12,6 +12,7 @@ class VCardHelper
      *
      * @param string date
      * @param string timezone
+     *
      * @return VCard
      */
     public static function prepareVCard(Contact $contact)
@@ -43,8 +44,9 @@ class VCardHelper
      * A contact can have multiple fields of the same type (email, phone, fax...)
      * so we need to take the first one we find.
      *
-     * @param  Contact $contact
-     * @param  string $fieldType
+     * @param Contact $contact
+     * @param string  $fieldType
+     *
      * @return \Illuminate\Database\Eloquent\Collection|null
      */
     public static function getAllEntriesOfASpecificContactFieldType(Contact $contact, string $fieldType)
@@ -53,7 +55,7 @@ class VCardHelper
                                     ->where('type', $fieldType)
                                     ->first();
 
-        if (! $contactFieldType) {
+        if (!$contactFieldType) {
             return;
         }
 
@@ -74,13 +76,14 @@ class VCardHelper
      * @param Contact $contact
      * @param VCard   $vCard
      * @param string  $fieldType
+     *
      * @return VCard
      */
     public static function addContactFieldEntriesInVCard(Contact $contact, VCard $vCard, String $fieldType)
     {
         $contactFields = self::getAllEntriesOfASpecificContactFieldType($contact, $fieldType);
 
-        if (! $contactFields) {
+        if (!$contactFields) {
             return $vCard;
         }
 

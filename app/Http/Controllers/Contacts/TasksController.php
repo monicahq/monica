@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Task;
 use App\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TasksRequest;
 use App\Http\Requests\People\TaskToggleRequest;
+use App\Task;
 
 class TasksController extends Controller
 {
@@ -19,12 +19,12 @@ class TasksController extends Controller
 
         foreach ($contact->tasks as $task) {
             $data = [
-                'id' => $task->id,
-                'title' => $task->title,
-                'description' => $task->description,
-                'completed' => $task->completed,
+                'id'           => $task->id,
+                'title'        => $task->title,
+                'description'  => $task->description,
+                'completed'    => $task->completed,
                 'completed_at' => \App\Helpers\DateHelper::getShortDate($task->completed_at),
-                'edit' => false,
+                'edit'         => false,
             ];
             $tasks->push($data);
         }
@@ -38,8 +38,8 @@ class TasksController extends Controller
     public function store(TasksRequest $request, Contact $contact)
     {
         $task = $contact->tasks()->create([
-            'account_id' => auth()->user()->account->id,
-            'title' => $request->get('title'),
+            'account_id'  => auth()->user()->account->id,
+            'title'       => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
 
@@ -54,9 +54,9 @@ class TasksController extends Controller
     public function update(TasksRequest $request, Contact $contact, Task $task)
     {
         $task->update([
-            'title' => $request->get('title'),
+            'title'       => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
-            'completed' => $request->get('completed'),
+            'completed'   => $request->get('completed'),
         ]);
 
         $contact->logEvent('task', $task->id, 'update');
@@ -84,7 +84,8 @@ class TasksController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Task $task
+     * @param Task    $task
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Task $task)
