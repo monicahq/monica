@@ -261,7 +261,7 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ postgresql-client-9.6
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++
             sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_pgsql pgsql mbstring
       - *prepare-environment
       - run:
