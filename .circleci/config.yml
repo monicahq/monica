@@ -261,7 +261,7 @@ jobs:
           name: Install extensions
           command: |
             sudo apt-get update
-            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ libpq-dev
             sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_pgsql pgsql mbstring
       - *prepare-environment
       - run:
