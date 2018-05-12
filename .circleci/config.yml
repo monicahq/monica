@@ -186,7 +186,7 @@ jobs:
             - public/fonts
             - public/js
 
-  tests-7.1:
+  tests-7.1-mysql:
     <<: *defaults
     docker:
       - image: circleci/php:7.1-node-browsers
@@ -217,7 +217,7 @@ jobs:
           root: *root
           paths: results
 
-  tests-7.2:
+  tests-7.2-mysql:
     <<: *defaults
     docker:
       - image: circleci/php:7.2-node-browsers
@@ -240,6 +240,45 @@ jobs:
       - *prepare-db
       - *unit-tests
       - *psalm
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+
+  tests-7.2-postgres:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/postgres:9.6-alpine-ram
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: monica
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - run:
+          name: Install extensions
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ postgresql-client-9.6
+            sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_pgsql pgsql mbstring
+      - *prepare-environment
+      - run:
+          name: Prepare environment for postgre
+          command: |
+            cp scripts/tests/.env.postgres.travis .env
+      - *remove-xdebug
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 60s
+      - *prepare-db
+      - run:
+          name: Run unit tests
+          command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunitpostgres.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
       - store_test_results:
           path: results
       - store_artifacts:
@@ -407,7 +446,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-7.1:
+      - tests-7.1-mysql:
           requires:
             - build
           filters:
@@ -415,7 +454,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-7.2:
+      - tests-7.2-mysql:
           requires:
             - build
           filters:
@@ -423,7 +462,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-browser-7.1:
+      - tests-7.2-postgres:
           requires:
             - build
           filters:
