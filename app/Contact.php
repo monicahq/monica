@@ -1302,7 +1302,6 @@ class Contact extends Model
      * @param mixed $tags string or Tag
      * @return \Illuminate\Database\Eloquent\Builder $query
      */
-
     public function scopeTags($query, $tags)
     {
         if ($tags == 'NONE') {
