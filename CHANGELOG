@@ -8,6 +8,7 @@ UNRELEASED CHANGES:
 * Allow multiple imported fields and replace existing contacts
 * Adds ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
+* Add trusted proxies to run behind a ssl terminating loadbalancer
 
 RELEASED VERSIONS:
 
