@@ -1168,7 +1168,7 @@ class Contact extends Model
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $firstMetDate =$this->firstMetDate;
+                    $firstMetDate = $this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
 

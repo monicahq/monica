@@ -15,16 +15,14 @@ class Country extends Resource
      */
     public function toArray($request)
     {
-        if ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection)
-        {
+        if ($this->resource instanceof \PragmaRX\Countries\Package\Support\Collection) {
             $id = $this->resource->id;
             $name = $this->resource->country;
-        }
-        else
-        {
+        } else {
             $id = $this->resource;
             $name = CountriesHelper::get($this->resource);
         }
+
         return [
             'id' => $id,
             'object' => 'country',
