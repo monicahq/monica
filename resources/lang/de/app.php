@@ -155,7 +155,7 @@ return [
     'relationship_type_grandchild' => 'Enkel',
     'relationship_type_grandchild_female' => 'Enkelin',
     'relationship_type_grandchild_with_name' => ':name\'s Enkel',
-    'relationship_type_grandchild_female_with_name' => ':name\'s Enkel',
+    'relationship_type_grandchild_female_with_name' => ':name\'s Enkelin',
 
     'relationship_type_uncle' => 'Onkel',
     'relationship_type_uncle_female' => 'Tante',
