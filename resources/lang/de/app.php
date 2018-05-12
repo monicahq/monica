@@ -202,8 +202,8 @@ return [
     'relationship_type_boss_with_name' => ':name\'s Chef',
     'relationship_type_boss_female_with_name' => ':name\'s Chefin',
 
-    'relationship_type_subordinate' => 'Mitarbeiter',
-    'relationship_type_subordinate_female' => 'Mitarbeiterin',
+    'relationship_type_subordinate' => ':name\'s Untergebener',
+    'relationship_type_subordinate_female' => ':name\'s Untergebene',
     'relationship_type_subordinate_with_name' => ':name\'s Mitarbeiter',
     'relationship_type_subordinate_female_with_name' => ':name\'s Mitarbeiterin',
 
