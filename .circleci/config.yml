@@ -275,10 +275,14 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:5432 -timeout 60s
-      - *prepare-db
+      - run:
+          name: Prepare database
+          command: |
+            php artisan migrate --env=testing --no-interaction -vvv | true
+            php artisan db:seed --env=testing --no-interaction -vvv | true
       - run:
           name: Run unit tests
-          command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunitpostgres.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
+          command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunitpostgres.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml | true
       - store_test_results:
           path: results
       - store_artifacts:
