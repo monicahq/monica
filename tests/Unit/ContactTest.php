@@ -1263,14 +1263,14 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas(
             'tags',
             [
-                'name' => 'friend', 
+                'name' => 'friend',
             ]
         );
 
         $this->assertDatabaseHas(
             'tags',
             [
-                'name' => 'test2', 
+                'name' => 'test2',
             ]
         );
 
