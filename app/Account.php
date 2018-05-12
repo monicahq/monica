@@ -313,6 +313,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Email records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function emails()
+    {
+        return $this->hasMany('App\Email');
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value

@@ -326,6 +326,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Email records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function emails()
+    {
+        return $this->hasMany('App\Emails', 'contact_id');
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
