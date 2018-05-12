@@ -149,7 +149,7 @@ return [
 
     'relationship_type_grandparent' => 'Großeltern',
     'relationship_type_grandparent_female' => 'Großmutter',
-    'relationship_type_grandparent_with_name' => ':name\'s Großeltern',
+    'relationship_type_grandparent_with_name' => ':name\'s Großvater',
     'relationship_type_grandparent_female_with_name' => ':name\'s Großmutter',
 
     'relationship_type_grandchild' => 'Enkel',
