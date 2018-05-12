@@ -147,13 +147,13 @@ return [
     'relationship_type_sibling_with_name' => ':names Bruder',
     'relationship_type_sibling_female_with_name' => ':names Schwester',
 
-    'relationship_type_grandparent' => 'Großeltern',
+    'relationship_type_grandparent' => 'Großvater',
     'relationship_type_grandparent_female' => 'Großmutter',
     'relationship_type_grandparent_with_name' => ':name\'s Großvater',
     'relationship_type_grandparent_female_with_name' => ':name\'s Großmutter',
 
     'relationship_type_grandchild' => 'Enkel',
-    'relationship_type_grandchild_female' => 'Enkel',
+    'relationship_type_grandchild_female' => 'Enkelin',
     'relationship_type_grandchild_with_name' => ':name\'s Enkel',
     'relationship_type_grandchild_female_with_name' => ':name\'s Enkel',
 
@@ -177,10 +177,10 @@ return [
     'relationship_type_godfather_with_name' => ':names Pate',
     'relationship_type_godfather_female_with_name' => ':names Patin',
 
-    'relationship_type_godson' => 'Patensohn',
+    'relationship_type_godson' => 'Patenkind',
     'relationship_type_godson_female' => 'Patenkind',
-    'relationship_type_godson_with_name' => ':name\'s Patensohn',
-    'relationship_type_godson_female_with_name' => ':name\'s Patentochter',
+    'relationship_type_godson_with_name' => ':name\'s Patenkind',
+    'relationship_type_godson_female_with_name' => ':name\'s Patenkind',
 
     'relationship_type_friend' => 'Freund',
     'relationship_type_friend_female' => 'Freundin',
