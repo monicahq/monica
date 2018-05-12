@@ -18,27 +18,27 @@ return [
         'after' => false,
 
         'elements' => [
-            'borders' => false,
-            'cities' => false,
-            'currencies' => false,
-            'flag' => false,
-            'geometry' => false,
-            'states' => false,
-            'taxes' => false,
-            'timezones' => false,
+            'borders'         => false,
+            'cities'          => false,
+            'currencies'      => false,
+            'flag'            => false,
+            'geometry'        => false,
+            'states'          => false,
+            'taxes'           => false,
+            'timezones'       => false,
             'timezones_times' => false,
-            'topology' => false,
+            'topology'        => false,
         ],
     ],
 
     'maps' => [
-        'lca3' => 'cca3',
+        'lca3'       => 'cca3',
         'currencies' => 'currency',
     ],
 
     'validation' => [
         'enabled' => false,
-        'rules' => [
+        'rules'   => [
             'country'           => 'name.common',
             'name'              => 'name.common',
             'nameCommon'        => 'name.common',

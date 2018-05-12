@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Contact;
 use App\ContactField;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiContactFieldController extends ApiController
 {
     /**
      * Get the detail of a given contactField.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -32,13 +34,15 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Store the contactField.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $contactField = $this->validateUpdate($request, $request->input('contact_field_type_id'));
-        if (! $contactField instanceof ContactField) {
+        if (!$contactField instanceof ContactField) {
             return $contactField;
         }
 
@@ -58,14 +62,16 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Update the contactField.
-     * @param  Request $request
-     * @param  int $contactFieldId
+     *
+     * @param Request $request
+     * @param int     $contactFieldId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $contactFieldId)
     {
         $contactField = $this->validateUpdate($request, $contactFieldId);
-        if (! $contactField instanceof ContactField) {
+        if (!$contactField instanceof ContactField) {
             return $contactField;
         }
 
@@ -81,17 +87,18 @@ class ApiContactFieldController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
-     * @param  int $contactFieldId
+     * @param Request $request
+     * @param int     $contactFieldId
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request, $contactFieldId)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'data' => 'max:255|required',
+            'data'                  => 'max:255|required',
             'contact_field_type_id' => 'integer|required',
-            'contact_id' => 'required|integer',
+            'contact_id'            => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -120,7 +127,9 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Delete a contactField.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $contactFieldId)

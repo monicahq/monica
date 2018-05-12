@@ -2,11 +2,11 @@
 
 use App\Account;
 use App\Contact;
+use App\Helpers\CountriesHelper;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
-use App\Helpers\CountriesHelper;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -45,7 +45,7 @@ class FakeContentTableSeeder extends Seeder
             $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-            $this->contact = new Contact;
+            $this->contact = new Contact();
             $this->contact->account_id = $this->account->id;
             $this->contact->gender_id = $this->getRandomGender()->id;
             $this->contact->first_name = $this->faker->firstName($gender);
@@ -182,7 +182,7 @@ class FakeContentTableSeeder extends Seeder
             foreach (range(1, rand(2, 6)) as $index) {
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-                $relatedContact = new Contact;
+                $relatedContact = new Contact();
                 $relatedContact->account_id = $this->contact->account_id;
                 $relatedContact->gender_id = $this->getRandomGender()->id;
                 $relatedContact->first_name = $this->faker->firstName($gender);
@@ -221,8 +221,8 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
                 $note = $this->contact->notes()->create([
-                    'body' => $this->faker->realText(rand(40, 500)),
-                    'account_id' => $this->contact->account_id,
+                    'body'         => $this->faker->realText(rand(40, 500)),
+                    'account_id'   => $this->contact->account_id,
                     'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
@@ -239,17 +239,17 @@ class FakeContentTableSeeder extends Seeder
                 $date = $this->faker->dateTimeThisYear($max = 'now')->format('Y-m-d');
 
                 $activity = $this->contact->activities()->create([
-                    'summary' => $this->faker->realText(rand(40, 100)),
+                    'summary'          => $this->faker->realText(rand(40, 100)),
                     'date_it_happened' => $date,
                     'activity_type_id' => rand(1, 13),
-                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
-                    'account_id' => $this->contact->account_id,
+                    'description'      => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
+                    'account_id'       => $this->contact->account_id,
                 ], ['account_id' => $this->contact->account_id]);
 
                 $entry = DB::table('journal_entries')->insertGetId([
-                    'account_id' => $this->account->id,
-                    'date' => $date,
-                    'journalable_id' => $activity->id,
+                    'account_id'       => $this->account->id,
+                    'date'             => $date,
+                    'journalable_id'   => $activity->id,
                     'journalable_type' => 'App\Activity',
                 ]);
 
@@ -263,11 +263,11 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 10); $j++) {
                 $task = $this->contact->tasks()->create([
-                    'title' => $this->faker->realText(rand(40, 100)),
-                    'description' => $this->faker->realText(rand(100, 1000)),
-                    'completed' => (rand(1, 2) == 1 ? 0 : 1),
+                    'title'        => $this->faker->realText(rand(40, 100)),
+                    'description'  => $this->faker->realText(rand(100, 1000)),
+                    'completed'    => (rand(1, 2) == 1 ? 0 : 1),
                     'completed_at' => (rand(1, 2) == 1 ? $this->faker->dateTimeThisCentury() : null),
-                    'account_id' => $this->contact->account_id,
+                    'account_id'   => $this->contact->account_id,
                 ]);
 
                 $this->contact->logEvent('task', $task->id, 'create');
@@ -280,10 +280,10 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 6); $j++) {
                 $debt = $this->contact->debts()->create([
-                    'in_debt' => (rand(1, 2) == 1 ? 'yes' : 'no'),
-                    'amount' => rand(321, 39391),
-                    'reason' => $this->faker->realText(rand(100, 1000)),
-                    'status' => 'inprogress',
+                    'in_debt'    => (rand(1, 2) == 1 ? 'yes' : 'no'),
+                    'amount'     => rand(321, 39391),
+                    'reason'     => $this->faker->realText(rand(100, 1000)),
+                    'status'     => 'inprogress',
                     'account_id' => $this->contact->account_id,
                 ]);
 
@@ -298,12 +298,12 @@ class FakeContentTableSeeder extends Seeder
             for ($j = 0; $j < rand(1, 31); $j++) {
                 $gift = $this->contact->gifts()->create([
 
-                    'name' => $this->faker->realText(rand(10, 100)),
-                    'comment' => $this->faker->realText(rand(1000, 5000)),
-                    'url' => $this->faker->url,
-                    'value' => rand(12, 120),
-                    'account_id' => $this->contact->account_id,
-                    'is_an_idea' => true,
+                    'name'             => $this->faker->realText(rand(10, 100)),
+                    'comment'          => $this->faker->realText(rand(1000, 5000)),
+                    'url'              => $this->faker->url,
+                    'value'            => rand(12, 120),
+                    'account_id'       => $this->contact->account_id,
+                    'is_an_idea'       => true,
                     'has_been_offered' => false,
                 ]);
 
@@ -316,12 +316,12 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 3) == 1) {
             $address = $this->contact->addresses()->create([
-                'account_id' => $this->contact->account_id,
-                'country' => $this->getRandomCountry(),
-                'name' => $this->faker->word,
-                'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
-                'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
-                'province' => (rand(1, 3) == 1) ? $this->faker->state : null,
+                'account_id'  => $this->contact->account_id,
+                'country'     => $this->getRandomCountry(),
+                'name'        => $this->faker->word,
+                'street'      => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
+                'city'        => (rand(1, 3) == 1) ? $this->faker->city : null,
+                'province'    => (rand(1, 3) == 1) ? $this->faker->state : null,
                 'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,
             ]);
         }
@@ -344,8 +344,8 @@ class FakeContentTableSeeder extends Seeder
             for ($j = 0; $j < rand(1, 4); $j++) {
                 $contactField = $this->contact->contactFields()->create([
                     'contact_field_type_id' => rand(1, 6),
-                    'data' => $this->faker->url,
-                    'account_id' => $this->contact->account->id,
+                    'data'                  => $this->faker->url,
+                    'account_id'            => $this->contact->account->id,
                 ]);
             }
         }
@@ -358,17 +358,17 @@ class FakeContentTableSeeder extends Seeder
 
             $entryId = DB::table('entries')->insertGetId([
                 'account_id' => $this->account->id,
-                'title' => $this->faker->realText(rand(12, 20)),
-                'post' => $this->faker->realText(rand(400, 500)),
+                'title'      => $this->faker->realText(rand(12, 20)),
+                'post'       => $this->faker->realText(rand(400, 500)),
                 'created_at' => $date,
             ]);
 
             $journalEntry = DB::table('journal_entries')->insertGetId([
-                'account_id' => $this->account->id,
-                'date' => $date,
-                'journalable_id' => $entryId,
+                'account_id'       => $this->account->id,
+                'date'             => $date,
+                'journalable_id'   => $entryId,
                 'journalable_type' => 'App\Entry',
-                'created_at' => now(),
+                'created_at'       => now(),
             ]);
         }
     }
@@ -380,11 +380,11 @@ class FakeContentTableSeeder extends Seeder
                 $date = $this->faker->dateTimeThisYear();
 
                 $petId = DB::table('pets')->insertGetId([
-                    'account_id' => $this->account->id,
-                    'contact_id' => $this->contact->id,
+                    'account_id'      => $this->account->id,
+                    'contact_id'      => $this->contact->id,
                     'pet_category_id' => rand(1, 11),
-                    'name' => (rand(1, 3) == 1) ? $this->faker->firstName : null,
-                    'created_at' => $date,
+                    'name'            => (rand(1, 3) == 1) ? $this->faker->firstName : null,
+                    'created_at'      => $date,
                 ]);
             }
         }
@@ -397,17 +397,17 @@ class FakeContentTableSeeder extends Seeder
 
             $dayId = DB::table('days')->insertGetId([
                 'account_id' => $this->account->id,
-                'rate' => rand(1, 3),
-                'date' => $date,
+                'rate'       => rand(1, 3),
+                'date'       => $date,
                 'created_at' => $date,
             ]);
 
             $journalEntry = DB::table('journal_entries')->insertGetId([
-                'account_id' => $this->account->id,
-                'date' => $date,
-                'journalable_id' => $dayId,
+                'account_id'       => $this->account->id,
+                'date'             => $date,
+                'journalable_id'   => $dayId,
                 'journalable_type' => 'App\Day',
-                'created_at' => now(),
+                'created_at'       => now(),
             ]);
         }
     }
@@ -423,7 +423,7 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
             $calls = $this->contact->calls()->create([
                 'account_id' => $this->contact->account_id,
-                'called_at' => $this->faker->dateTimeThisYear(),
+                'called_at'  => $this->faker->dateTimeThisYear(),
             ]);
         }
     }

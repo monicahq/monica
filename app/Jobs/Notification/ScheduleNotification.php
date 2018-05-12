@@ -4,10 +4,10 @@ namespace App\Jobs\Notification;
 
 use App\Notification;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * Check if a user can be sent a notification and if that's the case,
@@ -44,7 +44,7 @@ class ScheduleNotification implements ShouldQueue
 
         foreach ($account->users as $user) {
             if ($user->shouldBeReminded($this->notification->trigger_date)
-                && ! $account->hasLimitations()) {
+                && !$account->hasLimitations()) {
                 dispatch(new SendNotificationEmail($this->notification, $user));
             }
         }

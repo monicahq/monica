@@ -3,8 +3,8 @@
 namespace Tests\Api\Contact;
 
 use App\Contact;
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiContactTagControllerTest extends ApiTestCase
 {
@@ -23,7 +23,7 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
+            'message'    => ['The tags field is required.'],
             'error_code' => 32,
         ]);
     }
@@ -43,7 +43,7 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $contact->id,
+            'id'   => $contact->id,
             'name' => 'very-specific-tag-name-2',
         ]);
     }
@@ -61,7 +61,7 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
+            'message'    => ['The tags field is required.'],
             'error_code' => 32,
         ]);
     }
@@ -76,11 +76,11 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $tag = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'friend',
+            'name'       => 'friend',
         ]);
         $tag2 = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'family',
+            'name'       => 'family',
         ]);
 
         $contact->setTag($tag->name);
@@ -93,7 +93,7 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $contact->id,
+            'id'   => $contact->id,
             'name' => $tag2->name,
         ]);
 
@@ -112,15 +112,15 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $tag = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'friend',
+            'name'       => 'friend',
         ]);
         $tag2 = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'family',
+            'name'       => 'family',
         ]);
         $tag3 = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'work',
+            'name'       => 'work',
         ]);
 
         $contact->setTag($tag->name);
@@ -134,7 +134,7 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $contact->id,
+            'id'   => $contact->id,
             'name' => $tag3->name,
         ]);
 
@@ -153,11 +153,11 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $tag = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'friend',
+            'name'       => 'friend',
         ]);
         $tag2 = factory('App\Tag')->create([
             'account_id' => $user->account->id,
-            'name' => 'family',
+            'name'       => 'family',
         ]);
 
         $contact->setTag($tag->name);

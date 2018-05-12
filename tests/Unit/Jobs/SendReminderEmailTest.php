@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Mail\UserRemindedMail;
 use App\Jobs\SendReminderEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\UserRemindedMail;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class SendReminderEmailTest extends TestCase
 {
@@ -25,11 +25,11 @@ class SendReminderEmailTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
         ]);
 

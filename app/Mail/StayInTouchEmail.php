@@ -2,12 +2,12 @@
 
 namespace App\Mail;
 
-use App\User;
 use App\Contact;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class StayInTouchEmail extends Mailable
 {
@@ -40,7 +40,7 @@ class StayInTouchEmail extends Mailable
                     ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->getCompleteName($this->user->name_order)]))
                     ->with([
                         'contact' => $this->contact,
-                        'user' => $this->user,
+                        'user'    => $this->user,
                     ]);
     }
 }

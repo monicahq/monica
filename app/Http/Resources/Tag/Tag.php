@@ -10,16 +10,17 @@ class Tag extends Resource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
+     *
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'object' => 'tag',
-            'name' => $this->name,
+            'id'        => $this->id,
+            'object'    => 'tag',
+            'name'      => $this->name,
             'name_slug' => $this->name_slug,
-            'account' => [
+            'account'   => [
                 'id' => $this->account->id,
             ],
             'created_at' => $this->created_at->format(config('api.timestamp_format')),

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class NotificationTest extends TestCase
 {
@@ -35,7 +35,7 @@ class NotificationTest extends TestCase
         $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'reminder_id' => $reminder->id,
         ]);
 
@@ -56,7 +56,7 @@ class NotificationTest extends TestCase
         $account = factory('App\Account')->create([]);
         $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
+            'account_id'  => $account->id,
             'reminder_id' => $reminder->id,
         ]);
 
@@ -79,29 +79,29 @@ class NotificationTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
+            'account_id'                   => $account->id,
             'scheduled_number_days_before' => 7,
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 8,
-            'active' => true,
+            'active'                => true,
         ]);
         $this->assertFalse($notification->shouldBeSent());
         $reminderRule->delete();
 
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => true,
+            'active'                => true,
         ]);
         $this->assertTrue($notification->shouldBeSent());
         $reminderRule->delete();
 
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => false,
+            'active'                => false,
         ]);
         $this->assertFalse($notification->shouldBeSent());
     }

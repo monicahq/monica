@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class CallTest extends FeatureTestCase
 {
@@ -13,6 +13,7 @@ class CallTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -66,7 +67,7 @@ class CallTest extends FeatureTestCase
 
         $params = [
             'called_at' => '2013-01-01',
-            'content' => null,
+            'content'   => null,
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
@@ -100,7 +101,7 @@ class CallTest extends FeatureTestCase
 
         $params = [
             'called_at' => '2013-01-01',
-            'content' => 'This is a test call',
+            'content'   => 'This is a test call',
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
@@ -135,8 +136,8 @@ class CallTest extends FeatureTestCase
         $call = factory(\App\Call::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'content' => 'this is a test',
-            'called_at' => '2013-01-01 00:00:00',
+            'content'    => 'this is a test',
+            'called_at'  => '2013-01-01 00:00:00',
         ]);
 
         $response = $this->get('/people/'.$contact->id);

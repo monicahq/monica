@@ -2,13 +2,13 @@
 
 namespace App\Mail;
 
-use App\User;
 use App\Contact;
 use App\Reminder;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class UserRemindedMail extends Mailable
 {
@@ -42,9 +42,9 @@ class UserRemindedMail extends Mailable
         return $this->text('emails.reminder.reminder')
                     ->subject(trans('mail.subject_line', ['contact' => $contact->getCompleteName($this->user->name_order)]))
                     ->with([
-                        'contact' => $contact,
+                        'contact'  => $contact,
                         'reminder' => $this->reminder,
-                        'user' => $this->user,
+                        'user'     => $this->user,
                     ]);
     }
 }

@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Tag;
 use App\Contact;
+use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Tag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Contact\Contact as ContactResource;
 
 class ApiContactTagController extends ApiController
 {
     /**
      * Associate one or more tags to the contact.
+     *
      * @param Request $request
-     * @param int  $contactId
+     * @param int     $contactId
      */
     public function setTags(Request $request, $contactId)
     {
         $contact = $this->validateTag($request, $contactId);
-        if (! $contact instanceof Contact) {
+        if (!$contact instanceof Contact) {
             return $contact;
         }
 
@@ -33,8 +34,9 @@ class ApiContactTagController extends ApiController
 
     /**
      * Remove all the tags associated with the contact.
+     *
      * @param Request $request
-     * @param int  $contactId
+     * @param int     $contactId
      */
     public function unsetTags(Request $request, $contactId)
     {
@@ -53,13 +55,14 @@ class ApiContactTagController extends ApiController
 
     /**
      * Remove one or more specific tags associated with the contact.
+     *
      * @param Request $request
-     * @param int  $contactId
+     * @param int     $contactId
      */
     public function unsetTag(Request $request, $contactId)
     {
         $contact = $this->validateTag($request, $contactId);
-        if (! $contact instanceof Contact) {
+        if (!$contact instanceof Contact) {
             return $contact;
         }
 
@@ -83,8 +86,9 @@ class ApiContactTagController extends ApiController
     /**
      * Validate the request for update tag.
      *
-     * @param  Request $request
-     * @param  int $contactId
+     * @param Request $request
+     * @param int     $contactId
+     *
      * @return mixed
      */
     private function validateTag(Request $request, $contactId)

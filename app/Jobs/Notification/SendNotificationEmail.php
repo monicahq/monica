@@ -2,14 +2,14 @@
 
 namespace App\Jobs\Notification;
 
-use App\User;
-use App\Notification;
-use Illuminate\Bus\Queueable;
 use App\Mail\NotificationEmail;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Notification;
+use App\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendNotificationEmail implements ShouldQueue
 {

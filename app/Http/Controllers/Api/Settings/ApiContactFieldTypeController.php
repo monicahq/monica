@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\Settings;
 
 use App\ContactFieldType;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiContactFieldTypeController extends ApiController
 {
@@ -27,7 +27,9 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Get the detail of a given contact field type.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $contactFieldTypeId)
@@ -45,7 +47,9 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Store the contactfieldtype.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -69,8 +73,10 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Update the contact field type.
-     * @param  Request $request
+     *
+     * @param Request $request
      * @param  int
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $contactFieldTypeId)
@@ -109,18 +115,19 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
+            'name'             => 'required|max:255',
             'fontawesome_icon' => 'nullable|max:255',
-            'protocol' => 'nullable|max:255',
-            'delible' => 'integer',
-            'type' => 'nullable|max:255',
+            'protocol'         => 'nullable|max:255',
+            'delible'          => 'integer',
+            'type'             => 'nullable|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -133,7 +140,9 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Delete an contactfieldtype.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $contactFieldTypeId)

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class CountriesTest extends FeatureTestCase
 {
@@ -20,17 +20,16 @@ class CountriesTest extends FeatureTestCase
                 $table->string('iso');
                 $table->string('country');
             });
-            (new \CountriesSeederTable)->run();
+            (new \CountriesSeederTable())->run();
 
             foreach (DB::table('countries')->get() as $country) {
                 $iso = \CountriesSeederTable::fixIso($country->iso);
                 $cca2 = CountriesHelper::find($iso);
 
-                $this->assertNotEmpty($cca2, "Country not found for ".$iso);
+                $this->assertNotEmpty($cca2, 'Country not found for '.$iso);
             }
-        }
-        finally {
-            Schema::dropIfExists('countries');            
+        } finally {
+            Schema::dropIfExists('countries');
         }
     }
 }

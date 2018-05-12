@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class AddMultipleGendersChoices extends Migration
 {
@@ -32,6 +32,7 @@ class AddMultipleGendersChoices extends Migration
 
     /**
      * Alter an enum field constraints. Source: https://stackoverflow.com/a/36198549.
+     *
      * @param $table
      * @param $field
      * @param array $options

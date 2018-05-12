@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Entry;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class EntryTest extends TestCase
 {
@@ -20,15 +20,15 @@ class EntryTest extends TestCase
         $entry->save();
 
         $data = [
-            'type' => 'entry',
-            'id' => 1,
-            'title' => 'This is the title',
-            'post' => '<p>this is a post</p>',
-            'day' => 1,
-            'day_name' => 'Sun',
-            'month' => 1,
+            'type'       => 'entry',
+            'id'         => 1,
+            'title'      => 'This is the title',
+            'post'       => '<p>this is a post</p>',
+            'day'        => 1,
+            'day_name'   => 'Sun',
+            'month'      => 1,
             'month_name' => 'Jan',
-            'year' => 2017,
+            'year'       => 2017,
         ];
 
         $this->assertEquals(

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Pet;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Pet\Pet as PetResource;
+use App\Pet;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiPetController extends ApiController
 {
@@ -24,7 +24,9 @@ class ApiPetController extends ApiController
 
     /**
      * Get the detail of a given pet.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -42,14 +44,16 @@ class ApiPetController extends ApiController
 
     /**
      * Store the pet.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'pet_category_id' => 'integer|required|exists:pet_categories,id',
+            'pet_category_id'  => 'integer|required|exists:pet_categories,id',
             static::CONTACT_ID => 'required|integer|exists:contacts,id',
         ]);
 
@@ -74,8 +78,10 @@ class ApiPetController extends ApiController
 
     /**
      * Update the pet.
-     * @param  Request $request
-     * @param  int $petId
+     *
+     * @param Request $request
+     * @param int     $petId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $petId)
@@ -90,7 +96,7 @@ class ApiPetController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'pet_category_id' => 'sometimes|integer|required|exists:pet_categories,id',
+            'pet_category_id'  => 'sometimes|integer|required|exists:pet_categories,id',
             static::CONTACT_ID => 'sometimes|required|integer|exists:contacts,id',
         ]);
 
@@ -110,8 +116,10 @@ class ApiPetController extends ApiController
 
     /**
      * Delete a pet.
-     * @param  Request $request
-     * @param  int $petId
+     *
+     * @param Request $request
+     * @param int     $petId
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $petId)
@@ -131,8 +139,10 @@ class ApiPetController extends ApiController
 
     /**
      * Get the list of pets for the given contact.
-     * @param  Request $request
-     * @param  int $contactId
+     *
+     * @param Request $request
+     * @param int     $contactId
+     *
      * @return \Illuminate\Http\Response
      */
     public function listContactPets(Request $request, $contactId)
@@ -153,8 +163,10 @@ class ApiPetController extends ApiController
 
     /**
      * Store the pet, associated to a specific contact.
-     * @param  Request $request
-     * @param  int $contactId
+     *
+     * @param Request $request
+     * @param int     $contactId
+     *
      * @return \Illuminate\Http\Response
      */
     public function storeContactPet(Request $request, $contactId)
@@ -166,9 +178,11 @@ class ApiPetController extends ApiController
 
     /**
      * Update the pet, associated to a specific contact.
-     * @param  Request $request
-     * @param  int $contactId
-     * @param  int $petId
+     *
+     * @param Request $request
+     * @param int     $contactId
+     * @param int     $petId
+     *
      * @return \Illuminate\Http\Response
      */
     public function moveContactPet(Request $request, $contactId, $petId)

@@ -2,14 +2,14 @@
 
 namespace App\Jobs;
 
-use App\User;
-use App\Reminder;
-use Illuminate\Bus\Queueable;
 use App\Mail\UserRemindedMail;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Reminder;
+use App\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendReminderEmail implements ShouldQueue
 {

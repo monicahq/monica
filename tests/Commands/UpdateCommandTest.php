@@ -2,8 +2,8 @@
 
 namespace Tests\Commands;
 
-use Tests\TestCase;
 use App\Console\Commands\Update;
+use Tests\TestCase;
 
 class UpdateCommandTest extends TestCase
 {

@@ -24,7 +24,7 @@ class PetsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'max:255|nullable',
+            'name'            => 'max:255|nullable',
             'pet_category_id' => 'integer',
         ];
     }

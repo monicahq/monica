@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Address;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAddressController extends ApiController
 {
     /**
      * Get the detail of a given address.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -32,7 +34,9 @@ class ApiAddressController extends ApiController
 
     /**
      * Store the address.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -58,8 +62,10 @@ class ApiAddressController extends ApiController
 
     /**
      * Update the address.
-     * @param  Request $request
-     * @param  int $addressId
+     *
+     * @param Request $request
+     * @param int     $addressId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $addressId)
@@ -89,20 +95,21 @@ class ApiAddressController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'name' => 'max:255|required',
-            'street' => 'max:255|nullable',
-            'city' => 'max:255|nullable',
-            'province' => 'max:255|nullable',
+            'name'        => 'max:255|required',
+            'street'      => 'max:255|nullable',
+            'city'        => 'max:255|nullable',
+            'province'    => 'max:255|nullable',
             'postal_code' => 'max:255|nullable',
-            'country' => 'max:3|nullable',
-            'contact_id' => 'required|integer',
+            'country'     => 'max:3|nullable',
+            'contact_id'  => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -123,7 +130,9 @@ class ApiAddressController extends ApiController
 
     /**
      * Delete a address.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $addressId)

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Note;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Note\Note as NoteResource;
+use App\Note;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiNoteController extends ApiController
 {
@@ -32,7 +32,9 @@ class ApiNoteController extends ApiController
 
     /**
      * Get the detail of a given note.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -50,15 +52,17 @@ class ApiNoteController extends ApiController
 
     /**
      * Store the note.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
-            'contact_id' => 'required|integer',
+            'body'         => 'required|max:100000',
+            'contact_id'   => 'required|integer',
             'is_favorited' => 'required|integer',
         ]);
 
@@ -94,8 +98,10 @@ class ApiNoteController extends ApiController
 
     /**
      * Update the note.
-     * @param  Request $request
-     * @param  int $noteId
+     *
+     * @param Request $request
+     * @param int     $noteId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $noteId)
@@ -110,7 +116,7 @@ class ApiNoteController extends ApiController
 
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
+            'body'       => 'required|max:100000',
             'contact_id' => 'required|integer',
         ]);
 
@@ -146,7 +152,9 @@ class ApiNoteController extends ApiController
 
     /**
      * Delete a note.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $noteId)

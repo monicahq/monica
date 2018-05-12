@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class UpdateChangelogWithRemovalAutomaticBirthday extends Migration
 {
@@ -16,7 +16,7 @@ When you edit a contact, or manage a relationship, and add a birthday, we used t
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => '2018-05-04',
+            'created_at'  => '2018-05-04',
         ]);
 
         $instance = \App\Instance::first();

@@ -40,12 +40,12 @@ return [
     'connections' => [
 
         'main' => [
-            'salt' => env('HASH_SALT', 'your-salt-string'),
+            'salt'   => env('HASH_SALT', 'your-salt-string'),
             'length' => env('HASH_LENGTH', 18),
         ],
 
         'alternative' => [
-            'salt' => 'your-salt-string',
+            'salt'   => 'your-salt-string',
             'length' => 'your-length-integer',
         ],
 

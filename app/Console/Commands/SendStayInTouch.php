@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Contact;
-use Illuminate\Console\Command;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Illuminate\Console\Command;
 
 class SendStayInTouch extends Command
 {

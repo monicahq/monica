@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Debt;
 use App\Contact;
+use App\Debt;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
 
@@ -13,6 +13,7 @@ class DebtController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Contact $contact)
@@ -25,20 +26,22 @@ class DebtController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Contact $contact)
     {
         return view('people.debt.add')
             ->withContact($contact)
-            ->withDebt(new Debt);
+            ->withDebt(new Debt());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param DebtRequest $request
-     * @param Contact $contact
+     * @param Contact     $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(DebtRequest $request, Contact $contact)
@@ -51,7 +54,7 @@ class DebtController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'inprogress',
+                'status'     => 'inprogress',
             ]
         );
 
@@ -65,7 +68,8 @@ class DebtController extends Controller
      * Display the specified resource.
      *
      * @param Contact $contact
-     * @param Debt $debt
+     * @param Debt    $debt
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Contact $contact, Debt $debt)
@@ -77,7 +81,8 @@ class DebtController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param Debt $debt
+     * @param Debt    $debt
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact, Debt $debt)
@@ -91,8 +96,9 @@ class DebtController extends Controller
      * Update the specified resource in storage.
      *
      * @param DebtRequest $request
-     * @param Contact $contact
-     * @param Debt $debt
+     * @param Contact     $contact
+     * @param Debt        $debt
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(DebtRequest $request, Contact $contact, Debt $debt)
@@ -105,7 +111,7 @@ class DebtController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'status' => 'inprogress',
+                'status'     => 'inprogress',
             ]
         );
 
@@ -119,7 +125,8 @@ class DebtController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Debt $debt
+     * @param Debt    $debt
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Debt $debt)

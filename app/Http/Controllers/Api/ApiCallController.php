@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Call;
 use App\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Call\Call as CallResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiCallController extends ApiController
 {
@@ -34,7 +34,9 @@ class ApiCallController extends ApiController
 
     /**
      * Get the detail of a given call.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $callId)
@@ -52,7 +54,9 @@ class ApiCallController extends ApiController
 
     /**
      * Store the call.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -76,8 +80,10 @@ class ApiCallController extends ApiController
 
     /**
      * Update the call.
-     * @param  Request $request
-     * @param  int $callId
+     *
+     * @param Request $request
+     * @param int     $callId
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $callId)
@@ -107,15 +113,16 @@ class ApiCallController extends ApiController
     /**
      * Validate the request for update.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return mixed
      */
     private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'content' => 'required|max:100000',
-            'called_at' => 'required|date',
+            'content'    => 'required|max:100000',
+            'called_at'  => 'required|date',
             'contact_id' => 'required|integer',
         ]);
 
@@ -137,7 +144,9 @@ class ApiCallController extends ApiController
 
     /**
      * Delete a note.
-     * @param  Request $request
+     *
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $callId)

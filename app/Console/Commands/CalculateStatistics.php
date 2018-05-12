@@ -30,7 +30,7 @@ class CalculateStatistics extends Command
      */
     public function handle()
     {
-        $statistic = new Statistic;
+        $statistic = new Statistic();
         $statistic->number_of_users = DB::table('users')->count();
         $statistic->number_of_contacts = DB::table('contacts')->count();
         $statistic->number_of_notes = DB::table('notes')->count();

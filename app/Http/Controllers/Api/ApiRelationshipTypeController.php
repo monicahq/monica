@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\RelationshipType;
-use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
+use App\RelationshipType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class ApiRelationshipTypeController extends ApiController
 {
@@ -17,7 +17,8 @@ class ApiRelationshipTypeController extends ApiController
     /**
      * Get all relationship types in an instance.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -35,7 +36,8 @@ class ApiRelationshipTypeController extends ApiController
     /**
      * Get the detail of a given relationship type.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)

@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Contact;
-use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class AddressTest extends FeatureTestCase
 {
@@ -14,6 +14,7 @@ class AddressTest extends FeatureTestCase
     /**
      * Returns an array containing a user object along with
      * a contact for that user.
+     *
      * @return array
      */
     private function fetchUser()
@@ -47,7 +48,7 @@ class AddressTest extends FeatureTestCase
         $address = factory(\App\Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
-            'name' => 'test',
+            'name'       => 'test',
         ]);
 
         $response = $this->get('/people/'.$contact->id.'/addresses');

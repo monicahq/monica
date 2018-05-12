@@ -1,8 +1,8 @@
 <?php
 
 use App\Relationship;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class FixContactsData extends Migration
 {
@@ -22,12 +22,12 @@ class FixContactsData extends Migration
 
         foreach ($relationships as $relationship) {
             $contact = DB::table('contacts')->where('id', $relationship->contact_is)->first();
-            if (! $contact) {
+            if (!$contact) {
                 $lineContactIsToDelete->push($relationship);
             }
 
             $contact = DB::table('contacts')->where('id', $relationship->of_contact)->first();
-            if (! $contact) {
+            if (!$contact) {
                 $lineOfContactToDelete->push($relationship);
             }
         }

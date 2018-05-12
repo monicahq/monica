@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Gender;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class GenderTest extends TestCase
 {
@@ -34,7 +34,7 @@ class GenderTest extends TestCase
 
     public function test_it_gets_the_gender_name()
     {
-        $gender = new Gender;
+        $gender = new Gender();
         $gender->name = 'Woman';
 
         $this->assertEquals(

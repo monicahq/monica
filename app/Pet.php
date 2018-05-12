@@ -47,7 +47,8 @@ class Pet extends Model
     /**
      * Set the name to null if it's an empty string.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return void
      */
     public function setNameAttribute($value)

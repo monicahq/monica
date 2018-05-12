@@ -13,9 +13,10 @@ class MoneyHelper
      * the users's settings will be used. If the currency setting is not
      * defined, then the amount will be returned without a currency symbol.
      *
-     * @param  int|null     $amount   Amount to format.
-     * @param  App\Currency $currency Currency of amount.
-     * @return string                 Amount formatted with currency symbol.
+     * @param int|null     $amount   Amount to format.
+     * @param App\Currency $currency Currency of amount.
+     *
+     * @return string Amount formatted with currency symbol.
      */
     public static function format($amount, Currency $currency = null)
     {
@@ -23,7 +24,7 @@ class MoneyHelper
             $amount = 0;
         }
 
-        if (! $currency && auth()->user()) {
+        if (!$currency && auth()->user()) {
             $currency = auth()->user()->currency;
         }
 

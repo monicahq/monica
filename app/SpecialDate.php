@@ -46,7 +46,7 @@ class SpecialDate extends Model
      * @var array
      */
     protected $casts = [
-        'is_age_based' => 'boolean',
+        'is_age_based'    => 'boolean',
         'is_year_unknown' => 'boolean',
     ];
 
@@ -82,6 +82,7 @@ class SpecialDate extends Model
 
     /**
      * Mutator for the reminder id attribute.
+     *
      * @return int
      */
     public function getReminderIdAttribute($value)
@@ -106,15 +107,16 @@ class SpecialDate extends Model
      * Sets a reminder for this date. If a reminder is already defined for this
      * date, it will delete it first and recreate one.
      *
-     * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
-     * @param int $frequencyNumber
+     * @param string $frequency       The frequency the reminder will be set. Can be 'year', 'month', 'day'.
+     * @param int    $frequencyNumber
+     *
      * @return Reminder
      */
     public function setReminder(string $frequency, int $frequencyNumber, string $title)
     {
         $this->deleteReminder();
 
-        $reminder = new Reminder;
+        $reminder = new Reminder();
         $reminder->frequency_type = $frequency;
         $reminder->frequency_number = $frequencyNumber;
         $reminder->next_expected_date = $this->date;
@@ -136,15 +138,16 @@ class SpecialDate extends Model
 
     /**
      * Deletes the reminder for this date, if it exists.
+     *
      * @return int
      */
     public function deleteReminder()
     {
-        if (! $this->reminder_id) {
+        if (!$this->reminder_id) {
             return;
         }
 
-        if (! $this->reminder) {
+        if (!$this->reminder) {
             return;
         }
 
@@ -164,6 +167,7 @@ class SpecialDate extends Model
     /**
      * Returns the age that the date represents, if the date is set and if it's
      * not based on a year we don't know.
+     *
      * @return int
      */
     public function getAge()
@@ -181,7 +185,8 @@ class SpecialDate extends Model
 
     /**
      * Create a SpecialDate from an age.
-     * @param  int $age
+     *
+     * @param int $age
      */
     public function createFromAge(int $age)
     {
@@ -194,9 +199,10 @@ class SpecialDate extends Model
 
     /**
      * Create a SpecialDate from an actual date, that might not contain a year.
-     * @param  int    $year
-     * @param  int    $month
-     * @param  int    $day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
      */
     public function createFromDate(int $year, int $month, int $day)
     {
@@ -217,6 +223,7 @@ class SpecialDate extends Model
 
     /**
      * Associates a special date to a contact.
+     *
      * @param Contact $contact
      */
     public function setToContact(Contact $contact)
@@ -231,6 +238,7 @@ class SpecialDate extends Model
     /**
      * Returns the age that a contact died assuming we know when they were born
      * and died.
+     *
      * @return int
      */
     public function getAgeAtDeath()

@@ -24,11 +24,11 @@ class RemindersRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
+            'title'              => 'required',
             'next_expected_date' => 'required|date',
-            'description' => 'string|nullable',
-            'frequency_type' => 'required',
-            'frequency_number' => 'int|nullable',
+            'description'        => 'string|nullable',
+            'frequency_type'     => 'required',
+            'frequency_number'   => 'int|nullable',
         ];
     }
 }

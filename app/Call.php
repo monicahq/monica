@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Parsedown;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Parsedown;
 
 class Call extends Model
 {

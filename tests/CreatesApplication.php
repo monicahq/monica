@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\App;
 
 trait CreatesApplication
 {

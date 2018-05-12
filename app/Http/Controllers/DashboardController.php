@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use App\Debt;
 use App\User;
-use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -33,12 +33,12 @@ class DashboardController extends Controller
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
         foreach ($lastUpdatedContacts as $contact) {
             $data = [
-                'id' => $contact->hashID(),
-                'has_avatar' => $contact->has_avatar,
-                'avatar_url' => $contact->getAvatarURL(110),
-                'initials' => $contact->getInitials(),
+                'id'                   => $contact->hashID(),
+                'has_avatar'           => $contact->has_avatar,
+                'avatar_url'           => $contact->getAvatarURL(110),
+                'initials'             => $contact->getInitials(),
                 'default_avatar_color' => $contact->default_avatar_color,
-                'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
+                'complete_name'        => $contact->getCompleteName(auth()->user()->name_order),
             ];
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
@@ -56,17 +56,17 @@ class DashboardController extends Controller
             }, 0);
 
         $data = [
-            'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->count(),
-            'number_of_reminders' => $account->reminders_count,
-            'number_of_notes' => $account->notes_count,
+            'lastUpdatedContacts'  => $lastUpdatedContactsCollection,
+            'number_of_contacts'   => $account->contacts()->real()->count(),
+            'number_of_reminders'  => $account->reminders_count,
+            'number_of_notes'      => $account->notes_count,
             'number_of_activities' => $account->activities_count,
-            'number_of_gifts' => $account->gifts_count,
-            'number_of_tasks' => $account->tasks_count,
-            'debt_due' => $debt_due,
-            'debt_owed' => $debt_owed,
-            'debts' => $debt,
-            'user' => auth()->user(),
+            'number_of_gifts'      => $account->gifts_count,
+            'number_of_tasks'      => $account->tasks_count,
+            'debt_due'             => $debt_due,
+            'debt_owed'            => $debt_owed,
+            'debts'                => $debt,
+            'user'                 => auth()->user(),
         ];
 
         return view('dashboard.index', $data);
@@ -74,6 +74,7 @@ class DashboardController extends Controller
 
     /**
      * Get calls for the dashboard.
+     *
      * @return Collection
      */
     public function calls()
@@ -83,9 +84,9 @@ class DashboardController extends Controller
 
         foreach ($calls as $call) {
             $data = [
-                'id' => $call->id,
-                'called_at' => \App\Helpers\DateHelper::getShortDate($call->called_at),
-                'name' => $call->contact->getIncompleteName(),
+                'id'         => $call->id,
+                'called_at'  => \App\Helpers\DateHelper::getShortDate($call->called_at),
+                'name'       => $call->contact->getIncompleteName(),
                 'contact_id' => $call->contact->hashID(),
             ];
             $callsCollection->push($data);
@@ -96,6 +97,7 @@ class DashboardController extends Controller
 
     /**
      * Get notes for the dashboard.
+     *
      * @return Collection
      */
     public function notes()
@@ -105,17 +107,17 @@ class DashboardController extends Controller
 
         foreach ($notes as $note) {
             $data = [
-                'id' => $note->id,
-                'body' => $note->body,
+                'id'         => $note->id,
+                'body'       => $note->body,
                 'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
-                'name' => $note->contact->getIncompleteName(),
-                'contact' => [
-                    'id' => $note->contact->hashID(),
-                    'has_avatar' => $note->contact->has_avatar,
-                    'avatar_url' => $note->contact->getAvatarURL(110),
-                    'initials' => $note->contact->getInitials(),
+                'name'       => $note->contact->getIncompleteName(),
+                'contact'    => [
+                    'id'                   => $note->contact->hashID(),
+                    'has_avatar'           => $note->contact->has_avatar,
+                    'avatar_url'           => $note->contact->getAvatarURL(110),
+                    'initials'             => $note->contact->getInitials(),
                     'default_avatar_color' => $note->contact->default_avatar_color,
-                    'complete_name' => $note->contact->getCompleteName(auth()->user()->name_order),
+                    'complete_name'        => $note->contact->getCompleteName(auth()->user()->name_order),
                 ],
             ];
             $notesCollection->push($data);

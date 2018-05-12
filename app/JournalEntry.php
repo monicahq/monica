@@ -44,6 +44,7 @@ class JournalEntry extends Model
 
     /**
      * Adds a new entry in the journal.
+     *
      * @param mixed $resourceToLog
      */
     public function add($resourceToLog)
@@ -62,6 +63,7 @@ class JournalEntry extends Model
 
     /**
      * Get the information about the object represented by the Journal Entry.
+     *
      * @return array
      */
     public function getObjectData()
@@ -69,7 +71,7 @@ class JournalEntry extends Model
         $type = $this->journalable_type;
 
         // Instantiating the object
-        $correspondingObject = (new $type)->findOrFail($this->journalable_id);
+        $correspondingObject = (new $type())->findOrFail($this->journalable_id);
 
         return $correspondingObject->getInfoForJournalEntry();
     }

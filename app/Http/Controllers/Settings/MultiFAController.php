@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
-use PragmaRX\Google2FA\Google2FA;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Http\Request;
+use PragmaRX\Google2FA\Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class MultiFAController extends Controller
@@ -31,6 +31,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function enableTwoFactor(Request $request)
@@ -55,6 +56,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function validateTwoFactor(Request $request)
@@ -90,6 +92,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function disableTwoFactor(Request $request)
@@ -99,6 +102,7 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function deactivateTwoFactor(Request $request)

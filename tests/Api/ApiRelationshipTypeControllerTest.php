@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiRelationshipTypeControllerTest extends ApiTestCase
 {
@@ -37,18 +37,18 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         ]);
 
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account_id,
-            'name' => 'father',
-            'name_reverse_relationship' => 'son',
+            'account_id'                 => $user->account_id,
+            'name'                       => 'father',
+            'name_reverse_relationship'  => 'son',
             'relationship_type_group_id' => $relationshipTypeGroup->id,
-            'delible' => 0,
+            'delible'                    => 0,
         ]);
         $relationshipType2 = factory('App\RelationshipType')->create([
-            'account_id' => $user->account_id,
-            'name' => 'son',
-            'name_reverse_relationship' => 'father',
+            'account_id'                 => $user->account_id,
+            'name'                       => 'son',
+            'name_reverse_relationship'  => 'father',
             'relationship_type_group_id' => $relationshipTypeGroup->id,
-            'delible' => 0,
+            'delible'                    => 0,
         ]);
 
         $response = $this->json('GET', '/api/relationshiptypes');
@@ -56,9 +56,9 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $relationshipType2->id,
-            'object' => 'relationshiptype',
-            'name' => 'son',
+            'id'      => $relationshipType2->id,
+            'object'  => 'relationshiptype',
+            'name'    => 'son',
             'delible' => false,
         ]);
     }
@@ -72,11 +72,11 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         ]);
 
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $user->account_id,
-            'name' => 'father',
-            'name_reverse_relationship' => 'son',
+            'account_id'                 => $user->account_id,
+            'name'                       => 'father',
+            'name_reverse_relationship'  => 'son',
             'relationship_type_group_id' => $relationshipTypeGroup->id,
-            'delible' => 0,
+            'delible'                    => 0,
         ]);
 
         $response = $this->json('GET', '/api/relationshiptypes/'.$relationshipType->id);
@@ -84,12 +84,12 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $relationshipType->id,
-            'object' => 'relationshiptype',
-            'name' => 'father',
-            'name_reverse_relationship' => 'son',
+            'id'                         => $relationshipType->id,
+            'object'                     => 'relationshiptype',
+            'name'                       => 'father',
+            'name_reverse_relationship'  => 'son',
             'relationship_type_group_id' => $relationshipTypeGroup->id,
-            'delible' => false,
+            'delible'                    => false,
         ]);
     }
 }

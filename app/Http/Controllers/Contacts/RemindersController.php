@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Contact;
-use App\Reminder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\RemindersRequest;
+use App\Reminder;
 
 class RemindersController extends Controller
 {
@@ -13,6 +13,7 @@ class RemindersController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Contact $contact)
@@ -25,20 +26,22 @@ class RemindersController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function create(Contact $contact)
     {
         return view('people.reminders.add')
             ->withContact($contact)
-            ->withReminder(new Reminder);
+            ->withReminder(new Reminder());
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param RemindersRequest $request
-     * @param Contact $contact
+     * @param Contact          $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(RemindersRequest $request, Contact $contact)
@@ -65,8 +68,9 @@ class RemindersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Contact $contact
+     * @param Contact  $contact
      * @param Reminder $reminder
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Contact $contact, Reminder $reminder)
@@ -77,8 +81,9 @@ class RemindersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
+     * @param Contact  $contact
      * @param Reminder $reminder
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact, Reminder $reminder)
@@ -92,8 +97,9 @@ class RemindersController extends Controller
      * Update the specified resource in storage.
      *
      * @param RemindersRequest $request
-     * @param Contact $contact
-     * @param Reminder $reminder
+     * @param Contact          $contact
+     * @param Reminder         $reminder
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(RemindersRequest $request, Contact $contact, Reminder $reminder)
@@ -122,6 +128,7 @@ class RemindersController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Reminder $reminder
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, $reminderId)

@@ -10,15 +10,16 @@ class Entry extends Resource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
+     *
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'object' => 'entry',
-            'title' => $this->title,
-            'post' => $this->post,
+            'id'      => $this->id,
+            'object'  => 'entry',
+            'title'   => $this->title,
+            'post'    => $this->post,
             'account' => [
                 'id' => $this->account_id,
             ],

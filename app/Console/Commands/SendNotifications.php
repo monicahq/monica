@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\Notification\ScheduleNotification;
 use App\Notification;
 use Illuminate\Console\Command;
-use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command
 {
@@ -34,7 +34,7 @@ class SendNotifications extends Command
                                 ->orderBy('trigger_date', 'asc')->get();
 
         foreach ($notifications as $notification) {
-            if (! $notification->contact) {
+            if (!$notification->contact) {
                 $notification->delete();
                 continue;
             }

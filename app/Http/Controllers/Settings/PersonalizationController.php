@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Settings;
 
 use App\ContactFieldType;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PersonalizationController extends Controller
 {
     /**
      * Display the personalization page.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -31,13 +32,14 @@ class PersonalizationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     *
      * @return string
      */
     public function storeContactFieldType(Request $request)
     {
         Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'icon' => 'max:255|nullable',
+            'name'     => 'required|max:255',
+            'icon'     => 'max:255|nullable',
             'protocol' => 'max:255|nullable',
         ])->validate();
 
@@ -48,7 +50,7 @@ class PersonalizationController extends Controller
             ])
             + [
                 'fontawesome_icon' => $request->get('icon'),
-                'account_id' => auth()->user()->account->id,
+                'account_id'       => auth()->user()->account->id,
             ]
         );
     }
@@ -57,7 +59,8 @@ class PersonalizationController extends Controller
      * Edit a newly created resource in storage.
      *
      * @param ContactFieldTypeRequest $request
-     * @param string $contactFieldTypeId
+     * @param string                  $contactFieldTypeId
+     *
      * @return \Illuminate\Http\Response
      */
     public function editContactFieldType(Request $request, $contactFieldTypeId)
@@ -75,8 +78,8 @@ class PersonalizationController extends Controller
         }
 
         Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'icon' => 'max:255|nullable',
+            'name'     => 'required|max:255',
+            'icon'     => 'max:255|nullable',
             'protocol' => 'max:255|nullable',
         ])->validate();
 
@@ -110,7 +113,7 @@ class PersonalizationController extends Controller
             ]);
         }
 
-        if (! $contactFieldType->delible) {
+        if (!$contactFieldType->delible) {
             return response()->json([
                 'errors' => [
                     'message' => trans('app.error_unauthorized'),

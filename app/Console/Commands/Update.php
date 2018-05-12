@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Console\ConfirmableTrait;
 use App\Console\Commands\Helpers\CommandExecutor;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
+use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Update extends Command
 {
@@ -56,7 +56,7 @@ class Update extends Command
             try {
                 $this->commandExecutor->artisan('✓ Maintenance mode: on', 'down', [
                     '--message' => 'Upgrading Monica v'.config('monica.app_version'),
-                    '--retry' => '10',
+                    '--retry'   => '10',
                     ]);
 
                 // Clear or rebuild all cache
@@ -86,7 +86,7 @@ class Update extends Command
                 if (DB::table('activity_types')->count() == 0) {
                     $this->commandExecutor->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => 'true']);
                 }
-                if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
+                if ($this->getLaravel()->environment() != 'testing' && !file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
             } finally {

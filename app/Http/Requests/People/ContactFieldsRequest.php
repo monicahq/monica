@@ -25,7 +25,7 @@ class ContactFieldsRequest extends FormRequest
     {
         return [
             'contact_field_type_id' => 'required',
-            'data' => 'max:255|required',
+            'data'                  => 'max:255|required',
         ];
     }
 }

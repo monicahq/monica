@@ -24,14 +24,14 @@ class GiftsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'comment' => '',
-            'url' => '',
-            'offered' => 'string',
-            'date_offered' => 'date|nullable',
-            'value' => 'int|nullable',
+            'name'          => 'required',
+            'comment'       => '',
+            'url'           => '',
+            'offered'       => 'string',
+            'date_offered'  => 'date|nullable',
+            'value'         => 'int|nullable',
             'has_recipient' => 'boolean',
-            'recipient' => 'required_with:has_recipient',
+            'recipient'     => 'required_with:has_recipient',
         ];
     }
 }

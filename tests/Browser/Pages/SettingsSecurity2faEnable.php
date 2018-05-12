@@ -19,7 +19,8 @@ class SettingsSecurity2faEnable extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param  Browser  $browser
+     * @param Browser $browser
+     *
      * @return void
      */
     public function assert(Browser $browser)
@@ -35,10 +36,10 @@ class SettingsSecurity2faEnable extends Page
     public function elements()
     {
         return [
-            'barcode' => '#barcode',
+            'barcode'   => '#barcode',
             'secretkey' => '#secretkey',
-            'verify' => "button[name='verify']",
-            'otp' => '#one_time_password',
+            'verify'    => "button[name='verify']",
+            'otp'       => '#one_time_password',
         ];
     }
 }

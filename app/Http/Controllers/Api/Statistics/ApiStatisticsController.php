@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Http\Request;
 
 class ApiStatisticsController extends ApiController
 {
@@ -41,11 +41,11 @@ class ApiStatisticsController extends ApiController
 
         $statistics = collect();
         $statistics->push([
-            'instance_creation_date' => $instance->created_at->format(config('api.timestamp_format')),
-            'number_of_contacts' => ($statistic ? $statistic->number_of_contacts : 0),
-            'number_of_users' => ($statistic ? $statistic->number_of_users : 0),
-            'number_of_activities' => ($statistic ? $statistic->number_of_activities : 0),
-            'number_of_reminders' => ($statistic ? $statistic->number_of_reminders : 0),
+            'instance_creation_date'        => $instance->created_at->format(config('api.timestamp_format')),
+            'number_of_contacts'            => ($statistic ? $statistic->number_of_contacts : 0),
+            'number_of_users'               => ($statistic ? $statistic->number_of_users : 0),
+            'number_of_activities'          => ($statistic ? $statistic->number_of_activities : 0),
+            'number_of_reminders'           => ($statistic ? $statistic->number_of_reminders : 0),
             'number_of_new_users_last_week' => $numberNewUsers,
         ]);
 

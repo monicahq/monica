@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiStatisticsControllerTest extends ApiTestCase
 {
@@ -43,7 +43,7 @@ class ApiStatisticsControllerTest extends ApiTestCase
 
         $response->assertStatus(404);
         $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
+            'message'    => 'The resource has not been found',
             'error_code' => 31,
         ]);
     }

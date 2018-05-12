@@ -2,15 +2,16 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property Account $account
  * @property Contact $contact
  * @property Contact $recipient
+ *
  * @method static Builder offered()
  * @method static Builder isIdea()
  */
@@ -39,8 +40,8 @@ class Gift extends Model
      * @var array
      */
     protected $casts = [
-        'is_an_idea' => 'boolean',
-        'has_been_offered' => 'boolean',
+        'is_an_idea'        => 'boolean',
+        'has_been_offered'  => 'boolean',
         'has_been_received' => 'boolean',
     ];
 
@@ -78,6 +79,7 @@ class Gift extends Model
      * Limit results to already offered gifts.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeOffered(Builder $query)
@@ -89,6 +91,7 @@ class Gift extends Model
      * Limit results to gifts at the idea stage.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeIsIdea(Builder $query)
@@ -111,6 +114,7 @@ class Gift extends Model
      * Set the recipient for the gift.
      *
      * @param int $value
+     *
      * @return string
      */
     public function setRecipientAttribute($value)
@@ -121,7 +125,8 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getRecipientNameAttribute()
@@ -134,7 +139,8 @@ class Gift extends Model
     /**
      * Get the gift name.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getNameAttribute($value)
@@ -145,7 +151,8 @@ class Gift extends Model
     /**
      * Get the URL of the gift.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getUrlAttribute($value)
@@ -156,7 +163,8 @@ class Gift extends Model
     /**
      * Get the comment of the gift.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getCommentAttribute($value)
@@ -167,7 +175,8 @@ class Gift extends Model
     /**
      * Get the value of the gift.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getValueAttribute($value)
@@ -177,6 +186,7 @@ class Gift extends Model
 
     /**
      * Toggle a gift between the idea and offered state.
+     *
      * @return void
      */
     public function toggle()

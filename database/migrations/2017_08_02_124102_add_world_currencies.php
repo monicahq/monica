@@ -2,10 +2,11 @@
 /**
  * Add world currencies to the db
  * Dataset taken from.
+ *
  * @see https://github.com/wiredmax/world-currencies
  */
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class AddWorldCurrencies extends Migration
 {
@@ -33,8 +34,8 @@ class AddWorldCurrencies extends Migration
                 }
 
                 DB::table('currencies')->insert([
-                    'iso' => $currency['iso']['code'],
-                    'name' => $currency['name'],
+                    'iso'    => $currency['iso']['code'],
+                    'name'   => $currency['name'],
                     'symbol' => $currency['units']['major']['symbol'],
                 ]);
             }

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Exception;
 use App\Gender;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Settings\GendersRequest;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GendersController extends Controller
 {
@@ -22,8 +22,8 @@ class GendersController extends Controller
 
         foreach ($genders as $gender) {
             $data = [
-                'id' => $gender->id,
-                'name' => $gender->name,
+                'id'               => $gender->id,
+                'name'             => $gender->name,
                 'numberOfContacts' => $gender->contacts->count(),
             ];
             $gendersData->push($data);
@@ -51,8 +51,8 @@ class GendersController extends Controller
         );
 
         return [
-            'id' => $gender->id,
-            'name' => $gender->name,
+            'id'               => $gender->id,
+            'name'             => $gender->name,
             'numberOfContacts' => $gender->contacts->count(),
         ];
     }

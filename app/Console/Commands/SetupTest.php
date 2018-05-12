@@ -28,7 +28,7 @@ class SetupTest extends Command
      */
     public function handle()
     {
-        if (! $this->confirm('Are you sure you want to proceed? This will delete ALL data in your environment.')) {
+        if (!$this->confirm('Are you sure you want to proceed? This will delete ALL data in your environment.')) {
             return;
         }
 
@@ -37,7 +37,7 @@ class SetupTest extends Command
         $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         $this->artisan('✓ Symlink the storage folder', 'storage:link');
 
-        if (! $this->option('skipSeed')) {
+        if (!$this->option('skipSeed')) {
             $this->artisan('✓ Filling  database with fake data', 'db:seed', ['--class' => 'FakeContentTableSeeder']);
         }
 

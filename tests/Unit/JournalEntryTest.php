@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\JournalEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class JournalEntryTest extends TestCase
 {
@@ -26,12 +26,12 @@ class JournalEntryTest extends TestCase
         $activity = factory(\App\Activity::class)->create();
         $date = $activity->date_it_happened;
 
-        $journalEntry = (new JournalEntry)->add($activity);
+        $journalEntry = (new JournalEntry())->add($activity);
 
         $this->assertDatabaseHas('journal_entries', [
-            'account_id' => $activity->account_id,
-            'date' => $date,
-            'journalable_id' => $activity->id,
+            'account_id'       => $activity->account_id,
+            'date'             => $date,
+            'journalable_id'   => $activity->id,
             'journalable_type' => 'App\Activity',
         ]);
     }
@@ -40,20 +40,20 @@ class JournalEntryTest extends TestCase
     {
         $activity = factory(\App\Activity::class)->create();
 
-        $journalEntry = (new JournalEntry)->add($activity);
+        $journalEntry = (new JournalEntry())->add($activity);
 
         $data = [
-            'type' => 'activity',
-            'id' => $activity->id,
-            'activity_type' => (! is_null($activity->type) ? $activity->type->getTranslationKeyAsString() : null),
-            'summary' => $activity->summary,
-            'description' => $activity->description,
-            'day' => $activity->date_it_happened->day,
-            'day_name' => $activity->date_it_happened->format('D'),
-            'month' => $activity->date_it_happened->month,
-            'month_name' => strtoupper($activity->date_it_happened->format('M')),
-            'year' => $activity->date_it_happened->year,
-            'attendees' => $activity->getContactsForAPI(),
+            'type'          => 'activity',
+            'id'            => $activity->id,
+            'activity_type' => (!is_null($activity->type) ? $activity->type->getTranslationKeyAsString() : null),
+            'summary'       => $activity->summary,
+            'description'   => $activity->description,
+            'day'           => $activity->date_it_happened->day,
+            'day_name'      => $activity->date_it_happened->format('D'),
+            'month'         => $activity->date_it_happened->month,
+            'month_name'    => strtoupper($activity->date_it_happened->format('M')),
+            'year'          => $activity->date_it_happened->year,
+            'attendees'     => $activity->getContactsForAPI(),
         ];
 
         $this->assertEquals(

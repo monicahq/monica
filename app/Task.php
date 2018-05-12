@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account
  * @property Contact $contact
+ *
  * @method static Builder completed()
  * @method static Builder inProgress()
  */
@@ -35,7 +36,7 @@ class Task extends Model
      */
     protected $casts = [
         'completed' => 'boolean',
-        'archived' => 'boolean',
+        'archived'  => 'boolean',
     ];
 
     /**
@@ -62,6 +63,7 @@ class Task extends Model
      * Limit tasks to completed ones.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeCompleted(Builder $query)
@@ -73,6 +75,7 @@ class Task extends Model
      * Limit tasks to in-progress ones.
      *
      * @param Builder $query
+     *
      * @return Builder
      */
     public function scopeInProgress(Builder $query)

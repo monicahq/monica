@@ -2,10 +2,10 @@
 
 namespace App;
 
-use Parsedown;
+use App\Interfaces\IsJournalableInterface;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
-use App\Interfaces\IsJournalableInterface;
+use Parsedown;
 
 class Entry extends Model implements IsJournalableInterface
 {
@@ -41,7 +41,8 @@ class Entry extends Model implements IsJournalableInterface
     /**
      * Get the Entry title.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getTitleAttribute($value)
@@ -52,7 +53,8 @@ class Entry extends Model implements IsJournalableInterface
     /**
      * Get the Entry post.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return string
      */
     public function getPostAttribute($value)
@@ -62,6 +64,7 @@ class Entry extends Model implements IsJournalableInterface
 
     /**
      * Get all the information of the Entry for the journal.
+     *
      * @return array
      */
     public function getInfoForJournalEntry()
@@ -70,15 +73,15 @@ class Entry extends Model implements IsJournalableInterface
         $entryDate = $this->journalEntry ? $this->journalEntry->date : $this->created_at;
 
         return [
-            'type' => 'entry',
-            'id' => $this->id,
-            'title' => $this->title,
-            'post' => $this->post,
-            'day' => $entryDate->day,
-            'day_name' => \App\Helpers\DateHelper::getShortDay($entryDate),
-            'month' => $entryDate->month,
+            'type'       => 'entry',
+            'id'         => $this->id,
+            'title'      => $this->title,
+            'post'       => $this->post,
+            'day'        => $entryDate->day,
+            'day_name'   => \App\Helpers\DateHelper::getShortDay($entryDate),
+            'month'      => $entryDate->month,
             'month_name' => \App\Helpers\DateHelper::getShortMonth($entryDate),
-            'year' => $entryDate->year,
+            'year'       => $entryDate->year,
         ];
     }
 }

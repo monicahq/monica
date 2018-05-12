@@ -3,9 +3,9 @@
 namespace Tests\Helper;
 
 use App\Account;
-use Tests\TestCase;
 use App\Helpers\InstanceHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class InstanceHelperTest extends TestCase
 {
@@ -89,7 +89,7 @@ class InstanceHelperTest extends TestCase
 
     public function test_it_returns_null_when_fetching_an_unknown_plan_information()
     {
-        $account = new Account;
+        $account = new Account();
 
         $this->assertNull(
             InstanceHelper::getPlanInformationFromConfig('unknown_plan')

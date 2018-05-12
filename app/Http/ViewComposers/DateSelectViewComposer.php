@@ -2,9 +2,9 @@
 
 namespace App\Http\ViewComposers;
 
+use App\Helpers\DateHelper;
 use Illuminate\View\View;
 use Jenssegers\Date\Date;
-use App\Helpers\DateHelper;
 
 class DateSelectViewComposer
 {
@@ -15,7 +15,8 @@ class DateSelectViewComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param View $view
+     *
      * @return void
      */
     public function compose(View $view)
@@ -34,7 +35,7 @@ class DateSelectViewComposer
 
         $view->with([
             'months' => $months,
-            'years' => $years,
+            'years'  => $years,
         ]);
     }
 }

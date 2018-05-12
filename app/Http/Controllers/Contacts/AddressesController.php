@@ -6,8 +6,8 @@ use App\Address;
 use App\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\AddressesRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AddressesController extends Controller
 {
@@ -20,17 +20,17 @@ class AddressesController extends Controller
 
         foreach ($contact->addresses as $address) {
             $data = [
-                'id' => $address->id,
-                'name' => $address->name,
+                'id'               => $address->id,
+                'name'             => $address->name,
                 'googleMapAddress' => $address->getGoogleMapAddress(),
-                'address' => $address->getFullAddress(),
-                'country' => $address->country,
-                'country_name' => $address->country_name,
-                'street' => $address->street,
-                'city' => $address->city,
-                'province' => $address->province,
-                'postal_code' => $address->postal_code,
-                'edit' => false,
+                'address'          => $address->getFullAddress(),
+                'country'          => $address->country,
+                'country_name'     => $address->country_name,
+                'street'           => $address->street,
+                'city'             => $address->city,
+                'province'         => $address->province,
+                'postal_code'      => $address->postal_code,
+                'edit'             => false,
             ];
             $contactAddresses->push($data);
         }
@@ -52,12 +52,12 @@ class AddressesController extends Controller
     public function store(AddressesRequest $request, Contact $contact)
     {
         return $contact->addresses()->create([
-            'account_id' => auth()->user()->account->id,
-            'country' => ($request->get('country') == '0' ? null : $request->get('country')),
-            'name' => ($request->get('name') == '' ? null : $request->get('name')),
-            'street' => ($request->get('street') == '' ? null : $request->get('street')),
-            'city' => ($request->get('city') == '' ? null : $request->get('city')),
-            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'account_id'  => auth()->user()->account->id,
+            'country'     => ($request->get('country') == '0' ? null : $request->get('country')),
+            'name'        => ($request->get('name') == '' ? null : $request->get('name')),
+            'street'      => ($request->get('street') == '' ? null : $request->get('street')),
+            'city'        => ($request->get('city') == '' ? null : $request->get('city')),
+            'province'    => ($request->get('province') == '' ? null : $request->get('province')),
             'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
         ]);
     }
@@ -68,11 +68,11 @@ class AddressesController extends Controller
     public function edit(AddressesRequest $request, Contact $contact, Address $address)
     {
         $address->update([
-            'country' => ($request->get('country') == '' ? null : $request->get('country')),
-            'name' => ($request->get('name') == '' ? null : $request->get('name')),
-            'street' => ($request->get('street') == '' ? null : $request->get('street')),
-            'city' => ($request->get('city') == '' ? null : $request->get('city')),
-            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'country'     => ($request->get('country') == '' ? null : $request->get('country')),
+            'name'        => ($request->get('name') == '' ? null : $request->get('name')),
+            'street'      => ($request->get('street') == '' ? null : $request->get('street')),
+            'city'        => ($request->get('city') == '' ? null : $request->get('city')),
+            'province'    => ($request->get('province') == '' ? null : $request->get('province')),
             'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
         ]);
 

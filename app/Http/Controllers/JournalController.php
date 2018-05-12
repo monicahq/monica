@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Day;
 use App\Entry;
+use App\Http\Requests\Journal\DaysRequest;
 use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller
 {
@@ -24,6 +24,7 @@ class JournalController extends Controller
 
     /**
      * Get all the journal entries.
+     *
      * @return array
      */
     public function list()
@@ -43,12 +44,12 @@ class JournalController extends Controller
             }
 
             $data = [
-                'id' => $journalEntry->id,
-                'date' => $journalEntry->date,
-                'journalable_id' => $journalEntry->journalable_id,
+                'id'               => $journalEntry->id,
+                'date'             => $journalEntry->date,
+                'journalable_id'   => $journalEntry->journalable_id,
                 'journalable_type' => $journalEntry->journalable_type,
-                'object' => $journalEntry->getObjectData(),
-                'show_calendar' => $showCalendar,
+                'object'           => $journalEntry->getObjectData(),
+                'show_calendar'    => $showCalendar,
             ];
             $entries->push($data);
 
@@ -60,18 +61,20 @@ class JournalController extends Controller
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
         return [
-            'total' => $journalEntries->total(),
-            'per_page' => $journalEntries->perPage(),
-            'current_page' => $journalEntries->currentPage(),
+            'total'         => $journalEntries->total(),
+            'per_page'      => $journalEntries->perPage(),
+            'current_page'  => $journalEntries->currentPage(),
             'next_page_url' => $journalEntries->nextPageUrl(),
             'prev_page_url' => $journalEntries->previousPageUrl(),
-            'data' => $entries,
+            'data'          => $entries,
         ];
     }
 
     /**
      * Gets the details of a single Journal Entry.
-     * @param  JournalEntry $journalEntry
+     *
+     * @param JournalEntry $journalEntry
+     *
      * @return array
      */
     public function get(JournalEntry $journalEntry)
@@ -90,20 +93,21 @@ class JournalController extends Controller
         ]);
 
         // Log a journal entry
-        $journalEntry = (new JournalEntry)->add($day);
+        $journalEntry = (new JournalEntry())->add($day);
 
         return [
-            'id' => $journalEntry->id,
-            'date' => $journalEntry->date,
-            'journalable_id' => $journalEntry->journalable_id,
+            'id'               => $journalEntry->id,
+            'date'             => $journalEntry->date,
+            'journalable_id'   => $journalEntry->journalable_id,
             'journalable_type' => $journalEntry->journalable_type,
-            'object' => $journalEntry->getObjectData(),
-            'show_calendar' => true,
+            'object'           => $journalEntry->getObjectData(),
+            'show_calendar'    => true,
         ];
     }
 
     /**
      * Delete the Day entry.
+     *
      * @return mixed
      */
     public function trashDay($day)
@@ -115,6 +119,7 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
+     *
      * @return bool
      */
     public function hasRated()
@@ -139,14 +144,15 @@ class JournalController extends Controller
     /**
      * Saves the journal entry.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'entry' => 'required',
-            'date' => 'required',
+            'date'  => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -155,7 +161,7 @@ class JournalController extends Controller
                 ->withErrors($validator);
         }
 
-        $entry = new Entry;
+        $entry = new Entry();
         $entry->account_id = Auth::user()->account_id;
         $entry->post = $request->input('entry');
 
@@ -167,7 +173,7 @@ class JournalController extends Controller
 
         $entry->date = $request->input('date');
         // Log a journal entry
-        (new JournalEntry)->add($entry);
+        (new JournalEntry())->add($entry);
 
         return redirect()->route('journal.index');
     }

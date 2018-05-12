@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
 use App\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
+use Illuminate\Http\Request;
 
 class ApiRelationshipTypeGroupController extends ApiController
 {
@@ -17,7 +17,8 @@ class ApiRelationshipTypeGroupController extends ApiController
     /**
      * Get all relationship type groups in an instance.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -35,7 +36,8 @@ class ApiRelationshipTypeGroupController extends ApiController
     /**
      * Get the detail of a given relationship type group.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)

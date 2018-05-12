@@ -1,10 +1,10 @@
 <?php
 
 use App\Contact;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 class ChangeContactsTable extends Migration
 {
@@ -30,7 +30,7 @@ class ChangeContactsTable extends Migration
         $significantOthers = DB::table('significant_others')->get();
 
         foreach ($significantOthers as $significantOther) {
-            $contact = new Contact;
+            $contact = new Contact();
             $contact->account_id = $significantOther->account_id;
             $contact->first_name = $significantOther->first_name;
             $contact->gender = $significantOther->gender;
@@ -61,8 +61,8 @@ class ChangeContactsTable extends Migration
 
         foreach ($significantOthers as $significantOther) {
             DB::table('relationships')->insert([
-                'account_id' => $significantOther->account_id,
-                'contact_id' => $significantOther->contact_id,
+                'account_id'      => $significantOther->account_id,
+                'contact_id'      => $significantOther->contact_id,
                 'with_contact_id' => $significantOther->temp_contact_id,
             ]);
         }

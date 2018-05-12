@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Contact;
+use App\Http\Controllers\Controller;
 use App\Relationship;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
@@ -13,7 +13,8 @@ class RelationshipsController extends Controller
     /**
      * Display the Create relationship page.
      *
-     * @param  Contact $contact
+     * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function new(Request $request, Contact $contact)
@@ -33,7 +34,7 @@ class RelationshipsController extends Controller
                 continue;
             }
             $arrayContacts->push([
-                'id' => $existingContact->id,
+                'id'   => $existingContact->id,
                 'name' => $existingContact->getCompleteName(),
             ]);
         }
@@ -43,14 +44,14 @@ class RelationshipsController extends Controller
         $arrayRelationshipTypes = collect();
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
-                'id' => $relationshipType->id,
+                'id'   => $relationshipType->id,
                 'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
 
         return view('people.relationship.new')
             ->withContact($contact)
-            ->withPartner(new Contact)
+            ->withPartner(new Contact())
             ->withGenders(auth()->user()->account->genders)
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
@@ -65,6 +66,7 @@ class RelationshipsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, Contact $contact)
@@ -81,8 +83,8 @@ class RelationshipsController extends Controller
         // case of creating a new contact
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
-            'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'last_name'  => 'max:100',
+            'gender_id'  => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -92,13 +94,13 @@ class RelationshipsController extends Controller
         }
 
         // set the name of the contact
-        $partner = new Contact;
+        $partner = new Contact();
         $partner->account_id = $contact->account->id;
         // set gender
         $partner->gender_id = $request->input('gender_id');
         $partner->is_partial = true;
 
-        if (! $partner->setName($request->input('first_name'), $request->input('last_name'))) {
+        if (!$partner->setName($request->input('first_name'), $request->input('last_name'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -163,25 +165,26 @@ class RelationshipsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Contact $contact
+     * @param Contact          $contact
      * @param SignificantOther $significantOther
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact, Contact $otherContact)
     {
-        $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
-        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : \Carbon\Carbon::now()->day;
-        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : \Carbon\Carbon::now()->month;
+        $age = (string) (!is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
+        $birthdate = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
+        $day = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : \Carbon\Carbon::now()->day;
+        $month = !is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : \Carbon\Carbon::now()->month;
 
-        $hasBirthdayReminder = ! is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
+        $hasBirthdayReminder = !is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
 
         // Building the list of relationship types specifically for the dropdown which asks
         // for an id and a name.
         $arrayRelationshipTypes = collect();
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
-                'id' => $relationshipType->id,
+                'id'   => $relationshipType->id,
                 'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
@@ -208,17 +211,18 @@ class RelationshipsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Contact $contact
+     * @param Request          $request
+     * @param Contact          $contact
      * @param SignificantOther $significantOther
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Contact $contact, Contact $otherContact)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
-            'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'last_name'  => 'max:100',
+            'gender_id'  => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -228,7 +232,7 @@ class RelationshipsController extends Controller
         }
 
         // set the name of the contact
-        if (! $otherContact->setName($request->input('first_name'), $request->input('last_name'))) {
+        if (!$otherContact->setName($request->input('first_name'), $request->input('last_name'))) {
             return back()
                 ->withInput()
                 ->withErrors('There has been a problem with saving the name.');
@@ -294,6 +298,7 @@ class RelationshipsController extends Controller
      *
      * @param Contact $contact
      * @param Contact $partner
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Contact $otherContact)

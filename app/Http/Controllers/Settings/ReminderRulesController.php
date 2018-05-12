@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Http\Controllers\Controller;
 use App\ReminderRule;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class ReminderRulesController extends Controller
 {
@@ -18,9 +18,9 @@ class ReminderRulesController extends Controller
 
         foreach ($reminderRules as $reminderRule) {
             $data = [
-                'id' => $reminderRule->id,
+                'id'                    => $reminderRule->id,
                 'number_of_days_before' => $reminderRule->number_of_days_before,
-                'active' => $reminderRule->active,
+                'active'                => $reminderRule->active,
             ];
             $reminderRulesData->push($data);
         }
@@ -31,6 +31,7 @@ class ReminderRulesController extends Controller
     public function toggle(Request $request, ReminderRule $reminderRule)
     {
         $reminderRule->toggle();
+
         return trans('settings.personalization_reminder_rule_save');
     }
 }

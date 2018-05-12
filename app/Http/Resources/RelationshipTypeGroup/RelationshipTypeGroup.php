@@ -10,14 +10,15 @@ class RelationshipTypeGroup extends Resource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request
+     *
      * @return array
      */
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'object' => 'relationshiptypegroup',
-            'name' => $this->name,
+            'id'      => $this->id,
+            'object'  => 'relationshiptypegroup',
+            'name'    => $this->name,
             'delible' => (bool) $this->delible,
             'account' => [
                 'id' => $this->account->id,

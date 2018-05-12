@@ -11,9 +11,10 @@ abstract class TestCase extends BaseTestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param  object &$object
-     * @param  string $methodName
-     * @param  array  $parameters
+     * @param object &$object
+     * @param string $methodName
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function invokePrivateMethod(&$object, $methodName, array $parameters = [])

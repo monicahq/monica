@@ -2,8 +2,8 @@
 
 namespace Tests\Helper;
 
-use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
+use Tests\FeatureTestCase;
 
 class LocaleHelperTest extends FeatureTestCase
 {

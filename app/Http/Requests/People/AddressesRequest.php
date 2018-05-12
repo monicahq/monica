@@ -24,11 +24,11 @@ class AddressesRequest extends FormRequest
     public function rules()
     {
         return [
-            'country' => 'max:3|nullable',
-            'name' => 'max:255|nullable',
-            'street' => 'max:255|nullable',
-            'city' => 'max:255|nullable',
-            'province' => 'max:255|nullable',
+            'country'     => 'max:3|nullable',
+            'name'        => 'max:255|nullable',
+            'street'      => 'max:255|nullable',
+            'city'        => 'max:255|nullable',
+            'province'    => 'max:255|nullable',
             'postal_code' => 'max:255|nullable',
         ];
     }

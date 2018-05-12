@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AddCustomGender extends Migration
 {
@@ -30,7 +30,7 @@ class AddCustomGender extends Migration
         foreach ($accounts as $account) {
             $user = DB::table('users')->select('locale')->where('account_id', $account->id)->first();
 
-            if (! $user) {
+            if (!$user) {
                 continue;
             }
             App::setLocale($user->locale);

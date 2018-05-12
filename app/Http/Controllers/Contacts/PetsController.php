@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Pet;
 use App\Contact;
-use App\PetCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\PetsRequest;
+use App\Pet;
+use App\PetCategory;
 
 class PetsController extends Controller
 {
@@ -21,7 +21,7 @@ class PetsController extends Controller
 
         foreach ($petCategories as $petCategory) {
             $data = [
-                'id' => $petCategory->id,
+                'id'   => $petCategory->id,
                 'name' => $petCategory->name,
                 'edit' => false,
             ];
@@ -33,7 +33,8 @@ class PetsController extends Controller
 
     /**
      * Get all the pets for this contact.
-     * @param  Contact $contact
+     *
+     * @param Contact $contact
      */
     public function get(Contact $contact)
     {
@@ -42,11 +43,11 @@ class PetsController extends Controller
 
         foreach ($pets as $pet) {
             $data = [
-                'id' => $pet->id,
-                'name' => $pet->name,
+                'id'              => $pet->id,
+                'name'            => $pet->name,
                 'pet_category_id' => $pet->pet_category_id,
-                'category_name' => $pet->petCategory->name,
-                'edit' => false,
+                'category_name'   => $pet->petCategory->name,
+                'edit'            => false,
             ];
             $petsCollection->push($data);
         }
@@ -70,11 +71,11 @@ class PetsController extends Controller
         );
 
         return [
-            'id' => $pet->id,
-            'name' => $pet->name,
+            'id'              => $pet->id,
+            'name'            => $pet->name,
             'pet_category_id' => $pet->pet_category_id,
-            'category_name' => $pet->petCategory->name,
-            'edit' => false,
+            'category_name'   => $pet->petCategory->name,
+            'edit'            => false,
         ];
     }
 
@@ -94,11 +95,11 @@ class PetsController extends Controller
         );
 
         return [
-            'id' => $pet->id,
-            'name' => $pet->name,
+            'id'              => $pet->id,
+            'name'            => $pet->name,
             'pet_category_id' => $pet->pet_category_id,
-            'category_name' => $pet->petCategory->name,
-            'edit' => false,
+            'category_name'   => $pet->petCategory->name,
+            'edit'            => false,
         ];
     }
 

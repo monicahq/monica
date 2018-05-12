@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class RelationshipTypeTest extends TestCase
 {
@@ -33,8 +33,8 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'uncle',
+            'account_id'                => $account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
@@ -48,8 +48,8 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'uncle',
+            'account_id'                => $account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
@@ -63,14 +63,14 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'uncle',
+            'account_id'                => $account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
         $contact = factory('App\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
-            'last_name' => 'Twain',
+            'last_name'  => 'Twain',
         ]);
 
         $this->assertEquals(
@@ -83,14 +83,14 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'uncle',
+            'account_id'                => $account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
         $contact = factory('App\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
-            'last_name' => 'Twain',
+            'last_name'  => 'Twain',
         ]);
 
         $this->assertEquals(
@@ -103,14 +103,14 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'uncle',
+            'account_id'                => $account->id,
+            'name'                      => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
         $contact = factory('App\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
-            'last_name' => 'Twain',
+            'last_name'  => 'Twain',
         ]);
 
         $this->assertEquals(
@@ -123,14 +123,14 @@ class RelationshipTypeTest extends TestCase
     {
         $account = factory('App\Account')->create([]);
         $relationshipType = factory('App\RelationshipType')->create([
-            'account_id' => $account->id,
-            'name' => 'partner',
+            'account_id'                => $account->id,
+            'name'                      => 'partner',
             'name_reverse_relationship' => 'partner',
         ]);
         $contact = factory('App\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
-            'last_name' => 'Twain',
+            'last_name'  => 'Twain',
         ]);
 
         $this->assertEquals(

@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 class CreateContactFieldsTable extends Migration
 {
@@ -68,40 +68,40 @@ class CreateContactFieldsTable extends Migration
         });
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Email',
+            'name'             => 'Email',
             'fontawesome_icon' => 'fa fa-envelope-open-o',
-            'protocol' => 'mailto:',
-            'delible' => false,
-            'type' => 'email',
+            'protocol'         => 'mailto:',
+            'delible'          => false,
+            'type'             => 'email',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Phone',
+            'name'             => 'Phone',
             'fontawesome_icon' => 'fa fa-volume-control-phone',
-            'protocol' => 'tel:',
-            'delible' => false,
-            'type' => 'phone',
+            'protocol'         => 'tel:',
+            'delible'          => false,
+            'type'             => 'phone',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Facebook',
+            'name'             => 'Facebook',
             'fontawesome_icon' => 'fa fa-facebook-official',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Twitter',
+            'name'             => 'Twitter',
             'fontawesome_icon' => 'fa fa-twitter-square',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Whatsapp',
+            'name'             => 'Whatsapp',
             'fontawesome_icon' => 'fa fa-whatsapp',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
-            'name' => 'Telegram',
+            'name'             => 'Telegram',
             'fontawesome_icon' => 'fa fa-telegram',
-            'protocol' => 'telegram:',
+            'protocol'         => 'telegram:',
         ]);
     }
 }

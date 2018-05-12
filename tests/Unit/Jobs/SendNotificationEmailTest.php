@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Mail\NotificationEmail;
-use Illuminate\Support\Facades\Mail;
 use App\Jobs\Notification\SendNotificationEmail;
+use App\Mail\NotificationEmail;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 
 class SendNotificationEmailTest extends TestCase
 {
@@ -25,24 +25,24 @@ class SendNotificationEmailTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => true,
+            'active'                => true,
         ]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-            'reminder_id' => $reminder->id,
+            'account_id'                         => $account->id,
+            'contact_id'                         => $contact->id,
+            'reminder_id'                        => $reminder->id,
             'delete_after_number_of_emails_sent' => 1,
-            'scheduled_number_days_before' => 7,
+            'scheduled_number_days_before'       => 7,
         ]);
 
         dispatch(new SendNotificationEmail($notification, $user));
@@ -57,7 +57,7 @@ class SendNotificationEmailTest extends TestCase
     }
 
     /**
-     * It doesn't send the reminder if reminder rule is set to off
+     * It doesn't send the reminder if reminder rule is set to off.
      */
     public function test_it_doesnt_send_a_notification()
     {
@@ -71,24 +71,24 @@ class SendNotificationEmailTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
         ]);
         $reminderRule = factory('App\ReminderRule')->create([
-            'account_id' => $account->id,
+            'account_id'            => $account->id,
             'number_of_days_before' => 7,
-            'active' => false,
+            'active'                => false,
         ]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-            'reminder_id' => $reminder->id,
+            'account_id'                         => $account->id,
+            'contact_id'                         => $contact->id,
+            'reminder_id'                        => $reminder->id,
             'delete_after_number_of_emails_sent' => 1,
-            'scheduled_number_days_before' => 7,
+            'scheduled_number_days_before'       => 7,
         ]);
 
         dispatch(new SendNotificationEmail($notification, $user));

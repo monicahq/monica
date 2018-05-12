@@ -10,10 +10,10 @@ trait Searchable
     /**
      * Search for needle in the columns defined by $searchable_columns.
      *
-     * @param  Builder $builder query builder
+     * @param Builder $builder query builder
      * @param  $needle
-     * @param  int  $accountId
-     * @param  int $limitPerPage
+     * @param int $accountId
+     * @param int $limitPerPage
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */

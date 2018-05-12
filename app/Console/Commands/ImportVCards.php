@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\Traits\VCardImporter;
+use App\User;
 use Illuminate\Console\Command;
-use Sabre\VObject\Component\VCard;
 use Illuminate\Filesystem\Filesystem;
+use Sabre\VObject\Component\VCard;
 
 class ImportVCards extends Command
 {
@@ -32,6 +32,7 @@ class ImportVCards extends Command
      * Execute the console command.
      *
      * @param Filesystem $filesystem
+     *
      * @return mixed
      */
     public function handle(Filesystem $filesystem)
@@ -40,13 +41,13 @@ class ImportVCards extends Command
 
         $user = User::where('email', $this->argument('user'))->first();
 
-        if (! $user) {
+        if (!$user) {
             $this->error('You need to provide a valid user email!');
 
             return;
         }
 
-        if (! $filesystem->exists($this->path) || $filesystem->extension($this->path) !== 'vcf') {
+        if (!$filesystem->exists($this->path) || $filesystem->extension($this->path) !== 'vcf') {
             $this->error('The provided vcard file was not found or is not valid!');
 
             return;
@@ -59,7 +60,7 @@ class ImportVCards extends Command
     {
         $this->info("We found {$matchCount} contacts in {$this->path}.");
 
-        if (! $this->confirm('Would you like to import them?', true)) {
+        if (!$this->confirm('Would you like to import them?', true)) {
             return false;
         }
 

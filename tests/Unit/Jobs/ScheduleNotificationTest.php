@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
+use App\Jobs\Notification\ScheduleNotification;
 use Carbon\Carbon;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;
-use App\Jobs\Notification\ScheduleNotification;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ScheduleNotificationTest extends TestCase
 {
@@ -26,17 +26,17 @@ class ScheduleNotificationTest extends TestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
-            'email' => 'john@doe.com',
+            'email'      => 'john@doe.com',
         ]);
         $reminder = factory('App\Reminder')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'account_id'         => $account->id,
+            'contact_id'         => $contact->id,
             'next_expected_date' => '2017-01-01',
         ]);
         $notification = factory('App\Notification')->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-            'reminder_id' => $reminder->id,
+            'account_id'   => $account->id,
+            'contact_id'   => $contact->id,
+            'reminder_id'  => $reminder->id,
             'trigger_date' => '2017-01-01',
         ]);
 

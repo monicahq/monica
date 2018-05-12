@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Address;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class AddressTest extends TestCase
 {
@@ -12,14 +12,14 @@ class AddressTest extends TestCase
 
     public function testGetPartialAddressReturnsNullIfNoCityIsDefined()
     {
-        $address = new Address;
+        $address = new Address();
 
         $this->assertNull($address->getPartialAddress());
     }
 
     public function testGetPartialAddressReturnsCityIfProvinceIsUndefined()
     {
-        $address = new Address;
+        $address = new Address();
         $address->city = 'Montreal';
 
         $this->assertEquals(
@@ -30,7 +30,7 @@ class AddressTest extends TestCase
 
     public function testGetPartialAddressReturnsCityAndProvince()
     {
-        $address = new Address;
+        $address = new Address();
         $address->city = 'Montreal';
         $address->province = 'QC';
 
@@ -42,14 +42,14 @@ class AddressTest extends TestCase
 
     public function testGetCountryReturnsNullIfNoStreetIsDefined()
     {
-        $address = new Address;
+        $address = new Address();
 
         $this->assertNull($address->getCountryName());
     }
 
     public function testGetCountryCodeReturnsStreetWhenDefined()
     {
-        $address = new Address;
+        $address = new Address();
         $address->country = 'US';
 
         $this->assertEquals(
@@ -60,7 +60,7 @@ class AddressTest extends TestCase
 
     public function testGetCountryCodeReturnsGB()
     {
-        $address = new Address;
+        $address = new Address();
         $address->country = 'GB';
 
         $this->assertEquals(
@@ -71,7 +71,7 @@ class AddressTest extends TestCase
 
     public function testGetGoogleMapsAddressReturnsLink()
     {
-        $address = new Address;
+        $address = new Address();
         $address->country = 'US';
         $address->name = 'default';
         $address->street = '12';
@@ -87,7 +87,7 @@ class AddressTest extends TestCase
 
     public function test_it_returns_name()
     {
-        $address = new Address;
+        $address = new Address();
         $address->name = 'Test';
 
         $this->assertEquals(
@@ -98,7 +98,7 @@ class AddressTest extends TestCase
 
     public function test_it_returns_street()
     {
-        $address = new Address;
+        $address = new Address();
         $address->street = '123 Street Machine';
 
         $this->assertEquals(
@@ -109,7 +109,7 @@ class AddressTest extends TestCase
 
     public function test_it_returns_city()
     {
-        $address = new Address;
+        $address = new Address();
         $address->city = 'Montreal';
 
         $this->assertEquals(
@@ -120,7 +120,7 @@ class AddressTest extends TestCase
 
     public function test_it_returns_province()
     {
-        $address = new Address;
+        $address = new Address();
         $address->province = 'QC';
 
         $this->assertEquals(
@@ -131,7 +131,7 @@ class AddressTest extends TestCase
 
     public function test_it_returns_postal_code()
     {
-        $address = new Address;
+        $address = new Address();
         $address->postal_code = 'H1L1L1';
 
         $this->assertEquals(

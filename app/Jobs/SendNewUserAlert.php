@@ -2,13 +2,13 @@
 
 namespace App\Jobs;
 
-use App\User;
 use App\Mail\NewUserAlert;
+use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendNewUserAlert implements ShouldQueue
 {
