@@ -1168,7 +1168,7 @@ class Contact extends Model
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $firstMetDate =$this->firstMetDate;
+                    $firstMetDate = $this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
 
@@ -1293,6 +1293,30 @@ class Contact extends Model
         if ($relatedContact) {
             return \App\Contact::find($relatedContact->of_contact);
         }
+    }
+
+    /**
+     * Get the contacts that have all the provided $tags
+     * or if $tags is NONE get contacts that have no tags.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $tags string or Tag
+     * @return \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeTags($query, $tags)
+    {
+        if ($tags == 'NONE') {
+            // get tagless contacts
+            $query = $query->has('tags', '<', 1);
+        } elseif (! empty($tags)) {
+            // gets users who have all the tags
+            foreach ($tags as $tag) {
+                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+            }
+        }
+
+        return $query;
     }
 
     /**

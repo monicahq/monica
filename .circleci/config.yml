@@ -90,6 +90,27 @@ command13: &remove-xdebug
     name: Remove xdebug
     command: |
       sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+command14: &docker-install
+  run:
+    name: Install docker_squash
+    command: |
+      sudo apt-get update
+      sudo apt-get install -y python-pip
+      pip install docker-squash "docker < 3"
+command15: &docker-build
+  run:
+    name: Make docker image
+    command: |
+      docker-compose --version
+      make docker_build
+      make docker_squash
+command16: &docker-push-bintray
+  run:
+    name: Publish docker image
+    command: |
+      echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+      make docker_push_bintray
+
 
 restore_cache1: &restore_composer
   restore_cache:
@@ -344,9 +365,20 @@ jobs:
           <<: *post_checkout
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - *restore_assets
-
       - run: make dist
       - run: make push_bintray_dist
+
+  deploy-docker-master:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
 
   deploy-docker:
     <<: *defaults
@@ -356,23 +388,14 @@ jobs:
       - checkout:
           <<: *post_checkout
       - *prepare-environment
-      - run:
-          name: Install docker_squash
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip
-            pip install docker-squash "docker < 3"
-      - run:
-          name: Make docker image
-          command: |
-            docker-compose --version
-            make docker_build
-            make docker_squash
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
       - run:
           name: Publish docker image
           command: |
-            echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-            make docker_push_bintray
+            echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_push
 
 workflows:
   version: 2
@@ -453,9 +476,12 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-docker-master:
+          filters:
+            branches:
+              only:
+                - master
       - deploy-docker:
-          requires:
-            - build
           filters:
             branches:
               ignore: /.*/

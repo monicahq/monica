@@ -96,7 +96,7 @@ class Notification extends Model
      * Indicate whether a notification should be sent, as this should be
      * dictated by the reminder rule (on or off).
      *
-     * @return boolean
+     * @return bool
      */
     public function shouldBeSent()
     {
