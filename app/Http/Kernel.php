@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
     /**
@@ -29,14 +30,15 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\CheckLocale::class,
+            'bindings',
+            'locale',
             \App\Http\Middleware\CheckVersion::class,
         ],
 
         'api' => [
             'throttle:60,1',
-            'bindings',
+            //'bindings',
+            'locale',
         ],
     ];
 
@@ -56,5 +58,6 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+        'locale' => \App\Http\Middleware\CheckLocale::class,
     ];
 }

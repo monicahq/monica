@@ -4,6 +4,7 @@ use App\Account;
 use App\Contact;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
+use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -316,7 +317,7 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
             $address = $this->contact->addresses()->create([
                 'account_id' => $this->contact->account_id,
-                'country_id' => rand(1, 242),
+                'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
                 'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
                 'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
@@ -324,6 +325,17 @@ class FakeContentTableSeeder extends Seeder
                 'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,
             ]);
         }
+    }
+
+    private $countries = null;
+
+    private function getRandomCountry()
+    {
+        if ($this->countries == null) {
+            $this->countries = CountriesHelper::getAll();
+        }
+
+        return $this->countries->random()->id;
     }
 
     public function populateContactFields()

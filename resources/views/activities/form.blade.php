@@ -53,10 +53,10 @@
     {{-- Build the Activity types dropdown --}}
     <div class="form-group{{ $errors->has('activity_type_id') ? ' has-error' : '' }}">
         <label for="activity_type_id">{{ trans('people.activities_add_pick_activity') }}</label>
-        <select id="activity_type_id" name="activity_type_id" class="form-control" required>
+        <select id="activity_type_id" name="activity_type_id" class="form-control">
 
             {{-- Blank option --}}
-            <option value="0" selected>
+            <option value="" selected>
                 -
             </option>
 

@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Account;
+use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
 use App\SpecialDate;
@@ -71,11 +73,11 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_delete_reminder_destroys_the_associated_reminder()
     {
-        $reminder = new Reminder;
+        $reminder = factory(Reminder::class)->make();
         $reminder->id = 1;
         $reminder->save();
 
-        $specialDate = new SpecialDate;
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->reminder_id = $reminder->id;
         $specialDate->save();
 
@@ -86,10 +88,11 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_delete_reminder_also_deletes_notifications()
     {
-        $reminder = factory('App\Reminder')->create(['account_id' => 3]);
-        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
-        $notification = factory('App\Notification')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
-        $specialDate = factory('App\SpecialDate')->create(['account_id' => 3, 'reminder_id' => $reminder->id]);
+        $account = factory(Account::class)->create();
+        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
+        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $specialDate = factory('App\SpecialDate')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
 
         $this->assertDatabaseHas('notifications', ['reminder_id' => $reminder->id]);
 
@@ -100,7 +103,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_delete_reminder_returns_0_if_reminder_not_found()
     {
-        $specialDate = factory(\App\SpecialDate::class)->create(['reminder_id' => 23]);
+        $specialDate = factory(\App\SpecialDate::class)->create(['reminder_id' => null]);
 
         $this->assertEquals(0, $specialDate->deleteReminder());
     }
@@ -109,8 +112,11 @@ class SpecialDateTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
+
         $reminder = new Reminder;
         $reminder->account_id = $user->account_id;
+        $reminder->contact_id = $contact->id;
         $reminder->id = 1;
         $reminder->save();
 
@@ -276,7 +282,7 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->setToContact($contact);
 
         $this->assertEquals(
-            1,
+            $contact->account_id,
             $specialDate->account_id
         );
 
