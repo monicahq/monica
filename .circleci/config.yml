@@ -152,7 +152,7 @@ jobs:
       - *install-extensions
       - persist_to_workspace:
           root: *root
-          paths: php-extensions-${PHP_VERSION}.tar.bz2
+          paths: php-extensions*
 
       - run:
           name: Prepare environment
