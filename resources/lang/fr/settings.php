@@ -180,7 +180,7 @@ return [
     'import_upload_rule_time' => 'Cela peut prendre 1 minute pour importer les contacts et les traiter. Merci de votre patience.',
     'import_upload_rule_cant_revert' => 'Veuillez vous assurer que les données sont fiables avant d’importer, car l’import ne peut être annulé.',
     'import_upload_form_file' => 'Votre fichier <code>.vcf</code> or <code>.vCard</code> :',
-    'import_report_title' => 'Rapport de l’import',
+    'import_report_title' => 'Rapport d’import',
     'import_report_date' => 'Date de l’import',
     'import_report_type' => 'Type d’import',
     'import_report_number_contacts' => 'Nombre de contacts dans le fichier',
