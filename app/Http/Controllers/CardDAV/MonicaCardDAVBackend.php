@@ -84,9 +84,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
         return false;
     }
 
-    function prepareCard($contact) {
+    public function prepareCard($contact) {
         $vcard = new VObject\Component\VCard([
-            'FN'  => 'Cowboy Henk',
+            'FN'  => $contact->getCompleteName(),
             'TEL' => '+1 555 34567 455',
             'N'   => ['Henk', 'Cowboy', '', 'Dr.', 'MD'],
         ]);
@@ -94,7 +94,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
         $uri = $contact->id;
         $timestamp = $contact->updated_at->timestamp;
         return [
-            'id'           => $contact->id,
+            'id'           => md5($contact->id),
             'uri'          => $uri,
             'lastmodified' => $timestamp,
             'etag'         => '"' . md5($uri.$timestamp) . '"',

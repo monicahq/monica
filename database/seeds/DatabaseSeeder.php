@@ -14,17 +14,14 @@ class DatabaseSeeder extends Seeder
         switch (\Illuminate\Support\Facades\App::environment()) {
             case 'local':
                 $this->call(ActivityTypesTableSeeder::class);
-                $this->call(CountriesSeederTable::class);
                 $this->call(FakeUserTableSeeder::class);
             break;
             case 'testing':
                 $this->call(ActivityTypesTableSeeder::class);
-                $this->call(CountriesSeederTable::class);
                 $this->call(FakeUserTableSeeder::class);
             break;
             case 'production':
                 $this->call(ActivityTypesTableSeeder::class);
-                $this->call(CountriesSeederTable::class);
             break;
         }
     }

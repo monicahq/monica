@@ -29,7 +29,7 @@ class JournalEntryTest extends TestCase
         $journalEntry = (new JournalEntry)->add($activity);
 
         $this->assertDatabaseHas('journal_entries', [
-            'account_id' => 1,
+            'account_id' => $activity->account_id,
             'date' => $date,
             'journalable_id' => $activity->id,
             'journalable_type' => 'App\Activity',

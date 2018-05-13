@@ -30,6 +30,9 @@ class CardDAVController extends Controller
                 new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend)
         ];
 
+        
+        dd($carddavBackend->prepareCard($contact));
+
         // Initiate Sabre server
         $server = new \Sabre\DAV\Server($nodes);
         $server->setBaseUri('/carddav');

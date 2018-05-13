@@ -32,7 +32,7 @@ command1: &install-extensions
     command: |
       sudo apt-get update
       sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-      sudo docker-php-ext-install -j4 zip intl bcmath gd pdo_mysql mysqli mbstring
+      sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_mysql mysqli mbstring
 command2: &prepare-environment
   run:
     name: Prepare environment
@@ -46,7 +46,7 @@ command3: &update-chrome
 command4: &wait-for-db
   run:
     name: Wait for DB
-    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
 command5: &prepare-db
   run:
     name: Prepare database
@@ -61,11 +61,11 @@ command6: &http-server
 command7: &wait-for-server
   run:
     name: Wait for http server
-    command: dockerize -wait tcp://localhost:8000 -timeout 120s
+    command: dockerize -wait tcp://localhost:8000 -timeout 60s
 command8: &unit-tests
   run:
     name: Run unit tests
-    command: phpdbg -qrr vendor/bin/phpunit -c phpunit.xml
+    command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
 command9: &psalm
   run:
     name: Run psalm
@@ -90,7 +90,27 @@ command13: &remove-xdebug
     name: Remove xdebug
     command: |
       sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-      echo "memory_limit=512M" | sudo tee /usr/local/etc/php/php.ini
+command14: &docker-install
+  run:
+    name: Install docker_squash
+    command: |
+      sudo apt-get update
+      sudo apt-get install -y python-pip
+      pip install docker-squash "docker < 3"
+command15: &docker-build
+  run:
+    name: Make docker image
+    command: |
+      docker-compose --version
+      make docker_build
+      make docker_squash
+command16: &docker-push-bintray
+  run:
+    name: Publish docker image
+    command: |
+      echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+      make docker_push_bintray
+
 
 restore_cache1: &restore_composer
   restore_cache:
@@ -306,7 +326,9 @@ jobs:
           at: *root
       - *restore_node
       - restore_cache:
-          keys: *sonar_key
+          keys:
+            - *sonar_key
+            - sonarscanner-v1-
 
       - run:
           name: Merge junit files
@@ -343,9 +365,20 @@ jobs:
           <<: *post_checkout
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - *restore_assets
-
       - run: make dist
       - run: make push_bintray_dist
+
+  deploy-docker-master:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
 
   deploy-docker:
     <<: *defaults
@@ -355,23 +388,14 @@ jobs:
       - checkout:
           <<: *post_checkout
       - *prepare-environment
-      - run:
-          name: Install docker_squash
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y python-pip
-            pip install docker-squash "docker < 3"
-      - run:
-          name: Make docker image
-          command: |
-            docker-compose --version
-            make docker_build
-            make docker_squash
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
       - run:
           name: Publish docker image
           command: |
-            echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-            make docker_push_bintray
+            echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_push
 
 workflows:
   version: 2
@@ -381,30 +405,40 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-7.1:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-7.2:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-browser-7.1:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - tests-browser-7.2:
           requires:
             - build
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
       - reporting:
           requires:
             - tests-7.1
@@ -414,6 +448,8 @@ workflows:
           filters:
             branches:
               ignore: /l10n_master.*/
+            tags:
+              only: /.*/
   deploy:
     jobs:
       - build:
@@ -440,9 +476,12 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-docker-master:
+          filters:
+            branches:
+              only:
+                - master
       - deploy-docker:
-          requires:
-            - build
           filters:
             branches:
               ignore: /.*/
