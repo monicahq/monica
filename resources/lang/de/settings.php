@@ -123,7 +123,7 @@ return [
     'subscriptions_downgrade_title' => 'Konto auf kostenlose Variante downgraden',
     'subscriptions_downgrade_limitations' => 'Die kostenlose Variante hat Einschränkungen. um downdgraden zu können müssen folgende Dinge zutreffen:',
     'subscriptions_downgrade_rule_users' => 'Du darfst nur einen Benutzer in deinem Konto haben',
-    'subscriptions_downgrade_rule_users_constraint' => 'You currently have <a href=":url">1 user</a> in your account.|You currently have <a href=":url">:count users</a> in your account.',
+    'subscriptions_downgrade_rule_users_constraint' => 'Sie haben derzeit <a href=":url">1 Benutzer</a> in Ihrem Konto. | Sie haben derzeit <a href=":url">:count Benutzer</a> in Ihrem Konto.',
     'subscriptions_downgrade_rule_invitations' => 'Du darfst keine Ausstehenden Einladungen haben',
     'subscriptions_downgrade_rule_invitations_constraint' => 'You currently have <a href=":url">1 pending invitation</a> sent to people.|You currently have <a href=":url">:count pending invitations</a> sent to people.',
     'subscriptions_downgrade_cta' => 'Zurückstufen',
