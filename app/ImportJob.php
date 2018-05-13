@@ -322,11 +322,11 @@ class ImportJob extends Model
         $email = (string) $this->currentEntry->EMAIL;
 
         if (! $email) {
-            return null;
+            return;
         }
 
         if (! $this->isValidEmail($email)) {
-            return null;
+            return;
         }
 
         $contactFieldType = \App\ContactFieldType::where([
