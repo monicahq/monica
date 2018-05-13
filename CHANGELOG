@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add ability to sort contact list by untagged contacts
+* Allow multiple imported fields and replace existing contacts
 
 RELEASED VERSIONS:
 
