@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'Chcete <a href=":url">importovat své kontakty</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -106,7 +107,6 @@ return [
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
-    'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin.',
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
