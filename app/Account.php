@@ -657,7 +657,7 @@ class Account extends Model
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password);
-
+            
         return $account;
     }
 
