@@ -6,7 +6,6 @@ use App\Address;
 use App\Contact;
 use App\Helpers\LocaleHelper;
 use App\Helpers\CountriesHelper;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -48,7 +47,7 @@ class AddressesController extends Controller
     {
         $key = 'countries.'.LocaleHelper::getLocale();
 
-        $countries = Cache::rememberForever($key, function() {
+        $countries = Cache::rememberForever($key, function () {
             return CountriesHelper::getAll();
         });
 
