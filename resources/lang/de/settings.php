@@ -116,7 +116,7 @@ return [
     'subscriptions_account_free_plan_benefits_support' => 'Du unterstützt das Projekt auf lange Sicht, so dass wir mehr großartige Features umsetzen können.',
     'subscriptions_account_upgrade' => 'Konto upgraden',
     'subscriptions_account_upgrade_title' => 'Upgrade Monica today and have more meaningful relationships.',
-    'subscriptions_account_upgrade_choice' => 'Pick a plan below and join over :customers persons who upgraded their Monica.',
+    'subscriptions_account_upgrade_choice' => 'Wähle eines der Abos und schließe dich :customers Personen an, die ihr Monica bereits upgegraded haben.',
     'subscriptions_account_invoices' => 'Rechnungen',
     'subscriptions_account_invoices_download' => 'Herunterladen',
     'subscriptions_account_payment' => 'Wie möchtest du bezahlen?',
@@ -236,7 +236,7 @@ return [
 
     'api_authorized_clients' => 'Liste der authorisierten Clients',
     'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application. You can revoke this authorization at anytime.',
-    'api_authorized_clients_title' => 'Authorized Applications',
+    'api_authorized_clients_title' => 'Zugelassene Anwendungen',
     'api_authorized_clients_name' => 'Name',
     'api_authorized_clients_scopes' => 'Scopes',
 
@@ -271,19 +271,19 @@ return [
     'personalization_genders_modal_edit_question' => 'Wie soll dieses neue Geschlech umbenannt werden?',
     'personalization_genders_modal_delete' => 'Geschlechtstyp löschen',
     'personalization_genders_modal_delete_desc' => 'Möchten Sie {name} wirklich löschen?',
-    'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_question' => 'Du hast aktuell {count} Kontakt mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht soll der Kontakt dann haben?|Du hast aktuell {count} Kontakte mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht sollen die Kontakte dann haben?',
     'personalization_genders_modal_error' => 'Bitte wähle ein gültiges Geschlecht aus der Liste.',
 
     'personalization_reminder_rule_save' => 'Die Änderung wurde gespeichert',
     'personalization_reminder_rule_title' => 'Erinnerungs Regeln',
-    'personalization_reminder_rule_line' => '{count} day before|{count} days before',
+    'personalization_reminder_rule_line' => '{count} Tag zuvor|{count} Tage zuvor',
     'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
 
-    'personalization_module_save' => 'The change has been saved',
+    'personalization_module_save' => 'Die Änderung wurde gespeichert',
     'personalization_module_title' => 'Features',
     'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
+    'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
 ];
