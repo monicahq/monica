@@ -24,7 +24,7 @@ return [
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
-    'people_list_untagged' => 'View untagged contacts',
+    'people_list_untagged' => 'Afficher les contacts sans étiquette',
     'people_list_filter_untag' => 'Showing all untagged contacts ',
 
     // people add
