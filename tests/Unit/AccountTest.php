@@ -539,7 +539,7 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $account->populateRelationshipTypeGroupsTable();
-        $account->populateRelationshipTypesTable(true);
+        $account->populateRelationshipTypesTable();
 
         $this->assertDatabaseMissing('relationship_types', [
             'name' => 'fuckfriend',
