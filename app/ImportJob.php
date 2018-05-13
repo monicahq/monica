@@ -344,8 +344,6 @@ class ImportJob extends Model
                 return $contactField->contact;
             }
         }
-
-        return null;
     }
 
     /**
