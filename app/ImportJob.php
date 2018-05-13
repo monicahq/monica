@@ -239,7 +239,7 @@ class ImportJob extends Model
      *
      * @return
      */
-    public function processEntries($behaviour)
+    public function processEntries($behaviour = self::BEHAVIOUR_ADD)
     {
         collect($this->entries[0])->map(function ($vcard) {
             return Reader::read($vcard);
@@ -255,7 +255,7 @@ class ImportJob extends Model
      * @param  VCard  $vCard
      * @return [type]        [description]
      */
-    public function processSingleEntry($behaviour)
+    public function processSingleEntry($behaviour = self::BEHAVIOUR_ADD)
     {
         if (! $this->checkImportFeasibility()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
@@ -403,7 +403,7 @@ class ImportJob extends Model
      *
      * @return Contact
      */
-    public function createContactFromCurrentEntry($contact)
+    public function createContactFromCurrentEntry($contact = null)
     {
         if (! $contact) {
             $contact = new \App\Contact;
