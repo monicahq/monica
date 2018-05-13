@@ -29,9 +29,11 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_get_countries()
     {
+        $user = $this->signIn();
+
         $response = $this->get('/countries');
 
-        $response->assertStatus(302);
+        $response->assertStatus(200);
 
         $countries = CountriesHelper::getAll();
 
