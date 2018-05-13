@@ -15,6 +15,7 @@ var2: &node_key node-v2-{{ checksum "yarn.lock" }}
 var3: &assets_key assets-v2-{{ .Revision }}
 var4: &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
 var5: &root ~/monica
+var4: &phpextensions_key phpextensions-v1-{{ arch }}-{{ .Environment.PHP_VERSION }}
 
 # Defaults env
 defaults: &defaults
@@ -28,17 +29,19 @@ checkout0: &post_checkout
 
 command1: &install-extensions
   run:
-    name: Install extensions
+    name: Install php extensions
     command: |
       sudo apt-get update
-      sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-      sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_mysql mysqli mbstring
+      sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev
+      sudo docker-php-ext-install -j$(nproc) zip intl json iconv bcmath gd pdo_mysql mysqli mbstring
 command2: &prepare-environment
   run:
     name: Prepare environment
     command: |
       mkdir -p results/coverage
       cp scripts/tests/.env.mysql.travis .env
+      sudo apt-get update
+      sudo apt-get install -y mysql-client
 command3: &update-chrome
   run:
     name: Install chrome
@@ -127,6 +130,10 @@ restore_cache3: &restore_assets
     keys:
       - *assets_key
       - assets-v2-
+restore_cache3: &restore_phpextensions
+  restore_cache:
+    keys:
+      - *phpextensions_key
 
 
 version: 2
@@ -134,18 +141,19 @@ jobs:
   build:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1-node
+      - image: circleci/php:7.2-node
 
     steps:
       - checkout:
           <<: *post_checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libicu-dev g++
-            sudo docker-php-ext-install intl json iconv
       - *prepare-environment
+      - *install-extensions
+      - persist_to_workspace:
+          root: /
+          paths:
+            - /usr/local/etc/php/conf.d
+            - $(php-config --extension-dir)
+
       - run:
           name: Prepare environment
           command: |
@@ -186,37 +194,6 @@ jobs:
             - public/fonts
             - public/js
 
-  tests-7.1:
-    <<: *defaults
-    docker:
-      - image: circleci/php:7.1-node-browsers
-      - image: circleci/mysql:5.7-ram
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
-
-    steps:
-      - checkout:
-          <<: *post_checkout
-      - *install-extensions
-      - *prepare-environment
-      - *remove-xdebug
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
-      - *wait-for-db
-      - *prepare-db
-      - *unit-tests
-      - *psalm
-      - store_test_results:
-          path: results
-      - store_artifacts:
-          path: results
-      - persist_to_workspace:
-          root: *root
-          paths: results
-
   tests-7.2:
     <<: *defaults
     docker:
@@ -230,7 +207,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
-      - *install-extensions
+      - attach_workspace:
+          at: /
       - *prepare-environment
       - *remove-xdebug
       - *restore_composer
@@ -244,39 +222,6 @@ jobs:
           path: results
       - store_artifacts:
           path: results
-
-  tests-browser-7.1:
-    <<: *defaults
-    docker:
-      - image: circleci/php:7.1-node-browsers
-      - image: circleci/mysql:5.7-ram
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
-
-    steps:
-      - checkout:
-          <<: *post_checkout
-      - *install-extensions
-      - *prepare-environment
-      - *update-chrome
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
-      - *wait-for-db
-      - *prepare-db
-      - *selenium
-      - *http-server
-      - *wait-for-server
-      - *browser-tests
-      - *fix-coverage
-      - store_test_results:
-          path: results
-      - store_artifacts:
-          path: results
-      - store_artifacts:
-          path: tests/Browser/screenshots
       - persist_to_workspace:
           root: *root
           paths: results
@@ -294,8 +239,10 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
-      - *install-extensions
+      - attach_workspace:
+          at: /
       - *prepare-environment
+      - *restore_phpextensions
       - *update-chrome
       - *restore_composer
       - *restore_node
@@ -313,11 +260,14 @@ jobs:
           path: results
       - store_artifacts:
           path: tests/Browser/screenshots
+      - persist_to_workspace:
+          root: *root
+          paths: results
 
   reporting:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1-node
+      - image: circleci/php:7.2-node
 
     steps:
       - checkout:
@@ -344,7 +294,7 @@ jobs:
   deploy-assets:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.2
 
     steps:
       - checkout:
@@ -358,7 +308,7 @@ jobs:
   deploy-dist:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.2
 
     steps:
       - checkout:
@@ -395,6 +345,7 @@ jobs:
           name: Publish docker image
           command: |
             echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_tag
             make docker_push
 
 workflows:
@@ -407,23 +358,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-7.1:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /l10n_master.*/
-            tags:
-              only: /.*/
       - tests-7.2:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /l10n_master.*/
-            tags:
-              only: /.*/
-      - tests-browser-7.1:
           requires:
             - build
           filters:
@@ -441,9 +376,7 @@ workflows:
               only: /.*/
       - reporting:
           requires:
-            - tests-7.1
             - tests-7.2
-            - tests-browser-7.1
             - tests-browser-7.2
           filters:
             branches:
