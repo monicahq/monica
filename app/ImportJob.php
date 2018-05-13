@@ -319,11 +319,11 @@ class ImportJob extends Model
      */
     public function existingContact()
     {
-        $email = (string) $this->currentEntry->EMAIL;
-
-        if (! $email) {
-            return;
+        if (is_null($this->currentEntry->EMAIL)) {
+           return;
         }
+
+        $email = (string) $this->currentEntry->EMAIL;
 
         if (! $this->isValidEmail($email)) {
             return;
