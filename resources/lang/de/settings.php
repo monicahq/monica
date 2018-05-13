@@ -116,7 +116,7 @@ return [
     'subscriptions_account_free_plan_benefits_support' => 'Du unterstützt das Projekt auf lange Sicht, so dass wir mehr großartige Features umsetzen können.',
     'subscriptions_account_upgrade' => 'Konto upgraden',
     'subscriptions_account_upgrade_title' => 'Upgrade Monica today and have more meaningful relationships.',
-    'subscriptions_account_upgrade_choice' => 'Wähle eines der Abos und schließe dich :customers Personen an, die ihr Monica bereits upgegraded haben.',
+    'subscriptions_account_upgrade_choice' => 'Wähle eines der Abos und schließe dich :customers Personen an, die bereits die Premium-Version von Monica nutzen.',
     'subscriptions_account_invoices' => 'Rechnungen',
     'subscriptions_account_invoices_download' => 'Herunterladen',
     'subscriptions_account_payment' => 'Wie möchtest du bezahlen?',
@@ -281,7 +281,7 @@ return [
 
     'personalization_module_save' => 'Die Änderung wurde gespeichert',
     'personalization_module_title' => 'Funktionen',
-    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+    'personalization_module_desc' => 'Manche Menschen brauchen nicht alle Funktionen. Unten kannst du die Felder auswählen, die auf einer Kontaktseite angezeigt werden. Die Änderungen werden für ALLE Kontakte übernommen. Wenn du eine Funktion ausschaltest, so gehen die Daten darin nicht verloren, wir verbergen sie nur.',
 
     'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
