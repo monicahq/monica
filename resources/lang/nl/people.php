@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts ',
 
     // people add
     'people_add_title' => 'Add a new person',
