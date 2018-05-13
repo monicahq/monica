@@ -321,7 +321,7 @@ class ImportJob extends Model
     {
         $email = (string) $this->currentEntry->EMAIL;
 
-        if (is_null($email)) {
+        if (! $email) {
             return null;
         }
 
