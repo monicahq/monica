@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'Deseja <a href=":url">importar os seus contatos</a>?',
     'people_edit_email_error' => 'Já existe um contacto na sua conta com este endereço de e-mail. Por favor escolha outro.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Informações de contacto',
@@ -106,7 +107,6 @@ return [
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'Eu sei o dia e o mês da data de nascimento desta pessoa, mas não o ano…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
-    'information_edit_help' => 'Se você indicar uma data de nascimento exata para essa pessoa, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta pessoa.',
     'information_no_linkedin_defined' => 'Nenhum LinkedIn definido',
     'information_no_work_defined' => 'Nenhuma informação profissional definida',
     'information_work_at' => 'em :company',
