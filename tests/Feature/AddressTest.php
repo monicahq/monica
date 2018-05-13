@@ -31,7 +31,7 @@ class AddressTest extends FeatureTestCase
     {
         $response = $this->get('/countries');
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
 
         $countries = CountriesHelper::getAll();
 
