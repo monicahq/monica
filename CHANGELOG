@@ -1,9 +1,25 @@
 UNRELEASED CHANGES:
 
-* Remove automatic birthday reminder creation when editing a contact
-* Use external list of countries, with translations and reliability
+*
 
 RELEASED VERSIONS:
+
+v2.1.1 - 2018-05-13
+-------------------
+
+* Change file structure inside the People folder (backend change)
+* Remove automatic birthday reminder creation when editing a contact
+* Set fixed version for MySQL in docker-compose
+* Build absolute path to stubs files in UploadVCardTest and UploadVCardsTest (backend)
+* Refactor how countries are fetched
+* Change address fetching in API
+* Add ComposerScripts links
+* Fix tests to prepare for foreign keys (backend)
+* Fix deploy tagged version
+* Fix vagrant box
+* Fix notifications being sent even if reminder rule is set to off
+* Fix API locale
+* Fix update command (backend)
 
 v2.1.0 - 2018-05-03
 -------------------
