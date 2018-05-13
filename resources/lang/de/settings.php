@@ -106,7 +106,7 @@ return [
     'users_invitation_need_subscription' => 'Das Hinzufügen von weiteren Benutzern erfordert ein Abonnement.',
 
     'subscriptions_account_current_plan' => 'Dein aktuelles Abonnement',
-    'subscriptions_account_current_paid_plan' => 'You are on the :name plan. Thanks so much for being a subscriber.',
+    'subscriptions_account_current_paid_plan' => 'Sie befinden sich im :name Abo. Vielen Dank für die Anmeldung.',
     'subscriptions_account_next_billing' => 'Dein Abonnement erneuert sich automatisch am <strong>:date</strong>. Du kannst dein Abonnement jederzeit <a href=":url">kündigen</a>.',
     'subscriptions_account_free_plan' => 'Du hast das kostenlose Abonnement.',
     'subscriptions_account_free_plan_upgrade' => 'Du kannst dein Konto auf :name upgraden, was $:price pro Monat kostet. Es beinhaltet folgende Vorteile:',
@@ -167,7 +167,7 @@ return [
     'import_title' => 'Importiere Kontakte in dein Konto',
     'import_cta' => 'Kontakte hochladen',
     'import_stat' => 'Du hast bisher :number Dateien importiert.',
-    'import_result_stat' => 'Uploaded vCard with 1 contact (:total_imported imported, :total_skipped skipped)|Uploaded vCard with :total_contacts contacts (:total_imported imported, :total_skipped skipped)',
+    'import_result_stat' => 'vCard mit 1 Kontakt hochgeladen (:total_imported importiert, :total_skipped übersprungen)|vCard mit :total_contacts Kontakten hochgeladen (:total_imported importiert, :total_skipped übersprungen)',
     'import_view_report' => 'Bericht anzeigen',
     'import_in_progress' => 'Der Import ist im Gange. Lade die Seite in einer Minute neu.',
     'import_upload_title' => 'Kontakte aus vCard importieren',
