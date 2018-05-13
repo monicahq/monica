@@ -67,7 +67,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/people/{contact}/vcard', 'ContactsController@vcard');
 
         // Addresses
-        Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
+        Route::get('/countries', 'Contacts\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
         Route::post('/people/{contact}/addresses', 'Contacts\\AddressesController@store');
         Route::put('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@edit');
