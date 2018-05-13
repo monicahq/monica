@@ -215,7 +215,7 @@ class ApiAdressesTest extends ApiTestCase
             'street' => 'street',
             'postal_code' => '12345',
             'country' => 'US',
-        ]);        
+        ]);
     }
 
     public function test_address_delete()
@@ -244,6 +244,6 @@ class ApiAdressesTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $address->id,
-        ]);        
+        ]);
     }
 }
