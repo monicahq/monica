@@ -151,8 +151,8 @@ jobs:
       - persist_to_workspace:
           root: /
           paths:
-            - /usr/local/etc/php/conf.d
-            - $(php-config --extension-dir)
+            - usr/local/etc/php/conf.d
+            - $(php-config --extension-dir | cut -c 2-)
 
       - run:
           name: Prepare environment
