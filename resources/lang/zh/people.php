@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '现在更新',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts ',
 
     // people add
     'people_add_title' => '添加新人员',
