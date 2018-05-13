@@ -20,7 +20,7 @@ class ApiCountryController extends ApiController
     {
         $key = 'countries.'.LocaleHelper::getLocale();
 
-        $countries = Cache::rememberForever($key, function() {
+        $countries = Cache::rememberForever($key, function () {
             return CountriesHelper::getAll();
         });
 
