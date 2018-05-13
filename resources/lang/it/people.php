@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Utilizzo account: :current/:limit contatti',
     'people_list_account_upgrade_title' => 'Effettua l\'upgrade del tuo account per poter usufruire delle sue piene funzionalitá.',
     'people_list_account_upgrade_cta' => 'Effettua l\'upgrade ora',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts ',
 
     // people add
     'people_add_title' => 'Aggiungi una persona',
