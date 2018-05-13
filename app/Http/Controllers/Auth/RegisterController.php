@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Auth;
 use App\User;
-use Validator;
 use App\Account;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -49,11 +49,12 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        if (config('monica.disable_signup') == 'true') {
+        $first = ! Account::hasAny();
+        if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
 
-        return view('auth.register');
+        return view('auth.register', ['first' => $first]);
     }
 
     /**
@@ -80,11 +81,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $first = ! Account::hasAny();
         $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
         $user = $account->users()->first();
 
-        // send me an alert
-        dispatch(new SendNewUserAlert($user));
+        if (! $first) {
+            // send me an alert
+            dispatch(new SendNewUserAlert($user));
+        }
 
         return $user;
     }

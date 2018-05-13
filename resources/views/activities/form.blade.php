@@ -39,9 +39,9 @@
     <div class="form-group{{ $errors->has('date_it_happened') ? ' has-error' : '' }}">
         <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
         <input type="date" id="date_it_happened" name="date_it_happened" class="form-control"
-               value="{{ old('date_it_happened') ?? $activity->date_it_happened->format('Y-m-d') ?? \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
-               min="{{ \Carbon\Carbon::now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
-               max="{{ \Carbon\Carbon::now(Auth::user()->timezone)->format('Y-m-d') }}"
+               value="{{ old('date_it_happened') ?? $activity->date_it_happened->format('Y-m-d') ?? now(Auth::user()->timezone)->format('Y-m-d') }}"
+               min="{{ now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
+               max="{{ now(Auth::user()->timezone)->format('Y-m-d') }}"
         >
         @if ($errors->has('date_it_happened'))
             <span class="help-block">
@@ -53,10 +53,10 @@
     {{-- Build the Activity types dropdown --}}
     <div class="form-group{{ $errors->has('activity_type_id') ? ' has-error' : '' }}">
         <label for="activity_type_id">{{ trans('people.activities_add_pick_activity') }}</label>
-        <select id="activity_type_id" name="activity_type_id" class="form-control" required>
+        <select id="activity_type_id" name="activity_type_id" class="form-control">
 
             {{-- Blank option --}}
-            <option value="0" selected>
+            <option value="" selected>
                 -
             </option>
 

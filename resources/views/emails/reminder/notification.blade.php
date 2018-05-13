@@ -1,6 +1,6 @@
 {{ trans('mail.greetings', ['username' => $user->first_name]) }},
 
-{{ trans('mail.notification_description', ['count' => $notification->scheduled_number_days_before, 'date' => $notification->reminder->next_expected_date->format('Y-m-d')]) }}
+{{ trans_choice('mail.notification_description', $notification->scheduled_number_days_before, ['count' => $notification->scheduled_number_days_before, 'date' => $notification->reminder->next_expected_date->format('Y-m-d')]) }}
 
 {!! $reminder->title !!}
 
@@ -17,4 +17,4 @@ COMMENT:
 -------
 
 {{ trans('mail.footer_contact_info') }}
-{{ config('app.url') }}/people/{{ $contact->id }}
+{{ config('app.url') }}/people/{{ $contact->hashID() }}

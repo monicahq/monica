@@ -163,16 +163,19 @@
     padding-top: 90px;
     padding-bottom: 40px;
 
+    .col-md-offset-3-right {
+      margin-right: 25%;
+    }
+
     .signup-box {
       background-color: #fff;
       border: 1px solid #e4edf5;
       border-radius: 5px;
       padding: 50px 20px 20px;
 
-      .logo {
-        left: 45%;
-        position: absolute;
-        top: -33px;
+      h1 {
+        font-weight: 700;
+        text-align: center;
       }
 
       h2, h3 {

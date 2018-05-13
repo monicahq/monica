@@ -12,7 +12,7 @@ class DayTest extends TestCase
 
     public function test_get_info_for_journal_entry_that_doesnt_happen_today()
     {
-        $day = new Day;
+        $day = factory(Day::class)->make();
         $day->id = 1;
         $day->rate = 1;
         $day->comment = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.';
@@ -41,9 +41,9 @@ class DayTest extends TestCase
 
     public function test_get_info_for_journal_entry_that_happen_today()
     {
-        $date = \Carbon\Carbon::now();
+        $date = now();
 
-        $day = new Day;
+        $day = factory(Day::class)->make();
         $day->id = 1;
         $day->rate = 1;
         $day->comment = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.';

@@ -2,10 +2,10 @@ FROM alpine:3.6
 
 EXPOSE 80:80
 
-RUN apk update && apk upgrade; \
-    apk add --virtual .build-deps \
-        curl openssl; \
-    apk add apache2 make netcat-openbsd \
+RUN apk update && apk upgrade
+RUN apk add --virtual .build-deps \
+        curl openssl
+RUN apk add apache2 make netcat-openbsd \
         #- base
         php7 php7-apache2 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
@@ -30,10 +30,12 @@ RUN apk update && apk upgrade; \
         php7-mysqli php7-pdo_mysql \
         #- pgsql
         php7-pgsql php7-pdo_pgsql \
+        #- vinkla/hashids
+        php7-bcmath \
         #- sentry/sentry
-        php7-curl; \
-    # Create apache2 dir needed for httpd
-    mkdir -p /run/apache2
+        php7-curl
+# Create apache2 dir needed for httpd
+RUN mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -43,24 +45,50 @@ WORKDIR /var/www/monica
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-ADD . .
-RUN cp .env.example .env; \
-    chown -R monica:monica . && \
-    chgrp -R apache bootstrap/cache storage && \
-    chmod -R g+w bootstrap/cache storage && \
-    # Apache2 conf
-    cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
-    # Composer installation
-    scripts/docker/install-composer.sh; \
-    # Set crontab for schedules
-    echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -; \
-    # Cleanup
-    apk del .build-deps && rm -rf /var/cache/apk/*
+COPY readme.md \
+    CONTRIBUTING.md \
+    CHANGELOG \
+    CONTRIBUTORS \
+    LICENSE \
+    .env.example \
+    artisan \
+    composer.json \
+    composer.lock \
+    package.json \
+    app.json \
+    nginx_app.conf \
+    webpack.mix.js \
+    yarn.lock \
+    ./
+COPY app ./app
+COPY bootstrap ./bootstrap
+COPY config ./config
+COPY database ./database
+COPY public ./public
+COPY resources ./resources
+COPY routes ./routes
+COPY scripts ./scripts
+
+RUN mkdir -p bootstrap/cache
+RUN mkdir -p storage
+COPY .env.example .env
+RUN chown -R monica:monica .
+RUN chgrp -R apache bootstrap/cache storage
+RUN chmod -R g+w bootstrap/cache storage
+
+# Apache2 conf
+COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+# Composer installation
+RUN scripts/docker/install-composer.sh
+# Set crontab for schedules
+RUN echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -
+# Cleanup
+RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 # Install composer dependencies and prepare permissions for Apache
 USER monica
-RUN composer install --no-interaction --no-suggest --no-dev && \
-    composer clear-cache
+RUN composer install --no-interaction --no-suggest --no-dev
+RUN composer clear-cache
 USER root
 
 # This is the command that the container will run by default

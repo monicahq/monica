@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Entry;
-use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -18,8 +18,13 @@ class ApiJournalController extends ApiController
      */
     public function index(Request $request)
     {
-        $entries = auth()->user()->account->entries()
-                                ->paginate($this->getLimitPerPage());
+        try {
+            $entries = auth()->user()->account->entries()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return JournalResource::collection($entries);
     }

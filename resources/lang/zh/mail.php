@@ -11,4 +11,6 @@ return [
     'notification_subject_line' => '您有一个即将进行的活动',
     'notification_description' => '在:count天后(:date),将有以下事件发生：',
 
+    'stay_in_touch_subject_line' => 'Stay in touch with :name',
+    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency days.',
 ];

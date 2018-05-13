@@ -3,13 +3,13 @@
 @section('content')
   <section class="ph3 ph0-ns">
 
-    <!-- Page content -->
+    {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
-      <p><a href="{{ url('/people/'.$contact->id) }}">< {{ $contact->getCompleteName() }}</a></p>
+      <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import') !!}</p>
+      <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
       @endif
     </div>
 
@@ -60,7 +60,7 @@
               </div>
               <div class="dtc">
                 <form-input
-                  value="{{ $contact->first_naem }}"
+                  value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
@@ -96,20 +96,17 @@
         </div>
 
         {{-- Birthdate --}}
-        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <form-specialdate
-              v-bind:months="{{ $months }}"
-              v-bind:days="{{ $days }}"
-              v-bind:month="{{ $month }}"
-              v-bind:day="{{ $day }}"
-              v-bind:age="'{{ $age }}'"
-              v-bind:default-date="'{{ $birthdate }}'"
-              v-bind:locale="'{{ auth()->user()->locale }}'"
-              :value="'{{ $birthdayState }}'"
-            ></form-specialdate>
-          </div>
-        </div>
+        <form-specialdate
+          v-bind:months="{{ $months }}"
+          v-bind:days="{{ $days }}"
+          v-bind:month="{{ $month }}"
+          v-bind:day="{{ $day }}"
+          v-bind:age="'{{ $age }}'"
+          v-bind:default-date="'{{ $birthdate }}'"
+          v-bind:locale="'{{ auth()->user()->locale }}'"
+          v-bind:reminder={{ $hasBirthdayReminder }}
+          :value="'{{ $birthdayState }}'"
+        ></form-specialdate>
 
         {{-- Is the contact deceased? --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
@@ -142,7 +139,7 @@
         <div class="ph4-ns ph3 pv3 bb b--gray-monica">
           <div class="flex-ns justify-between">
             <div class="">
-              <a href="{{ url('/people/'.$contact->id) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+              <a href="{{ url('/people/'.$contact->hashID()) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
             </div>
             <div class="">
               <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,7 +16,7 @@ class CreateContactFieldsTable extends Migration
     {
         Schema::create('contact_field_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id')->unsigned();
+            $table->unsignedInteger('account_id');
             $table->string('name');
             $table->string('fontawesome_icon')->nullable();
             $table->string('protocol')->nullable();
@@ -28,9 +29,9 @@ class CreateContactFieldsTable extends Migration
 
         Schema::create('contact_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id')->unsigned();
-            $table->integer('contact_id')->unsigned();
-            $table->integer('contact_field_type_id')->unsigned();
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('contact_field_type_id');
             $table->string('data');
             $table->timestamps();
 
@@ -41,8 +42,8 @@ class CreateContactFieldsTable extends Migration
 
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id')->unsigned();
-            $table->integer('contact_id')->unsigned();
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('contact_id');
             $table->string('name')->nullable();
             $table->string('street')->nullable();
             $table->string('city')->nullable();

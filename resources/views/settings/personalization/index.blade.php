@@ -55,6 +55,12 @@
           </div>
         </div>
 
+        <div class="br3 ba b--gray-monica bg-white mb4">
+          <div class="pa3 bb b--gray-monica">
+            <modules limited="{{ auth()->user()->account->hasLimitations() }}"></modules>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

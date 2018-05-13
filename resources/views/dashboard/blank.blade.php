@@ -9,7 +9,7 @@
     <div class="tc mb3">
       <img src="/img/dashboard/blank.png">
     </div>
-    <p class="tc f7">Illustration by <a href="http://www.freepik.com/free-vector/happy-family-illustration_776167.htm">Freepik</a></p>
+    <p class="tc f7">{!! trans('dashboard.dashboard_blank_illustration', ['url' => 'http://www.freepik.com/free-vector/happy-family-illustration_776167.htm']) !!}</p>
   </div>
 
 @endsection

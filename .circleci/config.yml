@@ -1,0 +1,423 @@
+# CircleCI build for https://circleci.com/gh/monicahq/monica
+# Largely adapted, with the help of https://github.com/angular/angular/blob/master/.circleci/config.yml
+
+version: 2
+
+# Note: YAML anchors allow an object to be re-used, reducing duplication.
+# The ampersand declares an alias for an object, then later the `<<: *name`
+# syntax dereferences it.
+# See http://blog.daemonl.com/2016/02/yaml.html
+# To validate changes, use an online parser, eg.
+# http://yaml-online-parser.appspot.com/
+
+aliases:
+# Some variables
+  - &composer_key composer-v2-{{ checksum "composer.lock" }}
+  - &node_key node-v2-{{ checksum "yarn.lock" }}
+  - &assets_key assets-v2-{{ .Revision }}
+  - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+  - &root ~/monica
+
+# Defaults env
+  - &defaults
+    working_directory: *root
+
+# After checkout, rebase on top of master.
+# Similar to travis behavior, but not quite the same.
+# See https://discuss.circleci.com/t/1662
+  - &post_checkout
+    post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
+
+  - &install-extensions
+    run:
+      name: Install php extensions
+      command: |
+        sudo apt-get update
+        sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev
+        sudo docker-php-ext-install -j$(nproc) zip intl json iconv bcmath gd pdo_mysql mysqli mbstring
+        tar cvjf php-extensions-${PHP_VERSION}.tar.bz2 --exclude opcache.a --exclude opcache.so --exclude sodium.a --exclude sodium.so --exclude xdebug.so $(php-config --extension-dir) /usr/local/etc/php/conf.d
+  - &prepare-environment
+    run:
+      name: Prepare environment
+      command: |
+        mkdir -p results/coverage
+        cp scripts/tests/.env.mysql.travis .env
+        sudo apt-get update
+        sudo apt-get install -y mysql-client
+  - &update-chrome
+    run:
+      name: Install chrome
+      command: scripts/tests/install-chrome.sh
+  - &wait-for-db
+    run:
+      name: Wait for DB
+      command: dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
+  - &prepare-db
+    run:
+      name: Prepare database
+      command: |
+        php artisan migrate --env=testing --no-interaction -vvv
+        php artisan db:seed --env=testing --no-interaction -vvv
+  - &http-server
+    run:
+      name: Run http server
+      command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+      background: true
+  - &wait-for-server
+    run:
+      name: Wait for http server
+      command: dockerize -wait tcp://localhost:8000 -timeout 60s
+  - &unit-tests
+    run:
+      name: Run unit tests
+      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
+  - &psalm
+    run:
+      name: Run psalm
+      command: vendor/bin/psalm --show-info=false
+  - &browser-tests
+    run:
+      name: Run unit tests
+      command: php artisan dusk --log-junit results/junit2.xml
+  - &fix-coverage
+    run:
+      name: Fix coverage
+      command: |
+        vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        rm -rf results/coverage
+  - &selenium
+    run:
+      name: Run selenium chromedriver
+      command: vendor/bin/chromedriver
+      background: true
+  - &remove-xdebug
+    run:
+      name: Remove xdebug
+      command: |
+        sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+  - &docker-install
+    run:
+      name: Install docker_squash
+      command: |
+        sudo apt-get update
+        sudo apt-get install -y python-pip
+        pip install docker-squash "docker < 3"
+  - &docker-build
+    run:
+      name: Make docker image
+      command: |
+        docker-compose --version
+        make docker_build
+        make docker_squash
+  - &docker-push-bintray
+    run:
+      name: Publish docker image
+      command: |
+        echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+        make docker_push_bintray
+
+
+  - &restore_composer
+    restore_cache:
+      keys:
+        - *composer_key
+        - composer-v2-
+  - &restore_node
+    restore_cache:
+      keys:
+        - *node_key
+        - node-v2-
+  - &restore_assets
+    restore_cache:
+      keys:
+        - *assets_key
+        - assets-v2-
+  - &restore_phpextensions
+    run:
+      name: Extract php extensions
+      command: sudo tar xvjf php-extensions-${PHP_VERSION}.tar.bz2 --directory=/ --overwrite
+
+
+jobs:
+  build:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2-node
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+
+      - *install-extensions
+      - persist_to_workspace:
+          root: *root
+          paths: php-extensions*
+
+      - run:
+          name: Prepare environment
+          command: |
+            sudo composer self-update
+            yarn global add greenkeeper-lockfile
+
+      ## COMPOSER
+      - *restore_composer
+      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - save_cache:
+          key: *composer_key
+          paths: vendor
+
+      ## NODE.JS
+      - run:
+          name: Update yarn lockfile
+          command: CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+      - *restore_node
+      - run: yarn install
+      - save_cache:
+          key: *node_key
+          paths: node_modules
+      - run:
+          name: Upload yarn lockfile
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(git rev-list --no-merges --count HEAD ^${CIRCLE_BRANCH}) $(yarn global bin)/greenkeeper-lockfile-upload
+
+      # Build js and css assets
+      - run:
+          name: Build assets
+          command: |
+            php artisan lang:generate
+            yarn run production
+      - save_cache:
+          key: *assets_key
+          paths:
+            - public/mix-manifest.json
+            - public/css
+            - public/fonts
+            - public/js
+
+  tests-7.2:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *restore_phpextensions
+      - *remove-xdebug
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *unit-tests
+      - *psalm
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+      - persist_to_workspace:
+          root: *root
+          paths: results
+
+  tests-browser-7.2:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: monica
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *restore_phpextensions
+      - *update-chrome
+      - *restore_composer
+      - *restore_node
+      - *restore_assets
+      - *wait-for-db
+      - *prepare-db
+      - *selenium
+      - *http-server
+      - *wait-for-server
+      - *browser-tests
+      - *fix-coverage
+      - store_test_results:
+          path: results
+      - store_artifacts:
+          path: results
+      - store_artifacts:
+          path: tests/Browser/screenshots
+      - persist_to_workspace:
+          root: *root
+          paths: results
+
+  reporting:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2-node
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *restore_node
+      - restore_cache:
+          keys:
+            - *sonar_key
+            - sonarscanner-v1-
+
+      - run:
+          name: Merge junit files
+          command: $(yarn bin)/junit-merge --dir results --out results/result.xml
+      - run:
+          name: Run sonar scanner
+          command: scripts/tests/runsonar.sh
+
+      - save_cache:
+          key: *sonar_key
+          paths: ~/sonarscanner
+
+  deploy-assets:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *restore_composer
+      - *restore_assets
+
+      - run: make assets
+      - run: make push_bintray_assets
+
+  deploy-dist:
+    <<: *defaults
+    docker:
+      - image: circleci/php:7.2
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+      - *restore_assets
+      - run: make dist
+      - run: make push_bintray_dist
+
+  deploy-docker-master:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
+
+  deploy-docker:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - *prepare-environment
+      - *docker-install
+      - *docker-build
+      - *docker-push-bintray
+      - run:
+          name: Publish docker image
+          command: |
+            echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_tag
+            make docker_push
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - tests-7.2:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - tests-browser-7.2:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - reporting:
+          requires:
+            - tests-7.2
+            - tests-browser-7.2
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+  deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+                - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-assets:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-dist:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+      - deploy-docker-master:
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-docker:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/

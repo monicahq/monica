@@ -17,4 +17,4 @@ COMMENT:
 -------
 
 {{ trans('mail.footer_contact_info') }}
-{{ config('app.url') }}/people/{{ $contact->id }}
+{{ config('app.url') }}/people/{{ $contact->hashID() }}

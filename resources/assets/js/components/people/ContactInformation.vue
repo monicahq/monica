@@ -7,7 +7,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_info_title') }}</h3>
       </div>
-      <div class="dtc tr" v-if="contactInformationData.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactInformationData.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -28,7 +28,7 @@
             <a :href="contactInformation.protocol + contactInformation.data" v-if="contactInformation.protocol">{{ contactInformation.data }}</a>
             <a :href="contactInformation.data" v-if="!contactInformation.protocol">{{ contactInformation.data }}</a>
           </div>
-          <div class="dtc tr" v-if="editMode">
+          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>
             <i class="fa fa-trash-o pointer" @click="trash(contactInformation)"></i>
           </div>
@@ -108,7 +108,9 @@
                     data: '',
                     edit: false,
                     errors: []
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -126,26 +128,27 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash', 'contactId'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getContactInformationData();
                 this.getContactFieldTypes();
             },
 
             getContactInformationData() {
-                axios.get('/people/' + this.contactId + '/contactfield')
+                axios.get('/people/' + this.hash + '/contactfield')
                         .then(response => {
                             this.contactInformationData = response.data;
                         });
             },
 
             getContactFieldTypes() {
-                axios.get('/people/' + this.contactId + '/contactfieldtypes')
+                axios.get('/people/' + this.hash + '/contactfieldtypes')
                         .then(response => {
                             this.contactFieldTypes = response.data;
                         });
@@ -153,7 +156,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/contactfield',
+                    'post', '/people/' + this.hash + '/contactfield',
                     this.createForm
                 );
 
@@ -175,7 +178,7 @@
 
             update(contactField) {
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/contactfield/' + contactField.id,
+                    'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
             },
@@ -184,7 +187,7 @@
                 this.updateForm.id = contactField.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/contactfield/' + contactField.id,
+                    'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
                     this.updateForm
                 );
 

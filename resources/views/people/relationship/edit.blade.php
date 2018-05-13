@@ -1,48 +1,142 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-show significantother">
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12">
-            <ul class="horizontal">
-              <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
-              </li>
-              <li>
-                <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
-              </li>
-              <li>
-                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
-              </li>
-              <li>
-                {{ trans('app.breadcrumb_edit_significant_other') }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<section class="ph3 ph0-ns">
+
+  {{-- Breadcrumb --}}
+  <div class="mt4 mw7 center mb3">
+    <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
+    <div class="mt4 mw7 center mb3">
+      <h3 class="f3 fw5">{{ trans('people.relationship_form_edit') }}</h3>
     </div>
-
-    <!-- Page content -->
-    <div class="main-content central-form">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-            <h2>{{ trans('people.significant_other_add_title', ['name' => $contact->first_name]) }}</h2>
-
-            @include('people.relationship.form', [
-              'method' => 'PUT',
-              'action' => route('people.relationships.update', [$contact, $partner]),
-              'buttonText' => trans('people.significant_other_edit_cta')
-            ])
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
+
+  <div class="mw7 center br3 ba b--gray-monica bg-white mb6">
+
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+    @endif
+
+    @include('partials.errors')
+
+    <form action="/people/{{ $contact->hashID() }}/relationships/{{ $partner->hashID() }}" method="POST">
+      {{ csrf_field() }}
+      <input type="hidden" name="type" value="{{ $type }}">
+
+      {{-- Nature of relationship --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-select
+          :options="{{ $relationshipTypes }}"
+          value="{{ $type }}"
+          v-bind:required="true"
+          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->getCompleteName()]) }}'"
+          v-bind:id="'relationship_type_id'">
+        </form-select>
+      </div>
+
+      {{-- Name --}}
+      <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+        {{-- This check is for the cultures that are used to say the last name first --}}
+        <div class="mb3 mb0-ns">
+          @if (auth()->user()->name_order == 'firstname_first')
+
+          <div class="dt dt--fixed">
+            <div class="dtc pr2">
+              <form-input
+                value="{{ $partner->first_name }}"
+                v-bind:input-type="'text'"
+                v-bind:id="'first_name'"
+                v-bind:required="true"
+                v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+              </form-input>
+            </div>
+            <div class="dtc">
+              <form-input
+                value="{{ $partner->last_name }}"
+                v-bind:input-type="'text'"
+                v-bind:id="'last_name'"
+                v-bind:required="false"
+                v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+              </form-input>
+            </div>
+          </div>
+
+          @else
+
+          <div class="dt dt--fixed">
+            <div class="dtc pr2">
+              <form-input
+                value="{{ $partner->last_name }}"
+                v-bind:input-type="'text'"
+                v-bind:id="'lastname'"
+                v-bind:required="false"
+                v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+              </form-input>
+            </div>
+            <div class="dtc">
+              <form-input
+                value="{{ $partner->first_name }}"
+                v-bind:input-type="'text'"
+                v-bind:id="'firstname'"
+                v-bind:required="true"
+                v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+              </form-input>
+            </div>
+          </div>
+
+          @endif
+        </div>
+      </div>
+
+      {{-- Gender --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-select
+          :options="{{ $genders }}"
+          v-bind:required="true"
+          value="{{ $partner->gender->id }}"
+          v-bind:title="'{{ trans('people.people_add_gender') }}'"
+          v-bind:id="'gender_id'">
+        </form-select>
+      </div>
+
+      {{-- Birthdate --}}
+      <form-specialdate
+        v-bind:months="{{ $months }}"
+        v-bind:days="{{ $days }}"
+        v-bind:locale="'{{ auth()->user()->locale }}'"
+        v-bind:month="{{ $month }}"
+        v-bind:day="{{ $day }}"
+        v-bind:age="'{{ $age }}'"
+        v-bind:default-date="'{{ $birthdate }}'"
+        v-bind:reminder={{ $hasBirthdayReminder }}
+        :value="'{{ $birthdayState }}'"
+      ></form-specialdate>
+
+      <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+        <div class="mb3 mb0-ns">
+          <label class="pa0 ma0 lh-copy pointer" for="realContact">
+            <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
+          </label>
+        </div>
+      </div>
+
+      {{-- Form actions --}}
+      <div class="ph4-ns ph3 pv3 bb b--gray-monica">
+        <div class="flex-ns justify-between">
+          <div class="">
+            <a href="/people/{{ $contact->hashID() }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+          </div>
+          <div class="">
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-if="global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.save') }}</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</section>
+
 @endsection

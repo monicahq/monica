@@ -1,9 +1,79 @@
 UNRELEASED CHANGES:
 
-* Improve heroku integration
-* Add bullet points to lists in call log
+* Add ability to sort contact list by untagged contacts
 
 RELEASED VERSIONS:
+
+v2.1.1 - 2018-05-13
+-------------------
+
+* Change file structure inside the People folder (backend change)
+* Remove automatic birthday reminder creation when editing a contact
+* Set fixed version for MySQL in docker-compose
+* Build absolute path to stubs files in UploadVCardTest and UploadVCardsTest (backend)
+* Refactor how countries are fetched
+* Change address fetching in API
+* Add ComposerScripts links
+* Fix tests to prepare for foreign keys (backend)
+* Fix deploy tagged version
+* Fix vagrant box
+* Fix notifications being sent even if reminder rule is set to off
+* Fix API locale
+* Fix update command (backend)
+
+v2.1.0 - 2018-05-03
+-------------------
+
+* Refactor vCard import
+* Add support for markdown on the Journal
+* Add support for markdown for Notes
+* Add many unit tests on the API
+* Add ability to display contact fields for each contact in the contact list through the API
+* Add ability to stay in touch with a contact by sending reminders at a given interval
+* Add secure Oauth route for the API login
+* Fix removal of tags
+
+v2.0.1 - 2018-04-17
+-------------------
+
+* Add ability to set relationships through the API
+* Fix ordering of activites in journal
+* Fix how you meet section not being shown
+* Add a changelog inside the application
+* Fix monica:calculatestatistics command
+
+v2.0.0 - 2018-04-12
+-------------------
+
+* Add ability to set a journal entry date
+* Use UUID instead of actual ID to identify contacts
+* Add ability to show/hide sections on the Contact sheet view
+* Add many more relationship types to link contacts together
+* Fix called_at field in the Call object returned by the API
+* Add Linkedin URL in the Contact object returned by the API
+* Improve localization: add plural forms, localize every needed messages
+* Split app.js in 3 files, and load translations files for Vue in separate files
+* Localize update tag message
+* Fix some messages syntax and ponctuation
+* Add a new monica:update command
+* Fix gifts handle
+* Remove old documentation from sources
+* Fix Bug when editing gift
+
+v1.8.2 - 2018-03-20
+-------------------
+
+* Add a Vagrantfile to run Monica on Vagrant
+* Add support for Hebrew and Chinese Simplified
+* Add bullet points to call lists when rendered from markdown
+* Require debugbar on dev only
+* Improve heroku integration
+* Open register page after a clean installation
+* API:  Add ability to sort tasks by completed_at attribute
+* API: Add sorting capabilities to most models
+* Update Czech, Italian, Portuguese, Russian, German, French language files
+* Fix docker image creating wrong storage directories
+* Fix notification messages
 
 v1.8.1 - 2018-03-02
 -------------------
@@ -138,7 +208,7 @@ v1.0.0 - 2017-11-09
 * Add a button to `Save and add another contact` straight from the Add contact screen
 * Add the ability to indicate how you've met someone
 * Replace former front-end build system by mix (which is the new default with Laravel 5.5)
-* Add a first part of the API
+* Add the first part of the API
 * Fix the access to upgrade account view
 * Add security.txt file
 * Upgrade codebase to Laravel 5.5

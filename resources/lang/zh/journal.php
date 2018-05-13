@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => '评价你的一天。',
     'entry_delete_success' => '记录条目已成功删除。',
     'journal_add_title' => '标题 (可选)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => '条目',
     'journal_add_cta' => '保存',
     'journal_blank_cta' => '添加您的第一个记录条目',

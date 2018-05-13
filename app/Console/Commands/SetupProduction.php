@@ -38,33 +38,11 @@ class SetupProduction extends Command
          * If the .env file does not exist, then key generation
          * will fail. So we create one if it does not already exist.
          */
-        if (! file_exists('.env')) {
-            touch('.env');
+        if (! file_exists(__DIR__.'/../../../.env')) {
+            touch(__DIR__.'/../../../.env');
         }
 
-        $this->callSilent('migrate', ['--force' => true]);
-        $this->info('✓ Performed migrations');
-
-        $this->call('db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => true]);
-        $this->info('✓ Filled the Activity Types table');
-
-        $this->call('db:seed', ['--class' => 'CountriesSeederTable', '--force' => true]);
-        $this->info('✓ Filled the Countries table');
-
-        $this->callSilent('storage:link');
-        $this->info('✓ Symlinked the storage folder for the avatars');
-
-        $email = $this->option('email');
-        if (! $email) {
-            $email = $this->ask('Account creation: what should be your email address to login?');
-        }
-
-        $password = $this->option('password');
-        if (! $password) {
-            $password = $this->secret('Please choose a password:');
-        }
-
-        Account::createDefault('John', 'Doe', $email, $password);
+        $this->callSilent('monica:update', ['--force' => true]);
 
         $this->line('');
         $this->line('-----------------------------');
@@ -72,9 +50,21 @@ class SetupProduction extends Command
         $this->line('| Welcome to Monica v'.config('monica.app_version'));
         $this->line('|');
         $this->line('-----------------------------');
-        $this->info('| You can now sign in to your account:');
-        $this->line('| username: '.$email);
-        $this->line('| password: <hidden>');
+
+        $email = $this->option('email');
+        $password = $this->option('password');
+        if (! empty($email) && ! empty($password)) {
+            Account::createDefault('John', 'Doe', $email, $password);
+
+            $this->info('| You can now sign in to your account:');
+            $this->line('| username: '.$email);
+            $this->line('| password: <hidden>');
+        } elseif (Account::hasAny()) {
+            $this->info('| You can now log in to your account');
+        } else {
+            $this->info('| You can now register to the first account by opening the application:');
+        }
+
         $this->line('| URL:      '.config('app.url'));
         $this->line('-----------------------------');
 

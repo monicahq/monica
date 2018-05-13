@@ -12,15 +12,17 @@
     <div>
         <div v-if="tokens.length > 0">
             <div class="panel panel-default">
-                <div class="panel-heading">Authorized Applications</div>
+                <div class="panel-heading">
+                    {{ $t('settings.api_authorized_clients_title') }}
+                </div>
 
                 <div class="panel-body">
                     <!-- Authorized Tokens -->
                     <table class="table table-borderless m-b-none">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Scopes</th>
+                                <th>{{ $t('settings.api_authorized_clients_name') }}</th>
+                                <th>{{ $t('settings.api_authorized_clients_scopes') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -42,7 +44,7 @@
                                 <!-- Revoke Button -->
                                 <td style="vertical-align: middle;">
                                     <a class="action-link text-danger" @click="revoke(token)">
-                                        Revoke
+                                        {{ $t('app.revoke') }}
                                     </a>
                                 </td>
                             </tr>

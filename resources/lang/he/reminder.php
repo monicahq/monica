@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'type_birthday' => 'Wish happy birthday to',
-    'type_phone_call' => 'Call',
-    'type_lunch' => 'Lunch with',
-    'type_hangout' => 'Hangout with',
-    'type_email' => 'Email',
-    'type_birthday_kid' => 'Wish happy birthday to the kid of',
+    'type_birthday' => 'נא לאחל יום הולדת שמח ל־',
+    'type_phone_call' => 'שיחה',
+    'type_lunch' => 'ארוחת צהריים עם',
+    'type_hangout' => 'בילוי משותף עם',
+    'type_email' => 'דוא״ל',
+    'type_birthday_kid' => 'נא לאחל יום הולדת שמח לילד של',
 
 ];

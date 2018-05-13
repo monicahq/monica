@@ -21,21 +21,17 @@ class SubscriptionsController extends Controller
         }
 
         if (! auth()->user()->account->isSubscribed()) {
-            $data = [
+            return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
-            ];
-
-            return view('settings.subscriptions.blank', $data);
+            ]);
         }
 
         $planId = auth()->user()->account->getSubscribedPlanId();
 
-        $data = [
+        return view('settings.subscriptions.account', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
             'nextBillingDate' => auth()->user()->account->getNextBillingDate(),
-        ];
-
-        return view('settings.subscriptions.account', $data);
+        ]);
     }
 
     /**
@@ -49,19 +45,16 @@ class SubscriptionsController extends Controller
             return redirect('settings/');
         }
 
-        $account = auth()->user()->account;
-        $plan = $request->query('plan');
-
-        $data = [
-            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
-            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
-        ];
-
-        if ($account->isSubscribed()) {
+        if (auth()->user()->account->isSubscribed()) {
             return redirect('/settings/subscriptions');
         }
 
-        return view('settings.subscriptions.upgrade', $data);
+        $plan = $request->query('plan');
+
+        return view('settings.subscriptions.upgrade', [
+            'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
+            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+        ]);
     }
 
     /**

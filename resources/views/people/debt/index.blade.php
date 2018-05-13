@@ -1,10 +1,10 @@
-<div class="col-xs-12 section-title">
+<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
   <img src="/img/people/debt/bill.svg" class="icon-section icon-money">
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span class="fr">
-      <a href="/people/{{ $contact->id }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
+    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
+      <a href="/people/{{ $contact->hashID() }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.debts_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="/people/{{ $contact->id }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
+      <a href="/people/{{ $contact->hashID() }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
 
@@ -31,12 +31,12 @@
         <div class="table-cell debt-nature">
           @if ($debt->in_debt == 'yes')
             {{ trans('people.debt_you_owe', [
-                'amount' => MoneyHelper::format($debt->amount)
+                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
             ]) }}
           @else
             {{ trans('people.debt_they_owe', [
                 'name' => $contact->first_name,
-                'amount' => MoneyHelper::format($debt->amount)
+                'amount' => App\Helpers\MoneyHelper::format($debt->amount)
             ]) }}
           @endif
         </div>
@@ -46,7 +46,7 @@
           @endif
         </div>
         <div class="table-cell list-actions">
-          <a href="{{ route('people.debt.edit', ['people' => $contact->id, 'debtId' => $debt->id]) }}">
+          <a href="{{ route('people.debt.edit', [$contact, $debt]) }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
           <a href="#" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
@@ -67,11 +67,11 @@
             @if ($contact->isOwedMoney())
               {{ trans('people.debt_they_owe', [
                   'name' => $contact->first_name,
-                  'amount' => MoneyHelper::format($contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format($contact->totalOutstandingDebtAmount())
               ]) }}
             @else
               {{ trans('people.debt_you_owe', [
-                  'amount' => MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
+                  'amount' => App\Helpers\MoneyHelper::format(-$contact->totalOutstandingDebtAmount())
               ]) }}
             @endif
           </strong>

@@ -2,25 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Locales supported by the application
-    |--------------------------------------------------------------------------
-    |
-    | This is the list of locales that we will use to localize the application.
-    | Each locale is defined in `resources/lang/` in their respective folder.
-    |
-    */
-    'langs' => [
-        'en',
-        'fr',
-        'pt',
-        'ru',
-        'cs',
-        'it',
-        'de',
-    ],
-
    /*
     |--------------------------------------------------------------------------
     | Disable User registration
@@ -46,11 +27,9 @@ return [
     | User and error tracking
     |--------------------------------------------------------------------------
     |
-    | We provide placeholders for Google Analytics, Intercom and Sentry.
+    | We provide placeholders for Sentry.
     |
     */
-    'google_analytics_app_id' => env('GOOGLE_ANALYTICS_APP_ID'),
-    'intercom_app_id' => env('INTERCOM_APP_ID'),
     'sentry_support' => env('SENTRY_SUPPORT', false),
 
     /*
@@ -98,6 +77,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allow access through the API of the public statistics
+    |--------------------------------------------------------------------------
+    |
+    | Your Monica instance has some statistics (number of users, number of
+    | contacts,...). Those data can be public (they are on MonicaHQ.com).
+    | This setting lets you access those data through a public API call.
+    |
+    */
+    'allow_statistics_through_public_api_access' => env('ALLOW_STATISTICS_THROUGH_PUBLIC_API_ACCESS', false),
+    /*
+    |--------------------------------------------------------------------------
     | URL of the server for the version check
     |--------------------------------------------------------------------------
     |
@@ -109,6 +99,36 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | List of default relationship type group
+    |--------------------------------------------------------------------------
+    |
+    | This is used to populate the relationship type groups table.
+    |
+    */
+    'default_relationship_type_group' => [
+        'love',
+        'family',
+        'friend',
+        'work',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Specific to the official Monica mobile application
+    |--------------------------------------------------------------------------
+    |
+    | We need to pass a specific client ID and client secret that only the
+    | official mobile application can access - in order to protect the privacy
+    | of the instance (which has a lot of data).
+    | You can check what we do with this data on the mobile application on the
+    | official repository: https://github.com/monicahq/chandler.
+    |
+    */
+    'mobile_client_id' => env('MOBILE_CLIENT_ID', null),
+    'mobile_client_secret' => env('MOBILE_CLIENT_SECRET', null),
+
+    /*
+    |--------------------------------------------------------------------------
     | Version of the application that you run
     |--------------------------------------------------------------------------
     |
@@ -117,5 +137,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '1.8.1',
+    'app_version' => '2.1.1',
 ];

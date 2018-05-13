@@ -31,6 +31,13 @@ class TagsController extends Controller
             return response()->json(['status' => 'no', 'tags' => '']);
         }
 
+        // remove old tags if there are not to keep
+        foreach ($contact->tags()->get() as $tag) {
+            if (! in_array($tag->name, $tags)) {
+                $contact->unsetTag($tag);
+            }
+        }
+
         $tagsWithIdAndSlug = [];
         foreach ($tags as $tag) {
             $tag = $contact->setTag($tag);
@@ -39,6 +46,7 @@ class TagsController extends Controller
             array_push($tagsWithIdAndSlug, [
               'id' => $tag->id,
               'slug' => $tag->name_slug,
+              'name' => $tag->name,
             ]);
         }
 

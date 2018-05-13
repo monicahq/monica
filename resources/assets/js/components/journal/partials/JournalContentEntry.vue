@@ -25,11 +25,11 @@
             </p>
             <h3 class="mb1">{{ entry.title }}</h3>
 
-            <p>{{ entry.post }}</p>
+            <div class="markdown" v-html="entry.post"></div>
 
             <ul class="f7">
               <li class="di">
-                <a class="pointer" @click="trash()">Delete</a>
+                <a class="pointer" @click="trash()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>

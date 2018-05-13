@@ -1,27 +1,28 @@
 <?php
 
-Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
+use Illuminate\Support\Facades\Route;
+
+Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
+
+Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
-    /*
-     * CONTACTS
-     */
+    // Contacts
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    // Relationships
+    Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
+    Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
+    Route::post('/relationships', 'Api\\ApiRelationshipController@create');
+    Route::put('/relationships/{id}', 'Api\\ApiRelationshipController@update');
+    Route::delete('/relationships/{id}', 'Api\\ApiRelationshipController@destroy');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
     Route::get('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
-
-    // Set a partner to the contact
-    Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
-    Route::post('/contacts/{contact}/partners/unset', 'Api\\ApiContactController@unsetPartners');
-
-    // Set a kid to the contact
-    Route::post('/contacts/{contact}/kids', 'Api\\ApiContactController@kids');
-    Route::post('/contacts/{contact}/kids/unset', 'Api\\ApiContactController@unsetKids');
 
     // Addresses
     Route::resource('addresses', 'Api\\ApiAddressController', ['except' => [
@@ -94,6 +95,16 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     // Debts
     Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
       'create', 'edit', 'patch',
+    ]]);
+
+    // Relationship Type Groups
+    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['except' => [
+      'create', 'store', 'destroy', 'edit', 'patch', 'update',
+    ]]);
+
+    // Relationship Types
+    Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['except' => [
+      'create', 'store', 'destroy', 'edit', 'patch', 'update',
     ]]);
 
     /*

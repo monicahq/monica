@@ -2,9 +2,14 @@
 
 namespace App;
 
+use App\Traits\Hasher;
 use App\Traits\Searchable;
+use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\Tag\Tag as TagResource;
@@ -13,17 +18,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
-use App\Http\Resources\Contact\PartnerShort as PartnerShortResource;
-use App\Http\Resources\Contact\OffspringShort as OffspringShortResource;
-use App\Http\Resources\Contact\ProgenitorShort as ProgenitorShortResource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class Contact extends Model
 {
     use Searchable;
+    use Hasher;
 
     protected $dates = [
         'last_talked_to',
         'last_consulted_at',
+        'stay_in_touch_trigger_date',
         'created_at',
         'updated_at',
     ];
@@ -234,29 +240,9 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function activeRelationships()
+    public function relationships()
     {
-        return $this->hasMany('App\Relationship', 'contact_id')->where('is_active', 1);
-    }
-
-    /**
-     * Get the Offsprings records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function offsprings()
-    {
-        return $this->hasMany('App\Offspring', 'is_the_child_of');
-    }
-
-    /**
-     * Get the Progenitors records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function progenitors()
-    {
-        return $this->hasMany('App\Progenitor', 'is_the_parent_of');
+        return $this->hasMany('App\Relationship', 'contact_is');
     }
 
     /**
@@ -431,7 +417,7 @@ class Contact extends Model
     /**
      * Mutator last_consulted_at.
      *
-     * @param datetime $value
+     * @param \DateTime $value
      */
     public function setLastConsultedAtAttribute($value)
     {
@@ -568,99 +554,50 @@ class Contact extends Model
     }
 
     /**
-     * Get the current Significant Others, if they exists, or return null otherwise.
+     * Get all the contacts related to the current contact by a specific
+     * relationship type group.
      *
-     * @return Collection
+     * @param  string $type
+     * @return Collection|null
      */
-    public function getCurrentPartners()
+    public function getRelationshipsByRelationshipTypeGroup(String $type)
     {
-        $partners = collect([]);
-        foreach ($this->activeRelationships as $relationship) {
-            $contact = self::find($relationship->with_contact_id);
-            $partners->push($contact);
+        $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
+
+        if (! $relationshipTypeGroup) {
+            return;
         }
 
-        return $partners;
+        return $this->relationships->filter(function ($item) use ($type) {
+            return $item->relationshipType->relationshipTypeGroup->name == $type;
+        });
     }
 
     /**
-     * Get the current Significant Others as ID, if they exists, or return null otherwise.
+     * Translate a collection of relationships into a collection that the API can
+     * parse.
      *
+     * @param  Collection $collection
+     * @param  bool       $shortVersion Indicates whether the collection should include how contacts are related
      * @return Collection
      */
-    public function getCurrentPartnersForAPI()
+    public static function translateForAPI(Collection $collection)
     {
-        $partners = collect([]);
-        foreach ($this->activeRelationships as $relationship) {
-            $contact = self::find($relationship->with_contact_id);
-            $partners->push(new PartnerShortResource($contact));
+        $contacts = collect();
+
+        foreach ($collection as $relationship) {
+            $contact = $relationship->ofContact;
+
+            $contacts->push([
+                'relationship' => [
+                    'id' => $relationship->id,
+                    'name' => $relationship->relationship_type_name,
+                ],
+                'contact' => new ContactShortResource($contact),
+                ]);
         }
 
-        return $partners;
-    }
-
-    /**
-     * Get the Kids, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getOffsprings()
-    {
-        $kids = collect([]);
-        foreach ($this->offsprings as $offspring) {
-            $contact = self::find($offspring->contact_id);
-            $kids->push($contact);
-        }
-
-        return $kids;
-    }
-
-    /**
-     * Get the Kids, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getOffspringsForAPI()
-    {
-        $kids = collect([]);
-        foreach ($this->offsprings as $offspring) {
-            $contact = self::find($offspring->contact_id);
-            $kids->push(new OffspringShortResource($contact));
-        }
-
-        return $kids;
-    }
-
-    /**
-     * Get the current parents, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getProgenitors()
-    {
-        $progenitors = collect([]);
-        foreach ($this->progenitors as $progenitor) {
-            $contact = self::find($progenitor->contact_id);
-            $progenitors->push($contact);
-        }
-
-        return $progenitors;
-    }
-
-    /**
-     * Get the current parents, if they exists, or return null otherwise.
-     *
-     * @return Collection
-     */
-    public function getProgenitorsForAPI()
-    {
-        $progenitors = collect([]);
-        foreach ($this->progenitors as $progenitor) {
-            $contact = self::find($progenitor->contact_id);
-            $progenitors->push(new ProgenitorShortResource($contact));
-        }
-
-        return $progenitors;
+        return $contacts;
     }
 
     /**
@@ -707,7 +644,7 @@ class Contact extends Model
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
-        $event = $this->events()->create([]);
+        $event = $this->events()->make();
         $event->account_id = $this->account_id;
         $event->object_type = $objectType;
         $event->object_id = $objectId;
@@ -725,7 +662,7 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $middleName = null, String $lastName)
+    public function setName(String $firstName, String $lastName = null, String $middleName = null)
     {
         if ($firstName == '') {
             return false;
@@ -789,8 +726,7 @@ class Contact extends Model
     }
 
     /**
-     * Refresh statistics about activities
-     * TODO: unit test.
+     * Refresh statistics about activities.
      *
      * @return void
      */
@@ -802,8 +738,9 @@ class Contact extends Model
         // Create the statistics again
         $this->activities->groupBy('date_it_happened.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->create([]);
+                $activityStatistic = $this->activityStatistics()->make();
                 $activityStatistic->account_id = $this->account_id;
+                $activityStatistic->contact_id = $this->id;
                 $activityStatistic->year = $year;
                 $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
@@ -982,6 +919,14 @@ class Contact extends Model
     }
 
     /**
+     * Get the list of contact fields for this contact.
+     */
+    public function getContactFieldsForAPI()
+    {
+        return ContactFieldResource::collection($this->contactFields);
+    }
+
+    /**
      * Update the last called info on the contact, if the call has been made
      * in the most recent date.
      *
@@ -1000,277 +945,76 @@ class Contact extends Model
     }
 
     /**
-     * Get the list of all potential contacts to add as either a significant
-     * other or a kid.
+     * Set a relationship between two contacts.
      *
-     * @return Collection
+     * @param Contact $otherContact
+     * @param int $relationshipTypeId
      */
-    public function getPotentialContacts()
+    public function setRelationship(self $otherContact, $relationshipTypeId)
     {
-        $partners = self::where('account_id', $this->account_id)
-                            ->where('is_partial', 0)
-                            ->where('id', '!=', $this->id)
-                            ->orderBy('first_name', 'asc')
-                            ->orderBy('last_name', 'asc')
-                            ->get();
+        $relationshipType = RelationshipType::find($relationshipTypeId);
 
-        // Filter out the contacts who already partner with the given contact
-        $counter = 0;
-        foreach ($partners as $partner) {
-            $relationship = Relationship::where('contact_id', $this->id)
-                                    ->where('with_contact_id', $partner->id)
-                                    ->count();
+        // Contact A is linked to Contact B
+        $relationship = new Relationship;
+        $relationship->account_id = $this->account_id;
+        $relationship->relationship_type_id = $relationshipType->id;
+        $relationship->contact_is = $this->id;
+        $relationship->relationship_type_name = $relationshipType->name;
+        $relationship->of_contact = $otherContact->id;
+        $relationship->save();
 
-            $offspring = Offspring::where('contact_id', $partner->id)
-                                    ->where('is_the_child_of', $this->id)
-                                    ->count();
+        // Get the reverse relationship
+        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-            $progenitor = Progenitor::where('contact_id', $partner->id)
-                                    ->where('is_the_parent_of', $this->id)
-                                    ->count();
-
-            if ($relationship != 0 || $offspring != 0 || $progenitor != 0) {
-                $partners->forget($counter);
-            }
-            $counter++;
-        }
-
-        return $partners;
+        // Contact B is linked to Contact A
+        $relationship = new Relationship;
+        $relationship->account_id = $this->account_id;
+        $relationship->relationship_type_id = $reverseRelationshipType->id;
+        $relationship->contact_is = $otherContact->id;
+        $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
+        $relationship->of_contact = $this->id;
+        $relationship->save();
     }
 
     /**
-     * Get the list of partners who are not "real" contacts.
+     * Update the relationship between two contacts.
      *
-     * @return Collection
+     * @param Contact $otherContact
+     * @param int $relationshipTypeId
      */
-    public function getPartialPartners()
+    public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
     {
-        $relationships = Relationship::where('contact_id', $this->id)
-                                    ->get();
+        $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
 
-        $partners = collect();
-        foreach ($relationships as $relationship) {
-            $partner = self::findOrFail($relationship->with_contact_id);
-
-            if ($partner->is_partial) {
-                $partners->push($partner);
-            }
-        }
-
-        return $partners;
+        $this->setRelationship($otherContact, $newRelationshipTypeId);
     }
 
     /**
-     * Get the list of kids who are not "real" contacts.
+     * Delete a relationship between two contacts.
      *
-     * @return Collection
+     * @param  self   $otherContact
      */
-    public function getPartialOffsprings()
+    public function deleteRelationship(self $otherContact, int $relationshipTypeId)
     {
-        $offsprings = Offspring::where('is_the_child_of', $this->id)
-                                    ->get();
+        // Each relationship between two contacts has two Relationship objects.
+        // We need to delete both.
 
-        $kids = collect();
-        foreach ($offsprings as $offspring) {
-            $kid = self::findOrFail($offspring->contact_id);
-
-            if ($kid->is_partial) {
-                $kids->push($kid);
-            }
-        }
-
-        return $kids;
-    }
-
-    /**
-     * Set a relationship between the two contacts. Has the option to set a
-     * bilateral relationship if the partner is a real contact.
-     *
-     * @param Contact $partner
-     * @param  bool $bilateral
-     */
-    public function setRelationshipWith(self $partner, $bilateral = false)
-    {
-        Relationship::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $this->id,
-                'with_contact_id' => $partner->id,
-                'is_active' => 1,
-            ]
-        );
-
-        if ($bilateral) {
-            Relationship::create(
-                [
-                    'account_id' => $this->account_id,
-                    'contact_id' => $partner->id,
-                    'with_contact_id' => $this->id,
-                    'is_active' => 1,
-                ]
-            );
-        }
-    }
-
-    /**
-     * Set a unilateral relationship to a bilateral one between the two contacts.
-     *
-     * @param Contact $partner
-     * @param  bool $bilateral
-     */
-    public function updateRelationshipWith(self $partner)
-    {
-        Relationship::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $partner->id,
-                'with_contact_id' => $this->id,
-                'is_active' => 1,
-            ]
-        );
-    }
-
-    /**
-     * Set a relationship between the two contacts. Has the option to set a
-     * bilateral relationship if the kid is a real contact.
-     *
-     * @param Contact $parent
-     * @param  bool $bilateral
-     */
-    public function isTheOffspringOf(self $parent, $bilateral = false)
-    {
-        Offspring::create(
-            [
-                'account_id' => $this->account_id,
-                'contact_id' => $this->id,
-                'is_the_child_of' => $parent->id,
-            ]
-        );
-
-        if ($bilateral) {
-            Progenitor::create(
-                [
-                    'account_id' => $this->account_id,
-                    'contact_id' => $parent->id,
-                    'is_the_parent_of' => $this->id,
-                ]
-            );
-        }
-    }
-
-    /**
-     * Unset a relationship between the two contacts.
-     *
-     * @param  Contact $partner
-     * @param  bool $bilateral
-     */
-    public function unsetRelationshipWith(self $partner, $bilateral = false)
-    {
-        $relationship = Relationship::where('contact_id', $this->id)
-                        ->where('with_contact_id', $partner->id)
-                        ->first();
+        $relationship = Relationship::where('contact_is', $this->id)
+                                    ->where('of_contact', $otherContact->id)
+                                    ->where('relationship_type_id', $relationshipTypeId)
+                                    ->first();
 
         $relationship->delete();
 
-        if ($bilateral) {
-            $relationship = Relationship::where('contact_id', $partner->id)
-                        ->where('with_contact_id', $this->id)
-                        ->first();
+        $relationshipType = RelationshipType::find($relationshipTypeId);
+        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-            $relationship->delete();
-        }
-    }
+        $relationship = Relationship::where('contact_is', $otherContact->id)
+                                    ->where('of_contact', $this->id)
+                                    ->where('relationship_type_id', $reverseRelationshipType->id)
+                                    ->first();
 
-    /**
-     * Unset a parenting relationship between the two contacts.
-     *
-     * @param  Contact $kid
-     * @param  bool $bilateral
-     */
-    public function unsetOffspring(self $kid, $bilateral = false)
-    {
-        $offspring = Offspring::where('contact_id', $kid->id)
-                        ->where('is_the_child_of', $this->id)
-                        ->first();
-
-        $offspring->delete();
-
-        if ($bilateral) {
-            $progenitor = Progenitor::where('contact_id', $this->id)
-                        ->where('is_the_parent_of', $kid->id)
-                        ->first();
-
-            $progenitor->delete();
-        }
-    }
-
-    /**
-     * Deletes all the events that mentioned the relationship with this partner.
-     *
-     * @var Contact
-     */
-    public function deleteEventsAboutTheseTwoContacts(self $contact, $type)
-    {
-        Event::where('contact_id', $this->id)
-                ->where('object_id', $contact->id)
-                ->where('object_type', $type)
-                ->delete();
-
-        Event::where('contact_id', $contact->id)
-                ->where('object_id', $this->id)
-                ->where('object_type', $type)
-                ->delete();
-    }
-
-    /**
-     * Get all the reminders about the contact, and also about the relatives
-     * (significant others and kids).
-     *
-     * @return Collection
-     */
-    public function getRemindersAboutRelatives()
-    {
-        $reminders = $this->reminders;
-
-        $partners = $this->getPartialPartners();
-        foreach ($partners as $partner) {
-            foreach ($partner->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
-
-        $kids = $this->getPartialOffsprings();
-        foreach ($kids as $kid) {
-            foreach ($kid->reminders as $reminder) {
-                $reminders->push($reminder);
-            }
-        }
-
-        return $reminders;
-    }
-
-    /**
-     * Get the first progenitor of the contact.
-     * @return Contact
-     */
-    public function getFirstProgenitor()
-    {
-        $offspring = Offspring::where('contact_id', $this->id)
-                        ->first();
-
-        return self::findOrFail($offspring->is_the_child_of);
-    }
-
-    /**
-     * Get the partner of the contact.
-     * @return Contact
-     */
-    public function getFirstPartner()
-    {
-        $relationship = Relationship::where('with_contact_id', $this->id)
-                        ->first();
-
-        return self::findOrFail($relationship->contact_id);
+        $relationship->delete();
     }
 
     /**
@@ -1295,27 +1039,6 @@ class Contact extends Model
             ->sum(function ($d) {
                 return $d->in_debt === 'yes' ? -$d->amount : $d->amount;
             });
-    }
-
-    /**
-     * Get all the family members.
-     * @return Collection
-     */
-    public function getFamilyMembers()
-    {
-        $offsprings = $this->offsprings;
-        $relationships = $this->activeRelationships;
-
-        $family = collect([]);
-        foreach ($offsprings as $offspring) {
-            $family->push($offspring->contact);
-        }
-
-        foreach ($relationships as $relationship) {
-            $family->push($relationship->with_contact);
-        }
-
-        return $family;
     }
 
     /**
@@ -1356,12 +1079,12 @@ class Contact extends Model
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+        $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1392,7 +1115,7 @@ class Contact extends Model
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromAge($age)->setToContact($this);
+        $specialDate->setToContact($this)->createFromAge($age);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1418,63 +1141,41 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
-        if ($occasion == 'birthdate') {
-            if (! $this->birthday_special_date_id) {
-                return;
-            }
+        switch ($occasion) {
+            case 'birthdate':
+                if ($this->birthday_special_date_id) {
+                    $birthdate = $this->birthdate;
+                    $this->birthday_special_date_id = null;
+                    $this->save();
 
-            $this->birthdate->deleteReminder();
-            $this->birthdate->delete();
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
+                }
+            break;
+            case 'deceased_date':
+                if ($this->deceased_special_date_id) {
+                    $deceasedDate = $this->deceasedDate;
+                    $this->deceased_special_date_id = null;
+                    $this->save();
 
-            $this->birthday_special_date_id = null;
-            $this->save();
-        }
+                    $deceasedDate->deleteReminder();
+                    $deceasedDate->delete();
+                }
+            break;
+            case 'first_met':
+                if ($this->first_met_special_date_id) {
+                    $firstMetDate = $this->firstMetDate;
+                    $this->first_met_special_date_id = null;
+                    $this->save();
 
-        if ($occasion == 'deceased_date') {
-            if (! $this->deceased_special_date_id) {
-                return;
-            }
-
-            $this->deceasedDate->deleteReminder();
-            $this->deceasedDate->delete();
-
-            $this->deceased_special_date_id = null;
-            $this->save();
-        }
-
-        if ($occasion == 'first_met') {
-            if (! $this->first_met_special_date_id) {
-                return;
-            }
-
-            $this->firstMetDate->deleteReminder();
-            $this->firstMetDate->delete();
-
-            $this->first_met_special_date_id = null;
-            $this->save();
-        }
-    }
-
-    /**
-     * Gets the contact related to this contact if the current contact is partial.
-     */
-    public function getRelatedRealContact()
-    {
-        // Look in the Relationships table
-        $relatedContact = \App\Relationship::where('with_contact_id', $this->id)->first();
-
-        if ($relatedContact) {
-            return \App\Contact::find($relatedContact->contact_id);
-        }
-
-        // Look in the Offspring table
-        $relatedContact = \App\Offspring::where('contact_id', $this->id)->first();
-        if ($relatedContact) {
-            return self::find($relatedContact->is_the_child_of);
+                    $firstMetDate->deleteReminder();
+                    $firstMetDate->delete();
+                }
+            break;
         }
     }
 
@@ -1514,5 +1215,171 @@ class Contact extends Model
     public function unsetTag(Tag $tag)
     {
         $this->tags()->detach($tag->id);
+    }
+
+    /**
+     * Get the Relationship object representing the relation between two contacts.
+     *
+     * @param  Contact $otherContact
+     * @return Relationship|null
+     */
+    public function getRelationshipNatureWith(self $otherContact)
+    {
+        return Relationship::where('contact_is', $this->id)
+                                    ->where('of_contact', $otherContact->id)
+                                    ->first();
+    }
+
+    /**
+     * Delete the contact and all the related object.
+     *
+     * @return bool
+     */
+    public function deleteEverything()
+    {
+        // I know: this is a really brutal way of deleting objects. I'm doing
+        // this because I'll add more objects related to contacts in the future
+        // and I don't want to have to think of deleting a row that matches a
+        // contact.
+        //
+        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        foreach ($tables as $table) {
+            $tableName = $table->table_name;
+
+            try {
+                DB::table($tableName)->where('contact_id', $this->id)->delete();
+            } catch (QueryException $e) {
+                continue;
+            }
+        }
+
+        $this->delete();
+
+        return true;
+    }
+
+    /**
+     * Get all the reminders regarding the birthdays of the contacts who have a
+     * relationships with the current contact.
+     *
+     * @return Collection
+     */
+    public function getBirthdayRemindersAboutRelatedContacts()
+    {
+        $reminders = collect();
+        $relationships = $this->relationships->filter(function ($item) {
+            return ! is_null($item->ofContact->birthday_special_date_id);
+        });
+
+        foreach ($relationships as $relationship) {
+            $reminder = Reminder::find($relationship->ofContact->birthdate->reminder_id);
+
+            if ($reminder) {
+                $reminders->push($reminder);
+            }
+        }
+
+        return $reminders;
+    }
+
+    /**
+     * Gets the first contact related to this contact if the current contact is
+     * partial.
+     */
+    public function getRelatedRealContact()
+    {
+        $relatedContact = \App\Relationship::where('contact_is', $this->id)->first();
+
+        if ($relatedContact) {
+            return \App\Contact::find($relatedContact->of_contact);
+        }
+    }
+
+    /**
+     * Get the contacts that have all the provided $tags
+     * or if $tags is NONE get contacts that have no tags.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $tags string or Tag
+     * @return \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeTags($query, $tags)
+    {
+        if ($tags == 'NONE') {
+            // get tagless contacts
+            $query = $query->has('tags', '<', 1);
+        } elseif (! empty($tags)) {
+            // gets users who have all the tags
+            foreach ($tags as $tag) {
+                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * Indicates the age of the contact at death.
+     *
+     * @return int
+     */
+    public function getAgeAtDeath()
+    {
+        return $this->deceasedDate->getAgeAtDeath();
+    }
+
+    /**
+     * Update the frequency for which user has to be warned to stay in touch
+     * with the contact.
+     *
+     * @param  int $frequency
+     * @return bool
+     */
+    public function updateStayInTouchFrequency($frequency)
+    {
+        if (! is_int($frequency)) {
+            return false;
+        }
+
+        $this->stay_in_touch_frequency = $frequency;
+
+        if ($frequency == 0) {
+            $this->stay_in_touch_frequency = null;
+        }
+
+        $this->save();
+
+        return true;
+    }
+
+    /**
+     * Update the date the notification about staying in touch should be sent.
+     *
+     * @param int $frequency
+     * @param string $timezone
+     */
+    public function setStayInTouchTriggerDate($frequency, $timezone)
+    {
+        $now = \Carbon\Carbon::now($timezone);
+        $newTriggerDate = $now->addDays($frequency);
+        $this->stay_in_touch_trigger_date = $newTriggerDate;
+
+        if ($frequency == 0) {
+            $this->stay_in_touch_trigger_date = null;
+        }
+
+        $this->save();
+    }
+
+    /**
+     * Send the email about staying in touch with the contact.
+     *
+     * @param  User $user
+     * @return void
+     */
+    public function sendStayInTouchEmail(User $user)
+    {
+        Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
     }
 }
