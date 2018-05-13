@@ -320,7 +320,7 @@ class ImportJob extends Model
     public function existingContact()
     {
         if (is_null($this->currentEntry->EMAIL)) {
-           return;
+            return;
         }
 
         $email = (string) $this->currentEntry->EMAIL;
