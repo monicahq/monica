@@ -458,7 +458,13 @@ class ContactsController extends Controller
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
-                $results[$key]->hash = $result->hashID();
+                if ($result->is_partial) {
+                    $real = $result->getRelatedRealContact();
+
+                    $results[$key]->hash = $real->hashID();
+                } else {
+                    $results[$key]->hash = $result->hashID();
+                }
             }
 
             return $results;
