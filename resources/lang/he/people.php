@@ -24,8 +24,8 @@ return [
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
-    'people_list_untagged' => 'View untagged contacts',
-    'people_list_filter_untag' => 'Showing all untagged contacts ',
+    'people_list_untagged' => 'הצגת אנשי קשר ללא תיוג',
+    'people_list_filter_untag' => 'מוצגים אנשי קשר ללא תיוג ',
 
     // people add
     'people_add_title' => 'הוספת אדם חדש',
