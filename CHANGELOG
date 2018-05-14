@@ -2,8 +2,10 @@ UNRELEASED CHANGES:
 
 * Remove automatic birthday reminder creation when editing a contact
 * Use external list of countries, with translations and reliability
-* Fixes 1209 Add journal entry with date != today does not work
+* Fix journal entry with date different than today's date not working
+* Fixes Contact search dropdown shows non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
+* Allow multiple imported fields and replace existing contacts
 
 RELEASED VERSIONS:
 
