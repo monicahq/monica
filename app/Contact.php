@@ -342,6 +342,20 @@ class Contact extends Model
                 return $builder->orderBy('last_name', 'asc');
             case 'lastnameZA':
                 return $builder->orderBy('last_name', 'desc');
+            case 'lastactivitydateNewtoOld':
+                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->orderBy('activities.date_it_happened', 'desc');
+                $builder->select('*', 'contacts.id as id');
+
+                return $builder;
+            case 'lastactivitydateOldtoNew':
+                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->orderBy('activities.date_it_happened', 'asc');
+                $builder->select('*', 'contacts.id as id');
+
+                return $builder;
             default:
                 return $builder->orderBy('first_name', 'asc');
         }
