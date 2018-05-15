@@ -49,7 +49,7 @@ class ContactsController extends Controller
                             ->where('account_id', auth()->user()->account_id)
                             ->get();
 
-                if(!($tags->contains($tag[0]))) {
+                if (! ($tags->contains($tag[0]))) {
                     $tags = $tags->concat($tag);
                 }
 
