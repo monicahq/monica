@@ -342,9 +342,32 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 3) == 1) {
             for ($j = 0; $j < rand(1, 4); $j++) {
+                $type = rand(1, 6);
+                $data = null;
+                switch($type) {
+                    case 1: // Email
+                        $data = $this->faker->email;
+                    break;
+                    case 2: // Phone
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 3: // Facebook
+                        $data = "https://facebook.com/".$this->faker->userName;
+                    break;
+                    case 4: // Twitter
+                        $data = "https://twitter.com/".$this->faker->userName;
+                    break;
+                    case 5: // Whatsapp
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 6: // Telegram
+                        $data = $this->faker->phoneNumber;
+                    break;
+                }
+
                 $contactField = $this->contact->contactFields()->create([
-                    'contact_field_type_id' => rand(1, 6),
-                    'data' => $this->faker->url,
+                    'contact_field_type_id' => $type,
+                    'data' => $data,
                     'account_id' => $this->contact->account->id,
                 ]);
             }
