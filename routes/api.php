@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::post('/emailhook', 'InBoundEmailController@new');
+Route::post('/inboundemail/postmark', 'InBoundEmailController@new_postmark');
 
 Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
 

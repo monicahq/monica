@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 class InBoundEmailController extends Controller
 {
 
-    public function new(Request $request) {
+    public function new_postmark(Request $request) {
 
         $from = $request->FromFull['Email'];
 
