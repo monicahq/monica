@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Email;
+use App\InBoundEmail;
 use App\Account;
 use App\Contacts;
 use App\ContactFieldType;
@@ -68,7 +68,7 @@ class InBoundEmailController extends Controller
 
         $datetime_email = str_replace_first('at', '', $datetime_email);
 
-        $email = new Email;
+        $email = new InBoundEmail;
         $email->account_id = $user->account_id;
         $email->to = $to_email;
         $email->from = $from_email;

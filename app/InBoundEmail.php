@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Email extends Model
+class InBoundEmail extends Model
 {
     protected $dates = [
         'sent',
@@ -63,7 +63,7 @@ class Email extends Model
      */
     public function setToContact($contact)
     {
-        $contact_email = new ContactEmail;
+        $contact_email = new ContactInBoundEmail;
         $contact_email->account_id = $this->account_id;
         $contact_email->email_id = $this->id;
         $contact_email->contact_id = $contact->id;

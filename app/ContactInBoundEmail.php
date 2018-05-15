@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ContactEmail extends Model
+class ContactInBoundEmail extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -32,6 +32,6 @@ class ContactEmail extends Model
 
     public function email()
     {
-        return $this->belongsTo(Email::class, 'email_id');
+        return $this->belongsTo(InBoundEmail::class, 'email_id');
     }
 }

@@ -317,9 +317,9 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function emails()
+    public function in_bound_emails()
     {
-        return $this->hasMany('App\Email');
+        return $this->hasMany('App\InBoundEmail');
     }
 
     /**
