@@ -51,7 +51,7 @@ class User extends Authenticatable
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create the user
         $user = new self;
@@ -305,7 +305,7 @@ class User extends Authenticatable
      *
      * @return void
      */
-    public function acceptPolicy(String $ipAddress): void
+    public function acceptPolicy($ipAddress = null): void
     {
         $latestTerm = Term::latest()->first();
 

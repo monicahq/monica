@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Account;
+use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +84,13 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
-        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $account = Account::createDefault(
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            \Request::ip()
+        );
         $user = $account->users()->first();
 
         if (! $first) {

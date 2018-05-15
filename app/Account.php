@@ -646,7 +646,7 @@ class Account extends Model
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create new account
         $account = new self;
