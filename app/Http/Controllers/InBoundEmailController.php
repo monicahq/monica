@@ -9,10 +9,8 @@ use Illuminate\Http\Request;
 
 class InBoundEmailController extends Controller
 {
-
     public function new_postmark(Request $request)
     {
-
         $from = $request->FromFull['Email'];
 
         $user = User::where('email', $from)->first();
