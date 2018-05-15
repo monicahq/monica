@@ -344,7 +344,7 @@ class FakeContentTableSeeder extends Seeder
             for ($j = 0; $j < rand(1, 4); $j++) {
                 $type = rand(1, 6);
                 $data = null;
-                switch($type) {
+                switch ($type) {
                     case 1: // Email
                         $data = $this->faker->email;
                     break;
@@ -352,10 +352,10 @@ class FakeContentTableSeeder extends Seeder
                         $data = $this->faker->phoneNumber;
                     break;
                     case 3: // Facebook
-                        $data = "https://facebook.com/".$this->faker->userName;
+                        $data = 'https://facebook.com/'.$this->faker->userName;
                     break;
                     case 4: // Twitter
-                        $data = "https://twitter.com/".$this->faker->userName;
+                        $data = 'https://twitter.com/'.$this->faker->userName;
                     break;
                     case 5: // Whatsapp
                         $data = $this->faker->phoneNumber;
