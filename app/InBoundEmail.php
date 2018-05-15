@@ -4,7 +4,6 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -57,7 +56,7 @@ class InBoundEmail extends Model
     }
 
     /**
-     * Link to a to a contact
+     * Link to a to a contact.
      *
      * @param Contact $contact
      */
@@ -74,5 +73,4 @@ class InBoundEmail extends Model
     {
         $this->attributes['sent'] = Carbon::parse($value);
     }
-
 }

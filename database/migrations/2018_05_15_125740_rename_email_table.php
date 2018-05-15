@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class RenameEmailTable extends Migration
@@ -17,5 +16,4 @@ class RenameEmailTable extends Migration
 
         Schema::rename('contact_emails', 'contact_in_bound_emails');
     }
-
 }

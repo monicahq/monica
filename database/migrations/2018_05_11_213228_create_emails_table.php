@@ -32,5 +32,4 @@ class CreateEmailsTable extends Migration
             $table->timestamps();
         });
     }
-
 }
