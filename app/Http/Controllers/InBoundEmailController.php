@@ -9,6 +9,16 @@ use Illuminate\Http\Request;
 
 class InBoundEmailController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('webhook');
+    }
+
     public function new_postmark(Request $request)
     {
         $from = $request->FromFull['Email'];

@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
+        'webhook' => \App\Http\Middleware\Webhook::class,
     ];
 }
