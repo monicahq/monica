@@ -32,7 +32,7 @@ class InBoundEmailController extends Controller
         $email_data = [
           'from_email' => '',
           'to_email' => '',
-          'subjct' => '',
+          'subject' => '',
           'datetime' => '',
         ];
 
