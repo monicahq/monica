@@ -130,6 +130,7 @@ These Terms can change at any time, but I’ll never be a dick about it. Running
             'privacy_version' => '2',
             'term_content' => $term,
             'term_version' => '2',
+            'created_at' => '2018-04-12',
         ]);
     }
 

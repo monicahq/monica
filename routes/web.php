@@ -42,6 +42,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
     });
     Route::post('/validate2fa', 'DashboardController@index');
 
+    Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::get('/changelog', 'ChangelogController@index');
 
     Route::group(['as' => 'people'], function () {

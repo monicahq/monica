@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
 
+Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
+
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 

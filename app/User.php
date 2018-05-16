@@ -297,7 +297,11 @@ class User extends Authenticatable
         $latestTerm = Term::latest()->first();
         $lastAcceptedTerm = $this->terms()->latest()->first();
 
-        return $latestTerm->id == $lastAcceptedTerm->id;
+        if (! $lastAcceptedTerm) {
+            return false;
+        }
+
+        return $latestTerm->id === $lastAcceptedTerm->id;
     }
 
     /**
