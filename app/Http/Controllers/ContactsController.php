@@ -49,7 +49,9 @@ class ContactsController extends Controller
                             ->where('account_id', auth()->user()->account_id)
                             ->get();
 
-                $tags = $tags->concat($tag);
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
+                }
 
                 $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
