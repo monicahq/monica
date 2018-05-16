@@ -216,4 +216,9 @@ return [
     'relationship_type_protege_female' => 'Schützling',
     'relationship_type_protege_with_name' => ':name\'s Schützling',
     'relationship_type_protege_female_with_name' => ':name\'s Schützling',
+
+    'relationship_type_ex_husband' => 'ex husband',
+    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 ];
