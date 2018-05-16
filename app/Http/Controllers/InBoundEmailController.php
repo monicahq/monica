@@ -23,36 +23,38 @@ class InBoundEmailController extends Controller
     {
         $from = $request->FromFull['Email'];
 
-        $user = User::where('email', $from)->first();
+        $user = User::where('email', $from)->firstOrFail();
 
         $contacts = $user->account->contacts()->real();
 
         $email_contents = $request->TextBody;
 
+        $email_data = array();
+
         $pattern = '/From:.{1,}<(.{1,})>/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $from_email = $matches[1];
+            $email_data["from_email"] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/To:.{1,}<(.{1,})>/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $to_email = $matches[1];
+            $email_data["to_email"] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/Date:\s{1,}(.{1,})/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $datetime_email = $matches[1];
+            $email_data["datetime"] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/Subject:\s{1,}(.{1,})/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $subject_email = $matches[1];
+            $email_data["subject"] = $matches[1];
         } else {
             abort(400);
         }
@@ -61,7 +63,10 @@ class InBoundEmailController extends Controller
 
         $field_id = $field->id;
 
-        $contacts = $contacts->whereHas('contactFields', function ($query) use ($field_id,$to_email,$from_email) {
+        $contacts = $contacts->whereHas('contactFields', function ($query) use ($field_id,$email_data) {
+            $to_email = $email_data["to_email"];
+            $from_email = $email_data["from_email"];
+
             $query->where([
                 ['data', "$to_email"],
                 ['contact_field_type_id', $field_id],
@@ -71,14 +76,14 @@ class InBoundEmailController extends Controller
             ]);
         })->get();
 
-        $datetime_email = str_replace_first('at', '', $datetime_email);
+        $email_data["datetime"] = str_replace_first('at', '', $email_data["datetime"]);
 
         $email = new InBoundEmail;
         $email->account_id = $user->account_id;
-        $email->to = $to_email;
-        $email->from = $from_email;
-        $email->subject = $subject_email;
-        $email->sent = $datetime_email;
+        $email->to = $email_data["to_email"];
+        $email->from = $email_data["from_email"];
+        $email->subject = $email_data["subject"];
+        $email->sent = $email_data["datetime"];
         $email->content = $email_contents;
         $email->save();
 
