@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Fixes Contact search dropdown shows non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
+* Fixes #1338 Contact tags duplicate when filtering contacts
 
 RELEASED VERSIONS:
 
