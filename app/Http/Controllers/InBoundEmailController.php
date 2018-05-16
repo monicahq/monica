@@ -33,28 +33,28 @@ class InBoundEmailController extends Controller
 
         $pattern = '/From:.{1,}<(.{1,})>/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $email_data["from_email"] = $matches[1];
+            $email_data['from_email'] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/To:.{1,}<(.{1,})>/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $email_data["to_email"] = $matches[1];
+            $email_data['to_email'] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/Date:\s{1,}(.{1,})/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $email_data["datetime"] = $matches[1];
+            $email_data['datetime'] = $matches[1];
         } else {
             abort(400);
         }
 
         $pattern = '/Subject:\s{1,}(.{1,})/m';
         if (preg_match($pattern, $email_contents, $matches)) {
-            $email_data["subject"] = $matches[1];
+            $email_data['subject'] = $matches[1];
         } else {
             abort(400);
         }
@@ -64,8 +64,8 @@ class InBoundEmailController extends Controller
         $field_id = $field->id;
 
         $contacts = $contacts->whereHas('contactFields', function ($query) use ($field_id,$email_data) {
-            $to_email = $email_data["to_email"];
-            $from_email = $email_data["from_email"];
+            $to_email = $email_data['to_email'];
+            $from_email = $email_data['from_email'];
 
             $query->where([
                 ['data', "$to_email"],
@@ -76,14 +76,14 @@ class InBoundEmailController extends Controller
             ]);
         })->get();
 
-        $email_data["datetime"] = str_replace_first('at', '', $email_data["datetime"]);
+        $email_data['datetime'] = str_replace_first('at', '', $email_data['datetime']);
 
         $email = new InBoundEmail;
         $email->account_id = $user->account_id;
-        $email->to = $email_data["to_email"];
-        $email->from = $email_data["from_email"];
-        $email->subject = $email_data["subject"];
-        $email->sent = $email_data["datetime"];
+        $email->to = $email_data['to_email'];
+        $email->from = $email_data['from_email'];
+        $email->subject = $email_data['subject'];
+        $email->sent = $email_data['datetime'];
         $email->content = $email_contents;
         $email->save();
 
