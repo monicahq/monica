@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Compliance;
+namespace App\Http\Resources\Settings\Compliance;
 
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;

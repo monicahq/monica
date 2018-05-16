@@ -296,6 +296,14 @@ $factory->define(App\Models\Settings\Term::class, function (Faker\Generator $fak
     ];
 });
 
+$factory->define(App\Models\Settings\Currency::class, function (Faker\Generator $faker) {
+    return [
+        'iso' => $faker->realText(10),
+        'name' => $faker->realText(10),
+        'symbol' => $faker->realText(10),
+    ];
+});
+
 $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator $faker) {
     static $account_id;
     static $stripe_plan;

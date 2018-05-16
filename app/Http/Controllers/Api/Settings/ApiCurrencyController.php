@@ -5,36 +5,36 @@ namespace App\Http\Controllers\Api\Settings;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Compliance\Compliance as ComplianceResource;
+use App\Http\Resources\Settings\Currency as CurrencyResource;
 
-class ApiComplianceController extends ApiController
+class ApiCurrencyController extends ApiController
 {
     /**
-     * Get the list of terms and privacy policies.
+     * Get the list of currencies.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $terms = Term::orderBy('term_version', 'desc')->paginate($this->getLimitPerPage());
+        $currencies = Currency::paginate($this->getLimitPerPage());
 
-        return ComplianceResource::collection($terms);
+        return CurrencyResource::collection($currencies);
     }
 
     /**
-     * Get the detail of a given term.
+     * Get the detail of a given currency.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $termId)
+    public function show(Request $request, $currencyId)
     {
         try {
-            $term = Term::where('term_version', $termId)
+            $currency = Currency::where(id, $currencyId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new ComplianceResource($term);
+        return new CurrencyResource($currency);
     }
 }

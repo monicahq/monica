@@ -53,4 +53,28 @@ class ApiComplianceControllerTest extends ApiTestCase
             'data' => $this->jsonStructureCompliance,
         ]);
     }
+
+    public function it_gets_a_single_term()
+    {
+        $term = factory(Term::class)->create([
+            'term_version' => rand(1,100),
+            'term_content' => 'dummy data',
+            'privacy_version' => rand(1,100),
+            'privacy_content' => 'dummy data',
+        ]);
+
+
+        $response = $this->json('GET', '/api/compliance/'.$term->id);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'id' => $termId->id,
+            'object' => 'term',
+        ]);
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureCompliance,
+        ]);
+    }
 }

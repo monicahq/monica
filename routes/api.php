@@ -9,6 +9,12 @@ Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
 Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
+    // Me
+    Route::get('/me', 'Api\\Account\\ApiUserController@show');
+    Route::get('/me/compliance', 'Api\\Account\\ApiUserController@compliance');
+    Route::get('/me/compliance/{id}', 'Api\\Account\\ApiUserController@get');
+    Route::post('/me/compliance', 'Api\\Account\\ApiUserController@set');
+
     // Contacts
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',

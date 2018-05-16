@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Compliance;
+namespace App\Http\Resources\Settings\Currency;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ComplianceCollection extends ResourceCollection
+class CurrencyCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
