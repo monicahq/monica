@@ -29,7 +29,7 @@ class InBoundEmailController extends Controller
 
         $email_contents = $request->TextBody;
 
-        $email_data = array();
+        $email_data = [];
 
         $pattern = '/From:.{1,}<(.{1,})>/m';
         if (preg_match($pattern, $email_contents, $matches)) {
