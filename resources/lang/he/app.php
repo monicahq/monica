@@ -217,8 +217,8 @@ return [
     'relationship_type_protege_with_name' => 'חניך של :name',
     'relationship_type_protege_female_with_name' => 'חניכה של :name',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'גרוש',
+    'relationship_type_ex_husband_female' => 'גרושה',
+    'relationship_type_ex_husband_with_name' => 'הגרוש של :name',
+    'relationship_type_ex_husband_female_with_name' => 'הגרושה של :name',
 ];
