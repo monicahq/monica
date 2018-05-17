@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'Вы хотите <a href=":url">импортировать ваши контакты</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -106,7 +107,6 @@ return [
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
-    'information_edit_help' => 'Если вы укажите точную дату рождения для этого человека, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения.',
     'information_no_linkedin_defined' => 'LinkedIn не указан',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',

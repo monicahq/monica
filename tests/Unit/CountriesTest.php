@@ -26,11 +26,10 @@ class CountriesTest extends FeatureTestCase
                 $iso = \CountriesSeederTable::fixIso($country->iso);
                 $cca2 = CountriesHelper::find($iso);
 
-                $this->assertNotEmpty($cca2, "Country not found for ".$iso);
+                $this->assertNotEmpty($cca2, 'Country not found for '.$iso);
             }
-        }
-        finally {
-            Schema::dropIfExists('countries');            
+        } finally {
+            Schema::dropIfExists('countries');
         }
     }
 }
