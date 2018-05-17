@@ -53,6 +53,9 @@ class JournalEntry extends Model
         if ($resourceToLog instanceof Activity) {
             $this->date = $resourceToLog->date_it_happened;
         }
+        if ($resourceToLog instanceof Entry) {
+            $this->date = $resourceToLog->date;
+        }
         $this->journalable_id = $resourceToLog->id;
         $this->journalable_type = get_class($resourceToLog);
         $this->save();
