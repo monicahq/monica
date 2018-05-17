@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\Settings\Term;
+use App\Models\Settings\Currency;
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Settings\Currency as CurrencyResource;
+use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
 class ApiCurrencyController extends ApiController
 {
