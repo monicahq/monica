@@ -8,7 +8,7 @@ Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
 
 Route::get('/currencies', 'Api\\Settings\\ApiCurrencyController@index');
 
-Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
+Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/', 'Api\\ApiController@success');
 
     // Me

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Contact;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Bus;

@@ -31,6 +31,7 @@ class ReminderRulesController extends Controller
     public function toggle(Request $request, ReminderRule $reminderRule)
     {
         $reminderRule->toggle();
+
         return trans('settings.personalization_reminder_rule_save');
     }
 }

@@ -221,7 +221,7 @@
             },
 
             getCountries() {
-                axios.get('/people/' + this.hash + '/countries')
+                axios.get('/countries')
                         .then(response => {
                             this.countries = response.data;
                         });
