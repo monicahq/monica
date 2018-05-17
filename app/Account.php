@@ -520,9 +520,13 @@ class Account extends Model
      *
      * @return void
      */
-    public function populateRelationshipTypesTable()
+    public function populateRelationshipTypesTable($migrateOnlyNewTypes = false)
     {
-        $defaultRelationshipTypes = DB::table('default_relationship_types')->where('migrated', 0)->get();
+        if ($migrateOnlyNewTypes) {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->where('migrated', 0)->get();
+        } else {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        }
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
             $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
