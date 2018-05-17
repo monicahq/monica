@@ -29,7 +29,7 @@ class AddExWifeHusbandRelationship extends Migration
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
                 /* @var Account $account */
-                $account->populateRelationshipTypesTable();
+                $account->populateRelationshipTypesTable(true);
             }
         });
 
