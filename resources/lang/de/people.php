@@ -25,7 +25,7 @@ return [
     'people_list_account_upgrade_title' => 'Führe ein Upgrade aus, um alle Funktionen freizuschalten.',
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',
     'people_list_untagged' => 'Unmarkierte Kontakte anzeigen',
-    'people_list_filter_untag' => 'Showing all untagged contacts ',
+    'people_list_filter_untag' => 'Alle unmarkierten Kontakte anzeigen',
 
     // people add
     'people_add_title' => 'Person hinzufügen',
