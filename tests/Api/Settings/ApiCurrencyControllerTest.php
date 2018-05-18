@@ -20,29 +20,27 @@ class ApiCurrencyControllerTest extends ApiTestCase
 
     public function test_it_gets_a_list_of_currencies()
     {
-        $currency = factory(Currency::class, 10)->create([]);
-
+        // in theory the currencies table is seeded by the initial script
         $response = $this->json('GET', '/api/currencies/');
 
         $response->assertStatus(200);
 
         $this->assertCount(
-            10,
+            15,
             $response->decodeResponseJson()['data']
         );
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 15,
             'current_page' => 1,
         ]);
 
-        $response->assertJsonFragment([
-            'id' => $currency->id,
-            'object' => 'currency',
-        ]);
-
         $response->assertJsonStructure([
-            'data' => $this->jsonStructureCurrency,
+            'data' => [
+                '*' => [
+                    $this->jsonStructureCurrency
+                ]
+            ]
         ]);
     }
 
