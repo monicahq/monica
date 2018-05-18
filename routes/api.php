@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
 
 Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
+Route::get('/compliance/{id}', 'Api\\Settings\\ApiComplianceController@show');
 
 Route::get('/currencies', 'Api\\Settings\\ApiCurrencyController@index');
+Route::get('/currencies/{id}', 'Api\\Settings\\ApiCurrencyController@show');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/', 'Api\\ApiController@success');

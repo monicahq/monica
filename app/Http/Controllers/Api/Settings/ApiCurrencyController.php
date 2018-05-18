@@ -23,14 +23,14 @@ class ApiCurrencyController extends ApiController
 
     /**
      * Get the detail of a given currency.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $currencyId)
     {
         try {
-            $currency = Currency::where(id, $currencyId)
-                ->firstOrFail();
+            $currency = Currency::find($currencyId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

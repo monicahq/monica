@@ -37,14 +37,12 @@ class ApiCurrencyControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    $this->jsonStructureCurrency
-                ]
+                '*' => $this->jsonStructureCurrency
             ]
         ]);
     }
 
-    public function it_gets_a_single_currency()
+    public function test_it_gets_a_single_currency()
     {
         $currency = factory(Currency::class)->create([]);
 

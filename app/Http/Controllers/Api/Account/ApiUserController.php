@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Account;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Account\User\User as UserResource;
 
 class ApiUserController extends ApiController
@@ -15,15 +16,15 @@ class ApiUserController extends ApiController
      */
     public function show(Request $request)
     {
-        return new UserResource(auth()->user);
+        return new UserResource(auth()->user());
     }
 
     public function get(Request $request, $termId)
     {
-        $term = User::whereHas('terms', function (query) use ($termId) {
-            $query->whereIn('user.id', auth()->user()->id)
-                    ->whereIn('term.id', $termId);
-        })->first();
+        // $term = User::whereHas('terms', function (query) use ($termId) {
+        //     $query->whereIn('user.id', auth()->user()->id)
+        //             ->whereIn('term.id', $termId);
+        // })->first();
 
         return $this->respond([
             'data' => [

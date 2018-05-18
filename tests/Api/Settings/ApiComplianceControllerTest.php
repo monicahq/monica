@@ -63,7 +63,6 @@ class ApiComplianceControllerTest extends ApiTestCase
             'privacy_content' => 'dummy data',
         ]);
 
-
         $response = $this->json('GET', '/api/compliance/'.$term->id);
 
         $response->assertStatus(200);
