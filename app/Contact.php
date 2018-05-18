@@ -39,6 +39,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'nickname',
     ];
 
     // The list of columns we want the Searchable trait to select.
@@ -47,6 +48,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'nickname',
         'has_avatar',
         'avatar_file_name',
         'gravatar_url',
@@ -68,6 +70,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'nickname',
         'gender_id',
         'account_id',
         'is_partial',
@@ -105,6 +108,14 @@ class Contact extends Model
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
     ];
+
+    /**
+     * The name order attribute that indicates how to format the name of the
+     * contact.
+     *
+     * @var string
+     */
+    protected $nameOrder = 'firstname_lastname';
 
     /**
      * Get the user associated with the contact.
@@ -418,6 +429,38 @@ class Contact extends Model
     }
 
     /**
+     * Set the name order attribute.
+     *
+     * @param string $value
+     * @return void
+     */
+    public function nameOrder($value)
+    {
+        $this->nameOrder = $value;
+    }
+
+    /**
+     * Get the nickname of the contact.
+     *
+     * @return string
+     */
+    public function getNicknameAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Mutator last_name.
+     *
+     * @param string|null $value
+     */
+    public function setNicknameAttribute($value)
+    {
+        $value = $value ? trim($value) : null;
+        $this->attributes['nickname'] = $value;
+    }
+
+    /**
      * Get user's initials.
      *
      * @return string
@@ -450,34 +493,117 @@ class Contact extends Model
     }
 
     /**
-     * Get the complete name of the contact.
+     * Get the full name of the contact.
      *
      * @return string
      */
-    public function getCompleteName($nameOrder = 'firstname_first')
+    public function getNameAttribute()
     {
+        // @TODO:
+        // - changer toutes les occurences de getCompleteName()
+        // - faire en sorte que getInitials fonctionne avec les langues LastName Firstname
         $completeName = '';
 
-        if ($nameOrder == 'firstname_first') {
-            $completeName = $this->first_name;
+        switch ($this->nameOrder) {
+            case 'firstname_lastname':
+                $completeName = $this->first_name;
 
-            if (! is_null($this->middle_name)) {
-                $completeName = $completeName.' '.$this->middle_name;
-            }
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
 
-            if (! is_null($this->last_name)) {
-                $completeName = $completeName.' '.$this->last_name;
-            }
-        } else {
-            if (! is_null($this->last_name)) {
-                $completeName = $this->last_name;
-            }
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
+                }
+                break;
+            case 'lastname_firstname':
+                $completeName = '';
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
+                }
 
-            if (! is_null($this->middle_name)) {
-                $completeName = $completeName.' '.$this->middle_name;
-            }
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
 
-            $completeName = $completeName.' '.$this->first_name;
+                $completeName .= ' ' . $this->first_name;
+                break;
+            case 'firstname_lastname_nickname':
+                $completeName = $this->first_name;
+
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
+
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
+                }
+
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
+                }
+                break;
+            case 'firstname_nickname_lastname':
+                $completeName = $this->first_name;
+
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
+
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
+                }
+
+                if (!is_null($this->last_name)) {
+                    $completeName = $completeName . ' ' . $this->last_name;
+                }
+
+                break;
+            case 'lastname_firstname_nickname':
+                $completeName = '';
+                if (!is_null($this->last_name)) {
+                    $completeName = $this->last_name;
+                }
+
+                $completeName = $completeName . ' ' . $this->first_name;
+
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
+
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
+                }
+                break;
+            case 'lastname_nickname_firstname':
+                $completeName = '';
+                if (!is_null($this->last_name)) {
+                    $completeName = $this->last_name;
+                }
+
+                if (!is_null($this->nickname)) {
+                    $completeName = $completeName . ' (' . $this->nickname . ')';
+                }
+
+                if (!is_null($this->middle_name)) {
+                    $completeName = $completeName . ' ' . $this->middle_name;
+                }
+
+                $completeName = $completeName . ' ' . $this->first_name;
+                break;
+            case 'nickname':
+                if (!is_null($this->nickname)) {
+                    $completeName = $this->nickname;
+                }
+
+                if ($completeName == '') {
+                    $completeName = $this->first_name;
+
+                    if (!is_null($this->last_name)) {
+                        $completeName = $completeName . ' ' . $this->last_name;
+                    }
+                }
+                break;
         }
 
         if ($this->is_dead) {
