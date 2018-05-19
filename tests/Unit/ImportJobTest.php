@@ -14,23 +14,28 @@ class ImportJobTest extends TestCase
     public function test_it_belongs_to_a_user()
     {
         $user = factory('App\User')->create([]);
-        $importJob = factory('App\ImportJob')->create(['user_id' => $user->id]);
+        $importJob = factory('App\ImportJob')->create(['user_id' => $user->id, 'account_id' => $user->account_id]);
 
         $this->assertTrue($importJob->user()->exists());
     }
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $user = factory('App\User')->create([]);
+        $importJob = factory('App\ImportJob')->create(['user_id' => $user->id, 'account_id' => $user->account_id]);
 
         $this->assertTrue($importJob->account()->exists());
     }
 
     public function test_it_belongs_to_many_reports()
     {
+        $user = factory('App\User')->create([]);
         $importJob = factory('App\ImportJob')->create([]);
-        $importJobReport = factory('App\ImportJobReport', 100)->create(['import_job_id' => $importJob->id]);
+        $importJobReport = factory('App\ImportJobReport', 3)->create([
+            'import_job_id' => $importJob->id,
+            'user_id' => $user->id,
+            'account_id' => $user->account_id,
+        ]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }

@@ -280,7 +280,12 @@ $factory->define(App\Instance::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\ImportJob::class, function (Faker\Generator $faker) {
-    return [];
+    $user = factory('App\User')->create([]);
+
+    return [
+        'user_id' => $user->id,
+        'account_id' => $user->account_id,
+    ];
 });
 
 $factory->define(App\ImportJobReport::class, function (Faker\Generator $faker) {
