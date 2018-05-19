@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Api\Account;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Models\Settings\Term;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
@@ -30,17 +34,35 @@ class ApiUserController extends ApiController
      */
     public function get(Request $request, $termId)
     {
-        $term = User::whereHas('terms', function (query) use ($termId) {
-            $query->whereIn('user.id', auth()->user()->id)
-                    ->whereIn('term.id', $termId);
-        })->first();
+        // @TODO: use eloquent to do this instead
+        try {
+            $term = DB::table('term_user')->where('user_id', auth()->user()->id)
+                ->where('term_id', $termId)
+                ->first();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        $compliance = Term::find($termId);
 
         return $this->respond([
             'data' => [
-                'signed' => 'yes',
+                'signed' => true,
+                'ip_address' => $term->ip_address,
                 'user' => new UserResource(auth()->user()),
-                'term' => new ComplianceResource($term),
+                'term' => new ComplianceResource($compliance),
             ],
         ]);
+    }
+
+    /**
+     * Get all the policies ever signed by the authenticated user.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function compliance(Request $request)
+    {
+
     }
 }

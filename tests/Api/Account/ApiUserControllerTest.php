@@ -4,6 +4,7 @@ namespace Tests\Api\Contact;
 
 use App\User;
 use Tests\ApiTestCase;
+use App\Models\Settings\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiUserControllerTest extends ApiTestCase
@@ -42,6 +43,21 @@ class ApiUserControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'first_name' => $user->first_name,
             'object' => 'user',
+        ]);
+    }
+
+    public function test_it_tells_if_the_user_has_signed_a_given_policy()
+    {
+        $user = $this->signIn();
+
+        $term = factory(Term::class)->create([]);
+        $term->users()->sync($user->id);
+
+        $response = $this->get('/api/me/compliance/'.$term->id);
+
+        $response->assertJsonFragment([
+            'signed' => true,
+            'ip_address' => null,
         ]);
     }
 }
