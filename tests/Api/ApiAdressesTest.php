@@ -3,10 +3,12 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Http\Controllers\Api\ApiController;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiAdressesTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     public function test_address_get_contacts()
     {
         $user = $this->signin();
@@ -196,7 +198,7 @@ class ApiAdressesTest extends ApiTestCase
             'country' => 'US'
         ]);
 
-        $response->assertStatus(200);        
+        $response->assertStatus(200);
 
         $response->assertJsonFragment([
             'object' => 'address',
@@ -234,7 +236,7 @@ class ApiAdressesTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/addresses/'.$address_id);
 
-        $response->assertStatus(200);        
+        $response->assertStatus(200);
 
         $response->assertJsonFragment([
             'id' => $address_id,
