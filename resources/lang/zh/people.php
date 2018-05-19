@@ -43,6 +43,7 @@ return [
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -106,7 +107,6 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
-    'information_edit_help' => '如果您为此人指明了确切的出生日期, 我们将为您创建一个新的提醒。因此, 系统将在每年庆祝此人生日的时间通知您。',
     'information_no_linkedin_defined' => '没有定义LinkedIn',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company',

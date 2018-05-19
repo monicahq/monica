@@ -57,7 +57,7 @@ class SendNotificationEmailTest extends TestCase
     }
 
     /**
-     * It doesn't send the reminder if reminder rule is set to off
+     * It doesn't send the reminder if reminder rule is set to off.
      */
     public function test_it_doesnt_send_a_notification()
     {

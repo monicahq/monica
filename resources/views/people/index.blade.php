@@ -42,6 +42,13 @@
                         <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
+                  @if ($tagLess)
+                      <p class="clear-filter">
+                        <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
+                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                      </p>
+                  @endif
+
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
                   <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
@@ -70,6 +77,12 @@
                         </span>
                     @endforeach
                     <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                  </p>
+              @endif
+              @if ($tagLess)
+                  <p class="clear-filter">
+                    <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
+                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
 
@@ -164,6 +177,9 @@
                 </li>
                 @endif
               @endforeach
+                <li class="f7 mt3">
+                    <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
+                </li>
               </ul>
             </div>
 

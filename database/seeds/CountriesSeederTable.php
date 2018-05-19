@@ -258,13 +258,15 @@ class CountriesSeederTable extends Seeder
         DB::table('countries')->insert(['iso'=>'ae', 'country' => 'United Arab Emirates']);
     }
 
-    public static function fixIso($iso) {
+    public static function fixIso($iso)
+    {
         switch ($iso) {
             case 'ct':
                 // Cyprus
-                return "CY";
+                return 'CY';
                 break;
         }
+
         return $iso;
     }
 }

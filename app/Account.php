@@ -518,29 +518,30 @@ class Account extends Model
     /**
      * Populate the relationship types table based on the default ones.
      *
-     * @param  bool $ignoreTableAlreadyMigrated
      * @return void
      */
-    public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
+    public function populateRelationshipTypesTable($migrateOnlyNewTypes = false)
     {
-        $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        if ($migrateOnlyNewTypes) {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->where('migrated', 0)->get();
+        } else {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        }
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
-                $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
-                                        ->where('id', $defaultRelationshipType->relationship_type_group_id)
-                                        ->first();
+            $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
+                                    ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                                    ->first();
 
-                $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
+            $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
-                RelationshipType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultRelationshipType->name,
-                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                    'relationship_type_group_id' => $relationshipTypeGroup->id,
-                    'delible' => $defaultRelationshipType->delible,
-                ]);
-            }
+            RelationshipType::create([
+                'account_id' => $this->id,
+                'name' => $defaultRelationshipType->name,
+                'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                'relationship_type_group_id' => $relationshipTypeGroup->id,
+                'delible' => $defaultRelationshipType->delible,
+            ]);
         }
     }
 

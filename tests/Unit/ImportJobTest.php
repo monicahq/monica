@@ -340,7 +340,8 @@ class ImportJobTest extends TestCase
         ]);
 
         $importJob->currentEntry = $vcard;
-        $this->assertFalse($importJob->contactExists());
+        $contact = $importJob->existingContact();
+        $this->assertNull($contact);
     }
 
     public function test_it_returns_an_unknown_name_if_no_name_is_in_entry()

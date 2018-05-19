@@ -19,7 +19,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
             ]);
 
         $response = $this->json('GET', '/api/contacts');
@@ -33,7 +33,7 @@ class ApiAdressesTest extends ApiTestCase
                 'object' => 'country',
                 'id' => 'FR',
                 'name' => 'France',
-                'iso' => 'FR'
+                'iso' => 'FR',
             ],
             'street' => 'street',
             'postal_code' => '12345',
@@ -50,7 +50,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
             ]);
 
         $response = $this->json('GET', '/api/contacts/'.$contact->id);
@@ -64,7 +64,7 @@ class ApiAdressesTest extends ApiTestCase
                 'object' => 'country',
                 'id' => 'FR',
                 'name' => 'France',
-                'iso' => 'FR'
+                'iso' => 'FR',
             ],
             'street' => 'street',
             'postal_code' => '12345',
@@ -81,7 +81,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
             ]);
 
         $response = $this->json('GET', '/api/contacts/'.$contact->id.'/addresses');
@@ -95,7 +95,7 @@ class ApiAdressesTest extends ApiTestCase
                 'object' => 'country',
                 'id' => 'FR',
                 'name' => 'France',
-                'iso' => 'FR'
+                'iso' => 'FR',
             ],
             'street' => 'street',
             'postal_code' => '12345',
@@ -112,7 +112,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
             ]);
 
         $response = $this->json('GET', '/api/addresses/'.$address->id);
@@ -126,7 +126,7 @@ class ApiAdressesTest extends ApiTestCase
                 'object' => 'country',
                 'id' => 'FR',
                 'name' => 'France',
-                'iso' => 'FR'
+                'iso' => 'FR',
             ],
             'street' => 'street',
             'postal_code' => '12345',
@@ -144,7 +144,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
         ]);
 
         $response->assertStatus(201);
@@ -155,7 +155,7 @@ class ApiAdressesTest extends ApiTestCase
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
         ]);
 
         $response->assertJsonFragment([
@@ -166,7 +166,7 @@ class ApiAdressesTest extends ApiTestCase
                 'object' => 'country',
                 'id' => 'FR',
                 'name' => 'France',
-                'iso' => 'FR'
+                'iso' => 'FR',
             ],
             'street' => 'street',
             'postal_code' => '12345',
@@ -177,41 +177,45 @@ class ApiAdressesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
-
-        $response = $this->json('POST', '/api/addresses', [
+        $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
         ]);
 
-        $response->assertStatus(201);
-
-        $address_id = $response->json('data.id');
-        $this->assertGreaterThan(0, $address_id);
-
-        $response = $this->json('PUT', '/api/addresses/'.$address_id, [
+        $response = $this->json('PUT', '/api/addresses/'.$address->id, [
             'contact_id' => $contact->id,
             'name' => 'address name up',
-            'country' => 'US'
+            'country' => 'US',
         ]);
 
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
             'object' => 'address',
-            'id' => $address_id,
+            'id' => $address->id,
             'name' => 'address name up',
             'country' => [
                 'object' => 'country',
                 'id' => 'US',
                 'name' => 'United States',
-                'iso' => 'US'
+                'iso' => 'US',
             ],
             'street' => 'street',
             'postal_code' => '12345',
+        ]);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $address->id,
+            'name' => 'address name up',
+            'street' => 'street',
+            'postal_code' => '12345',
+            'country' => 'US',
         ]);
     }
 
@@ -219,28 +223,28 @@ class ApiAdressesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
-
-        $response = $this->json('POST', '/api/addresses', [
+        $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'name' => 'address name',
             'street' => 'street',
             'postal_code' => '12345',
-            'country' => 'FR'
+            'country' => 'FR',
         ]);
 
-        $response->assertStatus(201);
-
-        $address_id = $response->json('data.id');
-        $this->assertGreaterThan(0, $address_id);
-
-        $response = $this->json('DELETE', '/api/addresses/'.$address_id);
+        $response = $this->json('DELETE', '/api/addresses/'.$address->id);
 
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $address_id,
+            'id' => $address->id,
             'deleted' => true,
+        ]);
+
+        $this->assertDatabaseMissing('addresses', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $address->id,
         ]);
     }
 }
