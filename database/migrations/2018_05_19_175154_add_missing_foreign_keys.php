@@ -135,11 +135,6 @@ class AddMissingForeignKeys extends Migration
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('special_date_id')->references('id')->on('special_dates');
         });
-        Schema::table('reminders_sent', function (Blueprint $table) {
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->foreign('reminder_id')->references('id')->on('reminders');
-        });
         Schema::table('sessions', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
         });
@@ -293,11 +288,6 @@ class AddMissingForeignKeys extends Migration
             $table->dropForeign(['account_id']);
             $table->dropForeign(['contact_id']);
             $table->dropForeign(['special_date_id']);
-        });
-        Schema::table('reminders_sent', function (Blueprint $table) {
-            $table->dropForeign(['account_id']);
-            $table->dropForeign(['contact_id']);
-            $table->dropForeign(['reminder_id']);
         });
         Schema::table('sessions', function (Blueprint $table) {
             $table->dropForeign(['user_id']);

@@ -136,11 +136,6 @@ class NormalizeForeignKeyColumnsToUnsignedInteger extends Migration
             $table->unsignedInteger('contact_id')->change();
             $table->unsignedInteger('special_date_id')->change();
         });
-        Schema::table('reminders_sent', function (Blueprint $table) {
-            $table->unsignedInteger('account_id')->change();
-            $table->unsignedInteger('contact_id')->change();
-            $table->unsignedInteger('reminder_id')->change();
-        });
         Schema::table('sessions', function (Blueprint $table) {
             $table->unsignedInteger('user_id')->change();
         });
@@ -295,11 +290,6 @@ class NormalizeForeignKeyColumnsToUnsignedInteger extends Migration
             $table->integer('account_id')->change();
             $table->integer('contact_id')->change();
             $table->integer('special_date_id')->change();
-        });
-        Schema::table('reminders_sent', function (Blueprint $table) {
-            $table->integer('account_id')->change();
-            $table->integer('contact_id')->change();
-            $table->integer('reminder_id')->change();
         });
         Schema::table('sessions', function (Blueprint $table) {
             $table->integer('user_id')->change();
