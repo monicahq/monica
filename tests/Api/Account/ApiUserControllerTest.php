@@ -59,5 +59,29 @@ class ApiUserControllerTest extends ApiTestCase
             'signed' => true,
             'ip_address' => null,
         ]);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'signed',
+                'signed_date',
+                'ip_address',
+                'user',
+                'term',
+            ],
+        ]);
+    }
+
+    public function test_it_returns_method_not_found_if_no_policy_is_found()
+    {
+        $user = $this->signIn();
+
+        $response = $this->get('/api/me/compliance/32455212');
+
+        $response->assertStatus(404);
+
+        $response->assertJsonFragment([
+            'message' => 'The resource has not been found',
+            'error_code' => 31,
+        ]);
     }
 }

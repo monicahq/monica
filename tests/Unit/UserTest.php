@@ -265,4 +265,33 @@ class UserTest extends TestCase
             'ip_address' => $ipAddress,
         ]);
     }
+
+    public function test_it_gets_status_for_a_specific_compliance()
+    {
+        $user = factory(User::class)->create([]);
+        $this->assertFalse($user->getStatusForCompliance(123));
+
+        $term = factory(Term::class)->create([]);
+        $user->terms()->sync([$term->id => ['account_id' => $user->account_id]]);
+
+        $array = $user->getStatusForCompliance($term->id);
+        $this->assertArrayHasKey('signed', $array);
+    }
+
+    public function test_it_gets_all_the_signed_compliances_of_the_user()
+    {
+        $user = factory(User::class)->create([]);
+        $term = factory(Term::class)->create([]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $user->account_id]]);
+
+        $term2 = factory(Term::class)->create([]);
+        $user->terms()->syncWithoutDetaching([$term2->id => ['account_id' => $user->account_id]]);
+        $collection = $user->getAllCompliances();
+
+        $this->assertEquals(
+            2,
+            $collection->count()
+        );
+        //$this->assertTrue($collection->contains('id', $expected->id));
+    }
 }

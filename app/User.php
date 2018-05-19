@@ -13,6 +13,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Account\User\User as UserResource;
+use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable
 {
@@ -318,5 +320,54 @@ class User extends Authenticatable
             'account_id' => $this->account->id,
             'ip_address' => $ipAddress,
         ]]);
+    }
+
+    /**
+     * Get the status for a given term.
+     *
+     * @param int $termId
+     * @return array|bool
+     */
+    public function getStatusForCompliance($termId)
+    {
+        // @TODO: use eloquent to do this instead
+        $termUser = DB::table('term_user')->where('user_id', $this->id)
+                                            ->where('term_id', $termId)
+                                            ->first();
+
+        if (! $termUser) {
+            return false;
+        }
+
+        $compliance = Term::find($termId);
+        $signedDate = \App\Helpers\DateHelper::createDateFromFormat($termUser->created_at, $this->timezone);
+
+        return [
+            'signed' => true,
+            'signed_date' => $signedDate->format(config('api.timestamp_format')),
+            'ip_address' => $termUser->ip_address,
+            'user' => new UserResource($this),
+            'term' => new ComplianceResource($compliance),
+        ];
+    }
+
+    /**
+     * Get the list of all the policies the user has signed.
+     *
+     * @return array
+     */
+    public function getAllCompliances()
+    {
+        $terms = collect();
+        $termsUser = DB::table('term_user')->where('user_id', $this->id)
+                                                        ->get();
+
+        foreach ($termsUser as $termUser) {
+            $terms->push([
+                $this->getStatusForCompliance($termUser->term_id)
+            ]);
+        }
+
+        return $terms;
     }
 }

@@ -34,25 +34,15 @@ class ApiUserController extends ApiController
      */
     public function get(Request $request, $termId)
     {
-        // @TODO: use eloquent to do this instead
-        try {
-            $term = DB::table('term_user')->where('user_id', auth()->user()->id)
-                ->where('term_id', $termId)
-                ->first();
-        } catch (ModelNotFoundException $e) {
+        $userCompliance = auth()->user()->getStatusForCompliance($termId);
+
+        if ($userCompliance == false) {
             return $this->respondNotFound();
         }
 
-        $compliance = Term::find($termId);
-
         return $this->respond([
-            'data' => [
-                'signed' => true,
-                'ip_address' => $term->ip_address,
-                'user' => new UserResource(auth()->user()),
-                'term' => new ComplianceResource($compliance),
-            ],
-        ]);
+            'data' => $userCompliance]
+        );
     }
 
     /**
