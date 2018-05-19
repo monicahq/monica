@@ -2,7 +2,6 @@
 
 namespace Tests\Unit;
 
-use App\Contact;
 use App\User;
 use App\Account;
 use App\Contact;
@@ -28,7 +27,7 @@ class AccountTest extends FeatureTestCase
             'name' => 'test',
         ]);
 
-        $this->assertTrue($account->genders()->exists());
+        $this->assertSame(2, $account->genders()->count());
     }
 
     public function test_it_has_many_notifications()
