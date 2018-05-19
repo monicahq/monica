@@ -17,6 +17,10 @@ class CheckCompliance
      */
     public function handle($request, Closure $next)
     {
+        if ($request->isMethod('post')) {
+            return $next($request);
+        }
+
         if (Route::currentRouteName() == 'compliance') {
             return $next($request);
         }

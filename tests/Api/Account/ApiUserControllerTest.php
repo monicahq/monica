@@ -29,14 +29,19 @@ class ApiUserControllerTest extends ApiTestCase
 
     public function test_it_gets_the_authenticated_user()
     {
-        $user->signIn();
+        $user = $this->signIn();
 
-        $response = $this->json('GET', '/me');
+        $response = $this->get('/api/me');
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureUser,
+        ]);
+
+        $response->assertJsonFragment([
+            'first_name' => $user->first_name,
+            'object' => 'user',
         ]);
     }
 }

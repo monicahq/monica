@@ -8,7 +8,10 @@
       <p>We have changed our terms of use and privacy policy.</p>
       <p>Please take some time to review them and either accept them or reject them below.</p>
       <p>If you reject them, you won't be able to use your account anymore. In that case, click here to export your data.</p>
-      <p><a href="">Accept</a></p>
+      <form action="/compliance/sign" method="POST">
+        {{ csrf_field() }}
+        <button class="btn btn-primary" name="save" type="submit">Accept policy</button>
+      </form>
     </div>
   </div>
 @endsection

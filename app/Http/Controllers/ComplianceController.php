@@ -16,4 +16,15 @@ class ComplianceController extends Controller
     {
         return view('compliance.index');
     }
+
+    /**
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        auth()->user()->acceptPolicy(\Request::ip());
+
+        return redirect('/dashboard');
+    }
 }
