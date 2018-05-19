@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'מיון לפי שם משפחה ת ← א',
     'people_list_lastactivitydateNewtoOld' => 'מיון לפי מועד הפעילות האחרונה מהחדשה לישנה',
     'people_list_lastactivitydateOldtoNew' => 'מיון לפי מועד הפעילות האחרונה מהישנה לחדשה',
-    'people_list_filter_tag' => 'הצגת כל אנשי הקשר עם התגית ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'ניקוי מסנן',
     'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
@@ -25,7 +25,7 @@ return [
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
     'people_list_untagged' => 'הצגת אנשי קשר ללא תיוג',
-    'people_list_filter_untag' => 'מוצגים אנשי קשר ללא תיוג ',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'הוספת אדם חדש',
