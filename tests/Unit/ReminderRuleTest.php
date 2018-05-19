@@ -41,8 +41,10 @@ class ReminderRuleTest extends TestCase
 
     public function test_it_toggles_the_status()
     {
+        $account = factory('App\Account')->create([]);
         $reminderRule = new ReminderRule;
         $reminderRule->active = true;
+        $reminderRule->account_id = $account->id;
         $reminderRule->save();
 
         $reminderRule->toggle();
