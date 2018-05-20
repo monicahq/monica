@@ -38,7 +38,7 @@ class ApiCurrencyControllerTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => [
                 '*' => $this->jsonStructureCurrency,
-            ]
+            ],
         ]);
     }
 
