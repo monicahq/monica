@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
@@ -41,8 +42,8 @@ class ApiUserController extends ApiController
         }
 
         return $this->respond([
-            'data' => $userCompliance]
-        );
+            'data' => $userCompliance
+        ]);
     }
 
     /**
@@ -53,6 +54,41 @@ class ApiUserController extends ApiController
      */
     public function compliance(Request $request)
     {
+        $terms = auth()->user()->getAllCompliances();
 
+        return $this->respond([
+            'data' => $terms
+        ]);
+    }
+
+    /**
+     * Sign the latest policy for the authenticated user.
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function set(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ip_address' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->setErrorCode(32)
+                        ->respondWithError($validator->errors()->all());
+        }
+
+        // Create the contact
+        try {
+            $term = auth()->user()->acceptPolicy($request->get('ip_address'));
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        $userCompliance = auth()->user()->getStatusForCompliance($term->id);
+
+        return $this->respond([
+            'data' => $userCompliance
+        ]);
     }
 }

@@ -310,9 +310,9 @@ class User extends Authenticatable
     /**
      * Accept the policy.
      *
-     * @return void
+     * @return Term
      */
-    public function acceptPolicy($ipAddress = null): void
+    public function acceptPolicy($ipAddress = null): Term
     {
         $latestTerm = Term::latest()->first();
 
@@ -320,6 +320,8 @@ class User extends Authenticatable
             'account_id' => $this->account->id,
             'ip_address' => $ipAddress,
         ]]);
+
+        return $latestTerm;
     }
 
     /**

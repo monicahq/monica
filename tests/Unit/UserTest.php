@@ -292,6 +292,5 @@ class UserTest extends TestCase
             2,
             $collection->count()
         );
-        //$this->assertTrue($collection->contains('id', $expected->id));
     }
 }
