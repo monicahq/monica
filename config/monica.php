@@ -121,7 +121,7 @@ return [
     | CASL. Defaults to false, but if you do, it's at your own risk.
     |
     */
-    'policy_compliant' => env('POLICY_COMPLIANT', false),
+    'policy_compliant' => env('POLICY_COMPLIANT', true),
 
     /*
     |--------------------------------------------------------------------------
