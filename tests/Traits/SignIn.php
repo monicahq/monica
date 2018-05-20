@@ -2,8 +2,6 @@
 
 namespace Tests\Traits;
 
-use App\Account;
-
 trait SignIn
 {
     /**
