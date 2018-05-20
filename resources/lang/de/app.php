@@ -22,7 +22,7 @@ return [
     'with' => 'mit',
     'days' => 'Tag|Tage',
 
-    'application_title' => 'Monica - persönlicher Beziehungsmanager',
+    'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
