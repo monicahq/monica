@@ -12,7 +12,7 @@ xenial:
 package: build
 	rm -f monicahq-stable.box
 	vagrant box remove monicahq/monicahq --box-version 0 || true
-	vagrant package monicahq-stable --output ./monicahq-stable.box
+	vagrant package monicahq-stable --output ./monicahq-stable.box --vagrantfile ../Vagrantfile
 	vagrant box add monicahq/monicahq ./monicahq-stable.box
 
 upload:
