@@ -18,25 +18,10 @@ class RelationshipsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        // getting the list of existing contacts
-        $existingContacts = auth()->user()->account->contacts()
-                                        ->real()
-                                        ->select(['id', 'first_name', 'last_name'])
-                                        ->sortedBy('name')
-                                        ->get();
-
-        // Building the list of contacts specifically for the dropdown which asks
-        // for an id and a name. Also filter out the current contact.
-        $arrayContacts = collect();
-        foreach ($existingContacts as $existingContact) {
-            if ($existingContact->id == $contact->id) {
-                continue;
-            }
-            $arrayContacts->push([
-                'id' => $existingContact->id,
-                'name' => $existingContact->getCompleteName(),
-            ]);
-        }
+        // getting the amount of existing contacts
+        $existingContactCount = auth()->user()->account->contacts()
+            ->real()
+            ->count();
 
         // Building the list of relationship types specifically for the dropdown which asks
         // for an id and a name.
@@ -56,7 +41,7 @@ class RelationshipsController extends Controller
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdate(now()->format('Y-m-d'))
-            ->withExistingContacts($arrayContacts)
+            ->withExistingContactCount($existingContactCount)
             ->withType($request->get('type'));
     }
 

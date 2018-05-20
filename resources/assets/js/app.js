@@ -34,6 +34,12 @@ Vue.use(ToggleButton);
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
 
+// Autocompletes / TypeAHead
+Vue.component(
+    'add-exist-relationship-typeahead',
+    require('./components/autocomplete/AddExistRelationship.vue')
+);
+
 // Custom components
 Vue.component(
     'passport-clients',
