@@ -266,15 +266,6 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_sends_false_if_no_term_is_found_while_trying_to_accept_policy()
-    {
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $ipAddress = '12.12.12.12';
-
-        $this->assertFalse($user->acceptPolicy($ipAddress));
-    }
-
     public function test_it_gets_status_for_a_specific_compliance()
     {
         $user = factory(User::class)->create([]);

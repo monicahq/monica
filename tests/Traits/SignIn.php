@@ -2,6 +2,8 @@
 
 namespace Tests\Traits;
 
+use App\Account;
+
 trait SignIn
 {
     /**
@@ -16,6 +18,7 @@ trait SignIn
         if (is_null($user)) {
             $user = factory('App\User')->create();
             $user->account->populateDefaultFields($user->account);
+            $user->acceptPolicy();
         }
 
         $this->be($user);

@@ -35,12 +35,12 @@ class ApiComplianceControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertCount(
-            10,
+            Term::get()->count(),
             $response->decodeResponseJson()['data']
         );
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => Term::get()->count(),
             'current_page' => 1,
         ]);
 
