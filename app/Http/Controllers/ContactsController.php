@@ -31,16 +31,6 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $dateFlag = false;
-
-        $date_sort = null;
-
-        if (str_contains($sort, 'lastactivitydate')) {
-            $date_sort = str_after($sort, 'lastactivitydate');
-            $sort = 'firstnameAZ';
-            $dateFlag = true;
-        }
-
         $tags = null;
         $url = '';
         $count = 1;
@@ -59,7 +49,9 @@ class ContactsController extends Controller
                             ->where('account_id', auth()->user()->account_id)
                             ->get();
 
-                $tags = $tags->concat($tag);
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
+                }
 
                 $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
@@ -77,20 +69,8 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
-        if ($dateFlag) {
-            foreach ($contacts as $contact) {
-                $contact['sort_date'] = $contact->getLastActivityDate();
-            }
-
-            if ($date_sort == 'NewtoOld') {
-                $contacts = $contacts->sortByDesc('sort_date');
-            } elseif ($date_sort == 'OldtoNew') {
-                $contacts = $contacts->sortBy('sort_date');
-            }
-        }
-
         return view('people.index')
-            ->withContacts($contacts)
+            ->withContacts($contacts->unique('id'))
             ->withTags($tags)
             ->withUrl($url)
             ->withTagCount($count)
@@ -480,7 +460,13 @@ class ContactsController extends Controller
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
-                $results[$key]->hash = $result->hashID();
+                if ($result->is_partial) {
+                    $real = $result->getRelatedRealContact();
+
+                    $results[$key]->hash = $real->hashID();
+                } else {
+                    $results[$key]->hash = $result->hashID();
+                }
             }
 
             return $results;

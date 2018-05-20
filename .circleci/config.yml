@@ -1,6 +1,7 @@
 # CircleCI build for https://circleci.com/gh/monicahq/monica
-
 # Largely adapted, with the help of https://github.com/angular/angular/blob/master/.circleci/config.yml
+
+version: 2
 
 # Note: YAML anchors allow an object to be re-used, reducing duplication.
 # The ampersand declares an alias for an object, then later the `<<: *name`
@@ -9,143 +10,150 @@
 # To validate changes, use an online parser, eg.
 # http://yaml-online-parser.appspot.com/
 
+aliases:
 # Some variables
-var1: &composer_key composer-v2-{{ checksum "composer.lock" }}
-var2: &node_key node-v2-{{ checksum "yarn.lock" }}
-var3: &assets_key assets-v2-{{ .Revision }}
-var4: &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
-var5: &root ~/monica
+  - &composer_key composer-v2-{{ checksum "composer.lock" }}
+  - &node_key node-v2-{{ checksum "yarn.lock" }}
+  - &assets_key assets-v2-{{ .Revision }}
+  - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+  - &root ~/monica
 
 # Defaults env
-defaults: &defaults
-  working_directory: *root
+  - &defaults
+    working_directory: *root
 
 # After checkout, rebase on top of master.
 # Similar to travis behavior, but not quite the same.
 # See https://discuss.circleci.com/t/1662
-checkout0: &post_checkout
-  post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
+  - &post_checkout
+    post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
 
-command1: &install-extensions
-  run:
-    name: Install extensions
-    command: |
-      sudo apt-get update
-      sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev g++ mysql-client
-      sudo docker-php-ext-install -j$(nproc) zip intl bcmath gd pdo_mysql mysqli mbstring
-command2: &prepare-environment
-  run:
-    name: Prepare environment
-    command: |
-      mkdir -p results/coverage
-      cp scripts/tests/.env.mysql.travis .env
-command3: &update-chrome
-  run:
-    name: Install chrome
-    command: scripts/tests/install-chrome.sh
-command4: &wait-for-db
-  run:
-    name: Wait for DB
-    command: dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
-command5: &prepare-db
-  run:
-    name: Prepare database
-    command: |
-      php artisan migrate --env=testing --no-interaction -vvv
-      php artisan db:seed --env=testing --no-interaction -vvv
-command6: &http-server
-  run:
-    name: Run http server
-    command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
-    background: true
-command7: &wait-for-server
-  run:
-    name: Wait for http server
-    command: dockerize -wait tcp://localhost:8000 -timeout 60s
-command8: &unit-tests
-  run:
-    name: Run unit tests
-    command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
-command9: &psalm
-  run:
-    name: Run psalm
-    command: vendor/bin/psalm --show-info=false
-command10: &browser-tests
-  run:
-    name: Run unit tests
-    command: php artisan dusk --log-junit results/junit2.xml
-command11: &fix-coverage
-  run:
-    name: Fix coverage
-    command: |
-      vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-      rm -rf results/coverage
-command12: &selenium
-  run:
-    name: Run selenium chromedriver
-    command: vendor/bin/chromedriver
-    background: true
-command13: &remove-xdebug
-  run:
-    name: Remove xdebug
-    command: |
-      sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-command14: &docker-install
-  run:
-    name: Install docker_squash
-    command: |
-      sudo apt-get update
-      sudo apt-get install -y python-pip
-      pip install docker-squash "docker < 3"
-command15: &docker-build
-  run:
-    name: Make docker image
-    command: |
-      docker-compose --version
-      make docker_build
-      make docker_squash
-command16: &docker-push-bintray
-  run:
-    name: Publish docker image
-    command: |
-      echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-      make docker_push_bintray
-
-
-restore_cache1: &restore_composer
-  restore_cache:
-    keys:
-      - *composer_key
-      - composer-v2-
-restore_cache2: &restore_node
-  restore_cache:
-    keys:
-      - *node_key
-      - node-v2-
-restore_cache3: &restore_assets
-  restore_cache:
-    keys:
-      - *assets_key
-      - assets-v2-
+  - &install-extensions
+    run:
+      name: Install php extensions
+      command: |
+        sudo apt-get update
+        sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev
+        sudo docker-php-ext-install -j$(nproc) zip intl json iconv bcmath gd pdo_mysql mysqli mbstring
+        tar cvjf php-extensions-${PHP_VERSION}.tar.bz2 --exclude opcache.a --exclude opcache.so --exclude sodium.a --exclude sodium.so --exclude xdebug.so $(php-config --extension-dir) /usr/local/etc/php/conf.d
+  - &prepare-environment
+    run:
+      name: Prepare environment
+      command: |
+        mkdir -p results/coverage
+        cp scripts/tests/.env.mysql.travis .env
+        sudo apt-get update
+        sudo apt-get install -y mysql-client
+  - &update-chrome
+    run:
+      name: Install chrome
+      command: scripts/tests/install-chrome.sh
+  - &wait-for-db
+    run:
+      name: Wait for DB
+      command: dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
+  - &prepare-db
+    run:
+      name: Prepare database
+      command: |
+        php artisan migrate --env=testing --no-interaction -vvv
+        php artisan db:seed --env=testing --no-interaction -vvv
+  - &http-server
+    run:
+      name: Run http server
+      command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+      background: true
+  - &wait-for-server
+    run:
+      name: Wait for http server
+      command: dockerize -wait tcp://localhost:8000 -timeout 60s
+  - &unit-tests
+    run:
+      name: Run unit tests
+      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
+  - &psalm
+    run:
+      name: Run psalm
+      command: vendor/bin/psalm --show-info=false
+  - &browser-tests
+    run:
+      name: Run unit tests
+      command: php artisan dusk --log-junit results/junit2.xml
+  - &fix-coverage
+    run:
+      name: Fix coverage
+      command: |
+        vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        rm -rf results/coverage
+  - &selenium
+    run:
+      name: Run selenium chromedriver
+      command: vendor/bin/chromedriver
+      background: true
+  - &remove-xdebug
+    run:
+      name: Remove xdebug
+      command: |
+        sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+  - &docker-install
+    run:
+      name: Install docker_squash
+      command: |
+        sudo apt-get update
+        sudo apt-get install -y python-pip
+        pip install docker-squash "docker < 3"
+  - &docker-build
+    run:
+      name: Make docker image
+      command: |
+        docker-compose --version
+        make docker_build
+        make docker_squash
+  - &docker-push-bintray
+    run:
+      name: Publish docker image
+      command: |
+        echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+        make docker_push_bintray
 
 
-version: 2
+  - &restore_composer
+    restore_cache:
+      keys:
+        - *composer_key
+        - composer-v2-
+  - &restore_node
+    restore_cache:
+      keys:
+        - *node_key
+        - node-v2-
+  - &restore_assets
+    restore_cache:
+      keys:
+        - *assets_key
+        - assets-v2-
+  - &restore_phpextensions
+    run:
+      name: Extract php extensions
+      command: sudo tar xvjf php-extensions-${PHP_VERSION}.tar.bz2 --directory=/ --overwrite
+
+
 jobs:
   build:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1-node
+      - image: circleci/php:7.2-node
 
     steps:
       - checkout:
           <<: *post_checkout
-      - run:
-          name: Install extensions
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y libicu-dev g++
-            sudo docker-php-ext-install intl json iconv
       - *prepare-environment
+
+      - *install-extensions
+      - persist_to_workspace:
+          root: *root
+          paths: php-extensions*
+
       - run:
           name: Prepare environment
           command: |
@@ -186,37 +194,6 @@ jobs:
             - public/fonts
             - public/js
 
-  tests-7.1:
-    <<: *defaults
-    docker:
-      - image: circleci/php:7.1-node-browsers
-      - image: circleci/mysql:5.7-ram
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
-
-    steps:
-      - checkout:
-          <<: *post_checkout
-      - *install-extensions
-      - *prepare-environment
-      - *remove-xdebug
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
-      - *wait-for-db
-      - *prepare-db
-      - *unit-tests
-      - *psalm
-      - store_test_results:
-          path: results
-      - store_artifacts:
-          path: results
-      - persist_to_workspace:
-          root: *root
-          paths: results
-
   tests-7.2:
     <<: *defaults
     docker:
@@ -230,8 +207,10 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
-      - *install-extensions
+      - attach_workspace:
+          at: *root
       - *prepare-environment
+      - *restore_phpextensions
       - *remove-xdebug
       - *restore_composer
       - *restore_node
@@ -244,39 +223,6 @@ jobs:
           path: results
       - store_artifacts:
           path: results
-
-  tests-browser-7.1:
-    <<: *defaults
-    docker:
-      - image: circleci/php:7.1-node-browsers
-      - image: circleci/mysql:5.7-ram
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
-
-    steps:
-      - checkout:
-          <<: *post_checkout
-      - *install-extensions
-      - *prepare-environment
-      - *update-chrome
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
-      - *wait-for-db
-      - *prepare-db
-      - *selenium
-      - *http-server
-      - *wait-for-server
-      - *browser-tests
-      - *fix-coverage
-      - store_test_results:
-          path: results
-      - store_artifacts:
-          path: results
-      - store_artifacts:
-          path: tests/Browser/screenshots
       - persist_to_workspace:
           root: *root
           paths: results
@@ -294,8 +240,10 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
-      - *install-extensions
+      - attach_workspace:
+          at: *root
       - *prepare-environment
+      - *restore_phpextensions
       - *update-chrome
       - *restore_composer
       - *restore_node
@@ -313,11 +261,14 @@ jobs:
           path: results
       - store_artifacts:
           path: tests/Browser/screenshots
+      - persist_to_workspace:
+          root: *root
+          paths: results
 
   reporting:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1-node
+      - image: circleci/php:7.2-node
 
     steps:
       - checkout:
@@ -344,7 +295,7 @@ jobs:
   deploy-assets:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.2
 
     steps:
       - checkout:
@@ -358,7 +309,7 @@ jobs:
   deploy-dist:
     <<: *defaults
     docker:
-      - image: circleci/php:7.1
+      - image: circleci/php:7.2
 
     steps:
       - checkout:
@@ -395,6 +346,7 @@ jobs:
           name: Publish docker image
           command: |
             echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_tag
             make docker_push
 
 workflows:
@@ -407,23 +359,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-7.1:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /l10n_master.*/
-            tags:
-              only: /.*/
       - tests-7.2:
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /l10n_master.*/
-            tags:
-              only: /.*/
-      - tests-browser-7.1:
           requires:
             - build
           filters:
@@ -441,9 +377,7 @@ workflows:
               only: /.*/
       - reporting:
           requires:
-            - tests-7.1
             - tests-7.2
-            - tests-browser-7.1
             - tests-browser-7.2
           filters:
             branches:

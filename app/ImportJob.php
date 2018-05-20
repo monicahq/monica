@@ -24,6 +24,9 @@ class ImportJob extends Model
     const ERROR_CONTACT_EXIST = 'import_vcard_contact_exist';
     const ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME = 'import_vcard_contact_no_firstname';
 
+    const BEHAVIOUR_ADD = 'behaviour_add';
+    const BEHAVIOUR_REPLACE = 'behaviour_replace';
+
     protected $table = 'import_jobs';
 
     /**
@@ -113,7 +116,7 @@ class ImportJob extends Model
      *
      * @return [type] [description]
      */
-    public function process()
+    public function process($behaviour = self::BEHAVIOUR_ADD)
     {
         $this->initJob();
 
@@ -123,7 +126,7 @@ class ImportJob extends Model
 
         $this->getSpecialGender();
 
-        $this->processEntries();
+        $this->processEntries($behaviour);
 
         $this->deletePhysicalFile();
 
@@ -138,6 +141,8 @@ class ImportJob extends Model
     public function initJob(): void
     {
         $this->started_at = now();
+        $this->contacts_imported = 0;
+        $this->contacts_skipped = 0;
         $this->save();
     }
 
@@ -234,13 +239,13 @@ class ImportJob extends Model
      *
      * @return
      */
-    public function processEntries()
+    public function processEntries($behaviour = self::BEHAVIOUR_ADD)
     {
         collect($this->entries[0])->map(function ($vcard) {
             return Reader::read($vcard);
-        })->each(function (VCard $vCard) {
+        })->each(function (VCard $vCard) use ($behaviour) {
             $this->currentEntry = $vCard;
-            $this->processSingleEntry();
+            $this->processSingleEntry($behaviour);
         });
     }
 
@@ -250,7 +255,7 @@ class ImportJob extends Model
      * @param  VCard  $vCard
      * @return [type]        [description]
      */
-    public function processSingleEntry()
+    public function processSingleEntry($behaviour = self::BEHAVIOUR_ADD)
     {
         if (! $this->checkImportFeasibility()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
@@ -258,13 +263,14 @@ class ImportJob extends Model
             return;
         }
 
-        if ($this->contactExists()) {
+        $contact = $this->existingContact();
+        if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             $this->skipEntry(self::ERROR_CONTACT_EXIST);
 
             return;
         }
 
-        $this->createContactFromCurrentEntry();
+        $this->createContactFromCurrentEntry($contact);
     }
 
     /**
@@ -309,18 +315,18 @@ class ImportJob extends Model
     /**
      * Check whether the contact already exists in the database.
      *
-     * @return bool
+     * @return Contact|null
      */
-    public function contactExists(): bool
+    public function existingContact()
     {
         if (is_null($this->currentEntry->EMAIL)) {
-            return false;
+            return;
         }
 
         $email = (string) $this->currentEntry->EMAIL;
 
-        if ($this->isValidEmail($email) == false) {
-            return false;
+        if (! $this->isValidEmail($email)) {
+            return;
         }
 
         $contactFieldType = \App\ContactFieldType::where([
@@ -328,17 +334,16 @@ class ImportJob extends Model
             ['type', 'email'],
         ])->first();
 
-        $contactField = null;
-
         if ($contactFieldType) {
             $contactField = \App\ContactField::where([
                 ['account_id', $this->account_id],
-                ['data', $email],
                 ['contact_field_type_id', $contactFieldType->id],
-            ])->first();
-        }
+            ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
 
-        return $email && $contactField;
+            if ($contactField) {
+                return $contactField->contact;
+            }
+        }
     }
 
     /**
@@ -398,12 +403,14 @@ class ImportJob extends Model
      *
      * @return Contact
      */
-    public function createContactFromCurrentEntry()
+    public function createContactFromCurrentEntry($contact = null)
     {
-        $contact = new \App\Contact;
-        $contact->account_id = $this->account_id;
-        $contact->gender_id = $this->gender->id;
-        $contact->save();
+        if (! $contact) {
+            $contact = new \App\Contact;
+            $contact->account_id = $this->account_id;
+            $contact->gender_id = $this->gender->id;
+            $contact->save();
+        }
 
         $this->importNames($contact);
         $this->importWorkInformation($contact);
@@ -481,21 +488,17 @@ class ImportJob extends Model
             return;
         }
 
-        $address = new \App\Address();
-        $address->street = $this->formatValue($this->currentEntry->ADR->getParts()[2]);
-        $address->city = $this->formatValue($this->currentEntry->ADR->getParts()[3]);
-        $address->province = $this->formatValue($this->currentEntry->ADR->getParts()[4]);
-        $address->postal_code = $this->formatValue($this->currentEntry->ADR->getParts()[5]);
-
-        $iso = CountriesHelper::find($this->currentEntry->ADR->getParts()[6]);
-
-        if ($iso) {
-            $address->country = $iso;
+        foreach ($this->currentEntry->ADR as $adr) {
+            Address::firstOrCreate([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'street' => $this->formatValue($adr->getParts()[2]),
+                'city' => $this->formatValue($adr->getParts()[3]),
+                'province' => $this->formatValue($adr->getParts()[4]),
+                'postal_code' => $this->formatValue($adr->getParts()[5]),
+                'country' => CountriesHelper::find($adr->getParts()[6]),
+            ]);
         }
-
-        $address->contact_id = $contact->id;
-        $address->account_id = $contact->account_id;
-        $address->save();
     }
 
     /**
@@ -508,13 +511,15 @@ class ImportJob extends Model
             return;
         }
 
-        if ($this->isValidEmail($this->currentEntry->EMAIL)) {
-            $contactField = new \App\ContactField;
-            $contactField->contact_id = $contact->id;
-            $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($this->currentEntry->EMAIL);
-            $contactField->contact_field_type_id = $this->contactFieldEmailId();
-            $contactField->save();
+        foreach ($this->currentEntry->EMAIL as $email) {
+            if ($this->isValidEmail($email)) {
+                ContactField::firstOrCreate([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'data' => $this->formatValue($email),
+                    'contact_field_type_id' => $this->contactFieldEmailId(),
+                ]);
+            }
         }
     }
 
@@ -524,13 +529,17 @@ class ImportJob extends Model
      */
     public function importTel(\App\Contact $contact): void
     {
-        if (! is_null($this->formatValue($this->currentEntry->TEL))) {
-            $contactField = new \App\ContactField;
-            $contactField->contact_id = $contact->id;
-            $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($this->currentEntry->TEL);
-            $contactField->contact_field_type_id = $this->contactFieldPhoneId();
-            $contactField->save();
+        if (is_null($this->currentEntry->TEL)) {
+            return;
+        }
+
+        foreach ($this->currentEntry->TEL as $tel) {
+            ContactField::firstOrCreate([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'data' => $this->formatValue($tel),
+                'contact_field_type_id' => $this->contactFieldPhoneId(),
+            ]);
         }
     }
 
