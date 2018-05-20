@@ -341,32 +341,42 @@ class FakeContentTableSeeder extends Seeder
     public function populateContactFields()
     {
         if (rand(1, 3) == 1) {
-            for ($j = 0; $j < rand(1, 4); $j++) {
-                $type = rand(1, 6);
+
+            // Fetch number of types
+            $numberOfTypes = \App\ContactFieldType::count();
+
+            for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
+                // Retrieve random ContactFieldType
+                $contactFieldType = \App\ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                // Fake data according to type
                 $data = null;
-                switch ($type) {
-                    case 1: // Email
+                switch ($contactFieldType->name) {
+                    case 'Email':
                         $data = $this->faker->email;
                     break;
-                    case 2: // Phone
+                    case 'Phone':
                         $data = $this->faker->phoneNumber;
                     break;
-                    case 3: // Facebook
+                    case 'Facebook':
                         $data = 'https://facebook.com/'.$this->faker->userName;
                     break;
-                    case 4: // Twitter
+                    case 'Twitter':
                         $data = 'https://twitter.com/'.$this->faker->userName;
                     break;
-                    case 5: // Whatsapp
+                    case 'Whatsapp':
                         $data = $this->faker->phoneNumber;
                     break;
-                    case 6: // Telegram
+                    case 'Telegram':
                         $data = $this->faker->phoneNumber;
+                    break;
+                    default:
+                        $data = $this->faker->url;
                     break;
                 }
 
                 $contactField = $this->contact->contactFields()->create([
-                    'contact_field_type_id' => $type,
+                    'contact_field_type_id' => $contactFieldType->id,
                     'data' => $data,
                     'account_id' => $this->contact->account->id,
                 ]);
