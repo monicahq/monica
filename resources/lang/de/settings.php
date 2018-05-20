@@ -115,7 +115,7 @@ return [
     'subscriptions_account_free_plan_benefits_import_data_vcard' => 'Importiere Kontakte über vCards',
     'subscriptions_account_free_plan_benefits_support' => 'Du unterstützt das Projekt auf lange Sicht, so dass wir mehr großartige Features umsetzen können.',
     'subscriptions_account_upgrade' => 'Konto upgraden',
-    'subscriptions_account_upgrade_title' => 'Upgrade Monica today and have more meaningful relationships.',
+    'subscriptions_account_upgrade_title' => 'Upgrade Monica heute und mache deine persönlichen Beziehungen gehaltvoller.',
     'subscriptions_account_upgrade_choice' => 'Wähle eines der Abos und schließe dich :customers Personen an, die bereits die Premium-Version von Monica nutzen.',
     'subscriptions_account_invoices' => 'Rechnungen',
     'subscriptions_account_invoices_download' => 'Herunterladen',
