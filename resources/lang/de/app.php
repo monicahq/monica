@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'update' => 'Ändern',
+    'update' => 'Aktualisieren',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
@@ -22,7 +22,7 @@ return [
     'with' => 'mit',
     'days' => 'Tag|Tage',
 
-    'application_title' => 'Monica - persönlicher Beziehungsmanager',
+    'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
@@ -83,6 +83,11 @@ return [
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
+
+    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_desc' => 'We have changed our <a href="https://monicahq.com/terms">terms of use</a> and <a href="https://monicahq.com/privacy">privacy policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -216,4 +221,9 @@ return [
     'relationship_type_protege_female' => 'Schützling',
     'relationship_type_protege_with_name' => ':name\'s Schützling',
     'relationship_type_protege_female_with_name' => ':name\'s Schützling',
+
+    'relationship_type_ex_husband' => 'Ex-Mann',
+    'relationship_type_ex_husband_female' => 'Ex-Frau',
+    'relationship_type_ex_husband_with_name' => ':name’s Ex-Mann',
+    'relationship_type_ex_husband_female_with_name' => ':name’s Ex-Frau',
 ];

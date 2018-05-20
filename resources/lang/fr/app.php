@@ -84,6 +84,11 @@ return [
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
+    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_desc' => 'We have changed our <a href="https://monicahq.com/terms">terms of use</a> and <a href="https://monicahq.com/privacy">privacy policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_terms' => 'Accept new terms and privacy policy',
+
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
     // This is because we need to indicate the name of the relationship type,
@@ -216,4 +221,9 @@ return [
     'relationship_type_protege_female' => 'protégée',
     'relationship_type_protege_with_name' => 'protégé de :name',
     'relationship_type_protege_female_with_name' => 'protégée de :name',
+
+    'relationship_type_ex_husband' => 'ex-mari',
+    'relationship_type_ex_husband_female' => 'ex-femme',
+    'relationship_type_ex_husband_with_name' => 'ex-mari de :name',
+    'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
 ];
