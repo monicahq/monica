@@ -33,6 +33,7 @@ class Kernel extends HttpKernel
             'bindings',
             'locale',
             \App\Http\Middleware\CheckVersion::class,
+            \App\Http\Middleware\CheckCompliance::class,
         ],
 
         'api' => [

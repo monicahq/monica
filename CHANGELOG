@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add User and Currency support in the API
+* Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
 * Fixes Contact search dropdown shows non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts

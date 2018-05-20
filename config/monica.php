@@ -114,6 +114,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Compliance to various international policies.
+    |--------------------------------------------------------------------------
+    |
+    | Indicates whether we should comply to international policies like GDPR or
+    | CASL. Defaults to false, but if you do, it's at your own risk.
+    |
+    */
+    'policy_compliant' => env('POLICY_COMPLIANT', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Specific to the official Monica mobile application
     |--------------------------------------------------------------------------
     |
