@@ -176,9 +176,6 @@
                     <span class="number-contacts-per-tag {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
-                <li class="f7 mt3">
-                  <a href="">View untagged contacts</a>
-                </li>
               @endforeach
                 <li class="f7 mt3">
                     <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
