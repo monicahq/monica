@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'Inserire una password sicura',
     'register_password_confirmation' => 'Conferma password',
     'register_action' => 'Registrati',
-    'register_policy' => 'Registrarsi significa hai letto e sei d\'accordo con la nostra</a> informativa sulla privacy<a href=":url" hreflang=":hreflang">.',
+    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
     'register_invitation_email' => 'Per ragioni di sicurezza, inserisci l\'indirizzo email della persona che ti ha invitato. Trovi questa informazione nella mail di invito.',
 
 ];
