@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'update' => 'Ändern',
+    'update' => 'Aktualisieren',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
