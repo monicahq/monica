@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Settings;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use App\Http\Controllers\Api\ApiController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class ApiComplianceController extends ApiController
@@ -29,7 +30,7 @@ class ApiComplianceController extends ApiController
     public function show(Request $request, $termId)
     {
         try {
-            $term = Term::where('term_version', $termId)
+            $term = Term::where('id', $termId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

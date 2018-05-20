@@ -309,11 +309,15 @@ class User extends Authenticatable
     /**
      * Accept the policy.
      *
-     * @return Term
+     * @return Term|bool
      */
-    public function acceptPolicy($ipAddress = null): Term
+    public function acceptPolicy($ipAddress = null)
     {
         $latestTerm = Term::latest()->first();
+
+        if (! $latestTerm) {
+            return false;
+        }
 
         $this->terms()->syncWithoutDetaching([$latestTerm->id => [
             'account_id' => $this->account->id,

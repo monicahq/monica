@@ -44,17 +44,14 @@ class ApiComplianceControllerTest extends ApiTestCase
             'current_page' => 1,
         ]);
 
-        $response->assertJsonFragment([
-            'id' => $contactField->id,
-            'object' => 'contactfield',
-        ]);
-
         $response->assertJsonStructure([
-            'data' => $this->jsonStructureCompliance,
+            'data' => [
+                '*' => $this->jsonStructureCompliance,
+            ],
         ]);
     }
 
-    public function it_gets_a_single_term()
+    public function test_it_gets_a_single_term()
     {
         $term = factory(Term::class)->create([
             'term_version' => rand(1, 100),
@@ -68,12 +65,24 @@ class ApiComplianceControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'id' => $termId->id,
+            'id' => $term->id,
             'object' => 'term',
         ]);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureCompliance,
+        ]);
+    }
+
+    public function test_it_doesnt_get_a_single_term()
+    {
+        $response = $this->json('GET', '/api/compliance/3');
+
+        $response->assertStatus(404);
+
+        $response->assertJsonFragment([
+            'message' => 'The resource has not been found',
+            'error_code' => 31,
         ]);
     }
 }
