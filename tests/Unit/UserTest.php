@@ -230,7 +230,7 @@ class UserTest extends TestCase
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
 
-        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($user->isPolicyCompliant());
     }
@@ -241,10 +241,12 @@ class UserTest extends TestCase
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
 
-        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
+        $user->terms()->syncWithoutDetaching([$term->id => ['account_id' => $account->id]]);
 
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
+        // need to sleep, otherwise the creation date of the two terms are
+        // identical
+        sleep(1);
+        $term2 = factory(Term::class)->create([]);
 
         $this->assertFalse($user->isPolicyCompliant());
     }

@@ -95,7 +95,7 @@ class User extends Authenticatable
      */
     public function terms()
     {
-        return $this->belongsToMany(Term::class)->withTimestamps();
+        return $this->belongsToMany(Term::class)->withPivot('ip_address')->withTimestamps();
     }
 
     /**
@@ -297,17 +297,16 @@ class User extends Authenticatable
     public function isPolicyCompliant(): bool
     {
         $latestTerm = Term::latest()->first();
-        $lastAcceptedTerm = $this->terms()->latest()->first();
 
-        if (! $lastAcceptedTerm) {
+        if ($this->getStatusForCompliance($latestTerm->id) == false) {
             return false;
         }
 
-        return $latestTerm->id === $lastAcceptedTerm->id;
+        return true;
     }
 
     /**
-     * Accept the policy.
+     * Accept latest policy.
      *
      * @return Term|bool
      */
@@ -337,6 +336,7 @@ class User extends Authenticatable
     {
         // @TODO: use eloquent to do this instead
         $termUser = DB::table('term_user')->where('user_id', $this->id)
+                                            ->where('account_id', $this->account_id)
                                             ->where('term_id', $termId)
                                             ->first();
 
