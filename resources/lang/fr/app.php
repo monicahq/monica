@@ -219,6 +219,6 @@ return [
 
     'relationship_type_ex_husband' => 'ex-mari',
     'relationship_type_ex_husband_female' => 'ex-femme',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband_with_name' => 'ex-mari de :name',
+    'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
 ];
