@@ -59,7 +59,7 @@
               <div class="form-check">
                 <label class="form-check-label">
                   <input class="form-check-input" id="policy" name="policy" type="checkbox" value="polict">
-                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
+                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'urlterm' => 'https://monicahq.com/terms', 'hreflang' => 'en', ]) !!}
                 </label>
               </div>
 

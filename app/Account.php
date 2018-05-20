@@ -535,13 +535,15 @@ class Account extends Model
 
             $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
-            RelationshipType::create([
-                'account_id' => $this->id,
-                'name' => $defaultRelationshipType->name,
-                'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                'relationship_type_group_id' => $relationshipTypeGroup->id,
-                'delible' => $defaultRelationshipType->delible,
-            ]);
+            if ($relationshipTypeGroup) {
+                RelationshipType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipType->name,
+                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                    'relationship_type_group_id' => $relationshipTypeGroup->id,
+                    'delible' => $defaultRelationshipType->delible,
+                ]);
+            }
         }
     }
 
