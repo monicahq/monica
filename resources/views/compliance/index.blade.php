@@ -1,16 +1,16 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <section class="ph3 ph0-ns">
+  <section class="ph3 ph0-ns mt4">
 
-    <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
-      <p>Sorry for the interruption.</p>
-      <p>We have changed our terms of use and privacy policy.</p>
-      <p>Please take some time to review them and either accept them or reject them below.</p>
-      <p>If you reject them, you won't be able to use your account anymore. In that case, click here to export your data.</p>
-      <form action="/compliance/sign" method="POST">
+    <div class="mw7 center br3 ba b--gray-monica bg-white mb5 pa5">
+      <h2 class="mb4">{{ trans('app.compliance_title') }}</h2>
+      <p>{!! trans('app.compliance_desc') !!}</p>
+      <p>{{ trans('app.compliance_desc_end') }}</p>
+
+      <form action="/compliance/sign" method="POST" class="tc mt4">
         {{ csrf_field() }}
-        <button class="btn btn-primary" name="save" type="submit">Accept policy</button>
+        <button class="btn btn-primary" name="save" type="submit">{{ trans('app.compliance_terms') }}</button>
       </form>
     </div>
   </div>
