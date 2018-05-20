@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Currency;
+use App\Models\Settings\Currency;
 
 class MoneyHelper
 {

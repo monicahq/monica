@@ -545,13 +545,15 @@ class Account extends Model
 
             $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
-            RelationshipType::create([
-                'account_id' => $this->id,
-                'name' => $defaultRelationshipType->name,
-                'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                'relationship_type_group_id' => $relationshipTypeGroup->id,
-                'delible' => $defaultRelationshipType->delible,
-            ]);
+            if ($relationshipTypeGroup) {
+                RelationshipType::create([
+                    'account_id' => $this->id,
+                    'name' => $defaultRelationshipType->name,
+                    'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
+                    'relationship_type_group_id' => $relationshipTypeGroup->id,
+                    'delible' => $defaultRelationshipType->delible,
+                ]);
+            }
         }
     }
 
@@ -654,9 +656,10 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
+     * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create new account
         $account = new self;
@@ -667,7 +670,7 @@ class Account extends Model
         $account->populateDefaultFields($account);
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
 
         return $account;
     }

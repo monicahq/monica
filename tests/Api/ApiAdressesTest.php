@@ -3,9 +3,12 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiAdressesTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     public function test_address_get_contacts()
     {
         $user = $this->signin();
