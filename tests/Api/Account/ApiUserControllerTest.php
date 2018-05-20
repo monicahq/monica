@@ -136,7 +136,7 @@ class ApiUserControllerTest extends ApiTestCase
         $user->terms()->syncWithoutDetaching([$term2->id => ['account_id' => $user->account_id]]);
 
         $params = [
-            'ip_address' => '128.3.1.2'
+            'ip_address' => '128.3.1.2',
         ];
 
         $response = $this->json('POST', '/api/me/compliance', $params);

@@ -3,7 +3,6 @@
 namespace App;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -293,7 +292,7 @@ class User extends Authenticatable
     /**
      * Indicate if the user has accepted the most current terms and privacy.
      *
-     * @return boolean
+     * @return bool
      */
     public function isPolicyCompliant(): bool
     {
@@ -366,7 +365,7 @@ class User extends Authenticatable
 
         foreach ($termsUser as $termUser) {
             $terms->push([
-                $this->getStatusForCompliance($termUser->term_id)
+                $this->getStatusForCompliance($termUser->term_id),
             ]);
         }
 

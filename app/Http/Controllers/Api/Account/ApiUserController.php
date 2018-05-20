@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Api\Account;
 use App\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
-use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class ApiUserController extends ApiController
 {
@@ -42,7 +39,7 @@ class ApiUserController extends ApiController
         }
 
         return $this->respond([
-            'data' => $userCompliance
+            'data' => $userCompliance,
         ]);
     }
 
@@ -57,7 +54,7 @@ class ApiUserController extends ApiController
         $terms = auth()->user()->getAllCompliances();
 
         return $this->respond([
-            'data' => $terms
+            'data' => $terms,
         ]);
     }
 
@@ -88,7 +85,7 @@ class ApiUserController extends ApiController
         $userCompliance = auth()->user()->getStatusForCompliance($term->id);
 
         return $this->respond([
-            'data' => $userCompliance
+            'data' => $userCompliance,
         ]);
     }
 }

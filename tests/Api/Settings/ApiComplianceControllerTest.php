@@ -24,9 +24,9 @@ class ApiComplianceControllerTest extends ApiTestCase
     public function test_it_gets_a_list_of_terms()
     {
         $term = factory(Term::class, 10)->create([
-            'term_version' => rand(1,100),
+            'term_version' => rand(1, 100),
             'term_content' => 'dummy data',
-            'privacy_version' => rand(1,100),
+            'privacy_version' => rand(1, 100),
             'privacy_content' => 'dummy data',
         ]);
 
@@ -57,9 +57,9 @@ class ApiComplianceControllerTest extends ApiTestCase
     public function it_gets_a_single_term()
     {
         $term = factory(Term::class)->create([
-            'term_version' => rand(1,100),
+            'term_version' => rand(1, 100),
             'term_content' => 'dummy data',
-            'privacy_version' => rand(1,100),
+            'privacy_version' => rand(1, 100),
             'privacy_content' => 'dummy data',
         ]);
 
