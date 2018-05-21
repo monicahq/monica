@@ -18,6 +18,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
@@ -39,6 +40,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
@@ -59,6 +61,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
@@ -81,6 +84,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
