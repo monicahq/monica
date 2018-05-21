@@ -542,7 +542,7 @@ class Contact extends Model
                 }
 
                 if (! is_null($this->nickname)) {
-                    $completeName = $completeName . ' ('.$this->nickname . ')';
+                    $completeName = $completeName.' ('.$this->nickname.')';
                 }
                 break;
             case 'firstname_nickname_lastname':
@@ -553,7 +553,7 @@ class Contact extends Model
                 }
 
                 if (! is_null($this->nickname)) {
-                    $completeName = $completeName . ' ('.$this->nickname . ')';
+                    $completeName = $completeName.' ('.$this->nickname.')';
                 }
 
                 if (! is_null($this->last_name)) {
@@ -574,7 +574,7 @@ class Contact extends Model
                 }
 
                 if (! is_null($this->nickname)) {
-                    $completeName = $completeName . ' ('.$this->nickname . ')';
+                    $completeName = $completeName.' ('.$this->nickname.')';
                 }
                 break;
             case 'lastname_nickname_firstname':
@@ -584,7 +584,7 @@ class Contact extends Model
                 }
 
                 if (! is_null($this->nickname)) {
-                    $completeName = $completeName . ' ('.$this->nickname . ')';
+                    $completeName = $completeName.' ('.$this->nickname.')';
                 }
 
                 $completeName = $completeName.' '.$this->first_name;
