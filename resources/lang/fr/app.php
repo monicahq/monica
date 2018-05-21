@@ -85,7 +85,7 @@ return [
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
     'compliance_title' => 'Désolé pour l’interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc' => 'Nous avons changé nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a> et notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a>. Nous devons vous demander de les consulter et les accepter si vous voulez continuer à utiliser votre compte.',
     'compliance_desc_end' => 'Nous ne faisons rien de méchant avec vos données ou votre compte et nous ne le ferons jamais.',
     'compliance_terms' => 'Accepter les nouvelles conditions et politique de confidentialité',
 
