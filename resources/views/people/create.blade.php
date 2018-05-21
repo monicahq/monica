@@ -26,7 +26,7 @@
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
-        @if (auth()->user()->name_order == 'firstname_first')
+        @if (auth()->user()->name_order == 'firstname_lastname')
 
         <div class="mb3">
           <form-input
