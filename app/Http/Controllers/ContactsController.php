@@ -134,7 +134,7 @@ class ContactsController extends Controller
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
