@@ -83,8 +83,13 @@
               <div class="form-group">
                 <label for="name_order">{{ trans('settings.name_order') }}</label>
                 <select name="name_order" class="form-control">
-                  <option value="firstname_first" {{ (auth()->user()->name_order == 'firstname_first')?'selected':'' }}>{{ trans('settings.name_order_firstname_first') }}</option>
-                  <option value="lastname_first" {{ (auth()->user()->name_order == 'lastname_first')?'selected':'' }}>{{ trans('settings.name_order_lastname_first') }}</option>
+                  <option value="firstname_lastname" {{ (auth()->user()->name_order == 'firstname_lastname')?'selected':'' }}>{{ trans('settings.name_order_firstname_lastname') }}</option>
+                  <option value="lastname_firstname" {{ (auth()->user()->name_order == 'lastname_firstname')?'selected':'' }}>{{ trans('settings.name_order_lastname_firstname') }}</option>
+                  <option value="firstname_lastname_nickname" {{ (auth()->user()->name_order == 'firstname_lastname_nickname')?'selected':'' }}>{{ trans('settings.name_order_firstname_lastname_nickname') }}</option>
+                  <option value="firstname_nickname_lastname" {{ (auth()->user()->name_order == 'firstname_nickname_lastname')?'selected':'' }}>{{ trans('settings.name_order_firstname_nickname_lastname') }}</option>
+                  <option value="lastname_firstname_nickname" {{ (auth()->user()->name_order == 'lastname_firstname_nickname')?'selected':'' }}>{{ trans('settings.name_order_lastname_firstname_nickname') }}</option>
+                  <option value="lastname_nickname_firstname" {{ (auth()->user()->name_order == 'lastname_nickname_firstname')?'selected':'' }}>{{ trans('settings.name_order_lastname_nickname_firstname') }}</option>
+                  <option value="nickname" {{ (auth()->user()->name_order == 'nickname')?'selected':'' }}>{{ trans('settings.name_order_nickname') }}</option>
                 </select>
               </div>
 
