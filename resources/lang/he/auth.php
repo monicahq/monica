@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'נא להקליד ססמה מאובטחת',
     'register_password_confirmation' => 'אימות ססמה',
     'register_action' => 'רישום',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
+    'register_policy' => 'הרשמה מאמתת שקראת והסכמת ל<a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> ול<a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> שלנו.',
     'register_invitation_email' => 'מטעמי אבטחה, נא לציין את כתובת הדוא״ל של מי שהזמין אותך להצטרף לחשבון הזה. המידע הזה מופיע בהודעת ההזמנה.',
 
 ];
