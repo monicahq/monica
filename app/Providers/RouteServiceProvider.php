@@ -19,11 +19,14 @@ use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    use DetectsApplicationNamespace;
+
     /**
      * This namespace is applied to your controller routes.
      *
@@ -31,7 +34,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'App\Http\Controllers';
+    protected function getNamespace() {
+        return $this->getAppNamespace() . 'Http\Controllers';
+    }
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -173,7 +178,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes($router);
 
         $this->mapOAuthRoutes($router);
-        //
+        
+        $this->mapSpecialRoutes($router);
     }
 
     /**
@@ -188,7 +194,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'middleware' => 'web',
-            'namespace' => $this->namespace,
+            'namespace' => $this->getNamespace(),
         ], function ($router) {
             require base_path('routes/web.php');
         });
@@ -204,7 +210,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'prefix' => 'oauth',
-            'namespace' => $this->namespace,
+            'namespace' => $this->getNamespace(),
         ], function () {
             require base_path('routes/oauth.php');
         });
@@ -222,9 +228,26 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'prefix' => 'api',
             'middleware' => 'api',
-            'namespace' => $this->namespace,
+            'namespace' => $this->getNamespace(),
         ], function ($router) {
             require base_path('routes/api.php');
+        });
+    }
+
+    /**
+     * Define the "special" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapSpecialRoutes(Router $router)
+    {
+        $router->group([
+            'namespace' => $this->getNamespace(),
+            'middleware' => ['locale'],
+        ], function ($router) {
+            require base_path('routes/special.php');
         });
     }
 }
