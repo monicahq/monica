@@ -15,6 +15,19 @@
             <h2>{{ trans('auth.login_to_account') }}</h2>
 
             @include ('partials.errors')
+            @if (session('confirmation-success'))
+                <div class="alert alert-success">
+                    {{ session('confirmation-success') }}
+                </div>
+            @endif
+            @if (session('confirmation-danger'))
+                <div class="alert alert-danger">
+                    {!! session('confirmation-danger') !!}
+                </div>
+                <div class="alert alert-danger">
+                      {!! trans('auth.confirmation_again') !!}
+                </div>
+            @endif
 
             <form class="" action="/login" method="post">
               {{ csrf_field() }}
