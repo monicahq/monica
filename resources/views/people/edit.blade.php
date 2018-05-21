@@ -25,8 +25,8 @@
           <div class="mb3 mb0-ns">
             @if (auth()->user()->name_order == 'firstname_lastname')
 
-            <div class="dt dt--fixed">
-              <div class="dtc pr2">
+            <div class="dt-ns dt--fixed di">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
@@ -35,7 +35,7 @@
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
-              <div class="dtc pr2">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
@@ -44,7 +44,7 @@
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
                   v-bind:input-type="'text'"
@@ -57,8 +57,8 @@
 
             @else
 
-            <div class="dt dt--fixed">
-              <div class="dtc pr2">
+            <div class="dt-ns dt--fixed di">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
@@ -67,7 +67,7 @@
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
-              <div class="dtc pr2">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
@@ -76,7 +76,7 @@
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
                   v-bind:input-type="'text'"
