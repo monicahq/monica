@@ -24,6 +24,9 @@
                 <div class="alert alert-danger">
                     {!! session('confirmation-danger') !!}
                 </div>
+                <div class="alert alert-danger">
+                      {!! trans('auth.confirmation_again') !!}
+                </div>
             @endif
 
             <form class="" action="/login" method="post">
