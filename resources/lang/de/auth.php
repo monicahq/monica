@@ -56,7 +56,7 @@ return [
     'register_password_example' => 'Sicheres Kennwort eingeben',
     'register_password_confirmation' => 'Passwortbestätigung',
     'register_action' => 'Anmelden',
-    'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
+    'register_policy' => 'Deine Anmeldung bedeutet, dass du unsere <a href=":url" hreflang=":hreflang">Datenschutzrichtlinien</a> and <a href=":urlterm" hreflang=":hreflang">AGBs</a> gelesen und akzeptiert hast.',
     'register_invitation_email' => 'Aus Sicherheitsgründen geben Sie bitte die E-Mail-Adresse der Person an, die Sie eingeladen hat, diesem Konto beizutreten. Diese Informationen finden Sie in der Einladungs-E-Mail.',
 
 ];
