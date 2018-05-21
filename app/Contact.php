@@ -467,7 +467,7 @@ class Contact extends Model
      */
     public function getInitialsAttribute()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->getCompleteName(), $initials);
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->name, $initials);
 
         return implode('', $initials[0]);
     }
@@ -499,9 +499,6 @@ class Contact extends Model
      */
     public function getNameAttribute()
     {
-        // @TODO:
-        // - changer toutes les occurences de getCompleteName()
-        // - faire en sorte que getInitials fonctionne avec les langues LastName Firstname
         $completeName = '';
 
         switch ($this->nameOrder) {
@@ -585,11 +582,11 @@ class Contact extends Model
                     $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
 
+                $completeName = $completeName . ' ' . $this->first_name;
+
                 if (!is_null($this->middle_name)) {
                     $completeName = $completeName . ' ' . $this->middle_name;
                 }
-
-                $completeName = $completeName . ' ' . $this->first_name;
                 break;
             case 'nickname':
                 if (!is_null($this->nickname)) {

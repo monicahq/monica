@@ -105,8 +105,6 @@ class ContactTest extends FeatureTestCase
         $contact->last_name = 'Gregory';
         $contact->is_dead = false;
 
-        // Check that the default 'name' accessor returns the name with
-        // firstname lastname order.
         $this->assertEquals(
             'Peter H Gregory',
             $contact->name
@@ -159,7 +157,7 @@ class ContactTest extends FeatureTestCase
         $contact->nickname = 'Rambo';
         $contact->nameOrder('firstname_lastname_nickname');
         $this->assertEquals(
-            'Gregory H Peter (Rambo)',
+            'Peter H Gregory (Rambo)',
             $contact->name
         );
 
@@ -170,7 +168,7 @@ class ContactTest extends FeatureTestCase
         $contact->nickname = 'Rambo';
         $contact->nameOrder('firstname_nickname_lastname');
         $this->assertEquals(
-            'Gregory H (Rambo) Peter',
+            'Peter H (Rambo) Gregory',
             $contact->name
         );
 
@@ -181,7 +179,7 @@ class ContactTest extends FeatureTestCase
         $contact->nickname = 'Rambo';
         $contact->nameOrder('lastname_firstname_nickname');
         $this->assertEquals(
-            'Peter H Gregory (Rambo)',
+            'Gregory Peter H (Rambo)',
             $contact->name
         );
 
@@ -213,6 +211,15 @@ class ContactTest extends FeatureTestCase
         $contact->nameOrder('nickname');
         $this->assertEquals(
             'Peter Gregory',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->last_name = null;
+        $contact->nameOrder('nickname');
+        $this->assertEquals(
+            'Peter',
             $contact->name
         );
     }
