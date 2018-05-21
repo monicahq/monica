@@ -34,8 +34,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected function getNamespace() {
-        return $this->getAppNamespace() . 'Http\Controllers';
+    protected function getNamespace()
+    {
+        return $this->getAppNamespace().'Http\Controllers';
     }
 
     /**
@@ -178,7 +179,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes($router);
 
         $this->mapOAuthRoutes($router);
-        
+
         $this->mapSpecialRoutes($router);
     }
 
