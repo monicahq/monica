@@ -510,22 +510,22 @@ class Contact extends Model
             case 'firstname_lastname':
                 $completeName = $this->first_name;
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
 
-                if (!is_null($this->last_name)) {
-                    $completeName = $completeName . ' ' . $this->last_name;
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
                 }
                 break;
             case 'lastname_firstname':
                 $completeName = '';
-                if (!is_null($this->last_name)) {
-                    $completeName = $completeName . ' ' . $this->last_name;
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
                 }
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
 
                 $completeName .= ' ' . $this->first_name;
@@ -533,76 +533,76 @@ class Contact extends Model
             case 'firstname_lastname_nickname':
                 $completeName = $this->first_name;
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
 
-                if (!is_null($this->last_name)) {
-                    $completeName = $completeName . ' ' . $this->last_name;
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
                 }
 
-                if (!is_null($this->nickname)) {
+                if (! is_null($this->nickname)) {
                     $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
                 break;
             case 'firstname_nickname_lastname':
                 $completeName = $this->first_name;
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
 
-                if (!is_null($this->nickname)) {
+                if (! is_null($this->nickname)) {
                     $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
 
-                if (!is_null($this->last_name)) {
-                    $completeName = $completeName . ' ' . $this->last_name;
+                if (! is_null($this->last_name)) {
+                    $completeName = $completeName.' '.$this->last_name;
                 }
 
                 break;
             case 'lastname_firstname_nickname':
                 $completeName = '';
-                if (!is_null($this->last_name)) {
+                if (! is_null($this->last_name)) {
                     $completeName = $this->last_name;
                 }
 
-                $completeName = $completeName . ' ' . $this->first_name;
+                $completeName = $completeName.' '.$this->first_name;
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
 
-                if (!is_null($this->nickname)) {
+                if (! is_null($this->nickname)) {
                     $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
                 break;
             case 'lastname_nickname_firstname':
                 $completeName = '';
-                if (!is_null($this->last_name)) {
+                if (! is_null($this->last_name)) {
                     $completeName = $this->last_name;
                 }
 
-                if (!is_null($this->nickname)) {
+                if (! is_null($this->nickname)) {
                     $completeName = $completeName . ' (' . $this->nickname . ')';
                 }
 
-                $completeName = $completeName . ' ' . $this->first_name;
+                $completeName = $completeName.' '.$this->first_name;
 
-                if (!is_null($this->middle_name)) {
-                    $completeName = $completeName . ' ' . $this->middle_name;
+                if (! is_null($this->middle_name)) {
+                    $completeName = $completeName.' '.$this->middle_name;
                 }
                 break;
             case 'nickname':
-                if (!is_null($this->nickname)) {
+                if (! is_null($this->nickname)) {
                     $completeName = $this->nickname;
                 }
 
                 if ($completeName == '') {
                     $completeName = $this->first_name;
 
-                    if (!is_null($this->last_name)) {
-                        $completeName = $completeName . ' ' . $this->last_name;
+                    if (! is_null($this->last_name)) {
+                        $completeName = $completeName.' '.$this->last_name;
                     }
                 }
                 break;
