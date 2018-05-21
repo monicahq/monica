@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Account;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,7 +19,8 @@ class ConfirmEmail extends Notification implements ShouldQueue
      */
     public function via()
     {
-        if (! config('monica.signup_double_optin')) {
+        $first = Account::count() == 1;
+        if (! config('monica.signup_double_optin') || $first) {
             return [];
         }
 
