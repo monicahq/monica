@@ -84,10 +84,10 @@ return [
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href="https://monicahq.com/terms">terms of use</a> and <a href="https://monicahq.com/privacy">privacy policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => 'Entschuldige die Unterbrechung.',
+    'compliance_desc' => 'Wir haben unsere <a href="https://monicahq.com/terms">Nutzungsbedingungen</a> und <a href="https://monicahq.com/privacy">Datenschutzbestimmungen</a> geändert. Dem Gesetz entsprechend müssen wir dich bitten beides durchzulesen und zu akzeptieren, um deinen Account weiter nutzen zu können.',
+    'compliance_desc_end' => 'Wir machen nichts Böses mit deinen Daten oder deinem Account und werden das auch nie tun.',
+    'compliance_terms' => 'Neue AGB und Datenschutzerklärung akzeptieren',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
