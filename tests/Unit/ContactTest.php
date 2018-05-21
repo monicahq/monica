@@ -276,6 +276,20 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_get_initials_returns_order_thanks_to_user_preferences()
+    {
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = null;
+        $contact->last_name = 'Gregory';
+        $contact->nameOrder('lastname_firstname');
+
+        $this->assertEquals(
+            'GP',
+            $contact->getInitials()
+        );
+    }
+
     public function testGetLastActivityDateWithMultipleActivities()
     {
         $contact = factory(\App\Contact::class)->create();

@@ -7,6 +7,7 @@ use App\Traits\Searchable;
 use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -500,6 +501,10 @@ class Contact extends Model
     public function getNameAttribute()
     {
         $completeName = '';
+
+        if (Auth::check()) {
+            $this->nameOrder = auth()->user()->name_order;
+        }
 
         switch ($this->nameOrder) {
             case 'firstname_lastname':

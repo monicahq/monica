@@ -164,7 +164,7 @@ class User extends Authenticatable
     {
         $completeName = '';
 
-        if ($this->name_order == 'firstname_first') {
+        if ($this->name_order == 'firstname_lastname') {
             $completeName = $this->first_name;
 
             if (! is_null($this->last_name)) {
