@@ -2,7 +2,10 @@
 
 namespace Tests\Api\Contact;
 
+use App\Contact;
+use App\ContactField;
 use Tests\ApiTestCase;
+use App\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactControllerTest extends ApiTestCase
@@ -69,6 +72,66 @@ class ApiContactControllerTest extends ApiTestCase
         'updated_at',
     ];
 
+    protected $jsonStructureContactWithContactFields = [
+        'id',
+        'object',
+        'hash_id',
+        'first_name',
+        'last_name',
+        'gender',
+        'is_partial',
+        'is_dead',
+        'last_called',
+        'last_activity_together',
+        'stay_in_touch_frequency',
+        'stay_in_touch_trigger_date',
+        'information' => [
+            'relationships' => [
+                'love' => [
+                    'total',
+                    'contacts',
+                ],
+                'family' => [
+                    'total',
+                    'contacts',
+                ],
+                'friend' => [
+                    'total',
+                    'contacts',
+                ],
+                'work' => [
+                    'total',
+                    'contacts',
+                ],
+            ],
+            'dates' => [
+                'birthdate' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+                'deceased_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+            ],
+            'career',
+            'avatar',
+            'food_preferencies',
+            'how_you_met',
+        ],
+        'addresses',
+        'tags',
+        'statistics',
+        'contactFields' => [],
+        'account' => [
+            'id',
+        ],
+        'created_at',
+        'updated_at',
+    ];
+
     protected $jsonStructureContactShort = [
         'id',
         'object',
@@ -104,7 +167,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -122,7 +185,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -138,7 +201,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -165,13 +228,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -191,13 +254,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 2)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -219,13 +282,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 2)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -247,7 +310,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
@@ -266,7 +329,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
@@ -284,7 +347,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
             'is_partial' => true,
@@ -303,9 +366,19 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
+        ]);
+
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
         ]);
 
         $response = $this->json('GET', '/api/contacts?with=contactfields');
@@ -314,7 +387,73 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->jsonStructureContact,
+                '*' => $this->jsonStructureContactWithContactFields,
+            ],
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $contactField->id,
+            'object' => 'contactfield',
+            'account' => [
+                'id' => $user->account_id,
+            ],
+        ]);
+    }
+
+    public function test_it_gets_list_of_contacts_with_parameter_and_limit_and_page()
+    {
+        $user = $this->signin();
+
+        $initialContact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'roger',
+        ]);
+
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $initialContactField = factory(ContactField::class)->create([
+            'contact_id' => $initialContact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $counter = 1;
+        while ($counter < 12) {
+            $contact = factory(Contact::class)->create([
+                'account_id' => $user->account_id,
+                'first_name' => 'roger',
+            ]);
+
+            $field = factory(ContactFieldType::class)->create([
+                'account_id' => $user->account_id,
+            ]);
+
+            $contactField = factory(ContactField::class)->create([
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+                'contact_field_type_id' => $field->id,
+            ]);
+
+            $counter++;
+        }
+
+        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=10');
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => $this->jsonStructureContactWithContactFields,
+            ],
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $initialContact->id,
+            'object' => 'contactfield',
+            'account' => [
+                'id' => $user->account_id,
             ],
         ]);
     }
