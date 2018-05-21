@@ -16,10 +16,10 @@ class ChangeNameOrderUserPreferencies extends Migration
     {
         DB::table('users')
             ->where('name_order', 'firstname_first')
-            ->update(['name_order' => 'firstname_lastname']);
+            ->update(['name_order' => 'firstname_lastname_nickname']);
 
         DB::table('users')
             ->where('name_order', 'lastname_first')
-            ->update(['name_order' => 'lastname_firstname']);
+            ->update(['name_order' => 'lastname_firstname_nickname']);
     }
 }

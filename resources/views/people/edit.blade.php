@@ -46,7 +46,7 @@
               </div>
               <div class="dtc">
                 <form-input
-                  value="{{ $contact->last_name }}"
+                  value="{{ $contact->nickname }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'nickname'"
                   v-bind:required="false"
@@ -78,10 +78,10 @@
               </div>
               <div class="dtc">
                 <form-input
-                  value="{{ $contact->first_name }}"
+                  value="{{ $contact->nickname }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'nickname'"
-                  v-bind:required="true"
+                  v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
