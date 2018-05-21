@@ -85,7 +85,7 @@ return [
     'default_save_success' => 'Die Daten wurden gespeichert.',
 
     'compliance_title' => 'Entschuldige die Unterbrechung.',
-    'compliance_desc' => 'Wir haben unsere <a href="https://monicahq.com/terms">Nutzungsbedingungen</a> und <a href="https://monicahq.com/privacy">Datenschutzbestimmungen</a> geändert. Dem Gesetz entsprechend müssen wir dich bitten beides durchzulesen und zu akzeptieren, um deinen Account weiter nutzen zu können.',
+    'compliance_desc' => 'Wir haben unsere <a href="https://monicahq.com/terms">AGBs</a> und <a href="https://monicahq.com/privacy">Datenschutzerklärung</a> geändert. Wir sind gesetzlich dazu verpflichtet zu verlangen, dass du beides durchliest und akzeptierst, damit du deinen Account weiter nutzen kannst.',
     'compliance_desc_end' => 'Wir machen nichts Böses mit deinen Daten oder deinem Account und werden das auch nie tun.',
     'compliance_terms' => 'Neue AGB und Datenschutzerklärung akzeptieren',
 
