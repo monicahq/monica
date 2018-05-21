@@ -2,7 +2,10 @@
 
 namespace Tests\Api\Contact;
 
+use App\Contact;
+use App\ContactField;
 use Tests\ApiTestCase;
+use App\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactControllerTest extends ApiTestCase
@@ -162,7 +165,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -180,7 +183,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -196,7 +199,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -223,13 +226,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -249,13 +252,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 2)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -277,13 +280,13 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact', 2)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
         // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory('App\Contact', 10)->create([
+        $contact = factory(Contact::class, 10)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -305,7 +308,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
@@ -324,7 +327,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
@@ -342,7 +345,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
             'is_partial' => true,
@@ -361,16 +364,16 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
-        $field = factory('App\ContactFieldType')->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
@@ -399,33 +402,33 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $initialContact = factory('App\Contact')->create([
+        $initialContact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'roger',
         ]);
 
-        $field = factory('App\ContactFieldType')->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $initialContactField = factory('App\ContactField')->create([
+        $initialContactField = factory(ContactField::class)->create([
             'contact_id' => $initialContact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
         ]);
 
         $i = 1;
-        while ($i < 100) {
-            $contact = factory('App\Contact')->create([
+        while ($i < 12) {
+            $contact = factory(Contact::class)->create([
                 'account_id' => $user->account_id,
                 'first_name' => 'roger',
             ]);
 
-            $field = factory('App\ContactFieldType')->create([
+            $field = factory(ContactFieldType::class)->create([
                 'account_id' => $user->account_id,
             ]);
 
-            $contactField = factory('App\ContactField')->create([
+            $contactField = factory(ContactField::class)->create([
                 'contact_id' => $contact->id,
                 'account_id' => $user->account_id,
                 'contact_field_type_id' => $field->id,
