@@ -110,7 +110,8 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        if (! config('monica.signup_double_optin')) {
+        $first = Account::count() == 1;
+        if (! config('monica.signup_double_optin') || $first) {
             // if signup_double_optin is disabled, skip the confirm email part
             $user->confirmation_code = null;
             $user->confirmed = true;
