@@ -84,10 +84,10 @@ return [
 
     'default_save_success' => 'הנתונים נשמרו.',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => 'סליחה על ההפרעה.',
+    'compliance_desc' => 'ערכנו את <a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> ואת <a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> שלנו. מכוח החוק עלינו לבקש ממך לעיין בשינויים ולאשר את הסכמתך להם כדי להמשיך לאפשר לך להשתמש בחשבונך.',
+    'compliance_desc_end' => 'אנו לא משתמשים בנתונים או בחשבון שלך לאף מטרה זדונית וגם לא נעשה זאת בעתיד.',
+    'compliance_terms' => 'קבלת התנאים ומדיניות הפרטיות החדשים',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
