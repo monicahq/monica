@@ -15,15 +15,15 @@
 
 {{-- Introductions --}}
 @if ($modules->contains('key', 'how_you_met'))
-@include('people.dashboard.introductions.index')
+@include('people.introductions.index')
 @endif
 
 {{-- Work --}}
 @if ($modules->contains('key', 'work_information'))
-@include('people.dashboard.work.index')
+@include('people.work.index')
 @endif
 
 {{-- Food preferences --}}
 @if ($modules->contains('key', 'food_preferences'))
-@include('people.dashboard.food-preferencies.index')
+@include('people.food-preferencies.index')
 @endif

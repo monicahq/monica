@@ -31,37 +31,29 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $dateFlag = false;
-
-        $date_sort = null;
-
-        if (str_contains($sort, 'lastactivitydate')) {
-            $date_sort = str_after($sort, 'lastactivitydate');
-            $sort = 'firstnameAZ';
-            $dateFlag = true;
-        }
-
         $tags = null;
         $url = '';
-        $tagCount = 1;
+        $count = 1;
 
-        if ($request->get('tag1')) {
-            $tags = Tag::where('name_slug', $request->get('tag1'))
-                        ->where('account_id', auth()->user()->account_id)
-                        ->get();
+        if ($request->get('no_tag')) {
+            //get tag less contacts
+            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+            $contacts = $contacts->tags('NONE')->get();
+        } elseif ($request->get('tag1')) {
+            // get contacts with selected tags
 
-            $count = 2;
+            $tags = collect();
 
-            while (true) {
-                if ($request->get('tag'.$count)) {
-                    $tags = $tags->concat(
-                        Tag::where('name_slug', $request->get('tag'.$count))
-                                    ->where('account_id', auth()->user()->account_id)
-                                    ->get()
-                    );
-                } else {
-                    break;
+            while ($request->get('tag'.$count)) {
+                $tag = Tag::where('name_slug', $request->get('tag'.$count))
+                            ->where('account_id', auth()->user()->account_id)
+                            ->get();
+
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
                 }
+
+                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
                 $count++;
             }
@@ -71,38 +63,18 @@ class ContactsController extends Controller
 
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
 
-            foreach ($tags as $tag) {
-                $contacts = $contacts->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('id', $tag->id);
-                });
-
-                $url = $url.'tag'.$tagCount.'='.$tag->name_slug.'&';
-
-                $tagCount++;
-            }
-
-            $contacts = $contacts->get();
+            $contacts = $contacts->tags($tags)->get();
         } else {
+            // get all contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
-        if ($dateFlag) {
-            foreach ($contacts as $contact) {
-                $contact['sort_date'] = $contact->getLastActivityDate();
-            }
-
-            if ($date_sort == 'NewtoOld') {
-                $contacts = $contacts->sortByDesc('sort_date');
-            } elseif ($date_sort == 'OldtoNew') {
-                $contacts = $contacts->sortBy('sort_date');
-            }
-        }
-
         return view('people.index')
-            ->withContacts($contacts)
+            ->withContacts($contacts->unique('id'))
             ->withTags($tags)
             ->withUrl($url)
-            ->withTagCount($tagCount);
+            ->withTagCount($count)
+            ->withTagLess($request->get('no_tag') ?? false);
     }
 
     /**
@@ -241,6 +213,8 @@ class ContactsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
 
+        $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
+
         return view('people.edit')
             ->withContact($contact)
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
@@ -250,6 +224,7 @@ class ContactsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
+            ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withGenders(auth()->user()->account->genders);
     }
 
@@ -323,7 +298,11 @@ class ContactsController extends Controller
                     $request->input('month'),
                     $request->input('day')
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
@@ -334,7 +313,11 @@ class ContactsController extends Controller
                     $birthdate->month,
                     $birthdate->day
                 );
-                $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                if ($request->input('addReminder') != '') {
+                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                }
+
                 break;
         }
 
@@ -379,7 +362,7 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
-        return view('people.dashboard.work.edit')
+        return view('people.work.edit')
             ->withContact($contact);
     }
 
@@ -415,7 +398,7 @@ class ContactsController extends Controller
      */
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
-        return view('people.dashboard.food-preferencies.edit')
+        return view('people.food-preferencies.edit')
             ->withContact($contact);
     }
 
@@ -477,7 +460,13 @@ class ContactsController extends Controller
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
-                $results[$key]->hash = $result->hashID();
+                if ($result->is_partial) {
+                    $real = $result->getRelatedRealContact();
+
+                    $results[$key]->hash = $real->hashID();
+                } else {
+                    $results[$key]->hash = $result->hashID();
+                }
             }
 
             return $results;

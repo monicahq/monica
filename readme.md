@@ -113,7 +113,7 @@ Note: while the .com version has a paid plan, there is no limitations on Monica 
 
 If you want to host it yourself, you need
 
-* PHP 7.0.0+ or newer
+* PHP 7.1+ or newer
 * HTTP server with PHP support (eg: Apache, Nginx, Caddy)
 * Composer
 * MySQL
