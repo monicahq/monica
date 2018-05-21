@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\DBHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -82,7 +83,7 @@ class ExportAccountAsSQL
 
 '.PHP_EOL;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
         // Looping over the tables
         foreach ($tables as $table) {
