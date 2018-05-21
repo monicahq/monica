@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add debts on the dashboard
 * Add User and Currency support in the API
 * Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
