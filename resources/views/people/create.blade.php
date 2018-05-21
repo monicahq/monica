@@ -37,12 +37,21 @@
           </form-input>
         </div>
 
-        <div class="mb3 mb0-ns">
+        <div class="mb3">
           <form-input
             v-bind:id="'last_name'"
             v-bind:input-type="'text'"
             v-bind:required="false"
             v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3 mb0-ns">
+          <form-input
+            v-bind:id="'nickname'"
+            v-bind:input-type="'text'"
+            v-bind:required="false"
+            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 
@@ -57,12 +66,21 @@
           </form-input>
         </div>
 
-        <div class="mb3 mb0-ns">
+        <div class="mb3">
           <form-input
             v-bind:id="'first_name'"
             v-bind:input-type="'text'"
             v-bind:required="true"
             v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3 mb0-ns">
+          <form-input
+            v-bind:id="'nickname'"
+            v-bind:input-type="'text'"
+            v-bind:required="false"
+            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 

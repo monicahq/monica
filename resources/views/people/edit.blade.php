@@ -35,13 +35,22 @@
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc">
+                <form-input
+                  value="{{ $contact->last_name }}"
+                  v-bind:input-type="'text'"
+                  v-bind:id="'nickname'"
+                  v-bind:required="false"
+                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>
@@ -58,13 +67,22 @@
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc pr2">
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc">
+                <form-input
+                  value="{{ $contact->first_name }}"
+                  v-bind:input-type="'text'"
+                  v-bind:id="'nickname'"
+                  v-bind:required="true"
+                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>
