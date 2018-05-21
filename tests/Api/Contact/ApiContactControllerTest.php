@@ -417,8 +417,8 @@ class ApiContactControllerTest extends ApiTestCase
             'contact_field_type_id' => $field->id,
         ]);
 
-        $i = 1;
-        while ($i < 12) {
+        $counter = 1;
+        while ($counter < 12) {
             $contact = factory(Contact::class)->create([
                 'account_id' => $user->account_id,
                 'first_name' => 'roger',
@@ -434,7 +434,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'contact_field_type_id' => $field->id,
             ]);
 
-            $i++;
+            $counter++;
         }
 
         $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=10');
