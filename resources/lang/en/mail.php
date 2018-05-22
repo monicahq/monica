@@ -13,4 +13,9 @@ return [
 
     'stay_in_touch_subject_line' => 'Stay in touch with :name',
     'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency days.',
+
+    'notifications_whoops' => 'Whoops!',
+    'notifications_hello' => 'Hello!',
+    'notifications_regards' => 'Regards',
+    'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)'
 ];

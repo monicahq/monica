@@ -25,7 +25,6 @@ return [
 
     'login_to_account' => 'Login to your account',
     'email' => 'Email',
-    'current_email' => 'Current Email',
     'password' => 'Password',
     'login' => 'Login',
     'button_remember' => 'Remember Me',
@@ -61,4 +60,9 @@ return [
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
 
     'confirmation_again' => 'If you want to change your email you can <a href="'.url('settings/emailchange').'" class="alert-link">click here</a>.',
+    'email_change_current_email' => 'Current email address:',
+    'email_change_title' => 'Change your email',
+    'email_change_new' => 'New email address',
+    'email_change_password' => 'Confirm your password',
+    'email_changed' => 'Your email has been changed. Check your mailbox to validate it.'
 ];

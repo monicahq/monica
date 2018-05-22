@@ -14,10 +14,10 @@ return [
 
    /*
     |--------------------------------------------------------------------------
-    | Disable User registration
+    | Activate double optin on signup
     |--------------------------------------------------------------------------
     |
-    | Disables registration of new users
+    | Activates double optin on signup
     |
     */
     'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', true),

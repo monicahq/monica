@@ -3,52 +3,53 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Notifications\ConfirmEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EmailChangeRequest;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 
 class EmailChangeController extends Controller
 {
-    use AuthenticatesUsers;
-
-    protected $redirectTo = '/confirmation/resend';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware(['guest', 'startsession']);
-    }
-
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('auth.emailchange');
+        if ($request->session()->has('user_id')) {
+
+            $model = config('auth.providers.users.model');
+
+            $user = $model::findOrFail($request->session()->get('user_id'));
+
+            return view('auth.emailchange')
+                ->with('email', $user->email);
+        }
+
+        return redirect('/');
     }
 
     /**
      * Change user email.
      *
      * @param EmailChangeRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function save(EmailChangeRequest $request)
     {
-        $this->validateLogin($request);
+        if ($request->session()->has('user_id')) {
+            $response = $this->validateAndEmailChange($request);
 
-        $response = $this->validateAndEmailChange($request);
+            return $response == 'auth.email_changed'
+                ? $this->sendChangedResponse($response)
+                : $this->sendChangedFailedResponse($response);
+        }
 
-        return $response == 'email.changed'
-            ? redirect($this->redirectPath())
-            : $this->sendChangedFailedResponse($response);
+        return redirect('/');
     }
 
     /**
@@ -64,49 +65,73 @@ class EmailChangeController extends Controller
             return $user;
         }
 
-        $user->update(['email' => $request['newmail']]);
+        // Change email of the user
+        $user->email = $request->get('newmail');
 
-        return 'email.changed';
+        // Resend validation token
+        $user->confirmation_code = str_random(30);
+        $user->confirmed = false;
+        $user->save();
+    
+        $user->notify(new ConfirmEmail);
+
+        // Logout the user
+        Auth::guard()->logout();
+        $request->session()->invalidate();
+
+        return 'auth.email_changed';
     }
 
     /**
      * Validate a password change request with the given credentials.
      *
-     * @param \Illuminate\Http\Request $credentials
+     * @param \Illuminate\Http\Request $request
      * @return mixed
-     *
-     * @throws \UnexpectedValueException
      */
-    protected function validateChange(Request $credentials)
+    protected function validateChange(Request $request)
     {
-        return $this->getUser($credentials);
+        if (is_null($user = $this->getUser($request))) {
+            return 'passwords.invalid';
+        }
+
+        return $user;
     }
 
     /**
      * Get the user with the given credentials.
      *
-     * @param \Illuminate\Http\Request $credentials
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Contracts\Auth\CanResetPassword|null
      */
-    protected function getUser(Request $credentials)
+    protected function getUser(Request $request)
     {
-        return $this->login($credentials);
+        $model = config('auth.providers.users.model');
+
+        $user = $model::findOrFail($request->session()->get('user_id'));
+
+        // Using current email from user, and current password sent with the request to authenticate the user
+        if (! Auth::attempt(['email' => $user->email, 'password' => $request['password']])) {
+            // authentication fails
+            return;
+        }
+
+        return $user;
     }
 
     /**
-     * The user has been authenticated.
+     * Get the response for a successful password changed.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user
-     * @return mixed
+     * @param string $response
+     * @return \Illuminate\Http\Response
      */
-    protected function authenticated(Request $request, $user)
+    protected function sendChangedResponse($response)
     {
-        return Auth::user();
+        return redirect('/')
+                    ->with('status', trans($response));
     }
 
     /**
-     * Get the response for a failed password changed.
+     * Get the response for a failed password.
      *
      * @param string $response
      * @return \Illuminate\Http\Response

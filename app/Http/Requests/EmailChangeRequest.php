@@ -22,9 +22,8 @@ class EmailChangeRequest extends Request
     public function rules()
     {
         return [
-            'email' => 'required|string',
             'password' => 'required|string',
-            'newmail' => 'required|email|max:2083|unique:users,email,'.$this->id,
+            'newmail' => 'required|email|max:255|unique:users,email',
         ];
     }
 }
