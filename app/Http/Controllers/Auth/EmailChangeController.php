@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\EmailChangeRequest;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 
 class EmailChangeController extends Controller
 {
