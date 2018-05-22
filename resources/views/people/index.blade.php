@@ -177,9 +177,12 @@
                 </li>
                 @endif
               @endforeach
+
+              @if (auth()->user()->account->tags->count() != 0)
                 <li class="f7 mt3">
                     <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
+              @endif
               </ul>
             </div>
 
