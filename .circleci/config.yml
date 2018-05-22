@@ -170,7 +170,7 @@ jobs:
       ## NODE.JS
       - run:
           name: Update yarn lockfile
-          command: CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test 0 = `git rev-list --no-merges --count HEAD ^${CIRCLE_BRANCH}` || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
       - *restore_node
       - run: yarn install
       - save_cache:
@@ -178,7 +178,7 @@ jobs:
           paths: node_modules
       - run:
           name: Upload yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(git rev-list --no-merges --count HEAD ^${CIRCLE_BRANCH}) $(yarn global bin)/greenkeeper-lockfile-upload
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test 0 = `git rev-list --no-merges --count HEAD ^${CIRCLE_BRANCH}` || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
