@@ -21,7 +21,6 @@ class EmailChangeController extends Controller
     public function index(Request $request)
     {
         if ($request->session()->has('user_id')) {
-
             $model = config('auth.providers.users.model');
 
             $user = $model::findOrFail($request->session()->get('user_id'));
@@ -72,7 +71,7 @@ class EmailChangeController extends Controller
         $user->confirmation_code = str_random(30);
         $user->confirmed = false;
         $user->save();
-    
+
         $user->notify(new ConfirmEmail);
 
         // Logout the user

@@ -64,5 +64,5 @@ return [
     'email_change_title' => 'Change your email',
     'email_change_new' => 'New email address',
     'email_change_password' => 'Confirm your password',
-    'email_changed' => 'Your email has been changed. Check your mailbox to validate it.'
+    'email_changed' => 'Your email has been changed. Check your mailbox to validate it.',
 ];
