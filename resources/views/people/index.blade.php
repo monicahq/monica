@@ -169,7 +169,7 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $dbtag)
+              @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
                     <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
@@ -177,9 +177,12 @@
                 </li>
                 @endif
               @endforeach
+
+              @if ($userTags->count() != 0)
                 <li class="f7 mt3">
                     <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
+              @endif
               </ul>
             </div>
 
