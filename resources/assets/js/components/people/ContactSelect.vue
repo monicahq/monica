@@ -29,7 +29,7 @@
                 src : '/people/search',
                 results : [],
                 filterable : false,
-                selected: { label: 'Search', id: '' },
+                selected: { label: 'Search and select an existing contact', id: '' },
             }
         },
         methods: {
