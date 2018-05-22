@@ -1,7 +1,7 @@
 <template>
     <div>
         <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
-        <input type="hidden" :name="name" v-model="selected.id">
+        <input type="hidden" :name="name" :value="selected ? selected.id : ''">
         <vSelect placeholder="search" @search="search" :options="results" v-model="selected"></vSelect>
     </div>
 </template>
