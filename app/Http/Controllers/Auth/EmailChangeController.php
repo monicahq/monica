@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Notifications\ConfirmEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\EmailChangeRequest;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 
 class EmailChangeController extends Controller
@@ -61,7 +61,7 @@ class EmailChangeController extends Controller
     protected function validateAndEmailChange(EmailChangeRequest $request)
     {
         $user = $this->validateChange($request);
-        if (! $user instanceof Authenticatable) {
+        if (! $user instanceof Model) {
             return $user;
         }
 
