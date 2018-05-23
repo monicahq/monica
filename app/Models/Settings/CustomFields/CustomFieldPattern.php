@@ -28,7 +28,7 @@ class CustomFieldPattern extends Model
     }
 
     /**
-     * Get the activity records associated with the account.
+     * Get the custom field records associated with the custom field pattern.
      *
      * @return HasMany
      */

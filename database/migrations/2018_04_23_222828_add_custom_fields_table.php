@@ -23,13 +23,13 @@ class AddCustomFieldsTable extends Migration
 
         Schema::create('custom_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id');
-            $table->integer('custom_field_pattern_id');
+            $table->unsignedInteger('account_id');
             $table->string('name');
-            $table->string('fields_order');
+            $table->string('fields_order')->nullable();
             $table->boolean('is_list')->default(0);
             $table->boolean('is_important')->default(0);
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
         Schema::create('fields', function (Blueprint $table) {

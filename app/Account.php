@@ -329,7 +329,7 @@ class Account extends Model
      */
     public function customFields()
     {
-        return $this->hasMany('App\CustomField');
+        return $this->hasMany(\App\Models\Settings\CustomFields\CustomField::class);
     }
 
     /**
