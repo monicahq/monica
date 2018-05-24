@@ -288,6 +288,9 @@ $factory->define(App\Changelog::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Settings\CustomFields\CustomField::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
+        'custom_field_pattern_id' => function () {
+            return factory(App\Models\Settings\CustomFields\CustomFieldPattern::class)->create()->id;
+        },
     ];
 });
 
@@ -297,13 +300,13 @@ $factory->define(App\Models\Settings\CustomFields\CustomFieldType::class, functi
 
 $factory->define(App\Models\Settings\CustomFields\Field::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => 1,
+        'account_id' => factory(App\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Settings\CustomFields\FieldChoice::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => 1,
+        'account_id' => factory(App\Account::class)->create()->id,
     ];
 });
 
@@ -315,13 +318,13 @@ $factory->define(App\Models\Settings\CustomFields\CustomFieldPattern::class, fun
 
 $factory->define(App\Models\Settings\CustomFields\ContactCustomFieldPattern::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => 1,
+        'account_id' => factory(App\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Settings\CustomFields\ContactFieldValue::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => 1,
+        'account_id' => factory(App\Account::class)->create()->id,
     ];
 });
 

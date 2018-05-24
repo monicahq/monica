@@ -2,8 +2,11 @@
 
 namespace App\Models\Settings\CustomFields;
 
+use App\Account;
+use App\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class ContactCustomFieldPattern extends Model
 {

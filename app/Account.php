@@ -7,6 +7,7 @@ use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class Account extends Model
 {
@@ -329,7 +330,17 @@ class Account extends Model
      */
     public function customFieldPatterns()
     {
-        return $this->hasMany('App\CustomFieldPattern');
+        return $this->hasMany(CustomFieldPattern::class);
+    }
+
+    /**
+     * Get the contact custom field pattern records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function contactCustomFieldPatterns()
+    {
+        return $this->hasMany(CustomFieldPattern::class);
     }
 
     /**

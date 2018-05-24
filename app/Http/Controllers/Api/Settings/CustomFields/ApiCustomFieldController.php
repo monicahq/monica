@@ -26,22 +26,22 @@ class ApiCustomFieldController extends ApiController
     }
 
     /**
-     * Get the detail of a given contact field type.
+     * Get the detail of a given custom field.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $contactFieldTypeId)
+    public function show(Request $request, $customFieldId)
     {
         try {
-            $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldTypeId)
+            $customField = CustomField::where('account_id', auth()->user()->account_id)
+                ->where('id', $customFieldId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new ContactFieldTypeResource($contactFieldType);
+        return new CustomFieldResource($customField);
     }
 
     /**

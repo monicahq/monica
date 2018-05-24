@@ -15,10 +15,7 @@ class CustomFieldTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory(Account::class)->create([]);
-        $customField = factory(CustomField::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $customField = factory(CustomField::class)->create([]);
 
         $this->assertTrue($customField->account()->exists());
     }
@@ -35,15 +32,7 @@ class CustomFieldTest extends TestCase
 
     public function test_it_belongs_to_a_custom_field_pattern()
     {
-        $account = factory(Account::class)->create([]);
-        $customFieldPattern = factory(CustomFieldPattern::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $customField = factory(CustomField::class)->create([
-            'account_id' => $account->id,
-            'custom_field_pattern_id' => $account->id,
-        ]);
+        $customField = factory(CustomField::class)->create([]);
 
         $this->assertTrue($customField->customFieldPattern()->exists());
     }

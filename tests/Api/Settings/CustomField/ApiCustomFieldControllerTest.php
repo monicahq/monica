@@ -5,6 +5,7 @@ namespace Tests\Api\Setings\CustomField;
 use Tests\ApiTestCase;
 use App\Models\Settings\CustomFields\CustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class ApiCustomFieldControllerTest extends ApiTestCase
 {
@@ -72,10 +73,15 @@ class ApiCustomFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
         $response = $this->json('POST', '/api/customfields', [
                             'name' => 'Movies',
                             'is_list' => true,
                             'is_important' => false,
+                            'custom_field_pattern_id' => $customFieldPattern->id,
                         ]);
 
         $response->assertStatus(201);
@@ -215,6 +221,21 @@ class ApiCustomFieldControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'message' => 'The resource has not been found',
             'error_code' => 31,
+        ]);
+    }
+
+    public function test_it_gets_a_single_custom_field()
+    {
+        $user = $this->signin();
+
+        $customField = factory(CustomField::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/customfields/'.$customField->id);
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureCustomField,
         ]);
     }
 }

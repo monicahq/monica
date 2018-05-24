@@ -1,15 +1,16 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\Setings\CustomField;
 
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class ApiCustomFieldPatternControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonStructureCustomField = [
+    protected $jsonStructureCustomFieldPattern = [
         'id',
         'object',
         'name',
@@ -21,222 +22,207 @@ class ApiCustomFieldPatternControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_custom_field_patterns()
+    public function test_it_gets_a_list_of_contact_fields()
     {
         $user = $this->signin();
 
-        $customFieldPattern = factory('App\CustomFieldPattern', 10)->create([
+        $customFieldPatterns = factory(CustomFieldPattern::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/customfieldpatterns');
 
-        $response->assertStatus(200);
-
-        $this->assertCount(
-            10,
-            $response->decodeResponseJson()['data']
-        );
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => $this->jsonStructureCustomFieldPattern,
+            ],
+        ]);
     }
 
-    // public function test_it_contains_pagination_when_fetching_contacts()
-    // {
-    //     $user = $this->signin();
+    public function test_it_applies_limit_parameter()
+    {
+        $user = $this->signin();
 
-    //     $contact = factory('App\Contact', 10)->create([
-    //         'account_id' => $user->account_id,
-    //     ]);
+        $customFieldPatterns = factory(CustomFieldPattern::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
 
-    //     $response = $this->json('GET', '/api/contacts');
+        $response = $this->json('GET', '/api/customfieldpatterns?limit=1');
 
-    //     $response->assertJsonFragment([
-    //         'total' => 10,
-    //         'current_page' => 1,
-    //     ]);
-    // }
+        $response->assertJsonFragment([
+            'total' => 10,
+            'current_page' => 1,
+            'per_page' => '1',
+            'last_page' => 10,
+        ]);
 
-    // public function test_it_applies_the_limit_parameter_in_search()
-    // {
-    //     $user = $this->signin();
+        $response = $this->json('GET', '/api/customfieldpatterns?limit=2');
 
-    //     $contact = factory('App\Contact', 10)->create([
-    //         'account_id' => $user->account_id,
-    //     ]);
+        $response->assertJsonFragment([
+            'total' => 10,
+            'current_page' => 1,
+            'per_page' => '2',
+            'last_page' => 5,
+        ]);
+    }
 
-    //     $response = $this->json('GET', '/api/contacts?limit=1');
+    public function test_it_stores_a_custom_field_pattern()
+    {
+        $user = $this->signin();
 
-    //     $response->assertJsonFragment([
-    //         'total' => 10,
-    //         'current_page' => 1,
-    //         'per_page' => '1',
-    //         'last_page' => 10,
-    //     ]);
+        $customFieldPatternPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+        ]);
 
-    //     $response = $this->json('GET', '/api/contacts?limit=2');
+        $response = $this->json('POST', '/api/customfieldpatterns', [
+                            'name' => 'Friends and family',
+                            'icon_name' => 'random name',
+                        ]);
 
-    //     $response->assertJsonFragment([
-    //         'total' => 10,
-    //         'current_page' => 1,
-    //         'per_page' => '2',
-    //         'last_page' => 5,
-    //     ]);
-    // }
+        $response->assertStatus(201);
 
-    // public function test_it_is_possible_to_search_contacts_with_query()
-    // {
-    //     $user = $this->signin();
+        $this->assertDatabaseHas('custom_field_patterns', [
+            'name' => 'Friends and family',
+            'icon_name' => 'random name',
+        ]);
 
-    //     $contact = factory('App\Contact')->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureCustomFieldPattern,
+        ]);
+    }
 
-    //     // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-    //     $contact = factory('App\Contact', 10)->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'bob',
-    //     ]);
+    public function test_it_doesnt_store_a_custom_field_pattern_if_query_not_valid()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('GET', '/api/contacts?query=ro');
+        $response = $this->json('POST', '/api/customfieldpatterns', [
+                            'name' => 'Friends and family',
+                        ]);
 
-    //     $response->assertStatus(200);
+        $response->assertStatus(400);
 
-    //     $response->assertJsonFragment([
-    //         'first_name' => 'roger',
-    //         'total' => 1,
-    //         'query' => 'ro',
-    //     ]);
-    // }
+        $response->assertJsonFragment([
+            'message' => ['The icon name field is required.'],
+            'error_code' => 32,
+        ]);
+    }
 
-    // public function test_it_is_possible_to_search_contacts_and_limit_query()
-    // {
-    //     $user = $this->signin();
+    public function test_it_updates_a_custom_field_pattern()
+    {
+        $user = $this->signin();
 
-    //     $contact = factory('App\Contact', 2)->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'France',
+            'icon_name' => 'random name',
+        ]);
 
-    //     // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-    //     $contact = factory('App\Contact', 10)->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'bob',
-    //     ]);
+        $response = $this->json('PUT', '/api/customfieldpatterns/'.$customFieldPattern->id, [
+                            'name' => 'Friends and family',
+                            'icon_name' => 'random name',
+                        ]);
 
-    //     $response = $this->json('GET', '/api/contacts?query=ro&limit=1');
+        $response->assertStatus(200);
 
-    //     $response->assertStatus(200);
+        $this->assertDatabaseHas('custom_field_patterns', [
+            'name' => 'Friends and family',
+            'icon_name' => 'random name',
+        ]);
 
-    //     $response->assertJsonFragment([
-    //         'first_name' => 'roger',
-    //         'total' => 2,
-    //         'query' => 'ro',
-    //         'per_page' => '1',
-    //         'current_page' => 1,
-    //     ]);
-    // }
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureCustomFieldPattern,
+        ]);
+    }
 
-    // public function test_it_is_possible_to_search_contacts_and_limit_query_and_paginate()
-    // {
-    //     $user = $this->signin();
+    public function test_it_doesnt_update_if_custom_field_not_found()
+    {
+        $user = $this->signin();
 
-    //     $contact = factory('App\Contact', 2)->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
+        $response = $this->json('PUT', '/api/customfieldpatterns/2349273984279348', [
+                            'name' => 'Friends and family',
+                            'icon_name' => 'random name',
+                        ]);
 
-    //     // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-    //     $contact = factory('App\Contact', 10)->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'bob',
-    //     ]);
+        $response->assertStatus(404);
 
-    //     $response = $this->json('GET', '/api/contacts?query=ro&limit=1&page=2');
+        $response->assertJsonFragment([
+            'message' => 'The resource has not been found',
+            'error_code' => 31,
+        ]);
+    }
 
-    //     $response->assertStatus(200);
+    public function test_it_doesnt_update_if_query_is_invalid()
+    {
+        $user = $this->signin();
 
-    //     $response->assertJsonFragment([
-    //         'first_name' => 'roger',
-    //         'total' => 2,
-    //         'query' => 'ro',
-    //         'per_page' => '1',
-    //         'current_page' => 2,
-    //     ]);
-    // }
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'France',
+            'icon_name' => 'random name',
+        ]);
 
-    // public function test_it_gets_a_contact()
-    // {
-    //     $user = $this->signin();
+        $response = $this->json('PUT', '/api/customfieldpatterns/'.$customFieldPattern->id, [
+                            'name' => 'Friends and family',
+                        ]);
 
-    //     $contact = factory('App\Contact')->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
+        $response->assertStatus(400);
 
-    //     $response = $this->json('GET', '/api/contacts/'.$contact->id);
+        $response->assertJsonFragment([
+            'message' => ['The icon name field is required.'],
+            'error_code' => 32,
+        ]);
+    }
 
-    //     $response->assertStatus(200);
+    public function test_it_deletes_a_custom_field_pattern()
+    {
+        $user = $this->signin();
 
-    //     $response->assertJsonFragment([
-    //         'first_name' => 'roger',
-    //         'object' => 'contact',
-    //     ]);
-    // }
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'France',
+            'icon_name' => 'random name',
+        ]);
 
-    // public function test_getting_a_contact_matches_a_specific_json_structure()
-    // {
-    //     $user = $this->signin();
+        $response = $this->delete('/api/customfieldpatterns/'.$customFieldPattern->id);
 
-    //     $contact = factory('App\Contact')->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
+        $response->assertStatus(200);
 
-    //     $response = $this->json('GET', '/api/contacts/'.$contact->id);
+        $this->assertDatabaseMissing('custom_field_patterns', [
+            'id' => $customFieldPattern->id,
+        ]);
 
-    //     $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'deleted' => true,
+            'id' => $customFieldPattern->id,
+        ]);
+    }
 
-    //     $response->assertJsonStructure([
-    //         'data' => $this->jsonStructureContact,
-    //     ]);
-    // }
+    public function test_it_doesnt_delete_the_custom_field_pattern_if_not_found()
+    {
+        $user = $this->signin();
 
-    // public function test_getting_a_partial_contact_matches_a_specific_json_structure()
-    // {
-    //     $user = $this->signin();
+        $response = $this->delete('/api/customfieldpatterns/2349273984279348');
 
-    //     $contact = factory('App\Contact')->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //         'is_partial' => true,
-    //     ]);
+        $response->assertStatus(404);
 
-    //     $response = $this->json('GET', '/api/contacts/'.$contact->id);
+        $response->assertJsonFragment([
+            'message' => 'The resource has not been found',
+            'error_code' => 31,
+        ]);
+    }
 
-    //     $response->assertStatus(200);
+    public function test_it_gets_a_single_custom_field_pattern()
+    {
+        $user = $this->signin();
 
-    //     $response->assertJsonStructure([
-    //         'data' => $this->jsonStructureContactShort,
-    //     ]);
-    // }
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+        ]);
 
-    // public function test_getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
-    // {
-    //     $user = $this->signin();
+        $response = $this->json('GET', '/api/customfieldpatterns/'.$customFieldPattern->id);
 
-    //     $contact = factory('App\Contact')->create([
-    //         'account_id' => $user->account_id,
-    //         'first_name' => 'roger',
-    //     ]);
-
-    //     $response = $this->json('GET', '/api/contacts?with=contactfields');
-
-    //     $response->assertStatus(200);
-
-    //     $response->assertJsonStructure([
-    //         'data' => [
-    //             '*' => $this->jsonStructureContact,
-    //         ],
-    //     ]);
-    // }
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureCustomFieldPattern,
+        ]);
+    }
 }

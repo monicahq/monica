@@ -2,8 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Account;
+use App\Contact;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
+use App\Models\Settings\CustomFields\ContactCustomFieldPattern;
 
 class ContactCustomFieldPatternTest extends TestCase
 {
@@ -11,8 +15,8 @@ class ContactCustomFieldPatternTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $contactCustomFieldPattern = factory('App\ContactCustomFieldPattern')->create([
+        $account = factory(Account::class)->create([]);
+        $contactCustomFieldPattern = factory(ContactCustomFieldPattern::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -21,8 +25,8 @@ class ContactCustomFieldPatternTest extends TestCase
 
     public function test_it_belongs_to_one_custom_field_pattern()
     {
-        $customFieldPattern = factory('App\CustomFieldPattern')->create([]);
-        $contactCustomFieldPattern = factory('App\ContactCustomFieldPattern')->create([
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([]);
+        $contactCustomFieldPattern = factory(ContactCustomFieldPattern::class)->create([
             'custom_field_pattern_id' => $customFieldPattern->id,
         ]);
 
@@ -31,8 +35,8 @@ class ContactCustomFieldPatternTest extends TestCase
 
     public function test_it_belongs_to_one_contact()
     {
-        $contact = factory('App\Contact')->create([]);
-        $contactCustomFieldPattern = factory('App\ContactCustomFieldPattern')->create([
+        $contact = factory(Contact::class)->create([]);
+        $contactCustomFieldPattern = factory(ContactCustomFieldPattern::class)->create([
             'contact_id' => $contact->id,
         ]);
 
