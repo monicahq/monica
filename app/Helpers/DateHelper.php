@@ -212,7 +212,7 @@ class DateHelper
         for ($hour = 1; $hour <= 24; $hour++) {
             $currentDate->hour = $hour;
             $hours->push([
-                'id' => "$hour:00",
+                'id' => date('H:i', strtotime("$hour:00")),
                 'name' => $currentDate->format($format),
             ]);
         }
