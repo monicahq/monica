@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ActivityTypesTableSeeder extends Seeder
 {
@@ -11,14 +12,15 @@ class ActivityTypesTableSeeder extends Seeder
      */
     public function run()
     {
+        $now = now();
         DB::table('activity_types')->truncate();
         DB::table('activity_type_groups')->truncate();
 
         // SIMPLE ACTIVITIES
         DB::table('activity_type_groups')->insert([
             'key' => 'simple_activities',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -26,8 +28,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'hang_out',
             'activity_type_group_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -35,8 +37,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'my_place',
             'icon' => 'movie_home',
             'activity_type_group_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -44,15 +46,15 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'my_place',
             'icon' => 'talk_home',
             'activity_type_group_id' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         // SPORT
         DB::table('activity_type_groups')->insert([
             'key' => 'sport',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -60,15 +62,15 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'sport',
             'activity_type_group_id' => 2,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         // FOOD
         DB::table('activity_type_groups')->insert([
             'key' => 'food',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -76,8 +78,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'his_place',
             'icon' => 'ate_his_place',
             'activity_type_group_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -85,8 +87,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'bar',
             'activity_type_group_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -94,8 +96,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'my_place',
             'icon' => 'ate_home',
             'activity_type_group_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -103,8 +105,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'picknicked',
             'activity_type_group_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -112,15 +114,15 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'restaurant',
             'activity_type_group_id' => 3,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         // CULTURAL
         DB::table('activity_type_groups')->insert([
             'key' => 'cultural_activities',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -128,8 +130,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'theater',
             'activity_type_group_id' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -137,8 +139,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'concert',
             'activity_type_group_id' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -146,8 +148,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'play',
             'activity_type_group_id' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
 
         DB::table('activity_types')->insert([
@@ -155,8 +157,8 @@ class ActivityTypesTableSeeder extends Seeder
             'location_type' => 'outside',
             'icon' => 'museum',
             'activity_type_group_id' => 4,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
     }
 }

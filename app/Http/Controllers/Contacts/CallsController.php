@@ -32,7 +32,7 @@ class CallsController extends Controller
 
         $contact->updateLastCalledInfo($call);
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.calls_add_success'));
     }
 
@@ -58,7 +58,7 @@ class CallsController extends Controller
             $contact->save();
         }
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.call_delete_success'));
     }
 }

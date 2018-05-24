@@ -6,9 +6,9 @@
   "background_color": "#fff",
   "description": "Intuitive personal relationships management.",
   "icons": [{
-    "src": "/img/touch/140x140.png",
+    "src": "/img/monica_140.svg",
     "sizes": "140x140",
-    "type": "image/png"
+    "type": "image/svg+xml"
   }],
   "orientation": "portrait-primary",
   "related_applications": [{

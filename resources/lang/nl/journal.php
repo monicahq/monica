@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'Je hebt je dag beoordeeld.',
     'entry_delete_success' => 'De dagboek invoer is succesvol verwijderd.',
     'journal_add_title' => 'Titel (optioneel)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Invoer',
     'journal_add_cta' => 'Opslaan',
     'journal_blank_cta' => 'Voeg je eerst dagboek invoer toe',

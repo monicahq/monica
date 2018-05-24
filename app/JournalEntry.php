@@ -50,6 +50,12 @@ class JournalEntry extends Model
     {
         $this->account_id = $resourceToLog->account_id;
         $this->date = now();
+        if ($resourceToLog instanceof Activity) {
+            $this->date = $resourceToLog->date_it_happened;
+        }
+        if ($resourceToLog instanceof Entry) {
+            $this->date = $resourceToLog->date;
+        }
         $this->journalable_id = $resourceToLog->id;
         $this->journalable_type = get_class($resourceToLog);
         $this->save();
@@ -66,7 +72,7 @@ class JournalEntry extends Model
         $type = $this->journalable_type;
 
         // Instantiating the object
-        $correspondingObject = (new $type)::findOrFail($this->journalable_id);
+        $correspondingObject = (new $type)->findOrFail($this->journalable_id);
 
         return $correspondingObject->getInfoForJournalEntry();
     }

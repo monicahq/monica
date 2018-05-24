@@ -51,7 +51,7 @@
 
                             <!-- Secret -->
                             <td style="vertical-align: middle;">
-                                <code>{{ client.secret }}</code>
+                                <code dir="ltr">{{ client.secret }}</code>
                             </td>
 
                             <!-- Edit Button -->
@@ -78,7 +78,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             {{ $t('settings.api_oauth_create') }}
@@ -144,7 +144,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             Edit Client
@@ -226,7 +226,9 @@
                     errors: [],
                     name: '',
                     redirect: ''
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -249,6 +251,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getClients();
 
                 $('#modal-create-client').on('shown.bs.modal', () => {

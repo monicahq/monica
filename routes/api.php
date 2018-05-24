@@ -1,7 +1,23 @@
 <?php
 
-Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
+use Illuminate\Support\Facades\Route;
+
+Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
+
+Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
+Route::get('/compliance/{id}', 'Api\\Settings\\ApiComplianceController@show');
+
+Route::get('/currencies', 'Api\\Settings\\ApiCurrencyController@index');
+Route::get('/currencies/{id}', 'Api\\Settings\\ApiCurrencyController@show');
+
+Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/', 'Api\\ApiController@success');
+
+    // Me
+    Route::get('/me', 'Api\\Account\\ApiUserController@show');
+    Route::get('/me/compliance', 'Api\\Account\\ApiUserController@compliance');
+    Route::get('/me/compliance/{id}', 'Api\\Account\\ApiUserController@get');
+    Route::post('/me/compliance', 'Api\\Account\\ApiUserController@set');
 
     // Contacts
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
@@ -11,19 +27,14 @@ Route::group(['middleware' => ['auth:api', 'throttle:60,1']], function () {
     // Relationships
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
     Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
+    Route::post('/relationships', 'Api\\ApiRelationshipController@create');
+    Route::put('/relationships/{id}', 'Api\\ApiRelationshipController@update');
+    Route::delete('/relationships/{id}', 'Api\\ApiRelationshipController@destroy');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
     Route::get('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
-
-    // Set a partner to the contact
-    Route::post('/contacts/{contact}/partners', 'Api\\ApiContactController@partners');
-    Route::post('/contacts/{contact}/partners/unset', 'Api\\ApiContactController@unsetPartners');
-
-    // Set a kid to the contact
-    Route::post('/contacts/{contact}/kids', 'Api\\ApiContactController@kids');
-    Route::post('/contacts/{contact}/kids/unset', 'Api\\ApiContactController@unsetKids');
 
     // Addresses
     Route::resource('addresses', 'Api\\ApiAddressController', ['except' => [

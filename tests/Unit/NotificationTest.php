@@ -44,7 +44,7 @@ class NotificationTest extends TestCase
 
     public function test_it_indicates_how_many_emails_should_be_sent_before_a_notification_is_deleted()
     {
-        $notification = new Notification;
+        $notification = factory(Notification::class)->create();
         $this->assertEquals(0, $notification->delete_after_number_of_emails_sent);
 
         $notification->setNumberOfEmailsNeededForDeletion(3);
@@ -73,5 +73,36 @@ class NotificationTest extends TestCase
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,
         ]);
+    }
+
+    public function test_it_indicates_if_a_notification_should_be_sent()
+    {
+        $account = factory('App\Account')->create([]);
+        $notification = factory('App\Notification')->create([
+            'account_id' => $account->id,
+            'scheduled_number_days_before' => 7,
+        ]);
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 8,
+            'active' => true,
+        ]);
+        $this->assertFalse($notification->shouldBeSent());
+        $reminderRule->delete();
+
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 7,
+            'active' => true,
+        ]);
+        $this->assertTrue($notification->shouldBeSent());
+        $reminderRule->delete();
+
+        $reminderRule = factory('App\ReminderRule')->create([
+            'account_id' => $account->id,
+            'number_of_days_before' => 7,
+            'active' => false,
+        ]);
+        $this->assertFalse($notification->shouldBeSent());
     }
 }

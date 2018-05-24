@@ -14,27 +14,31 @@
               <img src="{{ $contact->gravatar_url }}" width="87">
             @else
               @if (strlen($contact->getInitials()) == 1)
-              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar one-letter {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @else
-              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @endif
             @endif
           @endif
 
-          <h2>
+          <h3 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ $contact->getCompleteName(auth()->user()->name_order) }}
-            @if ($contact->birthday_special_date_id)
+            @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
                 <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
               @endif
+            @elseif ($contact->is_dead)
+                @if (! is_null($contact->deceasedDate))
+                  <span class="ml3 light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+                @endif
             @endif
-          </h2>
+          </h3>
 
-          <ul class="horizontal profile-detail-summary">
+          <ul class="horizontal profile-detail-summary {{ \App\Helpers\LocaleHelper::getDirection() }}">
             @if ($contact->is_dead)
               <li>
                 @if (! is_null($contact->deceasedDate))
@@ -60,16 +64,19 @@
             </li>
           </ul>
 
-          <ul class="tags">
+          <ul class="tags {{ \App\Helpers\LocaleHelper::getDirection() }}">
+            <li class="mr3">
+              <stay-in-touch :contact="{{ $contact }}" hash="{!! $contact->hashID() !!}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
+            </li>
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
                 <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
-            <li><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
+            <li class="mr3"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
-          <form method="POST" action="/people/{{ $contact->id }}/tags/update" id="tagsForm">
+          <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ csrf_field() }}
             <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
             <div class="tagsFormActions">
@@ -78,9 +85,9 @@
             </div>
           </form>
 
-          <ul class="horizontal quick-actions">
+          <ul class="horizontal quick-actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li>
-              <a href="/people/{{ $contact->id }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+              <a href="/people/{{ $contact->hashID() }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
             </li>
           </ul>
         </div>

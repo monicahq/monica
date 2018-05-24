@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Parsedown;
 use Carbon\Carbon;
+use App\Traits\Hasher;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -17,6 +19,7 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
+    use Hasher;
 
     /**
      * The table associated with the model.
@@ -82,6 +85,20 @@ class Activity extends Model implements IsJournalableInterface
     public function journalEntries()
     {
         return $this->morphMany('App\JournalEntry', 'journalable');
+    }
+
+    /**
+     * Return the markdown parsed body.
+     *
+     * @return string
+     */
+    public function getParsedContentAttribute()
+    {
+        if (is_null($this->description)) {
+            return;
+        }
+
+        return (new Parsedown())->text($this->description);
     }
 
     /**

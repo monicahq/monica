@@ -68,7 +68,9 @@ class ApiController extends Controller
                 $this->setWithParameter($request->get('with'));
             }
 
-            // make sure the JSON is well formatted if the given call sends a JSON
+            // make sure the JSON is well formatted if the call sends a JSON
+            // if the call contains a JSON, the call must not be a GET or
+            // a DELETE
             // TODO: there is probably a much better way to do that
             if ($request->method() != 'GET' && $request->method() != 'DELETE'
                 && is_null(json_decode($request->getContent()))) {
@@ -250,11 +252,11 @@ class ApiController extends Controller
      * Sends a response not found (404) to the request.
      * @param string $message
      */
-    public function respondNotFound($message = 'Not found!')
+    public function respondNotFound()
     {
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
-                    ->respondWithError($message);
+                    ->respondWithError(config('api.error_codes.31'));
     }
 
     /**

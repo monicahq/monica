@@ -25,6 +25,10 @@
         <testsuite name="Api Tests">
             <directory suffix="Test.php">./tests/Api</directory>
         </testsuite>
+
+        <testsuite name="Commands Tests">
+            <directory suffix="Test.php">./tests/Commands</directory>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
@@ -43,8 +47,4 @@
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="APP_DEFAULT_LOCALE" value="en"/>
     </php>
-    <logging>
-        <log type="coverage-clover" target="./results/coverage.xml"/>
-        <log type="junit" target="./results/junit.xml"/>
-    </logging>
 </phpunit>

@@ -4,10 +4,14 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3">
+        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
 
           <div class="signup-box">
-            <img class="logo" src="/img/small-logo.png" alt="">
+            <div class="dt w-100">
+              <div class="dtc tc">
+                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+              </div>
+            </div>
             @if($first)
               <h1>{{ trans('auth.register_title_welcome') }}</h1>
               <h2>{{ trans('auth.register_create_account') }}</h2>
@@ -51,12 +55,16 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
+              <!-- Policy acceptance check -->
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" id="policy" name="policy" type="checkbox" value="polict">
+                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'urlterm' => 'https://monicahq.com/terms', 'hreflang' => 'en', ]) !!}
+                </label>
               </div>
 
-              <div class="help">
-                {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
+              <div class="form-group actions">
+                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
 
             </form>

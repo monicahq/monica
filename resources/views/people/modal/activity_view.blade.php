@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         {{ $activity->getSummary() }}
-        <button type="button" class="close" data-dismiss="modal">
+        <button type="button" class="close {{ \App\Helpers\LocaleHelper::getDirection() }}" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -14,8 +14,7 @@
                   <ul class="contacts">
                       <ul class="contacts-list">
                           @foreach ($activity->contacts as $contact)
-                              <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
-                              <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
+                              <li class="pretty-tag"><a href="/people/{{ $contact->hashID() }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                           @endforeach
                       </ul>
                   </ul>
@@ -34,7 +33,9 @@
                   <br>
 
                   <label for="description">{{ trans('people.activities_add_optional_comment') }}</label>
-                  <p>{{ $activity->description }}</p>
+                  <div class="markdown">
+                  {!! $activity->parsed_content !!}
+                  </div>
 
       </div>
       <div class="modal-footer">

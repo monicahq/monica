@@ -66,7 +66,7 @@
                     {{ $tag->name }}
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                   </div>
-                  <div class="table-cell actions">
+                  <div class="table-cell actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
                     <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>

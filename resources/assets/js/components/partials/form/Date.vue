@@ -6,7 +6,7 @@
     <datepicker :value="selectedDate"
                 :name="id"
                 :format="format"
-                v-bind:language="locale"
+                :language="language"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'">
     </datepicker>
   </div>
@@ -14,6 +14,7 @@
 
 <script>
     import Datepicker from 'vuejs-datepicker'
+    import * as Languages from 'vuejs-datepicker/dist/locale'
 
     export default {
         /*
@@ -22,7 +23,8 @@
         data() {
             return {
                 format: 'yyyy-MM-dd',
-                selectedDate: ''
+                selectedDate: '',
+                language: Languages.en
             };
         },
 
@@ -34,6 +36,7 @@
          * Prepare the component (Vue 2.x).
          */
         mounted() {
+            this.language = Languages[this.locale];
             this.selectedDate = new Date()  // this creates a date object in the user's timezone
             this.selectedDate.setYear(this.defaultDate.slice(0, 4))
             this.selectedDate.setMonth(parseInt(this.defaultDate.slice(5, 7)) - 1)  // months a indexed at 0 in js

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Route;
 use App\Day;
 use App\Pet;
 use App\Debt;
@@ -10,13 +9,16 @@ use App\Gift;
 use App\Note;
 use App\Task;
 use App\Gender;
+use App\Module;
 use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\ContactField;
 use App\Relationship;
 use App\ReminderRule;
+use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -42,28 +44,36 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('contact', function ($value) {
             try {
+                $value = app('idhasher')->decodeId($value);
+
                 return Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                    ->where('id', $value)
+                    ->firstOrFail();
             } catch (ModelNotFoundException $ex) {
                 redirect('/people/notfound')->send();
             }
         });
 
         Route::bind('contactfield', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return ContactField::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
+                ->where('contact_id', $value)
                 ->where('id', $value)
                 ->firstOrFail();
         });
 
         Route::bind('activity', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return  Activity::where('account_id', auth()->user()->account_id)
                 ->where('id', $value)
                 ->firstOrFail();
         });
 
         Route::bind('reminder', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
@@ -85,6 +95,8 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('debt', function ($value, $route) {
+            $value = app('idhasher')->decodeId($value);
+
             return  Debt::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->where('id', $value)
@@ -93,6 +105,8 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('relationships', function ($value, $route) {
             Contact::findOrFail($route->parameter('contact')->id);
+
+            $value = app('idhasher')->decodeId($value);
 
             Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_is', $route->parameter('contact')->id)
@@ -138,6 +152,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->where('id', $value)
                 ->firstOrFail();
         });
+
+        Route::bind('module', function ($value) {
+            return Module::where('account_id', auth()->user()->account_id)
+                ->where('id', $value)
+                ->firstOrFail();
+        });
     }
 
     /**
@@ -152,6 +172,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes($router);
 
+        $this->mapOAuthRoutes($router);
         //
     }
 
@@ -166,9 +187,26 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes(Router $router)
     {
         $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
+            'middleware' => 'web',
+            'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/web.php');
+        });
+    }
+
+    /**
+     * Define the custom oauth routes for the API.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    protected function mapOAuthRoutes(Router $router)
+    {
+        $router->group([
+            'prefix' => 'oauth',
+            'namespace' => $this->namespace,
+        ], function () {
+            require base_path('routes/oauth.php');
         });
     }
 
@@ -183,8 +221,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'prefix' => 'api',
+            'middleware' => 'api',
             'namespace' => $this->namespace,
-            'middleware' => 'auth:api',
         ], function ($router) {
             require base_path('routes/api.php');
         });

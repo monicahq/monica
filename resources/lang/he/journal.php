@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'דירגת את היום שלך.',
     'entry_delete_success' => 'הרשומה ביומן נמחקה בהצלחה.',
     'journal_add_title' => 'כותרת (רשות)',
+    'journal_add_date' => 'תאריך',
     'journal_add_post' => 'רשומה',
     'journal_add_cta' => 'שמירה',
     'journal_blank_cta' => 'ניתן להוסיף את רשומת היומן הראשונה שלך',

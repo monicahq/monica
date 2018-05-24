@@ -9,26 +9,29 @@ return [
     'edit' => 'עריכה',
     'upload' => 'העלאה',
     'close' => 'סגירה',
-    'create' => 'Create',
+    'create' => 'יצירה',
     'remove' => 'הסרה',
-    'revoke' => 'Revoke',
+    'revoke' => 'שלילה',
     'done' => 'סיום',
     'verify' => 'אימות',
     'for' => 'for',
+    'new' => 'new',
     'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
+    'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
+    'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול מקוונת בחינם לקשרים עם חברים ומשפחה.',
 
     'markdown_description' => 'רוצה להוסיף קצת עניין לטקסט שלך? במערכת זו קיימת תמיכה ב־Markdown כדי להוסיף הדגשה, הטיה, רשימות ועוד.',
     'markdown_link' => 'קריאת התיעוד',
 
     'header_settings_link' => 'הגדרות',
     'header_logout_link' => 'יציאה',
+    'header_changelog_link' => 'שינויים במוצר',
 
     'main_nav_cta' => 'הוספת אנשים',
     'main_nav_dashboard' => 'לוח מחוונים',
@@ -36,7 +39,6 @@ return [
     'main_nav_journal' => 'יומן',
     'main_nav_activities' => 'פעילויות',
     'main_nav_tasks' => 'משימות',
-    'main_nav_trash' => 'אשפה',
 
     'footer_remarks' => 'יש הערות?',
     'footer_send_email' => 'ניתן לשלוח לי דוא״ל',
@@ -78,4 +80,140 @@ return [
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
+    'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
+
+    'default_save_success' => 'הנתונים נשמרו.',
+
+    // Relationship types
+    // Yes, each relationship type has 8 strings associated with it.
+    // This is because we need to indicate the name of the relationship type,
+    // and also the name of the opposite side of this relationship (father/son),
+    // and then, the feminine version of the string. Finally, in some sentences
+    // in the UI, we need to include the name of the person we add the relationship
+    // to.
+    'relationship_type_group_love' => 'קשרים רומנטיים',
+    'relationship_type_group_family' => 'קשרים משפחתיים',
+    'relationship_type_group_friend' => 'קשרים חברתיים',
+    'relationship_type_group_work' => 'קשרי עבודה',
+    'relationship_type_group_other' => 'סוגי קשר אחרים',
+
+    'relationship_type_partner' => 'בן זוג',
+    'relationship_type_partner_female' => 'בת זוג',
+    'relationship_type_partner_with_name' => 'בן הזוג של :name',
+    'relationship_type_partner_female_with_name' => 'בת הזוג של :name',
+
+    'relationship_type_spouse' => 'בעל',
+    'relationship_type_spouse_female' => 'אישה',
+    'relationship_type_spouse_with_name' => 'בעלה של :name',
+    'relationship_type_spouse_female_with_name' => 'אשתו של :name',
+
+    'relationship_type_date' => 'יוצא קבוע',
+    'relationship_type_date_female' => 'יוצאת קבוע',
+    'relationship_type_date_with_name' => 'יוצא קבוע עם :name',
+    'relationship_type_date_female_with_name' => 'יוצאת קבוע עם :name',
+
+    'relationship_type_lover' => 'מאהב',
+    'relationship_type_lover_female' => 'מאהבת',
+    'relationship_type_lover_with_name' => 'מאהב של :name',
+    'relationship_type_lover_female_with_name' => 'מאהבת של :name',
+
+    'relationship_type_inlovewith' => 'מאוהב',
+    'relationship_type_inlovewith_female' => 'מאוהבת',
+    'relationship_type_inlovewith_with_name' => 'מושא אהבתו של :name',
+    'relationship_type_inlovewith_female_with_name' => 'מושא אהבתה של :name',
+
+    'relationship_type_lovedby' => 'נאהב על ידי',
+    'relationship_type_lovedby_female' => 'נאהבת על ידי',
+    'relationship_type_lovedby_with_name' => 'מאהב סודי של :name',
+    'relationship_type_lovedby_female_with_name' => 'מאהבת סודית של :name',
+
+    'relationship_type_ex' => 'חבר לשעבר',
+    'relationship_type_ex_female' => 'חברה לשעבר',
+    'relationship_type_ex_with_name' => 'חבר לשעבר של :name',
+    'relationship_type_ex_female_with_name' => 'חברה לשעבר של :name',
+
+    'relationship_type_parent' => 'אבא',
+    'relationship_type_parent_female' => 'אימא',
+    'relationship_type_parent_with_name' => 'אבא של :name',
+    'relationship_type_parent_female_with_name' => 'אימא של :name',
+
+    'relationship_type_child' => 'בן',
+    'relationship_type_child_female' => 'בת',
+    'relationship_type_child_with_name' => 'בן של :name',
+    'relationship_type_child_female_with_name' => 'בת של :name',
+
+    'relationship_type_sibling' => 'אח',
+    'relationship_type_sibling_female' => 'אחות',
+    'relationship_type_sibling_with_name' => 'אח של :name',
+    'relationship_type_sibling_female_with_name' => 'אחות של :name',
+
+    'relationship_type_grandparent' => 'סבא',
+    'relationship_type_grandparent_female' => 'סבתא',
+    'relationship_type_grandparent_with_name' => 'סבא של :name',
+    'relationship_type_grandparent_female_with_name' => 'סבתא של :name',
+
+    'relationship_type_grandchild' => 'נכד',
+    'relationship_type_grandchild_female' => 'נכדה',
+    'relationship_type_grandchild_with_name' => 'נכד של :name',
+    'relationship_type_grandchild_female_with_name' => 'נכדה של :name',
+
+    'relationship_type_uncle' => 'דוד',
+    'relationship_type_uncle_female' => 'דודה',
+    'relationship_type_uncle_with_name' => 'דוד של :name',
+    'relationship_type_uncle_female_with_name' => 'דודה של :name',
+
+    'relationship_type_nephew' => 'אחיין',
+    'relationship_type_nephew_female' => 'אחיינית',
+    'relationship_type_nephew_with_name' => 'אחיין של :name',
+    'relationship_type_nephew_female_with_name' => 'אחיינית של :name',
+
+    'relationship_type_cousin' => 'בן דוד',
+    'relationship_type_cousin_female' => 'בת דודה',
+    'relationship_type_cousin_with_name' => 'בן דוד של :name',
+    'relationship_type_cousin_female_with_name' => 'בת דודה של :name',
+
+    'relationship_type_godfather' => 'סנדק',
+    'relationship_type_godfather_female' => 'סנדקית',
+    'relationship_type_godfather_with_name' => 'הסנדק של :name',
+    'relationship_type_godfather_female_with_name' => 'הסנדקית של :name',
+
+    'relationship_type_godson' => 'בן סנדקות',
+    'relationship_type_godson_female' => 'בת סנדקות',
+    'relationship_type_godson_with_name' => 'בן הסנדקות של :name',
+    'relationship_type_godson_female_with_name' => 'בת הסנדקות של :name',
+
+    'relationship_type_friend' => 'חבר',
+    'relationship_type_friend_female' => 'חברה',
+    'relationship_type_friend_with_name' => 'חבר של :name',
+    'relationship_type_friend_female_with_name' => 'חברה של :name',
+
+    'relationship_type_bestfriend' => 'החבר הטוב ביותר',
+    'relationship_type_bestfriend_female' => 'החברה הטובה ביותר',
+    'relationship_type_bestfriend_with_name' => 'החבר הכי טוב של :name',
+    'relationship_type_bestfriend_female_with_name' => 'החברה הכי טובה של :name',
+
+    'relationship_type_colleague' => 'עמית לעבודה',
+    'relationship_type_colleague_female' => 'עמיתה לעבודה',
+    'relationship_type_colleague_with_name' => 'עמית לעבודה של :name',
+    'relationship_type_colleague_female_with_name' => 'עמיתה לעבודה של :name',
+
+    'relationship_type_boss' => 'מנהל',
+    'relationship_type_boss_female' => 'מנהלת',
+    'relationship_type_boss_with_name' => 'מנהל של :name',
+    'relationship_type_boss_female_with_name' => 'מנהלת של :name',
+
+    'relationship_type_subordinate' => 'כפוף',
+    'relationship_type_subordinate_female' => 'כפופה',
+    'relationship_type_subordinate_with_name' => 'כפוף ל:name',
+    'relationship_type_subordinate_female_with_name' => 'כפופה ל:name',
+
+    'relationship_type_mentor' => 'חונך',
+    'relationship_type_mentor_female' => 'חונכת',
+    'relationship_type_mentor_with_name' => 'חונך של :name',
+    'relationship_type_mentor_female_with_name' => 'חונך של :name',
+
+    'relationship_type_protege' => 'חניך',
+    'relationship_type_protege_female' => 'חניכה',
+    'relationship_type_protege_with_name' => 'חניך של :name',
+    'relationship_type_protege_female_with_name' => 'חניכה של :name',
 ];

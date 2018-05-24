@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Hasher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Debt extends Model
 {
+    use Hasher;
     /**
      * The attributes that aren't mass assignable.
      *

@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Auth;
 use App\Contact;
+use App\ContactFieldType;
 
 class SearchHelper
 {
@@ -23,12 +24,15 @@ class SearchHelper
             $search_field = $matches[1];
             $search_term = $matches[2];
 
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
+            $field = ContactFieldType::where('account_id', $accountId)
+                ->where('name', 'LIKE', $search_field)
+                ->first();
 
             $field_id = $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id, $search_term) {
+            $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
+                    ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);

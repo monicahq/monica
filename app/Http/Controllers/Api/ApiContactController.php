@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
@@ -36,9 +37,13 @@ class ApiContactController extends ApiController
                 return $this->respondInvalidQuery();
             }
 
-            return ContactResource::collection($contacts)->additional(['meta' => [
+            $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
+
+            return $collection->additional([
+                'meta' => [
                     'query' => $needle,
-                ]]);
+                ],
+            ]);
         }
 
         try {
@@ -49,7 +54,9 @@ class ApiContactController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return ContactResource::collection($contacts);
+        $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
+
+        return $collection;
     }
 
     /**
@@ -358,5 +365,19 @@ class ApiContactController extends ApiController
         $contact->delete();
 
         return $this->respondObjectDeleted($contact->id);
+    }
+
+    /**
+     * Apply the `?with=` parameter.
+     * @param  Collection $contacts
+     * @return Collection
+     */
+    private function applyWithParameter($contacts, string $parameter = null)
+    {
+        if ($parameter == 'contactfields') {
+            return ContactWithContactFieldsResource::collection($contacts);
+        }
+
+        return ContactResource::collection($contacts);
     }
 }

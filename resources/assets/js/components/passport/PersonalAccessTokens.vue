@@ -74,7 +74,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button " class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             {{ $t('settings.api_token_create') }}
@@ -140,7 +140,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             {{ $t('settings.api_token_title') }}
@@ -181,7 +181,9 @@
                     name: '',
                     scopes: [],
                     errors: []
-                }
+                },
+
+                dirltr: true,
             };
         },
 
@@ -204,6 +206,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getTokens();
                 this.getScopes();
 

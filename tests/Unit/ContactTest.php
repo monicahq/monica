@@ -6,8 +6,11 @@ use App\Tag;
 use App\Call;
 use App\Debt;
 use App\Contact;
+use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
+use App\Mail\StayInTouchEmail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
@@ -388,6 +391,12 @@ class ContactTest extends FeatureTestCase
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'test@test.com',
         ]);
+        $contactField = factory(\App\ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test2@test.com',
+        ]);
 
         $email = $contact->getFirstEmail();
         $this->assertEquals($email, 'test@test.com');
@@ -530,7 +539,7 @@ class ContactTest extends FeatureTestCase
     public function test_update_last_called_info_method()
     {
         $date = '2017-01-22 17:56:03';
-        $contact = new Contact;
+        $contact = factory(Contact::class)->create();
         $call = new Call;
         $call->called_at = $date;
 
@@ -541,7 +550,7 @@ class ContactTest extends FeatureTestCase
             $contact->last_talked_to
         );
 
-        $otherContact = new Contact;
+        $otherContact = factory(Contact::class)->create();
         $otherContact->last_talked_to = '1990-01-01 01:01:01';
 
         $otherContact->updateLastCalledInfo($call);
@@ -557,7 +566,12 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertTrue($contact->isOwedMoney());
     }
@@ -567,7 +581,12 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertFalse($contact->isOwedMoney());
     }
@@ -577,20 +596,46 @@ class ContactTest extends FeatureTestCase
         /** @var Contact $contact */
         $contact = factory(Contact::class)->create();
 
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
-        $contact->debts()->save(new Debt(['in_debt' => 'no', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'no',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(200, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 100]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 100,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300]));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 300,
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
 
-        $contact->debts()->save(new Debt(['in_debt' => 'yes', 'amount' => 300, 'status' => 'complete']));
+        $contact->debts()->save(new Debt([
+            'in_debt' => 'yes',
+            'amount' => 300,
+            'status' => 'complete',
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]));
 
         $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
     }
@@ -652,16 +697,14 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_approximate_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create([
             'is_age_based' => 1,
         ]);
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(
@@ -672,9 +715,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_almost_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create([
             'is_age_based' => 0,
             'is_year_unknown' => 1,
@@ -682,7 +723,7 @@ class ContactTest extends FeatureTestCase
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(
@@ -693,14 +734,12 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_returns_an_exact_birthday_state()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $specialDate = factory(SpecialDate::class)->create();
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
-        $specialDate->contact_id = $specialDate->id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $this->assertEquals(
@@ -842,9 +881,10 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sets_a_relationship_between_two_contacts()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
-        $partner = factory(Contact::class)->create(['account_id' => 1]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -921,12 +961,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $account->id,
             'is_partial' => true,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -944,12 +985,13 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
     {
-        $contact = factory(Contact::class)->create(['account_id' => 1]);
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create([
-            'account_id' => 1,
+            'account_id' => $account->id,
             'is_partial' => false,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => 1]);
+        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -1117,5 +1159,263 @@ class ContactTest extends FeatureTestCase
             $contact->id,
             $foundContact->id
         );
+    }
+
+    public function test_contact_deletion()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact->save();
+        $id = $contact->id;
+
+        $this->assertEquals(1, Contact::where('id', $id)->count());
+
+        $contact->deleteEverything();
+
+        $this->assertEquals(0, Contact::where('id', $id)->count());
+    }
+
+    public function test_it_can_get_tagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $tag = Tag::where('id', $tag->id)
+                    ->where('account_id', $user->account->account_id)
+                    ->get();
+
+        $contacts = $user->account->contacts()->real()->tags($tag)->get();
+
+        $this->assertTrue($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_untagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $contacts = $user->account->contacts()->real()->tags('NONE')->get();
+
+        $this->assertFalse($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_multiple_tags()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $contact->setTag($tag->name);
+        $tag2 = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'test2',
+        ]);
+        $contact->setTag($tag2->name);
+
+        $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact2->setTag($tag2->name);
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'test2',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact2->id,
+            ]
+        );
+
+        $tags = collect();
+
+        $tags = $tags->concat(Tag::where('name_slug', $tag->name)
+                    ->where('account_id', auth()->user()->account_id)
+                    ->get());
+
+        $tags = $tags->concat(Tag::where('name_slug', $tag2->name)
+                    ->where('account_id', auth()->user()->account_id)
+                    ->get());
+
+        $contacts = $user->account->contacts()->real()->tags($tags)->get();
+
+        $this->assertTrue($contacts->contains($contact));
+
+        $this->assertFalse($contacts->contains($contact2));
+    }
+
+    public function test_it_updates_stay_in_touch_frequency()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(3);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+    }
+
+    public function test_it_resets_stay_in_touch_frequency_if_set_to_0()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency(0);
+
+        $this->assertTrue($result);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'stay_in_touch_frequency' => null,
+        ]);
+    }
+
+    public function test_it_returns_false_if_frequency_is_not_an_integer()
+    {
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $result = $contact->updateStayInTouchFrequency('not an integer');
+
+        $this->assertFalse($result);
+    }
+
+    public function test_it_updates_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
+
+        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+
+        $this->assertEquals(
+            '2017-01-04',
+            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+        );
+    }
+
+    public function it_resets_the_stay_in_touch_trigger_date()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
+        ]);
+
+        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+
+        $this->assertNull($contact->stay_in_touch_trigger_date);
+    }
+
+    public function test_it_sends_the_stay_in_touch_email()
+    {
+        Mail::fake();
+
+        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_frequency' => 3,
+        ]);
+        $user = factory('App\User')->create([
+            'account_id' => $account->id,
+            'email' => 'john@doe.com',
+            'locale' => 'US\Eastern',
+        ]);
+
+        $contact->sendStayInTouchEmail($user);
+
+        Mail::assertSent(StayInTouchEmail::class, function ($mail) {
+            return $mail->hasTo('john@doe.com');
+        });
     }
 }

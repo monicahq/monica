@@ -1,20 +1,9 @@
-header {
-  background-color: #325776;
+.header-logo {
+  text-decoration: none;
 
-  .main-cta {
-    position: relative;
-    top: 16px;
-  }
-}
-
-.logo {
-  margin: 10px 15px;
-
-  a {
-    &:hover {
-      background-color: transparent;
-      color: #fff;
-    }
+  &:hover {
+    text-decoration: none;
+    background-color: transparent;
   }
 }
 
@@ -42,16 +31,28 @@ header {
 }
 
 .header-nav {
-  margin-top: 24px;
   text-align: right;
-}
 
-.header-nav-item {
-  display: inline;
-  margin-right: 10px;
+  .header-nav-item {
+    display: inline;
+    margin-right: 10px;
 
-  &:last-child {
-    margin-right: 0;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &.rtl {
+    text-align: left;
+
+    .header-nav-item {
+      &:last-child {
+        margin-right: 10px;
+      }
+      &:first-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 
@@ -67,6 +68,11 @@ header {
     color: #fff;
     padding: 3px 11px;
     text-decoration: none;
+  }
+
+  svg {
+    position: relative;
+    top: 3px;
   }
 }
 
@@ -144,6 +150,50 @@ header {
 
 .header-search-result:hover {
   background: #f5f5f5;
+}
+
+.pulse {
+  -webkit-animation: pulse 3s linear infinite;
+  -moz-animation: pulse 3s linear infinite;
+  -ms-animation: pulse 3s linear infinite;
+  animation: pulse 3s linear infinite;
+
+  &:before {
+    position: absolute;
+    content: '';
+    background-color:#19a974;
+    border-radius:50%;
+    width: 9px;
+    height: 9px;
+    pointer-events: none;
+    top: 16px;
+    left: 17px;
+    z-index: 10000;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  50% {
+    -webkit-transform: scale(0.8);
+    -moz-transform: scale(0.8);
+    -o-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+  }
 }
 
 @media (max-width: 767px) {

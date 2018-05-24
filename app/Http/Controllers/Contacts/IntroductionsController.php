@@ -19,7 +19,7 @@ class IntroductionsController extends Controller
      */
     public function edit(Contact $contact)
     {
-        return view('people.dashboard.introductions.edit')
+        return view('people.introductions.edit')
             ->withContact($contact);
     }
 
@@ -34,7 +34,7 @@ class IntroductionsController extends Controller
     {
         // Store the contact that allowed this encounter to happen in the first
         // place
-        if ($request->get('metThroughId') != 0) {
+        if ($request->get('metThroughId') !== null) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->get('metThroughId'))
@@ -68,7 +68,7 @@ class IntroductionsController extends Controller
 
         $contact->logEvent('contact', $contact->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.introductions_update_success'));
     }
 
@@ -85,7 +85,7 @@ class IntroductionsController extends Controller
 
         $contact->events()->forObject($gift)->get()->each->delete();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_delete_success'));
     }
 }

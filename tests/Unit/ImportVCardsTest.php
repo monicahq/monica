@@ -5,7 +5,6 @@ namespace Tests\Unit;
 use App\User;
 use App\Account;
 use App\Contact;
-use App\Country;
 use Mockery as m;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -16,7 +15,7 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesUser()
     {
-        $path = 'tests/stubs/vcard_stub.vcf';
+        $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
 
@@ -47,7 +46,7 @@ class ImportVCardsTest extends TestCase
     public function testItImportsContacts()
     {
         $user = $this->getUser();
-        $path = 'tests/stubs/vcard_stub.vcf';
+        $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
@@ -72,12 +71,17 @@ class ImportVCardsTest extends TestCase
             'first_name' => 'Johnny',
         ]);
 
+        $this->assertDatabaseHas('contacts', [
+            'company' => 'U2',
+            'job' => 'Lead vocalist',
+        ]);
+
         // Allows checking addresses are correctly saved
         $this->assertDatabaseHas('addresses', [
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',
-            'country_id' => Country::where('country', 'United Kingdom')->first()->id,
+            'country' => 'GB',
         ]);
 
         $this->assertDatabaseHas('contact_fields', [

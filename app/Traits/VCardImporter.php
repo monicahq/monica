@@ -5,10 +5,10 @@ namespace App\Traits;
 use App\Gender;
 use App\Address;
 use App\Contact;
-use App\Country;
 use App\ContactField;
 use App\ContactFieldType;
 use Sabre\VObject\Reader;
+use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 
 trait VCardImporter
@@ -79,7 +79,13 @@ trait VCardImporter
             $contact->first_name = $this->formatValue($vcard->NICKNAME);
         }
 
-        $contact->job = $this->formatValue($vcard->ORG);
+        $contact->company = $this->formatValue($vcard->ORG);
+        if ($vcard->ROLE) {
+            $contact->job = $this->formatValue($vcard->ROLE);
+        }
+        if ($vcard->TITLE) {
+            $contact->job = $this->formatValue($vcard->TITLE);
+        }
 
         $contact->setAvatarColor();
 
@@ -98,15 +104,7 @@ trait VCardImporter
             $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
             $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
             $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-
-            $country = Country::where('country', $vcard->ADR->getParts()[6])
-                ->orWhere('iso', mb_strtolower($vcard->ADR->getParts()[6]))
-                ->first();
-
-            if ($country) {
-                $address->country_id = $country->id;
-            }
-
+            $address->country = CountriesHelper::find($vcard->ADR->getParts()[6]);
             $address->contact_id = $contact->id;
             $address->account_id = $contact->account_id;
             $address->save();
@@ -114,12 +112,17 @@ trait VCardImporter
 
         if (! is_null($this->formatValue($vcard->EMAIL))) {
             // Saves the email
-            $contactField = new ContactField;
-            $contactField->contact_id = $contact->id;
-            $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($vcard->EMAIL);
-            $contactField->contact_field_type_id = $this->contactFieldEmailId();
-            $contactField->save();
+
+            $isValidEmail = filter_var($this->formatValue($vcard->EMAIL), FILTER_VALIDATE_EMAIL);
+
+            if ($isValidEmail) {
+                $contactField = new ContactField;
+                $contactField->contact_id = $contact->id;
+                $contactField->account_id = $contact->account_id;
+                $contactField->data = $this->formatValue($vcard->EMAIL);
+                $contactField->contact_field_type_id = $this->contactFieldEmailId();
+                $contactField->save();
+            }
         }
 
         if (! is_null($this->formatValue($vcard->TEL))) {
@@ -199,6 +202,12 @@ trait VCardImporter
     private function contactExists(VCard $vcard, int $account_id)
     {
         $email = (string) $vcard->EMAIL;
+
+        $isValidEmail = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        if (! $isValidEmail) {
+            return false;
+        }
 
         $contactFieldType = ContactFieldType::where([
             ['account_id', $account_id],

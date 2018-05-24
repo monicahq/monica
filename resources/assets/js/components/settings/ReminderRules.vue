@@ -20,7 +20,7 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -33,7 +33,7 @@
             {{ $tc('settings.personalization_reminder_rule_line', reminderRule.number_of_days_before, {count: reminderRule.number_of_days_before}) }}
           </div>
         </div>
-        <div class="dtc tr">
+        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <toggle-button :class="'reminder-rule-' + reminderRule.number_of_days_before" :value="reminderRule.active" :sync="true" :labels="true" v-on:change="toggle(reminderRule)" />
           </div>
@@ -54,6 +54,7 @@
         data() {
             return {
                 reminderRules: [],
+                dirltr: true,
             };
         },
 
@@ -81,6 +82,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getReminderRules();
             },
 

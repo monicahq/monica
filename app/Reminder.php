@@ -2,10 +2,12 @@
 
 namespace App;
 
-use Auth;
 use Carbon\Carbon;
+use App\Traits\Hasher;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Reminder extends Model
 {
+    use Hasher;
     /**
      * The attributes that aren't mass assignable.
      *

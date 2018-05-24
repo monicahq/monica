@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -66,7 +67,7 @@ class Gift extends Model
     /**
      * Get the contact record associated with the gift.
      *
-     * @return BelongsTo
+     * @return HasOne
      */
     public function recipient()
     {
@@ -103,7 +104,7 @@ class Gift extends Model
      */
     public function hasParticularRecipient()
     {
-        return $this->is_for !== null;
+        return $this->is_for !== null && $this->is_for !== 0;
     }
 
     /**
@@ -112,7 +113,7 @@ class Gift extends Model
      * @param int $value
      * @return string
      */
-    public function setIsForAttribute($value)
+    public function setRecipientAttribute($value)
     {
         $this->attributes['is_for'] = $value;
     }

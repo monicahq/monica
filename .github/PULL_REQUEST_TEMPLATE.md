@@ -20,5 +20,6 @@
 #### Other tasks
 - [ ] [CHANGELOG](https://github.com/monicahq/monica/blob/master/CHANGELOG) entry added, if necessary, under `UNRELEASED`.
 - [ ] [CONTRIBUTORS](https://github.com/monicahq/monica/blob/master/CONTRIBUTORS) entry added, if necessary.
-- [ ] If it's relevant, add the documentation about your feature in the README file.
+- [ ] If it's relevant and worth mentioning, create a changelog entry for this change. The changelog entry will appear inside the UI for all users to see. To know if your change is worth the creation of a changelog entry, [read the documentation](https://github.com/monicahq/monica/wiki/Advanced-content-tips-for-developers#when-is-it-relevant-to-create-a-changelog-entry).
 - [ ] Indicate `[wip]` in the title of the PR it is is not final yet. Remove `[wip]` when ready. Otherwise the PR will be considered complete and rejected if it's not working.
+- [ ] Don't forget to [ask for a free account](mailto:regis@monicahq.com) on https://monicahq.com as anyone who contributes can request a free account.

@@ -173,7 +173,7 @@
         computed: {
             hasMorePage: function() {
                 var total = this.journalEntries.per_page * this.journalEntries.current_page
-console.log('total ' + total)
+
                 if (total >= this.journalEntries.total) {
                   return true
                 }

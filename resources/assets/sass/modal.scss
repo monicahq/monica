@@ -13,6 +13,10 @@
     right: 19px;
     top: 14px;
     font-size: 30px;
+    &.rtl {
+      right: auto;
+      left: 19px;
+    }
   }
 
   &.log-call {
