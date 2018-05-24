@@ -15,7 +15,6 @@ class ConvertMysqlEncoding extends Migration
         $connection = DB::connection();
 
         if ($connection->getDriverName() == 'mysql') {
-
             $databasename = $connection->getDatabaseName();
 
             // Tables
@@ -24,8 +23,7 @@ class ConvertMysqlEncoding extends Migration
                 ->where('table_schema', '=', $databasename)
                 ->get();
 
-            foreach ($tables as $table)
-            {
+            foreach ($tables as $table) {
                 DB::statement('ALTER TABLE `'.$table->table_name.'` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
             }
 
