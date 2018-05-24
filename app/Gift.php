@@ -127,7 +127,7 @@ class Gift extends Model
     public function getRecipientNameAttribute()
     {
         if ($this->hasParticularRecipient()) {
-            return $this->recipient()->first()->first_name;
+            return $this->recipient->first_name;
         }
     }
 

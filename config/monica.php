@@ -77,6 +77,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Allow access through the API of the public statistics
+    |--------------------------------------------------------------------------
+    |
+    | Your Monica instance has some statistics (number of users, number of
+    | contacts,...). Those data can be public (they are on MonicaHQ.com).
+    | This setting lets you access those data through a public API call.
+    |
+    */
+    'allow_statistics_through_public_api_access' => env('ALLOW_STATISTICS_THROUGH_PUBLIC_API_ACCESS', false),
+    /*
+    |--------------------------------------------------------------------------
     | URL of the server for the version check
     |--------------------------------------------------------------------------
     |
@@ -103,6 +114,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Compliance to various international policies.
+    |--------------------------------------------------------------------------
+    |
+    | Indicates whether we should comply to international policies like GDPR or
+    | CASL. Defaults to false, but if you do, it's at your own risk.
+    |
+    */
+    'policy_compliant' => env('POLICY_COMPLIANT', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Specific to the official Monica mobile application
     |--------------------------------------------------------------------------
     |
@@ -126,5 +148,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.0.1',
+    'app_version' => '2.1.1',
 ];

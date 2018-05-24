@@ -2,11 +2,11 @@
 
 namespace App;
 
-use DB;
 use App\Traits\Hasher;
 use App\Traits\Searchable;
 use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
@@ -56,6 +56,7 @@ class Contact extends Model
         'account_id',
         'created_at',
         'updated_at',
+        'is_partial',
     ];
 
     /**
@@ -342,6 +343,20 @@ class Contact extends Model
                 return $builder->orderBy('last_name', 'asc');
             case 'lastnameZA':
                 return $builder->orderBy('last_name', 'desc');
+            case 'lastactivitydateNewtoOld':
+                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->orderBy('activities.date_it_happened', 'desc');
+                $builder->select('*', 'contacts.id as id');
+
+                return $builder;
+            case 'lastactivitydateOldtoNew':
+                $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
+                $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
+                $builder->orderBy('activities.date_it_happened', 'asc');
+                $builder->select('*', 'contacts.id as id');
+
+                return $builder;
             default:
                 return $builder->orderBy('first_name', 'asc');
         }
@@ -417,7 +432,7 @@ class Contact extends Model
     /**
      * Mutator last_consulted_at.
      *
-     * @param datetime $value
+     * @param \DateTime $value
      */
     public function setLastConsultedAtAttribute($value)
     {
@@ -644,7 +659,7 @@ class Contact extends Model
      */
     public function logEvent($objectType, $objectId, $natureOfOperation)
     {
-        $event = $this->events()->create([]);
+        $event = $this->events()->make();
         $event->account_id = $this->account_id;
         $event->object_type = $objectType;
         $event->object_id = $objectId;
@@ -738,8 +753,9 @@ class Contact extends Model
         // Create the statistics again
         $this->activities->groupBy('date_it_happened.year')
             ->map(function (Collection $activities, $year) {
-                $activityStatistic = $this->activityStatistics()->create([]);
+                $activityStatistic = $this->activityStatistics()->make();
                 $activityStatistic->account_id = $this->account_id;
+                $activityStatistic->contact_id = $this->id;
                 $activityStatistic->year = $year;
                 $activityStatistic->count = $activities->count();
                 $activityStatistic->save();
@@ -1078,12 +1094,12 @@ class Contact extends Model
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromDate($year, $month, $day)->setToContact($this);
+        $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1114,7 +1130,7 @@ class Contact extends Model
         }
 
         $specialDate = new SpecialDate;
-        $specialDate->createFromAge($age)->setToContact($this);
+        $specialDate->setToContact($this)->createFromAge($age);
 
         if ($occasion == 'birthdate') {
             $this->birthday_special_date_id = $specialDate->id;
@@ -1140,36 +1156,39 @@ class Contact extends Model
      */
     public function removeSpecialDate($occasion)
     {
-        if (is_null($occasion)) {
+        if (null === $occasion) {
             return;
         }
 
         switch ($occasion) {
             case 'birthdate':
                 if ($this->birthday_special_date_id) {
-                    $this->birthdate->deleteReminder();
-                    $this->birthdate->delete();
-
+                    $birthdate = $this->birthdate;
                     $this->birthday_special_date_id = null;
                     $this->save();
+
+                    $this->birthdate->deleteReminder();
+                    $this->birthdate->delete();
                 }
             break;
             case 'deceased_date':
                 if ($this->deceased_special_date_id) {
-                    $this->deceasedDate->deleteReminder();
-                    $this->deceasedDate->delete();
-
+                    $deceasedDate = $this->deceasedDate;
                     $this->deceased_special_date_id = null;
                     $this->save();
+
+                    $deceasedDate->deleteReminder();
+                    $deceasedDate->delete();
                 }
             break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
-                    $this->firstMetDate->deleteReminder();
-                    $this->firstMetDate->delete();
-
+                    $firstMetDate = $this->firstMetDate;
                     $this->first_met_special_date_id = null;
                     $this->save();
+
+                    $firstMetDate->deleteReminder();
+                    $firstMetDate->delete();
                 }
             break;
         }
@@ -1289,6 +1308,40 @@ class Contact extends Model
         if ($relatedContact) {
             return \App\Contact::find($relatedContact->of_contact);
         }
+    }
+
+    /**
+     * Get the contacts that have all the provided $tags
+     * or if $tags is NONE get contacts that have no tags.
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed $tags string or Tag
+     * @return \Illuminate\Database\Eloquent\Builder $query
+     */
+    public function scopeTags($query, $tags)
+    {
+        if ($tags == 'NONE') {
+            // get tagless contacts
+            $query = $query->has('tags', '<', 1);
+        } elseif (! empty($tags)) {
+            // gets users who have all the tags
+            foreach ($tags as $tag) {
+                $query = $query->whereHas('tags', function ($query) use ($tag) {
+                    $query->where('id', $tag->id);
+                });
+            }
+        }
+
+        return $query;
+    }
+
+    /**
+     * Indicates the age of the contact at death.
+     *
+     * @return int
+     */
+    public function getAgeAtDeath()
+    {
+        return $this->deceasedDate->getAgeAtDeath();
     }
 
     /**

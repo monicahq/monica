@@ -3,9 +3,9 @@
 namespace Tests\Helper;
 
 use App\User;
-use App\Currency;
 use Tests\TestCase;
 use App\Helpers\MoneyHelper;
+use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MoneyHelperTest extends TestCase

@@ -20,8 +20,7 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
-    'day' => 'day',
-    'days' => 'days',
+    'days' => 'day|days',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -84,6 +83,11 @@ return [
     'error_save' => 'We had an error trying to save the data.',
 
     'default_save_success' => 'The data has been saved.',
+
+    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -217,4 +221,9 @@ return [
     'relationship_type_protege_female' => 'protege',
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
+
+    'relationship_type_ex_husband' => 'ex husband',
+    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 ];

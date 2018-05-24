@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Informazioni sul contatto',
@@ -58,6 +59,15 @@ return [
     // Header
     'edit_contact_information' => 'Modifica informazioni del contatto',
     'call_button' => 'Aggiungi chiamata',
+
+    // Stay in touch
+    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
+    'stay_in_touch_modal_label' => 'Send me an email every...',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
@@ -97,7 +107,6 @@ return [
     'information_edit_probably' => 'Questa persona probabilmente ha',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Conosco la data di nascita esatta di questa persona, che è il',
-    'information_edit_help' => 'Se indichi la data di nascita esatta di questa persona creeremo un promemoria per te – ti verrà notificato l\'arrivo del suo compleanno annualmente.',
     'information_no_linkedin_defined' => 'Nessun profilo LinkedIn',
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => 'Aggiungi un promemoria per questa data',
     'deceased_label' => 'Deceduto/a',
     'deceased_label_with_date' => 'Decesso il :date',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => 'Informazioni di contatto',

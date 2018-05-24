@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
+    'people_add_reminder_for_birthday' => 'יצירת תזכורת שנתית ליום ההולדת',
 
     // show
     'section_contact_information' => 'פרטי קשר',
@@ -58,6 +59,15 @@ return [
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'call_button' => 'תיעוד שיחה',
+
+    // Stay in touch
+    'stay_in_touch' => 'לשמור על קשר',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'התדירות חייבת להיות מספר גדול מ־0.',
+    'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
+    'stay_in_touch_modal_title' => 'לשמור על קשר',
+    'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
+    'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל בכל…',
 
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
@@ -97,7 +107,6 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
-    'information_edit_help' => 'ציון יום ההולדת המדויק של האדם הזה, יצור תזכורת עבורך – כדי להודיע לך בכל שנה מתי הגיע לברך את האדם הזה לרגל יום הולדתו.',
     'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => 'הוספת תזכורת לתאריך הזה',
     'deceased_label' => 'פטירה',
     'deceased_label_with_date' => 'פטירה ב־:date',
+    'deceased_age' => 'גיל בעת הפטירה',
 
     // Contact information
     'contact_info_title' => 'פרטי קשר',

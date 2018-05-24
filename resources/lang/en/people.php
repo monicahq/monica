@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Sort by last name Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'Search your contacts...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Add a new person',
@@ -43,6 +45,7 @@ return [
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -61,8 +64,9 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every {count} days',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
     'stay_in_touch_modal_label' => 'Send me an email every...',
@@ -105,7 +109,6 @@ return [
     'information_edit_probably' => 'This person is probably...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
-    'information_edit_help' => 'If you indicate an exact birthdate for this person, we will create a new reminder for you – so you’ll be notified every year when it’s time to celebrate this person’s birthdate.',
     'information_no_linkedin_defined' => 'No LinkedIn defined',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
@@ -299,6 +302,7 @@ return [
     'deceased_add_reminder' => 'Add a reminder for this date',
     'deceased_label' => 'Deceased',
     'deceased_label_with_date' => 'Deceased on :date',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => 'Contact information',

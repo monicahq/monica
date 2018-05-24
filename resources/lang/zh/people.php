@@ -43,6 +43,7 @@ return [
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -58,6 +59,15 @@ return [
     // Header
     'edit_contact_information' => '编辑联系人信息',
     'call_button' => '记录通话',
+
+    // Stay in touch
+    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
+    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
+    'stay_in_touch_modal_label' => 'Send me an email every...',
 
     // Calls
     'modal_call_title' => '记录通话',
@@ -97,7 +107,6 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
-    'information_edit_help' => '如果您为此人指明了确切的出生日期, 我们将为您创建一个新的提醒。因此, 系统将在每年庆祝此人生日的时间通知您。',
     'information_no_linkedin_defined' => '没有定义LinkedIn',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company',
@@ -291,6 +300,7 @@ return [
     'deceased_add_reminder' => '为此日期添加提醒',
     'deceased_label' => '世者',
     'deceased_label_with_date' => '在:date去世',
+    'deceased_age' => 'Age at death',
 
     // Contact information
     'contact_info_title' => '联系信息',

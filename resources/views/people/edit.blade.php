@@ -56,7 +56,7 @@
               </div>
               <div class="dtc">
                 <form-input
-                  value="{{ $contact->first_naem }}"
+                  value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
@@ -92,20 +92,17 @@
         </div>
 
         {{-- Birthdate --}}
-        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <form-specialdate
-              v-bind:months="{{ $months }}"
-              v-bind:days="{{ $days }}"
-              v-bind:month="{{ $month }}"
-              v-bind:day="{{ $day }}"
-              v-bind:age="'{{ $age }}'"
-              v-bind:default-date="'{{ $birthdate }}'"
-              v-bind:locale="'{{ auth()->user()->locale }}'"
-              :value="'{{ $birthdayState }}'"
-            ></form-specialdate>
-          </div>
-        </div>
+        <form-specialdate
+          v-bind:months="{{ $months }}"
+          v-bind:days="{{ $days }}"
+          v-bind:month="{{ $month }}"
+          v-bind:day="{{ $day }}"
+          v-bind:age="'{{ $age }}'"
+          v-bind:default-date="'{{ $birthdate }}'"
+          v-bind:locale="'{{ auth()->user()->locale }}'"
+          v-bind:reminder={{ $hasBirthdayReminder }}
+          :value="'{{ $birthdayState }}'"
+        ></form-specialdate>
 
         {{-- Is the contact deceased? --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">

@@ -2,12 +2,13 @@
 
 namespace Tests\Unit;
 
-use DB;
 use App\User;
 use App\Account;
+use App\Contact;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase
@@ -16,7 +17,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_genders()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
             'name' => 'test',
@@ -31,12 +32,15 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_notifications()
     {
-        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create();
+        $account = $contact->account;
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
         ]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
+            'contact_id' => $contact->id,
         ]);
 
         $this->assertTrue($account->notifications()->exists());
@@ -44,7 +48,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_relationship_types()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory(Account::class)->create();
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
@@ -57,7 +61,8 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_relationship_type_groups()
     {
-        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create();
+        $account = $contact->account;
         $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
         ]);
@@ -70,7 +75,8 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_modules()
     {
-        $account = factory('App\Account')->create([]);
+        $contact = factory(Contact::class)->create();
+        $account = $contact->account;
         $module = factory('App\Module')->create([
             'account_id' => $account->id,
         ]);
@@ -103,7 +109,8 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
-        $account = factory('App\Account')->create();
+        $contact = factory(Contact::class)->create();
+        $account = $contact->account;
 
         $user = factory(User::class)->create([
             'account_id' => $account->id,
@@ -117,7 +124,8 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_cant_downgrade_with_two_users()
     {
-        $account = factory('App\Account')->create();
+        $contact = factory(Contact::class)->create();
+        $account = $contact->account;
 
         $user = factory(User::class)->create([
             'account_id' => $account->id,
@@ -135,7 +143,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_cant_downgrade_with_pending_invitations()
     {
-        $account = factory('App\Account')->create();
+        $account = factory(Account::class)->create();
 
         $invitation = factory(Invitation::class)->create([
             'account_id' => $account->id,
@@ -173,7 +181,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_true_if_monthly_plan_is_set()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -192,7 +200,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_true_if_annual_plan_is_set()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -211,7 +219,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_user_is_subscribed_returns_false_if_no_plan_is_set()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         $this->assertEquals(
             false,
@@ -265,7 +273,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_has_invoices_returns_true_if_a_plan_exists()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         $plan = factory(\Laravel\Cashier\Subscription::class)->create([
             'account_id' => $account->id,
@@ -279,7 +287,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_has_invoices_returns_false_if_a_plan_does_not_exist()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         $this->assertFalse($account->hasInvoices());
     }
@@ -365,7 +373,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_three_default_genders()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $account->populateDefaultGendersTable();
 
         $this->assertEquals(
@@ -376,7 +384,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_the_right_default_genders()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $account->populateDefaultGendersTable();
 
         $this->assertDatabaseHas(
@@ -397,7 +405,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_replaces_gender_with_another_gender()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $gender1 = factory('App\Gender')->create([
             'account_id' => $account->id,
         ]);
@@ -439,7 +447,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_two_default_reminder_rules()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $account->populateDefaultReminderRulesTable();
 
         $this->assertEquals(
@@ -450,7 +458,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_the_account_with_the_right_default_reminder_rules()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $account->populateDefaultReminderRulesTable();
 
         $this->assertDatabaseHas(
@@ -466,7 +474,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_relationship_type_object_matching_a_given_name()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'partner',
@@ -477,7 +485,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
             'name' => 'love',
@@ -488,7 +496,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
 
         // Love type
         $id = DB::table('default_relationship_type_groups')->insertGetId([
@@ -504,7 +512,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_skips_default_relationship_type_groups_table_for_types_already_migrated()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'friend_and_family',
             'migrated' => 1,
@@ -519,7 +527,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_default_relationship_types_table_if_tables_havent_been_migrated_yet()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'friend_and_family',
         ]);
@@ -539,7 +547,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_skips_default_relationship_types_table_for_types_already_migrated()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'friend_and_family',
         ]);
@@ -560,18 +568,20 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_call_statistics()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Call', 4)->create([
-            'account_id' => $account->id,
+        $contact = factory('App\Contact')->create();
+        $calls = factory('App\Call', 4)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
             'called_at' => '2018-03-02',
         ]);
 
-        $contact = factory('App\Call', 2)->create([
-            'account_id' => $account->id,
+        $calls = factory('App\Call', 2)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
             'called_at' => '1992-03-02',
         ]);
 
-        $statistics = $account->getYearlyCallStatistics();
+        $statistics = $contact->account->getYearlyCallStatistics();
 
         $this->assertTrue(
             $statistics->contains(4)
@@ -584,7 +594,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_activities_statistics()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $contact = factory('App\Activity', 4)->create([
             'account_id' => $account->id,
             'date_it_happened' => '2018-03-02',
@@ -608,7 +618,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         DB::table('default_contact_modules')->insert([
             'key' => 'work_information',
         ]);
@@ -622,7 +632,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_skips_default_account_modules_table_for_types_already_migrated()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         DB::table('default_contact_modules')->insert([
             'key' => 'awesome',
             'migrated' => 1,
@@ -638,7 +648,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_adds_an_unread_changelog_entry_to_all_users()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $user = factory('App\User')->create([
             'account_id' => $account->id,
         ]);
@@ -646,7 +656,7 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
 
-        $changelog = factory('App\Changelog')->create([]);
+        $changelog = factory('App\Changelog')->create();
 
         $account->addUnreadChangelogEntry($changelog->id);
 
@@ -663,9 +673,9 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_populates_account_with_changelogs()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory('App\Account')->create();
         $user = factory('App\User')->create(['account_id' => $account->id]);
-        $changelog = factory('App\Changelog')->create([]);
+        $changelog = factory('App\Changelog')->create();
         $changelog->users()->sync($user->id);
 
         $account->populateChangelogsTable();

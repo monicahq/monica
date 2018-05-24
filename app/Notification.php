@@ -91,4 +91,23 @@ class Notification extends Model
             $this->delete();
         }
     }
+
+    /**
+     * Indicate whether a notification should be sent, as this should be
+     * dictated by the reminder rule (on or off).
+     *
+     * @return bool
+     */
+    public function shouldBeSent()
+    {
+        $reminderRule = $this->account->reminderRules()
+                            ->where('number_of_days_before', $this->scheduled_number_days_before)
+                            ->first();
+
+        if (! $reminderRule) {
+            return false;
+        }
+
+        return $reminderRule->active;
+    }
 }

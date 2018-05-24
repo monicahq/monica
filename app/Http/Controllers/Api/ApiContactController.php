@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;

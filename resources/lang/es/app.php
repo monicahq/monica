@@ -20,8 +20,9 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
+    'days' => 'day|days',
 
-    'application_title' => 'Monica – a CRM for your friends and family',
+    'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
@@ -79,6 +80,9 @@ return [
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_save' => 'We had an error trying to save the data.',
+
+    'default_save_success' => 'The data has been saved.',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.

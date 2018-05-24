@@ -18,6 +18,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
@@ -39,6 +40,7 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
@@ -59,12 +61,13 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
-                  ->attach('vcard', 'tests/stubs/single_vcard_stub.vcard')
+                  ->attach('vcard', base_path('tests/stubs/single_vcard_stub.vcard'))
                   ->on(new ImportVCardUpload)
                   ->scrollTo('upload')
                   ->press('Upload')
@@ -81,12 +84,13 @@ class UploadVCardTest extends DuskTestCase
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
             $browser->loginAs($user)
                   ->visit('/settings/import')
                   ->clickLink('Import vCard')
-                  ->attach('vcard', 'tests/stubs/broken_vcard_stub.vcard')
+                  ->attach('vcard', base_path('tests/stubs/broken_vcard_stub.vcard'))
                   ->on(new ImportVCardUpload)
                   ->scrollTo('upload')
                   ->press('Upload')

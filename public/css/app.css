@@ -19881,8 +19881,7 @@ input:disabled {
   text-decoration: none;
 }
 
-.btn:hover,
-.btn:visited {
+.btn:hover {
   text-decoration: none;
   background-color: #e6ebf1;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f0f3f6), color-stop(90%, #e6ebf1));

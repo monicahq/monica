@@ -2,9 +2,9 @@
 
 namespace App;
 
-use DB;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -133,16 +133,6 @@ class Account extends Model
     }
 
     /**
-     * Get the offspring records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function offpsrings()
-    {
-        return $this->hasMany(Offspring::class);
-    }
-
-    /**
      * Get the progenitor records associated with the account.
      *
      * @return HasMany
@@ -197,7 +187,7 @@ class Account extends Model
      *
      * @return HasMany
      */
-    public function importjobreports()
+    public function importJobReports()
     {
         return $this->hasMany(ImportJobReport::class);
     }
@@ -548,21 +538,24 @@ class Account extends Model
     /**
      * Populate the relationship types table based on the default ones.
      *
-     * @param  bool $ignoreTableAlreadyMigrated
      * @return void
      */
-    public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
+    public function populateRelationshipTypesTable($migrateOnlyNewTypes = false)
     {
-        $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        if ($migrateOnlyNewTypes) {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->where('migrated', 0)->get();
+        } else {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        }
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
-                $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
-                                        ->where('id', $defaultRelationshipType->relationship_type_group_id)
-                                        ->first();
+            $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
+                                    ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                                    ->first();
 
-                $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
+            $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
+            if ($relationshipTypeGroup) {
                 RelationshipType::create([
                     'account_id' => $this->id,
                     'name' => $defaultRelationshipType->name,
@@ -673,9 +666,10 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
-     * @return this
+     * @param string $ipAddress
+     * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create new account
         $account = new self;
@@ -686,7 +680,7 @@ class Account extends Model
         $account->populateDefaultFields($account);
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
 
         return $account;
     }
@@ -731,7 +725,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyCallStatistics()
     {
@@ -766,7 +760,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return json
+     * @return array
      */
     public function getYearlyActivitiesStatistics()
     {

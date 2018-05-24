@@ -45,7 +45,8 @@
 
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_post') }}</label>
-                <textarea class="form-control" id="field-entry" name="entry" required></textarea>
+                <textarea class="form-control" id="field-entry" name="entry" rows="15" required></textarea>
+                <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ trans('app.markdown_link') }}</a></p>
               </div>
 
               <div class="form-group actions">
