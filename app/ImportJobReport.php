@@ -31,7 +31,7 @@ class ImportJobReport extends Model
     }
 
     /**
-     * Get the user record associated with the gift.
+     * Get the user record associated with the import job report.
      *
      * @return BelongsTo
      */
@@ -41,7 +41,7 @@ class ImportJobReport extends Model
     }
 
     /**
-     * Get the import job record associated with the gift.
+     * Get the import job record associated with the import job report.
      *
      * @return BelongsTo
      */

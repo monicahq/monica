@@ -51,7 +51,7 @@ class SpecialDate extends Model
     ];
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the special date.
      *
      * @return BelongsTo
      */
@@ -61,7 +61,7 @@ class SpecialDate extends Model
     }
 
     /**
-     * Get the contact record associated with the reminder.
+     * Get the contact record associated with the special date.
      *
      * @return BelongsTo
      */
@@ -71,7 +71,7 @@ class SpecialDate extends Model
     }
 
     /**
-     * Get the contact record associated with the reminder.
+     * Get the contact record associated with the special date.
      *
      * @return BelongsTo
      */

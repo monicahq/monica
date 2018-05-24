@@ -15,7 +15,7 @@ class Pet extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the pet.
      *
      * @return BelongsTo
      */
@@ -25,7 +25,7 @@ class Pet extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the pet.
      *
      * @return BelongsTo
      */
@@ -35,7 +35,7 @@ class Pet extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the pet category record associated with the pet.
      *
      * @return BelongsTo
      */

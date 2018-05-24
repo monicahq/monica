@@ -28,7 +28,7 @@ class Module extends Model
     ];
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the module.
      *
      * @return BelongsTo
      */

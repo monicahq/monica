@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,7 +18,7 @@ class ContactFieldType extends Model
     protected $table = 'contact_field_types';
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the contct field type.
      *
      * @return BelongsTo
      */

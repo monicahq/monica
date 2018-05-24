@@ -33,7 +33,7 @@ class Gender extends Model
     ];
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the gender.
      *
      * @return BelongsTo
      */

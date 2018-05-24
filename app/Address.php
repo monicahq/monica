@@ -28,7 +28,7 @@ class Address extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the address.
      *
      * @return BelongsTo
      */

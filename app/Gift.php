@@ -45,7 +45,7 @@ class Gift extends Model
     ];
 
     /**
-     * Get the account record associated with the record.
+     * Get the account record associated with the gift.
      *
      * @return BelongsTo
      */
@@ -65,7 +65,7 @@ class Gift extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the recipient record associated with the gift.
      *
      * @return HasOne
      */
