@@ -2,8 +2,11 @@
 
 namespace App\Models\Settings\CustomFields;
 
+use App\Account;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\CustomFields\Field;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class CustomField extends Model
 {
@@ -33,7 +36,7 @@ class CustomField extends Model
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -43,7 +46,7 @@ class CustomField extends Model
      */
     public function customFieldPattern()
     {
-        return $this->belongsTo('App\CustomFieldPattern');
+        return $this->belongsTo(CustomFieldPattern::class);
     }
 
     /**
@@ -53,7 +56,7 @@ class CustomField extends Model
      */
     public function fields()
     {
-        return $this->hasMany('App\Field');
+        return $this->hasMany(Field::class);
     }
 
     /**

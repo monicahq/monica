@@ -1,8 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models\Settings\CustomFields;
 
+use App\Account;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\CustomFields\CustomField;
+use App\Models\Settings\CustomFields\CustomFieldType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Field extends Model
@@ -30,7 +33,7 @@ class Field extends Model
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -40,7 +43,7 @@ class Field extends Model
      */
     public function customField()
     {
-        return $this->belongsTo('App\CustomField');
+        return $this->belongsTo(CustomField::class);
     }
 
     /**
@@ -50,7 +53,7 @@ class Field extends Model
      */
     public function customFieldType()
     {
-        return $this->belongsTo('App\CustomFieldType');
+        return $this->belongsTo(CustomFieldType::class);
     }
 
     /**

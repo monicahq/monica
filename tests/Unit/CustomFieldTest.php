@@ -2,9 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Account;
 use Tests\TestCase;
-use App\CustomField;
+use App\Models\Settings\CustomFields\Field;
+use App\Models\Settings\CustomFields\CustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Settings\CustomFields\CustomFieldPattern;
 
 class CustomFieldTest extends TestCase
 {
@@ -12,8 +15,8 @@ class CustomFieldTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $customField = factory('App\CustomField')->create([
+        $account = factory(Account::class)->create([]);
+        $customField = factory(CustomField::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -22,8 +25,8 @@ class CustomFieldTest extends TestCase
 
     public function test_it_has_many_fields()
     {
-        $customField = factory('App\CustomField')->create([]);
-        $field = factory('App\Field', 2)->create([
+        $customField = factory(CustomField::class)->create([]);
+        $field = factory(Field::class, 2)->create([
             'custom_field_id' => $customField->id,
         ]);
 
@@ -32,17 +35,22 @@ class CustomFieldTest extends TestCase
 
     public function test_it_belongs_to_a_custom_field_pattern()
     {
-        $account = factory('App\Account')->create([]);
-        $customFieldPattern = factory('App\CustomFieldPattern')->create([
+        $account = factory(Account::class)->create([]);
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
             'account_id' => $account->id,
         ]);
 
-        $this->assertTrue($customFieldPattern->account()->exists());
+        $customField = factory(CustomField::class)->create([
+            'account_id' => $account->id,
+            'custom_field_pattern_id' => $account->id,
+        ]);
+
+        $this->assertTrue($customField->customFieldPattern()->exists());
     }
 
     public function test_it_retrieves_the_name_of_the_custom_field()
     {
-        $customField = factory('App\CustomField')->make([
+        $customField = factory(CustomField::class)->make([
             'name' => 'Flirt',
         ]);
 
@@ -54,7 +62,7 @@ class CustomFieldTest extends TestCase
 
     public function test_it_retrieves_the_is_list_attribute()
     {
-        $customField = factory('App\CustomField')->make([
+        $customField = factory(CustomField::class)->make([
             'is_list' => 0,
         ]);
 
@@ -66,7 +74,7 @@ class CustomFieldTest extends TestCase
 
     public function test_it_retrieves_the_is_important_attribute()
     {
-        $customField = factory('App\CustomField')->make([
+        $customField = factory(CustomField::class)->make([
             'is_important' => 0,
         ]);
 
@@ -78,7 +86,7 @@ class CustomFieldTest extends TestCase
 
     public function test_it_retrieves_the_field_order_attribute()
     {
-        $customField = factory('App\CustomField')->make([
+        $customField = factory(CustomField::class)->make([
             'fields_order' => '1;3;4;1;4',
         ]);
 

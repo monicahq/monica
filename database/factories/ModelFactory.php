@@ -253,35 +253,35 @@ $factory->define(App\Models\Settings\CustomFields\CustomField::class, function (
     ];
 });
 
-$factory->define(App\CustomFieldType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\CustomFieldType::class, function (Faker\Generator $faker) {
     return [];
 });
 
-$factory->define(App\Field::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\Field::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
 });
 
-$factory->define(App\FieldChoice::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\FieldChoice::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
 });
 
-$factory->define(App\CustomFieldPattern::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\CustomFieldPattern::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Account::class)->create()->id,
+    ];
+});
+
+$factory->define(App\Models\Settings\CustomFields\ContactCustomFieldPattern::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];
 });
 
-$factory->define(App\ContactCustomFieldPattern::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => 1,
-    ];
-});
-
-$factory->define(App\ContactFieldValue::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\ContactFieldValue::class, function (Faker\Generator $faker) {
     return [
         'account_id' => 1,
     ];

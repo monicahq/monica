@@ -1,8 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Settings\CustomFields;
 
+use App\Account;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\CustomFields\Field;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FieldChoice extends Model
@@ -30,7 +32,7 @@ class FieldChoice extends Model
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -40,7 +42,7 @@ class FieldChoice extends Model
      */
     public function field()
     {
-        return $this->belongsTo('App\Field');
+        return $this->belongsTo(Field::class);
     }
 
     /**
