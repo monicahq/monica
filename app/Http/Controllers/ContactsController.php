@@ -49,7 +49,9 @@ class ContactsController extends Controller
                             ->where('account_id', auth()->user()->account_id)
                             ->get();
 
-                $tags = $tags->concat($tag);
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
+                }
 
                 $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
@@ -70,6 +72,7 @@ class ContactsController extends Controller
         return view('people.index')
             ->withContacts($contacts->unique('id'))
             ->withTags($tags)
+            ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->get('no_tag') ?? false);

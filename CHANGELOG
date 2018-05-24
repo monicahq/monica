@@ -1,11 +1,14 @@
 UNRELEASED CHANGES:
 
-* Remove automatic birthday reminder creation when editing a contact
-* Use external list of countries, with translations and reliability
+* Add User and Currency support in the API
+* Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
 * Fixes Contact search dropdown shows non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
+* Adds ex wife/husband relationship
+* Fix duplication of tags when filtering contacts
+* Add trusted proxies to run behind a ssl terminating loadbalancer
 
 RELEASED VERSIONS:
 
