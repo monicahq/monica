@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Notifications\ConfirmEmail;
 use App\Http\Controllers\Controller;
@@ -20,9 +21,7 @@ class EmailChangeController extends Controller
     public function index(Request $request)
     {
         if ($request->session()->has('user_id')) {
-            $model = config('auth.providers.users.model');
-
-            $user = $model::findOrFail($request->session()->get('user_id'));
+            $user = User::findOrFail($request->session()->get('user_id'));
 
             return view('auth.emailchange')
                 ->with('email', $user->email);
@@ -103,9 +102,7 @@ class EmailChangeController extends Controller
      */
     protected function getUser(Request $request)
     {
-        $model = config('auth.providers.users.model');
-
-        $user = $model::findOrFail($request->session()->get('user_id'));
+        $user = User::findOrFail($request->session()->get('user_id'));
 
         // Using current email from user, and current password sent with the request to authenticate the user
         if (! Auth::attempt(['email' => $user->email, 'password' => $request['password']])) {

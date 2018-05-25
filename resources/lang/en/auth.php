@@ -59,10 +59,10 @@ return [
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
 
-    'confirmation_again' => 'If you want to change your email you can <a href="'.url('settings/emailchange').'" class="alert-link">click here</a>.',
+    'confirmation_again' => 'If you want to change your email address you can <a href="'.url('settings/emailchange').'" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',
     'email_change_title' => 'Change your email',
     'email_change_new' => 'New email address',
     'email_change_password' => 'Confirm your password',
-    'email_changed' => 'Your email has been changed. Check your mailbox to validate it.',
+    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
 ];
