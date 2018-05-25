@@ -127,6 +127,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
 
     // Custom fields
+    Route::resource('defaultcustomfieldtypes', 'Api\\Settings\\CustomFields\\ApiDefaultCustomFieldTypeController', ['except' => [
+      'create', 'edit', 'patch', 'put', 'destroy',
+    ]]);
+
     Route::resource('customfields', 'Api\\Settings\\CustomFields\\ApiCustomFieldController', ['except' => [
       'create', 'edit', 'patch',
     ]]);

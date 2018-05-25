@@ -36,12 +36,14 @@ class AddCustomFieldsTable extends Migration
 
         Schema::create('fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id');
-            $table->integer('custom_field_id');
-            $table->integer('custom_field_type_id');
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('custom_field_id');
+            $table->unsignedInteger('default_custom_field_type_id');
             $table->string('name');
             $table->boolean('required')->default(0);
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('default_custom_field_type_id')->references('id')->on('default_custom_field_types')->onDelete('cascade');
         });
 
         Schema::create('default_custom_field_types', function (Blueprint $table) {

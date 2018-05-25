@@ -21,6 +21,9 @@ class CustomField extends Resource
             'fields_order' => $this->fields_order,
             'is_list' => (bool) $this->is_list,
             'is_important' => (bool) $this->is_important,
+            'custom_field_pattern' => [
+                'id' => $this->customFieldPattern->id,
+            ],
             'account' => [
                 'id' => $this->account->id,
             ],

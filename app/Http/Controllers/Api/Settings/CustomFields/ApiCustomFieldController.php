@@ -116,6 +116,7 @@ class ApiCustomFieldController extends ApiController
             'name' => 'required|max:255',
             'is_list' => 'boolean|required',
             'is_important' => 'boolean|required',
+            'custom_field_pattern_id' => 'integer|required',
         ]);
 
         if ($validator->fails()) {

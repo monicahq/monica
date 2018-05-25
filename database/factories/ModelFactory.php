@@ -294,7 +294,7 @@ $factory->define(App\Models\Settings\CustomFields\CustomField::class, function (
     ];
 });
 
-$factory->define(App\Models\Settings\CustomFields\CustomFieldType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Settings\CustomFields\DefaultCustomFieldType::class, function (Faker\Generator $faker) {
     return [];
 });
 

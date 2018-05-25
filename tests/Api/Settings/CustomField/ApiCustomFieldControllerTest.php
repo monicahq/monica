@@ -25,7 +25,7 @@ class ApiCustomFieldControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_contact_fields()
+    public function test_it_gets_a_list_of_custom_fields()
     {
         $user = $this->signin();
 
