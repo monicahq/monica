@@ -13,12 +13,19 @@ class AddCustomFieldsTable extends Migration
      */
     public function up()
     {
+        Schema::create('default_custom_field_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type');
+            $table->timestamps();
+        });
+
         Schema::create('custom_field_patterns', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id');
+            $table->unsignedInteger('account_id');
             $table->string('name');
             $table->string('icon_name');
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
 
         Schema::create('custom_fields', function (Blueprint $table) {
@@ -44,12 +51,6 @@ class AddCustomFieldsTable extends Migration
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('default_custom_field_type_id')->references('id')->on('default_custom_field_types')->onDelete('cascade');
-        });
-
-        Schema::create('default_custom_field_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('type');
-            $table->timestamps();
         });
 
         Schema::create('field_choices', function (Blueprint $table) {
