@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Notifications\ConfirmEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\EmailChangeRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -21,7 +20,7 @@ class EmailChangeController extends Controller
      * @var string
      */
     protected $redirectTo = '/settings/emailchange2';
-    
+
     /**
      * Show the application's login form.
      *
