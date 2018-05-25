@@ -2,7 +2,7 @@
     <div>
         <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
         <input type="hidden" :name="name" :value="selected ? selected.id : ''">
-        <vSelect placeholder="search" @search="search" :options="results" v-model="selected"></vSelect>
+        <vSelect placeholder="search" @search="search" :options="computedOption" v-model="selected"></vSelect>
     </div>
 </template>
 
@@ -22,28 +22,36 @@
             },
             userContactId: {
                 type: String
+            },
+            defaultOptions : {
+                type: Array
+            },
+            placeholder : {
+                type: String
             }
         },
         data () {
             return {
                 src : '/people/search',
-                results : [],
                 filterable : false,
-                selected: { label: 'Search and select an existing contact', id: '' },
+                selected: { label: this.placeholder, id: '' },
+                newOptions: [],
+            }
+        },
+        computed: {
+            computedOption : function() {
+                return this.newOptions.length > 0 ? this.newOptions : this.defaultOptions;
             }
         },
         methods: {
             search(keyword, loading) {
+                console.log(this.options);
                 this.getContacts(keyword, loading, this);
             },
             getContacts: function (keyword, loading, vm) {
                 axios.post(this.src, {
                     needle: keyword,
                     accountId: $('body').attr("data-account-id")
-                },{
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
                 }).then(function(response) {
                     let data = [];
                     response.data.data.forEach(function (contact) {
@@ -54,11 +62,10 @@
                         let middleName = contact.middle_name || '';
                         let lastName = contact.last_name || '';
                         contact.label = contact.first_name + (middleName ? ' ' + middleName : '') + (lastName ? ' ' + lastName : '');
-                        contact.value = contact.id;
                         data.push(contact);
                     });
 
-                    vm.results = data;
+                    vm.newOptions = data;
                 });
             }
         },

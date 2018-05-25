@@ -18,10 +18,27 @@ class RelationshipsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        // getting the amount of existing contacts
-        $existingContactCount = auth()->user()->account->contacts()
+        // getting top 20 of existing contacts
+        $existingContacts = auth()->user()->account->contacts()
             ->real()
-            ->count();
+            ->select(['id', 'first_name', 'last_name'])
+            ->sortedBy('name')
+            ->take(100)
+            ->get();
+
+        // Building the list of contacts specifically for the dropdown which asks
+        // for an id and a name. Also filter out the current contact.
+        $arrayContacts = collect();
+        foreach ($existingContacts as $existingContact) {
+            if ($existingContact->id == $contact->id) {
+                continue;
+            }
+            $arrayContacts->push([
+                'id' => $existingContact->id,
+                'label' => $existingContact->getCompleteName(),
+            ]);
+        }
+
 
         // Building the list of relationship types specifically for the dropdown which asks
         // for an id and a name.
@@ -29,7 +46,7 @@ class RelationshipsController extends Controller
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
                 'id' => $relationshipType->id,
-                'name' => $relationshipType->getLocalizedName($contact, true),
+                'label' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
 
@@ -41,7 +58,7 @@ class RelationshipsController extends Controller
             ->withDays(\App\Helpers\DateHelper::getListOfDays())
             ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
             ->withBirthdate(now()->format('Y-m-d'))
-            ->withExistingContactCount($existingContactCount)
+            ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }
 
