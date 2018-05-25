@@ -22,17 +22,12 @@
               </div>
             @endif
 
-            <form action="/settings/emailchange" method="POST">
+            <form action="/settings/emailchange2" method="POST">
               {{ csrf_field() }}
 
               <div class="form-group">
-                {{ trans('auth.email_change_current_email') }}
+                <label>{{ trans('auth.email_change_current_email') }}</label>
                 {{ $email }}
-              </div>
-
-              <div class="form-group">
-                <label for="password">{{ trans('auth.email_change_password') }}</label>
-                <input type="password" class="form-control" id="password" name="password" required>
               </div>
 
               {{-- email address --}}

@@ -36,10 +36,10 @@ class ConfirmEmail extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject(trans('confirmation::confirmation.email-title'))
-            ->line(trans('confirmation::confirmation.email-title'))
-            ->line(trans('confirmation::confirmation.email-intro'))
-            ->action(trans('confirmation::confirmation.email-button'),
+            ->subject(trans('mail.confirmation_email_title'))
+            ->line(trans('mail.confirmation_email_title'))
+            ->line(trans('mail.confirmation_email_intro'))
+            ->action(trans('mail.confirmation_email_button'),
                 url("confirmation/$notifiable->id/$notifiable->confirmation_code"));
     }
 }

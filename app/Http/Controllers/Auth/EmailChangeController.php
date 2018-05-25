@@ -9,9 +9,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\EmailChangeRequest;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class EmailChangeController extends Controller
 {
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login / registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/settings/emailchange2';
+    
+    /**
+     * Show the application's login form.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginFormSpecial(Request $request)
+    {
+        if ($request->session()->has('user_id')) {
+            $user = User::findOrFail($request->session()->get('user_id'));
+
+            return view('auth.emailchange1')
+                ->with('email', $user->email);
+        }
+
+        return redirect('/');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,14 +48,10 @@ class EmailChangeController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->session()->has('user_id')) {
-            $user = User::findOrFail($request->session()->get('user_id'));
+        $user = auth()->user();
 
-            return view('auth.emailchange')
-                ->with('email', $user->email);
-        }
-
-        return redirect('/');
+        return view('auth.emailchange2')
+            ->with('email', $user->email);
     }
 
     /**
@@ -38,15 +62,11 @@ class EmailChangeController extends Controller
      */
     public function save(EmailChangeRequest $request)
     {
-        if ($request->session()->has('user_id')) {
-            $response = $this->validateAndEmailChange($request);
+        $response = $this->validateAndEmailChange($request);
 
-            return $response == 'auth.email_changed'
-                ? $this->sendChangedResponse($response)
-                : $this->sendChangedFailedResponse($response);
-        }
-
-        return redirect('/');
+        return $response == 'auth.email_changed'
+            ? $this->sendChangedResponse($response)
+            : $this->sendChangedFailedResponse($response);
     }
 
     /**
@@ -57,10 +77,7 @@ class EmailChangeController extends Controller
      */
     protected function validateAndEmailChange(EmailChangeRequest $request)
     {
-        $user = $this->validateChange($request);
-        if (! $user instanceof Model) {
-            return $user;
-        }
+        $user = auth()->user();
 
         // Change email of the user
         $user->email = $request->get('newmail');
@@ -77,40 +94,6 @@ class EmailChangeController extends Controller
         $request->session()->invalidate();
 
         return 'auth.email_changed';
-    }
-
-    /**
-     * Validate a password change request with the given credentials.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return mixed
-     */
-    protected function validateChange(Request $request)
-    {
-        if (is_null($user = $this->getUser($request))) {
-            return 'passwords.invalid';
-        }
-
-        return $user;
-    }
-
-    /**
-     * Get the user with the given credentials.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Contracts\Auth\CanResetPassword|null
-     */
-    protected function getUser(Request $request)
-    {
-        $user = User::findOrFail($request->session()->get('user_id'));
-
-        // Using current email from user, and current password sent with the request to authenticate the user
-        if (! Auth::attempt(['email' => $user->email, 'password' => $request['password']])) {
-            // authentication fails
-            return;
-        }
-
-        return $user;
     }
 
     /**
