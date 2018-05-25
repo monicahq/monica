@@ -215,6 +215,7 @@ export function loadLanguageAsync (lang, set) {
 const app = null;
 const me = this;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+    moment.locale(lang);
 
     // the Vue appplication
     me.app = new Vue({
