@@ -30,7 +30,7 @@
                 {!! session('confirmation-danger') !!}
               </div>
               <div class="alert alert-danger">
-                {!! trans('auth.confirmation_again') !!}
+                {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
               </div>
             @endif
 

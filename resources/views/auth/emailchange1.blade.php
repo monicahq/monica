@@ -12,7 +12,8 @@
                 <img class="" src="/img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
-            <h2>{{ trans('auth.login_to_account') }}</h2>
+            <h2>{{ trans('auth.email_change_title') }}</h2>
+            <h3>{{ trans('auth.login_again') }}</h3>
 
             @include ('partials.errors')
             @if (session('status'))
@@ -21,13 +22,13 @@
               </div>
             @endif
 
-            <form class="" action="/settings/emailchange" method="post">
+            <form class="" action="/settings/emailchange1" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
-                <label>{{ trans('auth.email') }}</label>
-                <input type="hidden" class="form-control" id="email" name="email" value="{{ $email }}">
+                <label>{{ trans('auth.email_change_current_email') }}</label>
                 {{ $email }}
+                <input type="hidden" class="form-control" id="email" name="email" value="{{ $email }}">
               </div>
 
               <div class="form-group">
