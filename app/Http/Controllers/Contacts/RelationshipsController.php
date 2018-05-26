@@ -38,8 +38,7 @@ class RelationshipsController extends Controller
                 'label' => $existingContact->getCompleteName(),
             ]);
         }
-
-
+        
         // Building the list of relationship types specifically for the dropdown which asks
         // for an id and a name.
         $arrayRelationshipTypes = collect();
