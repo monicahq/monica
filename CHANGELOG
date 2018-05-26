@@ -9,6 +9,7 @@ UNRELEASED CHANGES:
 * Adds ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
 * Add trusted proxies to run behind a ssl terminating loadbalancer
+* Fix reminders for past events are visible on the dashboard
 
 RELEASED VERSIONS:
 
