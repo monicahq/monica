@@ -18,7 +18,7 @@ class RelationshipsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        // getting top 20 of existing contacts
+        // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()
             ->real()
             ->select(['id', 'first_name', 'last_name'])

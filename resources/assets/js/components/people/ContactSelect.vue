@@ -45,7 +45,6 @@
         },
         methods: {
             search(keyword, loading) {
-                console.log(this.options);
                 this.getContacts(keyword, loading, this);
             },
             getContacts: function (keyword, loading, vm) {
@@ -74,11 +73,3 @@
         }
     }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
-<style>
-
-</style>
