@@ -17,7 +17,7 @@ class DBHelper
         try {
             return DB::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
         } catch (\Exception $e) {
-            return null;
+            return;
         }
     }
 
