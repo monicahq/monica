@@ -212,7 +212,6 @@ jobs:
       - *restore_composer
       - *restore_node
       - *restore_assets
-      - *wait-for-db
       - *prepare-db
       - *unit-tests
       - *psalm
@@ -244,7 +243,6 @@ jobs:
       - *restore_composer
       - *restore_node
       - *restore_assets
-      - *wait-for-db
       - *prepare-db
       - *selenium
       - *http-server
