@@ -44,6 +44,7 @@ aliases:
         cp scripts/tests/.env.mysql.travis .env
         sudo apt-get update
         sudo apt-get install -y mysql-client
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
   - &update-chrome
     run:
       name: Install chrome
@@ -202,7 +203,6 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
 
     steps:
       - checkout:
@@ -235,7 +235,6 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: monica
 
     steps:
       - checkout:
