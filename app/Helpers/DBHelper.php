@@ -19,12 +19,12 @@ class DBHelper
 
     /**
      * Test if db version if greater than $version param.
-     * 
+     *
      * @param string
      * @return bool
      */
     public static function testVersion($version)
     {
-        return (version_compare(static::version(), $version) >= 0);
+        return version_compare(static::version(), $version) >= 0;
     }
 }
