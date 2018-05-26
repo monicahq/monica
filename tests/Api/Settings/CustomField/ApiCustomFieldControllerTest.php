@@ -18,6 +18,9 @@ class ApiCustomFieldControllerTest extends ApiTestCase
         'fields_order',
         'is_list',
         'is_important',
+        'custom_field_pattern' => [
+            'id',
+        ],
         'account' => [
             'id',
         ],
@@ -104,6 +107,7 @@ class ApiCustomFieldControllerTest extends ApiTestCase
         $response = $this->json('POST', '/api/customfields', [
                             'name' => 'Movies',
                             'is_list' => false,
+                            'custom_field_pattern_id' => 1,
                         ]);
 
         $response->assertStatus(400);
@@ -118,6 +122,10 @@ class ApiCustomFieldControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
+        $customFieldPattern = factory(CustomFieldPattern::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
         $customField = factory(CustomField::class)->create([
             'account_id' => $user->account_id,
             'name' => 'France',
@@ -129,6 +137,7 @@ class ApiCustomFieldControllerTest extends ApiTestCase
                             'name' => 'Movies',
                             'is_list' => true,
                             'is_important' => true,
+                            'custom_field_pattern_id' => $customFieldPattern->id,
                         ]);
 
         $response->assertStatus(200);
@@ -137,6 +146,7 @@ class ApiCustomFieldControllerTest extends ApiTestCase
             'name' => 'Movies',
             'is_list' => 1,
             'is_important' => 1,
+            'custom_field_pattern_id' => $customFieldPattern->id,
         ]);
 
         $response->assertJsonStructure([
@@ -175,12 +185,13 @@ class ApiCustomFieldControllerTest extends ApiTestCase
         $response = $this->json('PUT', '/api/customfields/'.$customField->id, [
                             'name' => 'Movies',
                             'is_list' => true,
+                            'is_important' => true,
                         ]);
 
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => ['The is important field is required.'],
+            'message' => ['The custom field pattern id field is required.'],
             'error_code' => 32,
         ]);
     }
