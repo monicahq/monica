@@ -223,7 +223,7 @@ class SettingsController extends Controller
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob));
+        dispatch(new AddContactFromVCard($importJob, $request->get('behaviour')));
 
         return redirect()->route('settings.import');
     }

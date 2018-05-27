@@ -86,7 +86,7 @@
           </div>
           <div class="">
             <button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>
-            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('people.people_add_cta') }}</button>
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" value="true" type="submit">{{ trans('people.people_add_cta') }}</button>
           </div>
         </div>
       </div>

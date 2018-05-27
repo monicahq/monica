@@ -43,6 +43,7 @@ return [
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
+    'people_add_reminder_for_birthday' => 'יצירת תזכורת שנתית ליום ההולדת',
 
     // show
     'section_contact_information' => 'פרטי קשר',
@@ -106,7 +107,6 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
-    'information_edit_help' => 'ציון יום ההולדת המדויק של האדם הזה, יצור תזכורת עבורך – כדי להודיע לך בכל שנה מתי הגיע לברך את האדם הזה לרגל יום הולדתו.',
     'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',

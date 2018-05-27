@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Account;
+use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -70,19 +71,26 @@ class RegisterController extends Controller
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'policy' => 'required',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array
      * @return User
      */
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
-        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $account = Account::createDefault(
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            \Request::ip()
+        );
         $user = $account->users()->first();
 
         if (! $first) {

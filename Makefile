@@ -65,7 +65,7 @@ docker_squash:
 docker_tag:
 	docker tag monicahq/monicahq monicahq/monicahq:$(BUILD)
 
-docker_push:
+docker_push: docker_tag
 	docker push monicahq/monicahq:$(BUILD)
 	docker push monicahq/monicahq:latest
 

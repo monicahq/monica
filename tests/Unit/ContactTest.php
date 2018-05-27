@@ -1175,6 +1175,146 @@ class ContactTest extends FeatureTestCase
         $this->assertEquals(0, Contact::where('id', $id)->count());
     }
 
+    public function test_it_can_get_tagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $tag = Tag::where('id', $tag->id)
+                    ->where('account_id', $user->account->account_id)
+                    ->get();
+
+        $contacts = $user->account->contacts()->real()->tags($tag)->get();
+
+        $this->assertTrue($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_untagged()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $tag = $contact->setTag('friend');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $contacts = $user->account->contacts()->real()->tags('NONE')->get();
+
+        $this->assertFalse($contacts->contains($contact));
+    }
+
+    public function test_it_can_get_multiple_tags()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'friend',
+        ]);
+        $contact->setTag($tag->name);
+        $tag2 = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+            'name' => 'test2',
+        ]);
+        $contact->setTag($tag2->name);
+
+        $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $contact2->setTag($tag2->name);
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'friend',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => 'test2',
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contact_tag',
+            [
+                'tag_id' => $tag2->id,
+                'contact_id' => $contact2->id,
+            ]
+        );
+
+        $tags = collect();
+
+        $tags = $tags->concat(Tag::where('name_slug', $tag->name)
+                    ->where('account_id', auth()->user()->account_id)
+                    ->get());
+
+        $tags = $tags->concat(Tag::where('name_slug', $tag2->name)
+                    ->where('account_id', auth()->user()->account_id)
+                    ->get());
+
+        $contacts = $user->account->contacts()->real()->tags($tags)->get();
+
+        $this->assertTrue($contacts->contains($contact));
+
+        $this->assertFalse($contacts->contains($contact2));
+    }
+
     public function test_it_updates_stay_in_touch_frequency()
     {
         $account = factory('App\Account')->create([]);

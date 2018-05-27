@@ -29,9 +29,9 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_get_countries()
     {
-        list($user, $contact) = $this->fetchUser();
+        $user = $this->signIn();
 
-        $response = $this->get('/people/'.$contact->id.'/countries');
+        $response = $this->get('/countries');
 
         $response->assertStatus(200);
 

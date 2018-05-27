@@ -518,21 +518,24 @@ class Account extends Model
     /**
      * Populate the relationship types table based on the default ones.
      *
-     * @param  bool $ignoreTableAlreadyMigrated
      * @return void
      */
-    public function populateRelationshipTypesTable($ignoreTableAlreadyMigrated = false)
+    public function populateRelationshipTypesTable($migrateOnlyNewTypes = false)
     {
-        $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        if ($migrateOnlyNewTypes) {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->where('migrated', 0)->get();
+        } else {
+            $defaultRelationshipTypes = DB::table('default_relationship_types')->get();
+        }
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipType->migrated == 0) {
-                $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
-                                        ->where('id', $defaultRelationshipType->relationship_type_group_id)
-                                        ->first();
+            $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
+                                    ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                                    ->first();
 
-                $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
+            $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
+            if ($relationshipTypeGroup) {
                 RelationshipType::create([
                     'account_id' => $this->id,
                     'name' => $defaultRelationshipType->name,
@@ -577,10 +580,14 @@ class Account extends Model
     public function getRemindersForMonth(int $month)
     {
         $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
-        $endInThreeMonths = now()->addMonthsNoOverflow($month)->endOfMonth();
+        // don't get reminders for past events:
+        if ($startOfMonth->isPast()) {
+            $startOfMonth = now();
+        }
+        $endOfMonth = now()->addMonthsNoOverflow($month)->endOfMonth();
 
         return auth()->user()->account->reminders()
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endInThreeMonths])
+                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
                      ->orderBy('next_expected_date', 'asc')
                      ->get();
     }
@@ -643,9 +650,10 @@ class Account extends Model
      * @param string $last_name
      * @param string $email
      * @param string $password
+     * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create new account
         $account = new self;
@@ -656,7 +664,7 @@ class Account extends Model
         $account->populateDefaultFields($account);
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
 
         return $account;
     }
