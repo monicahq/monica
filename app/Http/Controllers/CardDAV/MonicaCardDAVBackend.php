@@ -85,11 +85,48 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
     }
 
     public function prepareCard($contact) {
+        // Basic information
         $vcard = new VObject\Component\VCard([
             'FN'  => $contact->getCompleteName(),
-            'TEL' => '+1 555 34567 455',
-            'N'   => ['Henk', 'Cowboy', '', 'Dr.', 'MD'],
+            'N'   => [$contact->first_name, $contact->last_name],
         ]);
+
+        // Picture
+        $picture = $contact->getAvatarURL();
+        if (!is_null($picture)) {
+            $vcard->add('PHOTO', $picture);
+        }
+
+        // Gender
+        $gender = 'O';
+        switch($contact->gender->name) {
+            case 'Man':
+                $gender = 'M';
+            break;
+            case 'Woman':
+                $gender = 'F';
+            break;
+        }
+        $vcard->add('GENDER', $gender.';'.$contact->gender->name);
+
+        // Contactfields
+        foreach($contact->contactFields as $contactField) {
+            switch($contactField->contactFieldType->name) {
+                case 'Phone':
+                    $vcard->add('TEL', $contactField->data);
+                break;
+                case 'Email':
+                    $vcard->add('EMAIL', $contactField->data);
+                break;
+                case 'Facebook':
+                    $vcard->add('socialProfile', $contactField->data, ['type' => 'facebook']);
+                break;
+
+                // TODO: Twitter, Whatsapp, Telegram, other
+            }
+        }
+
+
 
         $uri = $contact->id;
         $timestamp = $contact->updated_at->timestamp;
@@ -104,12 +141,12 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
 
     function prepareCards($contacts) {
         $results = [];
-        
+
         foreach($contacts as $contact) {
             $results[] = $this->prepareCard($contact);
         }
 
-        Log::debug(__CLASS__.' prepareCards', $results);
+        Log::debug(__CLASS__.' prepareCards', ['count' => count($results)]);
 
         return $results;
     }
@@ -137,7 +174,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
         Log::debug(__CLASS__.' getCards', func_get_args());
 
         $contacts = Auth::user()->account->contacts()->real()->get();
-        
+
         return $this->prepareCards($contacts);
     }
 
@@ -172,7 +209,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
     function getMultipleCards($addressBookId, array $uris) {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->where('id', $uris)->get();
+        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->whereIn('id', $uris)->get();
 
         return $this->prepareCards($contacts);
     }
