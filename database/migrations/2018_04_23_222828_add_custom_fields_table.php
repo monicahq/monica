@@ -47,6 +47,7 @@ class AddCustomFieldsTable extends Migration
             $table->unsignedInteger('custom_field_id');
             $table->unsignedInteger('default_custom_field_type_id');
             $table->string('name');
+            $table->string('description');
             $table->boolean('required')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
@@ -55,11 +56,13 @@ class AddCustomFieldsTable extends Migration
 
         Schema::create('field_choices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('account_id');
-            $table->integer('field_id');
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('field_id');
             $table->string('value');
             $table->boolean('is_default')->default(0);
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('field_id')->references('id')->on('fields')->onDelete('cascade');
         });
 
         Schema::create('contact_custom_field_patterns', function (Blueprint $table) {

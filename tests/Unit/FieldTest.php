@@ -2,8 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Account;
 use Tests\TestCase;
+use App\Models\Settings\CustomFields;
+use App\Models\Settings\CustomFields\Field;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Settings\CustomFields\DefaultCustomFieldType;
 
 class FieldTest extends TestCase
 {
@@ -11,37 +15,28 @@ class FieldTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $field = factory('App\Field')->create([
-            'account_id' => $account->id,
-        ]);
+        $field = factory(Field::class)->create([]);
 
         $this->assertTrue($field->account()->exists());
     }
 
     public function test_it_belongs_to_a_custom_field_type()
     {
-        $customFieldType = factory('App\CustomFieldType')->create([]);
-        $field = factory('App\Field')->create([
-            'custom_field_type_id' => $customFieldType->id,
-        ]);
+        $field = factory(Field::class)->create([]);
 
-        $this->assertTrue($field->customFieldType()->exists());
+        $this->assertTrue($field->defaultCustomFieldType()->exists());
     }
 
     public function test_it_belongs_to_a_custom_field()
     {
-        $customField = factory('App\CustomField')->create([]);
-        $field = factory('App\Field')->create([
-            'custom_field_id' => $customField->id,
-        ]);
+        $field = factory(Field::class)->create([]);
 
         $this->assertTrue($field->customField()->exists());
     }
 
     public function test_it_retrieves_the_name_of_the_field()
     {
-        $field = factory('App\Field')->make([
+        $field = factory(Field::class)->make([
             'name' => 'Flirt',
         ]);
 
@@ -53,13 +48,25 @@ class FieldTest extends TestCase
 
     public function test_it_retrieves_the_is_required_attribute()
     {
-        $field = factory('App\Field')->make([
+        $field = factory(Field::class)->make([
             'is_required' => 0,
         ]);
 
         $this->assertEquals(
             0,
             $field->is_required
+        );
+    }
+
+    public function test_it_retrieves_the_description_attribute()
+    {
+        $field = factory(Field::class)->make([
+            'description' => 'this is a description',
+        ]);
+
+        $this->assertEquals(
+            'this is a description',
+            $field->description
         );
     }
 }

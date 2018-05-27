@@ -139,6 +139,10 @@ Route::group(['middleware' => ['auth:api']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    Route::resource('fields', 'Api\\Settings\\CustomFields\\ApiFieldController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     /*
      * MISC
      */

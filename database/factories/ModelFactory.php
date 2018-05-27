@@ -301,12 +301,15 @@ $factory->define(App\Models\Settings\CustomFields\DefaultCustomFieldType::class,
 $factory->define(App\Models\Settings\CustomFields\Field::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
+        'custom_field_id' => factory(App\Models\Settings\CustomFields\CustomField::class)->create()->id,
+        'default_custom_field_type_id' => factory(App\Models\Settings\CustomFields\DefaultCustomFieldType::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Settings\CustomFields\FieldChoice::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
+        'field_id' => factory(App\Models\Settings\CustomFields\Field::class)->create()->id,
     ];
 });
 

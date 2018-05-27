@@ -6,6 +6,7 @@ use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\CustomFields\FieldChoice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Settings\CustomFields\CustomFieldPattern;
 
@@ -314,13 +315,23 @@ class Account extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
+     * Get the custom field records associated with the account.
      *
      * @return HasMany
      */
     public function customFields()
     {
         return $this->hasMany(\App\Models\Settings\CustomFields\CustomField::class);
+    }
+
+    /**
+     * Get the Notifications records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function fields()
+    {
+        return $this->hasMany(\App\Models\Settings\CustomFields\Field::class);
     }
 
     /**
@@ -341,6 +352,16 @@ class Account extends Model
     public function contactCustomFieldPatterns()
     {
         return $this->hasMany(CustomFieldPattern::class);
+    }
+
+    /**
+     * Get the field choices records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function fieldChoices()
+    {
+        return $this->hasMany(FieldChoice::class);
     }
 
     /**

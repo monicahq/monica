@@ -5,8 +5,8 @@ namespace App\Models\Settings\CustomFields;
 use App\Account;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Settings\CustomFields\CustomField;
-use App\Models\Settings\CustomFields\CustomFieldType;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Settings\CustomFields\DefaultCustomFieldType;
 
 class Field extends Model
 {
@@ -27,7 +27,7 @@ class Field extends Model
     ];
 
     /**
-     * Get the account record associated with the custom field.
+     * Get the account record associated with the field.
      *
      * @return BelongsTo
      */
@@ -37,7 +37,7 @@ class Field extends Model
     }
 
     /**
-     * Get the custom field record associated with the field.
+     * Get the field record associated with the field.
      *
      * @return BelongsTo
      */
@@ -51,13 +51,13 @@ class Field extends Model
      *
      * @return BelongsTo
      */
-    public function customFieldType()
+    public function defaultCustomFieldType()
     {
-        return $this->belongsTo(CustomFieldType::class);
+        return $this->belongsTo(DefaultCustomFieldType::class);
     }
 
     /**
-     * Get the name of the custom field.
+     * Get the name of the field.
      *
      * @return string
      */
@@ -67,11 +67,21 @@ class Field extends Model
     }
 
     /**
-     * Get the required status of the custom field.
+     * Get the required status of the field.
      *
      * @return string
      */
     public function getIsRequiredAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the description of the field.
+     *
+     * @return string
+     */
+    public function getDescriptionAttribute($value)
     {
         return $value;
     }

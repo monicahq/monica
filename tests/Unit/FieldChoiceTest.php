@@ -2,7 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Account;
 use Tests\TestCase;
+use App\Models\Settings\CustomFields\Field;
+use App\Models\Settings\CustomFields\FieldChoice;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FieldChoiceTest extends TestCase
@@ -11,8 +14,8 @@ class FieldChoiceTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $field = factory('App\FieldChoice')->create([
+        $account = factory(Account::class)->create([]);
+        $field = factory(FieldChoice::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -21,8 +24,8 @@ class FieldChoiceTest extends TestCase
 
     public function test_it_belongs_to_one_field()
     {
-        $field = factory('App\Field')->create([]);
-        $fieldChoice = factory('App\FieldChoice')->create([
+        $field = factory(Field::class)->create([]);
+        $fieldChoice = factory(FieldChoice::class)->create([
             'field_id' => $field->id,
         ]);
 
@@ -31,7 +34,7 @@ class FieldChoiceTest extends TestCase
 
     public function test_it_retrieves_the_value()
     {
-        $fieldChoice = factory('App\FieldChoice')->make([
+        $fieldChoice = factory(FieldChoice::class)->make([
             'value' => 'Flirt',
         ]);
 
@@ -43,7 +46,7 @@ class FieldChoiceTest extends TestCase
 
     public function test_it_retrieves_the_is_default_attribute()
     {
-        $fieldChoice = factory('App\FieldChoice')->make([
+        $fieldChoice = factory(FieldChoice::class)->make([
             'is_default' => 0,
         ]);
 

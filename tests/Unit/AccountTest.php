@@ -18,6 +18,7 @@ use Tests\FeatureTestCase;
 use App\RelationshipTypeGroup;
 use Illuminate\Support\Facades\DB;
 use App\Models\Settings\CustomFields\CustomField;
+use App\Models\Settings\CustomFields\FieldChoice;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Settings\CustomFields\CustomFieldPattern;
 
@@ -115,6 +116,16 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->customFieldPatterns()->exists());
+    }
+
+    public function test_it_has_many_fieldchoices()
+    {
+        $account = factory(Account::class)->create([]);
+        $customFieldPattern = factory(FieldChoice::class, 3)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->fieldChoices()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
