@@ -6,7 +6,6 @@ use Tests\ApiTestCase;
 use App\Models\Settings\CustomFields\Field;
 use App\Models\Settings\CustomFields\CustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Settings\CustomFields\DefaultCustomFieldType;
 
 class ApiFieldControllerTest extends ApiTestCase
 {
@@ -81,14 +80,12 @@ class ApiFieldControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $defaultCustomFieldType = factory(DefaultCustomFieldType::class)->create([]);
-
         $response = $this->json('POST', '/api/fields', [
                             'name' => 'Movies',
                             'description' => 'this is a description',
                             'required' => false,
                             'custom_field_id' => $customField->id,
-                            'default_custom_field_type_id' => $defaultCustomFieldType->id,
+                            'custom_field_type' => $defaultCustomFieldType->id,
                         ]);
 
         $response->assertStatus(201);

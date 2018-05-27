@@ -6,10 +6,23 @@ use App\Account;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Settings\CustomFields\CustomField;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Settings\CustomFields\DefaultCustomFieldType;
 
 class Field extends Model
 {
+    /**
+     * The valid field types that we accept.
+     *
+     * @var array
+     */
+    protected $validFieldTypes = [
+        'text',
+        'textarea',
+        'date',
+        'dropdown',
+        'radiobutton',
+        'checkbox',
+    ];
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -47,16 +60,6 @@ class Field extends Model
     }
 
     /**
-     * Get the default custom field type record associated with the field.
-     *
-     * @return BelongsTo
-     */
-    public function defaultCustomFieldType()
-    {
-        return $this->belongsTo(DefaultCustomFieldType::class);
-    }
-
-    /**
      * Get the name of the field.
      *
      * @return string
@@ -84,5 +87,16 @@ class Field extends Model
     public function getDescriptionAttribute($value)
     {
         return $value;
+    }
+
+    /**
+     * Return true if the field contains a list of choices the user has to
+     * chose from.
+     *
+     * @return bool
+     */
+    pubic function hasFieldChoices(): bool
+    {
+        return;
     }
 }

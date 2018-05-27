@@ -12,14 +12,7 @@ class AddCustomFieldsTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('default_custom_field_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('type');
-            $table->timestamps();
-        });
-
-        Schema::create('custom_field_patterns', function (Blueprint $table) {
+    {Schema::create('custom_field_patterns', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->string('name');
@@ -45,7 +38,7 @@ class AddCustomFieldsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('custom_field_id');
-            $table->unsignedInteger('default_custom_field_type_id');
+            $table->string('custom_field_type');
             $table->string('name');
             $table->string('description');
             $table->boolean('required')->default(0);
@@ -81,15 +74,5 @@ class AddCustomFieldsTable extends Migration
             $table->mediumText('value');
             $table->timestamps();
         });
-
-        DB::table('default_custom_field_types')->insert([
-            'type' => 'text',
-        ]);
-        DB::table('default_custom_field_types')->insert([
-            'type' => 'textarea',
-        ]);
-        DB::table('default_custom_field_types')->insert([
-            'type' => 'date',
-        ]);
     }
 }

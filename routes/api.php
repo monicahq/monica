@@ -127,10 +127,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
 
     // Custom fields
-    Route::resource('defaultcustomfieldtypes', 'Api\\Settings\\CustomFields\\ApiDefaultCustomFieldTypeController', ['except' => [
-      'create', 'edit', 'patch', 'put', 'destroy',
-    ]]);
-
     Route::resource('customfields', 'Api\\Settings\\CustomFields\\ApiCustomFieldController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
@@ -142,6 +138,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('fields', 'Api\\Settings\\CustomFields\\ApiFieldController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+
+    Route::get('/contacts/{contact}/customfields/', 'Api\\Settings\\CustomFields\\ApiCustomFieldController@tasks');
+    Route::get('/contacts/{contact}/customfields/{customfield}', 'Api\\ApiTaskController@tasks');
 
     /*
      * MISC

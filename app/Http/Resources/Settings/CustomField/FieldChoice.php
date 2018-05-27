@@ -4,7 +4,7 @@ namespace App\Http\Resources\Settings\CustomField;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class Field extends Resource
+class FieldChoice extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,14 +16,11 @@ class Field extends Resource
     {
         return [
             'id' => $this->id,
-            'object' => 'field',
-            'name' => $this->name,
-            'description' => $this->description,
-            'required' => (bool) $this->required,
-            'field_choices' =>
-            'custom_field_type' => $this->custom_field_type,
-            'custom_field' => [
-                'id' => $this->customField->id,
+            'object' => 'fieldchoice',
+            'value' => $this->value,
+            'is_default' => (bool) $this->is_default,
+            'field' => [
+                'id' => $this->field->id,
             ],
             'account' => [
                 'id' => $this->account->id,

@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\Settings\CustomFields;
 use App\Models\Settings\CustomFields\Field;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Settings\CustomFields\DefaultCustomFieldType;
 
 class FieldTest extends TestCase
 {

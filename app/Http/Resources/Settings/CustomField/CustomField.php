@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Settings\CustomField;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Settings\CustomField\Field as FieldResource;
 
 class CustomField extends Resource
 {
@@ -21,6 +22,7 @@ class CustomField extends Resource
             'fields_order' => $this->fields_order,
             'is_list' => (bool) $this->is_list,
             'is_important' => (bool) $this->is_important,
+            'fields' => new FieldResource::collection($this->fields),
             'custom_field_pattern' => [
                 'id' => $this->customFieldPattern->id,
             ],
