@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendStayInTouch',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\SetupTest',
+        'App\Console\Commands\SetupFrontEndTest',
         'App\Console\Commands\Update',
     ];
 
