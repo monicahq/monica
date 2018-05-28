@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\InBoundEmail;
+use App\InboundEmail;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
 
-class InBoundEmailController extends Controller
+class InboundEmailController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -83,7 +83,7 @@ class InBoundEmailController extends Controller
 
         $email_data['datetime'] = str_replace_first('at', '', $email_data['datetime']);
 
-        $email = new InBoundEmail;
+        $email = new InboundEmail;
         $email->account_id = $user->account_id;
         $email->to = $email_data['to_email'];
         $email->from = $email_data['from_email'];

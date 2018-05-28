@@ -331,9 +331,9 @@ class Contact extends Model
      *
      * @return HasMany
      */
-    public function in_bound_emails()
+    public function inboundEmails()
     {
-        return $this->hasMany('App\InBoundEmail', 'contact_id');
+        return $this->hasMany('App\InboundEmail', 'contact_id');
     }
 
     /**

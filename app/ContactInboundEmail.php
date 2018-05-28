@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ContactInBoundEmail extends Model
+class ContactInboundEmail extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -27,8 +27,8 @@ class ContactInBoundEmail extends Model
         return $this->belongsTo(Contact::class, 'contact_id');
     }
 
-    public function email()
+    public function inboundEmail()
     {
-        return $this->belongsTo(InBoundEmail::class, 'email_id');
+        return $this->belongsTo(InboundEmail::class, 'email_id');
     }
 }
