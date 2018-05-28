@@ -4784,16 +4784,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.0.9",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "e1d57cdb357e5b10f5fdacbb0b86689c0a435e6e"
+                "reference": "4e7c98de67cc4171d4c986554e09a511da40f3d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/e1d57cdb357e5b10f5fdacbb0b86689c0a435e6e",
-                "reference": "e1d57cdb357e5b10f5fdacbb0b86689c0a435e6e",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/4e7c98de67cc4171d4c986554e09a511da40f3d8",
+                "reference": "4e7c98de67cc4171d4c986554e09a511da40f3d8",
                 "shasum": ""
             },
             "require": {
@@ -4836,7 +4836,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-30T16:59:37+00:00"
+            "time": "2018-05-16T09:05:32+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -4903,16 +4903,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.0.9",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "ca27c02b7a3fef4828c998c2ff9ba7aae1641c49"
+                "reference": "8c633f5a815903a1fe6e3fc135f207267a8a79af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/ca27c02b7a3fef4828c998c2ff9ba7aae1641c49",
-                "reference": "ca27c02b7a3fef4828c998c2ff9ba7aae1641c49",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/8c633f5a815903a1fe6e3fc135f207267a8a79af",
+                "reference": "8c633f5a815903a1fe6e3fc135f207267a8a79af",
                 "shasum": ""
             },
             "require": {
@@ -4948,7 +4948,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-04T05:10:37+00:00"
+            "time": "2018-05-16T09:05:32+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -5568,7 +5568,7 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.0.9",
+            "version": "v4.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
@@ -5961,16 +5961,16 @@
     "packages-dev": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.1.4",
+            "version": "v3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "7a91480cc6e597caed5117a3c5d685f06d35c5a1"
+                "reference": "d3cdca2ad6cc6e67735b4a63e7551c690a497f5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/7a91480cc6e597caed5117a3c5d685f06d35c5a1",
-                "reference": "7a91480cc6e597caed5117a3c5d685f06d35c5a1",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/d3cdca2ad6cc6e67735b4a63e7551c690a497f5f",
+                "reference": "d3cdca2ad6cc6e67735b4a63e7551c690a497f5f",
                 "shasum": ""
             },
             "require": {
@@ -6025,7 +6025,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2018-03-06T08:35:31+00:00"
+            "time": "2018-05-03T18:27:04+00:00"
         },
         {
             "name": "composer/xdebug-handler",
