@@ -22,4 +22,16 @@ trait Hasher
     {
         return app('idhasher')->encodeId($this->id);
     }
+
+    public function rawHashID()
+    {
+        return app('idhasher')->encodeRawId($this->id);
+    }
+
+    public function findOrFailByRawHashID($hash)
+    {
+        $value = app('idhasher')->decodeRawId($hash);
+
+        return $this->findOrFail($value);
+    }
 }

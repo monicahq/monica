@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Account;
 use App\InboundEmail;
 use App\ContactFieldType;
 use Illuminate\Http\Request;
@@ -19,13 +19,16 @@ class InboundEmailController extends Controller
         $this->middleware('webhook');
     }
 
-    public function new_postmark(Request $request)
+    public function new_inbound_postmark(Request $request)
     {
-        $from = $request->FromFull['Email'];
 
-        $user = User::where('email', $from)->firstOrFail();
+        if(empty($request->MailboxHash)) {
+          abort(400);
+        }
 
-        $contacts = $user->account->contacts()->real();
+        $account = Account::findOrFailByRawHashID($request->MailboxHash);
+
+        $contacts = $account->contacts()->real();
 
         $email_contents = $request->TextBody;
 

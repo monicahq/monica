@@ -38,4 +38,14 @@ class IdHasher
             return $hash;
         }
     }
+
+    public function encodeRawId($id)
+    {
+        return Hashids::encode($id);
+    }
+
+    public function decodeRawId($hash)
+    {
+        return Hashids::decode($hash);
+    }
 }

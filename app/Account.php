@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\Hasher;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Account extends Model
 {
     use Billable;
-
+    use Hasher;
     /**
      * The attributes that are mass assignable.
      *
