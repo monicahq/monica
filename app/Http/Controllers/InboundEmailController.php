@@ -21,7 +21,6 @@ class InboundEmailController extends Controller
 
     public function new_inbound_postmark(Request $request)
     {
-
         if (empty($request->MailboxHash)) {
             abort(400);
         }
