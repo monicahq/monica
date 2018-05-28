@@ -64,5 +64,5 @@ return [
     'email_change_current_email' => 'Adresse courriel actuelle :',
     'email_change_title' => 'Modifier votre adresse courriel',
     'email_change_new' => 'Nouvelle adresse courriel',
-    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
+    'email_changed' => 'Votre adresse courriel a été changée. Vérifiez votre boîte aux lettres pour la valider.',
 ];
