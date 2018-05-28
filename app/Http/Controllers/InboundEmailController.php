@@ -22,8 +22,8 @@ class InboundEmailController extends Controller
     public function new_inbound_postmark(Request $request)
     {
 
-        if(empty($request->MailboxHash)) {
-          abort(400);
+        if (empty($request->MailboxHash)) {
+            abort(400);
         }
 
         $account = Account::findOrFailByRawHashID($request->MailboxHash);
