@@ -62,5 +62,6 @@ class Kernel extends HttpKernel
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'webhook' => \App\Http\Middleware\Webhook::class,
+        'auth.confirm' => \App\Http\Middleware\AuthEmailConfirm::class,
     ];
 }

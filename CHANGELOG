@@ -10,6 +10,7 @@ UNRELEASED CHANGES:
 * Fix duplication of tags when filtering contacts
 * Add trusted proxies to run behind a ssl terminating loadbalancer
 * Fix reminders for past events are visible on the dashboard
+* Add email address verification on register, and email change
 
 RELEASED VERSIONS:
 

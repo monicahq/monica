@@ -9,6 +9,7 @@
         "ext-bcmath": "*",
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
+        "bestmomo/laravel-email-confirmation": "^1.1",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.7",
