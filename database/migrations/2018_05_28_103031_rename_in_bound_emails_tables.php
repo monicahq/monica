@@ -16,5 +16,4 @@ class RenameInBoundEmailsTables extends Migration
 
         Schema::rename('contact_in_bound_emails', 'contact_inbound_emails');
     }
-
 }
