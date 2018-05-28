@@ -24,6 +24,7 @@ return [
     '2fa_recuperation_code' => 'נא להקליד את קוד השחזור לאימות הדו־שלבי',
 
     'login_to_account' => 'כניסה לחשבון שלך',
+    'login_again' => 'Please login again to your account',
     'email' => 'דוא״ל',
     'password' => 'ססמה',
     'login' => 'כניסה',
@@ -59,4 +60,9 @@ return [
     'register_policy' => 'הרשמה מאמתת שקראת והסכמת ל<a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> ול<a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> שלנו.',
     'register_invitation_email' => 'מטעמי אבטחה, נא לציין את כתובת הדוא״ל של מי שהזמין אותך להצטרף לחשבון הזה. המידע הזה מופיע בהודעת ההזמנה.',
 
+    'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
+    'email_change_current_email' => 'Current email address:',
+    'email_change_title' => 'Change your email address',
+    'email_change_new' => 'New email address',
+    'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
 ];
