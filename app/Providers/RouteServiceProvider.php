@@ -173,7 +173,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapWebRoutes($router);
 
         $this->mapOAuthRoutes($router);
-        //
+
+        $this->mapSpecialRoutes($router);
     }
 
     /**
@@ -225,6 +226,23 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
         ], function ($router) {
             require base_path('routes/api.php');
+        });
+    }
+
+    /**
+     * Define the "special" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapSpecialRoutes(Router $router)
+    {
+        $router->group([
+            'middleware' => 'web',
+            'namespace' => $this->namespace,
+        ], function ($router) {
+            require base_path('routes/special.php');
         });
     }
 }
