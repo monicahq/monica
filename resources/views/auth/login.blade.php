@@ -39,16 +39,16 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" data-cy="login-input-email">
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.password') }}</label>
-                <input type="password" class="form-control" id="password" name="password">
+                <input type="password" class="form-control" id="password" name="password" data-cy="login-input-password">
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('auth.login') }}</button>
+                <button type="submit" class="btn btn-primary" data-cy="login-button-submit">{{ trans('auth.login') }}</button>
               </div>
 
               <div class="checkbox">
