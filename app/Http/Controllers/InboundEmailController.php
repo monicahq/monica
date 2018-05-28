@@ -86,7 +86,7 @@ class InboundEmailController extends Controller
         $email_data['datetime'] = str_replace_first('at', '', $email_data['datetime']);
 
         $email = new InboundEmail;
-        $email->account_id = $user->account_id;
+        $email->account_id = $account->id;
         $email->to = $email_data['to_email'];
         $email->from = $email_data['from_email'];
         $email->subject = $email_data['subject'];
