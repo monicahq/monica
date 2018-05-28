@@ -20,6 +20,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_first',
+        'confirmed' => true,
         'account_id' => factory(App\Account::class)->create()->id,
     ];
 });
