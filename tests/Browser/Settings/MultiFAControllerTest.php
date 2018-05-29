@@ -255,7 +255,7 @@ class MultiFAControllerTest extends DuskTestCase
                     ->press('verify');
 
             $this->assertFalse($this->hasDivAlert($browser));
-            $browser->assertPathIs('/validate2fa');
+            $browser->assertPathIs('/dashboard');
         });
     }
 

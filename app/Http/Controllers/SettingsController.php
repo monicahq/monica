@@ -12,6 +12,7 @@ use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -72,11 +73,12 @@ class SettingsController extends Controller
      */
     public function save(SettingsRequest $request)
     {
-        $request->user()->update(
+        $user = $request->user();
+
+        $user->update(
             $request->only([
                 'first_name',
                 'last_name',
-                'email',
                 'timezone',
                 'locale',
                 'currency_id',
@@ -86,8 +88,17 @@ class SettingsController extends Controller
             ]
         );
 
-        $request->user()->account->default_time_reminder_is_sent = $request->get('reminder_time');
-        $request->user()->account->save();
+        if ($user->email != $request->get('email')) {
+            $user->email = $request->get('email');
+            $user->confirmation_code = str_random(30);
+            $user->confirmed = false;
+            $user->save();
+
+            $user->notify(new ConfirmEmail);
+        }
+
+        $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $user->account->save();
 
         return redirect('settings')
             ->with('status', trans('settings.settings_success', [], $request['locale']));
