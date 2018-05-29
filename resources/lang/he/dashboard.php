@@ -11,6 +11,10 @@ return [
     'tab_recent_calls' => 'שיחות אחרונות',
     'tab_favorite_notes' => 'הערות מועדפות',
     'tab_calls_blank' => 'לא תיעדת אף שיחה עדיין.',
+    'tab_debts' => 'Debts',
+    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+
+    'debts_you_owe' => 'You owe',
 
     'statistics_contacts' => 'אנשי קשר',
     'statistics_activities' => 'פעילויות',
