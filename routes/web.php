@@ -42,6 +42,7 @@ Route::middleware(['auth', 'auth.confirm', '2fa'])->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::get('/dashboard/debts', 'DashboardController@debts');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 
