@@ -169,20 +169,20 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $dbtag)
+              @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
                     <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
                     <span class="number-contacts-per-tag {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
-                <li class="f7 mt3">
-                  <a href="">View untagged contacts</a>
-                </li>
               @endforeach
+
+              @if ($userTags->count() != 0)
                 <li class="f7 mt3">
                     <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
+              @endif
               </ul>
             </div>
 
