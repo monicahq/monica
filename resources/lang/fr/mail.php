@@ -21,5 +21,5 @@ return [
 
     'confirmation_email_title' => 'Monica – vérification d’adresse courriel',
     'confirmation_email_intro'=> 'Pour valider votre adresse courriel, cliquez sur le bouton ci-dessous',
-    'confirmation_email_button' => 'Vérifiez l\'adresse courriel',
+    'confirmation_email_button' => 'Vérifiez l’adresse courriel',
 ];
