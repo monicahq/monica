@@ -20,6 +20,6 @@ return [
     'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
 
     'confirmation_email_title' => 'מוניקה – אימות דוא״ל',
-    'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_intro'=> 'כדי לאמת את כתובת הדוא״ל שלך נא ללחוץ על הכפתור שלהלן',
+    'confirmation_email_button' => 'אימות כתובת דוא״ל',
 ];
