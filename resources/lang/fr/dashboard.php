@@ -12,7 +12,7 @@ return [
     'tab_favorite_notes' => 'Notes favorites',
     'tab_calls_blank' => 'Vous n’avez encore enregistré aucun appel.',
     'tab_debts' => 'Dettes',
-    'tab_debts_blank' => 'Vous n\'avez encore enregistré aucune dette.',
+    'tab_debts_blank' => 'Vous n’avez encore enregistré aucune dette.',
 
     'debts_you_owe' => 'Vous devez',
 
