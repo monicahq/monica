@@ -11,6 +11,10 @@ return [
     'tab_recent_calls' => 'Recente oproepen',
     'tab_favorite_notes' => 'Favoriete notities',
     'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
+    'tab_debts' => 'Debts',
+    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+
+    'debts_you_owe' => 'You owe',
 
     'statistics_contacts' => 'Contacten',
     'statistics_activities' => 'Activiteiten',
