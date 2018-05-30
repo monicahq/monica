@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add debts on the dashboard
 * Add User and Currency support in the API
 * Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
@@ -8,6 +9,9 @@ UNRELEASED CHANGES:
 * Allow multiple imported fields and replace existing contacts
 * Adds ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
+* Add trusted proxies to run behind a ssl terminating loadbalancer
+* Fix reminders for past events are visible on the dashboard
+* Add email address verification on register, and email change
 
 RELEASED VERSIONS:
 

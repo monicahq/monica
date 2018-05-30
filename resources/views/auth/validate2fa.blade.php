@@ -28,6 +28,7 @@
                 <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
                 <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
               </div>
+              <input type=hidden name="url" value="{{ url()->current() }}" />
 
               {{-- TODO
               <div class="form-group checkbox">

@@ -21,6 +21,11 @@
             @endif
 
             @include ('partials.errors')
+            @if (session('confirmation-success'))
+                <div class="alert alert-success">
+                    {{ session('confirmation-success') }}
+                </div>
+            @endif
 
             <form class="" action="/register" method="post">
               {{ csrf_field() }}

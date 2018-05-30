@@ -12,6 +12,16 @@ return [
     */
     'disable_signup' => env('APP_DISABLE_SIGNUP', false),
 
+   /*
+    |--------------------------------------------------------------------------
+    | Activate double optin on signup
+    |--------------------------------------------------------------------------
+    |
+    | Activates double optin on signup
+    |
+    */
+    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', true),
+
     /*
     |--------------------------------------------------------------------------
     | New User Email Notification
