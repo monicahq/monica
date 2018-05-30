@@ -35,5 +35,12 @@ describe('Contacts', function () {
     cy.get('input[name=firstname]').should('have.value', 'John')
     cy.get('input[name=lastname]').should('have.value', 'Doe')
     cy.get('select[name=gender]').should('have.value', '1')
+
+    cy.get('input[name=first_name]').type('Jane')
+    cy.get('input[name=last_name]').clear()
+    cy.get('button[name=save]').click()
+
+    cy.url().should('include', '/people/h:')
+    cy.get('h3').should('contain', 'Jane')
   })
 })
