@@ -13,3 +13,5 @@ npm-debug.log*
 /results
 .travis.deploy.json
 yarn-error.log
+/tests/cypress/screenshots
+/tests/cypress/videos
