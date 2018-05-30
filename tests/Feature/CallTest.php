@@ -70,7 +70,7 @@ class CallTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
         $params['account_id'] = $user->account_id;
@@ -83,6 +83,8 @@ class CallTest extends FeatureTestCase
         $response = $this->get('people/'.$contact->id);
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('Last called: Jan 01, 2013');
+
+        $eventParams = [];
 
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
@@ -102,7 +104,7 @@ class CallTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->id.'/call/store', $params);
-        $response->assertRedirect('/people/'.$contact->id);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
         $params['account_id'] = $user->account_id;
@@ -115,6 +117,8 @@ class CallTest extends FeatureTestCase
         $response = $this->get('people/'.$contact->id);
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('This is a test call');
+
+        $eventParams = [];
 
         // Make sure an event has been created for this action
         $eventParams['account_id'] = $user->account_id;
@@ -140,9 +144,13 @@ class CallTest extends FeatureTestCase
         $response = $this->delete('/people/'.$contact->id.'/call/'.$call->id);
         $response->assertStatus(302);
 
+        $params = [];
+
         $params['id'] = $call->id;
 
         $this->assertDatabaseMissing('calls', $params);
+
+        $eventParams = [];
 
         // make sure no event is in the database about this object
         $eventParams['account_id'] = $user->account_id;

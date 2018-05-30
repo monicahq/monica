@@ -1,0 +1,43 @@
+version: '3'
+services:
+  monicahq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    links:
+      - mysql
+    ports:
+      - 8080:80
+    env_file: .env.dev
+    environment:
+      - PASSWORD_CLIENT_ID=10
+      - PASSWORD_CLIENT_SECRET=4eYqKmvMr1nLhRNiI30fkPARM77j90MgBTaJADgN
+    volumes:
+      - /var/www/monica/storage
+      - ./app:/var/www/monica/app
+      - ./routes:/var/www/monica/routes
+      - ./database:/var/www/monica/database
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=sekret_root_password
+      - MYSQL_DATABASE=monica
+      - MYSQL_USER=homestead
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - /var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: sekret_root_password
+    restart: always
+    ports:
+      - "3000:80"
+    volumes:
+      - "/sessions"

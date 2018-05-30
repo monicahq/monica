@@ -58,7 +58,7 @@ class RemindersController extends Controller
 
         $contact->logEvent('reminder', $reminder->id, 'create');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.reminders_create_success'));
     }
 
@@ -114,7 +114,7 @@ class RemindersController extends Controller
 
         $contact->logEvent('reminder', $reminder->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.reminders_update_success'));
     }
 
@@ -137,7 +137,7 @@ class RemindersController extends Controller
 
         $contact->events()->forObject($reminder)->get()->each->delete();
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.reminders_delete_success'));
     }
 }

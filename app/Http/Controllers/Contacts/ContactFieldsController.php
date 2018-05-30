@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Auth;
 use App\Contact;
 use App\ContactField;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;
 
 class ContactFieldsController extends Controller

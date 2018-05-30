@@ -32,22 +32,13 @@ class SetupTest extends Command
             return;
         }
 
-        $this->callSilent('migrate:fresh');
-        $this->info('✓ Performed migrations');
+        $this->artisan('✓ Performing migrations', 'migrate:fresh');
 
-        $this->call('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
-        $this->info('✓ Filled the Activity Types table');
-
-        $this->call('db:seed', ['--class' => 'CountriesSeederTable']);
-        $this->info('✓ Filled the Countries table');
-
-        $this->callSilent('storage:link');
-        $this->info('✓ Symlinked the storage folder for the avatars');
+        $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
+        $this->artisan('✓ Symlink the storage folder', 'storage:link');
 
         if (! $this->option('skipSeed')) {
-            $this->call('db:seed', ['--class' => 'FakeContentTableSeeder']);
-            $this->info('');
-            $this->info('✓ Filled database with fake data');
+            $this->artisan('✓ Filling  database with fake data', 'db:seed', ['--class' => 'FakeContentTableSeeder']);
         }
 
         $this->line('');
@@ -63,5 +54,22 @@ class SetupTest extends Command
         $this->line('-----------------------------');
 
         $this->info('Setup is done. Have fun.');
+    }
+
+    public function exec($message, $command)
+    {
+        $this->info($message);
+        $this->line($command);
+        exec($command, $output);
+        $this->line(implode('\n', $output));
+        $this->line('');
+    }
+
+    public function artisan($message, $command, array $arguments = [])
+    {
+        $this->info($message);
+        $this->line('php artisan '.$command);
+        $this->callSilent($command, $arguments);
+        $this->line('');
     }
 }

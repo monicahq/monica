@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CountriesSeederTable extends Seeder
 {
@@ -255,5 +256,17 @@ class CountriesSeederTable extends Seeder
         DB::table('countries')->insert(['iso' => 'uy', 'country' => 'Uruguay']);
         DB::table('countries')->insert(['iso' => 've', 'country' => 'Venezuela']);
         DB::table('countries')->insert(['iso'=>'ae', 'country' => 'United Arab Emirates']);
+    }
+
+    public static function fixIso($iso)
+    {
+        switch ($iso) {
+            case 'ct':
+                // Cyprus
+                return 'CY';
+                break;
+        }
+
+        return $iso;
     }
 }

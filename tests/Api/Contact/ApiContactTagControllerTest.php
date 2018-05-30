@@ -44,7 +44,6 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'id' => $contact->id,
-            'name' => 'very-specific-tag-name',
             'name' => 'very-specific-tag-name-2',
         ]);
     }
@@ -140,7 +139,6 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
 
         $response->assertJsonMissing([
-            'name' => $tag->name,
             'name' => $tag2->name,
         ]);
     }
@@ -170,7 +168,6 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonMissing([
-            'name' => $tag->name,
             'name' => $tag2->name,
         ]);
     }

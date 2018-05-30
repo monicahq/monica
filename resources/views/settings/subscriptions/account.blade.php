@@ -37,9 +37,8 @@
 
             <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
 
-            <p>You are on the {{ $planInformation['name'] }} plan. Thanks so much for being a subscriber.</p>
-            <p>Your next billing date will be on {{ $nextBillingDate }}.</p>
-            <p><a href="{{ url('/settings/subscriptions/downgrade') }}">Click here</a> if you want to downgrade to the Free plan.</p>
+            <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) }}</p>
+            <p>{{ trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => url('/settings/subscriptions/downgrade')]) }}</p>
 
             {{-- Only display invoices if the subscription exists or existed --}}
             @if (auth()->user()->account->hasInvoices())

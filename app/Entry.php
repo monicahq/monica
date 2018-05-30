@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Parsedown;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -56,7 +57,7 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getPostAttribute($value)
     {
-        return $value;
+        return (new Parsedown())->text($value);
     }
 
     /**
@@ -65,16 +66,19 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
+        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
+        $entryDate = $this->journalEntry ? $this->journalEntry->date : $this->created_at;
+
         return [
-            'type' => 'activity',
+            'type' => 'entry',
             'id' => $this->id,
             'title' => $this->title,
             'post' => $this->post,
-            'day' => $this->created_at->day,
-            'day_name' => \App\Helpers\DateHelper::getShortDay($this->created_at),
-            'month' => $this->created_at->month,
-            'month_name' => \App\Helpers\DateHelper::getShortMonth($this->created_at),
-            'year' => $this->created_at->year,
+            'day' => $entryDate->day,
+            'day_name' => \App\Helpers\DateHelper::getShortDay($entryDate),
+            'month' => $entryDate->month,
+            'month_name' => \App\Helpers\DateHelper::getShortMonth($entryDate),
+            'year' => $entryDate->year,
         ];
     }
 }

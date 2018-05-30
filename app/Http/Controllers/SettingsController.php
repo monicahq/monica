@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Auth;
 use App\Tag;
 use App\User;
 use App\ImportJob;
@@ -13,6 +11,9 @@ use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
+use Illuminate\Support\Facades\DB;
+use App\Notifications\ConfirmEmail;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
@@ -27,9 +28,14 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
+        'changelog_user',
+        'changelogs',
         'countries',
         'currencies',
         'default_contact_field_types',
+        'default_contact_modules',
+        'default_relationship_type_groups',
+        'default_relationship_types',
         'failed_jobs',
         'instances',
         'jobs',
@@ -55,6 +61,7 @@ class SettingsController extends Controller
     public function index()
     {
         return view('settings.index')
+                ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
                 ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }
 
@@ -66,11 +73,12 @@ class SettingsController extends Controller
      */
     public function save(SettingsRequest $request)
     {
-        $request->user()->update(
+        $user = $request->user();
+
+        $user->update(
             $request->only([
                 'first_name',
                 'last_name',
-                'email',
                 'timezone',
                 'locale',
                 'currency_id',
@@ -80,8 +88,17 @@ class SettingsController extends Controller
             ]
         );
 
-        $request->user()->account->default_time_reminder_is_sent = $request->get('reminder_time');
-        $request->user()->account->save();
+        if ($user->email != $request->get('email')) {
+            $user->email = $request->get('email');
+            $user->confirmation_code = str_random(30);
+            $user->confirmed = false;
+            $user->save();
+
+            $user->notify(new ConfirmEmail);
+        }
+
+        $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $user->account->save();
 
         return redirect('settings')
             ->with('status', trans('settings.settings_success', [], $request['locale']));
@@ -115,7 +132,7 @@ class SettingsController extends Controller
 
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed()) {
+        if ($account->isSubscribed() && auth()->user()->has_access_to_paid_version_for_free == 0) {
             $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 
@@ -217,7 +234,7 @@ class SettingsController extends Controller
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob));
+        dispatch(new AddContactFromVCard($importJob, $request->get('behaviour')));
 
         return redirect()->route('settings.import');
     }

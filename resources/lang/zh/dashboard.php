@@ -4,6 +4,7 @@ return [
     'dashboard_blank_title' => '欢迎登录账号',
     'dashboard_blank_description' => 'Monica是一个记录你所有关心的人及与其交互信息的地方',
     'dashboard_blank_cta' => '添加您的第一个联系人',
+    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
 
     'notes_title' => '你还没有任何便签。',
 
@@ -15,4 +16,8 @@ return [
     'statistics_activities' => '活动',
     'statistics_gifts' => '礼物',
 
+    'reminders_next_months' => 'Events in the next 3 months',
+    'reminders_none' => 'No reminder for this month',
+
+    'linkedin_profile' => 'LinkedIn',
 ];

@@ -60,8 +60,8 @@ $db = [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
             'strict' => false,
             'engine' => null,
@@ -74,8 +74,8 @@ $db = [
             'database' => env('DB_TEST_DATABASE'),
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'strict' => false,
         ],
@@ -87,8 +87,8 @@ $db = [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
             'prefix' => env('DB_PREFIX', ''),
+            'charset' => 'utf8',
             'schema' => 'public',
         ],
 
@@ -100,7 +100,6 @@ $db = [
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
             'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'schema' => 'public',
         ],
@@ -157,15 +156,18 @@ if (env('HEROKU')) {
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
         'host' => $url['host'],
-        'port' => $url['port'],
-        'database' => substr($url['path'], 1),
+        'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
-        'charset' => 'utf8',
-        'prefix' => '',
+        'charset' => 'utf8mb4',
+        'collation' => 'utf8mb4_unicode_ci',
+        'prefix' => env('DB_PREFIX', ''),
         'strict' => false,
         'schema' => 'public',
     ];
+    if (array_key_exists('port', $url)) {
+        $db['connections']['heroku']['port'] = $url['port'];
+    }
 }
 
 return $db;

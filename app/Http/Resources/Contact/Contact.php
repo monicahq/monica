@@ -18,6 +18,7 @@ class Contact extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
+            'hash_id' => $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender->name,
@@ -25,19 +26,25 @@ class Contact extends Resource
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
+            'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
+            'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, (is_null($this->stay_in_touch_trigger_date) ? null : $this->stay_in_touch_trigger_date->format(config('api.timestamp_format')))),
             'information' => [
-                'family' => $this->when(! $this->is_partial, [
-                    'kids' => [
-                        'total' => $this->getOffsprings()->count(),
-                        'kids' => $this->getOffspringsForAPI(),
+                'relationships' => $this->when(! $this->is_partial, [
+                    'love' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('love')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
                     ],
-                    'partners' => [
-                        'total' => $this->getCurrentPartners()->count(),
-                        'partners' => $this->getCurrentPartnersForAPI(),
+                    'family' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('family')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family'))),
                     ],
-                    'progenitors' => [
-                        'total' => $this->getProgenitors()->count(),
-                        'progenitors' => $this->getProgenitorsForAPI(),
+                    'friend' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('friend')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend'))),
+                    ],
+                    'work' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('work')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work'))),
                     ],
                 ]),
                 'dates' => [
@@ -55,6 +62,7 @@ class Contact extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
+                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),

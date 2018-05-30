@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('jQuery-Tags-Input/dist/jquery.tagsinput.min');
+require('jquery-tags-input/dist/jquery.tagsinput.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,9 +30,9 @@ Vue.use(Tooltip);
 import ToggleButton from 'vue-js-toggle-button';
 Vue.use(ToggleButton);
 
-// Calendar
-import Datepicker from 'vuejs-datepicker';
-Vue.use(Datepicker);
+// Radio buttons
+import PrettyCheckbox from 'pretty-checkbox-vue';
+Vue.use(PrettyCheckbox);
 
 // Custom components
 Vue.component(
@@ -73,6 +73,10 @@ Vue.component(
     'form-date',
     require('./components/partials/form/Date.vue')
 );
+Vue.component(
+    'form-radio',
+    require('./components/partials/form/Radio.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -109,6 +113,11 @@ Vue.component(
 Vue.component(
     'pet',
     require('./components/people/Pets.vue')
+);
+
+Vue.component(
+    'stay-in-touch',
+    require('./components/people/StayInTouch.vue')
 );
 
 // Journal
@@ -155,32 +164,86 @@ Vue.component(
     require('./components/settings/U2fConnector.vue')
 );
 
+Vue.component(
+    'modules',
+    require('./components/settings/Modules.vue')
+);
+
+// axios
+import axios from 'axios';
+
 // i18n
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
-import messages from './vue-i18n-locales.generated.js';
-const i18n = new VueI18n({
-    locale: window.Laravel.locale,
-    messages
+// Moments
+import moment from 'moment';
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('LL')
+    }
 });
 
-const app = new Vue({
-    i18n,
-    data: {
-      activities_description_show: false,
-      reminders_frequency: 'once',
-      accept_invite_user: false,
-      date_met_the_contact: 'known'
-    },
-    methods: {
-    },
-}).$mount('#app');
+import messages from '../../../public/js/langs/en.json';
 
-require('./tags');
-require('./search');
-require('./contacts');
+export const i18n = new VueI18n({
+    locale: 'en', // set locale
+    fallbackLocale: 'en',
+    messages: {'en': messages}
+});
+
+const loadedLanguages = ['en']; // our default language that is prelaoded
+
+function setI18nLanguage (lang) {
+    i18n.locale = lang;
+    axios.defaults.headers.common['Accept-Language'] = lang;
+    document.querySelector('html').setAttribute('lang', lang);
+    return lang;
+}
+
+export function loadLanguageAsync (lang, set) {
+    if (i18n.locale !== lang) {
+      if (!loadedLanguages.includes(lang)) {
+        return axios.get(`/js/langs/${lang}.json`).then(msgs => {
+          i18n.setLocaleMessage(lang, msgs.data);
+          loadedLanguages.push(lang);
+          return set ? setI18nLanguage(lang) : lang;
+        });
+      }
+    }
+    return Promise.resolve(set ? setI18nLanguage(lang) : lang);
+}
+
+const app = null;
+const me = this;
+loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+    moment.locale(lang);
+
+    // the Vue appplication
+    me.app = new Vue({
+      i18n,
+      data: {
+        activities_description_show: false,
+        reminders_frequency: 'once',
+        accept_invite_user: false,
+        date_met_the_contact: 'known',
+        global_relationship_form_new_contact: true,
+      },
+      methods: {
+      },
+      mounted: function() {
+
+        // required modules
+        require('./tags');
+        require('./search');
+        require('./contacts');
+
+      }
+    }).$mount('#app');
+
+    return app;
+});
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
-} );
+});

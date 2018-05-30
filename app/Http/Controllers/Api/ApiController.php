@@ -31,6 +31,11 @@ class ApiController extends Controller
     /**
      * @var string
      */
+    protected $withParameter = null;
+
+    /**
+     * @var string
+     */
     protected $sortDirection = 'asc';
 
     public function __construct()
@@ -59,7 +64,13 @@ class ApiController extends Controller
                 $this->setLimitPerPage($request->get('limit'));
             }
 
-            // make sure the JSON is well formatted if the given call sends a JSON
+            if ($request->has('with')) {
+                $this->setWithParameter($request->get('with'));
+            }
+
+            // make sure the JSON is well formatted if the call sends a JSON
+            // if the call contains a JSON, the call must not be a GET or
+            // a DELETE
             // TODO: there is probably a much better way to do that
             if ($request->method() != 'GET' && $request->method() != 'DELETE'
                 && is_null(json_decode($request->getContent()))) {
@@ -100,6 +111,25 @@ class ApiController extends Controller
     public function setHTTPStatusCode($statusCode)
     {
         $this->httpStatusCode = $statusCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWithParameter()
+    {
+        return $this->withParameter;
+    }
+
+    /**
+     * @param string $with
+     * @return $this
+     */
+    public function setWithParameter($with)
+    {
+        $this->withParameter = $with;
 
         return $this;
     }
@@ -222,11 +252,11 @@ class ApiController extends Controller
      * Sends a response not found (404) to the request.
      * @param string $message
      */
-    public function respondNotFound($message = 'Not found!')
+    public function respondNotFound()
     {
         return $this->setHTTPStatusCode(404)
                     ->setErrorCode(31)
-                    ->respondWithError($message);
+                    ->respondWithError(config('api.error_codes.31'));
     }
 
     /**

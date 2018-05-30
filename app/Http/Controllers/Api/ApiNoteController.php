@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Note;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Note\Note as NoteResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -82,7 +82,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         }
 
@@ -134,7 +134,7 @@ class ApiNoteController extends ApiController
         }
 
         if ($request->get('is_favorited')) {
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
             $note->save();
         } else {
             $note->favorited_at = null;
@@ -180,6 +180,7 @@ class ApiNoteController extends ApiController
         }
 
         $notes = $contact->notes()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return NoteResource::collection($notes);

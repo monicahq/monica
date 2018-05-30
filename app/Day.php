@@ -30,14 +30,6 @@ class Day extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get all of the day's journal entries.
-     */
-    public function journalEntries()
-    {
-        return $this->morphMany('App\JournalEntry', 'journalable');
-    }
-
-    /**
      * Get the day's rate.
      *
      * @param  int  $value
@@ -71,9 +63,9 @@ class Day extends Model implements IsJournalableInterface
             'rate' => $this->rate,
             'comment' => $this->comment,
             'day' => $this->date->day,
-            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date)),
+            'day_name' => mb_convert_case(\App\Helpers\DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
             'month' => $this->date->month,
-            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date)),
+            'month_name' => mb_convert_case(\App\Helpers\DateHelper::getShortMonth($this->date), MB_CASE_UPPER, 'UTF-8'),
             'year' => $this->date->year,
             'happens_today' => $this->date->isToday(),
         ];

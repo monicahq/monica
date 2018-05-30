@@ -1,4 +1,10 @@
 <?php
+
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,14 +33,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', '2fa'])->group(function () {
+    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+});
+
+Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::get('/dashboard/debts', 'DashboardController@debts');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
-    Route::post('/validate2fa', 'DashboardController@index');
+
+    Route::get('/compliance', 'ComplianceController@index')->name('compliance');
+    Route::post('/compliance/sign', 'ComplianceController@store');
+    Route::get('/changelog', 'ChangelogController@index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people', 'ContactsController@index')->name('.index');
@@ -59,7 +73,7 @@ Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
         Route::get('/people/{contact}/vcard', 'ContactsController@vcard');
 
         // Addresses
-        Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
+        Route::get('/countries', 'Contacts\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
         Route::post('/people/{contact}/addresses', 'Contacts\\AddressesController@store');
         Route::put('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@edit');
@@ -87,23 +101,12 @@ Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
         Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('.food');
         Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('.food.update');
 
-        // Kid
-        Route::get('/people/{contact}/kids/add', 'Contacts\\KidsController@create')->name('.kids.add');
-        Route::post('/people/{contact}/kids/store', 'Contacts\\KidsController@store')->name('.kids.store');
-        Route::post('/people/{contact}/kids/storeExistingContact', 'Contacts\\KidsController@storeExistingContact')->name('.kids.storeexisting');
-        Route::get('/people/{contact}/kids/{kid}/edit', 'Contacts\\KidsController@edit')->name('.kids.edit');
-        Route::put('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@update')->name('.kids.update');
-        Route::delete('/people/{contact}/kids/{kid}', 'Contacts\\KidsController@destroy')->name('.kids.delete');
-        Route::post('/people/{contact}/kids/{kid}/unlink', 'Contacts\\KidsController@unlink')->name('.kids.unlink');
-
-        // Relationships (significant others)
-        Route::get('/people/{contact}/relationships/add', 'Contacts\\RelationshipsController@create')->name('.relationships.add');
+        // Relationships
+        Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new');
         Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('.relationships.store');
-        Route::post('/people/{contact}/relationships/storeExistingContact', 'Contacts\\RelationshipsController@storeExistingContact')->name('.relationships.storeexisting');
-        Route::get('/people/{contact}/relationships/{partner}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');
-        Route::put('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
-        Route::delete('/people/{contact}/relationships/{partner}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
-        Route::post('/people/{contact}/relationships/{partner}/unlink', 'Contacts\\RelationshipsController@unlink')->name('.relationships.unlink');
+        Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('.relationships.edit');
+        Route::post('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('.relationships.update');
+        Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('.relationships.delete');
 
         // Pets
         Route::get('/people/{contact}/pets', 'Contacts\\PetsController@get');
@@ -152,6 +155,9 @@ Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('people.search');
+
+        // Stay in touch information
+        Route::post('/people/{contact}/stayintouch', 'ContactsController@stayInTouch');
     });
 
     // Activities
@@ -198,6 +204,9 @@ Route::middleware(['auth', 'u2f', '2fa'])->group(function () {
 
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
+
+        Route::get('/settings/personalization/modules', 'Settings\\ModulesController@get');
+        Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
         Route::get('/settings/import', 'SettingsController@import')->name('.import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('.report');

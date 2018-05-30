@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use DB;
 use App\Account;
 use App\Statistic;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class CalculateStatistics extends Command
 {
@@ -59,8 +59,6 @@ class CalculateStatistics extends Command
         $statistic->number_of_gifts = DB::table('gifts')->count();
         $statistic->number_of_oauth_access_tokens = DB::table('oauth_access_tokens')->count();
         $statistic->number_of_oauth_clients = DB::table('oauth_clients')->count();
-        $statistic->number_of_offsprings = DB::table('offsprings')->count();
-        $statistic->number_of_progenitors = DB::table('progenitors')->count();
         $statistic->number_of_relationships = DB::table('relationships')->count();
         $statistic->number_of_subscriptions = DB::table('subscriptions')->count();
 

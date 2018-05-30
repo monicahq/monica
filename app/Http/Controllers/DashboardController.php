@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Debt;
+use App\User;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Debt\Debt as DebtResource;
 
 class DashboardController extends Controller
 {
@@ -23,12 +25,16 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
+        if ($account->contacts()->count() === 0) {
+            return view('dashboard.blank');
+        }
+
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
         foreach ($lastUpdatedContacts as $contact) {
             $data = [
-                'id' => $contact->id,
+                'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
                 'avatar_url' => $contact->getAvatarURL(110),
                 'initials' => $contact->getInitials(),
@@ -36,11 +42,6 @@ class DashboardController extends Controller
                 'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
             ];
             $lastUpdatedContactsCollection->push(json_encode($data));
-        }
-
-        // Latest statistics
-        if ($account->contacts()->count() === 0) {
-            return view('dashboard.blank');
         }
 
         $debt = $account->debts->where('status', 'inprogress');
@@ -57,7 +58,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts_count,
+            'number_of_contacts' => $account->contacts()->real()->count(),
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,
@@ -86,7 +87,7 @@ class DashboardController extends Controller
                 'id' => $call->id,
                 'called_at' => \App\Helpers\DateHelper::getShortDate($call->called_at),
                 'name' => $call->contact->getIncompleteName(),
-                'contact_id' => $call->contact->id,
+                'contact_id' => $call->contact->hashID(),
             ];
             $callsCollection->push($data);
         }
@@ -110,7 +111,7 @@ class DashboardController extends Controller
                 'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
                 'name' => $note->contact->getIncompleteName(),
                 'contact' => [
-                    'id' => $note->contact->id,
+                    'id' => $note->contact->hashID(),
                     'has_avatar' => $note->contact->has_avatar,
                     'avatar_url' => $note->contact->getAvatarURL(110),
                     'initials' => $note->contact->getInitials(),
@@ -122,6 +123,22 @@ class DashboardController extends Controller
         }
 
         return $notesCollection;
+    }
+
+    /**
+     * Get debts for the dashboard.
+     * @return Collection
+     */
+    public function debts()
+    {
+        $debtsCollection = collect([]);
+        $debts = auth()->user()->account->debts()->get();
+
+        foreach ($debts as $debt) {
+            $debtsCollection->push(new DebtResource($debt));
+        }
+
+        return $debtsCollection;
     }
 
     /**

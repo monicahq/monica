@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'Du hast deinen Tag bewertet',
     'entry_delete_success' => 'Der Tagebucheintrag wurde erfolgreich gelöscht.',
     'journal_add_title' => 'Titel (optional)',
+    'journal_add_date' => 'Datum',
     'journal_add_post' => 'Eintrag',
     'journal_add_cta' => 'Speichern',
     'journal_blank_cta' => 'Schreibe deinen ersten Eintrag',

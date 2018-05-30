@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -18,9 +17,11 @@ class ExportAccountAsSQL
         'activity_types',
         'api_usage',
         'cache',
-        'countries',
         'currencies',
         'default_contact_field_types',
+        'default_contact_modules',
+        'default_relationship_type_groups',
+        'default_relationship_types',
         'failed_jobs',
         'import_jobs',
         'import_job_reports',
@@ -76,7 +77,7 @@ class ExportAccountAsSQL
         $sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name." dump of data
 # {$this->file}
-# Export date: ".Carbon::now().'
+# Export date: ".now().'
 # ************************************************************
 
 '.PHP_EOL;

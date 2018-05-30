@@ -7,6 +7,10 @@ Before you do anything else, please read the [README.md](readme.md) of this proj
 This is where we highlight the vision and the strategy. Please make sure you
 accept this vision before contributing to this project.
 
+If you want to contribute to the translation / localization of Monica, please
+head over to [Crowdin](https://crowdin.com/project/monicahq) where we manage our
+localization files.
+
 ### 1. Where do I go from here?
 
 If you've noticed a bug or have a question, [make an issue](https://github.com/monicahq/monica/issues/new),

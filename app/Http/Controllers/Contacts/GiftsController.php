@@ -23,9 +23,10 @@ class GiftsController extends Controller
 
         foreach ($gifts as $gift) {
             $data = [
+                'contact_hash' => $contact->hashID(),
                 'id' => $gift->id,
                 'name' => $gift->name,
-                'is_for' => $gift->recipient_name,
+                'recipient_name' => $gift->recipient_name,
                 'comment' => $gift->comment,
                 'url' => $gift->url,
                 'value' => MoneyHelper::format($gift->value),
@@ -33,9 +34,9 @@ class GiftsController extends Controller
                 'is_an_idea' => $gift->is_an_idea,
                 'has_been_offered' => $gift->has_been_offered,
                 'has_been_received' => $gift->has_been_received,
-                'offered_at' => \App\Helpers\DateHelper::getShortDate($gift->offered_at, auth()->user()->locale),
-                'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at, auth()->user()->locale),
-                'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at, auth()->user()->locale),
+                'offered_at' => \App\Helpers\DateHelper::getShortDate($gift->offered_at),
+                'received_at' => \App\Helpers\DateHelper::getShortDate($gift->received_at),
+                'created_at' => \App\Helpers\DateHelper::getShortDate($gift->created_at),
                 'edit' => false,
                 'show_comment' => false,
             ];
@@ -66,8 +67,11 @@ class GiftsController extends Controller
      */
     public function create(Contact $contact)
     {
+        $familyRelationships = $contact->getRelationshipsByRelationshipTypeGroup('family');
+
         return view('people.gifts.add')
             ->withContact($contact)
+            ->withFamilyRelationships($familyRelationships)
             ->withGift(new Gift);
     }
 
@@ -96,13 +100,13 @@ class GiftsController extends Controller
         );
 
         if ($request->get('has_recipient')) {
-            $gift->is_for = $request->get('recipient');
+            $gift->recipient = $request->get('recipient');
             $gift->save();
         }
 
         $contact->logEvent('gift', $gift->id, 'create');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_add_success'));
     }
 
@@ -115,8 +119,11 @@ class GiftsController extends Controller
      */
     public function edit(Contact $contact, Gift $gift)
     {
+        $familyRelationships = $contact->getRelationshipsByRelationshipTypeGroup('family');
+
         return view('people.gifts.edit')
             ->withContact($contact)
+            ->withFamilyRelationships($familyRelationships)
             ->withGift($gift);
     }
 
@@ -139,19 +146,20 @@ class GiftsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'is_an_idea' => ! (bool) $request->get('offered'),
-                'has_been_offered' => (bool) $request->get('offered'),
+                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
+                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
+                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
             ]
         );
 
         if ($request->get('has_recipient')) {
-            $gift->is_for = $request->get('recipient');
+            $gift->recipient = $request->get('recipient');
             $gift->save();
         }
 
         $contact->logEvent('gift', $gift->id, 'update');
 
-        return redirect('/people/'.$contact->id)
+        return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_update_success'));
     }
 

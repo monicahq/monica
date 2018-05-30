@@ -44,7 +44,9 @@
           <li class="table-row">
             <div class="table-cell">
               @if (! is_null($importJob->ended_at))
-                @if ($importJob->contacts_found != $importJob->contacts_imported)
+                @if ($importJob->failed)
+                  <i class="fa fa-exclamation-triangle danger"></i>
+                @elseif ($importJob->contacts_found != $importJob->contacts_imported)
                   <i class="fa fa-check-circle warning"></i>
                 @else
                   <i class="fa fa-check-circle success"></i>
@@ -55,8 +57,10 @@
               <span class="date">{{ \App\Helpers\DateHelper::getShortDateWithTime($importJob->created_at) }}</span>
             </div>
             <div class="table-cell">
-              @if (! is_null($importJob->ended_at))
-              {{ trans('settings.import_result_stat', ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
+              @if($importJob->failed_reason)
+                {{ $importJob->failed_reason }}
+              @elseif (! is_null($importJob->ended_at))
+              {{ trans_choice('settings.import_result_stat', $importJob->contacts_found, ['total_contacts' => $importJob->contacts_found, 'total_imported' => $importJob->contacts_imported, 'total_skipped' => $importJob->contacts_skipped]) }}
               @endif
             </div>
             <div class="table-cell">

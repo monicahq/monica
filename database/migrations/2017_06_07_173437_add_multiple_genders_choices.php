@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
 class AddMultipleGendersChoices extends Migration
@@ -11,7 +12,7 @@ class AddMultipleGendersChoices extends Migration
      */
     public function up()
     {
-        $driverName = DB::connection()->getPDO()->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $driverName = DB::connection()->getDriverName();
         switch ($driverName) {
             case 'mysql':
                 DB::statement("ALTER TABLE contacts CHANGE COLUMN gender gender ENUM('male', 'female', 'none')");

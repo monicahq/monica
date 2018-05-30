@@ -8,6 +8,7 @@ use App\Reminder;
 use App\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 
 class NotificationEmail extends Mailable
@@ -39,7 +40,7 @@ class NotificationEmail extends Mailable
     {
         $contact = Contact::findOrFail($this->reminder->contact_id);
 
-        \App::setLocale($this->user->locale);
+        App::setLocale($this->user->locale);
 
         return $this->text('emails.reminder.notification')
                     ->subject(trans('mail.notification_subject_line'))

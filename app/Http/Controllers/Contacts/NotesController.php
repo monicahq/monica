@@ -21,6 +21,7 @@ class NotesController extends Controller
         foreach ($notes as $note) {
             $data = [
                 'id' => $note->id,
+                'parsed_body' => $note->parsedbody,
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,
@@ -58,7 +59,7 @@ class NotesController extends Controller
             $note->is_favorited = false;
         } else {
             $note->is_favorited = true;
-            $note->favorited_at = \Carbon\Carbon::now();
+            $note->favorited_at = now();
         }
 
         $contact->logEvent('note', $note->id, 'update');

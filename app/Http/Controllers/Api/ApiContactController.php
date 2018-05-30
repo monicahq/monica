@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
 {
@@ -35,9 +37,13 @@ class ApiContactController extends ApiController
                 return $this->respondInvalidQuery();
             }
 
-            return ContactResource::collection($contacts)->additional(['meta' => [
+            $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
+
+            return $collection->additional([
+                'meta' => [
                     'query' => $needle,
-                ]]);
+                ],
+            ]);
         }
 
         try {
@@ -48,7 +54,9 @@ class ApiContactController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return ContactResource::collection($contacts);
+        $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
+
+        return $collection;
     }
 
     /**
@@ -64,6 +72,10 @@ class ApiContactController extends ApiController
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        }
+
+        if ($this->getWithParameter() == 'contactfields') {
+            return new ContactWithContactFieldsResource($contact);
         }
 
         return new ContactResource($contact);
@@ -356,177 +368,16 @@ class ApiContactController extends ApiController
     }
 
     /**
-     * Link a partner to an existing contact.
+     * Apply the `?with=` parameter.
+     * @param  Collection $contacts
+     * @return Collection
      */
-    public function partners(Request $request, $contactId)
+    private function applyWithParameter($contacts, string $parameter = null)
     {
-        $validate = $this->validatePartners($request, $contactId);
-        if (! is_array($validate)) {
-            return $validate;
-        }
-        list($contact, $partner) = $validate;
-
-        if ($partner->is_partial) {
-            $contact->setRelationshipWith($partner);
-        } else {
-            $contact->setRelationshipWith($partner, true);
-            $partner->logEvent('contact', $partner->id, 'create');
+        if ($parameter == 'contactfields') {
+            return ContactWithContactFieldsResource::collection($contacts);
         }
 
-        return new ContactResource($contact);
-    }
-
-    /**
-     * Unlink a partner from an existing contact.
-     */
-    public function unsetPartners(Request $request, $contactId)
-    {
-        $validate = $this->validatePartners($request, $contactId);
-        if (! is_array($validate)) {
-            return $validate;
-        }
-        list($contact, $partner) = $validate;
-
-        if ($partner->is_partial) {
-            if ($partner->reminders) {
-                $partner->reminders()->get()->each->delete();
-            }
-
-            $contact->unsetRelationshipWith($partner);
-            $partner->delete();
-        } else {
-            $contact->unsetRelationshipWith($partner, true);
-        }
-
-        return new ContactResource($contact);
-    }
-
-    /**
-     * Validate the request for update Partners.
-     *
-     * @param  Request $request
-     * @param  int $contactId
-     * @return mixed
-     */
-    private function validatePartners(Request $request, $contactId)
-    {
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        // Make sure the contact is not a partial contact so we can actually
-        // associate him/her a partner
-        if ($contact->is_partial) {
-            return $this->setErrorCode(36)
-                        ->respondWithError('You can\'t set a partner or a child to a partial contact');
-        }
-
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'partner_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            $partner = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('partner_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return [$contact, $partner];
-    }
-
-    /**
-     * Link a child to an existing contact.
-     */
-    public function kids(Request $request, $contactId)
-    {
-        $validate = $this->validatePartners($request, $contactId);
-        if (! is_array($validate)) {
-            return $validate;
-        }
-        list($contact, $kid) = $validate;
-
-        if ($kid->is_partial) {
-            $kid->isTheOffspringOf($contact);
-        } else {
-            $kid->isTheOffspringOf($contact, true);
-            $kid->logEvent('contact', $kid->id, 'create');
-        }
-
-        return new ContactResource($contact);
-    }
-
-    /**
-     * Unlink a partner from an existing contact.
-     */
-    public function unsetKids(Request $request, $contactId)
-    {
-        $validate = $this->validatePartners($request, $contactId);
-        if (! is_array($validate)) {
-            return $validate;
-        }
-        list($contact, $kid) = $validate;
-
-        if ($kid->is_partial) {
-            if ($kid->reminders) {
-                $kid->reminders()->get()->each->delete();
-            }
-
-            $contact->unsetOffspring($kid);
-            $kid->delete();
-        } else {
-            $contact->unsetOffspring($kid, true);
-        }
-
-        return new ContactResource($contact);
-    }
-
-    /**
-     * Validate the request for update kids.
-     *
-     * @param  Request $request
-     * @param  int $contactId
-     * @return mixed
-     */
-    private function validateKids(Request $request, $contactId)
-    {
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'child_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            $kid = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('child_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return [$contact, $kid];
+        return ContactResource::collection($contacts);
     }
 }

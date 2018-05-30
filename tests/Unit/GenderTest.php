@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Gender;
-use App\Account;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -13,7 +12,7 @@ class GenderTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
         ]);
@@ -23,7 +22,7 @@ class GenderTest extends TestCase
 
     public function test_it_belongs_to_many_contacts()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
         ]);

@@ -7,7 +7,7 @@
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_address_title') }}</h3>
       </div>
-      <div class="dtc tr" v-if="contactAddresses.length > 0">
+      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
         <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
       </div>
@@ -30,7 +30,7 @@
 
             <span v-if="editMode">{{ contactAddress.address }}</span>
 
-            <span class="light-silver">({{ contactAddress.name }})</span>
+            <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
             <div class="fr" v-if="editMode">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
@@ -76,7 +76,7 @@
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.contact_address_form_country') }}
               </label>
-              <select class="db w-100 h2" v-model="updateForm.country_id">
+              <select class="db w-100 h2" v-model="updateForm.country">
                 <option v-for="country in countries" v-bind:value="country.id">
                   {{ country.country }}
                 </option>
@@ -135,7 +135,7 @@
           <label class="db fw6 lh-copy f6">
             {{ $t('people.contact_address_form_country') }}
           </label>
-          <select class="db w-100 h2" v-model="createForm.country_id">
+          <select class="db w-100 h2" v-model="createForm.country">
             <option value="0"></option>
             <option v-for="country in countries" v-bind:value="country.id">
               {{ country.country }}
@@ -165,7 +165,7 @@
                 addMode: false,
 
                 createForm: {
-                    country_id: 0,
+                    country: 0,
                     name: '',
                     street: '',
                     city: '',
@@ -175,13 +175,15 @@
 
                 updateForm: {
                     id: '',
-                    country_id: 0,
+                    country: 0,
                     name: '',
                     street: '',
                     city: '',
                     province: '',
                     postal_code: ''
                 },
+
+                dirltr: true,
             };
         },
 
@@ -199,33 +201,34 @@
             this.prepareComponent();
         },
 
-        props: ['contactId'],
+        props: ['hash'],
 
         methods: {
             /**
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getAddresses();
                 this.getCountries();
             },
 
             getAddresses() {
-                axios.get('/people/' + this.contactId + '/addresses')
+                axios.get('/people/' + this.hash + '/addresses')
                         .then(response => {
                             this.contactAddresses = response.data;
                         });
             },
 
             getCountries() {
-                axios.get('/people/' + this.contactId + '/countries')
+                axios.get('/countries')
                         .then(response => {
                             this.countries = response.data;
                         });
             },
 
             reinitialize() {
-                this.createForm.country_id = '';
+                this.createForm.country = '';
                 this.createForm.name = '';
                 this.createForm.street = '';
                 this.createForm.city = '';
@@ -241,7 +244,7 @@
             toggleEdit(contactAddress) {
                 Vue.set(contactAddress, 'edit', !contactAddress.edit);
                 this.updateForm.id = contactAddress.id;
-                this.updateForm.country_id = contactAddress.country_id;
+                this.updateForm.country = contactAddress.country;
                 this.updateForm.name = contactAddress.name;
                 this.updateForm.street = contactAddress.street;
                 this.updateForm.city = contactAddress.city;
@@ -251,7 +254,7 @@
 
             store() {
                 this.persistClient(
-                    'post', '/people/' + this.contactId + '/addresses',
+                    'post', '/people/' + this.hash + '/addresses',
                     this.createForm
                 );
 
@@ -260,7 +263,7 @@
 
             update(contactAddress) {
                 this.persistClient(
-                    'put', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
             },
@@ -269,7 +272,7 @@
                 this.updateForm.id = contactAddress.id;
 
                 this.persistClient(
-                    'delete', '/people/' + this.contactId + '/addresses/' + contactAddress.id,
+                    'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
                     this.updateForm
                 );
 

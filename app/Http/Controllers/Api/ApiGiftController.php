@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Gift;
-use Validator;
 use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Gift\Gift as GiftResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -190,6 +190,7 @@ class ApiGiftController extends ApiController
         }
 
         $gifts = $contact->gifts()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return GiftResource::collection($gifts);

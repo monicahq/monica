@@ -27,9 +27,9 @@ class VCardHelperTest extends FeatureTestCase
 
         $contactFields = VCardHelper::getAllEntriesOfASpecificContactFieldType($contact, 'email');
 
-        $this->assertEquals(
+        $this->assertCount(
             1,
-            count($contactFields)
+            $contactFields
         );
     }
 
@@ -86,9 +86,9 @@ class VCardHelperTest extends FeatureTestCase
 
         $vCard = VCardHelper::addContactFieldEntriesInVCard($contact, $vCard, 'email');
 
-        $this->assertEquals(
+        $this->assertCount(
             1,
-            count($vCard->getProperties())
+            $vCard->getProperties()
         );
     }
 
@@ -131,9 +131,9 @@ class VCardHelperTest extends FeatureTestCase
 
         $vCard = VCardHelper::addAddressToVCard($contact, $vCard);
 
-        $this->assertEquals(
+        $this->assertCount(
             2,
-            count($vCard->getProperties())
+            $vCard->getProperties()
         );
     }
 
@@ -149,9 +149,9 @@ class VCardHelperTest extends FeatureTestCase
             $vCard->getProperties()[1]['value']
         );
 
-        $this->assertEquals(
+        $this->assertCount(
             5,
-            count($vCard->getProperties())
+            $vCard->getProperties()
         );
     }
 
@@ -187,9 +187,9 @@ class VCardHelperTest extends FeatureTestCase
 
         $vCard = VCardHelper::prepareVCard($contact);
 
-        $this->assertEquals(
+        $this->assertCount(
             8,
-            count($vCard->getProperties())
+            $vCard->getProperties()
         );
     }
 }

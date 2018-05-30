@@ -6,7 +6,7 @@
 
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
-      <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
 
         @if (session('status'))
           <div class="alert alert-success">
@@ -17,7 +17,7 @@
         <h2>{{ trans('people.people_add_missing') }}</h2>
 
         @if (! auth()->user()->account->hasLimitations())
-          <p class="import">{!! trans('people.people_add_import') !!}</p>
+          <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
         @endif
 
         <form action="/people" method="POST">

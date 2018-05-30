@@ -14,7 +14,7 @@ class AddFacebookColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->bigInteger('facebook_user_id')->unsigned()->index();
+            $table->unsignedBigInteger('facebook_user_id')->index();
             $table->string('access_token')->nullable();
         });
     }

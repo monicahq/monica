@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Task;
-use App\Account;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -13,7 +12,7 @@ class TaskTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $task = factory('App\Task')->create([
             'account_id' => $account->id,
@@ -25,7 +24,7 @@ class TaskTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $account = factory(Account::class)->create([]);
+        $account = factory('App\Account')->create([]);
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $task = factory('App\Task')->create([
             'account_id' => $account->id,

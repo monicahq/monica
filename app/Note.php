@@ -104,9 +104,9 @@ class Note extends Model
      * @param  string $locale
      * @return string
      */
-    public function getCreatedAt($locale)
+    public function getCreatedAt()
     {
-        return DateHelper::getShortDate($this->created_at, $locale);
+        return DateHelper::getShortDate($this->created_at);
     }
 
     /**

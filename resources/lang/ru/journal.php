@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'How was your day? You can rate it once a day.',
     'journal_come_back' => 'Thanks. Come back tomorrow to rate your day again.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you\'ll have to delete the activity directly on the contact page.',
+    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Добавить запись в журнал',
     'journal_created_automatically' => 'Created automatically',
     'journal_entry_type_journal' => 'Journal entry',
@@ -11,6 +11,7 @@ return [
     'journal_entry_rate' => 'You rated your day.',
     'entry_delete_success' => 'Запись была удалена.',
     'journal_add_title' => 'Заголовок (не обязательно)',
+    'journal_add_date' => 'Date',
     'journal_add_post' => 'Содержимое',
     'journal_add_cta' => 'Сохранить',
     'journal_blank_cta' => 'Добавить вашу первую запись в журнал',

@@ -131,7 +131,7 @@
             },
 
             redirect(attendee) {
-                window.location.href = "/people/" + attendee.id
+                window.location.href = "/people/" + attendee.hash_ID
             }
         }
     }

@@ -13,17 +13,19 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
-        'App\Console\Commands\SendNotifications',
-        'App\Console\Commands\SendReminders',
         'App\Console\Commands\CalculateStatistics',
-        'App\Console\Commands\ImportCSV',
-        'App\Console\Commands\SetupProduction',
-        'App\Console\Commands\ImportVCards',
-        'App\Console\Commands\PingVersionServer',
-        'App\Console\Commands\SetupTest',
         'App\Console\Commands\Deactivate2FA',
         'App\Console\Commands\GetVersion',
+        'App\Console\Commands\ImportCSV',
+        'App\Console\Commands\ImportVCards',
+        'App\Console\Commands\LangGenerate',
+        'App\Console\Commands\PingVersionServer',
+        'App\Console\Commands\SendNotifications',
+        'App\Console\Commands\SendReminders',
+        'App\Console\Commands\SendStayInTouch',
+        'App\Console\Commands\SetupProduction',
+        'App\Console\Commands\SetupTest',
+        'App\Console\Commands\Update',
     ];
 
     /**
@@ -36,6 +38,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('send:notifications')->hourly();
         $schedule->command('send:reminders')->hourly();
+        $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
         $schedule->command('monica:ping')->daily();
     }

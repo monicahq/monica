@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use Validator;
 use App\Contact;
 use App\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Reminder\Reminder as ReminderResource;
 
@@ -182,6 +182,7 @@ class ApiReminderController extends ApiController
         }
 
         $reminders = $contact->reminders()
+                ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
 
         return ReminderResource::collection($reminders);

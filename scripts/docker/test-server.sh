@@ -18,7 +18,9 @@ if [[ -z ${APP_KEY:-} || "$APP_KEY" == "ChangeMeBy32KeyLengthOrGenerated" ]]; th
 else
   echo "APP_KEY already set"
 fi
-${ARTISAN} setup:production --force
+
+# Run migrations
+${ARTISAN} monica:update --force
 
 # Run cron
 crond -b &
