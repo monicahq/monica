@@ -37,11 +37,9 @@ class UpdateAssets extends Command
      */
     public function handle()
     {
-
     }
 
     public function link()
     {
-        
     }
 }
