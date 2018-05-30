@@ -20,7 +20,7 @@ return [
     | Activates double optin on signup
     |
     */
-    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', true),
+    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', false),
 
     /*
     |--------------------------------------------------------------------------
