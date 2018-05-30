@@ -17,7 +17,7 @@ return [
     'notifications_whoops' => 'אופס!',
     'notifications_hello' => 'שלום!',
     'notifications_regards' => 'בברכה',
-    'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
+    'notifications_footer' => 'אם נתקלת בבעיה בלחיצה על הכפתור „:actionText”, יש להעתיק ולהדביק את הכתובת שלהלן לתוך הדפדפן שלך: [:actionURL](:actionURL)',
 
     'confirmation_email_title' => 'מוניקה – אימות דוא״ל',
     'confirmation_email_intro'=> 'כדי לאמת את כתובת הדוא״ל שלך נא ללחוץ על הכפתור שלהלן',
