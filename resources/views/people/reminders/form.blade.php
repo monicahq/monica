@@ -11,7 +11,7 @@
     {{-- Nature of reminder --}}
     <fieldset class="form-group nature">
         <div class="form-group">
-            <input type="text" class="form-control" name="title" value="{{ old('title') ?? $reminder->title }}">
+            <input type="text" class="form-control" name="title" value="{{ old('title') ?? $reminder->title }}" required>
         </div>
     </fieldset>
 

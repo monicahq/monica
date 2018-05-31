@@ -21,6 +21,11 @@
             @endif
 
             @include ('partials.errors')
+            @if (session('confirmation-success'))
+                <div class="alert alert-success">
+                    {{ session('confirmation-success') }}
+                </div>
+            @endif
 
             <form class="" action="/register" method="post">
               {{ csrf_field() }}
@@ -55,12 +60,16 @@
                 <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
               </div>
 
-              <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
+              <!-- Policy acceptance check -->
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" id="policy" name="policy" type="checkbox" value="polict">
+                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'urlterm' => 'https://monicahq.com/terms', 'hreflang' => 'en', ]) !!}
+                </label>
               </div>
 
-              <div class="help">
-                {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
+              <div class="form-group actions">
+                <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
 
             </form>

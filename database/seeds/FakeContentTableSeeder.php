@@ -4,6 +4,7 @@ use App\Account;
 use App\Contact;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
+use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -316,7 +317,7 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
             $address = $this->contact->addresses()->create([
                 'account_id' => $this->contact->account_id,
-                'country_id' => rand(1, 242),
+                'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
                 'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
                 'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
@@ -326,13 +327,57 @@ class FakeContentTableSeeder extends Seeder
         }
     }
 
+    private $countries = null;
+
+    private function getRandomCountry()
+    {
+        if ($this->countries == null) {
+            $this->countries = CountriesHelper::getAll();
+        }
+
+        return $this->countries->random()->id;
+    }
+
     public function populateContactFields()
     {
         if (rand(1, 3) == 1) {
-            for ($j = 0; $j < rand(1, 4); $j++) {
+
+            // Fetch number of types
+            $numberOfTypes = \App\ContactFieldType::count();
+
+            for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
+                // Retrieve random ContactFieldType
+                $contactFieldType = \App\ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                // Fake data according to type
+                $data = null;
+                switch ($contactFieldType->name) {
+                    case 'Email':
+                        $data = $this->faker->email;
+                    break;
+                    case 'Phone':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 'Facebook':
+                        $data = 'https://facebook.com/'.$this->faker->userName;
+                    break;
+                    case 'Twitter':
+                        $data = 'https://twitter.com/'.$this->faker->userName;
+                    break;
+                    case 'Whatsapp':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 'Telegram':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    default:
+                        $data = $this->faker->url;
+                    break;
+                }
+
                 $contactField = $this->contact->contactFields()->create([
-                    'contact_field_type_id' => rand(1, 6),
-                    'data' => $this->faker->url,
+                    'contact_field_type_id' => $contactFieldType->id,
+                    'data' => $data,
                     'account_id' => $this->contact->account->id,
                 ]);
             }

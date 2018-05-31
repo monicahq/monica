@@ -34,14 +34,20 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
+    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+});
+
+Route::middleware(['auth', 'auth.confirm', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
+        Route::get('/dashboard/debts', 'DashboardController@debts');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
-    Route::post('/validate2fa', 'DashboardController@index');
 
+    Route::get('/compliance', 'ComplianceController@index')->name('compliance');
+    Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index');
 
     Route::group(['as' => 'people'], function () {
@@ -67,7 +73,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
         Route::get('/people/{contact}/vcard', 'ContactsController@vcard');
 
         // Addresses
-        Route::get('/people/{contact}/countries', 'Contacts\\AddressesController@getCountries');
+        Route::get('/countries', 'Contacts\\AddressesController@getCountries');
         Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
         Route::post('/people/{contact}/addresses', 'Contacts\\AddressesController@store');
         Route::put('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@edit');

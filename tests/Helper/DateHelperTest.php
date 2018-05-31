@@ -296,7 +296,7 @@ class DateHelperTest extends FeatureTestCase
         );
 
         $this->assertEquals(
-            '1:00',
+            '01:00',
             $hours[0]['id']
         );
 
@@ -322,7 +322,7 @@ class DateHelperTest extends FeatureTestCase
         );
 
         $this->assertEquals(
-            '1:00',
+            '01:00',
             $hours[0]['id']
         );
 
