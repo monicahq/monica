@@ -1,10 +1,17 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.2.0 - 2018-05-30
+-------------------
+
 * Add debts on the dashboard
-* Add User and Currency support in the API
+* Add support for User and Currency objects in the API
 * Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
-* Fixes Contact search dropdown shows non-contacts that link to nowhere
+* Fix Contact search dropdown showing non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
 * Adds ex wife/husband relationship
@@ -12,8 +19,7 @@ UNRELEASED CHANGES:
 * Add trusted proxies to run behind a ssl terminating loadbalancer
 * Fix reminders for past events are visible on the dashboard
 * Add email address verification on register, and email change
-
-RELEASED VERSIONS:
+* Change table structure to support emojis in texts
 
 v2.1.1 - 2018-05-13
 -------------------
