@@ -13,6 +13,11 @@
             <p class="mb0">{{ errorMessage }}</p>
           </div>
         </div>
+        <div class="form-information-message mb3" v-if="infoMessage != ''">
+          <div class="pa2">
+            <p class="mb0">{{ infoMessage }}</p>
+          </div>
+        </div>
 
         <div align="center">
             <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
@@ -39,6 +44,7 @@
         data() {
             return {
                 errorMessage: '',
+                infoMessage: '',
                 success: false,
             };
         },
@@ -114,12 +120,15 @@
                     register: JSON.stringify(data)
                 }).then(response => {
                     self.success = true;
+                    self.infoMessage = self.$t('settings.u2f_success');
+                    /*
                     self.$notify({
                         group: 'main',
                         title: self.$t('settings.u2f_success'),
                         text: '',
                         type: 'success'
                     });
+                    */
                 }).catch(error => {
                     self.errorMessage = error.response.data.message;
                 });
@@ -136,6 +145,7 @@
                     authentication: JSON.stringify(data)
                 }).then(response => {
                     self.success = true;
+                    //self.infoMessage = self.$t('settings.u2f_success');
                     self.$notify({
                         group: 'main',
                         title: self.$t('settings.u2f_success'),
