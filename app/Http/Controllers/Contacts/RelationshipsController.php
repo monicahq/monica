@@ -35,7 +35,7 @@ class RelationshipsController extends Controller
             }
             $arrayContacts->push([
                 'id' => $existingContact->id,
-                'label' => $existingContact->getCompleteName(),
+                'name' => $existingContact->getCompleteName(),
             ]);
         }
 
@@ -45,7 +45,7 @@ class RelationshipsController extends Controller
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $arrayRelationshipTypes->push([
                 'id' => $relationshipType->id,
-                'label' => $relationshipType->getLocalizedName($contact, true),
+                'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
 

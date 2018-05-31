@@ -2,7 +2,7 @@
     <div>
         <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
         <input type="hidden" :name="name" :value="selected ? selected.id : ''">
-        <vSelect placeholder="search" @search="search" :options="computedOption" v-model="selected"></vSelect>
+        <vSelect placeholder="search" v-bind:label="'name'" @search="search" :options="computedOption" v-model="selected"></vSelect>
     </div>
 </template>
 
@@ -34,7 +34,7 @@
             return {
                 src : '/people/search',
                 filterable : false,
-                selected: { label: this.placeholder, id: '' },
+                selected: { name: this.placeholder, id: '' },
                 newOptions: [],
             }
         },
@@ -60,7 +60,7 @@
 
                         let middleName = contact.middle_name || '';
                         let lastName = contact.last_name || '';
-                        contact.label = contact.first_name + (middleName ? ' ' + middleName : '') + (lastName ? ' ' + lastName : '');
+                        contact.name = contact.first_name + (middleName ? ' ' + middleName : '') + (lastName ? ' ' + lastName : '');
                         data.push(contact);
                     });
 
