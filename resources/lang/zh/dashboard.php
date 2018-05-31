@@ -11,6 +11,10 @@ return [
     'tab_recent_calls' => '最近通话',
     'tab_favorite_notes' => '收藏便签',
     'tab_calls_blank' => '你还没有电话拨打记录。',
+    'tab_debts' => 'Debts',
+    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+
+    'debts_you_owe' => 'You owe',
 
     'statistics_contacts' => '联系人',
     'statistics_activities' => '活动',
