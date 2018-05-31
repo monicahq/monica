@@ -72,6 +72,7 @@ class ContactsController extends Controller
         return view('people.index')
             ->withContacts($contacts->unique('id'))
             ->withTags($tags)
+            ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->get('no_tag') ?? false);

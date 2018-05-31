@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Trier par date de dernière activité (récent à vieux)',
     'people_list_lastactivitydateOldtoNew' => 'Trier par date de dernière activité (vieux à récent)',
-    'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette ',
+    'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_search' => 'Recherchez dans vos contacts...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
+    'people_list_untagged' => 'Afficher les contacts sans étiquette',
+    'people_list_filter_untag' => 'Afficher les contacts sans aucune étiquette',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
