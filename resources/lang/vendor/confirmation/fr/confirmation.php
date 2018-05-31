@@ -3,8 +3,8 @@
 return [
     'message' => 'Merci pour votre inscription ! Merci de vérifier vos courriels pour confirmer votre adresse courriel.',
     'success' => 'Votre compte a été validé ! Vous pouvez maintenant vous connecter.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
+    'again' => 'Vous devez vérifier votre adresse courriel avant de pouvoir accéder au site.
+                <br/>Si vous n’avez pas reçu le courriel de confirmation vérifiez votre dossier spam.
+                <br/>Pour obtenir un nouveau courriel de confirmation <a href=":url" class="alert-link">cliquez ici</a>.',
     'resend' => 'Un message de confirmation a été envoyé. Merci de vérifier votre boîte aux lettres.'
 ];
