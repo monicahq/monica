@@ -41,8 +41,8 @@
               :method="'register'">
             </u2f-connector>
 
-              <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
-            </form>
+            <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
+
           </div>
         </div>
       </div>

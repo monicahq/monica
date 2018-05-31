@@ -59,6 +59,14 @@
           </div>
           </div>
         </form>
+
+        @if ($authenticationData != '')
+        <u2f-connector
+          :authdatas="{{ json_encode($authenticationData) }}"
+          :method="'login'">
+        </u2f-connector>
+        @endif
+
       </div>
     </div>
   </body>
