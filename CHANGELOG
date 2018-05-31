@@ -4,6 +4,13 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v2.2.1 - 2018-05-31
+-------------------
+
+* Fix url of confirmation email resend
+* Update translations
+* Fix sonar run on release version
+
 v2.2.0 - 2018-05-30
 -------------------
 
