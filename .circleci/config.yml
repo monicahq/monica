@@ -269,7 +269,11 @@ jobs:
           <<: *post_checkout
       - attach_workspace:
           at: *root
+      - *prepare-environment
+      - *restore_phpextensions
+      - *restore_composer
       - *restore_node
+      - *restore_assets
       - restore_cache:
           keys:
             - *sonar_key
