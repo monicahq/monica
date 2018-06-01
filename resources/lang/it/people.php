@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Ordina per cognome Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Tutti i contatti etichettati con ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
     'people_search' => 'Cerca nei tuoi contatti...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Utilizzo account: :current/:limit contatti',
     'people_list_account_upgrade_title' => 'Effettua l\'upgrade del tuo account per poter usufruire delle sue piene funzionalitá.',
     'people_list_account_upgrade_cta' => 'Effettua l\'upgrade ora',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Aggiungi una persona',

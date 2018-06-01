@@ -84,6 +84,11 @@ return [
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
+    'compliance_title' => 'Désolé pour l’interruption.',
+    'compliance_desc' => 'Nous avons changé nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a> et notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a>. Nous devons vous demander de les consulter et les accepter si vous voulez continuer à utiliser votre compte.',
+    'compliance_desc_end' => 'Nous ne faisons rien de méchant avec vos données ou votre compte et nous ne le ferons jamais.',
+    'compliance_terms' => 'Accepter les nouvelles conditions et politique de confidentialité',
+
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
     // This is because we need to indicate the name of the relationship type,
@@ -216,4 +221,9 @@ return [
     'relationship_type_protege_female' => 'protégée',
     'relationship_type_protege_with_name' => 'protégé de :name',
     'relationship_type_protege_female_with_name' => 'protégée de :name',
+
+    'relationship_type_ex_husband' => 'ex-mari',
+    'relationship_type_ex_husband_female' => 'ex-femme',
+    'relationship_type_ex_husband_with_name' => 'ex-mari de :name',
+    'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
 ];
