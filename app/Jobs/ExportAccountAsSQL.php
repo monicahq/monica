@@ -133,26 +133,21 @@ class ExportAccountAsSQL
         }
 
         // Specific to `accounts` table
-        $accounts = array_filter($tables, function ($e) {
-            return $e->table_name == 'accounts';
-        }
-        )[0];
-        $tableName = $accounts->table_name;
-        $tableData = DB::table($tableName)->get()->toArray();
+        $tableName = 'accounts';
+        $tableData = DB::table($tableName)
+            ->where('id', '=', $account->id)
+            ->get()
+            ->toArray();
         foreach ($tableData as $data) {
-            $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
             $data = (array) $data;
-            if ($data['id'] === $account->id):
-                $values = [
-                    $data['id'],
-                    "'".addslashes($data['api_key'])."'",
-                    $data['number_of_invitations_sent'] !== null
-                        ? $data['number_of_invitations_sent']
-                        : 'NULL',
-                ];
+            $values = [
+                $data['id'],
+                "'".addslashes($data['api_key'])."'",
+                $data['number_of_invitations_sent'] ?? 'NULL',
+            ];
+            $newSQLLine = 'INSERT INTO '.$tableName.' (id, api_key, number_of_invitations_sent) VALUES (';
             $newSQLLine .= implode(',', $values).');'.PHP_EOL;
             $sql .= $newSQLLine;
-            endif;
         }
 
         Storage::disk(config('filesystems.default'))->put($downloadPath, $sql);
