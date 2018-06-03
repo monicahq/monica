@@ -8,6 +8,7 @@ use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Debt\Debt as DebtResource;
 
 class DashboardController extends Controller
 {
@@ -122,6 +123,22 @@ class DashboardController extends Controller
         }
 
         return $notesCollection;
+    }
+
+    /**
+     * Get debts for the dashboard.
+     * @return Collection
+     */
+    public function debts()
+    {
+        $debtsCollection = collect([]);
+        $debts = auth()->user()->account->debts()->get();
+
+        foreach ($debts as $debt) {
+            $debtsCollection->push(new DebtResource($debt));
+        }
+
+        return $debtsCollection;
     }
 
     /**

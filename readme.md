@@ -7,8 +7,8 @@
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage" alt="Code coverage"/></a>
 <a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=alert_status" alt="Quality gate" /></a>
-<a href="https://gitter.im/monicahq"><img src="https://img.shields.io/gitter/room/monicahq/monicahq.svg" /></a>
 <a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
+<a class="badge-align" href="https://slack.monicahq.com"><img src="https://slack.monicahq.com/badge.svg"></a>
 </p>
 
 Monica is a great open source personal relationship management system.
