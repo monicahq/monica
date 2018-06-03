@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Contact;
 use App\Activity;
 use App\JournalEntry;
+use App\Helpers\IdHasher;
+use Illuminate\Http\Request;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller
@@ -164,8 +166,12 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Activity $activity)
+    public function destroy(Request $request, Activity $activity)
     {
+        $contactHashedId = $request->get('contact');
+        $contactId = app('idhasher')->decodeId($contactHashedId);
+        $contact = Contact::find($contactId);
+
         $activity->deleteJournalEntry();
 
         $activity->delete();
