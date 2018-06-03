@@ -43,6 +43,11 @@ class SetupFrontEndTest extends Command
         $this->artisan('migrate:fresh');
         $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+
+        // get first user
+        $user = $this->account->users()->first();
+        $user->confirmed = true;
+        $user->save();
     }
 
     public function artisan($command, array $arguments = [])

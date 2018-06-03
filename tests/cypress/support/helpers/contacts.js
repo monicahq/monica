@@ -1,4 +1,4 @@
-Cypress.Commands.add('createContact', (firstname, lastname, gender) => {
+Cypress.Commands.add('createContact', (firstname, lastname, gender, action = 'save') => {
     cy.visit('/people')
     cy.get('#button-add-contact').click()
 
@@ -6,5 +6,5 @@ Cypress.Commands.add('createContact', (firstname, lastname, gender) => {
     cy.get('input[name=last_name]').type(lastname)
     cy.get('select[name=gender]').select(gender)
 
-    cy.get('button[name=save]').click()
+    cy.get('button[name=' + action + ']').click()
 })
