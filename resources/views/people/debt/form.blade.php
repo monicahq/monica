@@ -32,7 +32,7 @@
     </div>
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" cy-name="save-debt-button" class="btn btn-primary">
             @if($update_or_add == 'add')
             {{ trans('people.debt_add_add_cta') }}
             @elseif ($update_or_add == 'edit')
