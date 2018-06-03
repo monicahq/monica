@@ -9,17 +9,7 @@ describe('Activities', function () {
     cy.get('[cy-name=activities-blank-state]').should('be.visible')
 
     // add an activity
-    cy.get('[cy-name=add-activity-button]').should('be.visible')
-    cy.get('[cy-name=add-activity-button]').click()
-    cy.url().should('include', '/activities/add/h:')
-
-    cy.get('[name=summary]').type('This is a summary')
-    cy.get('[cy-name=save-activity-button]').click()
-
-    cy.url().should('include', '/people/h:')
-    cy.get('[cy-name=activities-blank-state]').should('not.be.visible')
-    cy.get('[cy-name=activity-body-1]').should('exist')
-    cy.get('[cy-name=activity-body-1]').should('contain', 'This is a summary')
+    cy.createActivity()
 
     // edit an activity
     cy.get('[cy-name=edit-activity-button-1]').click()

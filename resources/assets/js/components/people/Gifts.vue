@@ -127,7 +127,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="trash(giftToTrash)" class="btn">{{ $t('app.delete') }}</a>
+            <a @click="trash(giftToTrash)" class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>

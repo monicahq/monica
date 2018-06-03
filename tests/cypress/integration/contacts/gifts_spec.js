@@ -23,8 +23,8 @@ describe('Gifts', function () {
     cy.get('[cy-name=edit-gift-button-1]').click()
     cy.url().should('include', '/gifts/1/edit')
 
-    cy.get('[name=summary]').clear()
-    cy.get('[name=summary]').type('This is another gift')
+    cy.get('[name=name]').clear()
+    cy.get('[name=name]').type('This is another gift')
     cy.get('[cy-name=save-gift-button]').click()
 
     cy.get('[cy-name=gift-idea-item-1]').should('exist')
@@ -32,6 +32,7 @@ describe('Gifts', function () {
 
     // delete an gift
     cy.get('[cy-name=delete-gift-button-1]').click()
+    cy.get('[cy-name=modal-delete-gift-button-1]').click()
     cy.get('[cy-name=activities-blank-state]').should('be.visible')
     cy.get('[cy-name=gift-idea-item-1]').should('not.exist')
   })
