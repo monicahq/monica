@@ -9,7 +9,7 @@ use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Bestmomo\LaravelEmailConfirmation\Traits\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -99,5 +99,27 @@ class RegisterController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        $first = Account::count() == 1;
+        if (! config('monica.signup_double_optin') || $first) {
+            // if signup_double_optin is disabled, skip the confirm email part
+            $user->confirmation_code = null;
+            $user->confirmed = true;
+            $user->save();
+
+            $this->guard()->login($user);
+
+            return redirect(route('login'));
+        }
     }
 }

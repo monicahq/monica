@@ -1,3 +1,5 @@
 files:
   - source: /resources/lang/en/*.php
     translation: /resources/lang/%two_letters_code%/%original_file_name%
+  - source: /resources/lang/vendor/confirmation/en/*.php
+    translation: /resources/lang/vendor/confirmation/%two_letters_code%/%original_file_name%
