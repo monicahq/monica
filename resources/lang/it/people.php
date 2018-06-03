@@ -14,8 +14,8 @@ return [
     'people_list_firstnameZA' => 'Ordina per nome Z → A',
     'people_list_lastnameAZ' => 'Ordina per cognome A → Z',
     'people_list_lastnameZA' => 'Ordina per cognome Z → A',
-    'people_list_lastactivitydateNewtoOld' => 'Ordina per data dell\'ultima attività, da più recente a meno',
-    'people_list_lastactivitydateOldtoNew' => 'Ordina per data dell\'ultima attività, da meno a più recente',
+    'people_list_lastactivitydateNewtoOld' => 'Ordina per data dell\'ultima attività, più recente → meno recente',
+    'people_list_lastactivitydateOldtoNew' => 'Ordina per data dell\'ultima attività, meno recente → più recente',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
@@ -43,9 +43,9 @@ return [
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
-    'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
-    'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_edit_email_error' => 'Esiste già un contatto nel tuo account con questo indirizzo email. Scegline un altro, per favore.',
+    'people_export' => 'Esporta in formato vCard',
+    'people_add_reminder_for_birthday' => 'Crea un promemoria annuale per il compleanno',
 
     // show
     'section_contact_information' => 'Informazioni sul contatto',
@@ -53,7 +53,7 @@ return [
     'section_personal_reminders' => 'Promemoria',
     'section_personal_tasks' => 'Cose da fare',
     'section_personal_gifts' => 'Regali',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => 'Note',
 
     //
     'link_to_list' => 'Lista dei contatti',
@@ -63,13 +63,13 @@ return [
     'call_button' => 'Aggiungi chiamata',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
-    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch' => 'Rimani in contatto',
+    'stay_in_touch_frequency' => 'Rimani in contatto ogni giorno|Rimani in contatto ogni {count} giorni',
+    'stay_in_touch_invalid' => 'La frequenza dev\'essere un numero maggiore di 0.',
+    'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
+    'stay_in_touch_modal_title' => 'Rimani in contatto',
+    'stay_in_touch_modal_desc' => 'Possiamo ricordarti di rimanere in contatto con {firstname} tramite email a intervalli regolari.',
+    'stay_in_touch_modal_label' => 'Inviami una mail ogni...',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
