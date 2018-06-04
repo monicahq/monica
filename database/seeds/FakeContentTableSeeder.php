@@ -27,7 +27,7 @@ class FakeContentTableSeeder extends Seeder
     {
         $this->setUpFaker();
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
-        
+
         // set default admin account to confirmed
         $adminUser = $this->account->users()->first();
         $this->confirmUser($adminUser);
