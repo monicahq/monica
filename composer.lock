@@ -3103,16 +3103,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa"
+                "reference": "8f543ede60386faec9b0012833536de4b6083bb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
-                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/8f543ede60386faec9b0012833536de4b6083bb9",
+                "reference": "8f543ede60386faec9b0012833536de4b6083bb9",
                 "shasum": ""
             },
             "require": {
@@ -3139,7 +3139,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2017-05-24T10:07:27+00:00"
+            "time": "2018-04-14T14:36:18+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -7571,16 +7571,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "7.2.2",
+            "version": "7.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3cf0836680bf5c365c627e8566d46c9e1f544db9"
+                "reference": "42bb8f5b2cb36483907a20f45e4cd1665c24d8a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3cf0836680bf5c365c627e8566d46c9e1f544db9",
-                "reference": "3cf0836680bf5c365c627e8566d46c9e1f544db9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/42bb8f5b2cb36483907a20f45e4cd1665c24d8a7",
+                "reference": "42bb8f5b2cb36483907a20f45e4cd1665c24d8a7",
                 "shasum": ""
             },
             "require": {
@@ -7651,7 +7651,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-06-01T07:54:27+00:00"
+            "time": "2018-06-03T06:05:05+00:00"
         },
         {
             "name": "roave/security-advisories",
