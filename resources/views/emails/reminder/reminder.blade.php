@@ -6,7 +6,7 @@
 
 {{ trans('mail.for') }}
 
-{{ $contact->getCompleteName($user->name_order) }}
+{{ $contact->name }}
 
 {{-- COMMENTS --}}
 @if (! is_null($reminder->description))

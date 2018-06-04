@@ -54,6 +54,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->gender_id = $this->getRandomGender()->id;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
+            $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->has_avatar = false;
             $this->contact->save();
 

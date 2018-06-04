@@ -60,7 +60,19 @@ class SettingsController extends Controller
      */
     public function index()
     {
+        // names order
+        $namesOrder = [
+            'firstname_lastname',
+            'lastname_firstname',
+            'firstname_lastname_nickname',
+            'firstname_nickname_lastname',
+            'lastname_firstname_nickname',
+            'lastname_nickname_firstname',
+            'nickname',
+        ];
+
         return view('settings.index')
+                ->withNamesOrder($namesOrder)
                 ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
                 ->withHours(\App\Helpers\DateHelper::getListOfHours());
     }

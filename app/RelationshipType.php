@@ -62,23 +62,23 @@ class RelationshipType extends Model
 
             // `Regis Freyd's significant other`
             if (strtolower($femaleVersion) == strtolower($this->getLocalizedName())) {
-                return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->getCompleteName()]);
+                return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
             }
 
             // otherwise `Regis Freyd's uncle/aunt`
             return trans(
                 'app.relationship_type_'.$this->name.'_with_name',
-                ['name' => $contact->getCompleteName()]
+                ['name' => $contact->name]
             ).'/'.$femaleVersion;
         }
 
         // `Regis Freyd's uncle`
         if (! is_null($contact)) {
             if (strtolower($gender) == 'woman') {
-                return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->getCompleteName()]);
+                return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
             }
 
-            return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->getCompleteName()]);
+            return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
         }
 
         // `aunt`

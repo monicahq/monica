@@ -1,6 +1,6 @@
 @extends('layouts.skeleton')
 
-@section('title', $contact->getCompleteName(auth()->user()->name_order) )
+@section('title', $contact->name )
 
 @section('content')
   <div class="people-show" >
@@ -19,7 +19,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                {{ $contact->name }}
               </li>
             </ul>
           </div>
