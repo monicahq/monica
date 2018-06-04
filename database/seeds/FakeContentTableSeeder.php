@@ -28,6 +28,10 @@ class FakeContentTableSeeder extends Seeder
         $this->setUpFaker();
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
+        // set default admin account to confirmed
+        $adminUser = $this->account->users()->first();
+        $this->confirmUser($adminUser);
+
         // create a random number of contacts
         $this->numberOfContacts = rand(60, 100);
         echo 'Generating '.$this->numberOfContacts.' fake contacts'.PHP_EOL;
@@ -89,7 +93,9 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $this->blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $blankUser = $this->blankAccount->users()->first();
+        $this->confirmUser($blankUser);
     }
 
     public function populateFoodPreferencies()
@@ -465,5 +471,12 @@ class FakeContentTableSeeder extends Seeder
     public function getRandomGender()
     {
         return $this->account->genders->random();
+    }
+
+    public function confirmUser($user)
+    {
+        $user->confirmation_code = null;
+        $user->confirmed = true;
+        $user->save();
     }
 }
