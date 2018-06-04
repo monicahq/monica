@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
     'people_add_success' => ':name a été crée avec succès',
