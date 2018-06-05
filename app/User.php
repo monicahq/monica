@@ -25,7 +25,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'timezone', 'locale', 'currency_id', 'fluid_container', 'name_order', 'google2fa_secret',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'timezone',
+        'locale',
+        'currency_id',
+        'fluid_container',
+        'name_order',
+        'google2fa_secret',
     ];
 
     /**
@@ -155,7 +164,7 @@ class User extends Authenticatable
     {
         $completeName = '';
 
-        if ($this->name_order == 'firstname_first') {
+        if ($this->name_order == 'firstname_lastname') {
             $completeName = $this->first_name;
 
             if (! is_null($this->last_name)) {

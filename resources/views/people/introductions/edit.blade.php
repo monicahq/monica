@@ -16,7 +16,7 @@
                 <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+                <a href="{{ route('people.show', $contact) }}">{{ $contact->name }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_edit_introductions') }}
@@ -53,7 +53,7 @@
 
                       @if ($metThroughContact->id != $contact->id)
                       <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}>
-                        {{ $metThroughContact->getCompleteName(auth()->user()->name_order) }}
+                        {{ $metThroughContact->name }}
                       </option>
                       @endif
 

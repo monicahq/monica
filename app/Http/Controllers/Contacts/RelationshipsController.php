@@ -35,7 +35,7 @@ class RelationshipsController extends Controller
             }
             $arrayContacts->push([
                 'id' => $existingContact->id,
-                'name' => $existingContact->getCompleteName(),
+                'name' => $existingContact->name,
             ]);
         }
 
