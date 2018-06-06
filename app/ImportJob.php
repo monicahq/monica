@@ -472,7 +472,6 @@ class ImportJob extends Model
     {
         $birthdate = $this->currentEntry->BDAY;
         if ($birthdate && ! empty((string) $birthdate) && is_numeric($birthdate)) {
-
             $birthdate = new \DateTime((string) $birthdate);
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
