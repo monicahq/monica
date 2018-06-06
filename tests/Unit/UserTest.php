@@ -67,14 +67,14 @@ class UserTest extends TestCase
         $user = new User;
         $user->first_name = 'John';
         $user->last_name = 'Doe';
-        $user->name_order = 'firstname_first';
+        $user->name_order = 'firstname_lastname';
 
         $this->assertEquals(
             $user->name,
             'John Doe'
         );
 
-        $user->name_order = 'lastname_first';
+        $user->name_order = 'lastname_firstname';
 
         $this->assertEquals(
             $user->name,

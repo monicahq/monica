@@ -83,8 +83,9 @@
               <div class="form-group">
                 <label for="name_order">{{ trans('settings.name_order') }}</label>
                 <select name="name_order" class="form-control">
-                  <option value="firstname_first" {{ (auth()->user()->name_order == 'firstname_first')?'selected':'' }}>{{ trans('settings.name_order_firstname_first') }}</option>
-                  <option value="lastname_first" {{ (auth()->user()->name_order == 'lastname_first')?'selected':'' }}>{{ trans('settings.name_order_lastname_first') }}</option>
+                  @foreach ($namesOrder as $nameOrder)
+                  <option value="{{ $nameOrder }}" {{ (auth()->user()->name_order == $nameOrder) ? 'selected':'' }}>{{ trans('settings.name_order_'.$nameOrder) }}</option>
+                  @endforeach
                 </select>
               </div>
 

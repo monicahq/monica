@@ -5,7 +5,7 @@
 
     {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
-      <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
+      <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->name }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
@@ -23,10 +23,10 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
           <div class="mb3 mb0-ns">
-            @if (auth()->user()->name_order == 'firstname_first')
+            @if (auth()->user()->name_order == 'firstname_lastname')
 
-            <div class="dt dt--fixed">
-              <div class="dtc pr2">
+            <div class="dt-ns dt--fixed di">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
@@ -35,21 +35,30 @@
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'lastname'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc-ns pb0-ns w-100">
+                <form-input
+                  value="{{ $contact->nickname }}"
+                  v-bind:input-type="'text'"
+                  v-bind:id="'nickname'"
+                  v-bind:required="false"
+                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>
 
             @else
 
-            <div class="dt dt--fixed">
-              <div class="dtc pr2">
+            <div class="dt-ns dt--fixed di">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
                   v-bind:input-type="'text'"
@@ -58,13 +67,22 @@
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
-              <div class="dtc">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
                   v-bind:input-type="'text'"
                   v-bind:id="'firstname'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc-ns pb0-ns w-100">
+                <form-input
+                  value="{{ $contact->nickname }}"
+                  v-bind:input-type="'text'"
+                  v-bind:id="'nickname'"
+                  v-bind:required="false"
+                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>
