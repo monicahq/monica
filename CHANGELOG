@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix resetting account not working
 * Add support for nicknames
 
 RELEASED VERSIONS:
