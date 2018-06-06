@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77646740ed930baa5e0db5adc6386704",
+    "content-hash": "8d62ff9d46347da35911ecf0afc5bb7a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1681,6 +1681,54 @@
             "time": "2018-05-16T11:53:55+00:00"
         },
         {
+            "name": "jenssegers/model",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jenssegers/model.git",
+                "reference": "2d8d7c813632b86734b3ff094333d500278e39e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jenssegers/model/zipball/2d8d7c813632b86734b3ff094333d500278e39e9",
+                "reference": "2d8d7c813632b86734b3ff094333d500278e39e9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^5.0",
+                "illuminate/support": "^4.0|^5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0",
+                "satooshi/php-coveralls": "^0.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jenssegers\\Model\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "https://jenssegers.com"
+                }
+            ],
+            "description": "An Laravel eloquent-like model class, for Laravel and other frameworks",
+            "homepage": "https://github.com/jenssegers/model",
+            "keywords": [
+                "eloquent",
+                "laravel",
+                "model"
+            ],
+            "time": "2017-02-21T10:09:15+00:00"
+        },
+        {
             "name": "jeroendesloovere/vcard",
             "version": "1.6",
             "source": {
@@ -3141,6 +3189,72 @@
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "time": "2018-04-14T14:36:18+00:00"
+        },
+        {
+            "name": "php-on-couch/php-on-couch",
+            "version": "2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHP-on-Couch/PHP-on-Couch.git",
+                "reference": "6d332f0bfd6ab91651dcaec134b3e1852a69a87c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHP-on-Couch/PHP-on-Couch/zipball/6d332f0bfd6ab91651dcaec134b3e1852a69a87c",
+                "reference": "6d332f0bfd6ab91651dcaec134b3e1852a69a87c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "vlucas/phpdotenv": "^2.4"
+            },
+            "require-dev": {
+                "phpcheckstyle/phpcheckstyle": "*",
+                "phpunit/phpunit": "5.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPOnCouch\\": "src/",
+                    "PHPOnCouch\\Exceptions\\": "src/Exceptions/",
+                    "PHPOnCouch\\Adapter\\": "src/Adapter/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Bailly",
+                    "email": "mickael.bailly@free.fr",
+                    "homepage": "https://github.com/dready92/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Clemens Sahs",
+                    "email": "clemens.sahs@slides-worker.org",
+                    "homepage": "https://github.com/ClemensSahs",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Alexis Côté",
+                    "email": "alexiscote19@hotmail.com",
+                    "homepage": "https://popojargo.github.io/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CouchDB NoSQL database access in PHP",
+            "homepage": "https://github.com/PHP-on-Couch/PHP-on-Couch",
+            "keywords": [
+                "apache",
+                "couch",
+                "couchdb",
+                "db",
+                "driver",
+                "nosql"
+            ],
+            "time": "2017-11-27T21:26:44+00:00"
         },
         {
             "name": "phpseclib/phpseclib",

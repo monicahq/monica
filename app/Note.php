@@ -20,7 +20,7 @@ class Note extends Model
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', '_id'];
 
     /**
      * The attributes that should be cast to native types.

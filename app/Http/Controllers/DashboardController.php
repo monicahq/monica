@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Debt;
+use App\Note;
 use App\User;
 use App\Contact;
 use Illuminate\Http\Request;
+use App\Helpers\CouchDbHelper;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
 
@@ -101,26 +104,44 @@ class DashboardController extends Controller
      */
     public function notes()
     {
-        $notesCollection = collect([]);
-        $notes = auth()->user()->account->notes()->favorited()->get();
+        $client = CouchDbHelper::getAccountDatabase(auth()->user()->account->id);
 
-        foreach ($notes as $note) {
+        $notesCollection = collect([]);
+        $response = $client->descending(true)->include_docs(true)->getView('notes', 'favorites');
+        $notes = $response->rows;
+
+        foreach ($notes as $noteArray) {
+            $note = new Note((array) $noteArray->doc);
             $data = [
-                'id' => $note->id,
+                '_id' => $note->_id,
                 'body' => $note->body,
+                'contact_id' => $note->contact_id,
                 'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
-                'name' => $note->contact->getIncompleteName(),
-                'contact' => [
-                    'id' => $note->contact->hashID(),
-                    'has_avatar' => $note->contact->has_avatar,
-                    'avatar_url' => $note->contact->getAvatarURL(110),
-                    'initials' => $note->contact->getInitials(),
-                    'default_avatar_color' => $note->contact->default_avatar_color,
-                    'complete_name' => $note->contact->name,
-                ],
             ];
             $notesCollection->push($data);
         }
+
+        $contactIds = $notesCollection
+            ->map(function ($note) {
+                return $note['contact_id'];
+            })
+            ->unique();
+        $contacts = DB::table('contacts')->whereIn('id', $contactIds)->get();
+
+        $notesCollection = $notesCollection->map(function ($note) use ($contacts) {
+            $contact = new Contact((array) $contacts->firstWhere('id', $note['contact_id']));
+            $note['name'] = $contact->getIncompleteName();
+            $note['contact'] = [
+                'id' => $contact->hashID(),
+                'has_avatar' => $contact->has_avatar,
+                'avatar_url' => $contact->getAvatarURL(110),
+                'initials' => $contact->getInitials(),
+                'default_avatar_color' => $contact->default_avatar_color,
+                'complete_name' => $contact->name,
+            ];
+
+            return $note;
+        });
 
         return $notesCollection;
     }
