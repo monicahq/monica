@@ -61,8 +61,8 @@ return [
     'register_invitation_email' => 'Aus Sicherheitsgründen geben Sie bitte die E-Mail-Adresse der Person an, die Sie eingeladen hat, diesem Konto beizutreten. Diese Informationen finden Sie in der Einladungs-E-Mail.',
 
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
-    'email_change_current_email' => 'Current email address:',
-    'email_change_title' => 'Change your email address',
-    'email_change_new' => 'New email address',
+    'email_change_current_email' => 'Aktuelle E-Mail-Adresse:',
+    'email_change_title' => 'E-Mail-Adresse ändern',
+    'email_change_new' => 'Neue E-Mail-Adresse',
     'email_changed' => 'Your email address has been changed. Check your mailbox to validate it.',
 ];
