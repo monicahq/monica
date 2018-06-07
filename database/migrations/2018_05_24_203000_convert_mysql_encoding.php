@@ -12,8 +12,7 @@ class ConvertMysqlEncoding extends Migration
      */
     public function up()
     {
-        if (config('database.use_utf8mb4'))
-        {
+        if (config('database.use_utf8mb4')) {
             $connection = DB::connection();
 
             if ($connection->getDriverName() == 'mysql') {
