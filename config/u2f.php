@@ -14,7 +14,7 @@ return [
     /*
      * The sessionU2fName attribut will be set to true when the user validate an u2f
      */
-    'sessionU2fName' => 'otp',
+    'sessionU2fName' => 'otpu2f',
 
     /*
      * Controller configuration
@@ -41,7 +41,7 @@ return [
         /*
          * the route to redirect after a successful key authentication (default /)
          */
-        'postSuccessRedirectRoute' => '/dashboard',
+        'postSuccessRedirectRoute' => '',
     ],
 
     /*

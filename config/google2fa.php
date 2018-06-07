@@ -31,7 +31,7 @@ return [
      * 2FA verified session var
      */
 
-    'session_var' => 'otp',
+    'session_var' => 'google2fa',
 
     /*
      * One Time Password request input name

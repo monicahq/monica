@@ -3,37 +3,12 @@
 
 <template>
     <div>
-        <h3 class="with-actions">{{ $t('settings.2fa_title') }}</h3>
-        <p>{{ $t('settings.u2f_enable_description') }}</p>
-
-        <notifications group="main" position="bottom right" />
-
-        <div class="form-error-message mb3" v-if="errorMessage != ''">
-          <div class="pa2">
-            <p class="mb0">{{ errorMessage }}</p>
-          </div>
+        <div class="form-group">
+            <a href="{{ url('settings/security/2fa-disable') }}" class="btn btn-warning">
+              {{ trans('settings.2fa_disable_title') }}
+            </a>
         </div>
-        <div class="form-information-message mb3" v-if="infoMessage != ''">
-          <div class="pa2">
-            <p class="mb0">{{ infoMessage }}</p>
-          </div>
-        </div>
-
-        <div align="center">
-            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
-        </div>
-
-        <div class="pa2" v-if="! success">
-            <p>
-                {{ $t('settings.u2f_insertKey') }}
-            </p>
-            <p>
-                {{ $t('settings.u2f_buttonAdvise') }}
-                <br />
-                {{ $t('settings.u2f_noButtonAdvise') }}
-            </p>
-          </div>
-    </div>
+    </div> 
 </template>
 
 <script>

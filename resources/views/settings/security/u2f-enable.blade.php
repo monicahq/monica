@@ -1,7 +1,6 @@
 @extends('layouts.skeleton')
 
 @section('content')
-<script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
 <div class="settings">
 
   {{-- Breadcrumb --}}
@@ -49,5 +48,6 @@
     </div>
   </div>
 </div>
+<script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
 
 @endsection

@@ -4,6 +4,7 @@
   <body class="marketing register">
     <div class="container">
         <form class="" action="/validate2fa" method="post">
+          <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
           <div class="row">
             <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
                 <div class="signup-box">
@@ -28,7 +29,6 @@
                 <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
                 <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
               </div>
-              <input type=hidden name="url" value="{{ url()->current() }}" />
 
               {{-- TODO
               <div class="form-group checkbox">
@@ -59,13 +59,6 @@
           </div>
           </div>
         </form>
-
-        @if ($authenticationData != '')
-        <u2f-connector
-          :authdatas="{{ json_encode($authenticationData) }}"
-          :method="'login'">
-        </u2f-connector>
-        @endif
 
       </div>
     </div>
