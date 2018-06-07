@@ -16,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         '\PragmaRX\Google2FALaravel\Events\LoginSucceeded' => [
             'App\Listeners\LoginSucceed2fa',
-        ]
+        ],
     ];
 
     /**
