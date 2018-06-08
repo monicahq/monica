@@ -34,7 +34,7 @@ $db = [
     |--------------------------------------------------------------------------
     |
     | Use the new utf8mb4 charset format
-    | ⚠ be sure your DBMS supports utf8mb4 format 
+    | ⚠ be sure your DBMS supports utf8mb4 format
     |
     */
 
