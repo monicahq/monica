@@ -87,8 +87,7 @@ class MigrateDatabaseCollation extends Command
                 } else {
                     $this->info('Nothing to migrate, everything is ok.');
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 $this->error('                                                                      ');
                 $this->error('  Check if the DB_USE_UTF8MB4 variable in .env file is correctly set  ');
                 $this->error('                                                                      ');
