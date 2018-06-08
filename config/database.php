@@ -35,6 +35,8 @@ $db = [
     |
     | Use the new utf8mb4 charset format
     | ⚠ be sure your DBMS supports utf8mb4 format
+    | See https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+    | MySQL > 5.7.7 fully support it.
     |
     */
 
