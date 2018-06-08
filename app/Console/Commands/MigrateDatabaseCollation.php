@@ -39,7 +39,7 @@ class MigrateDatabaseCollation extends Command
             }
 
             $databasename = $connection->getDatabaseName();
-                
+
             $schemata = $connection->table('information_schema.schemata')
                 ->select('DEFAULT_CHARACTER_SET_NAME')
                 ->where('schema_name', '=', $databasename)
@@ -65,8 +65,7 @@ class MigrateDatabaseCollation extends Command
                 $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
                 DB::statement('ALTER DATABASE `'.$databasename.'` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;');
                 $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            }
-            elseif (!config('database.use_utf8mb4') && $schema == 'utf8mb4') {
+            } elseif (! config('database.use_utf8mb4') && $schema == 'utf8mb4') {
                 $this->line('Migrate to utf8 schema collation');
 
                 // Tables

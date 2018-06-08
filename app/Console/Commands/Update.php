@@ -100,7 +100,8 @@ class Update extends Command
         }
     }
 
-    private function migrateCollationTest() {
+    private function migrateCollationTest()
+    {
         $connection = DB::connection();
 
         if ($connection->getDriverName() != 'mysql') {
@@ -108,7 +109,7 @@ class Update extends Command
         }
 
         $databasename = $connection->getDatabaseName();
-            
+
         $schemata = $connection->table('information_schema.schemata')
                 ->select('DEFAULT_CHARACTER_SET_NAME')
                 ->where('schema_name', '=', $databasename)
@@ -116,7 +117,7 @@ class Update extends Command
 
         $schema = $schemata->first()->DEFAULT_CHARACTER_SET_NAME;
 
-        return (config('database.use_utf8mb4') && $schema == 'utf8'
-            || !config('database.use_utf8mb4') && $schema == 'utf8mb4');
+        return config('database.use_utf8mb4') && $schema == 'utf8'
+            || ! config('database.use_utf8mb4') && $schema == 'utf8mb4';
     }
 }
