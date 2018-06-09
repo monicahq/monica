@@ -212,6 +212,26 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas('contacts', $food);
     }
 
+    public function test_a_contact_can_have_its_last_name_removed()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => '',
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+        ];
+
+        $this->post('/people/'.$contact->id.'/update', $data);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'last_name' => null,
+        ]);
+    }
+
     private function changeArrayKey($from, $to, &$array = [])
     {
         $array[$to] = $array[$from];

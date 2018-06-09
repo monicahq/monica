@@ -704,7 +704,7 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(String $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type)
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
@@ -806,23 +806,15 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $lastName = null, String $middleName = null)
+    public function setName(string $firstName, string $lastName = null, string $middleName = null)
     {
-        if ($firstName == '') {
+        if ($firstName === '') {
             return false;
         }
 
         $this->first_name = $firstName;
-
-        if (! is_null($middleName)) {
-            $this->middle_name = $middleName;
-        }
-
-        if (! is_null($lastName)) {
-            $this->last_name = $lastName;
-        }
-
-        $this->save();
+        $this->middle_name = $middleName;
+        $this->last_name = $lastName;
 
         return true;
     }
