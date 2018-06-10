@@ -14,7 +14,7 @@ return [
     /*
      * The sessionU2fName attribut will be set to true when the user validate an u2f
      */
-    'sessionU2fName' => 'otpu2f',
+    'sessionU2fName' => 'u2f_auth',
 
     /*
      * Controller configuration
