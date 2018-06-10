@@ -30,6 +30,20 @@ $db = [
 
     /*
     |--------------------------------------------------------------------------
+    | Use utf8mb4 charset format
+    |--------------------------------------------------------------------------
+    |
+    | Use the new utf8mb4 charset format
+    | ⚠ be sure your DBMS supports utf8mb4 format
+    | See https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+    | MySQL > 5.7.7 fully support it.
+    |
+    */
+
+    'use_utf8mb4' => env('DB_USE_UTF8MB4', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Database Connections
     |--------------------------------------------------------------------------
     |
@@ -60,8 +74,8 @@ $db = [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+            'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
             'strict' => false,
             'engine' => null,
@@ -74,8 +88,8 @@ $db = [
             'database' => env('DB_TEST_DATABASE'),
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
+            'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+            'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => false,
         ],
@@ -159,8 +173,8 @@ if (env('HEROKU')) {
         'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
-        'charset' => 'utf8mb4',
-        'collation' => 'utf8mb4_unicode_ci',
+        'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+        'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
         'prefix' => env('DB_PREFIX', ''),
         'strict' => false,
         'schema' => 'public',
