@@ -44,6 +44,10 @@ aliases:
         cp scripts/tests/.env.mysql.travis .env
         sudo apt-get update
         sudo apt-get install -y mysql-client
+  - &yarn-install
+    run:
+      name: yarn install
+      command: yarn install --frozen-lockfile
   - &update-chrome
     run:
       name: Install chrome
@@ -174,7 +178,7 @@ jobs:
           name: Update yarn lockfile
           command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
       - *restore_node
-      - run: yarn install --frozen-lockfile
+      - *yarn-install
       - save_cache:
           key: *node_key
           paths: ~/.cache
@@ -215,6 +219,7 @@ jobs:
       - *remove-xdebug
       - *restore_composer
       - *restore_node
+      - *yarn-install
       - *restore_assets
       - *prepare-db
       - *unit-tests
@@ -246,6 +251,7 @@ jobs:
       - *update-chrome
       - *restore_composer
       - *restore_node
+      - *yarn-install
       - *restore_assets
       - *prepare-db
       - *selenium
@@ -278,6 +284,7 @@ jobs:
       - *restore_phpextensions
       - *restore_composer
       - *restore_node
+      - *yarn-install
       - *restore_assets
       - restore_cache:
           keys:
