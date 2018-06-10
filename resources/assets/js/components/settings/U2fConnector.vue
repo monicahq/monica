@@ -3,8 +3,7 @@
 
 <template>
     <div>
-        <h3 class="with-actions">{{ $t('settings.2fa_title') }}</h3>
-        <p>{{ $t('settings.u2f_enable_description') }}</p>
+        <!--<p>{{ $t('settings.u2f_enable_description') }}</p>-->
 
         <notifications group="main" position="bottom right" />
 
