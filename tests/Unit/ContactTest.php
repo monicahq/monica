@@ -75,7 +75,29 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_get_name_returns_name()
+    public function test_it_gets_the_nickname()
+    {
+        $contact = new Contact;
+        $contact->nickname = 'Peter';
+
+        $this->assertEquals(
+            'Peter',
+            $contact->nickname
+        );
+    }
+
+    public function test_it_sets_the_nickname()
+    {
+        $contact = new Contact;
+        $contact->nickname = ' Peter ';
+
+        $this->assertEquals(
+            'Peter',
+            $contact->nickname
+        );
+    }
+
+    public function test_name_attribute_returns_name_in_the_right_order()
     {
         $contact = new Contact;
         $contact->first_name = 'Peter';
@@ -85,69 +107,120 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             'Peter H Gregory',
-            $contact->getCompleteName()
-        );
-
-        $this->assertEquals(
-            'Peter',
-            $contact->first_name
-        );
-
-        $this->assertEquals(
-            'Gregory',
-            $contact->last_name
+            $contact->name
         );
 
         $contact = new Contact;
         $contact->first_name = 'Peter';
         $contact->middle_name = null;
         $contact->last_name = 'Gregory';
-
         $this->assertEquals(
             'Peter Gregory',
-            $contact->getCompleteName()
+            $contact->name
         );
 
         $contact = new Contact;
         $contact->first_name = 'Peter';
         $contact->middle_name = null;
         $contact->last_name = null;
-
         $this->assertEquals(
             'Peter',
-            $contact->getCompleteName()
+            $contact->name
         );
 
-        $this->assertEquals(
-            null,
-            $contact->last_name
-        );
-
-        $contact->first_name = 'Peter';
-        $contact->middle_name = 'H';
-        $contact->last_name = 'Gregory';
-        $contact->is_dead = true;
-        $this->assertEquals(
-            'Peter H Gregory ⚰',
-            $contact->getCompleteName()
-        );
-    }
-
-    public function test_get_name_returns_name_in_the_right_order()
-    {
         $contact = new Contact;
         $contact->first_name = 'Peter';
         $contact->middle_name = 'H';
         $contact->last_name = 'Gregory';
-
+        $contact->nickname = 'Rambo';
+        $contact->is_dead = true;
         $this->assertEquals(
-            'Gregory H Peter',
-            $contact->getCompleteName('lastname_first')
+            'Peter H Gregory ⚰',
+            $contact->name
         );
 
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('lastname_firstname');
         $this->assertEquals(
-            'Peter H Gregory',
-            $contact->getCompleteName('firstname_first')
+            'Gregory H Peter',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('firstname_lastname_nickname');
+        $this->assertEquals(
+            'Peter H Gregory (Rambo)',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('firstname_nickname_lastname');
+        $this->assertEquals(
+            'Peter H (Rambo) Gregory',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('lastname_firstname_nickname');
+        $this->assertEquals(
+            'Gregory Peter H (Rambo)',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('lastname_nickname_firstname');
+        $this->assertEquals(
+            'Gregory (Rambo) Peter H',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = 'H';
+        $contact->last_name = 'Gregory';
+        $contact->nickname = 'Rambo';
+        $contact->nameOrder('nickname');
+        $this->assertEquals(
+            'Rambo',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->last_name = 'Gregory';
+        $contact->nameOrder('nickname');
+        $this->assertEquals(
+            'Peter Gregory',
+            $contact->name
+        );
+
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->last_name = null;
+        $contact->nameOrder('nickname');
+        $this->assertEquals(
+            'Peter',
+            $contact->name
         );
     }
 
@@ -199,6 +272,20 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             'P',
+            $contact->getInitials()
+        );
+    }
+
+    public function test_get_initials_returns_order_thanks_to_user_preferences()
+    {
+        $contact = new Contact;
+        $contact->first_name = 'Peter';
+        $contact->middle_name = null;
+        $contact->last_name = 'Gregory';
+        $contact->nameOrder('lastname_firstname');
+
+        $this->assertEquals(
+            'GP',
             $contact->getInitials()
         );
     }

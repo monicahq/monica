@@ -35,7 +35,7 @@ class ContactTest extends FeatureTestCase
         $response = $this->get('/people');
 
         $response->assertSee(
-            $contact->getCompleteName()
+            $contact->name
         );
     }
 

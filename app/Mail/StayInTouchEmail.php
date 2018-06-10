@@ -37,7 +37,7 @@ class StayInTouchEmail extends Mailable
         App::setLocale($this->user->locale);
 
         return $this->text('emails.reminder.stayintouch')
-                    ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->getCompleteName($this->user->name_order)]))
+                    ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->name]))
                     ->with([
                         'contact' => $this->contact,
                         'user' => $this->user,
