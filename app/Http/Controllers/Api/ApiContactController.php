@@ -100,6 +100,7 @@ class ApiContactController extends ApiController
                 $request->only([
                     'first_name',
                     'last_name',
+                    'nickname',
                     'gender_id',
                     'job',
                     'company',
@@ -285,6 +286,7 @@ class ApiContactController extends ApiController
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender_id' => 'integer|required',
             'birthdate' => 'nullable|date',
             'birthdate_is_age_based' => 'boolean',

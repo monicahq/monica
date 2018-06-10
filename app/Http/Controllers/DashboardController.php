@@ -39,7 +39,7 @@ class DashboardController extends Controller
                 'avatar_url' => $contact->getAvatarURL(110),
                 'initials' => $contact->getInitials(),
                 'default_avatar_color' => $contact->default_avatar_color,
-                'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
+                'complete_name' => $contact->name,
             ];
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
@@ -116,7 +116,7 @@ class DashboardController extends Controller
                     'avatar_url' => $note->contact->getAvatarURL(110),
                     'initials' => $note->contact->getInitials(),
                     'default_avatar_color' => $note->contact->default_avatar_color,
-                    'complete_name' => $note->contact->getCompleteName(auth()->user()->name_order),
+                    'complete_name' => $note->contact->name,
                 ],
             ];
             $notesCollection->push($data);

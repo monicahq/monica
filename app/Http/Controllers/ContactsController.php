@@ -108,6 +108,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender' => 'required|integer',
         ]);
 
@@ -123,6 +124,7 @@ class ContactsController extends Controller
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
+        $contact->nickname = $request->input('nickname', null);
 
         $contact->save();
 
@@ -135,7 +137,7 @@ class ContactsController extends Controller
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
@@ -241,6 +243,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
+            'nickname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -259,6 +262,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = true;
