@@ -132,7 +132,7 @@ aliases:
     restore_cache:
       keys:
         - *node_key
-        - node-v2-
+        - node-v3-
   - &restore_assets
     restore_cache:
       keys:
