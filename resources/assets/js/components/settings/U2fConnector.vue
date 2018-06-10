@@ -18,11 +18,11 @@
           </div>
         </div>
 
-        <div align="center">
+        <div align="center" v-if="errorMessage == ''">
             <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
         </div>
 
-        <div class="pa2" v-if="! success">
+        <div class="pa2" v-if="! success && errorMessage == ''">
             <p>
                 {{ $t('settings.u2f_insertKey') }}
             </p>

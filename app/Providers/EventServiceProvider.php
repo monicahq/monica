@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        '\PragmaRX\Google2FALaravel\Events\LoginSucceeded' => [
+        'PragmaRX\Google2FALaravel\Events\LoginSucceeded' => [
             'App\Listeners\LoginSucceed2fa',
         ],
     ];
@@ -31,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
 
         Event::listen('u2f.authentication', function ($u2fKey, $user) {
             Validate2faController::loginCallback();
+        });
+        Event::listen('LoginSucceeded', function ($u2fKey, $user) {
+            session([config('u2f.sessionU2fName') => true]);
         });
     }
 }

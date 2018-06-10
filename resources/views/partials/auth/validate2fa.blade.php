@@ -5,7 +5,8 @@
 @endif
 <div class="form-group">
   <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-    <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
+  <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
+  <small>{{ trans('auth.2fa_otp_help') }}</small>
 </div>
 
 {{-- TODO

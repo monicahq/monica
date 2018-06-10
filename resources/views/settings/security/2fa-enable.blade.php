@@ -46,19 +46,19 @@
               <div class="panel-body">
                 {{ trans('settings.2fa_enable_otp') }}
                 <p>
-                <img id="barcode" alt="Image of QR barcode" src="{{ $image }}" />
-                <br />
-                {{ trans('settings.2fa_enable_otp_help') }} <code id="secretkey">{{ $secret }}</code>
+                  <img id="barcode" alt="Image of QR barcode" src="{{ $image }}" />
+                  <br />
+                  {{ trans('settings.2fa_enable_otp_help') }} <code id="secretkey">{{ $secret }}</code>
                 </p>
               </div>
 
               {{-- code --}}
               <div class="form-group">
-                  <p>
+                <p>
                   {{ trans('settings.2fa_enable_otp_validate') }}
-                  </p>
-                  <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-                <input type="number" class="form-control" id="one_time_password" name="one_time_password" />
+                </p>
+                <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
+                <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
               </div>
 
               <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>

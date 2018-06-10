@@ -21,27 +21,23 @@
           
               {{ csrf_field() }}
 
-              <img class="logo" src="/img/small-logo.png" alt="">
-
+              <h3>Authenticate with a U2F device</h3>
               <u2f-connector
                 :authdatas="{{ json_encode($authenticationData) }}"
                 :method="'login'"
                 :callbackurl="{{ json_encode(url()->current()) }}">
               </u2f-connector>
 
+              @if (app('pragmarx.google2fa')->isActivated())
+              <div class="mt5">
+                <h3>Authenticate with your two factor device</h3>
+                @include ('partials.auth.validate2fa')
+              </div>
+              @endif
+
             </div>
           </div>
         </div>
-
-        @if (app('pragmarx.google2fa')->isActivated())
-          <div class="row">
-            <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
-              <div class="signup-box">
-                @include ('partials.auth.validate2fa')
-              </div>
-            </div>
-          </div>
-        @endif
 
       </form>
     </div>

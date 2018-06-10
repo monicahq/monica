@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderShipped;
+use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 
 class LoginSucceed2fa
 {
@@ -19,12 +19,11 @@ class LoginSucceed2fa
     /**
      * Handle the event.
      *
-     * @param  \App\Events\OrderShipped  $event
+     * @param  LoginSucceeded $event
      * @return void
      */
-    public function handle(OrderShipped $event)
+    public function handle(LoginSucceeded $event)
     {
-        // Access the order using $event->order...
         session([config('u2f.sessionU2fName') => true]);
     }
 }
