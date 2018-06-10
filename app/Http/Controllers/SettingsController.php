@@ -50,6 +50,7 @@ class SettingsController extends Controller
         'sessions',
         'statistics',
         'subscriptions',
+        'terms',
         'users',
     ];
 
