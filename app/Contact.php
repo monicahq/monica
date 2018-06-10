@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Traits\Hasher;
+use App\Helpers\DBHelper;
 use App\Traits\Searchable;
 use App\Mail\StayInTouchEmail;
 use Illuminate\Support\Collection;
@@ -1385,7 +1386,7 @@ class Contact extends Model
         // and I don't want to have to think of deleting a row that matches a
         // contact.
         //
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
         foreach ($tables as $table) {
             $tableName = $table->table_name;
 

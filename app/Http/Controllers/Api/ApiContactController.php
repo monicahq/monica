@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Contact;
+use App\Helpers\DBHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use Illuminate\Support\Collection;
@@ -345,7 +346,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
         foreach ($tables as $table) {
             $tableName = $table->table_name;
             $tableData = DB::table($tableName)->get();
