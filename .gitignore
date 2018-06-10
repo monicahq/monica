@@ -6,6 +6,7 @@
 Homestead.yaml
 Homestead.json
 .env
+cypress.env.json
 /storage/oauth-private.key
 /storage/oauth-public.key
 .DS_Store
