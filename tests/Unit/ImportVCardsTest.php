@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use App\User;
 use App\Account;
-use App\Contact;
 use Mockery as m;
 use Tests\TestCase;
+use App\Models\Contacts\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase

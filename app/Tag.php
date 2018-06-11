@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
@@ -35,7 +36,7 @@ class Tag extends Model
      */
     public function contacts()
     {
-        return $this->belongsToMany('App\Contact')->withPivot('account_id')->withTimestamps();
+        return $this->belongsToMany(Contact::class)->withPivot('account_id')->withTimestamps();
     }
 
     /**

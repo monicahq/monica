@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contacts\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CallTest extends FeatureTestCase

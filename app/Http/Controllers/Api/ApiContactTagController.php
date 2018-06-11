@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Tag;
-use App\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contacts\Contact;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;

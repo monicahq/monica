@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,7 @@ class Event extends Model
      */
     public function contact()
     {
-        return $this->belongsTo('App\Contact');
+        return $this->belongsTo(Contact::class);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contact;
+use App\Models\Contacts\Contact;
 use App\Instance;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;

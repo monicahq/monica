@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contacts\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Relationships\Relationship;

@@ -13,7 +13,7 @@ class JournalEntryTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
         $task = factory('App\JournalEntry')->create([
             'account_id' => $account->id,
         ]);

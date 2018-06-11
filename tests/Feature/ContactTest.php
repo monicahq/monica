@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Gift;
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contacts\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

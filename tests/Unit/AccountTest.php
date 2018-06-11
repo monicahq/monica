@@ -4,10 +4,10 @@ namespace Tests\Unit;
 
 use App\User;
 use App\Account;
-use App\Contact;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
+use App\Models\Contacts\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -393,9 +393,9 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
 
-        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
 
         $account->replaceGender($gender1, $gender2);
         $this->assertEquals(
@@ -548,7 +548,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_call_statistics()
     {
-        $contact = factory('App\Contact')->create();
+        $contact = factory('App\Models\Contacts\Contact')->create();
         $calls = factory('App\Call', 4)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,

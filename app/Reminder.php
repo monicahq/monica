@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Contacts\Contact;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;

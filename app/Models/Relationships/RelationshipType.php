@@ -3,7 +3,7 @@
 namespace App\Models\Relationships;
 
 use App\Account;
-use App\Contact;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

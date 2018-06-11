@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Pet;
-use App\Contact;
 use App\PetCategory;
+use App\Models\Contacts\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\PetsRequest;
 

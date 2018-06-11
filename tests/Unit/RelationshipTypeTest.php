@@ -67,7 +67,7 @@ class RelationshipTypeTest extends TestCase
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
             'last_name' => 'Twain',
@@ -87,7 +87,7 @@ class RelationshipTypeTest extends TestCase
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
             'last_name' => 'Twain',
@@ -107,7 +107,7 @@ class RelationshipTypeTest extends TestCase
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
             'last_name' => 'Twain',
@@ -127,7 +127,7 @@ class RelationshipTypeTest extends TestCase
             'name' => 'partner',
             'name_reverse_relationship' => 'partner',
         ]);
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $account->id,
             'first_name' => 'Mark',
             'last_name' => 'Twain',

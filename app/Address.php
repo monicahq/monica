@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Contacts\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

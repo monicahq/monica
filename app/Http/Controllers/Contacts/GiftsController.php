@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Gift;
-use App\Contact;
+use App\Models\Contacts\Contact;
 use App\Helpers\MoneyHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\GiftsRequest;

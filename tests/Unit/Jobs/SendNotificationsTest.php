@@ -23,7 +23,7 @@ class SendNotificationsTest extends TestCase
             'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $reminder = factory('App\Reminder')->create([
             'account_id' => $account->id,

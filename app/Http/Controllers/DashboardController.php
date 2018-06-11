@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Debt;
 use App\User;
-use App\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contacts\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;

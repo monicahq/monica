@@ -21,7 +21,7 @@ class NotificationTest extends TestCase
     public function test_it_belongs_to_contact()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
         $notification = factory('App\Notification')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,

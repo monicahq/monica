@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Call;
-use App\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Call\Call as CallResource;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Task;
-use App\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;

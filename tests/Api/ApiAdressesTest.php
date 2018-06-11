@@ -12,7 +12,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_get_contacts()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -43,7 +43,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_get_contactid()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -74,7 +74,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_get_contactid_address()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -105,7 +105,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_get_addressid()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -136,7 +136,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_post()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
 
         $response = $this->json('POST', '/api/addresses', [
             'account_id' => $user->account->id,
@@ -178,7 +178,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_put()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -224,7 +224,7 @@ class ApiAdressesTest extends ApiTestCase
     public function test_address_delete()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $user->account->id]);
         $address = factory('App\Address')->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,

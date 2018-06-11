@@ -4,6 +4,7 @@ namespace App;
 
 use Exception;
 use Sabre\VObject\Reader;
+use App\Models\Contacts\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;
@@ -406,7 +407,7 @@ class ImportJob extends Model
     public function createContactFromCurrentEntry($contact = null)
     {
         if (! $contact) {
-            $contact = new \App\Contact;
+            $contact = new Contact;
             $contact->account_id = $this->account_id;
             $contact->gender_id = $this->gender->id;
             $contact->save();
@@ -434,7 +435,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importNames(\App\Contact $contact): void
+    public function importNames(Contact $contact): void
     {
         if ($this->currentEntry->N && ! empty($this->currentEntry->N->getParts()[1])) {
             $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
@@ -449,7 +450,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importWorkInformation(\App\Contact $contact): void
+    public function importWorkInformation(Contact $contact): void
     {
         if ($this->currentEntry->ORG) {
             $contact->company = $this->formatValue($this->currentEntry->ORG);
@@ -468,7 +469,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importBirthday(\App\Contact $contact): void
+    public function importBirthday(Contact $contact): void
     {
         if ($this->currentEntry->BDAY && ! empty((string) $this->currentEntry->BDAY)) {
             try {
@@ -486,7 +487,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importAddress(\App\Contact $contact): void
+    public function importAddress(Contact $contact): void
     {
         if (! $this->currentEntry->ADR) {
             return;
@@ -509,7 +510,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importEmail(\App\Contact $contact): void
+    public function importEmail(Contact $contact): void
     {
         if (is_null($this->currentEntry->EMAIL)) {
             return;
@@ -531,7 +532,7 @@ class ImportJob extends Model
      * @param Contact $contact
      * @return void
      */
-    public function importTel(\App\Contact $contact): void
+    public function importTel(Contact $contact): void
     {
         if (is_null($this->currentEntry->TEL)) {
             return;

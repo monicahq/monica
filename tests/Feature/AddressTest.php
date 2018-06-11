@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contacts\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

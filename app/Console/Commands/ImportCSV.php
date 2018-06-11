@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\User;
 use App\Gender;
-use App\Contact;
+use App\Models\Contacts\Contact;
 use Illuminate\Console\Command;
 
 class ImportCSV extends Command

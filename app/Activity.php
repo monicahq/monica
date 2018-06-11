@@ -6,6 +6,7 @@ use Parsedown;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Traits\Journalable;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

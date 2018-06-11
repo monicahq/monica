@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Contacts\Contact;
 use Tests\TestCase;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
@@ -248,7 +249,7 @@ END:VCARD
     public function test_it_doesnt_process_an_entry_if_contact_already_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $contactFieldType = factory('App\ContactFieldType')->create([
@@ -341,7 +342,7 @@ END:VCARD
     public function test_it_checks_if_a_contact_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $contactFieldType = factory('App\ContactFieldType')->create([
@@ -464,7 +465,7 @@ END:VCARD
         // we need the gender - otherwise the contact can't be created
         // as it requires the gender 'vCard'
         $importJob->getSpecialGender();
-        $numberOfContacts = \App\Contact::all()->count();
+        $numberOfContacts = Contact::all()->count();
         $numberOfFiledJobReport = \App\ImportJobReport::all()->count();
 
         $importJob->createContactFromCurrentEntry();
@@ -476,7 +477,7 @@ END:VCARD
         );
 
         // have we actually added a new contact in the database
-        $newNumberOfContacts = \App\Contact::all()->count();
+        $newNumberOfContacts = Contact::all()->count();
         $this->assertEquals(
             $numberOfContacts + 1,
             $newNumberOfContacts
@@ -498,7 +499,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importNames($contact);
 
         $this->assertEquals(
@@ -515,7 +516,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importNames($contact);
 
         $this->assertEquals(
@@ -533,7 +534,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importWorkInformation($contact);
 
         $this->assertEquals(
@@ -555,7 +556,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importBirthday($contact);
@@ -571,7 +572,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importAddress($contact);
@@ -590,7 +591,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importEmail($contact);
@@ -610,7 +611,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory('App\Models\Contacts\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importTel($contact);

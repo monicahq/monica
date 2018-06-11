@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use App\Account;
-use App\Contact;
 use App\Reminder;
 use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
+use App\Models\Contacts\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SpecialDateTest extends FeatureTestCase
@@ -27,7 +27,7 @@ class SpecialDateTest extends FeatureTestCase
     public function test_it_belongs_to_a_contact()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create([]);
+        $contact = factory('App\Models\Contacts\Contact')->create([]);
         $specialDate = factory('App\SpecialDate')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
@@ -277,7 +277,7 @@ class SpecialDateTest extends FeatureTestCase
     {
         $specialDate = factory(\App\SpecialDate::class)->make();
 
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
         $specialDate->setToContact($contact);
 
@@ -333,7 +333,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get__death_age_returns_null_if_birthDate_is_unknown()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
         $specialDate = factory(\App\SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
@@ -346,7 +346,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_death_age_returns_death_age()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
         $birthDate = factory(\App\SpecialDate::class)->make();
         $birthDate->is_year_unknown = 0;
@@ -371,7 +371,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_death_age_from_contact()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
         $birthDate = factory(\App\SpecialDate::class)->make();
         $birthDate->is_year_unknown = 0;

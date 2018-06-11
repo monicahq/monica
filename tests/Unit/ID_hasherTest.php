@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use App\Debt;
-use App\Contact;
 use App\Activity;
 use App\Reminder;
 use Tests\TestCase;
 use App\Helpers\IdHasher;
+use App\Models\Contacts\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ID_hasherTest extends TestCase

@@ -4,6 +4,7 @@ namespace App;
 
 use Parsedown;
 use App\Helpers\DateHelper;
+use App\Models\Contacts\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

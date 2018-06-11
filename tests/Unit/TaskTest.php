@@ -13,7 +13,7 @@ class TaskTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
         $task = factory('App\Task')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
@@ -25,7 +25,7 @@ class TaskTest extends TestCase
     public function test_it_belongs_to_a_contact()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
         $task = factory('App\Task')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
