@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Pet;
-use App\Debt;
-use App\Gift;
-use App\Note;
-use App\Task;
-use App\Gender;
+use App\Models\Contact\Pet;
+use App\Models\Contact\Debt;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Note;
+use App\Models\Contact\Task;
+use App\Models\Contact\Gender;
 use App\Module;
 use App\Reminder;
 use App\ReminderRule;

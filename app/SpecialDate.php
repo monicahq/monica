@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

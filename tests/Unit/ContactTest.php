@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Tag;
-use App\Debt;
+use App\Models\Contact\Tag;
+use App\Models\Contact\Debt;
 use App\User;
-use App\Gender;
-use App\Account;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use Carbon\Carbon;
 use App\SpecialDate;
 use App\Notification;

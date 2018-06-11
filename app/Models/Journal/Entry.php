@@ -3,7 +3,7 @@
 namespace App\Models\Journal;
 
 use Parsedown;
-use App\Account;
+use App\Models\Account\Account;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;

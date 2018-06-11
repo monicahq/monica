@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Account;
+use App\Models\Account\Account;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;

@@ -2,7 +2,7 @@
 
 namespace Tests\Helper;
 
-use App\Account;
+use App\Models\Account\Account;
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
 use App\Models\Contact\Address;

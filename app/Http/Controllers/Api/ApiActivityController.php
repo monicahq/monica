@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Note;
+use App\Models\Contact\Note;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;

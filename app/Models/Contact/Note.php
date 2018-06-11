@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Contact;
 
+use App\Models\Account\Account;
 use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;

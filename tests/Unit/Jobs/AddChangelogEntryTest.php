@@ -3,7 +3,7 @@
 namespace Tests\Unit\Jobs;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use App\Changelog;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;

@@ -21,11 +21,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'confirmed' => true,
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
-$factory->define(App\Account::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\Account::class, function (Faker\Generator $faker) {
     return [
         'api_key' => str_random(30),
     ];
@@ -33,7 +33,7 @@ $factory->define(App\Account::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_id' => function () {
             return factory(App\Models\Contact\ActivityType::class)->create()->id;
         },
@@ -72,18 +72,18 @@ $factory->define(App\Reminder::class, function (Faker\Generator $faker) {
 $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $faker) {
     return [
         'account_id' => function () {
-            return factory(App\Account::class)->create()->id;
+            return factory(App\Models\Account\Account::class)->create()->id;
         },
         'first_name' => 'John',
         'last_name' => 'Doe',
         'has_avatar' => false,
         'gender_id' => function () {
-            return factory(App\Gender::class)->create()->id;
+            return factory(App\Models\Contact\Gender::class)->create()->id;
         },
     ];
 });
 
-$factory->define(App\Gift::class, function (Faker\Generator $faker) {
+$factory->define(use App\Models\Contact\Gift;::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -103,7 +103,7 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
     ];
 });
 
-$factory->define(App\Task::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Task::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -124,7 +124,7 @@ $factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Note::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Note::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -136,7 +136,7 @@ $factory->define(App\Note::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'relationship_type_id' => function () {
             return factory(App\Models\Relationship\RelationshipType::class)->create()->id;
         },
@@ -145,7 +145,7 @@ $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Ge
 
 $factory->define(App\Models\Relationship\RelationshipType::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'relationship_type_group_id' => function () {
             return factory(App\Models\Relationship\RelationshipTypeGroup::class)->create()->id;
         },
@@ -154,47 +154,47 @@ $factory->define(App\Models\Relationship\RelationshipType::class, function (Fake
 
 $factory->define(App\Models\Relationship\RelationshipTypeGroup::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
-$factory->define(App\Gender::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Gender::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Journal\Entry::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
-$factory->define(App\Debt::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Debt::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -205,45 +205,39 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Journal\Day::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
-$factory->define(App\Progenitor::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
-    ];
-});
-
-$factory->define(App\Tag::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
 $factory->define(App\Models\Journal\JournalEntry::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
-$factory->define(App\Pet::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Pet::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'pet_category_id' => factory(App\PetCategory::class)->create()->id,
+        'pet_category_id' => factory(App\Models\Contact\PetCategory::class)->create()->id,
     ];
 });
 
-$factory->define(App\PetCategory::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\PetCategory::class, function (Faker\Generator $faker) {
     return [];
 });
 
 $factory->define(App\Models\Contact\ContactFieldType::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'name' => 'Email',
         'protocol' => 'mailto:',
         'type' => 'email',
@@ -263,7 +257,7 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
 
 $factory->define(App\ReminderRule::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
@@ -278,7 +272,7 @@ $factory->define(App\Notification::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Module::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => factory(App\Account::class)->create()->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
@@ -286,7 +280,7 @@ $factory->define(App\Changelog::class, function (Faker\Generator $faker) {
     return [];
 });
 
-$factory->define(App\Instance::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Instance\Instance::class, function (Faker\Generator $faker) {
     return [];
 });
 

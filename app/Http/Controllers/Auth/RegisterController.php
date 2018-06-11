@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
 use App\Http\Controllers\Controller;

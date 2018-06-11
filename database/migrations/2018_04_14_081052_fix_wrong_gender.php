@@ -1,7 +1,7 @@
 <?php
 
-use App\Gender;
-use App\Account;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Migrations\Migration;
 

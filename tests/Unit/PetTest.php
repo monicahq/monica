@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Pet;
-use App\Account;
+use App\Models\Contact\Pet;
+use App\Models\Account\Account;
 use Tests\TestCase;
-use App\PetCategory;
+use App\Models\Contact\PetCategory;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

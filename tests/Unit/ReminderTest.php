@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;

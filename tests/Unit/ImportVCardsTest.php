@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use Mockery as m;
 use Tests\TestCase;
 use App\Models\Contact\Contact;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Account;
+use App\Models\Account\Account;
 use GuzzleHttp\Client;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;

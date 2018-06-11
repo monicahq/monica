@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Pet;
+use App\Models\Contact\Pet;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;

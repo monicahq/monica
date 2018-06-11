@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Account;
+use App\Models\Account\Account;
 use Tests\TestCase;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

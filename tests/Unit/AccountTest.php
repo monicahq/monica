@@ -2,10 +2,11 @@
 
 namespace Tests\Unit;
 
+use Carbon\Carbon;
 use App\User;
-use App\Gender;
+use App\Models\Contact\Gender;
 use App\Module;
-use App\Account;
+use App\Models\Account\Account;
 use App\Reminder;
 use App\Changelog;
 use App\Invitation;
@@ -286,7 +287,7 @@ class AccountTest extends FeatureTestCase
 
         $account = $user->account;
 
-        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
         // add 3 reminders for the month of March
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
@@ -305,7 +306,7 @@ class AccountTest extends FeatureTestCase
 
         $account = $user->account;
 
-        \Carbon\Carbon::setTestNow(\Carbon\Carbon::create(2017, 1, 1));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
         // add 3 reminders for the month of March
         for ($i = 0; $i < 3; $i++) {

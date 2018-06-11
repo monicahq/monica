@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Reminder;
 use Tests\TestCase;
 use App\Notification;

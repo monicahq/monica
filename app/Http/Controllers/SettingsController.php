@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
+use App\Helpers\DateHelper;
+use App\Helpers\LocaleHelper;
+use App\Models\Contact\Tag;
 use App\User;
 use App\ImportJob;
 use App\Invitation;
@@ -75,8 +77,8 @@ class SettingsController extends Controller
 
         return view('settings.index')
                 ->withNamesOrder($namesOrder)
-                ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
-                ->withHours(\App\Helpers\DateHelper::getListOfHours());
+                ->withLocales(LocaleHelper::getLocaleList())
+                ->withHours(DateHelper::getListOfHours());
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Account;
+use App\Models\Account\Account;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;

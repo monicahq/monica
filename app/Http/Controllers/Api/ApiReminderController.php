@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Reminder;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -129,7 +130,7 @@ class ApiReminderController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), auth()->user()->timezone);
+        $date = Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), auth()->user()->timezone);
         if ($date->isPast()) {
             return $this->setErrorCode(38)
                         ->respondWithError('Date should be in the future');

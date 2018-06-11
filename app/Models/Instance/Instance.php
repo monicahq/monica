@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Instance;
 
+use App\Models\Account\Account;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;

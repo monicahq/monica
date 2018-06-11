@@ -2,16 +2,17 @@
 
 namespace App\Models\Contact;
 
-use App\Pet;
-use App\Tag;
-use App\Debt;
-use App\Gift;
-use App\Note;
-use App\Task;
+use Cabron\Carbon;
+use App\Models\Contact\Pet;
+use App\Models\Contact\Tag;
+use App\Models\Contact\Debt;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Note;
+use App\Models\Contact\Task;
 use App\User;
 use App\Event;
-use App\Gender;
-use App\Account;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Reminder;
 use App\SpecialDate;
 use App\Notification;
@@ -1522,7 +1523,7 @@ class Contact extends Model
      */
     public function setStayInTouchTriggerDate($frequency, $timezone)
     {
-        $now = \Carbon\Carbon::now($timezone);
+        $now = Carbon::now($timezone);
         $newTriggerDate = $now->addDays($frequency);
         $this->stay_in_touch_trigger_date = $newTriggerDate;
 

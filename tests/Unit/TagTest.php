@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Tag;
-use App\Account;
+use App\Models\Contact\Tag;
+use App\Models\Account\Account;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

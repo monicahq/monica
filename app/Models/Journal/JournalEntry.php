@@ -2,7 +2,7 @@
 
 namespace App\Models\Journal;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Models\Contact\Entry;
 use App\Models\Contact\Activity;
 use Illuminate\Database\Eloquent\Model;

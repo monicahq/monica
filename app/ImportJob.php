@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\Models\Account\Account;
+use App\Models\Contact\Gender;
+use App\User;
+use App\ImportJobReport;
 use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Address;

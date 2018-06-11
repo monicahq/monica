@@ -2,7 +2,8 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Account;
+use App\Models\Account\Account;
+use App\User;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -28,7 +29,7 @@ class SendNotificationEmailTest extends TestCase
             'default_time_reminder_is_sent' => '07:00',
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $user = factory('App\User')->create([
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
         ]);
@@ -74,7 +75,7 @@ class SendNotificationEmailTest extends TestCase
             'default_time_reminder_is_sent' => '07:00',
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $user = factory('App\User')->create([
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
         ]);

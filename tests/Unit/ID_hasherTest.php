@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Debt;
+use App\Models\Contact\Debt;
 use App\Reminder;
 use Tests\TestCase;
 use App\Helpers\IdHasher;

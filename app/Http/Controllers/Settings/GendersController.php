@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Exception;
-use App\Gender;
+use App\Models\Contact\Gender;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;

@@ -3,13 +3,16 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\ImportJob;
+use App\ImportJobReport;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase
@@ -61,7 +64,7 @@ END:VCARD
     public function test_it_belongs_to_many_reports()
     {
         $importJob = factory(ImportJob::class)->create([]);
-        $importJobReport = factory('App\ImportJobReport', 100)->create(['import_job_id' => $importJob->id]);
+        $importJobReport = factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }
@@ -97,7 +100,7 @@ END:VCARD
 
         $importJob->getSpecialGender();
 
-        $this->assertInstanceOf('App\Gender', $importJob->gender);
+        $this->assertInstanceOf(Gender::class, $importJob->gender);
 
         $this->assertEquals(
             $existingNumberOfGenders + 1,
@@ -109,7 +112,7 @@ END:VCARD
     {
         $account = factory(Account::class)->create([]);
         $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
-        $gender = factory('App\Gender')->create([
+        $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'name' => 'vCard',
         ]);
@@ -117,7 +120,7 @@ END:VCARD
 
         $importJob->getSpecialGender();
 
-        $this->assertInstanceOf('App\Gender', $importJob->gender);
+        $this->assertInstanceOf(Gender::class, $importJob->gender);
 
         $this->assertEquals(
             $existingNumberOfGenders,
@@ -260,7 +263,7 @@ END:VCARD
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\Models\Contact\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -353,7 +356,7 @@ END:VCARD
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\Models\Contact\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -470,7 +473,7 @@ END:VCARD
         // as it requires the gender 'vCard'
         $importJob->getSpecialGender();
         $numberOfContacts = Contact::all()->count();
-        $numberOfFiledJobReport = \App\ImportJobReport::all()->count();
+        $numberOfFiledJobReport = ImportJobReport::all()->count();
 
         $importJob->createContactFromCurrentEntry();
 
@@ -488,7 +491,7 @@ END:VCARD
         );
 
         // have we actually created a new import job report
-        $newNumberOfFiledJobReport = \App\ImportJobReport::all()->count();
+        $newNumberOfFiledJobReport = ImportJobReport::all()->count();
         $this->assertEquals(
             $numberOfFiledJobReport + 1,
             $newNumberOfFiledJobReport

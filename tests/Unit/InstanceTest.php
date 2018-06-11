@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Account;
-use App\Instance;
+use App\Models\Account\Account;
+use App\Models\Instance\Instance;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\Bus;

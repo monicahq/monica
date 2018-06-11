@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use App\Reminder;
 use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;

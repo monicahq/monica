@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Note;
-use App\Account;
+use App\Models\Contact\Note;
+use App\Models\Account\Account;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -97,7 +97,7 @@ class NoteTest extends TestCase
 
     public function testGetContentReturnsAString()
     {
-        $note = factory(\App\Note::class)->make();
+        $note = factory(Note::class)->make();
 
         $this->assertInternalType('string', $note->getContent());
     }

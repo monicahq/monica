@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use App\Reminder;
 use App\Changelog;
 use Carbon\Carbon;

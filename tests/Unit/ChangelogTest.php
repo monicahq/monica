@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
+use App\Models\Account\Account;
 use App\Changelog;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
