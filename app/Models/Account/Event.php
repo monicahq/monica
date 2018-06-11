@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Account;
 
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\Instance;
 
 use Carbon\Carbon;
 use App\Helpers\DateHelper;

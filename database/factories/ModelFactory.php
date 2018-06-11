@@ -113,7 +113,7 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
     ];
 });
 
-$factory->define(App\SpecialDate::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Instance\SpecialDate::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [

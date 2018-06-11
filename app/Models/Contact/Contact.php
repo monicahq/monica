@@ -3,10 +3,10 @@
 namespace App\Models\Contact;
 
 use App\Models\User\User;
-use App\Event;
+use App\Models\Account\Event;
 use App\Models\Contact\Reminder;
 use Carbon\Carbon;
-use App\SpecialDate;
+use App\Models\Instance\SpecialDate;
 use App\Models\Contact\Notification;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;

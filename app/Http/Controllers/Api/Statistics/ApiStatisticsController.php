@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
-use App\Statistic;
+use App\Models\Instance\Statistic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Instance\Instance;
