@@ -32,7 +32,7 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -67,7 +67,7 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $user->account_id,
         ]);
 

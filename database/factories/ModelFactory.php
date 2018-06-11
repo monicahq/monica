@@ -147,12 +147,12 @@ $factory->define(App\Models\Relationships\RelationshipType::class, function (Fak
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'relationship_type_group_id' => function () {
-            return factory(App\RelationshipTypeGroup::class)->create()->id;
+            return factory(App\Models\Relationships\RelationshipTypeGroup::class)->create()->id;
         },
     ];
 });
 
-$factory->define(App\RelationshipTypeGroup::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Relationships\RelationshipTypeGroup::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];

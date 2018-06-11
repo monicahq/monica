@@ -63,10 +63,10 @@ class AccountTest extends FeatureTestCase
     {
         $contact = factory(Contact::class)->create();
         $account = $contact->account;
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
         ]);
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
         ]);
 
@@ -466,12 +466,12 @@ class AccountTest extends FeatureTestCase
     public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create();
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
             'name' => 'love',
         ]);
 
-        $this->assertInstanceOf('App\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
+        $this->assertInstanceOf('App\Models\Relationships\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
     }
 
     public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()

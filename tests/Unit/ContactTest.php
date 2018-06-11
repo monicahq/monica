@@ -1133,7 +1133,7 @@ class ContactTest extends FeatureTestCase
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
         $relatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
         $otherRelatedContact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
             'name' => 'friend',
         ]);

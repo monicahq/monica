@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Relationships\Relationship;
 use App\Models\Relationships\RelationshipType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Relationships\RelationshipTypeGroup;
 
 class Account extends Model
 {
@@ -291,7 +292,7 @@ class Account extends Model
      */
     public function relationshipTypeGroups()
     {
-        return $this->hasMany('App\RelationshipTypeGroup');
+        return $this->hasMany(RelationshipTypeGroup::class);
     }
 
     /**
