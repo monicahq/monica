@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Account;
+use App\Changelog;
+use App\Models\Journal\Day;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Settings\Term;

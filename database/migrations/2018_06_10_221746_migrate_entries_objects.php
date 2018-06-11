@@ -14,5 +14,13 @@ class MigrateEntriesObjects extends Migration
         DB::table('journal_entries')
             ->where('journalable_type', 'App\Activity')
             ->update(['journalable_type' => 'App\Models\Contact\Activity']);
+
+        DB::table('journal_entries')
+            ->where('journalable_type', 'App\Day')
+            ->update(['journalable_type' => 'App\Models\Journal\Day']);
+
+        DB::table('journal_entries')
+            ->where('journalable_type', 'App\Entry')
+            ->update(['journalable_type' => 'App\Models\Journal\Entry']);
     }
 }

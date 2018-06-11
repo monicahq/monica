@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Day;
-use App\Entry;
+use App\Models\Journal\Entry;
+use App\Models\Journal\Day;
 use App\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

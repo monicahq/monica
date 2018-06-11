@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Journal\Day;
+use App\Models\Journal\Entry;
 use App\Models\Contact\Call;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;

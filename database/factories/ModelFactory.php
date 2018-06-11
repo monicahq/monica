@@ -188,7 +188,7 @@ $factory->define(App\Gender::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Entry::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Journal\Entry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];
@@ -203,7 +203,7 @@ $factory->define(App\Debt::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Day::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Journal\Day::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];

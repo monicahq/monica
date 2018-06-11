@@ -4,8 +4,9 @@ namespace App\Models\Contact;
 
 use Parsedown;
 use App\Account;
-use Carbon\Carbon;
+use App\Models\Contact\ActivityType;
 use App\JournalEntry;
+use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;

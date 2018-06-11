@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Account;
+use App\PetCategory;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

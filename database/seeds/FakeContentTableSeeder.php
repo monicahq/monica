@@ -408,7 +408,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $entryId,
-                'journalable_type' => 'App\Entry',
+                'journalable_type' => 'App\Models\Journal\Entry',
                 'created_at' => now(),
             ]);
         }
@@ -447,7 +447,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $dayId,
-                'journalable_type' => 'App\Day',
+                'journalable_type' => 'App\Models\Journal\Day',
                 'created_at' => now(),
             ]);
         }

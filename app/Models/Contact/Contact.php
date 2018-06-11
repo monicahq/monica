@@ -9,7 +9,7 @@ use App\Gift;
 use App\Note;
 use App\Task;
 use App\User;
-use App\Entry;
+use App\Models\Journal\Entry;
 use App\Event;
 use App\Gender;
 use App\Account;

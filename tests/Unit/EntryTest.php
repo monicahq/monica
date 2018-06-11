@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Entry;
+use App\Models\Journal\Entry;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

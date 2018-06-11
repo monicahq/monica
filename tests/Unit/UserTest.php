@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Day;
+use App\Models\Journal\Day;
 use App\User;
 use App\Account;
 use App\Reminder;

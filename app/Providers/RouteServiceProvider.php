@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Day;
+use App\Models\Journal\Day;
 use App\Pet;
 use App\Debt;
 use App\Gift;

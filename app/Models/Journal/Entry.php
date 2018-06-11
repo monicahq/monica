@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Journal;
 
+use App\Account;
 use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;

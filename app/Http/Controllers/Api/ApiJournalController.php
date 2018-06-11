@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entry;
+use App\Models\Journal\Entry;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;

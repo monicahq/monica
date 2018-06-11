@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Account;
+use App\Notification;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
