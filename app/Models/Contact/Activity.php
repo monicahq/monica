@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use App\JournalEntry;
-use App\ActivityType;
 use App\Account;
 use Parsedown;
 use Carbon\Carbon;

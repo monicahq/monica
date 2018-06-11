@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Note;
 use App\Models\Contact\Activity;
-use App\ActivityType;
+use App\Models\Contact\ActivityType;
 use App\JournalEntry;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;

@@ -35,7 +35,7 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'activity_type_id' => function () {
-            return factory(App\ActivityType::class)->create()->id;
+            return factory(App\Models\Contact\ActivityType::class)->create()->id;
         },
         'description' => $faker->sentence,
         'summary' => $faker->sentence,
@@ -43,7 +43,7 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
     ];
 });
 
-$factory->define(App\ActivityType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
     return [
         'activity_type_group_id' => function () {
             return factory(App\ActivityTypeGroup::class)->create()->id;

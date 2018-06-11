@@ -38,7 +38,7 @@ class ActivityTest extends TestCase
 
     public function testGetTitleReturnsAString()
     {
-        $type = factory(\App\ActivityType::class)->create();
+        $type = factory(\App\Models\Contact\ActivityType::class)->create();
 
         $activity = factory(\App\Models\Contact\Activity::class)->create([
             'activity_type_id' => $type->id,
