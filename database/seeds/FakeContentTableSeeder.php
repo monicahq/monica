@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\Contact\ContactFieldType;
 use App\Account;
 use GuzzleHttp\Client;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;

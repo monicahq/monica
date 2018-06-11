@@ -3,20 +3,20 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Account;
 use App\Gender;
+use App\Module;
+use App\Account;
 use App\Reminder;
 use App\Changelog;
-use App\Module;
 use App\Invitation;
 use App\Notification;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Call;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
+use Illuminate\Support\Facades\DB;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AccountTest extends FeatureTestCase

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contact\Call;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

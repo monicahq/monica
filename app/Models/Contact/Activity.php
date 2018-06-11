@@ -2,14 +2,13 @@
 
 namespace App\Models\Contact;
 
-use App\JournalEntry;
-use App\Account;
 use Parsedown;
+use App\Account;
 use Carbon\Carbon;
+use App\JournalEntry;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
-use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

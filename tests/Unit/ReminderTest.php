@@ -4,10 +4,10 @@ namespace Tests\Unit;
 
 use App\Account;
 use App\Reminder;
-use App\ReminderRule;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Notification;
+use App\ReminderRule;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

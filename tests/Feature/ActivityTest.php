@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase

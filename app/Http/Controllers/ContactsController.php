@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use Exception;
-use App\Models\Contact\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Relationship\Relationship;
 
 class ContactsController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends TestCase

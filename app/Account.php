@@ -2,19 +2,18 @@
 
 namespace App;
 
-use App\Tag;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Call;
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Relationship\RelationshipTypeGroup;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {

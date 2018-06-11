@@ -5,11 +5,11 @@ namespace Tests\Unit;
 use App\User;
 use App\Account;
 use App\ImportJob;
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use Tests\TestCase;
+use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase

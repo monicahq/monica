@@ -3,13 +3,13 @@
 namespace Tests\Helper;
 
 use App\Account;
-use App\Models\Contact\ContactFieldType;
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactField;
 use JeroenDesloovere\VCard\VCard;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardHelperTest extends FeatureTestCase

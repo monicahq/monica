@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Contact\Contact;
 use App\Instance;
 use GuzzleHttp\Client;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Account;
-use Carbon\Carbon;
 use App\User;
+use App\Account;
 use App\Reminder;
-use App\Notification;
+use Carbon\Carbon;
 use Tests\TestCase;
+use App\Notification;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Mail;

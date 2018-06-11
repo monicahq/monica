@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Account;
 use App\User;
+use App\Account;
 use App\Changelog;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;

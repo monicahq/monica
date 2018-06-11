@@ -3,11 +3,11 @@
 namespace Tests\Unit\Jobs;
 
 use App\Account;
-use App\Notification;
 use App\Reminder;
-use App\ReminderRule;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Notification;
+use App\ReminderRule;
 use App\Mail\NotificationEmail;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;

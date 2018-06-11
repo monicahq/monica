@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use App\Gender;
 use App\Account;
-use App\Models\Contact\Contact;
 use Tests\TestCase;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GenderTest extends TestCase

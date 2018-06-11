@@ -2,9 +2,9 @@
 
 namespace Tests\Api;
 
+use Tests\ApiTestCase;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiAdressesTest extends ApiTestCase
