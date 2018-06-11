@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\User;
+use App\ImportJob;
 use App\Models\Contact\Contact;
 use Tests\TestCase;
 use Sabre\VObject\Component\VCard;
@@ -40,8 +42,8 @@ END:VCARD
 
     public function test_it_belongs_to_a_user()
     {
-        $user = factory('App\User')->create([]);
-        $importJob = factory('App\ImportJob')->create(['user_id' => $user->id]);
+        $user = factory(User::class)->create([]);
+        $importJob = factory(ImportJob::class)->create(['user_id' => $user->id]);
 
         $this->assertTrue($importJob->user()->exists());
     }
@@ -49,14 +51,14 @@ END:VCARD
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
         $this->assertTrue($importJob->account()->exists());
     }
 
     public function test_it_belongs_to_many_reports()
     {
-        $importJob = factory('App\ImportJob')->create([]);
+        $importJob = factory(ImportJob::class)->create([]);
         $importJobReport = factory('App\ImportJobReport', 100)->create(['import_job_id' => $importJob->id]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
@@ -64,7 +66,7 @@ END:VCARD
 
     public function test_it_initiates_the_job()
     {
-        $importJob = factory('App\ImportJob')->make([]);
+        $importJob = factory(ImportJob::class)->make([]);
 
         $this->assertNull($importJob->started_at);
 
@@ -75,7 +77,7 @@ END:VCARD
 
     public function test_it_finalizes_the_job()
     {
-        $importJob = factory('App\ImportJob')->make([]);
+        $importJob = factory(ImportJob::class)->make([]);
 
         $this->assertNull($importJob->ended_at);
 
@@ -87,7 +89,7 @@ END:VCARD
     public function test_it_creates_a_new_specific_gender()
     {
         $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
         $existingNumberOfGenders = \App\Gender::all()->count();
 
@@ -104,7 +106,7 @@ END:VCARD
     public function test_it_gets_an_existing_gender()
     {
         $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
             'name' => 'vCard',
@@ -123,7 +125,7 @@ END:VCARD
 
     public function test_it_fails_and_throws_an_exception()
     {
-        $importJob = factory('App\ImportJob')->create([]);
+        $importJob = factory(ImportJob::class)->create([]);
         $importJob->fail('reason');
 
         $this->assertTrue($importJob->failed);
@@ -136,7 +138,7 @@ END:VCARD
     public function test_it_gets_the_physical_file()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -159,7 +161,7 @@ END:VCARD
     public function test_it_throws_an_exception_if_file_doesnt_exist()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -174,7 +176,7 @@ END:VCARD
     public function test_it_deletes_the_file()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -191,7 +193,7 @@ END:VCARD
     public function test_it_throws_an_exception_if_file_cant_be_deleted()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -205,7 +207,7 @@ END:VCARD
     public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -626,10 +628,10 @@ END:VCARD
     private function createImportJob()
     {
         $account = factory('App\Account')->create([]);
-        $user = factory('App\User')->create([
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'account_id' => $account->id,
             'user_id' => $user->id,
         ]);

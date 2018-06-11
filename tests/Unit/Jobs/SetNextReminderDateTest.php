@@ -2,8 +2,13 @@
 
 namespace Tests\Unit\Jobs;
 
+use App\User;
+use App\Account;
+use App\Reminder;
+use App\ReminderRule;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Contact;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -15,25 +20,25 @@ class SetNextReminderDateTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
-        $account = factory('App\Account')->create([
+        $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '07:00',
         ]);
-        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
-        $user = factory('App\User')->create([
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 7,
             'active' => 1,
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 30,
             'active' => 1,
         ]);
-        $reminder = factory('App\Reminder')->create([
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'next_expected_date' => '2017-01-01',
@@ -58,15 +63,15 @@ class SetNextReminderDateTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
-        $account = factory('App\Account')->create([
+        $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '07:00',
         ]);
-        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
-        $user = factory('App\User')->create([
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
         ]);
-        $reminder = factory('App\Reminder')->create([
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'next_expected_date' => '2017-01-01',

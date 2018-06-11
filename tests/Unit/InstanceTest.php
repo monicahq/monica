@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Instance;
+use App\Account;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\Bus;
@@ -15,8 +17,8 @@ class InstanceTest extends TestCase
     {
         Bus::fake();
 
-        $instance = factory('App\Instance')->create([]);
-        $account = factory('App\Account', 3)->create([]);
+        $instance = factory(Instance::class)->create([]);
+        $account = factory(Account::class, 3)->create([]);
 
         $instance->addUnreadChangelogEntry(1);
 

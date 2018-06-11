@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Account;
+use App\Models\Contact\Contact;
 use App\Note;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -12,9 +14,9 @@ class NoteTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
-        $note = factory('App\Note')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $note = factory(Note::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
@@ -24,8 +26,8 @@ class NoteTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $contact = factory('App\Models\Contact\Contact')->create([]);
-        $note = factory('App\Note')->create([
+        $contact = factory(Contact::class)->create([]);
+        $note = factory(Note::class)->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -34,10 +36,10 @@ class NoteTest extends TestCase
 
     public function test_it_filters_by_favorited_notes()
     {
-        $note = factory('App\Note')->create(['is_favorited' => true]);
-        $note = factory('App\Note')->create(['is_favorited' => true]);
-        $note = factory('App\Note')->create(['is_favorited' => false]);
-        $note = factory('App\Note')->create(['is_favorited' => true]);
+        $note = factory(Note::class)->create(['is_favorited' => true]);
+        $note = factory(Note::class)->create(['is_favorited' => true]);
+        $note = factory(Note::class)->create(['is_favorited' => false]);
+        $note = factory(Note::class)->create(['is_favorited' => true]);
 
         $this->assertEquals(
             3,

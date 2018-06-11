@@ -13,7 +13,7 @@ class SearchableTest extends TestCase
     /** @test */
     public function testSearchContactsReturnsCollection()
     {
-        $contact = factory('App\Models\Contact\Contact')->make();
+        $contact = factory(Contact::class)->make();
         $searchResults = $contact->search($contact->first_name, $contact->account_id, 10, 'created_at desc');
 
         $this->assertInstanceOf('Illuminate\Pagination\LengthAwarePaginator', $searchResults);
@@ -22,7 +22,7 @@ class SearchableTest extends TestCase
     /** @test */
     public function testSearchContactsThroughFirstNameAndResultContainsContact()
     {
-        $contact = factory('App\Models\Contact\Contact')->create(['first_name' => 'FirstName']);
+        $contact = factory(Contact::class)->create(['first_name' => 'FirstName']);
         $searchResults = $contact->search($contact->first_name, $contact->account_id, 10, 'created_at desc');
 
         $this->assertTrue($searchResults->contains($contact));
@@ -31,7 +31,7 @@ class SearchableTest extends TestCase
     /** @test */
     public function testSearchContactsThroughMiddleNameAndResultContainsContact()
     {
-        $contact = factory('App\Models\Contact\Contact')->create(['middle_name' => 'MiddleName']);
+        $contact = factory(Contact::class)->create(['middle_name' => 'MiddleName']);
         $searchResults = $contact->search($contact->middle_name, $contact->account_id, 10, 'created_at desc');
 
         $this->assertTrue($searchResults->contains($contact));

@@ -3,6 +3,8 @@
 namespace Tests\Unit;
 
 use App\Gender;
+use App\Account;
+use App\Models\Contact\Contact;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -12,8 +14,8 @@ class GenderTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $gender = factory('App\Gender')->create([
+        $account = factory(Account::class)->create([]);
+        $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -22,12 +24,12 @@ class GenderTest extends TestCase
 
     public function test_it_belongs_to_many_contacts()
     {
-        $account = factory('App\Account')->create([]);
-        $gender = factory('App\Gender')->create([
+        $account = factory(Account::class)->create([]);
+        $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
         ]);
-        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
-        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
 
         $this->assertTrue($gender->contacts()->exists());
     }

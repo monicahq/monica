@@ -2,6 +2,9 @@
 
 namespace Tests\Unit\Jobs;
 
+use App\Account;
+use App\User;
+use App\Changelog;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -12,9 +15,9 @@ class AddChangelogEntryTest extends TestCase
 
     public function test_it_adds_a_changelog_entry()
     {
-        $account = factory('App\Account')->create([]);
-        $user = factory('App\User')->create(['account_id' => $account->id]);
-        $changelog = factory('App\Changelog')->create([]);
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create(['account_id' => $account->id]);
+        $changelog = factory(Changelog::class)->create([]);
 
         dispatch(new AddChangelogEntry($account, $changelog->id));
 
