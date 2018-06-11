@@ -2,6 +2,7 @@
 
 namespace Tests\Api;
 
+use App\Models\Relationship\RelationshipTypeGroup;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -13,7 +14,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup', 10)->create([
+        $relationshipTypeGroup = factory(RelationshipTypeGroup::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -32,12 +33,12 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
             'name' => 'love',
             'delible' => 0,
         ]);
-        $relationshipTypeGroup2 = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup2 = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
             'name' => 'hate',
             'delible' => 0,
@@ -59,7 +60,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
             'name' => 'love',
             'delible' => 0,
