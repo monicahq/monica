@@ -472,13 +472,13 @@ class ContactTest extends FeatureTestCase
         $account = factory(\App\Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
             'data' => 'test@test.com',
         ]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -505,7 +505,7 @@ class ContactTest extends FeatureTestCase
         $account = factory(\App\Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -521,7 +521,7 @@ class ContactTest extends FeatureTestCase
         $account = factory(\App\Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -538,7 +538,7 @@ class ContactTest extends FeatureTestCase
         $account = factory(\App\Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -560,7 +560,7 @@ class ContactTest extends FeatureTestCase
         $account = factory(\App\Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,

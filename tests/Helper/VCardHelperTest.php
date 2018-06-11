@@ -19,7 +19,7 @@ class VCardHelperTest extends FeatureTestCase
 
         // populate a bunch of contact fields and contact field types
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -78,7 +78,7 @@ class VCardHelperTest extends FeatureTestCase
         $vCard = new VCard();
 
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -179,7 +179,7 @@ class VCardHelperTest extends FeatureTestCase
         ]);
 
         $contactFieldType = factory(\App\ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,

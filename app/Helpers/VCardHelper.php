@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
 use JeroenDesloovere\VCard\VCard;
 
 class VCardHelper

@@ -6,6 +6,7 @@ use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Address;
+use App\Models\Contact\ContactField;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;
@@ -337,7 +338,7 @@ class ImportJob extends Model
         ])->first();
 
         if ($contactFieldType) {
-            $contactField = \App\ContactField::where([
+            $contactField = ContactField::where([
                 ['account_id', $this->account_id],
                 ['contact_field_type_id', $contactFieldType->id],
             ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();

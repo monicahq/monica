@@ -235,7 +235,7 @@ class Account extends Model
      */
     public function contactFields()
     {
-        return $this->hasMany('App\ContactField');
+        return $this->hasMany('App\Models\Contact\ContactField');
     }
 
     /**

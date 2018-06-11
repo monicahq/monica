@@ -14,7 +14,7 @@ use App\Tag;
 use App\Task;
 use App\Pet;
 use App\Notification;
-use App\ContactField;
+use App\Models\Contact\ContactField;
 use App\Gift;
 use App\Entry;
 use App\Models\Contact\Call;

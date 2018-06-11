@@ -256,7 +256,7 @@ END:VCARD
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory('App\Models\Contact\ContactField')->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -349,7 +349,7 @@ END:VCARD
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory('App\Models\Contact\ContactField')->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,

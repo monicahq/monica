@@ -12,7 +12,7 @@ use App\Gender;
 use App\Module;
 use App\Models\Contact\Activity;
 use App\Reminder;
-use App\ContactField;
+use App\Models\Contact\ContactField;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;

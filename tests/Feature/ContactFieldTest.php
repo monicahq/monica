@@ -34,7 +34,7 @@ class ContactFieldTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,
@@ -106,7 +106,7 @@ class ContactFieldTest extends FeatureTestCase
             'type' => 'test',
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,
@@ -140,7 +140,7 @@ class ContactFieldTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(\App\Models\Contact\ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,

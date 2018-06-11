@@ -250,7 +250,7 @@ $factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) 
     ];
 });
 
-$factory->define(App\ContactField::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ContactField::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
