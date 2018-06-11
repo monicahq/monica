@@ -93,7 +93,7 @@ $factory->define(App\Gift::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Call::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -164,7 +164,7 @@ $factory->define(App\Offspring::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Call::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];

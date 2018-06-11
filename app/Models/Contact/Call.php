@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Contact;
 
 use Parsedown;
+use App\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

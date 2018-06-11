@@ -17,7 +17,7 @@ use App\Notification;
 use App\ContactField;
 use App\Gift;
 use App\Entry;
-use App\Call;
+use App\Models\Contact\Call;
 use App\Event;
 use App\Debt;
 use App\Reminder;

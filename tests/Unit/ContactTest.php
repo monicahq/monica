@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Tag;
-use App\Call;
+use App\Models\Contact\Call;
 use App\Debt;
 use Carbon\Carbon;
 use App\SpecialDate;

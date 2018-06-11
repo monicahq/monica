@@ -132,7 +132,7 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $call = factory(\App\Call::class)->create([
+        $call = factory(\App\Models\Contact\Call::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'content' => 'this is a test',

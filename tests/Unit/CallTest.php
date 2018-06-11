@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Call;
+use App\Models\Contact\Call;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

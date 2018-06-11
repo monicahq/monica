@@ -549,13 +549,13 @@ class AccountTest extends FeatureTestCase
     public function test_it_retrieves_yearly_call_statistics()
     {
         $contact = factory('App\Models\Contact\Contact')->create();
-        $calls = factory('App\Call', 4)->create([
+        $calls = factory('App\Models\Contact\Call', 4)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'called_at' => '2018-03-02',
         ]);
 
-        $calls = factory('App\Call', 2)->create([
+        $calls = factory('App\Models\Contact\Call', 2)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'called_at' => '1992-03-02',

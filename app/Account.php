@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Contact\Activity;
+use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
