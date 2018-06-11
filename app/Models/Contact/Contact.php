@@ -9,7 +9,7 @@ use App\ActivityStatistic;
 use App\Account;
 use App\Gender;
 use App\Note;
-use App\Address;
+use App\Models\Contact\Address;
 use App\Tag;
 use App\Task;
 use App\Pet;

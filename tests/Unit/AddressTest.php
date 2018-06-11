@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Address;
+use App\Models\Contact\Address;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

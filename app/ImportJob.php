@@ -5,6 +5,7 @@ namespace App;
 use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Address;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;

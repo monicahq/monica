@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Gender;
-use App\Address;
+use App\Models\Contact\Address;
 use App\ContactField;
 use App\ContactFieldType;
 use Sabre\VObject\Reader;

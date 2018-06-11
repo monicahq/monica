@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Address;
+use App\Models\Contact\Address;
 use App\Helpers\LocaleHelper;
 use App\Helpers\CountriesHelper;
 use App\Models\Contact\Contact;

@@ -44,7 +44,7 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(\App\Models\Contact\Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'name' => 'test',
@@ -90,7 +90,7 @@ class AddressTest extends FeatureTestCase
             'name' => 'test2',
         ];
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(\App\Models\Contact\Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
@@ -116,7 +116,7 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(\App\Models\Contact\Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);

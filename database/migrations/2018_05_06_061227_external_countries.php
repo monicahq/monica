@@ -1,6 +1,6 @@
 <?php
 
-use App\Address;
+use App\Models\Contact\Address;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

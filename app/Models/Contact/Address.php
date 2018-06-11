@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Contact;
 
+use App\Account;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Database\Eloquent\Model;

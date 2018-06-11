@@ -176,7 +176,7 @@ $factory->define(App\Invitation::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Address::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Address::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];

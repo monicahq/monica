@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Address;
+use App\Models\Contact\Address;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
