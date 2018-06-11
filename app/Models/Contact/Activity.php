@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Contacts;
+namespace App\Models\Contact;
 
 use App\JournalEntry;
 use App\ActivityType;
@@ -9,7 +9,7 @@ use Parsedown;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Traits\Journalable;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

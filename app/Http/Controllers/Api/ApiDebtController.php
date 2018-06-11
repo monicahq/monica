@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Debt;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Debt\Debt as DebtResource;

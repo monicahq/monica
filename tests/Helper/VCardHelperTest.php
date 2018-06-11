@@ -4,7 +4,7 @@ namespace Tests\Helper;
 
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use JeroenDesloovere\VCard\VCard;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

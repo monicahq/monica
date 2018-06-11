@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 

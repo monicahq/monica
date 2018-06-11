@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use JeroenDesloovere\VCard\VCard;
 
 class VCardHelper

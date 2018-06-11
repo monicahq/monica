@@ -24,7 +24,7 @@ class SendRemindersTest extends TestCase
             'default_time_reminder_is_sent' => '7:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $reminder = factory('App\Reminder')->create([
             'account_id' => $account->id,
@@ -48,7 +48,7 @@ class SendRemindersTest extends TestCase
             'default_time_reminder_is_sent' => '7:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $user1 = factory('App\User')->create(['account_id' => $account->id]);
         $user2 = factory('App\User')->create(['account_id' => $account->id]);
         $reminder = factory('App\Reminder')->create([
@@ -75,7 +75,7 @@ class SendRemindersTest extends TestCase
             'default_time_reminder_is_sent' => '7:00',
             'has_access_to_paid_version_for_free' => 0,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create(['account_id' => $account->id]);
         $reminder = factory('App\Reminder')->create([
             'account_id' => $account->id,

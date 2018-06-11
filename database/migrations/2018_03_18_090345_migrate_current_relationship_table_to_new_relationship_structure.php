@@ -3,7 +3,7 @@
 use App\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Relationships\Relationship;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migration

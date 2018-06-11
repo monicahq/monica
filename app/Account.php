@@ -2,16 +2,16 @@
 
 namespace App;
 
-use App\Models\Contacts\Activity;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Activity;
+use App\Models\Contact\Contact;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Relationships\Relationship;
-use App\Models\Relationships\RelationshipType;
+use App\Models\Relationship\Relationship;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Relationships\RelationshipTypeGroup;
+use App\Models\Relationship\RelationshipTypeGroup;
 
 class Account extends Model
 {

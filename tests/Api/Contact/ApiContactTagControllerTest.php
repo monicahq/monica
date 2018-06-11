@@ -3,7 +3,7 @@
 namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactTagControllerTest extends ApiTestCase

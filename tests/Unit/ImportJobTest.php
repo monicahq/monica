@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Tests\TestCase;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
@@ -249,7 +249,7 @@ END:VCARD
     public function test_it_doesnt_process_an_entry_if_contact_already_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $contactFieldType = factory('App\ContactFieldType')->create([
@@ -342,7 +342,7 @@ END:VCARD
     public function test_it_checks_if_a_contact_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $contactFieldType = factory('App\ContactFieldType')->create([
@@ -556,7 +556,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importBirthday($contact);
@@ -572,7 +572,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importAddress($contact);
@@ -591,7 +591,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importEmail($contact);
@@ -611,7 +611,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importTel($contact);

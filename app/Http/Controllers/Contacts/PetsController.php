@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Pet;
 use App\PetCategory;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\PetsRequest;
 

@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

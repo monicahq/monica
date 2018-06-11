@@ -19,7 +19,7 @@ class UpdateJournalEntriesWithExistingActivities extends Migration
                 'account_id' => $activity->account_id,
                 'date' => $activity->date_it_happened,
                 'journalable_id' => $activity->id,
-                'journalable_type' => 'App\Models\Contacts\Activity',
+                'journalable_type' => 'App\Models\Contact\Activity',
                 'created_at' => $activity->created_at,
             ]);
         }

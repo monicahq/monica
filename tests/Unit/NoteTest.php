@@ -13,7 +13,7 @@ class NoteTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $note = factory('App\Note')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
@@ -24,7 +24,7 @@ class NoteTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $contact = factory('App\Models\Contacts\Contact')->create([]);
+        $contact = factory('App\Models\Contact\Contact')->create([]);
         $note = factory('App\Note')->create([
             'contact_id' => $contact->id,
         ]);

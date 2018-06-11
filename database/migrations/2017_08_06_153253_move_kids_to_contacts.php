@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

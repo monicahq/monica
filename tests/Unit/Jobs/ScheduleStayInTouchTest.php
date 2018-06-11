@@ -23,7 +23,7 @@ class ScheduleStayInTouchTest extends TestCase
             'default_time_reminder_is_sent' => '7:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
             'stay_in_touch_frequency' => 5,
@@ -57,7 +57,7 @@ class ScheduleStayInTouchTest extends TestCase
             'default_time_reminder_is_sent' => '7:00',
             'has_access_to_paid_version_for_free' => 0,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
             'stay_in_touch_frequency' => 5,

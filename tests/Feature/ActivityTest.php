@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contacts\Activity;
+use App\Models\Contact\Activity;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -19,7 +19,7 @@ class ActivityTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -105,7 +105,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $activity = factory(\App\Models\Contacts\Activity::class)->create([
+        $activity = factory(\App\Models\Contact\Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => now(),

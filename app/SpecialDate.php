@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

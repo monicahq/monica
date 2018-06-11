@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Note;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\NotesRequest;
 use App\Http\Requests\People\NoteToggleRequest;

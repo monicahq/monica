@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Note;
-use App\Models\Contacts\Activity;
+use App\Models\Contact\Activity;
 use App\ActivityType;
 use App\JournalEntry;
 use Illuminate\Http\Request;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

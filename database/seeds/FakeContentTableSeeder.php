@@ -4,7 +4,7 @@ use App\Account;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -257,7 +257,7 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->account->id,
                     'date' => $date,
                     'journalable_id' => $activity->id,
-                    'journalable_type' => 'App\Models\Contacts\Activity',
+                    'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');

@@ -3,9 +3,9 @@
 use App\Gift;
 use App\Note;
 use App\Task;
-use App\Models\Contacts\Activity;
+use App\Models\Contact\Activity;
 use App\Reminder;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Migrations\Migration;
 
 class CalculateStatistics extends Migration

@@ -8,11 +8,11 @@ use App\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Relationships\Relationship;
+use App\Models\Relationship\Relationship;
 
 class ContactsController extends Controller
 {
@@ -149,6 +149,7 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
+        dd($contact->name);
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {

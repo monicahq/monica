@@ -7,7 +7,7 @@ use App\Reminder;
 use Carbon\Carbon;
 use App\SpecialDate;
 use Tests\FeatureTestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SpecialDateTest extends FeatureTestCase
@@ -27,7 +27,7 @@ class SpecialDateTest extends FeatureTestCase
     public function test_it_belongs_to_a_contact()
     {
         $account = factory('App\Account')->create([]);
-        $contact = factory('App\Models\Contacts\Contact')->create([]);
+        $contact = factory('App\Models\Contact\Contact')->create([]);
         $specialDate = factory('App\SpecialDate')->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\ContactField;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;

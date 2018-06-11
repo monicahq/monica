@@ -7,7 +7,7 @@ use App\Account;
 use App\Reminder;
 use App\Invitation;
 use Tests\FeatureTestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,10 +49,10 @@ class AccountTest extends FeatureTestCase
     public function test_it_has_many_relationship_types()
     {
         $account = factory(Account::class)->create();
-        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationship\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
-        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationship\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
 
@@ -63,10 +63,10 @@ class AccountTest extends FeatureTestCase
     {
         $contact = factory(Contact::class)->create();
         $account = $contact->account;
-        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
         ]);
-        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
         ]);
 
@@ -393,9 +393,9 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
 
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender1]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender2]);
 
         $account->replaceGender($gender1, $gender2);
         $this->assertEquals(
@@ -455,23 +455,23 @@ class AccountTest extends FeatureTestCase
     public function test_it_gets_the_relationship_type_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create();
-        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationship\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'partner',
         ]);
 
-        $this->assertInstanceOf('App\Models\Relationships\RelationshipType', $account->getRelationshipTypeByType('partner'));
+        $this->assertInstanceOf('App\Models\Relationship\RelationshipType', $account->getRelationshipTypeByType('partner'));
     }
 
     public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create();
-        $relationshipTypeGroup = factory('App\Models\Relationships\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory('App\Models\Relationship\RelationshipTypeGroup')->create([
             'account_id' => $account->id,
             'name' => 'love',
         ]);
 
-        $this->assertInstanceOf('App\Models\Relationships\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
+        $this->assertInstanceOf('App\Models\Relationship\RelationshipTypeGroup', $account->getRelationshipTypeGroupByType('love'));
     }
 
     public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
@@ -548,7 +548,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_retrieves_yearly_call_statistics()
     {
-        $contact = factory('App\Models\Contacts\Contact')->create();
+        $contact = factory('App\Models\Contact\Contact')->create();
         $calls = factory('App\Call', 4)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
@@ -575,12 +575,12 @@ class AccountTest extends FeatureTestCase
     public function test_it_retrieves_yearly_activities_statistics()
     {
         $account = factory('App\Account')->create();
-        $contact = factory('App\Models\Contacts\Activity', 4)->create([
+        $contact = factory('App\Models\Contact\Activity', 4)->create([
             'account_id' => $account->id,
             'date_it_happened' => '2018-03-02',
         ]);
 
-        $contact = factory('App\Models\Contacts\Activity', 2)->create([
+        $contact = factory('App\Models\Contact\Activity', 2)->create([
             'account_id' => $account->id,
             'date_it_happened' => '1992-03-02',
         ]);

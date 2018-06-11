@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Gift;
 use Tests\TestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GiftTest extends TestCase

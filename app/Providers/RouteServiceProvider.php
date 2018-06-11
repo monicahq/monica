@@ -10,15 +10,15 @@ use App\Note;
 use App\Task;
 use App\Gender;
 use App\Module;
-use App\Models\Contacts\Activity;
+use App\Models\Contact\Activity;
 use App\Reminder;
 use App\ContactField;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Route;
-use App\Models\Relationships\Relationship;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 

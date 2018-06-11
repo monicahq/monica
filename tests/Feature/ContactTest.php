@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Gift;
 use Tests\FeatureTestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

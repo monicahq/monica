@@ -26,8 +26,8 @@ class GenderTest extends TestCase
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id, 'gender_id' => $gender->id]);
 
         $this->assertTrue($gender->contacts()->exists());
     }

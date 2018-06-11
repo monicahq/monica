@@ -24,7 +24,7 @@ class ReminderTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $contact = factory('App\Models\Contacts\Contact')->create([]);
+        $contact = factory('App\Models\Contact\Contact')->create([]);
         $reminder = factory('App\Reminder')->create([
             'contact_id' => $contact->id,
         ]);

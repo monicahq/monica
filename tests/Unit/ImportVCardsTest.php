@@ -6,7 +6,7 @@ use App\User;
 use App\Account;
 use Mockery as m;
 use Tests\TestCase;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase

@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;

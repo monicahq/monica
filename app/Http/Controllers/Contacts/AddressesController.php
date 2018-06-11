@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Address;
 use App\Helpers\LocaleHelper;
 use App\Helpers\CountriesHelper;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;

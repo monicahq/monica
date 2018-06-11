@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Pet;
 use Illuminate\Http\Request;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Pet\Pet as PetResource;

@@ -2,7 +2,7 @@
 
 use App\Gender;
 use App\Account;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Migrations\Migration;
 
 class FixWrongGender extends Migration

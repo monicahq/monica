@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\Contacts;
+namespace App\Models\Contact;
 
 use App\User;
 use App\SpecialDate;
-use App\Models\Contacts\Activity;
+use App\Models\Contact\Activity;
 use App\ActivityStatistic;
 use App\Account;
 use App\Gender;
@@ -32,12 +32,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Relationships\Relationship;
-use App\Models\Relationships\RelationshipType;
+use App\Models\Relationship\Relationship;
+use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Relationships\RelationshipTypeGroup;
+use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;

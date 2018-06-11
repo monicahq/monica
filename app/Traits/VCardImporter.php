@@ -7,7 +7,7 @@ use App\Address;
 use App\ContactField;
 use App\ContactFieldType;
 use Sabre\VObject\Reader;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 

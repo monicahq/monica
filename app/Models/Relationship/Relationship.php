@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Relationships;
+namespace App\Models\Relationship;
 
 use App\Account;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 
 /**

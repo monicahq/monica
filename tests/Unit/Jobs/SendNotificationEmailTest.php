@@ -22,7 +22,7 @@ class SendNotificationEmailTest extends TestCase
         $account = factory('App\Account')->create([
             'default_time_reminder_is_sent' => '07:00',
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
@@ -68,7 +68,7 @@ class SendNotificationEmailTest extends TestCase
         $account = factory('App\Account')->create([
             'default_time_reminder_is_sent' => '07:00',
         ]);
-        $contact = factory('App\Models\Contacts\Contact')->create(['account_id' => $account->id]);
+        $contact = factory('App\Models\Contact\Contact')->create(['account_id' => $account->id]);
         $user = factory('App\User')->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',

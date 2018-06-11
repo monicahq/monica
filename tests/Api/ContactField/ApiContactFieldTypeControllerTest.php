@@ -27,7 +27,7 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Models\Contacts\Contact')->create([
+        $contact = factory('App\Models\Contact\Contact')->create([
             'account_id' => $user->account_id,
         ]);
 

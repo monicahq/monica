@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
-use App\Models\Relationships\Relationship;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Migrations\Migration;
 
 class FixContactsData extends Migration

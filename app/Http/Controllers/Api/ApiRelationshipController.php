@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\Contacts\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Relationships\Relationship;
-use App\Models\Relationships\RelationshipType;
+use App\Models\Relationship\Relationship;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 
