@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use App\Models\User\User;
 use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;

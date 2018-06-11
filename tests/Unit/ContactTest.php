@@ -2,10 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\User\User;
 use Carbon\Carbon;
-use App\Models\Instance\SpecialDate;
-use App\Models\Contact\Notification;
+use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
@@ -16,6 +14,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\Notification;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;

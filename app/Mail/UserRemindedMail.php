@@ -3,10 +3,10 @@
 namespace App\Mail;
 
 use App\Models\User\User;
-use App\Models\Contact\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 

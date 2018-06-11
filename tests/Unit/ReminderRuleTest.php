@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Models\Contact\ReminderRule;
 use App\Models\Account\Account;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderRuleTest extends TestCase

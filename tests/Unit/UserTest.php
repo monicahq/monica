@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\Models\User\User;
-use App\Models\Contact\Reminder;
-use App\Models\User\Changelog;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
+use App\Models\User\Changelog;
 use App\Models\Account\Account;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase

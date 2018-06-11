@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Notification;
-use App\Models\Contact\ReminderRule;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\Notification;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends TestCase

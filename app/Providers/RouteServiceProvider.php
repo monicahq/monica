@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\User\Module;
-use App\Models\Contact\Reminder;
-use App\Models\Contact\ReminderRule;
 use App\Helpers\IdHasher;
 use App\Models\Contact\Pet;
 use App\Models\Journal\Day;
+use App\Models\User\Module;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
@@ -16,7 +14,9 @@ use App\Models\Contact\Gender;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Support\Facades\Route;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

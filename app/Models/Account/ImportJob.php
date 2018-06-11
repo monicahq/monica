@@ -2,12 +2,10 @@
 
 namespace App\Models\Account;
 
-use App\Models\User\User;
 use Exception;
+use App\Models\User\User;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Gender;
-use App\Models\Account\Account;
-use App\Models\Account\ImportJobReport;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Models\User\User;
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\ReminderRule;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SetNextReminderDateTest extends TestCase

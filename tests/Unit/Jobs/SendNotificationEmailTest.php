@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Models\User\User;
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Notification;
-use App\Models\Contact\ReminderRule;
+use App\Models\User\User;
 use App\Mail\NotificationEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\Notification;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\Notification\SendNotificationEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

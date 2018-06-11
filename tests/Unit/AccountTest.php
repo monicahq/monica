@@ -2,20 +2,20 @@
 
 namespace Tests\Unit;
 
-use App\Models\User\User;
-use App\Models\User\Module;
-use App\Models\Contact\Reminder;
-use App\Models\User\Changelog;
 use Carbon\Carbon;
-use App\Models\Account\Invitation;
-use App\Models\Contact\Notification;
+use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Gender;
+use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Reminder;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\Notification;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

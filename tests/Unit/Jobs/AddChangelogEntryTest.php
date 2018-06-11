@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Jobs;
 
+use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\User\Changelog;
-use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

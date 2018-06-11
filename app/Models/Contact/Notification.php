@@ -3,8 +3,6 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

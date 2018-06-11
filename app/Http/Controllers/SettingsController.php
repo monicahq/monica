@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User\User;
-use App\Models\Account\ImportJob;
-use App\Models\Account\Invitation;
 use App\Helpers\DBHelper;
+use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
@@ -14,6 +12,8 @@ use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
+use App\Models\Account\ImportJob;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\Auth;

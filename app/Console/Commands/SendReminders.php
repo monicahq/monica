@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\User\User;
-use App\Models\Contact\Reminder;
 use App\Jobs\SendReminderEmail;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 
 class SendReminders extends Command

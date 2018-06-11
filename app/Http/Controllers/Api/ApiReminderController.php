@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use App\Models\Contact\Reminder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

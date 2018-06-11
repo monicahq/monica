@@ -2,21 +2,18 @@
 
 namespace App\Models\Contact;
 
-use App\Models\User\User;
-use App\Models\Account\Event;
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
-use App\Models\Instance\SpecialDate;
-use App\Models\Contact\Notification;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
-use App\Models\Contact\ActivityStatistic;
+use App\Models\User\User;
 use App\Traits\Searchable;
+use App\Models\Account\Event;
 use App\Models\Journal\Entry;
 use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Eloquent\Model;

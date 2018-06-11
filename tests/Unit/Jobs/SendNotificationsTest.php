@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Models\User\User;
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Notification;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Bus;
+use App\Models\Contact\Notification;
 use Illuminate\Support\Facades\Artisan;
 use App\Jobs\Notification\ScheduleNotification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
-use App\Models\Instance\Statistic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Instance\Instance;
+use App\Models\Instance\Statistic;
 use App\Http\Controllers\Api\ApiController;
 
 class ApiStatisticsController extends ApiController
