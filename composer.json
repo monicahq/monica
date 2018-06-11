@@ -21,7 +21,7 @@
         "jeroendesloovere/vcard": "^1.5",
         "laravel/cashier": "~7.0",
         "laravel/framework": "5.6.*",
-        "laravel/passport": "^5.0",
+        "laravel/passport": "^6.0",
         "laravel/socialite": "^3.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "mariuzzo/laravel-js-localization": "^1.4",
