@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User\User;
 use App\Reminder;
 use App\Jobs\SendReminderEmail;
 use App\Models\Account\Account;

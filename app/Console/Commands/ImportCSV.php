@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User\User;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;

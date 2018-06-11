@@ -2,7 +2,7 @@
 
 namespace Tests\Browser\Settings;
 
-use App\User;
+use App\Models\User\User;
 use Zxing\QrReader;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;

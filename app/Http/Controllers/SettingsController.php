@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User\User;
 use App\ImportJob;
 use App\Invitation;
 use App\Helpers\DBHelper;

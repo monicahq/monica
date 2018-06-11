@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User\User::class, function (Faker\Generator $faker) {
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
@@ -83,7 +83,7 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
     ];
 });
 
-$factory->define(use App\Models\Contact\Gift;::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [

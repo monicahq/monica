@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\User;
+use App\Models\User\User;
 use Carbon\Carbon;
 use App\SpecialDate;
 use App\Notification;

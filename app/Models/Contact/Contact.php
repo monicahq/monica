@@ -2,10 +2,10 @@
 
 namespace App\Models\Contact;
 
-use App\User;
+use App\Models\User\User;
 use App\Event;
 use App\Reminder;
-use Cabron\Carbon;
+use Carbon\Carbon;
 use App\SpecialDate;
 use App\Notification;
 use App\Traits\Hasher;

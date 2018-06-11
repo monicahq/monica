@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Console\Command;
 
 class Deactivate2FA extends Command

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\User\User;
 use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Gender;

@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\User;
+use App\Models\User\User;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Mail\StayInTouchEmail;

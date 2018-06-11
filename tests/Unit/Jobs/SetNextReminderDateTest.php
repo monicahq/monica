@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\User;
+use App\Models\User\User;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;

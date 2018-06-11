@@ -2,7 +2,7 @@
 
 namespace Tests\Helper;
 
-use App\User;
+use App\Models\User\User;
 use Tests\TestCase;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;

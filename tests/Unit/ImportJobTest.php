@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\User;
+use App\Models\User\User;
 use App\ImportJob;
 use Tests\TestCase;
 use App\ImportJobReport;
@@ -96,7 +96,7 @@ END:VCARD
         $account = factory(Account::class)->create([]);
         $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
-        $existingNumberOfGenders = \App\Gender::all()->count();
+        $existingNumberOfGenders = Gender::all()->count();
 
         $importJob->getSpecialGender();
 
@@ -104,7 +104,7 @@ END:VCARD
 
         $this->assertEquals(
             $existingNumberOfGenders + 1,
-            \App\Gender::all()->count()
+            Gender::all()->count()
         );
     }
 
@@ -116,7 +116,7 @@ END:VCARD
             'account_id' => $account->id,
             'name' => 'vCard',
         ]);
-        $existingNumberOfGenders = \App\Gender::all()->count();
+        $existingNumberOfGenders = Gender::all()->count();
 
         $importJob->getSpecialGender();
 
@@ -124,7 +124,7 @@ END:VCARD
 
         $this->assertEquals(
             $existingNumberOfGenders,
-            \App\Gender::all()->count()
+            Gender::all()->count()
         );
     }
 
@@ -447,7 +447,7 @@ END:VCARD
 
     public function test_it_formats_value()
     {
-        $importJob = new \App\ImportJob;
+        $importJob = new ImportJob;
 
         $result = $this->invokePrivateMethod($importJob, 'formatValue', ['']);
         $this->assertNull($result);

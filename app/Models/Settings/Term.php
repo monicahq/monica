@@ -2,7 +2,7 @@
 
 namespace App\Models\Settings;
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model

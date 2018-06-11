@@ -2,7 +2,7 @@
 
 namespace Tests\BrowserFeature;
 
-use App\User;
+use App\Models\User\User;
 use Tests\DuskTestCase;
 use Tests\Browser\Pages\ImportVCardUpload;
 

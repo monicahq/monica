@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\User;
+use App\Models\User\User;
 use App\Reminder;
 use Illuminate\Bus\Queueable;
 use App\Mail\UserRemindedMail;
