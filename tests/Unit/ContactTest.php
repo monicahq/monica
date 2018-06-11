@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Models\User\User;
 use Carbon\Carbon;
 use App\SpecialDate;
-use App\Notification;
+use App\Models\Contact\Notification;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Call;

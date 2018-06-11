@@ -6,7 +6,7 @@ use App\Models\User\User;
 use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use App\SpecialDate;
-use App\Notification;
+use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use Tests\FeatureTestCase;
 use App\Models\Account\Account;

@@ -4,7 +4,7 @@ namespace App\Mail;
 
 use App\Models\User\User;
 use App\Models\Contact\Reminder;
-use App\Notification;
+use App\Models\Contact\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\Contact\Contact;

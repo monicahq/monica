@@ -261,7 +261,7 @@ $factory->define(App\Models\Contact\ReminderRule::class, function (Faker\Generat
     ];
 });
 
-$factory->define(App\Notification::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Notification::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [

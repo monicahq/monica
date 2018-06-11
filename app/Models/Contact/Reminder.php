@@ -2,7 +2,7 @@
 
 namespace App\Models\Contact;
 
-use App\Notification;
+use App\Models\Contact\Notification;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;

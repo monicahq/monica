@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Notification;
+use App\Models\Contact\Notification;
 use Illuminate\Console\Command;
 use App\Jobs\Notification\ScheduleNotification;
 

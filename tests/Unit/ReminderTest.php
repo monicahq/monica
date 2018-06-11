@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Notification;
+use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;

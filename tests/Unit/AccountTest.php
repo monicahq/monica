@@ -8,7 +8,7 @@ use App\Models\Contact\Reminder;
 use App\Models\User\Changelog;
 use Carbon\Carbon;
 use App\Models\Account\Invitation;
-use App\Notification;
+use App\Models\Contact\Notification;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Call;
 use App\Models\Contact\Gender;
