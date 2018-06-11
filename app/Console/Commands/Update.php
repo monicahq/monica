@@ -81,6 +81,9 @@ class Update extends Command
                     $this->commandExecutor->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('dev') === false ? '--no-dev' : ''));
                 }
 
+                if ($this->migrateCollationTest()) {
+                    $this->commandExecutor->artisan('✓ Performing collation migrations', 'migrate:collation', ['--force' => 'true']);
+                }
                 $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force' => 'true']);
 
                 if (DB::table('activity_types')->count() == 0) {
@@ -95,5 +98,26 @@ class Update extends Command
 
             $this->line('Monica v'.config('monica.app_version').' is set up, enjoy.');
         }
+    }
+
+    private function migrateCollationTest()
+    {
+        $connection = DB::connection();
+
+        if ($connection->getDriverName() != 'mysql') {
+            return false;
+        }
+
+        $databasename = $connection->getDatabaseName();
+
+        $schemata = $connection->table('information_schema.schemata')
+                ->select('DEFAULT_CHARACTER_SET_NAME')
+                ->where('schema_name', '=', $databasename)
+                ->get();
+
+        $schema = $schemata->first()->DEFAULT_CHARACTER_SET_NAME;
+
+        return config('database.use_utf8mb4') && $schema == 'utf8'
+            || ! config('database.use_utf8mb4') && $schema == 'utf8mb4';
     }
 }
