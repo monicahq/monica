@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +15,7 @@ class ActivityStatistic extends Model
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**

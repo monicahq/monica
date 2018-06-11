@@ -241,7 +241,7 @@ $factory->define(App\PetCategory::class, function (Faker\Generator $faker) {
     return [];
 });
 
-$factory->define(App\ContactFieldType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ContactFieldType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'name' => 'Email',

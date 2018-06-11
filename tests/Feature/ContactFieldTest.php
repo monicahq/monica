@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use Tests\FeatureTestCase;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Contact;

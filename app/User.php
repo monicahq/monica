@@ -2,7 +2,10 @@
 
 namespace App;
 
+use App\Account;
+use App\Changelog;
 use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use App\Models\Settings\Term;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -88,7 +91,7 @@ class User extends Authenticatable
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -96,7 +99,7 @@ class User extends Authenticatable
      */
     public function changelogs()
     {
-        return $this->belongsToMany('App\Changelog')->withPivot('read', 'upvote')->withTimestamps();
+        return $this->belongsToMany(Changelog::class)->withPivot('read', 'upvote')->withTimestamps();
     }
 
     /**
@@ -354,7 +357,7 @@ class User extends Authenticatable
         }
 
         $compliance = Term::find($termId);
-        $signedDate = \App\Helpers\DateHelper::createDateFromFormat($termUser->created_at, $this->timezone);
+        $signedDate = DateHelper::createDateFromFormat($termUser->created_at, $this->timezone);
 
         return [
             'signed' => true,

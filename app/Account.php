@@ -2,9 +2,11 @@
 
 namespace App;
 
+use App\Tag;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
@@ -205,7 +207,7 @@ class Account extends Model
      */
     public function tags()
     {
-        return $this->hasMany('App\Tag')->orderBy('name', 'asc');
+        return $this->hasMany(Tag::class)->orderBy('name', 'asc');
     }
 
     /**
@@ -225,7 +227,7 @@ class Account extends Model
      */
     public function contactFieldTypes()
     {
-        return $this->hasMany('App\ContactFieldType');
+        return $this->hasMany(ContactFieldType::class);
     }
 
     /**

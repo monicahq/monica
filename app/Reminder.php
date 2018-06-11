@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Account;
+use App\Notification;
 use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use App\Traits\Hasher;
@@ -68,7 +70,7 @@ class Reminder extends Model
      */
     public function notifications()
     {
-        return $this->hasMany('App\Notification');
+        return $this->hasMany(Notification::class);
     }
 
     /**

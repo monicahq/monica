@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Parsedown;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ class Changelog extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot('read', 'upvote')->withTimestamps();
+        return $this->belongsToMany(User::class)->withPivot('read', 'upvote')->withTimestamps();
     }
 
     /**

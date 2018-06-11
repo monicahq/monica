@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Account;
+use App\Reminder;
 use App\Models\Contact\Contact;
 use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -97,10 +100,10 @@ class SpecialDate extends Model
     public function toShortString()
     {
         if ($this->is_year_unknown) {
-            return \App\Helpers\DateHelper::getShortDateWithoutYear($this->date);
+            return DateHelper::getShortDateWithoutYear($this->date);
         }
 
-        return \App\Helpers\DateHelper::getShortDate($this->date);
+        return DateHelper::getShortDate($this->date);
     }
 
     /**

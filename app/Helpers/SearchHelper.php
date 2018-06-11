@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Auth;
 use App\Models\Contact\Contact;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 
 class SearchHelper
 {

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Account;
+use App\Reminder;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

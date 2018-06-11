@@ -11,7 +11,7 @@ use App\Account;
 use App\Notification;
 use App\SpecialDate;
 use App\Gender;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use App\User;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;

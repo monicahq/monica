@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Helpers\DateHelper;
+use App\Account;
 use Parsedown;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +37,7 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function account()
     {
-        return $this->belongsTo('App\Account');
+        return $this->belongsTo(Account::class);
     }
 
     /**
@@ -75,9 +77,9 @@ class Entry extends Model implements IsJournalableInterface
             'title' => $this->title,
             'post' => $this->post,
             'day' => $entryDate->day,
-            'day_name' => \App\Helpers\DateHelper::getShortDay($entryDate),
+            'day_name' => DateHelper::getShortDay($entryDate),
             'month' => $entryDate->month,
-            'month_name' => \App\Helpers\DateHelper::getShortMonth($entryDate),
+            'month_name' => DateHelper::getShortMonth($entryDate),
             'year' => $entryDate->year,
         ];
     }

@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\Account;
 use App\ImportJob;
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 use Tests\TestCase;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Storage;
@@ -50,7 +52,7 @@ END:VCARD
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory(Account::class)->create([]);
         $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
         $this->assertTrue($importJob->account()->exists());
@@ -88,7 +90,7 @@ END:VCARD
 
     public function test_it_creates_a_new_specific_gender()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory(Account::class)->create([]);
         $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
         $existingNumberOfGenders = \App\Gender::all()->count();
@@ -105,7 +107,7 @@ END:VCARD
 
     public function test_it_gets_an_existing_gender()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory(Account::class)->create([]);
         $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
         $gender = factory('App\Gender')->create([
             'account_id' => $account->id,
@@ -251,10 +253,10 @@ END:VCARD
     public function test_it_doesnt_process_an_entry_if_contact_already_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
-        $contactFieldType = factory('App\ContactFieldType')->create([
+        $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
@@ -344,10 +346,10 @@ END:VCARD
     public function test_it_checks_if_a_contact_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
-        $contactFieldType = factory('App\ContactFieldType')->create([
+        $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
@@ -558,7 +560,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importBirthday($contact);
@@ -574,7 +576,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importAddress($contact);
@@ -593,7 +595,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importEmail($contact);
@@ -613,7 +615,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Models\Contact\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importTel($contact);
@@ -627,7 +629,7 @@ END:VCARD
 
     private function createImportJob()
     {
-        $account = factory('App\Account')->create([]);
+        $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);

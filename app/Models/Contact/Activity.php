@@ -7,6 +7,7 @@ use App\Account;
 use Parsedown;
 use Carbon\Carbon;
 use App\Traits\Hasher;
+use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
@@ -187,9 +188,9 @@ class Activity extends Model implements IsJournalableInterface
             'summary' => $this->summary,
             'description' => $this->description,
             'day' => $this->date_it_happened->day,
-            'day_name' => ucfirst(\App\Helpers\DateHelper::getShortDay($this->date_it_happened)),
+            'day_name' => ucfirst(DateHelper::getShortDay($this->date_it_happened)),
             'month' => $this->date_it_happened->month,
-            'month_name' => strtoupper(\App\Helpers\DateHelper::getShortMonth($this->date_it_happened)),
+            'month_name' => strtoupper(DateHelper::getShortMonth($this->date_it_happened)),
             'year' => $this->date_it_happened->year,
             'attendees' => $this->getContactsForAPI(),
         ];

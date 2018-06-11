@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Contact\ContactFieldType;
 use App\Account;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
@@ -350,11 +351,11 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
 
             // Fetch number of types
-            $numberOfTypes = \App\ContactFieldType::count();
+            $numberOfTypes = ContactFieldType::count();
 
             for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
                 // Retrieve random ContactFieldType
-                $contactFieldType = \App\ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 // Fake data according to type
                 $data = null;

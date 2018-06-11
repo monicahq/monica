@@ -3,7 +3,7 @@
 namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

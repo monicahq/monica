@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Tag;
 use Exception;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use App\Jobs\ResizeAvatars;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;

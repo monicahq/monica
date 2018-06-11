@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\ContactField;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;

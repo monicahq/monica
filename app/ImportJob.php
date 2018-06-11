@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Gender;
+use App\ImportJobReport;
 use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Address;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +48,7 @@ class ImportJob extends Model
     /**
      * The "Vcard" gender that will be associated with all imported contacts.
      *
-     * @var \App\Gender
+     * @var Gender
      */
     public $gender;
 
@@ -164,14 +167,14 @@ class ImportJob extends Model
      * Get or create the gender called "Vcard" that is associated with all
      * imported contacts.
      *
-     * @return \App\Gender
+     * @return Gender
      */
     public function getSpecialGender()
     {
-        $this->gender = \App\Gender::where('name', 'vCard')->first();
+        $this->gender = Gender::where('name', 'vCard')->first();
 
         if (! $this->gender) {
-            $this->gender = new \App\Gender;
+            $this->gender = new Gender;
             $this->gender->account_id = $this->account_id;
             $this->gender->name = 'vCard';
             $this->gender->save();
@@ -332,7 +335,7 @@ class ImportJob extends Model
             return;
         }
 
-        $contactFieldType = \App\ContactFieldType::where([
+        $contactFieldType = ContactFieldType::where([
             ['account_id', $this->account_id],
             ['type', 'email'],
         ])->first();
@@ -360,7 +363,7 @@ class ImportJob extends Model
     {
         $name = $this->name();
 
-        $importJobReport = new \App\ImportJobReport;
+        $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->account_id;
         $importJobReport->user_id = $this->user_id;
         $importJobReport->import_job_id = $this->id;
@@ -553,7 +556,7 @@ class ImportJob extends Model
     private function contactFieldEmailId()
     {
         if (! $this->contactFieldEmailId) {
-            $contactFieldType = \App\ContactFieldType::where('type', 'email')->first();
+            $contactFieldType = ContactFieldType::where('type', 'email')->first();
             $this->contactFieldEmailId = $contactFieldType->id;
         }
 
@@ -563,7 +566,7 @@ class ImportJob extends Model
     private function contactFieldPhoneId()
     {
         if (! $this->contactFieldPhoneId) {
-            $contactFieldType = \App\ContactFieldType::where('type', 'phone')->first();
+            $contactFieldType = ContactFieldType::where('type', 'phone')->first();
             $this->contactFieldPhoneId = $contactFieldType->id;
         }
 

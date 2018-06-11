@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -63,9 +64,9 @@ class Day extends Model implements IsJournalableInterface
             'rate' => $this->rate,
             'comment' => $this->comment,
             'day' => $this->date->day,
-            'day_name' => mb_convert_case(\App\Helpers\DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
+            'day_name' => mb_convert_case(DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
             'month' => $this->date->month,
-            'month_name' => mb_convert_case(\App\Helpers\DateHelper::getShortMonth($this->date), MB_CASE_UPPER, 'UTF-8'),
+            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->date), MB_CASE_UPPER, 'UTF-8'),
             'year' => $this->date->year,
             'happens_today' => $this->date->isToday(),
         ];

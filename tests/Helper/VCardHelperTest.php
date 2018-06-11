@@ -3,7 +3,7 @@
 namespace Tests\Helper;
 
 use App\Account;
-use App\ContactFieldType;
+use App\Models\Contact\ContactFieldType;
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
 use App\Models\Contact\Address;

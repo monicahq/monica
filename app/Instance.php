@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Account;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +28,7 @@ class Instance extends Model
      */
     public function addUnreadChangelogEntry(int $changelogId)
     {
-        $accounts = \App\Account::all();
+        $accounts = Account::all();
         foreach ($accounts as $account) {
             AddChangelogEntry::dispatch($account, $changelogId);
         }
