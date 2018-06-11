@@ -61,7 +61,7 @@
             </option>
 
             {{-- Predefined options --}}
-            @foreach (App\ActivityTypeGroup::all() as $activityTypeGroup)
+            @foreach (App\Models\Contact\ActivityTypeGroup::all() as $activityTypeGroup)
                 <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
                     @foreach (App\Models\Contact\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
                         <option value="{{ $activityType->id }}">

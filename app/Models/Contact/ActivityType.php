@@ -13,7 +13,7 @@ class ActivityType extends Model
      */
     public function group()
     {
-        return $this->belongsTo('App\ActivityTypeGroup', 'activity_type_group_id');
+        return $this->belongsTo(ActivityTypeGroup::class, 'activity_type_group_id');
     }
 
     public function getTranslationKeyAsString()
