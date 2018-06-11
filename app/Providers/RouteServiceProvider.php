@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User\Module;
-use App\Reminder;
-use App\ReminderRule;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\ReminderRule;
 use App\Helpers\IdHasher;
 use App\Models\Contact\Pet;
 use App\Models\Journal\Day;

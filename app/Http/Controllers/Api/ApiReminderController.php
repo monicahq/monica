@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;

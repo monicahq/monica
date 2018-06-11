@@ -4,10 +4,10 @@ namespace Tests\Unit;
 
 use App\Models\User\User;
 use App\Models\User\Module;
-use App\Reminder;
-use App\Changelog;
+use App\Models\Contact\Reminder;
+use App\Models\User\Changelog;
 use Carbon\Carbon;
-use App\Invitation;
+use App\Models\Account\Invitation;
 use App\Notification;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Call;

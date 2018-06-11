@@ -4,7 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\User\User;
 use App\Event;
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use App\SpecialDate;
 use App\Notification;

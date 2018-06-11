@@ -1,6 +1,6 @@
 <?php
 
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;

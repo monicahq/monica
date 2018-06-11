@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\Models\User\User;
-use App\Reminder;
-use App\Changelog;
+use App\Models\Contact\Reminder;
+use App\Models\User\Changelog;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Journal\Day;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User\User;
-use App\ImportJob;
-use App\Invitation;
+use App\Models\Account\ImportJob;
+use App\Models\Account\Invitation;
 use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;

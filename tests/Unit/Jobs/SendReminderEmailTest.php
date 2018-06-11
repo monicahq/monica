@@ -3,7 +3,7 @@
 namespace Tests\Unit\Jobs;
 
 use App\Models\User\User;
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Mail\UserRemindedMail;

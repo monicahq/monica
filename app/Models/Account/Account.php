@@ -2,13 +2,15 @@
 
 namespace App\Models\Account;
 
+use App\Models\Account\ImportJob;
+use App\Models\Account\ImportJobReport;
 use App\Models\User\User;
-use App\Changelog;
-use App\Invitation;
+use App\Models\User\Changelog;
+use App\Models\Account\Invitation;
 use App\Notification;
 use App\Models\User\Module;
-use App\ReminderRule;
-use App\Reminder;
+use App\Models\Contact\ReminderRule;
+use App\Models\Contact\Reminder;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;

@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use App\Models\User\User;
-use App\ImportJob;
+use App\Models\Account\ImportJob;
 use Tests\TestCase;
-use App\ImportJobReport;
+use App\Models\Account\ImportJobReport;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;

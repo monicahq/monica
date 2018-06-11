@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Invitation;
+use App\Models\Account\Invitation;
 use App\Mail\InvitationSent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;

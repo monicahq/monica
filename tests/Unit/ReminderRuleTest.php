@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\ReminderRule;
+use App\Models\Contact\ReminderRule;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models\User;
 
 use App\Models\User\User;
 use Parsedown;

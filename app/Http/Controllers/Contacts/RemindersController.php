@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\RemindersRequest;

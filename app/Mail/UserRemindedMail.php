@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Models\User\User;
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\Contact\Contact;

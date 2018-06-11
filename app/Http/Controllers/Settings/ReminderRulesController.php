@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\ReminderRule;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

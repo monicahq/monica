@@ -60,7 +60,7 @@ $factory->define(App\Models\Contact\ActivityTypeGroup::class, function (Faker\Ge
     ];
 });
 
-$factory->define(App\Reminder::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\Reminder::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 
     return [
@@ -170,7 +170,7 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
     ];
 });
 
-$factory->define(App\Invitation::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\Invitation::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
@@ -255,7 +255,7 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
     ];
 });
 
-$factory->define(App\ReminderRule::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ReminderRule::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
@@ -276,7 +276,7 @@ $factory->define(App\Models\User\Module::class, function (Faker\Generator $faker
     ];
 });
 
-$factory->define(App\Changelog::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User\Changelog::class, function (Faker\Generator $faker) {
     return [];
 });
 
@@ -284,11 +284,11 @@ $factory->define(App\Models\Instance\Instance::class, function (Faker\Generator 
     return [];
 });
 
-$factory->define(App\ImportJob::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ImportJob::class, function (Faker\Generator $faker) {
     return [];
 });
 
-$factory->define(App\ImportJobReport::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ImportJobReport::class, function (Faker\Generator $faker) {
     return [];
 });
 

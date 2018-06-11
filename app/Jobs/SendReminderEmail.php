@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User\User;
-use App\Reminder;
+use App\Models\Contact\Reminder;
 use Illuminate\Bus\Queueable;
 use App\Mail\UserRemindedMail;
 use Illuminate\Support\Facades\Mail;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Contact;
 
+use App\Notification;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;

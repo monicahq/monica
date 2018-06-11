@@ -2,7 +2,7 @@
 
 namespace App\Models\User;
 
-use App\Changelog;
+use App\Models\User\Changelog;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;

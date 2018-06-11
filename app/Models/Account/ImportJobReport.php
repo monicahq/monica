@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models\Account;
 
+use App\Models\Account\ImportJob;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
