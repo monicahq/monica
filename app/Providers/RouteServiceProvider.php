@@ -14,11 +14,11 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\ContactField;
-use App\Relationship;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use App\Models\Relationships\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 

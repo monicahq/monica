@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Relationships\Relationship;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -255,7 +256,7 @@ class Contact extends Model
      */
     public function relationships()
     {
-        return $this->hasMany('App\Relationship', 'contact_is');
+        return $this->hasMany(Relationship::class, 'contact_is');
     }
 
     /**
@@ -1431,10 +1432,10 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = \App\Relationship::where('contact_is', $this->id)->first();
+        $relatedContact = Relationship::where('contact_is', $this->id)->first();
 
         if ($relatedContact) {
-            return \App\Contact::find($relatedContact->of_contact);
+            return self::find($relatedContact->of_contact);
         }
     }
 

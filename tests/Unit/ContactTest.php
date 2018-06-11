@@ -49,7 +49,7 @@ class ContactTest extends FeatureTestCase
     {
         $account = factory('App\Account')->create([]);
         $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $relationship = factory('App\Relationship', 2)->create([
+        $relationship = factory('App\Models\Relationships\Relationship', 2)->create([
             'account_id' => $account->id,
             'contact_is' => $contact->id,
         ]);
@@ -1110,7 +1110,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'name' => 'godfather',
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $account->id,
             'contact_is' => $contact->id,
             'of_contact' => $partner->id,
@@ -1119,7 +1119,7 @@ class ContactTest extends FeatureTestCase
 
         $foundRelationship = $contact->getRelationshipNatureWith($partner);
 
-        $this->assertInstanceOf('App\Relationship', $foundRelationship);
+        $this->assertInstanceOf('App\Models\Relationships\Relationship', $foundRelationship);
 
         $this->assertEquals(
             $relationship->id,
@@ -1141,13 +1141,13 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'relationship_type_group_id' => $relationshipTypeGroup->id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contact->id,
             'of_contact' => $relatedContact->id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contact->id,
@@ -1196,13 +1196,13 @@ class ContactTest extends FeatureTestCase
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $user->account_id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contact->id,
             'of_contact' => $contactB->id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contact->id,
@@ -1231,7 +1231,7 @@ class ContactTest extends FeatureTestCase
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $user->account_id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $otherContact->id,

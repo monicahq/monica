@@ -12,7 +12,7 @@ class RelationshipTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $account->id,
         ]);
 
@@ -22,7 +22,7 @@ class RelationshipTest extends TestCase
     public function test_it_belongs_to_a_contact()
     {
         $contact = factory('App\Contact')->create([]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'contact_is' => $contact->id,
         ]);
 
@@ -32,7 +32,7 @@ class RelationshipTest extends TestCase
     public function test_it_belongs_to_another_contact()
     {
         $contact = factory('App\Contact')->create([]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'of_contact' => $contact->id,
         ]);
 
@@ -45,7 +45,7 @@ class RelationshipTest extends TestCase
         $relationshipType = factory('App\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $account->id,
             'relationship_type_id' => $relationshipType->id,
         ]);
@@ -56,7 +56,7 @@ class RelationshipTest extends TestCase
     public function test_it_belongs_to_a_contact_through_with_contact_field()
     {
         $contact = factory('App\Contact')->create([]);
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'of_contact' => $contact->id,
         ]);
 

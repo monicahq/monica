@@ -6,6 +6,7 @@ use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Relationships\Relationship;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model

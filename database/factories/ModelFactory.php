@@ -134,7 +134,7 @@ $factory->define(App\Note::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Relationship::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Relationships\Relationship::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'relationship_type_id' => function () {

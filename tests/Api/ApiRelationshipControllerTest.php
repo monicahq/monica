@@ -167,7 +167,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
             'name_reverse_relationship' => 'uncle',
         ]);
 
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
@@ -200,14 +200,14 @@ class ApiRelationshipControllerTest extends ApiTestCase
             'name_reverse_relationship' => 'uncle',
         ]);
 
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
             'of_contact' => $contactB->id,
         ]);
 
-        $relationshipB = factory('App\Relationship')->create([
+        $relationshipB = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account->id,
             'relationship_type_id' => $relationshipTypeB->id,
             'contact_is' => $contactB->id,
@@ -279,7 +279,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
             'name_reverse_relationship' => 'funnysituation',
         ]);
 
-        $relationship = factory('App\Relationship')->create([
+        $relationship = factory('App\Models\Relationships\Relationship')->create([
             'account_id' => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
@@ -319,7 +319,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
             'name_reverse_relationship' => 'uncle',
         ]);
 
-        $relationship = factory('App\Relationship', 3)->create([
+        $relationship = factory('App\Models\Relationships\Relationship', 3)->create([
             'account_id' => $user->account->id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contactA->id,
