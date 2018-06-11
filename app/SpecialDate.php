@@ -2,11 +2,9 @@
 
 namespace App;
 
-use App\Account;
-use App\Reminder;
-use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use App\Models\Relationship\RelationshipTypeGroup;
 use Tests\ApiTestCase;
+use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiRelationshipTypeGroupControllerTest extends ApiTestCase

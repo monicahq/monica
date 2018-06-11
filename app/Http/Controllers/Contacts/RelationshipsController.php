@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Relationship\Relationship;
+use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
 {

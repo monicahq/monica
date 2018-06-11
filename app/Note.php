@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Account;
 use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;

@@ -3,24 +3,24 @@
 namespace Tests\Unit;
 
 use App\Tag;
-use App\Models\Contact\Call;
 use App\Debt;
-use Carbon\Carbon;
-use Tests\FeatureTestCase;
-use App\Account;
-use App\Notification;
-use App\SpecialDate;
-use App\Gender;
-use App\Models\Contact\ContactFieldType;
 use App\User;
+use App\Gender;
+use App\Account;
+use Carbon\Carbon;
+use App\SpecialDate;
+use App\Notification;
+use Tests\FeatureTestCase;
+use App\Models\Contact\Call;
+use App\Mail\StayInTouchEmail;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactField;
 use App\Models\Contact\Activity;
+use App\Models\Contact\ContactField;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use App\Mail\StayInTouchEmail;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase

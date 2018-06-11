@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use App\Pet;
-use App\PetCategory;
 use App\Account;
 use Tests\TestCase;
+use App\PetCategory;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

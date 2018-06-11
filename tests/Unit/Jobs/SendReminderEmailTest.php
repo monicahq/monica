@@ -7,9 +7,9 @@ use App\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Mail\UserRemindedMail;
 use App\Jobs\SendReminderEmail;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

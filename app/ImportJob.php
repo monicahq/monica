@@ -2,18 +2,16 @@
 
 namespace App;
 
-use App\Gender;
-use App\ImportJobReport;
 use Exception;
 use Sabre\VObject\Reader;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Address;
-use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;

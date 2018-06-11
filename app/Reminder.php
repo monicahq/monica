@@ -2,12 +2,10 @@
 
 namespace App;
 
-use App\Account;
-use App\Notification;
-use App\Models\Contact\Contact;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contact\Activity;
-use Tests\TestCase;
 use App\Account;
-use App\Models\Contact\Contact;
+use Tests\TestCase;
 use App\JournalEntry;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class JournalEntryTest extends TestCase
