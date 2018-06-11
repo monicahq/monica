@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use App\Models\Contact\ActivityTypeGroup;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityType extends Model

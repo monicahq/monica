@@ -4,12 +4,11 @@ namespace App\Models\Contact;
 
 use Parsedown;
 use App\Account;
-use App\Models\Contact\ActivityType;
-use App\Models\Journal\JournalEntry;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

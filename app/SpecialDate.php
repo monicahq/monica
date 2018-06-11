@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Reminder;
-use App\Account;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;

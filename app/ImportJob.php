@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Account;
 use Exception;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Address;

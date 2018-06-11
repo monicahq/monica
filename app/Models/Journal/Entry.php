@@ -2,8 +2,8 @@
 
 namespace App\Models\Journal;
 
-use App\Account;
 use Parsedown;
+use App\Account;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Model;

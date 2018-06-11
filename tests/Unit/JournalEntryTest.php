@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use App\Account;
 use Tests\TestCase;
-use App\Models\Journal\JournalEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class JournalEntryTest extends TestCase

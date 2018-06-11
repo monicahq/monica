@@ -2,13 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Models\Journal\Day;
 use App\User;
 use App\Account;
 use App\Reminder;
 use App\Changelog;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

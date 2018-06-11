@@ -2,20 +2,16 @@
 
 namespace App;
 
-use App\Gender;
-use App\Module;
-use App\Notification;
-use App\ReminderRule;
-use App\Models\Contact\ContactField;
 use App\Models\Journal\Day;
-use App\Models\Journal\Entry;
-use App\Models\Journal\JournalEntry;
 use App\Models\Contact\Call;
+use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ContactField;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;

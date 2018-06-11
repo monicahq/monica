@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Account;
-use App\ImportJob;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

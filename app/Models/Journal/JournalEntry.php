@@ -3,8 +3,8 @@
 namespace App\Models\Journal;
 
 use App\Account;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Entry;
+use App\Models\Contact\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

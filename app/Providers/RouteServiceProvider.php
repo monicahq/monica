@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Journal\Day;
 use App\Pet;
 use App\Debt;
 use App\Gift;
@@ -13,6 +12,7 @@ use App\Module;
 use App\Reminder;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
+use App\Models\Journal\Day;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
