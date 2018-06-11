@@ -23,7 +23,7 @@ class JournalEntryTest extends TestCase
 
     public function test_get_add_adds_data_of_the_right_type()
     {
-        $activity = factory(\App\Activity::class)->create();
+        $activity = factory(\App\Models\Contacts\Activity::class)->create();
         $date = $activity->date_it_happened;
 
         $journalEntry = (new JournalEntry)->add($activity);
@@ -32,13 +32,13 @@ class JournalEntryTest extends TestCase
             'account_id' => $activity->account_id,
             'date' => $date,
             'journalable_id' => $activity->id,
-            'journalable_type' => 'App\Activity',
+            'journalable_type' => 'App\Models\Contacts\Activity',
         ]);
     }
 
     public function test_get_object_data_returns_an_object()
     {
-        $activity = factory(\App\Activity::class)->create();
+        $activity = factory(\App\Models\Contacts\Activity::class)->create();
 
         $journalEntry = (new JournalEntry)->add($activity);
 

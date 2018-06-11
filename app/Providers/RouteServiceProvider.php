@@ -10,7 +10,7 @@ use App\Note;
 use App\Task;
 use App\Gender;
 use App\Module;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\Reminder;
 use App\ContactField;
 use App\ReminderRule;

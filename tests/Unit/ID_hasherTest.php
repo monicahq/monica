@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Debt;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\Reminder;
 use Tests\TestCase;
 use App\Helpers\IdHasher;

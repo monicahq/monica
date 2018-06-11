@@ -31,7 +31,7 @@ $factory->define(App\Account::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Activity::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contacts\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'activity_type_id' => function () {

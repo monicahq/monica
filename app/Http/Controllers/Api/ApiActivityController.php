@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Note;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\ActivityType;
 use App\JournalEntry;
 use Illuminate\Http\Request;

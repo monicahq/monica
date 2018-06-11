@@ -294,17 +294,17 @@ class ContactTest extends FeatureTestCase
     {
         $contact = factory(Contact::class)->create();
 
-        $activity1 = factory(\App\Activity::class)->create([
+        $activity1 = factory(\App\Models\Contacts\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
         ]);
         $contact->activities()->attach($activity1);
 
-        $activity2 = factory(\App\Activity::class)->create([
+        $activity2 = factory(\App\Models\Contacts\Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
         ]);
         $contact->activities()->attach($activity2);
 
-        $activity3 = factory(\App\Activity::class)->create([
+        $activity3 = factory(\App\Models\Contacts\Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
         ]);
         $contact->activities()->attach($activity3);
@@ -319,7 +319,7 @@ class ContactTest extends FeatureTestCase
     {
         $contact = factory(Contact::class)->create();
 
-        $activity1 = factory(\App\Activity::class)->create([
+        $activity1 = factory(\App\Models\Contacts\Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
         ]);
         $contact->activities()->attach($activity1);

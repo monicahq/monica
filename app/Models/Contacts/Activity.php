@@ -1,7 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Contacts;
 
+use App\JournalEntry;
+use App\ActivityType;
+use App\Account;
 use Parsedown;
 use Carbon\Carbon;
 use App\Traits\Hasher;
@@ -85,7 +88,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function journalEntries()
     {
-        return $this->morphMany('App\JournalEntry', 'journalable');
+        return $this->morphMany(JournalEntry::class, 'journalable');
     }
 
     /**

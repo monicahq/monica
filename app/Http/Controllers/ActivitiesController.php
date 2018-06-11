@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contacts\Contact;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 

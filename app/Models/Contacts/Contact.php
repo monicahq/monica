@@ -4,7 +4,7 @@ namespace App\Models\Contacts;
 
 use App\User;
 use App\SpecialDate;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\ActivityStatistic;
 use App\Account;
 use App\Gender;

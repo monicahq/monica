@@ -3,7 +3,7 @@
 use App\Gift;
 use App\Note;
 use App\Task;
-use App\Activity;
+use App\Models\Contacts\Activity;
 use App\Reminder;
 use App\Models\Contacts\Contact;
 use Illuminate\Database\Migrations\Migration;

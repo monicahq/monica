@@ -575,12 +575,12 @@ class AccountTest extends FeatureTestCase
     public function test_it_retrieves_yearly_activities_statistics()
     {
         $account = factory('App\Account')->create();
-        $contact = factory('App\Activity', 4)->create([
+        $contact = factory('App\Models\Contacts\Activity', 4)->create([
             'account_id' => $account->id,
             'date_it_happened' => '2018-03-02',
         ]);
 
-        $contact = factory('App\Activity', 2)->create([
+        $contact = factory('App\Models\Contacts\Activity', 2)->create([
             'account_id' => $account->id,
             'date_it_happened' => '1992-03-02',
         ]);
