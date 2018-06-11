@@ -12,7 +12,7 @@ class RelationshipTypeGroupTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
 

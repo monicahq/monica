@@ -12,7 +12,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_belongs_to_an_account()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
 
@@ -32,7 +32,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_the_masculine_short_name_of_the_relationship_type()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
@@ -47,7 +47,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_the_feminine_short_name_of_the_relationship_type()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
@@ -62,7 +62,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_the_masculine_name_of_the_relationship_type_with_the_name_of_the_contact()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
@@ -82,7 +82,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_the_feminine_name_of_the_relationship_type_with_the_name_of_the_contact()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
@@ -102,7 +102,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_both_names_of_the_relationship_type_with_the_name_of_the_contact_and_the_opposite_version()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
@@ -122,7 +122,7 @@ class RelationshipTypeTest extends TestCase
     public function test_it_gets_only_one_name_of_the_relationship_type_if_name_and_name_reverse_are_similar()
     {
         $account = factory('App\Account')->create([]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'partner',
             'name_reverse_relationship' => 'partner',

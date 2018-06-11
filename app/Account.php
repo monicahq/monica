@@ -7,6 +7,7 @@ use App\Jobs\AddChangelogEntry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Relationships\Relationship;
+use App\Models\Relationships\RelationshipType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
@@ -280,7 +281,7 @@ class Account extends Model
      */
     public function relationshipTypes()
     {
-        return $this->hasMany('App\RelationshipType');
+        return $this->hasMany(RelationshipType::class);
     }
 
     /**

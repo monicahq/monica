@@ -49,10 +49,10 @@ class AccountTest extends FeatureTestCase
     public function test_it_has_many_relationship_types()
     {
         $account = factory(Account::class)->create();
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
         ]);
 
@@ -455,12 +455,12 @@ class AccountTest extends FeatureTestCase
     public function test_it_gets_the_relationship_type_object_matching_a_given_name()
     {
         $account = factory('App\Account')->create();
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'partner',
         ]);
 
-        $this->assertInstanceOf('App\RelationshipType', $account->getRelationshipTypeByType('partner'));
+        $this->assertInstanceOf('App\Models\Relationships\RelationshipType', $account->getRelationshipTypeByType('partner'));
     }
 
     public function test_it_gets_the_relationship_type_group_object_matching_a_given_name()

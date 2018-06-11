@@ -115,13 +115,13 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
-        $relationshipTypeB = factory('App\RelationshipType')->create([
+        $relationshipTypeB = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
@@ -155,13 +155,13 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
-        $relationshipTypeB = factory('App\RelationshipType')->create([
+        $relationshipTypeB = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
@@ -188,13 +188,13 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
-        $relationshipTypeB = factory('App\RelationshipType')->create([
+        $relationshipTypeB = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',
@@ -267,13 +267,13 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
-        $relationshipTypeC = factory('App\RelationshipType')->create([
+        $relationshipTypeC = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'fuckfriend',
             'name_reverse_relationship' => 'funnysituation',
@@ -307,13 +307,13 @@ class ApiRelationshipControllerTest extends ApiTestCase
         $user = $this->signin();
         $contactA = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $contactB = factory('App\Contact')->create(['account_id' => $user->account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'uncle',
             'name_reverse_relationship' => 'nephew',
         ]);
 
-        $relationshipTypeB = factory('App\RelationshipType')->create([
+        $relationshipTypeB = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account->id,
             'name' => 'nephew',
             'name_reverse_relationship' => 'uncle',

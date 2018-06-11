@@ -1,7 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Relationships;
 
+use App\Account;
+use App\Contact;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

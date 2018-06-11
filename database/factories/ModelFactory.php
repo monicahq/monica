@@ -138,12 +138,12 @@ $factory->define(App\Models\Relationships\Relationship::class, function (Faker\G
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'relationship_type_id' => function () {
-            return factory(App\RelationshipType::class)->create()->id;
+            return factory(App\Models\Relationships\RelationshipType::class)->create()->id;
         },
     ];
 });
 
-$factory->define(App\RelationshipType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Relationships\RelationshipType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
         'relationship_type_group_id' => function () {

@@ -971,7 +971,7 @@ class ContactTest extends FeatureTestCase
         $account = factory('App\Account')->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -999,13 +999,13 @@ class ContactTest extends FeatureTestCase
         $account = factory('App\Account')->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $oldRelationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
-        $newRelationshipType = factory('App\RelationshipType')->create([
+        $oldRelationshipType = factory('App\Models\Relationships\RelationshipType')->create(['account_id' => $account->id]);
+        $newRelationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'son',
             'name_reverse_relationship' => 'father',
         ]);
-        $reverseNewRelationshipType = factory('App\RelationshipType')->create([
+        $reverseNewRelationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'father',
             'name_reverse_relationship' => 'son',
@@ -1054,7 +1054,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'is_partial' => true,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -1078,7 +1078,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'is_partial' => false,
         ]);
-        $relationshipType = factory('App\RelationshipType')->create(['account_id' => $account->id]);
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create(['account_id' => $account->id]);
 
         $contact->setRelationship($partner, $relationshipType->id);
 
@@ -1106,7 +1106,7 @@ class ContactTest extends FeatureTestCase
         $account = factory('App\Account')->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'name' => 'godfather',
         ]);
@@ -1137,7 +1137,7 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'name' => 'friend',
         ]);
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $account->id,
             'relationship_type_group_id' => $relationshipTypeGroup->id,
         ]);
@@ -1193,7 +1193,7 @@ class ContactTest extends FeatureTestCase
         $contactC->birthday_special_date_id = $specialDate->id;
         $contactC->save();
 
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account_id,
         ]);
         $relationship = factory('App\Models\Relationships\Relationship')->create([
@@ -1228,7 +1228,7 @@ class ContactTest extends FeatureTestCase
             'is_partial' => true,
         ]);
 
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory('App\Models\Relationships\RelationshipType')->create([
             'account_id' => $user->account_id,
         ]);
         $relationship = factory('App\Models\Relationships\Relationship')->create([
