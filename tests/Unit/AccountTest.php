@@ -2,17 +2,17 @@
 
 namespace Tests\Unit;
 
-use Carbon\Carbon;
 use App\User;
-use App\Models\Contact\Gender;
 use App\Module;
-use App\Models\Account\Account;
 use App\Reminder;
 use App\Changelog;
+use Carbon\Carbon;
 use App\Invitation;
 use App\Notification;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Call;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Support\Facades\DB;

@@ -2,8 +2,8 @@
 
 namespace App\Models\Instance;
 
-use App\Models\Account\Account;
 use App\Jobs\AddChangelogEntry;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 

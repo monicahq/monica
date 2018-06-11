@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Models\Account\Account;
 use App\User;
 use App\Reminder;
 use Carbon\Carbon;
@@ -10,6 +9,7 @@ use Tests\TestCase;
 use App\Notification;
 use App\ReminderRule;
 use App\Mail\NotificationEmail;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\Notification\SendNotificationEmail;

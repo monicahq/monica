@@ -2,17 +2,17 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contact\Tag;
-use App\Models\Contact\Debt;
 use App\User;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use Carbon\Carbon;
 use App\SpecialDate;
 use App\Notification;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
+use App\Models\Contact\Debt;
 use App\Mail\StayInTouchEmail;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ContactField;

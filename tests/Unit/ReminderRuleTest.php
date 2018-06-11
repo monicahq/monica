@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Models\Account\Account;
 use Tests\TestCase;
 use App\ReminderRule;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderRuleTest extends TestCase

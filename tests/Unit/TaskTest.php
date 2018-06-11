@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use Tests\TestCase;
 use App\Models\Contact\Task;
 use App\Models\Account\Account;
-use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

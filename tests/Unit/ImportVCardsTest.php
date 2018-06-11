@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Models\Account\Account;
 use Mockery as m;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

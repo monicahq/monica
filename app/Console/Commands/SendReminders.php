@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\User;
-use App\Models\Account\Account;
 use App\Reminder;
 use App\Jobs\SendReminderEmail;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use App\Jobs\SetNextReminderDate;
 

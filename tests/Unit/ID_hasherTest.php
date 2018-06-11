@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Models\Contact\Debt;
 use App\Reminder;
 use Tests\TestCase;
 use App\Helpers\IdHasher;
+use App\Models\Contact\Debt;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

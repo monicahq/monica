@@ -2,9 +2,9 @@
 
 namespace Tests\Helper;
 
-use App\Models\Account\Account;
 use Tests\FeatureTestCase;
 use App\Helpers\VCardHelper;
+use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use JeroenDesloovere\VCard\VCard;

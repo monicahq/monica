@@ -1,9 +1,9 @@
 <?php
 
+use App\Reminder;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
-use App\Reminder;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Database\Migrations\Migration;

@@ -2,9 +2,9 @@
 
 namespace Tests\Helper;
 
-use App\Models\Account\Account;
 use Tests\TestCase;
 use App\Helpers\InstanceHelper;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class InstanceHelperTest extends TestCase

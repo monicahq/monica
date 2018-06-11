@@ -3,16 +3,16 @@
 namespace Tests\Unit;
 
 use App\User;
+use App\ImportJob;
+use Tests\TestCase;
+use App\ImportJobReport;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\ImportJob;
-use App\ImportJobReport;
-use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase

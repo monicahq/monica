@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
-use App\User;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;

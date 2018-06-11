@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\Models\Account\Account;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

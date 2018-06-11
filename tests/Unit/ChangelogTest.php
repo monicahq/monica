@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use App\User;
-use App\Models\Account\Account;
 use App\Changelog;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ChangelogTest extends TestCase

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Models\Account\Account;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;

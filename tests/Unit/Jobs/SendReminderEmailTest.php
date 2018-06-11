@@ -3,12 +3,12 @@
 namespace Tests\Unit\Jobs;
 
 use App\User;
-use App\Models\Account\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Mail\UserRemindedMail;
 use App\Jobs\SendReminderEmail;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

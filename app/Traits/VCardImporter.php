@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Contact\Gender;
 use Sabre\VObject\Reader;
+use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;

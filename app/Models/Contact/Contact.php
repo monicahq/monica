@@ -2,18 +2,10 @@
 
 namespace App\Models\Contact;
 
-use Cabron\Carbon;
-use App\Models\Contact\Pet;
-use App\Models\Contact\Tag;
-use App\Models\Contact\Debt;
-use App\Models\Contact\Gift;
-use App\Models\Contact\Note;
-use App\Models\Contact\Task;
 use App\User;
 use App\Event;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use App\Reminder;
+use Cabron\Carbon;
 use App\SpecialDate;
 use App\Notification;
 use App\Traits\Hasher;
@@ -22,6 +14,7 @@ use App\ActivityStatistic;
 use App\Traits\Searchable;
 use App\Models\Journal\Entry;
 use App\Mail\StayInTouchEmail;
+use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;

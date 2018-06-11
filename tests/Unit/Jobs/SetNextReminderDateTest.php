@@ -3,11 +3,11 @@
 namespace Tests\Unit\Jobs;
 
 use App\User;
-use App\Models\Account\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\ReminderRule;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

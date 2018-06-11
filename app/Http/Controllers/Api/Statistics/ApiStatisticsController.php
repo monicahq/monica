@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\Statistics;
 
 use App\Statistic;
-use App\Models\Instance\Instance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Instance\Instance;
 use App\Http\Controllers\Api\ApiController;
 
 class ApiStatisticsController extends ApiController

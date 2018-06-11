@@ -3,11 +3,11 @@
 namespace Tests\Unit\Jobs;
 
 use App\User;
-use App\Models\Account\Account;
 use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Notification;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;

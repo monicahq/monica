@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DateHelper;
-use App\Helpers\LocaleHelper;
-use App\Models\Contact\Tag;
 use App\User;
 use App\ImportJob;
 use App\Invitation;
 use App\Helpers\DBHelper;
+use App\Helpers\DateHelper;
+use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
+use App\Helpers\LocaleHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;

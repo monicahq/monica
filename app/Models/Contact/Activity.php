@@ -3,11 +3,11 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use App\Models\Account\Account;
 use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
+use App\Models\Account\Account;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;

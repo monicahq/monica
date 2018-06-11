@@ -3,9 +3,9 @@
 namespace App\Models\Journal;
 
 use Parsedown;
-use App\Models\Account\Account;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
+use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
 

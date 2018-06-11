@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Tag;
-use Exception;
 use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;

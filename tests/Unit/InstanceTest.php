@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Models\Account\Account;
-use App\Models\Instance\Instance;
 use Tests\TestCase;
 use App\Jobs\AddChangelogEntry;
+use App\Models\Account\Account;
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

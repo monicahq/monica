@@ -2,9 +2,8 @@
 
 namespace App\Models\Contact;
 
-use App\Models\Account\Account;
 use App\Traits\Hasher;
-use App\Models\Contact\Contact;
+use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 

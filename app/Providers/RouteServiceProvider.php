@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
+use App\Module;
+use App\Reminder;
+use App\ReminderRule;
+use App\Helpers\IdHasher;
 use App\Models\Contact\Pet;
+use App\Models\Journal\Day;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
 use App\Models\Contact\Gender;
-use App\Module;
-use App\Reminder;
-use App\ReminderRule;
-use App\Helpers\IdHasher;
-use App\Models\Journal\Day;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;

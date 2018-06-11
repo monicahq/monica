@@ -2,8 +2,8 @@
 
 namespace Tests\Api\Contact;
 
-use App\Models\Contact\Tag;
 use Tests\ApiTestCase;
+use App\Models\Contact\Tag;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

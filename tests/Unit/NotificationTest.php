@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Models\Account\Account;
 use App\Reminder;
 use Tests\TestCase;
 use App\Notification;
 use App\ReminderRule;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

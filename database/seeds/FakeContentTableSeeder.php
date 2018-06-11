@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Account\Account;
 use GuzzleHttp\Client;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
