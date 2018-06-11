@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Account;
 use Tests\TestCase;
-use App\JournalEntry;
+use App\Models\Journal\JournalEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

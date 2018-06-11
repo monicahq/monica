@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Journal\Entry;
 use App\Models\Journal\Day;
-use App\JournalEntry;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;

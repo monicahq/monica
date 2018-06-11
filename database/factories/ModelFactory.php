@@ -221,7 +221,7 @@ $factory->define(App\Tag::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\JournalEntry::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Journal\JournalEntry::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Account::class)->create()->id,
     ];

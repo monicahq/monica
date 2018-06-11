@@ -2,8 +2,14 @@
 
 namespace App;
 
+use App\Gender;
+use App\Module;
+use App\Notification;
+use App\ReminderRule;
+use App\Models\Contact\ContactField;
 use App\Models\Journal\Day;
 use App\Models\Journal\Entry;
+use App\Models\Journal\JournalEntry;
 use App\Models\Contact\Call;
 use Laravel\Cashier\Billable;
 use App\Jobs\AddChangelogEntry;
@@ -238,7 +244,7 @@ class Account extends Model
      */
     public function contactFields()
     {
-        return $this->hasMany('App\Models\Contact\ContactField');
+        return $this->hasMany(ContactField::class);
     }
 
     /**
@@ -248,7 +254,7 @@ class Account extends Model
      */
     public function journalEntries()
     {
-        return $this->hasMany('App\JournalEntry')->orderBy('date', 'desc');
+        return $this->hasMany(JournalEntry::class)->orderBy('date', 'desc');
     }
 
     /**
@@ -258,7 +264,7 @@ class Account extends Model
      */
     public function days()
     {
-        return $this->hasMany('App\Day');
+        return $this->hasMany(Day::class);
     }
 
     /**
@@ -268,7 +274,7 @@ class Account extends Model
      */
     public function genders()
     {
-        return $this->hasMany('App\Gender');
+        return $this->hasMany(Gender::class);
     }
 
     /**
@@ -278,7 +284,7 @@ class Account extends Model
      */
     public function reminderRules()
     {
-        return $this->hasMany('App\ReminderRule');
+        return $this->hasMany(ReminderRule::class);
     }
 
     /**
@@ -308,7 +314,7 @@ class Account extends Model
      */
     public function modules()
     {
-        return $this->hasMany('App\Module');
+        return $this->hasMany(Module::class);
     }
 
     /**
@@ -318,7 +324,7 @@ class Account extends Model
      */
     public function notifications()
     {
-        return $this->hasMany('App\Notification');
+        return $this->hasMany(Notification::class);
     }
 
     /**
