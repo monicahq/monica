@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Module;
+use App\Models\User\Module;
 use App\Reminder;
 use App\ReminderRule;
 use App\Helpers\IdHasher;

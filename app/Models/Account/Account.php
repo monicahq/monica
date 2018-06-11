@@ -6,7 +6,7 @@ use App\Models\User\User;
 use App\Changelog;
 use App\Invitation;
 use App\Notification;
-use App\Module;
+use App\Models\User\Module;
 use App\ReminderRule;
 use App\Reminder;
 use App\Helpers\DateHelper;

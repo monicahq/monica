@@ -270,7 +270,7 @@ $factory->define(App\Notification::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Module::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User\Module::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
