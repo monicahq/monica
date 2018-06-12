@@ -53,10 +53,10 @@ class JournalEntry extends Model
     {
         $this->account_id = $resourceToLog->account_id;
         $this->date = now();
-        if ($resourceToLog instanceof Activity) {
+        if ($resourceToLog instanceof \App\Models\Contact\Activity) {
             $this->date = $resourceToLog->date_it_happened;
         }
-        if ($resourceToLog instanceof Entry) {
+        if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $this->date = $resourceToLog->date;
         }
         $this->journalable_id = $resourceToLog->id;
