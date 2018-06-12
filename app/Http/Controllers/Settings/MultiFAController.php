@@ -62,7 +62,7 @@ class MultiFAController extends Controller
         //get user
         $user = $request->user();
 
-        if (!is_null($user->google2fa_secret)) {
+        if (! is_null($user->google2fa_secret)) {
             return response()->json(['error' => trans('settings.2fa_enable_error_already_set')]);
         }
 
