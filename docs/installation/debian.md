@@ -7,8 +7,10 @@ Monica can run on Debian Stretch.
 #### 1. Install the required packages:
 
 ```
-sudo apt install apache2 mariadb-server php7.0 php7.0-mysql php7.0-xml \
-    php7.0-intl php7.0-mbstring git curl
+sudo apt install apache2 mariadb-server php7.1 php7.1-cli php7.1-common \
+    php7.1-json php7.1-opcache php7.1-mysql php7.1-mbstring php7.1-mcrypt \
+    php7.1-zip php7.1-fpm php7.1-bcmath php7.1-intl php7.1-simplexml \
+    php7.1-dom php7.1-curl php7.1-gd git curl
 ```
 
 #### 2. Clone the repository
