@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => '名',
     'people_add_middlename' => '中间名 (可选)',
     'people_add_lastname' => '姓（可选）',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '添加',
     'people_save_and_add_another_cta' => '提交并添加其他人',
     'people_add_success' => ':name 已成功创建',

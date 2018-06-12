@@ -13,9 +13,6 @@
 
 Monica is a great open source personal relationship management system.
 
-<!-- This uses the MarkdownTOC's Sublime Text plugin to autogenerate the TOC -->
-<!-- MarkdownTOC autolink="true" depth="4" bracket="round" list_bullets="*" -->
-
 * [Introduction](#introduction)
   * [Purpose](#purpose)
   * [Features](#features)
@@ -40,15 +37,15 @@ Monica is a great open source personal relationship management system.
 * [Thank you, open source](#thank-you-open-source)
 * [License](#license)
 
-<!-- /MarkdownTOC -->
-
 ## Introduction
 
-Monica is an open-source web application to organize the interactions with your loved ones. I call it a PRM, or Personal Relationship Management. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management) (a popular tool used by sales teams in the corporate world) for your friends or family. This is what it currently looks like:
+Monica is an open-source web application to organize the interactions with your loved ones. We call it a PRM, or Personal Relationship Management. Think of it as a [CRM](https://en.wikipedia.org/wiki/Customer_relationship_management) (a popular tool used by sales teams in the corporate world) for your friends or family. This is what it currently looks like:
 
 <p align="center">
 <img src="docs/images/main-app.png" alt="screenshot of the application">
 </p>
+
+We also have official [open source mobile apps](https://github.com/monicahq/chandler).
 
 ### Purpose
 
@@ -81,6 +78,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Multi currencies
 * Multi languages
 * An API that covers most of the data
+* We also have [official mobile apps](https://github.com/monicahq/chandler), also open source
 
 ### Who is it for?
 
@@ -105,7 +103,7 @@ After a few months, I decided to open source the project so it would help other 
 There are multiple ways of getting started with Monica.
 
 1. You can use our hosted-version (this is the simplest way to use the product) on [https://monicahq.com](https://monicahq.com).
-1. You can install it on your server: follow installation instructions on the ([wiki](https://github.com/monicahq/monica/wiki/Installation-instructions)).
+1. You can install it on your server: follow installation instructions on the ([wiki](/docs/installation/index.md)).
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 
@@ -120,7 +118,7 @@ If you want to host it yourself, you need
 
 ### Update your instance
 
-Once the software is installed, you'll need to update it from time to time to have access to the latest features. [Read this document](https://github.com/monicahq/monica/wiki/Update-your-server) to learn how to do it.
+Once the software is installed, you'll need to update it from time to time to have access to the latest features. [Read this document](/docs/installation/update.md) to learn how to do it.
 
 ## Contribute
 
@@ -135,7 +133,7 @@ Do you want to help? That's awesome. Here are simple things you can do.
 ## Contribute as a developer
 
 * Read our [Contribution Guide](/CONTRIBUTING.md).
-* Install the developer version locally so you can start contributing [instructions](https://github.com/monicahq/monica/wiki/Contribute-as-a-developer).
+* Install the developer version locally so you can start contributing [instructions](/docs/contribute/index.md).
 * Look for [issues labelled bugs](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) if you are looking to have an immediate impact on the project.
 * Look for [issues labelled Help wanted](https://github.com/monicahq/monica/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) These are issues that you can solve relatively easily.
 * Look for [issues labelled Good first issue](https://github.com/monicahq/monica/labels/good%20first%20issue) These issues are for people who want to contribute, but try to work on a small feature first.
@@ -179,7 +177,7 @@ Here what we should do in order to realize our vision:
 * (**done**) Build importers and exporters of data. We don't want to have any vendor lock-ins. Data is the property of the users and they should be able to do whatever they want with it.
 * Be the central point of contact management, by supporting CardDav protocol.
 * Be the central point of calendar events, by supporting CalDav protocol.
-* Be available on mobile apps, not just a responsive site.
+* (**done**) Be available on [mobile apps](https://github.com/monicahq/chandler), not just a responsive site.
 * Build great reports so people can have interesting insights on how they interact with their loved ones.
 * Create a smart recommendation system for gifts. For instance, if my nephew is soon 6 years old in a month, I will be able to receive an email with a list of 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...
@@ -228,7 +226,14 @@ You can support the development of this tool [on Patreon](https://www.patreon.co
 
 ## Contact
 
-If you need to talk, you can contact me at regis AT monicahq DOT com. You can also reach me [on Twitter](https://twitter.com/djaiss).
+## Team
+
+Our team is made of 3 core members:
+* [Regis Freyd (djaiss)](https://github.com/djaiss)
+* [Théo Matthieu (mokto)](https://github.com/mokto)
+* [Alexis Saettler (asbiin)](https://github.com/asbiin)
+
+We are also fortunate to have an amazing community of external developers who help us greatly.
 
 ## Thank you, open source
 
@@ -236,6 +241,6 @@ Monica use a lot of open source projects and we thank them with all our hearts. 
 
 ## License
 
-Copyright (c) 2016-2018 Regis Freyd
+Copyright (c) 2016-2018
 
 Licensed under the AGPL License. [View license](/LICENSE).
