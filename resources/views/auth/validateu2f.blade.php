@@ -21,7 +21,7 @@
           
               {{ csrf_field() }}
 
-              <h3>Authenticate with a U2F device</h3>
+              <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
               <u2f-connector
                 :authdatas="{{ json_encode($authenticationData) }}"
                 :method="'login'"
@@ -30,7 +30,7 @@
 
               @if (app('pragmarx.google2fa')->isActivated())
               <div class="mt5">
-                <h3>Authenticate with your two factor device</h3>
+                <h3>{{ trans('auth.mfa_auth_otp') }}</h3>
                 @include ('partials.auth.validate2fa')
               </div>
               @endif

@@ -20,6 +20,7 @@
 
               {{ csrf_field() }}
 
+              <h3>{{ trans('auth.mfa_auth_otp') }}</h3>
               @include ('partials.auth.validate2fa')
 
             </div>

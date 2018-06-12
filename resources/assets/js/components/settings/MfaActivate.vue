@@ -34,7 +34,7 @@
             :id="'one_time_password'"
             v-model="one_time_password"
             :width="100"
-            :required="true" />
+            :required="true"></form-input>
         </div>
       </form>
       <div class="relative">
@@ -55,7 +55,7 @@
             :id="'one_time_password'"
             v-model="one_time_password"
             :width="100"
-            :required="true" />
+            :required="true"></form-input>
         </div>
       </form>
       <div class="relative">

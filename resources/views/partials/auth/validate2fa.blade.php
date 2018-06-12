@@ -5,7 +5,10 @@
 @endif
 <div class="form-group">
   <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-  <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
+  <form-input :input-type="'number'"
+            :id="'one_time_password'"
+            :width="100"
+            :required="true"></form-input>
   <small>{{ trans('auth.2fa_otp_help') }}</small>
 </div>
 
@@ -30,7 +33,7 @@
   </div>
   <div class="col-xs-12 col-md-6">
     <div class="form-group actions">
-      <a href="/logout" class="btn action">{{ trans('app.cancel') }}</a>
+      <a href="{{ url('logout') }}" class="btn action">{{ trans('app.cancel') }}</a>
     </div>
   </div>
 </div>

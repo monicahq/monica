@@ -18,6 +18,8 @@ return [
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
     'back_homepage' => 'Back to homepage',
+    'mfa_auth_otp' => 'Authenticate with your two factor device',
+    'mfa_auth_u2f' => 'Authenticate with a U2F device',
     '2fa_title' => 'Two Factor Authentication',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
     '2fa_one_time_password' => 'Two factor authentication code',
