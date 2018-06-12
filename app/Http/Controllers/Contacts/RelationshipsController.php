@@ -104,6 +104,9 @@ class RelationshipsController extends Controller
                 ->withErrors('There has been a problem with saving the name.');
         }
 
+        // set avatar color
+        $partner->setAvatarColor();
+
         $partner->save();
 
         // Handling the case of the birthday
@@ -143,9 +146,6 @@ class RelationshipsController extends Controller
 
                 break;
         }
-
-        // set avatar color
-        $partner->setAvatarColor();
 
         // create the relationship
         $contact->setRelationship($partner, $request->get('relationship_type_id'));
