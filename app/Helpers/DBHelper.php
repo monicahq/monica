@@ -31,4 +31,15 @@ class DBHelper
     {
         return version_compare(static::version(), $version) >= 0;
     }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getTables()
+    {
+        return DB::table('information_schema.tables')
+            ->select('table_name')
+            ->where('table_schema', '=', DB::connection()->getDatabaseName())
+            ->get();
+    }
 }
