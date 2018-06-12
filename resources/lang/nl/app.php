@@ -122,18 +122,18 @@ return [
     'relationship_type_lover_with_name' => ':name’s lover',
     'relationship_type_lover_female_with_name' => ':name’s lover',
 
-    'relationship_type_inlovewith' => 'in love with',
-    'relationship_type_inlovewith_female' => 'in love with',
-    'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
-    'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
+    'relationship_type_inlovewith' => 'verliefd op',
+    'relationship_type_inlovewith_female' => 'verliefd op',
+    'relationship_type_inlovewith_with_name' => 'iemand :naam is verliefd op',
+    'relationship_type_inlovewith_female_with_name' => 'iemand :naam is verliefd op',
 
-    'relationship_type_lovedby' => 'loved by',
-    'relationship_type_lovedby_female' => 'loved by',
-    'relationship_type_lovedby_with_name' => ':name’s secret lover',
-    'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
+    'relationship_type_lovedby' => 'begeert door',
+    'relationship_type_lovedby_female' => 'begeert door',
+    'relationship_type_lovedby_with_name' => ':naam\'s geheime minnaar',
+    'relationship_type_lovedby_female_with_name' => ':naam\'s geheime minnaar',
 
-    'relationship_type_ex' => 'ex-boyfriend',
-    'relationship_type_ex_female' => 'ex-girlfriend',
+    'relationship_type_ex' => 'ex-vriendje',
+    'relationship_type_ex_female' => 'ex-vriendin',
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
