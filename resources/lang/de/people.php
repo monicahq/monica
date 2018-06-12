@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'Vorname',
     'people_add_middlename' => 'zweiter Vorname (Optional)',
     'people_add_lastname' => 'Nachname (Optional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Person hinzufügen',
     'people_save_and_add_another_cta' => 'Hinzufügen und weitere Person anlegen',
     'people_add_success' => ':name wurde erfolgreich angelegt.',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Contact;
+use App\Helpers\DBHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use Illuminate\Support\Collection;
@@ -99,6 +100,7 @@ class ApiContactController extends ApiController
                 $request->only([
                     'first_name',
                     'last_name',
+                    'nickname',
                     'gender_id',
                     'job',
                     'company',
@@ -284,6 +286,7 @@ class ApiContactController extends ApiController
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender_id' => 'integer|required',
             'birthdate' => 'nullable|date',
             'birthdate_is_age_based' => 'boolean',
@@ -343,7 +346,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
         foreach ($tables as $table) {
             $tableName = $table->table_name;
             $tableData = DB::table($tableName)->get();

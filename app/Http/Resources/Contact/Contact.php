@@ -21,6 +21,7 @@ class Contact extends Resource
             'hash_id' => $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'nickname' => $this->nickname,
             'gender' => $this->gender->name,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,

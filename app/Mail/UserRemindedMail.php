@@ -40,7 +40,7 @@ class UserRemindedMail extends Mailable
         App::setLocale($this->user->locale);
 
         return $this->text('emails.reminder.reminder')
-                    ->subject(trans('mail.subject_line', ['contact' => $contact->getCompleteName($this->user->name_order)]))
+                    ->subject(trans('mail.subject_line', ['contact' => $contact->name]))
                     ->with([
                         'contact' => $contact,
                         'reminder' => $this->reminder,
