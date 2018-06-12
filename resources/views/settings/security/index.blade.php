@@ -66,17 +66,19 @@
               <button type="submit" class="btn">{{ trans('settings.password_btn') }}</button>
             </form>
 
-            @if (config('google2fa.enabled')===true)
+            @if (config('google2fa.enabled')===true || config('u2f.enable')===true)
             <form class="settings-reset">
               <h2>{{ trans('settings.2fa_title') }}</h2>
 
-              <div class="form-group">
-                @if ($is2FAActivated)
-                  <a href="{{ url('settings/security/2fa-disable') }}" class="btn btn-warning">{{ trans('settings.2fa_disable_title') }}</a>
-                @else
-                  <a href="{{ url('settings/security/2fa-enable') }}" class="btn btn-primary">{{ trans('settings.2fa_enable_title') }}</a>
-                @endif
-              </div>
+              @if (config('google2fa.enabled')===true)
+                 <mfa-activate :activated="@if ($is2FAActivated) true @else false @endif"></mfa-activate>
+              @endif
+
+              @if (config('u2f.enable')===true)
+              <h3>{{ trans('settings.u2f_title') }}</h3>
+              <a href="{{ url('u2f/register') }}" class="btn btn-primary">{{ trans('settings.u2f_enable_description') }}</a>
+              @endif
+
             </form>
 
             @endif

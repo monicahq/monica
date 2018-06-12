@@ -3,9 +3,7 @@
 
 <template>
     <div>
-        <!--<p>{{ $t('settings.u2f_enable_description') }}</p>-->
-
-        <notifications group="main" position="bottom right" />
+        <notifications group="main" position="bottom right" duration="5000" width="400" />
 
         <div class="form-error-message mb3" v-if="errorMessage != ''">
           <div class="pa2">
@@ -19,19 +17,19 @@
         </div>
 
         <div align="center" v-if="errorMessage == ''">
-            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
+          <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
         </div>
 
-        <div class="pa2" v-if="! success && errorMessage == ''">
-            <p>
-                {{ $t('settings.u2f_insertKey') }}
-            </p>
-            <p>
-                {{ $t('settings.u2f_buttonAdvise') }}
-                <br />
-                {{ $t('settings.u2f_noButtonAdvise') }}
-            </p>
-          </div>
+        <div class="pa2" v-if="errorMessage == ''">
+          <p>
+            {{ $t('settings.u2f_insertKey') }}
+          </p>
+          <p>
+            {{ $t('settings.u2f_buttonAdvise') }}
+            <br />
+            {{ $t('settings.u2f_noButtonAdvise') }}
+          </p>
+        </div>
     </div>
 </template>
 
@@ -118,21 +116,18 @@
                 }
 
                 var self = this;
-                axios.post('/u2f/register', {
-                    register: JSON.stringify(data)
-                }).then(response => {
-                    self.success = true;
-                    self.infoMessage = self.$t('settings.u2f_success');
-                    /*
-                    self.$notify({
-                        group: 'main',
-                        title: self.$t('settings.u2f_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                    */
-                }).catch(error => {
+                axios.post('/u2f/register', { register: JSON.stringify(data) })
+                .catch(error => {
                     self.errorMessage = error.response.data.message;
+                })
+                .then(response => {
+                    self.success = true;
+                    self.notify(self.$t('settings.u2f_success'), true);
+                })
+                .then(response => {
+                    setTimeout(function () {
+                        window.location = self.callbackurl;
+                    }, 3000);
                 });
             },
 
@@ -143,19 +138,15 @@
                 }
 
                 var self = this;
-                axios.post('/u2f/auth', {
-                    authentication: JSON.stringify(data)
-                }).then(response => {
-                    self.success = true;
-                    self.$notify({
-                        group: 'main',
-                        title: self.$t('settings.u2f_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                }).catch(error => {
+                axios.post('/u2f/auth', { authentication: JSON.stringify(data) })
+                .catch(error => {
                     self.errorMessage = error.response.data.message;
-                }).then(response => {
+                })
+                .then(response => {
+                    self.success = true;
+                    self.notify(self.$t('settings.u2f_success'), true);
+                })
+                .then(response => {
                     window.location = self.callbackurl;
                 });
             },
@@ -175,6 +166,15 @@
                         return this.$t('settings.u2f_error_timeout');
                 }
             },
+
+            notify(text, success) {
+                this.$notify({
+                    group: 'main',
+                    title: text,
+                    text: '',
+                    type: success ? 'success' : 'error'
+                });                
+            }
         }
     }
 </script>

@@ -34,13 +34,16 @@
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
 
+            <p>{{ trans('settings.u2f_enable_description') }}</p>
+
             <u2f-connector
               :currentkeys="{{ json_encode($currentKeys) }}"
               :registerdata="{{ json_encode($registerData) }}"
-              :method="'register'">
+              :method="'register'"
+              :callbackurl="{{ json_encode(url('settings/security')) }}">
             </u2f-connector>
 
-            <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
+            <a href="{{ url('settings/security') }}" class="btn">{{ trans('app.cancel') }}</a>
 
           </div>
         </div>

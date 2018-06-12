@@ -160,6 +160,10 @@ Vue.component(
     require('./components/settings/ReminderRules.vue')
 );
 Vue.component(
+    'mfa-activate',
+    require('./components/settings/MfaActivate.vue')
+);
+Vue.component(
     'u2f-connector',
     require('./components/settings/U2fConnector.vue')
 );
