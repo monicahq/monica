@@ -126,9 +126,8 @@ class ContactsController extends Controller
         $contact->last_name = $request->input('last_name', null);
         $contact->nickname = $request->input('nickname', null);
 
-        $contact->save();
-
         $contact->setAvatarColor();
+        $contact->save();
 
         $contact->logEvent('contact', $contact->id, 'create');
 
