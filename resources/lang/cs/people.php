@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'Jméno',
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Přidat tuto osobu',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',

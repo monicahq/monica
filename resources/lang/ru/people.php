@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Добавить',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',

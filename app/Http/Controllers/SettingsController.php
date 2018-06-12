@@ -6,6 +6,7 @@ use App\Tag;
 use App\User;
 use App\ImportJob;
 use App\Invitation;
+use App\Helpers\DBHelper;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
@@ -128,7 +129,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
         // Looping over the tables
         foreach ($tables as $table) {
@@ -166,8 +167,10 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
+        // TODO(tom@tomrochette.com): We cannot simply iterate over tables to reset an account
+        // as this will not work with foreign key constraints
         // Looping over the tables
         foreach ($tables as $table) {
             $tableName = $table->table_name;
