@@ -18,7 +18,7 @@ return [
     'sent' => 'Als de e-mail die je ingevoerd hebt al bestaat in onze database, zul je een wachtwoord reset link ontvangen.',
     'token' => 'Deze wachtwoord reset token is ongeldig.',
     'user' => 'Als de e-mail die je ingevoerd hebt al bestaat in onze database, zul je een wachtwoord reset link ontvangen.',
-    'changed' => 'Password changed successfuly.',
-    'invalid' => 'Current password you entered is not correct.',
+    'changed' => 'Wachtwoord succesvol gewijzigd.',
+    'invalid' => 'Het ingevoerde wachtwoord is niet correct.',
 
 ];
