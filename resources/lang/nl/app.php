@@ -117,8 +117,8 @@ return [
     'relationship_type_date_with_name' => ':dates naam',
     'relationship_type_date_female_with_name' => ':dates naam',
 
-    'relationship_type_lover' => 'lover',
-    'relationship_type_lover_female' => 'lover',
+    'relationship_type_lover' => 'geliefde',
+    'relationship_type_lover_female' => 'geliefde',
     'relationship_type_lover_with_name' => ':name’s lover',
     'relationship_type_lover_female_with_name' => ':name’s lover',
 
