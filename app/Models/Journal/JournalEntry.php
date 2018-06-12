@@ -4,7 +4,6 @@ namespace App\Models\Journal;
 
 use App\Models\Contact\Entry;
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
