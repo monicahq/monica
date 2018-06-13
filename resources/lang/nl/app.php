@@ -184,8 +184,8 @@ return [
 
     'relationship_type_godson' => 'peetzoon',
     'relationship_type_godson_female' => 'peetdochter',
-    'relationship_type_godson_with_name' => ':name’s godson',
-    'relationship_type_godson_female_with_name' => ':name’s goddaughter',
+    'relationship_type_godson_with_name' => ':naam\'s schoonzoon',
+    'relationship_type_godson_female_with_name' => ':naam\'s schoondochter',
 
     'relationship_type_friend' => 'vriend',
     'relationship_type_friend_female' => 'vriend',
@@ -207,23 +207,23 @@ return [
     'relationship_type_boss_with_name' => ':naam\'s baas',
     'relationship_type_boss_female_with_name' => ':naam\'s baas',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'ondergeschikte',
+    'relationship_type_subordinate_female' => 'ondergeschikte',
+    'relationship_type_subordinate_with_name' => ':naam\'s ondergeschikte',
+    'relationship_type_subordinate_female_with_name' => ':naam\'s ondergeschikte',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
-    'relationship_type_mentor_with_name' => ':name’s mentor',
-    'relationship_type_mentor_female_with_name' => ':name’s mentor',
+    'relationship_type_mentor_with_name' => ':naam\'s mentor',
+    'relationship_type_mentor_female_with_name' => ':naam\'s mentor',
 
     'relationship_type_protege' => 'protege',
     'relationship_type_protege_female' => 'protege',
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'ex-echtgenoot',
+    'relationship_type_ex_husband_female' => 'ex-vrouw',
+    'relationship_type_ex_husband_with_name' => ':naam\'s ex echtgenoot',
+    'relationship_type_ex_husband_female_with_name' => ':naam\'s ex-vrouw',
 ];
