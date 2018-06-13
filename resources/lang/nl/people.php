@@ -3,9 +3,9 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 kid|:count kids',
-    'people_list_last_updated' => 'Last consulted:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
+    'people_list_number_kids' => '1 kind|:count kids',
+    'people_list_last_updated' => 'Laatst bekeken:',
+    'people_list_number_reminders' => '1 herinnering|:count reminders',
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
     'people_list_blank_cta' => 'Add someone',
     'people_list_sort' => 'Sort',
