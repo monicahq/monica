@@ -43,7 +43,7 @@ aliases:
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql.travis .env
         sudo apt-get update
-        sudo apt-get install -y mysql-client
+        sudo apt-get install -y mysql-client libpng-dev
   - &yarn-install
     run:
       name: yarn install
