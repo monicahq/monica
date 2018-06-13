@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetupTest',
         'App\Console\Commands\SetupFrontEndTest',
         'App\Console\Commands\Update',
+        'App\Console\Commands\MigrateDatabaseCollation',
     ];
 
     /**

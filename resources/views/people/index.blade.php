@@ -147,7 +147,7 @@
                       @endif
                     @endif
                     <span class="people-list-item-name">
-                      {{ $contact->getCompleteName(auth()->user()->name_order) }}
+                      {{ $contact->name }}
                     </span>
 
                     <span class="people-list-item-information {{ \App\Helpers\LocaleHelper::getDirection() }}">
