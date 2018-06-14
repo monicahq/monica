@@ -1,10 +1,22 @@
 UNRELEASED CHANGES:
 
-* Fix resetting account not working
-* Add support for nicknames
-* Fix CSV import that can break if dates have the wrong format
+*
 
 RELEASED VERSIONS:
+
+v2.3.0 - 2018-06-13
+-------------------
+
+* Add a new variable DB_USE_UTF8MB4. Please read instructions carefully for this one.
+* Add support for nicknames
+* Fix resetting account not working
+* Fix CSV import that can break if dates have the wrong format
+* Add default accounts email confirmation in setup:test
+* Fix CSV import that can break if dates have the wrong format
+* Set the default tooltip delay to 0 so the tooltip does not stay displayed for 200ms by default
+* Replace queries with hardcoded "monica" database name to use the current default connection database
+* Set the default_avatar_color property before saving a contact model.
+* Move docs folder back to the repository
 
 v2.2.1 - 2018-05-31
 -------------------
