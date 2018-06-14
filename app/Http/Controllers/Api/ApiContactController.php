@@ -127,6 +127,7 @@ class ApiContactController extends ApiController
         }
 
         $contact->account_id = auth()->user()->account->id;
+        $contact->setAvatarColor();
         $contact->save();
 
         // birthdate
