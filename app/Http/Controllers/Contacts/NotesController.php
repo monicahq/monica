@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Note;
 use App\Contact;
+use App\Models\CouchNote;
+use App\Helpers\CouchDbHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\NotesRequest;
 use App\Http\Requests\People\NoteToggleRequest;
@@ -15,13 +17,17 @@ class NotesController extends Controller
      */
     public function get(Contact $contact)
     {
-        $notesCollection = collect([]);
-        $notes = $contact->notes()->latest()->get();
+        $client = CouchDbHelper::getAccountDatabase($contact->account_id);
 
-        foreach ($notes as $note) {
+        $notesCollection = collect([]);
+        $response = $client->limit(7)->startkey([$contact->id, []])->endkey([$contact->id])->descending(true)->include_docs(true)->getView('notes', 'byContact');
+        $notes = $response->rows;
+
+        foreach ($notes as $noteArray) {
+            $note = new CouchNote((array) $noteArray->doc);
             $data = [
-                'id' => $note->id,
-                'parsed_body' => $note->parsedbody,
+                '_id' => $note->_id,
+                'parsed_body' => $note->getParsedBodyAttribute(),
                 'body' => $note->body,
                 'is_favorited' => $note->is_favorited,
                 'favorited_at' => $note->favorited_at,
@@ -41,17 +47,17 @@ class NotesController extends Controller
      */
     public function store(NotesRequest $request, Contact $contact)
     {
-        $note = $contact->notes()->create([
-            'account_id' => auth()->user()->account->id,
+        $note = CouchNote::create(auth()->user()->account->id, new CouchNote([
             'body' => $request->get('body'),
-        ]);
+            'contact_id' => $contact->id,
+        ]));
 
-        $contact->logEvent('note', $note->id, 'create');
+        $contact->logEvent('note', $note->_id, 'create');
 
-        return $note;
+        return $note->toJson();
     }
 
-    public function toggle(NoteToggleRequest $request, Contact $contact, Note $note)
+    public function toggle(NoteToggleRequest $request, Contact $contact, CouchNote $note)
     {
         // check if the state of the note has changed
         if ($note->is_favorited) {
@@ -59,12 +65,14 @@ class NotesController extends Controller
             $note->is_favorited = false;
         } else {
             $note->is_favorited = true;
-            $note->favorited_at = now();
+            $note->favorited_at = now()->toDateTimeString();
         }
 
-        $contact->logEvent('note', $note->id, 'update');
+        $contact->logEvent('note', $note->_id, 'update');
 
         $note->save();
+
+        return $note->toJson();
     }
 
     /**
@@ -72,34 +80,32 @@ class NotesController extends Controller
      *
      * @param NotesRequest $request
      * @param Contact $contact
-     * @param Note $note
+     * @param CouchNote $note
      * @return \Illuminate\Http\Response
      */
-    public function update(NotesRequest $request, Contact $contact, Note $note)
+    public function update(NotesRequest $request, Contact $contact, CouchNote $note)
     {
-        $note->update(
-            $request->only([
-                'body',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $note->body = $request->body;
 
-        $contact->logEvent('note', $note->id, 'update');
+        $contact->logEvent('note', $note->_id, 'update');
 
-        return $note;
+        $note->save();
+
+        return $note->toJson();
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Note $note
+     * @param CouchNote $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Note $note)
+    public function destroy(Contact $contact, CouchNote $note)
     {
         $note->delete();
 
-        $contact->events()->forObject($note)->get()->each->delete();
+        // $contact->events()->forObject($note)->get()->each->delete();
+        $contact->logEvent('note', $note->_id, 'delete'); // is this what I should do here ?
     }
 }

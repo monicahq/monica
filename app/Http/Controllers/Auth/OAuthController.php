@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Exception;
+use App\Models\CouchUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Ircop\Antiflood\Facade\Antiflood;
@@ -47,12 +48,20 @@ class OAuthController extends Controller
         }
 
         try {
-            return response()->json($this->proxy([
+            $proxy = $this->proxy([
                 'username' => $email,
                 'password' => $password,
                 'grantType' => 'password',
-            ]));
+            ]);
+            $userId = User::getUserIdFromAccessToken($proxy['access_token']);
+            $user = new CouchUser((array) CouchUser::getOneById($userId));
+            $proxy['user'] = $user->toArray();
+            $proxy['couchdbAddress'] = config('database.connections.couchdb')['frontAddress'];
+
+            return response()->json($proxy);
         } catch (Exception $e) {
+            dd($e);
+
             return $this->handleError();
         }
     }

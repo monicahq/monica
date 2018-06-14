@@ -13,3 +13,4 @@ npm-debug.log*
 /results
 .travis.deploy.json
 yarn-error.log
+.idea

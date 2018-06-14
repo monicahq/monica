@@ -17,6 +17,7 @@ use App\ContactField;
 use App\Relationship;
 use App\ReminderRule;
 use App\Helpers\IdHasher;
+use App\Models\CouchNote;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -117,10 +118,9 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('note', function ($value, $route) {
-            return  Note::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+            // TODO: should verify contact_id
+            // TODO: should return 404 if document is missing
+            return CouchNote::getOneById(auth()->user()->account_id, $value);
         });
 
         Route::bind('journalEntry', function ($value, $route) {

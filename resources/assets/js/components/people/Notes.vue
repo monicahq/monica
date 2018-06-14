@@ -185,14 +185,14 @@
             },
 
             toggleFavorite(note) {
-                axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
+                axios.post('/people/' + this.hash + '/notes/' + note._id + '/toggle')
                       .then(response => {
                           this.getNotes();
                       });
             },
 
             update(note) {
-                axios.put('/people/' + this.hash + '/notes/' + note.id, note)
+                axios.put('/people/' + this.hash + '/notes/' + note._id, note)
                       .then(response => {
                           Vue.set(note, 'edit', note.edit);
                           this.getNotes();
@@ -207,13 +207,13 @@
             },
 
             showDelete(note) {
-                this.note.id = note.id
+                this.note._id = note._id
 
                 $('#modal-delete-note').modal('show');
             },
 
             trash(note) {
-                axios.delete('/people/' + this.hash + '/notes/' + note.id)
+                axios.delete('/people/' + this.hash + '/notes/' + note._id)
                       .then(response => {
                           this.getNotes();
 
