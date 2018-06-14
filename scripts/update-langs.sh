@@ -1,7 +1,7 @@
 #!/bin/bash
 
 l10nbranch=l10n_master3
-newbranch=$(date -Idate)-update-i18n
+newbranch=$(date +"%Y-%m-%d")-update-i18n
 origin=origin
 
 git checkout master
