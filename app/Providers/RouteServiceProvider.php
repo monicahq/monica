@@ -14,6 +14,7 @@ use App\Contact;
 use App\Activity;
 use App\Reminder;
 use App\ContactField;
+use App\JournalEntry;
 use App\Relationship;
 use App\ReminderRule;
 use App\Helpers\IdHasher;

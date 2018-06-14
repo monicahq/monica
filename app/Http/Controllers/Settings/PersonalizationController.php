@@ -56,7 +56,7 @@ class PersonalizationController extends Controller
     /**
      * Edit a newly created resource in storage.
      *
-     * @param ContactFieldTypeRequest $request
+     * @param Request $request
      * @param string $contactFieldTypeId
      * @return \Illuminate\Http\Response
      */
