@@ -1,9 +1,9 @@
  <?php
 
-use App\Account;
-use App\Relationship;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateCurrentRelationshipTableToNewRelationshipStructure extends Migration

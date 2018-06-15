@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Instance\Instance;
+use App\Models\Instance\Statistic;
 use App\Http\Controllers\Api\ApiController;
 
 class ApiStatisticsController extends ApiController
@@ -19,20 +22,20 @@ class ApiStatisticsController extends ApiController
         }
 
         // Collecting statistics
-        $statistic = \App\Statistic::orderBy('created_at', 'desc')->first();
-        $instance = \App\Instance::first();
+        $statistic = Statistic::orderBy('created_at', 'desc')->first();
+        $instance = Instance::first();
 
         // Get the date of the monday of last week
-        $dateMondayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateMondayLastWeek = Carbon::now()->subDays(7);
         $dateMondayLastWeek = $dateMondayLastWeek->startOfWeek();
 
         // Get the date of the sunday of last week
-        $dateSundayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateSundayLastWeek = Carbon::now()->subDays(7);
         $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
 
         // Get the number of users last monday
-        $instanceLastMonday = \App\Statistic::whereDate('created_at', '=', $dateMondayLastWeek->format('Y-m-d'))->first();
-        $instanceLastSunday = \App\Statistic::whereDate('created_at', '=', $dateSundayLastWeek->format('Y-m-d'))->first();
+        $instanceLastMonday = Statistic::whereDate('created_at', '=', $dateMondayLastWeek->format('Y-m-d'))->first();
+        $instanceLastSunday = Statistic::whereDate('created_at', '=', $dateSundayLastWeek->format('Y-m-d'))->first();
 
         $numberNewUsers = 0;
         if ($instanceLastMonday && $instanceLastSunday) {

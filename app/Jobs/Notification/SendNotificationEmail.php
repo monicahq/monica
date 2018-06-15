@@ -2,10 +2,10 @@
 
 namespace App\Jobs\Notification;
 
-use App\User;
-use App\Notification;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Mail\NotificationEmail;
+use App\Models\Contact\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

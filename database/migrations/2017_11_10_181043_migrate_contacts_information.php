@@ -1,7 +1,7 @@
 <?php
 
-use App\Account;
-use App\Instance;
+use App\Models\Account\Account;
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Task;
-use App\Contact;
+use App\Helpers\DateHelper;
+use App\Models\Contact\Task;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TasksRequest;
 use App\Http\Requests\People\TaskToggleRequest;
@@ -23,7 +24,7 @@ class TasksController extends Controller
                 'title' => $task->title,
                 'description' => $task->description,
                 'completed' => $task->completed,
-                'completed_at' => \App\Helpers\DateHelper::getShortDate($task->completed_at),
+                'completed_at' => DateHelper::getShortDate($task->completed_at),
                 'edit' => false,
             ];
             $tasks->push($data);

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Debt;
-use App\Contact;
+use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 
 class UsersColorSeeder extends Seeder

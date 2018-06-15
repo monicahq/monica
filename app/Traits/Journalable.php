@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\JournalEntry;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 trait Journalable

@@ -19,7 +19,7 @@ class UpdateJournalEntriesWithExistingActivities extends Migration
                 'account_id' => $activity->account_id,
                 'date' => $activity->date_it_happened,
                 'journalable_id' => $activity->id,
-                'journalable_type' => 'App\Activity',
+                'journalable_type' => 'App\Models\Contact\Activity',
                 'created_at' => $activity->created_at,
             ]);
         }
@@ -31,7 +31,7 @@ class UpdateJournalEntriesWithExistingActivities extends Migration
                 'account_id' => $entry->account_id,
                 'date' => $entry->created_at,
                 'journalable_id' => $entry->id,
-                'journalable_type' => 'App\Entry',
+                'journalable_type' => 'App\Models\Journal\Entry',
                 'created_at' => $entry->created_at,
             ]);
         }
