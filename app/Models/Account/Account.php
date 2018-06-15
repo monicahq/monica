@@ -15,6 +15,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Instance\SpecialDate;
 use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
@@ -255,6 +256,16 @@ class Account extends Model
     public function journalEntries()
     {
         return $this->hasMany(JournalEntry::class)->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the special dates records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function specialDates()
+    {
+        return $this->hasMany(SpecialDate::class);
     }
 
     /**
