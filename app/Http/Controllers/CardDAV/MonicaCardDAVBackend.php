@@ -85,6 +85,8 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
     }
 
     public function prepareCard($contact) {
+        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
+
         // Basic information
         $vcard = new VObject\Component\VCard([
             'FN'  => $contact->getCompleteName(),
@@ -108,6 +110,12 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
             break;
         }
         $vcard->add('GENDER', $gender.';'.$contact->gender->name);
+
+        // Birthday
+        if (!is_null($contact->birthdate)) {
+            $date = $contact->birthdate->date->format('Ymd');
+            $vcard->add('BDAY', $date);
+        }
 
         // Contactfields
         foreach($contact->contactFields as $contactField) {
@@ -134,7 +142,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
             'id'           => md5($contact->id),
             'uri'          => $uri,
             'lastmodified' => $timestamp,
-            'etag'         => '"' . md5($uri.$timestamp) . '"',
+            //'etag'         => '"' . md5($uri.$timestamp) . '"',
             'carddata'     => $vcard->serialize()
         ];
     }
