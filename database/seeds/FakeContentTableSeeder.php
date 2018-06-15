@@ -57,6 +57,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->has_avatar = false;
+            $this->contact->setAvatarColor();
             $this->contact->save();
 
             // set an external avatar
@@ -67,9 +68,7 @@ class FakeContentTableSeeder extends Seeder
                 $this->contact->save();
             }
 
-            $this->contact->setAvatarColor();
-
-            $this->populateFoodPreferencies();
+            $this->populateFoodPreferences();
             $this->populateDeceasedDate();
             $this->populateBirthday();
             $this->populateFirstMetInformation();
@@ -99,7 +98,7 @@ class FakeContentTableSeeder extends Seeder
         $this->confirmUser($blankUser);
     }
 
-    public function populateFoodPreferencies()
+    public function populateFoodPreferences()
     {
         // add food preferencies
         if (rand(1, 2) == 1) {
@@ -202,9 +201,8 @@ class FakeContentTableSeeder extends Seeder
                 if (rand(1, 2) == 1) {
                     $relatedContact->is_partial = true;
                 }
-                $relatedContact->save();
-
                 $relatedContact->setAvatarColor();
+                $relatedContact->save();
 
                 // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();

@@ -143,8 +143,8 @@ class ImportCSV extends Command
             $contact->email = null;
         }
 
-        $contact->save();
         $contact->setAvatarColor();
+        $contact->save();
 
         if (! empty($data[14])) {
             $birthdate = new \DateTime(strtotime($data[14]));

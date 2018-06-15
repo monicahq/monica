@@ -17,6 +17,7 @@ class UsersColorSeeder extends Seeder
 
         foreach ($contacts as $contact) {
             $contact->setAvatarColor();
+            $contact->save();
         }
     }
 }

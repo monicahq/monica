@@ -415,6 +415,7 @@ class ImportJob extends Model
             $contact = new Contact;
             $contact->account_id = $this->account_id;
             $contact->gender_id = $this->gender->id;
+            $contact->setAvatarColor();
             $contact->save();
         }
 
@@ -428,7 +429,6 @@ class ImportJob extends Model
         $this->contacts_imported++;
         $this->fileImportJobReport(self::VCARD_IMPORTED);
 
-        $contact->setAvatarColor();
         $contact->save();
 
         return $contact;
