@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Account;
+use App\Models\Account\Account;
 
 class InstanceHelper
 {

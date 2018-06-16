@@ -1,6 +1,6 @@
 <?php
 
-use App\Entry;
+use App\Models\Journal\Entry;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveEncryptionJournal extends Migration

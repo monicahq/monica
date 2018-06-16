@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Task;
-use App\Contact;
+use App\Models\Contact\Task;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;
@@ -38,7 +38,7 @@ class ApiTaskController extends ApiController
     public function show(Request $request, $taskId)
     {
         try {
-            $task = task::where('account_id', auth()->user()->account_id)
+            $task = Task::where('account_id', auth()->user()->account_id)
                 ->where('id', $taskId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {

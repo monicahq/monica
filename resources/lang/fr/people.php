@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Tri par nom de famille Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Trier par date de dernière activité (récent à vieux)',
     'people_list_lastactivitydateOldtoNew' => 'Trier par date de dernière activité (vieux à récent)',
-    'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette ',
+    'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
     'people_search' => 'Recherchez dans vos contacts...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
+    'people_list_untagged' => 'Afficher les contacts sans étiquette',
+    'people_list_filter_untag' => 'Afficher les contacts sans aucune étiquette',
 
     // people add
     'people_add_title' => 'Ajouter une nouvelle personne',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
+    'people_add_nickname' => 'Surnom (optionnel)',
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
     'people_add_success' => ':name a été crée avec succès',
@@ -62,7 +65,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'Restez en contact',
-    'stay_in_touch_frequency' => 'Rester en contact chaque jour | Rester en contact tous les {count} jours',
+    'stay_in_touch_frequency' => 'Rester en contact chaque jour|Rester en contact chaque jour|Rester en contact tous les {count} jours',
     'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',

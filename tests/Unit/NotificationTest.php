@@ -3,7 +3,11 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Notification;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\Notification;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class NotificationTest extends TestCase
@@ -12,17 +16,17 @@ class NotificationTest extends TestCase
 
     public function test_it_belongs_to_account()
     {
-        $account = factory('App\Account')->create([]);
-        $notification = factory('App\Notification')->create(['account_id' => $account->id]);
+        $account = factory(Account::class)->create([]);
+        $notification = factory(Notification::class)->create(['account_id' => $account->id]);
 
         $this->assertTrue($notification->account()->exists());
     }
 
     public function test_it_belongs_to_contact()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
@@ -32,9 +36,9 @@ class NotificationTest extends TestCase
 
     public function test_it_belongs_to_reminder()
     {
-        $account = factory('App\Account')->create([]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create([
+        $account = factory(Account::class)->create([]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'reminder_id' => $reminder->id,
         ]);
@@ -53,9 +57,9 @@ class NotificationTest extends TestCase
 
     public function test_it_deletes_a_notification_if_all_emails_have_been_sent()
     {
-        $account = factory('App\Account')->create([]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create([
+        $account = factory(Account::class)->create([]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'reminder_id' => $reminder->id,
         ]);
@@ -77,12 +81,12 @@ class NotificationTest extends TestCase
 
     public function test_it_indicates_if_a_notification_should_be_sent()
     {
-        $account = factory('App\Account')->create([]);
-        $notification = factory('App\Notification')->create([
+        $account = factory(Account::class)->create([]);
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'scheduled_number_days_before' => 7,
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 8,
             'active' => true,
@@ -90,7 +94,7 @@ class NotificationTest extends TestCase
         $this->assertFalse($notification->shouldBeSent());
         $reminderRule->delete();
 
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 7,
             'active' => true,
@@ -98,7 +102,7 @@ class NotificationTest extends TestCase
         $this->assertTrue($notification->shouldBeSent());
         $reminderRule->delete();
 
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 7,
             'active' => false,

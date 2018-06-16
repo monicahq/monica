@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Pet;
-use App\Contact;
-use App\PetCategory;
+use App\Models\Contact\Pet;
+use App\Models\Contact\Contact;
+use App\Models\Contact\PetCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\PetsRequest;
 

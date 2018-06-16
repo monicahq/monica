@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Řadit podle příjmení Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '1 kontakt|:count kontaktů',
     'people_search' => 'Prohledat kontakty...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Jméno',
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Přidat tuto osobu',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',

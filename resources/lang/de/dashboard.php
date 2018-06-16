@@ -11,6 +11,10 @@ return [
     'tab_recent_calls' => 'Kürzliche Telefonate',
     'tab_favorite_notes' => 'Markierte Notizen',
     'tab_calls_blank' => 'Du hast noch keine Telefonate protokolliert.',
+    'tab_debts' => 'Schulden',
+    'tab_debts_blank' => 'Du hast noch keine Schulden protokolliert.',
+
+    'debts_you_owe' => 'Du schuldest',
 
     'statistics_contacts' => 'Kontakte',
     'statistics_activities' => 'Aktivitäten',

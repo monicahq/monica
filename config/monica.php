@@ -20,7 +20,7 @@ return [
     | Activates double optin on signup
     |
     */
-    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', true),
+    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -158,5 +158,5 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.1.1',
+    'app_version' => '2.3.0',
 ];

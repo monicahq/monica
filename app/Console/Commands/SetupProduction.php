@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Account;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
 
 class SetupProduction extends Command

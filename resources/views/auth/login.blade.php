@@ -27,7 +27,7 @@
             @endif
             @if (session('confirmation-danger'))
               <div class="alert alert-danger">
-                {!! session('confirmation-danger') !!}
+                {!! __(session('confirmation-danger'), ['url' => url('confirmation/resend')]) !!}
               </div>
               <div class="alert alert-danger">
                 {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
@@ -62,7 +62,7 @@
                   <li>{{ trans('auth.password_forget') }}&nbsp;<a href="/password/reset">{{ trans('auth.password_reset') }}</a></li>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="/register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Account::hasAny())
+                  @elseif(! \App\Models\Account\Account::hasAny())
                     <li>{!! trans('auth.create_account', ['url' => '/register']) !!}</li>
                   @endif
                 </ul>

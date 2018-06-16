@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\User;
 use Tests\TestCase;
+use App\Models\User\User;
 use Illuminate\Session\Store;
 use App\Http\Requests\Request;
 use Illuminate\Session\NullSessionHandler;

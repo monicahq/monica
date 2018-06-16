@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use Exception;
-use App\Contact;
-use App\Relationship;
-use App\ContactFieldType;
+use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
@@ -108,6 +110,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender' => 'required|integer',
         ]);
 
@@ -123,10 +126,10 @@ class ContactsController extends Controller
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
-
-        $contact->save();
+        $contact->nickname = $request->input('nickname', null);
 
         $contact->setAvatarColor();
+        $contact->save();
 
         $contact->logEvent('contact', $contact->id, 'create');
 
@@ -135,7 +138,7 @@ class ContactsController extends Controller
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
@@ -157,7 +160,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
         $contact->save();
 
         $relationships = $contact->relationships;
@@ -218,8 +221,8 @@ class ContactsController extends Controller
 
         return view('people.edit')
             ->withContact($contact)
-            ->withDays(\App\Helpers\DateHelper::getListOfDays())
-            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
             ->withDay($day)
@@ -241,6 +244,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
+            'nickname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -259,6 +263,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = true;
@@ -307,7 +312,7 @@ class ContactsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
+                $birthdate = new Carbon($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use App\ContactFieldType;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

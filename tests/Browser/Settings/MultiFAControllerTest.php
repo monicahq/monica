@@ -2,9 +2,9 @@
 
 namespace Tests\Browser\Settings;
 
-use App\User;
 use Zxing\QrReader;
 use Tests\DuskTestCase;
+use App\Models\User\User;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsSecurity;
 use Tests\Browser\Pages\DashboardValidate2fa;

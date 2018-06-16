@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\ContactField;
+use App\Models\Contact\ContactField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactFieldTest extends TestCase

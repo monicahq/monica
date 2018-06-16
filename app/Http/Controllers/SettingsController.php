@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
-use App\User;
-use App\ImportJob;
-use App\Invitation;
+use App\Helpers\DBHelper;
+use App\Models\User\User;
+use App\Helpers\DateHelper;
+use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
+use App\Helpers\LocaleHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
+use App\Models\Account\ImportJob;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +53,7 @@ class SettingsController extends Controller
         'sessions',
         'statistics',
         'subscriptions',
+        'terms',
         'users',
     ];
 
@@ -60,9 +64,21 @@ class SettingsController extends Controller
      */
     public function index()
     {
+        // names order
+        $namesOrder = [
+            'firstname_lastname',
+            'lastname_firstname',
+            'firstname_lastname_nickname',
+            'firstname_nickname_lastname',
+            'lastname_firstname_nickname',
+            'lastname_nickname_firstname',
+            'nickname',
+        ];
+
         return view('settings.index')
-                ->withLocales(\App\Helpers\LocaleHelper::getLocaleList())
-                ->withHours(\App\Helpers\DateHelper::getListOfHours());
+                ->withNamesOrder($namesOrder)
+                ->withLocales(LocaleHelper::getLocaleList())
+                ->withHours(DateHelper::getListOfHours());
     }
 
     /**
@@ -115,7 +131,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
         // Looping over the tables
         foreach ($tables as $table) {
@@ -153,8 +169,10 @@ class SettingsController extends Controller
         $user = $request->user();
         $account = $user->account;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
+        // TODO(tom@tomrochette.com): We cannot simply iterate over tables to reset an account
+        // as this will not work with foreign key constraints
         // Looping over the tables
         foreach ($tables as $table) {
             $tableName = $table->table_name;

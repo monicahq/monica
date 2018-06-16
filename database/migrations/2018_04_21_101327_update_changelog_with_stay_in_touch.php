@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
@@ -24,7 +25,7 @@ You can now indicate if you want to stay in touch with someone at a regular inte
             'created_at' => '2018-04-21',
         ]);
 
-        $instance = \App\Instance::first();
+        $instance = Instance::first();
         $instance->addUnreadChangelogEntry($id);
     }
 }

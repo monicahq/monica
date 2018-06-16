@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Sort by last name Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '1 contact|:count contacts',
     'people_search' => 'Search your contacts...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Add a new person',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Add',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',

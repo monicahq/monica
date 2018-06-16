@@ -2,8 +2,8 @@
 
 namespace App\Jobs\StayInTouch;
 
-use App\Contact;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

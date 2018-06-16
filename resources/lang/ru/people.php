@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
     'people_search' => 'Поиск по контактам...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Лимиты контактов: :current/:limit',
     'people_list_account_upgrade_title' => 'Перейдите на другой план чтобы получить больше возможностей.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Добавить человека',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Добавить',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',

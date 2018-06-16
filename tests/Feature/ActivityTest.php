@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase
@@ -18,7 +20,7 @@ class ActivityTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -79,7 +81,7 @@ class ActivityTest extends FeatureTestCase
 
         // Get the activity that we just created
         // and make sure it's in our pivot table
-        $latestActivity = \App\Activity::all('id')->last();
+        $latestActivity = Activity::all('id')->last();
 
         $this->assertDatabaseHas('activity_contact', [
             'contact_id' => $contact->id,
@@ -104,7 +106,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $activity = factory(\App\Activity::class)->create([
+        $activity = factory(Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => now(),

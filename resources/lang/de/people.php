@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Nach Nachname sortieren Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Neueste Aktivitäten zuerst anzeigen',
     'people_list_lastactivitydateOldtoNew' => 'Älteste Aktivitäten zuerst anzeigen',
-    'people_list_filter_tag' => 'Zeige alle Kontakte mit Tag: ',
+    'people_list_filter_tag' => 'Es werden alle Kontakte mit den folgenden Tags angezeigt',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
     'people_search' => 'Suche in deinen Kontakten...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
     'people_list_account_upgrade_title' => 'Führe ein Upgrade aus, um alle Funktionen freizuschalten.',
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',
+    'people_list_untagged' => 'Unmarkierte Kontakte anzeigen',
+    'people_list_filter_untag' => 'Es werden alle Kontakte ohne Tags angezeigt',
 
     // people add
     'people_add_title' => 'Person hinzufügen',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Vorname',
     'people_add_middlename' => 'zweiter Vorname (Optional)',
     'people_add_lastname' => 'Nachname (Optional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Person hinzufügen',
     'people_save_and_add_another_cta' => 'Hinzufügen und weitere Person anlegen',
     'people_add_success' => ':name wurde erfolgreich angelegt.',

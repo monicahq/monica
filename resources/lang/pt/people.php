@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Classificar por sobrenome Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Ordenar por data de última atividade (da mais recente à mais antiga)',
     'people_list_lastactivitydateOldtoNew' => 'Ordenar por data de última atividade (da mais antiga à mais recente)',
-    'people_list_filter_tag' => 'A mostrar todos os contactos marcados com ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Limpar filtro',
     'people_list_contacts_per_tags' => '1 contacto|:count contactos',
     'people_search' => 'Procurar nos seus contactos...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Consumo da sua conta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Primeiro nome',
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Adicionar essa pessoa',
     'people_save_and_add_another_cta' => 'Enviar e adicionar outra pessoa',
     'people_add_success' => ':name foi criado com sucesso',

@@ -4,9 +4,9 @@
 
     {{-- NAME --}}
     @if ($relationship->ofContact->is_partial)
-    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'fr' }}">{{ $relationship->ofContact->getCompleteName(auth()->user()->name_order) }}</span>
+    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'fr' }}">{{ $relationship->ofContact->name }}</span>
     @else
-    <a class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'fr' }}" href="{{ route('people.show', $relationship->ofContact) }}">{{ $relationship->ofContact->getCompleteName(auth()->user()->name_order) }}</a>
+    <a class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'fr' }}" href="{{ route('people.show', $relationship->ofContact) }}">{{ $relationship->ofContact->name }}</a>
     @endif
 
     {{-- AGE --}}

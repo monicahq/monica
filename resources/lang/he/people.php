@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'מיון לפי שם משפחה ת ← א',
     'people_list_lastactivitydateNewtoOld' => 'מיון לפי מועד הפעילות האחרונה מהחדשה לישנה',
     'people_list_lastactivitydateOldtoNew' => 'מיון לפי מועד הפעילות האחרונה מהישנה לחדשה',
-    'people_list_filter_tag' => 'הצגת כל אנשי הקשר עם התגית ',
+    'people_list_filter_tag' => 'מוצגים כל אנשי הקשר עם התגית',
     'people_list_clear_filter' => 'ניקוי מסנן',
     'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
+    'people_list_untagged' => 'הצגת אנשי קשר ללא תיוג',
+    'people_list_filter_untag' => 'מוצגים כל אנשי קשר ללא תיוג',
 
     // people add
     'people_add_title' => 'הוספת אדם חדש',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'שם פרטי',
     'people_add_middlename' => 'שם אמצעי (רשות)',
     'people_add_lastname' => 'שם משפחה (רשות)',
+    'people_add_nickname' => 'כינוי (רשות)',
     'people_add_cta' => 'הוספה',
     'people_save_and_add_another_cta' => 'הגשה והוספת עוד מישהו',
     'people_add_success' => 'היצירה של :name הושלמה בהצלחה',

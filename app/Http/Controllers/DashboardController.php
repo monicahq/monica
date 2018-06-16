@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Debt;
-use App\User;
-use App\Contact;
+use App\Models\User\User;
+use App\Helpers\DateHelper;
+use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
@@ -39,7 +40,7 @@ class DashboardController extends Controller
                 'avatar_url' => $contact->getAvatarURL(110),
                 'initials' => $contact->getInitials(),
                 'default_avatar_color' => $contact->default_avatar_color,
-                'complete_name' => $contact->getCompleteName(auth()->user()->name_order),
+                'complete_name' => $contact->name,
             ];
             $lastUpdatedContactsCollection->push(json_encode($data));
         }
@@ -85,7 +86,7 @@ class DashboardController extends Controller
         foreach ($calls as $call) {
             $data = [
                 'id' => $call->id,
-                'called_at' => \App\Helpers\DateHelper::getShortDate($call->called_at),
+                'called_at' => DateHelper::getShortDate($call->called_at),
                 'name' => $call->contact->getIncompleteName(),
                 'contact_id' => $call->contact->hashID(),
             ];
@@ -108,7 +109,7 @@ class DashboardController extends Controller
             $data = [
                 'id' => $note->id,
                 'body' => $note->body,
-                'created_at' => \App\Helpers\DateHelper::getShortDate($note->created_at),
+                'created_at' => DateHelper::getShortDate($note->created_at),
                 'name' => $note->contact->getIncompleteName(),
                 'contact' => [
                     'id' => $note->contact->hashID(),
@@ -116,7 +117,7 @@ class DashboardController extends Controller
                     'avatar_url' => $note->contact->getAvatarURL(110),
                     'initials' => $note->contact->getInitials(),
                     'default_avatar_color' => $note->contact->default_avatar_color,
-                    'complete_name' => $note->contact->getCompleteName(auth()->user()->name_order),
+                    'complete_name' => $note->contact->name,
                 ],
             ];
             $notesCollection->push($data);

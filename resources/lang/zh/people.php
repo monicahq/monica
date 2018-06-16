@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => '以姓Z → A排序',
     'people_list_lastactivitydateNewtoOld' => '以最后活动日期从近到远排序',
     'people_list_lastactivitydateOldtoNew' => '以最后活动日期从远到近排序',
-    'people_list_filter_tag' => '显示所有联系人标签 ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => '清除筛选',
     'people_list_contacts_per_tags' => ':count 个联系人',
     'people_search' => '搜索联系人...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '现在更新',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => '添加新人员',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => '名',
     'people_add_middlename' => '中间名 (可选)',
     'people_add_lastname' => '姓（可选）',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '添加',
     'people_save_and_add_another_cta' => '提交并添加其他人',
     'people_add_success' => ':name 已成功创建',
