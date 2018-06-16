@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use Exception;
-use App\Contact;
-use App\Relationship;
-use App\ContactFieldType;
+use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
@@ -158,7 +160,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
         $contact->save();
 
         $relationships = $contact->relationships;
@@ -219,8 +221,8 @@ class ContactsController extends Controller
 
         return view('people.edit')
             ->withContact($contact)
-            ->withDays(\App\Helpers\DateHelper::getListOfDays())
-            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
             ->withDay($day)
@@ -310,7 +312,7 @@ class ContactsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
+                $birthdate = new Carbon($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,

@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Account;
-use App\Reminder;
+use App\Models\User\User;
 use App\Jobs\SendReminderEmail;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 
 class SendReminders extends Command

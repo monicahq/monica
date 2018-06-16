@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use Illuminate\Database\QueryException;

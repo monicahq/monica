@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Notification;
 use Illuminate\Console\Command;
+use App\Models\Contact\Notification;
 use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command

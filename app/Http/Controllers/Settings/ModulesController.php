@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Module;
+use App\Models\User\Module;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

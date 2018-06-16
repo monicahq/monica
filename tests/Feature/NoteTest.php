@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Note;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class NoteTest extends FeatureTestCase
@@ -58,7 +59,7 @@ class NoteTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $note = factory(Note::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'body' => 'this is a test',
@@ -94,7 +95,7 @@ class NoteTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $note = factory(\App\Note::class)->create([
+        $note = factory(Note::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'body' => 'this is a test',

@@ -2,6 +2,8 @@
 
 namespace Tests\Traits;
 
+use App\Models\User\User;
+
 trait SignIn
 {
     /**
@@ -14,7 +16,7 @@ trait SignIn
     public function signIn($user = null)
     {
         if (is_null($user)) {
-            $user = factory('App\User')->create();
+            $user = factory(User::class)->create();
             $user->account->populateDefaultFields($user->account);
             $user->acceptPolicy();
         }

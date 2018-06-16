@@ -2,7 +2,7 @@
 
 @if (config('monica.check_version'))
 
-    @if (\App\Instance::first()->latest_version != config('monica.app_version'))
+    @if (\App\Models\Instance\Instance::first()->latest_version != config('monica.app_version'))
     <li>
         <a href="#showVersion" data-toggle="modal" class="badge badge-success">{{ trans('app.footer_new_version') }}</a>
     </li>
@@ -19,8 +19,8 @@
             </button>
           </div>
           <div class="modal-body">
-          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Instance::first()->number_of_versions_since_current_version, ['number' => \App\Instance::first()->number_of_versions_since_current_version]) }}</p>
-          {!! \App\Instance::first()->latest_release_notes !!}
+          <p>{{ trans_choice('app.footer_modal_version_release_away', \App\Models\Instance\Instance::first()->number_of_versions_since_current_version, ['number' => \App\Models\Instance\Instance::first()->number_of_versions_since_current_version]) }}</p>
+          {!! \App\Models\Instance\Instance::first()->latest_release_notes !!}
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.close') }}</button>

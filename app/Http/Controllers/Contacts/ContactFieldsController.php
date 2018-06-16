@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Contact;
-use App\ContactField;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;
 
