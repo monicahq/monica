@@ -160,7 +160,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = Carbon::now();
         $contact->save();
 
         $relationships = $contact->relationships;
@@ -524,7 +524,7 @@ class ContactsController extends Controller
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

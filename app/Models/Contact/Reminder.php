@@ -138,9 +138,9 @@ class Reminder extends Model
      *
      * @return static
      */
-    public function calculateNextExpectedDate($timezone)
+    public function calculateNextExpectedDate()
     {
-        $date = $this->next_expected_date->setTimezone($timezone);
+        $date = $this->next_expected_date;
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);

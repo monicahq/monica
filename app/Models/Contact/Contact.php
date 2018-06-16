@@ -1509,9 +1509,9 @@ class Contact extends Model
      * @param int $frequency
      * @param string $timezone
      */
-    public function setStayInTouchTriggerDate($frequency, $timezone)
+    public function setStayInTouchTriggerDate($frequency)
     {
-        $now = Carbon::now($timezone);
+        $now = Carbon::now();
         $newTriggerDate = $now->addDays($frequency);
         $this->stay_in_touch_trigger_date = $newTriggerDate;
 
