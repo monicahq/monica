@@ -8,8 +8,6 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\SettingsSecurity;
 use Tests\Browser\Pages\DashboardValidate2fa;
-use Tests\Browser\Pages\SettingsSecurity2faEnable;
-use Tests\Browser\Pages\SettingsSecurity2faDisable;
 
 class MultiFAControllerTest extends DuskTestCase
 {
@@ -121,7 +119,6 @@ class MultiFAControllerTest extends DuskTestCase
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields($user->account);
         $user->acceptPolicy();
-
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser =
@@ -331,7 +328,7 @@ class MultiFAControllerTest extends DuskTestCase
 
             $res = $browser->elements('.notification');
             $notification = $res[1];
-    
+
             $this->assertContains('error', $notification->getAttribute('class'));
             $this->assertContains('Two Factor Authentication', $notification->getText());
         });
