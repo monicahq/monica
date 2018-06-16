@@ -10,7 +10,8 @@ class UpdateCommandTest extends TestCase
     public function test_update_command_default()
     {
         $commandExecutor = new CommandExecutorTester();
-        $command = new Update($commandExecutor);
+        $command = new Update();
+        $command->commandExecutor = $commandExecutor;
         $command->setLaravel($this->createApplication());
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());

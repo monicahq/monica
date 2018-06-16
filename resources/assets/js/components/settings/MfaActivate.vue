@@ -12,7 +12,7 @@
       <a v-else @click="showEnableModal" class="btn btn-primary">{{ $t('settings.2fa_enable_title') }}</a>
     </div>
 
-    <sweet-modal ref="enableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
+    <sweet-modal id="enableModal" ref="enableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
       <form v-on:submit.prevent="register()">
         <p>{{ $t('settings.2fa_enable_description') }}</p>
 
@@ -29,9 +29,9 @@
           <p>
             {{ $t('settings.2fa_enable_otp_validate') }}
           </p>
-          <label for="one_time_password">{{ $t('auth.2fa_one_time_password') }}</label>
+          <label for="one_time_password1">{{ $t('auth.2fa_one_time_password') }}</label>
           <form-input :input-type="'number'"
-            :id="'one_time_password'"
+            :id="'one_time_password1'"
             v-model="one_time_password"
             :width="100"
             :required="true"></form-input>
@@ -39,20 +39,20 @@
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="register()" class="btn btn-primary">{{ $t('app.verify') }}</a>
+            <a @click="register()" id="verify1" class="btn btn-primary">{{ $t('app.verify') }}</a>
             <a @click="closeEnableModal()" class="btn">{{ $t('app.cancel') }}</a>
         </span>
       </div>
     </sweet-modal>
 
-    <sweet-modal ref="disableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
+    <sweet-modal id="disableModal" ref="disableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
       <form v-on:submit.prevent="register()">
         <p>{{ $t('settings.2fa_disable_description') }}</p>
 
         <div class="form-group">
-          <label for="one_time_password">{{ $t('auth.2fa_one_time_password') }}</label>
+          <label for="one_time_password2">{{ $t('auth.2fa_one_time_password') }}</label>
           <form-input :input-type="'number'"
-            :id="'one_time_password'"
+            :id="'one_time_password2'"
             v-model="one_time_password"
             :width="100"
             :required="true"></form-input>
@@ -60,7 +60,7 @@
       </form>
       <div class="relative">
         <span class="fr">
-            <a @click="unregister()" class="btn btn-primary">{{ $t('app.verify') }}</a>
+            <a @click="unregister()" id="verify2" class="btn btn-primary">{{ $t('app.verify') }}</a>
             <a @click="closeDisableModal()" class="btn">{{ $t('app.cancel') }}</a>
         </span>
       </div>

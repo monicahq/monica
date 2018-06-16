@@ -1,4 +1,4 @@
-@extends('marketing.skeleton')
+@extends('marketing.auth')
 
 @section('content')
   <body class="marketing register">
