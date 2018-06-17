@@ -51,7 +51,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal')
                     ->assertVisible('barcode')
                     ->assertVisible('secretkey');
@@ -74,7 +74,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             // \Facebook\WebDriver\Remote\RemoteWebElement
@@ -125,11 +125,11 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal')
                     ->type('otpenable', '000000')
                     ->scrollTo('enableVerify')
-                    ->press('enableVerify')
+                    ->press('enableVerify')->pause(100)
                     ->waitUntilMissing('enableModal');
 
             $this->assertTrue($this->hasNotification($browser));
@@ -154,7 +154,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             $this->enable2fa($browser);
@@ -171,7 +171,7 @@ class MultiFAControllerTest extends DuskTestCase
         $browser->type('otpenable', $one_time_password);
 
         $browser = $browser->scrollTo('enableVerify')
-            ->press('enableVerify')
+            ->press('enableVerify')->pause(100)
             ->waitUntilMissing('enableModal');
 
         $this->assertTrue($this->hasNotification($browser));
@@ -202,18 +202,18 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             $secretkey = $this->enable2fa($browser);
 
             $browser =
-            $browser->clickLink('Logout')
+            $browser->clickLink('Logout')->pause(100)
                     ->loginAs($user)
                     ->visit(new DashboardValidate2fa)
                     ->assertVisible('otp')
                     ->type('otp', '000000')
-                    ->press('verify');
+                    ->press('verify')->pause(100);
 
             $this->assertTrue($this->hasDivAlert($browser));
             $notification = $this->getDivAlert($browser);
@@ -237,7 +237,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             $secretkey = $this->enable2fa($browser);
@@ -245,12 +245,12 @@ class MultiFAControllerTest extends DuskTestCase
             $one_time_password = $google2fa->getCurrentOtp($secretkey);
 
             $browser =
-            $browser->clickLink('Logout')
+            $browser->clickLink('Logout')->pause(100)
                     ->loginAs($user)
                     ->visit(new DashboardValidate2fa)
                     ->assertVisible('otp')
                     ->type('otp', $one_time_password)
-                    ->press('verify');
+                    ->press('verify')->pause(100);
 
             $this->assertFalse($this->hasDivAlert($browser));
             $browser->assertPathIs('/dashboard');
@@ -272,7 +272,7 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             $secretkey = $this->enable2fa($browser);
@@ -280,12 +280,12 @@ class MultiFAControllerTest extends DuskTestCase
             $one_time_password = $google2fa->getCurrentOtp($secretkey);
 
             $browser =
-            $browser->clickLink('Disable Two Factor Authentication')
+            $browser->clickLink('Disable Two Factor Authentication')->pause(100)
                     ->waitFor('disableModal')
                     ->assertVisible('otpdisable')
                     ->type('otpdisable', $one_time_password)
                     ->scrollTo('disableVerify')
-                    ->press('disableVerify')
+                    ->press('disableVerify')->pause(100)
                     ->waitUntilMissing('enableModal');
 
             $this->assertTrue($this->hasNotification($browser));
@@ -310,18 +310,18 @@ class MultiFAControllerTest extends DuskTestCase
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
                     ->scrollTo('two_factor_link')
-                    ->clickLink('Enable Two Factor Authentication')
+                    ->clickLink('Enable Two Factor Authentication')->pause(100)
                     ->waitFor('enableModal');
 
             $this->enable2fa($browser);
 
             $browser =
-            $browser->clickLink('Disable Two Factor Authentication')
+            $browser->clickLink('Disable Two Factor Authentication')->pause(100)
                     ->waitFor('disableModal')
                     ->assertVisible('otpdisable')
                     ->type('otpdisable', '000000')
                     ->scrollTo('disableVerify')
-                    ->press('disableVerify')
+                    ->press('disableVerify')->pause(100)
                     ->waitUntilMissing('enableModal');
 
             $this->assertTrue($this->hasNotification($browser));
