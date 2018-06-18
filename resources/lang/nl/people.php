@@ -45,7 +45,7 @@ return [
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
-    'people_export' => 'Export as vCard',
+    'people_export' => 'Exporteer als vCard',
     'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
@@ -78,11 +78,11 @@ return [
     'modal_call_date' => 'Dit telefoongesprek was eerder vandaag.',
     'modal_call_change' => 'Pas aan',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
-    'calls_add_success' => 'The phone call has been saved.',
-    'call_delete_confirmation' => 'Are you sure you want to delete this call?',
-    'call_delete_success' => 'The call has been deleted successfully',
-    'call_title' => 'Phone calls',
-    'call_empty_comment' => 'No details',
+    'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
+    'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
+    'call_delete_success' => 'Deze oproep is succesvol verwijdert',
+    'call_title' => 'Telefoon gesprekken',
+    'call_empty_comment' => 'Geen details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with :name',
     'call_blank_desc' => 'You called :name',
 
@@ -122,7 +122,7 @@ return [
     'work_information' => 'Work information',
 
     // food preferencies
-    'food_preferencies_add_success' => 'Food preferences have been saved',
+    'food_preferencies_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_title' => 'Indicate food preferences',
