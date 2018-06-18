@@ -28,13 +28,13 @@ return [
     'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
-    'people_add_title' => 'Add a new person',
-    'people_add_missing' => 'No Person Found Add New One Now',
-    'people_add_firstname' => 'First name',
-    'people_add_middlename' => 'Middle name (Optional)',
-    'people_add_lastname' => 'Last name (Optional)',
-    'people_add_nickname' => 'Nickname (Optional)',
-    'people_add_cta' => 'Add',
+    'people_add_title' => 'Voeg een nieuwe persoon toe',
+    'people_add_missing' => 'Niet gevonden, voeg nu iemand toe',
+    'people_add_firstname' => 'Voornaam',
+    'people_add_middlename' => 'Tweede naam (optioneel)',
+    'people_add_lastname' => 'Achternaam (optioneel)',
+    'people_add_nickname' => 'Koosnaam (Optioneel)',
+    'people_add_cta' => 'Toevoegen',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Geslacht',
@@ -49,35 +49,35 @@ return [
     'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
-    'section_contact_information' => 'Contact information',
-    'section_personal_activities' => 'Activities',
-    'section_personal_reminders' => 'Reminders',
-    'section_personal_tasks' => 'Tasks',
-    'section_personal_gifts' => 'Gifts',
-    'section_personal_notes' => 'Notes',
+    'section_contact_information' => 'Contact informatie',
+    'section_personal_activities' => 'Activiteiten',
+    'section_personal_reminders' => 'Herinneringen',
+    'section_personal_tasks' => 'Taken',
+    'section_personal_gifts' => 'Cadeaux',
+    'section_personal_notes' => 'Notities',
 
     //
-    'link_to_list' => 'List of people',
+    'link_to_list' => 'Lijst van contacten',
 
     // Header
-    'edit_contact_information' => 'Edit contact information',
-    'call_button' => 'Log a call',
+    'edit_contact_information' => 'Bewerk contact informatie',
+    'call_button' => 'Registreer een belgesprek',
 
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
+    'stay_in_touch_invalid' => 'De frequentie moet groter zijn dan 0.',
+    'stay_in_touch_premium' => 'U moe uw account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch_modal_label' => 'Stuur me een e-mail elke...',
 
     // Calls
-    'modal_call_title' => 'Log a call',
-    'modal_call_comment' => 'What did you talk about? (optional)',
-    'modal_call_date' => 'The phone call happened earlier today.',
-    'modal_call_change' => 'Change',
-    'modal_call_exact_date' => 'The phone call happened on',
+    'modal_call_title' => 'Registreer een belgesprek',
+    'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
+    'modal_call_date' => 'Dit telefoongesprek was eerder vandaag.',
+    'modal_call_change' => 'Pas aan',
+    'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
     'calls_add_success' => 'The phone call has been saved.',
     'call_delete_confirmation' => 'Are you sure you want to delete this call?',
     'call_delete_success' => 'The call has been deleted successfully',
