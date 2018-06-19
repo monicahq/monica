@@ -75,8 +75,10 @@
               @endif
 
               @if (config('u2f.enable')===true)
-              <h3>{{ trans('settings.u2f_title') }}</h3>
-              <a href="{{ url('u2f/register') }}" class="btn btn-primary">{{ trans('settings.u2f_enable_description') }}</a>
+                <u2f-connector
+                  :method="'register-modal'">
+                </u2f-connector>
+                <script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
               @endif
 
             </form>

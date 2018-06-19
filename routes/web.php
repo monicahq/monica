@@ -241,5 +241,6 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
         Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('.security.2fa-disable');
         Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
+        Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('.security.u2f-register');
     });
 });

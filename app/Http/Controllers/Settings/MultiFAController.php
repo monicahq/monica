@@ -141,4 +141,18 @@ class MultiFAController extends Controller
 
         return $google2fa->generateSecretKey(32);
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function u2fRegister(Request $request)
+    {
+        list($req, $sigs) = app('u2f')->getRegisterData($request->user());
+        session(['u2f.registerData' => $req]);
+        return response()->json([
+            'currentKeys' => $sigs,
+            'registerData' => $req
+            ]);
+    }
 }

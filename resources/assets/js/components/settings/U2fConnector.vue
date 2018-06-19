@@ -3,37 +3,78 @@
 
 <template>
     <div>
-        <notifications group="main" position="bottom right" duration="5000" width="400" />
+        <notifications group="u2f" position="bottom right" duration="5000" width="400" />
 
-        <div class="form-error-message mb3" v-if="errorMessage != ''">
-          <div class="pa2">
-            <p class="mb0">{{ errorMessage }}</p>
-          </div>
-        </div>
-        <div class="form-information-message mb3" v-if="infoMessage != ''">
-          <div class="pa2">
-            <p class="mb0">{{ infoMessage }}</p>
-          </div>
-        </div>
+        <div v-if="method == 'register-modal'">
+            <h3>{{ $t('settings.u2f_title') }}</h3>
+            <a @click="showRegisterModal" class="btn btn-primary">{{ $t('settings.u2f_enable_description') }}</a>
 
-        <div align="center" v-if="errorMessage == ''">
-          <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
-        </div>
+            <sweet-modal id="registerModal" ref="registerModal" overlay-theme="dark" :title="$t('settings.u2f_title')">
+                <div class="form-error-message mb3" v-if="errorMessage != ''">
+                    <div class="pa2">
+                        <p class="mb0">{{ errorMessage }}</p>
+                    </div>
+                </div>
+                <div class="form-information-message mb3" v-if="infoMessage != ''">
+                    <div class="pa2">
+                        <p class="mb0">{{ infoMessage }}</p>
+                    </div>
+                </div>
 
-        <div class="pa2" v-if="errorMessage == ''">
-          <p>
-            {{ $t('settings.u2f_insertKey') }}
-          </p>
-          <p>
-            {{ $t('settings.u2f_buttonAdvise') }}
-            <br />
-            {{ $t('settings.u2f_noButtonAdvise') }}
-          </p>
+                <div align="center" v-if="errorMessage == ''">
+                    <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
+                </div>
+
+                <div class="pa2" v-if="errorMessage == ''">
+                    <p>
+                        {{ $t('settings.u2f_insertKey') }}
+                    </p>
+                    <p>
+                        {{ $t('settings.u2f_buttonAdvise') }}
+                        <br />
+                        {{ $t('settings.u2f_noButtonAdvise') }}
+                    </p>
+                </div>
+                <div class="relative">
+                    <span class="fr">
+                        <a @click="closeRegisterModal()" class="btn">{{ $t('app.cancel') }}</a>
+                    </span>
+                </div>
+            </sweet-modal>
+        </div>
+        <div v-else>
+            <div class="form-error-message mb3" v-if="errorMessage != ''">
+                <div class="pa2">
+                    <p class="mb0">{{ errorMessage }}</p>
+                </div>
+            </div>
+            <div class="form-information-message mb3" v-if="infoMessage != ''">
+                <div class="pa2">
+                    <p class="mb0">{{ infoMessage }}</p>
+                </div>
+            </div>
+
+            <div align="center" v-if="errorMessage == ''">
+                <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt=""/>
+            </div>
+
+            <div class="pa2" v-if="errorMessage == ''">
+                <p>
+                    {{ $t('settings.u2f_insertKey') }}
+                </p>
+                <p>
+                    {{ $t('settings.u2f_buttonAdvise') }}
+                    <br />
+                    {{ $t('settings.u2f_noButtonAdvise') }}
+                </p>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+
     export default {
         /*
          * The component's data.
@@ -44,6 +85,11 @@
                 infoMessage: '',
                 success: false,
             };
+        },
+
+        components: {
+            SweetModal,
+            SweetModalTab
         },
 
         /**
@@ -86,12 +132,12 @@
                 var self = this;
                 switch(this.method) {
                     case 'register':
-                        setTimeout(function () {
+                    setTimeout(function () {
                             u2f.register(
                                 null,
                                 [self.registerdata],
                                 self.currentkeys,
-                                function (data) { self.u2fRegisterCallback(data); }
+                                function (data) { self.u2fRegisterCallback(data, true); }
                             );
                         }, 1000);
                     break;
@@ -109,7 +155,32 @@
                 }
             },
 
-            u2fRegisterCallback(data) {
+            showRegisterModal() {
+                var self = this;
+                axios.get('/settings/security/u2f-register')
+                .then(response => {
+                    this.currentkeys = response.data.currentKeys;
+                    this.registerdata = response.data.registerData;
+                    setTimeout(function () {
+                        u2f.register(
+                            null,
+                            [self.registerdata],
+                            self.currentkeys,
+                            function (data) { self.u2fRegisterCallback(data, false); }
+                        );
+                    }, 1000);
+                    this.$refs.registerModal.open();
+                }).catch(error => {
+                    this.notify(error.response.data.message, false);
+                });
+            },
+
+            closeRegisterModal() {
+                axios.get('/settings/security/u2f-register-forget');
+                this.$refs.registerModal.close();
+            },
+
+            u2fRegisterCallback(data, redirect) {
                 if (data.errorCode) {
                     this.errorMessage = this.getErrorText(data.errorCode);
                     return;
@@ -125,9 +196,13 @@
                     self.notify(self.$t('settings.u2f_success'), true);
                 })
                 .then(response => {
-                    setTimeout(function () {
-                        window.location = self.callbackurl;
-                    }, 3000);
+                    if (redirect) {
+                        setTimeout(function () {
+                            window.location = self.callbackurl;
+                        }, 3000);
+                    } else {
+                        self.closeRegisterModal();
+                    }
                 });
             },
 
@@ -169,7 +244,7 @@
 
             notify(text, success) {
                 this.$notify({
-                    group: 'main',
+                    group: 'u2f',
                     title: text,
                     text: '',
                     type: success ? 'success' : 'error'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95f78b66fd86f709e4968f38647f2f4f",
+    "content-hash": "37d0607a8e746e75eb60f09166d44c6d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1731,16 +1731,16 @@
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "536fb4111c6e36fa1fde4e0c6aa789dec8a25285"
+                "reference": "feaedbdbedadf3250c0bc50eb5941c5846ffaa36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/536fb4111c6e36fa1fde4e0c6aa789dec8a25285",
-                "reference": "536fb4111c6e36fa1fde4e0c6aa789dec8a25285",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/feaedbdbedadf3250c0bc50eb5941c5846ffaa36",
+                "reference": "feaedbdbedadf3250c0bc50eb5941c5846ffaa36",
                 "shasum": ""
             },
             "require": {
@@ -1772,7 +1772,7 @@
                 "security",
                 "u2f"
             ],
-            "time": "2018-04-23T16:25:22+00:00"
+            "time": "2018-06-19T04:56:27+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -3149,16 +3149,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3.0",
+            "version": "v0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9"
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/8f543ede60386faec9b0012833536de4b6083bb9",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
                 "shasum": ""
             },
             "require": {
@@ -3185,7 +3185,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2018-04-14T14:36:18+00:00"
+            "time": "2017-05-24T10:07:27+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
