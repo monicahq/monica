@@ -150,9 +150,10 @@ class MultiFAController extends Controller
     {
         list($req, $sigs) = app('u2f')->getRegisterData($request->user());
         session(['u2f.registerData' => $req]);
+
         return response()->json([
             'currentKeys' => $sigs,
-            'registerData' => $req
+            'registerData' => $req,
             ]);
     }
 }
