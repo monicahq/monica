@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
-*
+* Fix first name of a relation which could not be saved
+* Fix last name not being reset when set empty
 
 RELEASED VERSIONS:
 
