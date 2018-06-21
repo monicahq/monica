@@ -2,7 +2,7 @@
 
 namespace Tests\Traits;
 
-use App\User;
+use App\Models\User\User;
 use Laravel\Passport\Passport;
 
 trait ApiSignIn

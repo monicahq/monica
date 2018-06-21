@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\User;
+use App\Models\User\User;
 use App\Mail\NewUserAlert;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Mail;

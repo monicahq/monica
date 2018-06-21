@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Address;
 use Tests\TestCase;
+use App\Models\Contact\Address;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddressTest extends TestCase

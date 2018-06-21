@@ -2,9 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Activity;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends TestCase
@@ -31,16 +32,16 @@ class ActivityTest extends TestCase
 
     public function testGetDateItHappenedReturnsCarbonObject()
     {
-        $activity = factory(\App\Activity::class)->make();
+        $activity = factory(Activity::class)->make();
 
         $this->assertInstanceOf(Carbon::class, $activity->getDateItHappened());
     }
 
     public function testGetTitleReturnsAString()
     {
-        $type = factory(\App\ActivityType::class)->create();
+        $type = factory(ActivityType::class)->create();
 
-        $activity = factory(\App\Activity::class)->create([
+        $activity = factory(Activity::class)->create([
             'activity_type_id' => $type->id,
         ]);
 
@@ -49,7 +50,7 @@ class ActivityTest extends TestCase
 
     public function test_get_info_for_journal_entry()
     {
-        $activity = factory(\App\Activity::class)->create();
+        $activity = factory(Activity::class)->create();
 
         $data = [
             'type' => 'activity',

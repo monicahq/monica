@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Notification;
 
-use App\Notification;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

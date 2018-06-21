@@ -3,8 +3,16 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Account\ImportJob;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
+use App\Models\Account\ImportJobReport;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase
@@ -39,31 +47,31 @@ END:VCARD
 
     public function test_it_belongs_to_a_user()
     {
-        $user = factory('App\User')->create([]);
-        $importJob = factory('App\ImportJob')->create(['user_id' => $user->id]);
+        $user = factory(User::class)->create([]);
+        $importJob = factory(ImportJob::class)->create(['user_id' => $user->id]);
 
         $this->assertTrue($importJob->user()->exists());
     }
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $account = factory(Account::class)->create([]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
         $this->assertTrue($importJob->account()->exists());
     }
 
     public function test_it_belongs_to_many_reports()
     {
-        $importJob = factory('App\ImportJob')->create([]);
-        $importJobReport = factory('App\ImportJobReport', 100)->create(['import_job_id' => $importJob->id]);
+        $importJob = factory(ImportJob::class)->create([]);
+        $importJobReport = factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }
 
     public function test_it_initiates_the_job()
     {
-        $importJob = factory('App\ImportJob')->make([]);
+        $importJob = factory(ImportJob::class)->make([]);
 
         $this->assertNull($importJob->started_at);
 
@@ -74,7 +82,7 @@ END:VCARD
 
     public function test_it_finalizes_the_job()
     {
-        $importJob = factory('App\ImportJob')->make([]);
+        $importJob = factory(ImportJob::class)->make([]);
 
         $this->assertNull($importJob->ended_at);
 
@@ -85,44 +93,44 @@ END:VCARD
 
     public function test_it_creates_a_new_specific_gender()
     {
-        $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
+        $account = factory(Account::class)->create([]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
 
-        $existingNumberOfGenders = \App\Gender::all()->count();
+        $existingNumberOfGenders = Gender::all()->count();
 
         $importJob->getSpecialGender();
 
-        $this->assertInstanceOf('App\Gender', $importJob->gender);
+        $this->assertInstanceOf(Gender::class, $importJob->gender);
 
         $this->assertEquals(
             $existingNumberOfGenders + 1,
-            \App\Gender::all()->count()
+            Gender::all()->count()
         );
     }
 
     public function test_it_gets_an_existing_gender()
     {
-        $account = factory('App\Account')->create([]);
-        $importJob = factory('App\ImportJob')->create(['account_id' => $account->id]);
-        $gender = factory('App\Gender')->create([
+        $account = factory(Account::class)->create([]);
+        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
+        $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'name' => 'vCard',
         ]);
-        $existingNumberOfGenders = \App\Gender::all()->count();
+        $existingNumberOfGenders = Gender::all()->count();
 
         $importJob->getSpecialGender();
 
-        $this->assertInstanceOf('App\Gender', $importJob->gender);
+        $this->assertInstanceOf(Gender::class, $importJob->gender);
 
         $this->assertEquals(
             $existingNumberOfGenders,
-            \App\Gender::all()->count()
+            Gender::all()->count()
         );
     }
 
     public function test_it_fails_and_throws_an_exception()
     {
-        $importJob = factory('App\ImportJob')->create([]);
+        $importJob = factory(ImportJob::class)->create([]);
         $importJob->fail('reason');
 
         $this->assertTrue($importJob->failed);
@@ -135,7 +143,7 @@ END:VCARD
     public function test_it_gets_the_physical_file()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -158,7 +166,7 @@ END:VCARD
     public function test_it_throws_an_exception_if_file_doesnt_exist()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -173,7 +181,7 @@ END:VCARD
     public function test_it_deletes_the_file()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -190,7 +198,7 @@ END:VCARD
     public function test_it_throws_an_exception_if_file_cant_be_deleted()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -204,7 +212,7 @@ END:VCARD
     public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'filename' => 'testfile.vcf',
         ]);
 
@@ -248,14 +256,14 @@ END:VCARD
     public function test_it_doesnt_process_an_entry_if_contact_already_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
-        $contactFieldType = factory('App\ContactFieldType')->create([
+        $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -341,14 +349,14 @@ END:VCARD
     public function test_it_checks_if_a_contact_exists()
     {
         $importJob = $this->createImportJob();
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
-        $contactFieldType = factory('App\ContactFieldType')->create([
+        $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $importJob->account->id,
             'type' => 'email',
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'account_id' => $importJob->account->id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
@@ -439,7 +447,7 @@ END:VCARD
 
     public function test_it_formats_value()
     {
-        $importJob = new \App\ImportJob;
+        $importJob = new ImportJob;
 
         $result = $this->invokePrivateMethod($importJob, 'formatValue', ['']);
         $this->assertNull($result);
@@ -464,8 +472,8 @@ END:VCARD
         // we need the gender - otherwise the contact can't be created
         // as it requires the gender 'vCard'
         $importJob->getSpecialGender();
-        $numberOfContacts = \App\Contact::all()->count();
-        $numberOfFiledJobReport = \App\ImportJobReport::all()->count();
+        $numberOfContacts = Contact::all()->count();
+        $numberOfFiledJobReport = ImportJobReport::all()->count();
 
         $importJob->createContactFromCurrentEntry();
 
@@ -476,14 +484,14 @@ END:VCARD
         );
 
         // have we actually added a new contact in the database
-        $newNumberOfContacts = \App\Contact::all()->count();
+        $newNumberOfContacts = Contact::all()->count();
         $this->assertEquals(
             $numberOfContacts + 1,
             $newNumberOfContacts
         );
 
         // have we actually created a new import job report
-        $newNumberOfFiledJobReport = \App\ImportJobReport::all()->count();
+        $newNumberOfFiledJobReport = ImportJobReport::all()->count();
         $this->assertEquals(
             $numberOfFiledJobReport + 1,
             $newNumberOfFiledJobReport
@@ -498,7 +506,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importNames($contact);
 
         $this->assertEquals(
@@ -515,7 +523,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importNames($contact);
 
         $this->assertEquals(
@@ -533,7 +541,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = new \App\Contact;
+        $contact = new Contact;
         $importJob->importWorkInformation($contact);
 
         $this->assertEquals(
@@ -555,7 +563,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importBirthday($contact);
@@ -571,7 +579,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importAddress($contact);
@@ -590,7 +598,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importEmail($contact);
@@ -610,7 +618,7 @@ END:VCARD
         ]);
 
         $importJob->currentEntry = $vcard;
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
         $importJob->importTel($contact);
@@ -624,11 +632,11 @@ END:VCARD
 
     private function createImportJob()
     {
-        $account = factory('App\Account')->create([]);
-        $user = factory('App\User')->create([
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $importJob = factory('App\ImportJob')->create([
+        $importJob = factory(ImportJob::class)->create([
             'account_id' => $account->id,
             'user_id' => $user->id,
         ]);

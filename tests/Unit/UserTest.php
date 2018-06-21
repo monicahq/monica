@@ -2,13 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\Day;
-use App\User;
-use App\Account;
-use App\Changelog;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\Journal\Day;
 use App\Models\Settings\Term;
+use App\Models\User\Changelog;
+use App\Models\Account\Account;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -167,7 +168,7 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
 
         $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
     }
@@ -177,7 +178,7 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '08:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
         $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
     }
@@ -187,7 +188,7 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/London'));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
         $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
     }
@@ -197,7 +198,7 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 17, 32, 12));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '17:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
         $this->assertTrue($user->shouldBeReminded($reminder->next_expected_date));
     }

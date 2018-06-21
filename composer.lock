@@ -6238,16 +6238,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.38",
+            "version": "2.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a"
+                "reference": "8cfd4c627f77615ae03882c7e6afa2fb97430224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f269e7f58e3e0c8b52a1396b64b679949973f76a",
-                "reference": "f269e7f58e3e0c8b52a1396b64b679949973f76a",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/8cfd4c627f77615ae03882c7e6afa2fb97430224",
+                "reference": "8cfd4c627f77615ae03882c7e6afa2fb97430224",
                 "shasum": ""
             },
             "bin": [
@@ -6272,7 +6272,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-04-20T19:02:08+00:00"
+            "time": "2018-06-17T20:44:35+00:00"
         },
         {
             "name": "facebook/webdriver",

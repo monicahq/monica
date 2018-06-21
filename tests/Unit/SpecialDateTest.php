@@ -2,12 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Account;
-use App\Contact;
-use App\Reminder;
 use Carbon\Carbon;
-use App\SpecialDate;
+use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\Notification;
+use App\Models\Contact\ReminderRule;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SpecialDateTest extends FeatureTestCase
@@ -16,8 +19,8 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $specialDate = factory('App\SpecialDate')->create([
+        $account = factory(Account::class)->create([]);
+        $specialDate = factory(SpecialDate::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -26,9 +29,9 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create([]);
-        $specialDate = factory('App\SpecialDate')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([]);
+        $specialDate = factory(SpecialDate::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
@@ -38,9 +41,9 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_it_belongs_to_a_reminder()
     {
-        $account = factory('App\Account')->create([]);
-        $reminder = factory('App\Reminder')->create([]);
-        $specialDate = factory('App\SpecialDate')->create([
+        $account = factory(Account::class)->create([]);
+        $reminder = factory(Reminder::class)->create([]);
+        $specialDate = factory(SpecialDate::class)->create([
             'account_id' => $account->id,
             'reminder_id' => $reminder->id,
         ]);
@@ -89,10 +92,10 @@ class SpecialDateTest extends FeatureTestCase
     public function test_delete_reminder_also_deletes_notifications()
     {
         $account = factory(Account::class)->create();
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $specialDate = factory('App\SpecialDate')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $specialDate = factory(SpecialDate::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
 
         $this->assertDatabaseHas('notifications', ['reminder_id' => $reminder->id]);
 
@@ -103,7 +106,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_delete_reminder_returns_0_if_reminder_not_found()
     {
-        $specialDate = factory(\App\SpecialDate::class)->create(['reminder_id' => null]);
+        $specialDate = factory(SpecialDate::class)->create(['reminder_id' => null]);
 
         $this->assertEquals(0, $specialDate->deleteReminder());
     }
@@ -120,7 +123,7 @@ class SpecialDateTest extends FeatureTestCase
         $reminder->id = 1;
         $reminder->save();
 
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->reminder_id = $reminder->id;
         $specialDate->account_id = $user->account_id;
         $specialDate->save();
@@ -134,7 +137,7 @@ class SpecialDateTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->account_id = $user->account_id;
         $specialDate->save();
 
@@ -145,21 +148,21 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_set_reminder_creates_notifications()
     {
-        $user = factory('App\User')->create([]);
+        $user = factory(User::class)->create([]);
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $user->account->id,
             'number_of_days_before' => 7,
             'active' => 1,
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $user->account->id,
             'number_of_days_before' => 30,
             'active' => 1,
         ]);
 
-        $specialDate = factory('App\SpecialDate')->create(['account_id' => $user->account->id, 'date' => '2018-03-02']);
+        $specialDate = factory(SpecialDate::class)->create(['account_id' => $user->account->id, 'date' => '2018-03-02']);
 
         $reminder = $specialDate->setReminder('year', 1, '');
 
@@ -177,7 +180,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_age_returns_null_if_year_is_unknown()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 1;
         $specialDate->save();
 
@@ -186,7 +189,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_age_returns_age()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
         $specialDate->date = now()->subYears(5);
         $specialDate->save();
@@ -199,7 +202,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_create_from_age_sets_the_right_date()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
 
         $specialDate->createFromAge(100);
 
@@ -221,7 +224,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_create_from_date_creates_an_approximate_date()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
 
         $specialDate->createFromDate(0, 10, 10);
 
@@ -248,7 +251,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_create_from_date_creates_an_exact_date()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
 
         $specialDate->createFromDate(2019, 10, 10);
 
@@ -275,9 +278,9 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_set_contact_sets_the_contact_information()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
 
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
         $specialDate->setToContact($contact);
 
@@ -324,7 +327,7 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get__death_age_returns_null_if_year_is_unknown()
     {
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 1;
         $specialDate->save();
 
@@ -333,9 +336,9 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get__death_age_returns_null_if_birthDate_is_unknown()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
         $specialDate->date = now()->subYears(5);
         $specialDate->contact_id = $contact->id;
@@ -346,15 +349,15 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_death_age_returns_death_age()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
-        $birthDate = factory(\App\SpecialDate::class)->make();
+        $birthDate = factory(SpecialDate::class)->make();
         $birthDate->is_year_unknown = 0;
         $birthDate->date = now()->subYears(10);
         $birthDate->contact_id = $contact->id;
         $birthDate->save();
 
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
         $specialDate->date = now()->subYears(5);
         $specialDate->contact_id = $contact->id;
@@ -371,15 +374,15 @@ class SpecialDateTest extends FeatureTestCase
 
     public function test_get_death_age_from_contact()
     {
-        $contact = factory(\App\Contact::class)->create();
+        $contact = factory(Contact::class)->create();
 
-        $birthDate = factory(\App\SpecialDate::class)->make();
+        $birthDate = factory(SpecialDate::class)->make();
         $birthDate->is_year_unknown = 0;
         $birthDate->date = now()->subYears(10);
         $birthDate->contact_id = $contact->id;
         $birthDate->save();
 
-        $specialDate = factory(\App\SpecialDate::class)->make();
+        $specialDate = factory(SpecialDate::class)->make();
         $specialDate->is_year_unknown = 0;
         $specialDate->date = now()->subYears(5);
         $specialDate->contact_id = $contact->id;

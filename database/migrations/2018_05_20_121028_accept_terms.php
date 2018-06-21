@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Migrations\Migration;
 

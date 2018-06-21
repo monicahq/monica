@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\RelationshipType;
 use Illuminate\Http\Request;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\RelationshipType\RelationshipType as RelationshipTypeResource;
 

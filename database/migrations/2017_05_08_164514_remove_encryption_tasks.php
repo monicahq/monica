@@ -1,6 +1,6 @@
 <?php
 
-use App\Task;
+use App\Models\Contact\Task;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveEncryptionTasks extends Migration
