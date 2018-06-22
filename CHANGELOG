@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to click on entire row on the contact list
 * Fix first name of a relation which could not be saved
 * Fix last name not being reset when set empty
 
