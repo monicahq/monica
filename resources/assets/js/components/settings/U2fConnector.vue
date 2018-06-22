@@ -156,6 +156,9 @@
             },
 
             showRegisterModal() {
+                this.errorMessage = '';
+                this.infoMessage = '';
+                this.success = false;
                 var self = this;
                 axios.get('/settings/security/u2f-register')
                 .then(response => {
@@ -176,7 +179,6 @@
             },
 
             closeRegisterModal() {
-                axios.get('/settings/security/u2f-register-forget');
                 this.$refs.registerModal.close();
             },
 
