@@ -127,7 +127,7 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item bg-white pointer" @click="window.location.href='/people/{{ $contact->hashID() }}'">
+                <li class="people-list-item bg-white pointer" @click="window.location.href='{{ route('people.show', $contact) }}'">
                   @if ($contact->has_avatar)
                     <img src="{{ $contact->getAvatarURL(110) }}" width="43">
                   @else
