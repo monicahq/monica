@@ -296,4 +296,44 @@ class UserTest extends TestCase
             $collection->count()
         );
     }
+
+    public function test_it_gets_name_order_for_a_form()
+    {
+        $user = factory(User::class)->create([]);
+        $user->name_order = 'firstname_lastname';
+        $this->assertEquals(
+            'firstname',
+            $user->getNameOrderForForms()
+        );
+
+        $user->name_order = 'firstname_lastname_nickname';
+        $this->assertEquals(
+            'firstname',
+            $user->getNameOrderForForms()
+        );
+
+        $user->name_order = 'firstname_nickname_lastname';
+        $this->assertEquals(
+            'firstname',
+            $user->getNameOrderForForms()
+        );
+
+        $user->name_order = 'lastname_firstname';
+        $this->assertEquals(
+            'lastname',
+            $user->getNameOrderForForms()
+        );
+
+        $user->name_order = 'lastname_firstname_nickname';
+        $this->assertEquals(
+            'lastname',
+            $user->getNameOrderForForms()
+        );
+
+        $user->name_order = 'lastname_nickname_firstname';
+        $this->assertEquals(
+            'lastname',
+            $user->getNameOrderForForms()
+        );
+    }
 }
