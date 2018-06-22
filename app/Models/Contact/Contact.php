@@ -819,14 +819,8 @@ class Contact extends Model
         }
 
         $this->first_name = $firstName;
-
-        if (! is_null($middleName)) {
-            $this->middle_name = $middleName;
-        }
-
-        if (! is_null($lastName)) {
-            $this->last_name = $lastName;
-        }
+        $this->middle_name = $middleName;
+        $this->last_name = $lastName;
 
         $this->save();
 

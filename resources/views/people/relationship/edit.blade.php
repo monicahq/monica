@@ -41,7 +41,7 @@
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
         <div class="mb3 mb0-ns">
-          @if (auth()->user()->name_order == 'firstname_lastname')
+          @if (auth()->user()->getNameOrderForForms() == 'firstname')
 
           <div class="dt dt--fixed">
             <div class="dtc pr2">
@@ -71,7 +71,7 @@
               <form-input
                 value="{{ $partner->last_name }}"
                 v-bind:input-type="'text'"
-                v-bind:id="'lastname'"
+                v-bind:id="'last_name'"
                 v-bind:required="false"
                 v-bind:title="'{{ trans('people.people_add_lastname') }}'">
               </form-input>
@@ -80,7 +80,7 @@
               <form-input
                 value="{{ $partner->first_name }}"
                 v-bind:input-type="'text'"
-                v-bind:id="'firstname'"
+                v-bind:id="'first_name'"
                 v-bind:required="true"
                 v-bind:title="'{{ trans('people.people_add_firstname') }}'">
               </form-input>
