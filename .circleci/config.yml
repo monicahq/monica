@@ -12,7 +12,7 @@ version: 2
 
 aliases:
 # Some variables
-  - &composer_key composer-v2-{{ checksum "composer.lock" }}
+  - &composer_key composer-v3-{{ checksum "composer.lock" }}
   - &node_key node-v3-{{ checksum "package.json" }}
   - &assets_key assets-v2-{{ .Revision }}
   - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
@@ -84,7 +84,7 @@ aliases:
   - &browser-tests2
     run:
       name: Run browser tests (cypress)
-      command: $(yarn bin)/cypress run --record
+      command: $(yarn bin)/cypress run --record --reporter-options mochaFile=results/junit3.xml,toConsole=true
   - &fix-coverage
     run:
       name: Fix coverage
@@ -127,17 +127,12 @@ aliases:
     restore_cache:
       keys:
         - *composer_key
-        - composer-v2-
+        - composer-v3-
   - &restore_node
     restore_cache:
       keys:
         - *node_key
         - node-v3-
-  - &restore_assets
-    restore_cache:
-      keys:
-        - *assets_key
-        - assets-v2-
   - &restore_phpextensions
     run:
       name: Extract php extensions
@@ -171,6 +166,9 @@ jobs:
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: *composer_key
+          paths: ~/.composer/cache/
+      - persist_to_workspace:
+          root: *root
           paths: vendor
 
       ## NODE.JS
@@ -182,6 +180,9 @@ jobs:
       - save_cache:
           key: *node_key
           paths: ~/.cache
+      - persist_to_workspace:
+          root: *root
+          paths: node_modules
       - run:
           name: Upload yarn lockfile
           command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
@@ -192,8 +193,8 @@ jobs:
           command: |
             php artisan lang:generate
             yarn run production
-      - save_cache:
-          key: *assets_key
+      - persist_to_workspace:
+          root: *root
           paths:
             - public/mix-manifest.json
             - public/css
@@ -218,9 +219,6 @@ jobs:
       - *restore_phpextensions
       - *remove-xdebug
       - *restore_composer
-      - *restore_node
-      - *yarn-install
-      - *restore_assets
       - *prepare-db
       - *unit-tests
       - *psalm
@@ -250,9 +248,6 @@ jobs:
       - *restore_phpextensions
       - *update-chrome
       - *restore_composer
-      - *restore_node
-      - *yarn-install
-      - *restore_assets
       - *prepare-db
       - *selenium
       - *http-server
@@ -283,9 +278,7 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *restore_composer
-      - *restore_node
       - *yarn-install
-      - *restore_assets
       - restore_cache:
           keys:
             - *sonar_key
@@ -310,8 +303,9 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - *restore_composer
-      - *restore_assets
 
       - run: make assets
       - run: make push_bintray_assets
@@ -324,8 +318,9 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
-      - *restore_assets
       - run: make dist
       - run: make push_bintray_dist
 
@@ -336,6 +331,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - *prepare-environment
       - *docker-install
       - *docker-build
@@ -348,6 +345,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - *prepare-environment
       - *docker-install
       - *docker-build
