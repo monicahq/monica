@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => '没有定义LinkedIn',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => '更新工作信息',
     'work_edit_success' => '工作信息已成功更新',
     'work_edit_title' => '更新:name的工作信息',

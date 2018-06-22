@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
+    'linkedin_profile' => 'פרופיל LinkedIn',
     'work_add_cta' => 'עדכון פרטי עבודה',
     'work_edit_success' => 'פרטי העבודה עודכנו בהצלחה',
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
