@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'Nessun profilo LinkedIn',
     'information_no_work_defined' => 'Nessuna informazione professionale',
     'information_work_at' => 'alla :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Aggiorna informazioni professionali',
     'work_edit_success' => 'Le informazioni professionali sono state aggiornate.',
     'work_edit_title' => 'Aggiorna informazioni professionali di :name',
