@@ -387,4 +387,31 @@ class User extends Authenticatable
 
         return $terms;
     }
+
+    /**
+     * Get the name order that will be used when rendered the Add/Edit forms
+     * about contacts.
+     *
+     * @return string
+     */
+    public function getNameOrderForForms(): string
+    {
+        $nameOrder = '';
+
+        switch ($this->name_order) {
+            case 'firstname_lastname':
+            case 'firstname_lastname_nickname':
+            case 'firstname_nickname_lastname':
+            case 'nickname':
+                $nameOrder = 'firstname';
+                break;
+            case 'lastname_firstname':
+            case 'lastname_firstname_nickname':
+            case 'lastname_nickname_firstname':
+                $nameOrder = 'lastname';
+                break;
+        }
+
+        return $nameOrder;
+    }
 }
