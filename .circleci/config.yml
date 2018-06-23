@@ -275,7 +275,7 @@ jobs:
   tests-browser2-7.2:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node
+      - image: circleci/php:7.2-node-browsers
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
