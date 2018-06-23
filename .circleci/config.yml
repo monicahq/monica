@@ -248,6 +248,7 @@ jobs:
       - *restore_phpextensions
       - *update-chrome
       - *restore_composer
+      - *restore_node
       - *prepare-db
       - *selenium
       - *http-server
