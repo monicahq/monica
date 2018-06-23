@@ -12,9 +12,12 @@ version: 2
 
 aliases:
 # Some variables
+  - &composer_key_base composer-v3-
   - &composer_key composer-v3-{{ checksum "composer.lock" }}
-  - &node_key node-v3-{{ checksum "package.json" }}
+  - &node_key_base node-v4-
+  - &node_key node-v4-{{ checksum "package.json" }}
   - &assets_key assets-v2-{{ .Revision }}
+  - &sonar_key_base sonarscanner-v1-
   - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
   - &root ~/monica
 
@@ -127,12 +130,12 @@ aliases:
     restore_cache:
       keys:
         - *composer_key
-        - composer-v3-
+        - *composer_key_base
   - &restore_node
     restore_cache:
       keys:
         - *node_key
-        - node-v3-
+        - *node_key_base
   - &restore_phpextensions
     run:
       name: Extract php extensions
@@ -279,11 +282,10 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *restore_composer
-      - *yarn-install
       - restore_cache:
           keys:
             - *sonar_key
-            - sonarscanner-v1-
+            - *sonar_key_base
 
       - run:
           name: Merge junit files
