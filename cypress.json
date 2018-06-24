@@ -4,7 +4,7 @@
   "screenshotsFolder": "tests/cypress/screenshots",
   "supportFile": "tests/cypress/support/index.js",
   "fixturesFolder": "tests/cypress/fixtures",
-  "integrationFolder": "tests/cypress/integration/**",
+  "integrationFolder": "tests/cypress/integration",
   "pluginsFile": "tests/cypress/plugins/index.js",
   "video": false,
   "projectId": "2i96ir"
