@@ -260,7 +260,6 @@ jobs:
 
   reporting:
     <<: *defaults
-    context: SONAR
     docker:
       - image: circleci/php:7.2-node
 
@@ -383,6 +382,7 @@ workflows:
             tags:
               only: /.*/
       - reporting:
+          context: SONAR
           requires:
             - tests-7.2
             - tests-browser-7.2
