@@ -168,7 +168,7 @@ jobs:
       ## NODE.JS
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
       - *restore_node
       - run: yarn install
       - save_cache:
@@ -176,7 +176,7 @@ jobs:
           paths: node_modules
       - run:
           name: Upload yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
