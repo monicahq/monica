@@ -44,9 +44,9 @@ aliases:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
-        cp scripts/tests/.env.mysql.travis .env
+        cp scripts/tests/.env.mysql .env
         sudo apt-get update
-        sudo apt-get install -y mysql-client libpng-dev
+        sudo apt-get install -y mysql-client
   - &yarn-install
     run:
       name: yarn install
