@@ -12,10 +12,13 @@ version: 2
 
 aliases:
 # Some variables
-  - &composer_key composer-v2-{{ checksum "composer.lock" }}
-  - &node_key node-v2-{{ checksum "yarn.lock" }}
+  - &composer_key_base composer-v3-
+  - &composer_key composer-v3-{{ checksum "composer.lock" }}
+  - &node_key_base node-v4-
+  - &node_key node-v4-{{ checksum "package.json" }}
   - &assets_key assets-v2-{{ .Revision }}
-  - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+  - &sonar_key_base sonarscanner-v2-
+  - &sonar_key sonarscanner-v2-{{ .Environment.SONAR_VERSION }}-{{ checksum "scripts/tests/runsonar.sh" }}
   - &root ~/monica
 
 # Defaults env
@@ -41,9 +44,13 @@ aliases:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
-        cp scripts/tests/.env.mysql.travis .env
+        cp scripts/tests/.env.mysql .env
         sudo apt-get update
         sudo apt-get install -y mysql-client
+  - &yarn-install
+    run:
+      name: yarn install
+      command: yarn install --frozen-lockfile
   - &update-chrome
     run:
       name: Install chrome
@@ -68,15 +75,15 @@ aliases:
   - &unit-tests
     run:
       name: Run unit tests
-      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit.xml --coverage-clover ./results/coverage.xml
+      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
       name: Run psalm
       command: vendor/bin/psalm --show-info=false
   - &browser-tests
     run:
-      name: Run unit tests
-      command: php artisan dusk --log-junit results/junit2.xml
+      name: Run browser tests
+      command: php artisan dusk --log-junit results/junit/dusk/results.xml
   - &fix-coverage
     run:
       name: Fix coverage
@@ -119,17 +126,12 @@ aliases:
     restore_cache:
       keys:
         - *composer_key
-        - composer-v2-
+        - *composer_key_base
   - &restore_node
     restore_cache:
       keys:
         - *node_key
-        - node-v2-
-  - &restore_assets
-    restore_cache:
-      keys:
-        - *assets_key
-        - assets-v2-
+        - *node_key_base
   - &restore_phpextensions
     run:
       name: Extract php extensions
@@ -163,17 +165,20 @@ jobs:
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: *composer_key
+          paths: ~/.composer/cache/
+      - persist_to_workspace:
+          root: *root
           paths: vendor
 
       ## NODE.JS
+      - *restore_node
       - run:
           name: Update yarn lockfile
           command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
-      - *restore_node
-      - run: yarn install
+      - *yarn-install
       - save_cache:
           key: *node_key
-          paths: node_modules
+          paths: ~/.cache
       - run:
           name: Upload yarn lockfile
           command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
@@ -184,8 +189,8 @@ jobs:
           command: |
             php artisan lang:generate
             yarn run production
-      - save_cache:
-          key: *assets_key
+      - persist_to_workspace:
+          root: *root
           paths:
             - public/mix-manifest.json
             - public/css
@@ -209,16 +214,13 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *remove-xdebug
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
       - *prepare-db
       - *unit-tests
       - *psalm
       - store_test_results:
-          path: results
+          path: results/junit
       - store_artifacts:
-          path: results
+          path: results/junit
       - persist_to_workspace:
           root: *root
           paths: results
@@ -240,9 +242,6 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *update-chrome
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
       - *prepare-db
       - *selenium
       - *http-server
@@ -250,9 +249,9 @@ jobs:
       - *browser-tests
       - *fix-coverage
       - store_test_results:
-          path: results
+          path: results/junit
       - store_artifacts:
-          path: results
+          path: results/junit
       - store_artifacts:
           path: tests/Browser/screenshots
       - persist_to_workspace:
@@ -271,24 +270,28 @@ jobs:
           at: *root
       - *prepare-environment
       - *restore_phpextensions
-      - *restore_composer
-      - *restore_node
-      - *restore_assets
       - restore_cache:
           keys:
             - *sonar_key
-            - sonarscanner-v1-
+            - *sonar_key_base
 
       - run:
           name: Merge junit files
-          command: $(yarn bin)/junit-merge --dir results --out results/result.xml
+          command: |
+            yarn global add junit-merge
+            $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
       - run:
           name: Run sonar scanner
-          command: scripts/tests/runsonar.sh
+          command: |
+            export SONAR_RESULT=./results/results.xml
+            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml
+            scripts/tests/runsonar.sh
 
       - save_cache:
           key: *sonar_key
-          paths: ~/sonarscanner
+          paths:
+            - ~/sonarscanner
+            - ~/.sonar/cache
 
   deploy-assets:
     <<: *defaults
@@ -298,8 +301,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
-      - *restore_composer
-      - *restore_assets
+      - attach_workspace:
+          at: *root
 
       - run: make assets
       - run: make push_bintray_assets
@@ -312,8 +315,9 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
-      - *restore_assets
       - run: make dist
       - run: make push_bintray_dist
 
@@ -324,6 +328,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - *prepare-environment
       - *docker-install
       - *docker-build
@@ -336,6 +342,8 @@ jobs:
     steps:
       - checkout:
           <<: *post_checkout
+      - attach_workspace:
+          at: *root
       - *prepare-environment
       - *docker-install
       - *docker-build
@@ -374,6 +382,7 @@ workflows:
             tags:
               only: /.*/
       - reporting:
+          context: SONAR
           requires:
             - tests-7.2
             - tests-browser-7.2
