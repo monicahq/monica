@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
@@ -24,7 +25,7 @@ Many of you have asked for it - we now support nicknames for your contacts. By d
             'created_at' => '2018-05-21',
         ]);
 
-        $instance = \App\Instance::first();
+        $instance = Instance::first();
         $instance->addUnreadChangelogEntry($id);
     }
 }

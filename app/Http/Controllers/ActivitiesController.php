@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
-use App\Activity;
-use App\JournalEntry;
 use App\Helpers\IdHasher;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
+use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 
 class ActivitiesController extends Controller

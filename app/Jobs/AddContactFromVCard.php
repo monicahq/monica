@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\ImportJob;
 use Illuminate\Bus\Queueable;
+use App\Models\Account\ImportJob;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

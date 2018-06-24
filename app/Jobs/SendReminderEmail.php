@@ -2,10 +2,10 @@
 
 namespace App\Jobs;
 
-use App\User;
-use App\Reminder;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Mail\UserRemindedMail;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

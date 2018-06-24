@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'LinkedIn не указан',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Обновите информацию о работе',
     'work_edit_success' => 'Информация о работе была обновлена',
     'work_edit_title' => 'Обновление информации о работе: :name',

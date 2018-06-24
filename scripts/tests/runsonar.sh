@@ -24,11 +24,13 @@ function installSonar {
   echo 'Setup sonar scanner'
   
   # set version of sonar scanner to use :
-  sonarversion=3.1.0.1141
+  sonarversion=$SONAR_VERSION
+  echo "Using sonarscanner $sonarversion"
 
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
   if [ ! -d "sonar-scanner-$sonarversion" ]; then
+    echo "Downloading sonarscanner $sonarversion"
     java_path=$(which java || true)
     if [ -x "$java_path" ]; then
       wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip

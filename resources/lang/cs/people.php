@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Aktualizovat informace o práci',
     'work_edit_success' => 'Informace o práci úspěšně aktualizovány',
     'work_edit_title' => 'Aktualizovat informace o práci pro :name',
