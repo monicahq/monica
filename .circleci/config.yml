@@ -17,8 +17,8 @@ aliases:
   - &node_key_base node-v4-
   - &node_key node-v4-{{ checksum "package.json" }}
   - &assets_key assets-v2-{{ .Revision }}
-  - &sonar_key_base sonarscanner-v1-
-  - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+  - &sonar_key_base sonarscanner-v2-
+  - &sonar_key sonarscanner-v2-{{ .Environment.SONAR_VERSION }}-{{ checksum "scripts/tests/runsonar.sh" }}
   - &root ~/monica
 
 # Defaults env
@@ -260,6 +260,7 @@ jobs:
 
   reporting:
     <<: *defaults
+    context: SONAR
     docker:
       - image: circleci/php:7.2-node
 
@@ -289,7 +290,9 @@ jobs:
 
       - save_cache:
           key: *sonar_key
-          paths: ~/sonarscanner
+          paths:
+            - ~/sonarscanner
+            - ~/.sonar/cache
 
   deploy-assets:
     <<: *defaults
