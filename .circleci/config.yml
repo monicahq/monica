@@ -17,8 +17,8 @@ aliases:
   - &node_key_base node-v4-
   - &node_key node-v4-{{ checksum "package.json" }}
   - &assets_key assets-v2-{{ .Revision }}
-  - &sonar_key_base sonarscanner-v1-
-  - &sonar_key sonarscanner-v1-{{ checksum "scripts/tests/runsonar.sh" }}
+  - &sonar_key_base sonarscanner-v2-
+  - &sonar_key sonarscanner-v2-{{ .Environment.SONAR_VERSION }}-{{ checksum "scripts/tests/runsonar.sh" }}
   - &root ~/monica
 
 # Defaults env
@@ -44,9 +44,9 @@ aliases:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
-        cp scripts/tests/.env.mysql.travis .env
+        cp scripts/tests/.env.mysql .env
         sudo apt-get update
-        sudo apt-get install -y mysql-client libpng-dev
+        sudo apt-get install -y mysql-client
   - &yarn-install
     run:
       name: yarn install
@@ -181,20 +181,17 @@ jobs:
           paths: vendor
 
       ## NODE.JS
+      - *restore_node
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
-      - *restore_node
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
       - *yarn-install
       - save_cache:
           key: *node_key
           paths: ~/.cache
-      - persist_to_workspace:
-          root: *root
-          paths: node_modules
       - run:
           name: Upload yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" = "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
 
       # Build js and css assets
       - run:
@@ -255,7 +252,6 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *update-chrome
-      - *restore_node
       - *prepare-db
       - *selenium
       - *http-server
@@ -323,7 +319,9 @@ jobs:
 
       - run:
           name: Merge junit files
-          command: $(yarn bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+          command: |
+            yarn global add junit-merge
+            $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
       - run:
           name: Run sonar scanner
           command: |
@@ -333,7 +331,9 @@ jobs:
 
       - save_cache:
           key: *sonar_key
-          paths: ~/sonarscanner
+          paths:
+            - ~/sonarscanner
+            - ~/.sonar/cache
 
   deploy-assets:
     <<: *defaults
@@ -432,6 +432,7 @@ workflows:
             tags:
               only: /.*/
       - reporting:
+          context: SONAR
           requires:
             - tests-7.2
             - tests-browser-7.2
