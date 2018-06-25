@@ -24,7 +24,7 @@
           {{ csrf_field() }}
 
           {{-- This check is for the cultures that are used to say the last name first --}}
-          @if (auth()->user()->name_order == 'firstname_lastname')
+          @if (auth()->user()->getNameOrderForForms() == 'firstname')
 
           <dl class="form-group {{ $errors->has('first_name') ? ' errored' : '' }}">
             <dt><label for="first_name">{{ trans('people.people_add_firstname') }}</label></dt>

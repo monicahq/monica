@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'LinkedIn nicht angegeben',
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
     'work_edit_success' => 'Arbeitsplatz-Informationen wurden erfolgreich aktualisiert',
     'work_edit_title' => 'Ändere :name\'s Beruf-Informationen',

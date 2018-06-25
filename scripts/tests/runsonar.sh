@@ -24,11 +24,13 @@ function installSonar {
   echo 'Setup sonar scanner'
   
   # set version of sonar scanner to use :
-  sonarversion=3.1.0.1141
+  sonarversion=$SONAR_VERSION
+  echo "Using sonarscanner $sonarversion"
 
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
   if [ ! -d "sonar-scanner-$sonarversion" ]; then
+    echo "Downloading sonarscanner $sonarversion"
     java_path=$(which java || true)
     if [ -x "$java_path" ]; then
       wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
@@ -56,8 +58,8 @@ function CommonParams {
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=$SONAR_ORGANIZATION \
-       -Dsonar.php.tests.reportPath=./results/result.xml \
-       -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
+       -Dsonar.php.tests.reportPath=$SONAR_RESULT \
+       -Dsonar.php.coverage.reportPaths=$SONAR_COVERAGE \
        -Dsonar.analysis.buildNumber=$BUILD \
        -Dsonar.analysis.pipeline=$BUILD \
        $extra
