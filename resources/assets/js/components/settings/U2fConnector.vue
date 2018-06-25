@@ -34,6 +34,9 @@
                         <br />
                         {{ $t('settings.u2f_noButtonAdvise') }}
                     </p>
+                    <p>
+                        <span v-html="otpextension"></span>
+                    </p>
                 </div>
                 <div class="relative">
                     <span class="fr">
@@ -67,6 +70,9 @@
                     <br />
                     {{ $t('settings.u2f_noButtonAdvise') }}
                 </p>
+                <p>
+                    <span v-html="otpextension"></span>
+                </p>
             </div>
         </div>
     </div>
@@ -84,6 +90,7 @@
                 errorMessage: '',
                 infoMessage: '',
                 success: false,
+                otpextension: '',
             };
         },
 
@@ -129,6 +136,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.otpextension = this.$t('auth.2fa_otp_extension', {url: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'});
                 var self = this;
                 switch(this.method) {
                     case 'register':
