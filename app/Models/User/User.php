@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use Log;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
