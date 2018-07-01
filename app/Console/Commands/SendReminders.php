@@ -7,6 +7,7 @@ use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
+use Illuminate\Support\Facades\Log;
 
 class SendReminders extends Command
 {
