@@ -56,7 +56,7 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
-            \Log::info('User: '.$user->name.' | Reminder: '.$reminder->id);
+            Log::info('User: '.$user->name.' | Reminder: '.$reminder->id);
             if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)) {
                 if (! $account->hasLimitations()) {
                     $user->sendReminder($reminder);
