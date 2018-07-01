@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Log;
 use App\Models\User\User;
 use App\Jobs\SendReminderEmail;
 use App\Models\Account\Account;
@@ -57,8 +58,11 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
+            Log::info('$user: '.$user->name.' next expecated dte: '.$reminder->next_expected_date);
             if ($user->shouldBeReminded($reminder->next_expected_date)) {
+                Log::info('should be reminded');
                 if (! $account->hasLimitations()) {
+                    Log::info('doesnt have limitations');
                     dispatch(new SendReminderEmail($reminder, $user));
                 }
 
