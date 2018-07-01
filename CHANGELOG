@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Change how dates are stored, from local timezone to UTC
+* Remove the APP_TIMEZONE env variable
 
 RELEASED VERSIONS:
 

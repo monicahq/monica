@@ -54,6 +54,16 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | TIMEZONE
+    |--------------------------------------------------------------------------
+    |
+    | Timezone is not configurable in the .env file as everything is stored in
+    | UTC.
+    |
+    */
+
     'timezone' => 'UTC',
 
     /*
