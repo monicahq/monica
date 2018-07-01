@@ -4,14 +4,14 @@ namespace Tests\Unit;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Bus;
 use App\Models\User\User;
-use App\Models\Contact\Contact;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
+use Illuminate\Support\Facades\Bus;
 use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
