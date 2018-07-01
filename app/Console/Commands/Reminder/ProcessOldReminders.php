@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands\Reminder;
 
-use App\Models\Contact\Reminder;
 use Illuminate\Console\Command;
+use App\Models\Contact\Reminder;
 
 /**
  * Because of an old bug, some reminders have never been sent and sit on the
  * database, with very old `next_expected` date. This command
  * - delete one time reminders
- * - calculate the next expected date of the reminder based on its frequency
+ * - calculate the next expected date of the reminder based on its frequency.
  */
 class ProcessOldReminders extends Command
 {
@@ -40,7 +40,7 @@ class ProcessOldReminders extends Command
         foreach ($reminders as $reminder) {
             // Skip the reminder if the contact has been deleted (and for some
             // reasons, the reminder hasn't)
-            if (!$reminder->contact) {
+            if (! $reminder->contact) {
                 $reminder->delete();
                 continue;
             }
