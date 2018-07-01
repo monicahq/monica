@@ -6,11 +6,11 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Mail\UserRemindedMail;
-use App\Jobs\SendReminderEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendReminderEmailTest extends TestCase
