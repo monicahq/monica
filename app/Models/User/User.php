@@ -267,18 +267,21 @@ class User extends Authenticatable
         $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
 
         $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
-        \Log::info('currentDate: '.$currentDateOnUserTimezone. ' current hour: '.$currentHourOnUserTimezone);
+        \Log::info('currentDate: '.$currentDateOnUserTimezone.' current hour: '.$currentHourOnUserTimezone);
         if ($dateOfReminder != $currentDateOnUserTimezone) {
             \Log::info('$dateOfReminder != $currentDateOnUserTimezone');
+
             return false;
         }
 
         if ($hourEmailShouldBeSent != $currentHourOnUserTimezone) {
             \Log::info('$hourEmailShouldBeSent != $currentHourOnUserTimezone');
+
             return false;
         }
 
         \Log::info('return true');
+
         return true;
     }
 
