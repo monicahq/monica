@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Mail\UserRemindedMail;
-use App\Jobs\SendReminderEmail;
+use App\Jobs\Reminder\SendReminderEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
