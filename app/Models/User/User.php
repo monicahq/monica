@@ -9,7 +9,6 @@ use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
