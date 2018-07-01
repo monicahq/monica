@@ -14,7 +14,6 @@ class AcceptTerms extends Migration
     {
         User::chunk(200, function ($users) {
             foreach ($users as $user) {
-                \Log::info($user->id);
                 if ($user->account) {
                     $user->acceptPolicy();
                 }
