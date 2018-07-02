@@ -9,7 +9,10 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
+use Illuminate\Support\Facades\Bus;
+use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -170,7 +173,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
 
-        $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
     }
 
     public function test_user_should_not_be_reminded_because_hours_are_different()
@@ -180,7 +183,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
-        $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
     }
 
     public function test_user_should_not_be_reminded_because_timezone_is_different()
@@ -190,7 +193,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
-        $this->assertFalse($user->shouldBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
     }
 
     public function test_user_should_be_reminded()
@@ -200,7 +203,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
-        $this->assertTrue($user->shouldBeReminded($reminder->next_expected_date));
+        $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
     }
 
     public function test_it_marks_all_changelog_entries_as_read()
@@ -335,5 +338,20 @@ class UserTest extends TestCase
             'lastname',
             $user->getNameOrderForForms()
         );
+    }
+
+    public function test_it_sends_reminder()
+    {
+        Bus::fake();
+        $user = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'next_expected_date' => '2018-01-01',
+        ]);
+        $user->sendReminder($reminder);
+
+        Bus::assertDispatched(SendReminderEmail::class);
     }
 }

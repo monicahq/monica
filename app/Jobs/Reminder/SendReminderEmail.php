@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Reminder;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
