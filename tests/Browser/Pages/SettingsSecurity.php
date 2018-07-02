@@ -45,6 +45,7 @@ class SettingsSecurity extends Page
             'otpdisable' => '#one_time_password2',
             'enableModal' => '#enableModal',
             'disableModal' => '#disableModal',
+            'registerModal' => '#registerModal'
         ];
     }
 }

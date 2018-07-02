@@ -38,6 +38,43 @@ class MultiFAControllerTest extends DuskTestCase
     }
 
     /**
+     * Test if the user has U2F Enable Link in Security Page.
+     * @group multifa
+     */
+    public function testHasSettingsU2fEnableLink()
+    {
+        $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new SettingsSecurity)
+                    ->assertSeeLink('Add a new U2F security key');
+        });
+    }
+
+    /**
+     * Test U2F modal.
+     * @group multifa
+     */
+    public function testU2fModal()
+    {
+        $user = factory(User::class)->create();
+        $user->account->populateDefaultFields($user->account);
+        $user->acceptPolicy();
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $browser->loginAs($user)
+                    ->visit(new SettingsSecurity)
+                    ->scrollTo('two_factor_link')
+                    ->clickLink('Add a new U2F security key')
+                    ->waitFor('registerModal')
+                    ->assertSee('Insert your security key.');
+        });
+    }
+
+    /**
      * Test the barcode generated in 2fa Enable Page.
      * @group multifa
      */
