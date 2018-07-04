@@ -3,7 +3,7 @@
 
 <template>
     <div>
-        <notifications group="u2f" position="bottom right" duration="5000" width="400" />
+        <notifications group="u2f" position="top middle" duration="5000" width="400" />
 
         <div v-if="method == 'register-modal'">
             <h3>{{ $t('settings.u2f_title') }}</h3>
@@ -136,11 +136,14 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.otpextension = this.$t('auth.2fa_otp_extension', {url: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'});
+                this.otpextension = this.$t('auth.u2f_otp_extension', {
+                    urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
+                    urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
+                });
                 var self = this;
                 switch(this.method) {
                     case 'register':
-                    setTimeout(function () {
+                        setTimeout(function () {
                             u2f.register(
                                 null,
                                 [self.registerdata],

@@ -25,7 +25,7 @@ return [
     '2fa_one_time_password' => 'Two factor authentication code',
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
     '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
-    '2fa_otp_extension' => 'U2F is supported natively on Chrome, Firefox and Opera. On old Firefox versions, install the <a href="{url}">U2F Support Add-on</a>.',
+    'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
 
     'login_to_account' => 'Login to your account',
     'login_again' => 'Please login again to your account',
