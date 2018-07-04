@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "77646740ed930baa5e0db5adc6386704",
+    "content-hash": "37d0607a8e746e75eb60f09166d44c6d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1730,6 +1730,51 @@
             "time": "2018-03-12T15:09:51+00:00"
         },
         {
+            "name": "lahaxearnaud/laravel-u2f",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
+                "reference": "feaedbdbedadf3250c0bc50eb5941c5846ffaa36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/feaedbdbedadf3250c0bc50eb5941c5846ffaa36",
+                "reference": "feaedbdbedadf3250c0bc50eb5941c5846ffaa36",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "yubico/u2flib-server": "1.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lahaxearnaud\\U2f\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LAHAXE Arnaud",
+                    "email": "lahaxe.arnaud@gmail.com",
+                    "homepage": "http://lahaxe.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "U2F support for laravel 5",
+            "homepage": "https://github.com/lahaxearnaud/laravel-u2f",
+            "keywords": [
+                "otp",
+                "security",
+                "u2f"
+            ],
+            "time": "2018-06-19T04:56:27+00:00"
+        },
+        {
             "name": "laravel/cashier",
             "version": "v7.1.0",
             "source": {
@@ -3104,16 +3149,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3.0",
+            "version": "v0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9"
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/8f543ede60386faec9b0012833536de4b6083bb9",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
                 "shasum": ""
             },
             "require": {
@@ -3140,7 +3185,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2018-04-14T14:36:18+00:00"
+            "time": "2017-05-24T10:07:27+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -6015,6 +6060,41 @@
                 "lumen"
             ],
             "time": "2017-03-11T03:40:17+00:00"
+        },
+        {
+            "name": "yubico/u2flib-server",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Yubico/php-u2flib-server.git",
+                "reference": "dc318c80b59e62921c210f31b014def26ceebbab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Yubico/php-u2flib-server/zipball/dc318c80b59e62921c210f31b014def26ceebbab",
+                "reference": "dc318c80b59e62921c210f31b014def26ceebbab",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "Library for U2F implementation",
+            "homepage": "https://developers.yubico.com/php-u2flib-server",
+            "time": "2017-05-09T07:33:58+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",

@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Add U2F/yubikey support and refactor MultiFactor Authentication
 
 RELEASED VERSIONS:
 
