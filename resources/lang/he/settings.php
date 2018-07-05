@@ -86,7 +86,7 @@ return [
     '2fa_disable_success' => 'אימות דו־שלבי מושבת',
     '2fa_disable_error' => 'אירעה שגיאה בעת הניסיון להשבית את האימות הדו־שלבי',
     'u2f_title' => 'מפתח אבטחה U2F',
-    'u2f_enable_description' => 'Add a new U2F security key',
+    'u2f_enable_description' => 'הוספת מפתח אבטחה חדש מסוג U2F',
     'u2f_buttonAdvise' => 'אם למפתח האבטחה שלך יש כפתור, יש ללחוץ עליו.',
     'u2f_noButtonAdvise' => 'אם אין לו, יש להסיר אותו ולהכניס שוב.',
     'u2f_success' => 'המפתח שלך מזוהה ומאומת.',
