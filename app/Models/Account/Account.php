@@ -19,6 +19,8 @@ use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ContactField;
@@ -175,6 +177,26 @@ class Account extends Model
     public function activityStatistics()
     {
         return $this->hasMany(ActivityStatistic::class);
+    }
+
+    /**
+     * Get the activity type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypes()
+    {
+        return $this->hasMany(ActivityType::class);
+    }
+
+    /**
+     * Get the activity type category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypeCategories()
+    {
+        return $this->hasMany(ActivityTypeCategory::class);
     }
 
     /**

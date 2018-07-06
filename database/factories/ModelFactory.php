@@ -45,18 +45,20 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
 
 $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
     return [
-        'activity_type_group_id' => function () {
-            return factory(App\Models\Contact\ActivityTypeGroup::class)->create()->id;
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'activity_type_category_id' => function () {
+            return factory(App\Models\Contact\ActivityTypeCategory::class)->create()->id;
         },
-        'key' => $faker->sentence,
+        'translation_key' => $faker->sentence,
         'location_type' => $faker->word,
-        'icon' => $faker->word,
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityTypeGroup::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker\Generator $faker) {
     return [
-        'key' => $faker->sentence,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'translation_key' => $faker->sentence,
+        'name' => 
     ];
 });
 
