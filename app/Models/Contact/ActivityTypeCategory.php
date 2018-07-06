@@ -30,7 +30,7 @@ class ActivityTypeCategory extends Model
 
     /**
      * Get the activity type category's attribute.
-     * 
+     *
      * @return string
      */
     public function getNameAttribute()

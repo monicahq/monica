@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\ActivityType;
 use Illuminate\Http\Request;
+use App\Models\Contact\ActivityType;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class ApiActivityTypeController extends ApiController
 {
@@ -31,7 +31,7 @@ class ApiActivityTypeController extends ApiController
 
     /**
      * Get the detail of a given activity type.
-     * 
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -50,7 +50,7 @@ class ApiActivityTypeController extends ApiController
 
     /**
      * Store the activity type.
-     * 
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -75,7 +75,7 @@ class ApiActivityTypeController extends ApiController
 
     /**
      * Update the activity type.
-     * 
+     *
      * @param  Request $request
      * @param  int $activityTypeId
      * @return \Illuminate\Http\Response
