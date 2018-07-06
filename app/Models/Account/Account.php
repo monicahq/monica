@@ -21,6 +21,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
 use App\Models\Relationship\Relationship;
+use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -175,6 +177,26 @@ class Account extends Model
     public function activityStatistics()
     {
         return $this->hasMany(ActivityStatistic::class);
+    }
+
+    /**
+     * Get the activity type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypes()
+    {
+        return $this->hasMany(ActivityType::class);
+    }
+
+    /**
+     * Get the activity type category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypeCategories()
+    {
+        return $this->hasMany(ActivityTypeCategory::class);
     }
 
     /**

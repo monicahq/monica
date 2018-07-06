@@ -4,12 +4,12 @@ namespace App\Models\Contact;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ActivityType extends Model
+class ActivityTypeCategory extends Model
 {
-    protected $table = 'activity_types';
+    protected $table = 'activity_type_categories';
 
     /**
-     * Get the account record associated with the activity type.
+     * Get the account record associated with the activity type group.
      *
      * @return BelongsTo
      */
@@ -19,15 +19,19 @@ class ActivityType extends Model
     }
 
     /**
-     * Get the activity type category record associated with the activity types.
+     * Get the activity type records associated with the category.
+     *
+     * @return HasMany
      */
-    public function category()
+    public function activityTypes()
     {
-        return $this->belongsTo(ActivityTypeCategory::class, 'activity_type_category_id');
+        return $this->hasMany(ActivityType::class);
     }
 
     /**
-     * Get the activity type's attribute.
+     * Get the activity type category's attribute.
+     *
+     * @return string
      */
     public function getNameAttribute()
     {
