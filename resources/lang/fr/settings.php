@@ -94,8 +94,8 @@ return [
     'u2f_error_other_error' => 'Une erreur est survenue.',
     'u2f_error_bad_request' => 'L\'URL visitée ne correspond pas à l’App ID ou vous n\'utilisez pas HTTPS',
     'u2f_error_configuration_unsupported' => 'La configuration client n’est pas supportée.',
-    'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
-    'u2f_error_timeout' => 'Timeout reached before request could be satisfied.',
+    'u2f_error_device_ineligible' => 'Le dispositif présenté n’est pas admissible pour cette demande. Pour une demande d’enregistrement, cela peut signifier que le jeton est déjà enregistré, et pour une demande d\'authentification, cela peut signifier que le jeton ne connaît pas les clés présentées.',
+    'u2f_error_timeout' => 'Délai d’attente atteint avant que la demande ne soit satisfaite.',
 
     'users_list_title' => 'Utilisateurs avec accès à votre compte',
     'users_list_add_user' => 'Inviter un nouvel utilisateur',
