@@ -173,7 +173,7 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
                 $activityType = DB::table('activity_types')
                                             ->where('id', $activity->activity_type_id)
                                             ->first();
-\Log::info('activity: '.$activity->id);
+                \Log::info('activity: '.$activity->id);
                 DB::table('activities')
                         ->where('id', $activity->id)
                         ->update(['activity_type_label' => $activityType->key]);
@@ -220,7 +220,7 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
                                                 ->get();
 
                     foreach ($defaultActivityTypes as $defaultActivityType) {
-                      DB::table('activity_types')->insert([
+                        DB::table('activity_types')->insert([
                           'account_id' => $account->id,
                           'activity_type_category_id' => $activityTypeCategoryId,
                           'translation_key' => $defaultActivityType->translation_key,
