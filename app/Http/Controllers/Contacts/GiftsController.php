@@ -159,11 +159,10 @@ class GiftsController extends Controller
                 'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
                 'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
             ];
-        
+
         if (is_null($gift)) {
             $gift = $contact->gifts()->create($array);
-        }
-        else {
+        } else {
             $gift->update($array);
         }
 
