@@ -16,15 +16,13 @@ class AuthEmailConfirm
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check()) {
-            if (! auth()->user()->confirmed) {
-                // Logout the user
-                Auth::guard()->logout();
-                $request->session()->invalidate();
+        if (Auth::check() && ! auth()->user()->confirmed) {
+            // Logout the user
+            Auth::guard()->logout();
+            $request->session()->invalidate();
 
-                return redirect('/')
-                    ->with('confirmation-danger', trans('confirmation::confirmation.again'));
-            }
+            return redirect('/')
+                ->with('confirmation-danger', trans('confirmation::confirmation.again'));
         }
 
         return $next($request);
