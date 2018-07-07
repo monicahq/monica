@@ -36,7 +36,7 @@ class ScheduleStayInTouch implements ShouldQueue
         $mailSent = false;
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($this->contact->stay_in_touch_trigger_date)
+            if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
                 && ! $account->hasLimitations()) {
                 $this->contact->sendStayInTouchEmail($user);
                 $mailSent = true;

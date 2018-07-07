@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetupTest',
         'App\Console\Commands\Update',
         'App\Console\Commands\MigrateDatabaseCollation',
+        'App\Console\Commands\Reminder\ProcessOldReminders',
     ];
 
     /**
@@ -41,6 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('send:reminders')->hourly();
         $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
+        $schedule->command('process:old_reminders')->daily();
         $schedule->command('monica:ping')->daily();
     }
 }
