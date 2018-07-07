@@ -45,7 +45,7 @@ git commit -m "chore(assets): Update assets"
 
 # Push
 if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ]; then
-  echo -e "\033[0;31mCan't update master directly...\033[0:37m"
+  echo -e "\033[0;31mmaster is not up to date, but we can't update it directly...\033[0:37m"
   exit 0
 
 elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
@@ -69,8 +69,11 @@ elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
     exit 2
   fi
 
-  remote = "https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/$REPO"
+  echo "Pushing files to $PULL_REQUEST_BRANCH branch ..."
+  remote="https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/$REPO"
   git remote add gk-origin $remote
   git push gk-origin HEAD:$PULL_REQUEST_BRANCH
 
+  # Exit with error to stop the current build
+  exit -1
 fi
