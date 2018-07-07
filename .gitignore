@@ -13,3 +13,4 @@ npm-debug.log*
 /results
 .deploy.json
 yarn-error.log
+php-extensions-*.tar.bz2
