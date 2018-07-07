@@ -23,16 +23,6 @@ class SendStayInTouch extends Command
     protected $description = 'Send notifications about staying in touch with contacts';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
