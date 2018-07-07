@@ -3,7 +3,6 @@
 namespace Tests\Api\Activity;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivityTypeControllerTest extends ApiTestCase
