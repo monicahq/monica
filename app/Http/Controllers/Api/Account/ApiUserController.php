@@ -34,7 +34,7 @@ class ApiUserController extends ApiController
     {
         $userCompliance = auth()->user()->getStatusForCompliance($termId);
 
-        if ($userCompliance == false) {
+        if (! $userCompliance) {
             return $this->respondNotFound();
         }
 

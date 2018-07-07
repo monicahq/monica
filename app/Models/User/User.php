@@ -7,10 +7,13 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
+use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
+use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -249,34 +252,33 @@ class User extends Authenticatable
     }
 
     /**
-     * Indicate whether the user should be reminded about a reminder or notification.
-     * The user should be reminded only if the date of the reminder matches the
-     * current date, and the current hour matches the hour the account owner
+     * Indicate whether the user should be reminded at this time.
+     * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
      * @param Carbon $date
      * @return bool
      */
-    public function shouldBeReminded(Carbon $date)
+    public function isTheRightTimeToBeReminded(Carbon $date)
     {
-        $dateOfReminder = $date->hour(0)->minute(0)->second(0)->toDateString();
+        $isTheRightTime = true;
 
-        $currentDate = now($this->timezone);
+        $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
+        $currentHourOnUserTimezone = now($this->timezone)->format('G:00');
+        $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
+        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
-        $currentHourOnUserTimezone = $currentDate->format('G:00');
-        $currentDateOnUserTimezone = $currentDate->hour(0)->minute(0)->second(0)->toDateString();
-
-        $hourEmailShouldBeSent = $this->account->default_time_reminder_is_sent;
-
-        if ($dateOfReminder != $currentDateOnUserTimezone) {
-            return false;
+        Log::info('Reminder date: '.$dateToCompareTo.' | Today date for user: '.$currentDateOnUserTimezone);
+        if ($dateToCompareTo != $currentDateOnUserTimezone) {
+            $isTheRightTime = false;
         }
 
-        if ($hourEmailShouldBeSent != $currentHourOnUserTimezone) {
-            return false;
+        Log::info('Hour reminder should be sent: '.$defaultHourReminderShouldBeSent.' | Current hour for user: '.$currentHourOnUserTimezone);
+        if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
+            $isTheRightTime = false;
         }
 
-        return true;
+        return $isTheRightTime;
     }
 
     /**
@@ -413,5 +415,17 @@ class User extends Authenticatable
         }
 
         return $nameOrder;
+    }
+
+    /**
+     * Send the given reminder using all the ways the user wants to be reminded.
+     * Currently only email is supported.
+     *
+     * @param  Reminder $reminder
+     * @return
+     */
+    public function sendReminder(Reminder $reminder)
+    {
+        dispatch(new SendReminderEmail($reminder, $this));
     }
 }
