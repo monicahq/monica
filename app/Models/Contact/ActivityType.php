@@ -2,6 +2,8 @@
 
 namespace App\Models\Contact;
 
+use App\Models\Account\Account;
+use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityType extends Model
@@ -29,12 +31,12 @@ class ActivityType extends Model
     /**
      * Get the activity type's attribute.
      */
-    public function getNameAttribute()
+    public function getNameAttribute($value)
     {
         if ($this->translation_key) {
             return trans('people.activity_type_'.$this->translation_key);
         }
 
-        return $this->name;
+        return $value;
     }
 }

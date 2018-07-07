@@ -114,6 +114,11 @@ Route::group(['middleware' => ['auth:api']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    // Activity Type Categories
+    Route::resource('activitytypecategories', 'Api\\Contact\\ApiActivityTypeCategoryController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     // Relationship Type Groups
     Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['except' => [
       'create', 'store', 'destroy', 'edit', 'patch', 'update',

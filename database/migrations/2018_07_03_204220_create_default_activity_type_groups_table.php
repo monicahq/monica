@@ -168,15 +168,19 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
             $table->string('activity_type_label');
         });
 
+        DB::table('activities')
+            ->where('activity_type_id', 0)
+            ->update(['activity_type_id' => null]);
+
         DB::table('activities')->whereNotNull('activity_type_id')->orderBy('id')->chunk(100, function ($activities) {
             foreach ($activities as $activity) {
                 $activityType = DB::table('activity_types')
                                             ->where('id', $activity->activity_type_id)
                                             ->first();
-                \Log::info('activity: '.$activity->id);
+                
                 DB::table('activities')
-                        ->where('id', $activity->id)
-                        ->update(['activity_type_label' => $activityType->key]);
+                    ->where('id', $activity->id)
+                    ->update(['activity_type_label' => $activityType->key]);
             }
         });
 
@@ -200,6 +204,7 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
             $table->unsignedInteger('activity_type_category_id');
             $table->string('name')->nullable();
             $table->string('translation_key')->nullable();
+            $table->string('location_type')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('activity_type_category_id')->references('id')->on('activity_type_categories')->onDelete('cascade');
@@ -207,7 +212,7 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
 
         $defaultActivityTypeCategories = DB::table('default_activity_type_categories')->get();
 
-        DB::table('accounts')->orderBy('id')->chunk(100, function ($accounts) {
+        DB::table('accounts')->orderBy('id')->chunk(100, function ($accounts) use ($defaultActivityTypeCategories) {
             foreach ($accounts as $account) {
                 foreach ($defaultActivityTypeCategories as $defaultActivityTypeCategory) {
                     $activityTypeCategoryId = DB::table('activity_type_categories')->insertGetId([
@@ -231,7 +236,7 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
         });
 
         // final step
-        DB::table('activities')->orderBy('id')->chunk(100, function ($activities) {
+        DB::table('activities')->orderBy('id')->where('activity_type_label', '!=', '')->chunk(100, function ($activities) {
             foreach ($activities as $activity) {
                 $activityLabel = $activity->activity_type_label;
 
@@ -239,8 +244,9 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
                                                             ->where('translation_key', $activity->activity_type_label)
                                                             ->first();
 
-                $activity->activity_type_id = $activityType->id;
-                $activity->save();
+                DB::table('activities')
+                    ->where('id', $activity->id)
+                    ->update(['activity_type_id' => $activityType->id]);
             }
         });
 

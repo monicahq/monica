@@ -34,7 +34,6 @@ class SetupTest extends Command
 
         $this->artisan('✓ Performing migrations', 'migrate:fresh');
 
-        $this->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         $this->artisan('✓ Symlink the storage folder', 'storage:link');
 
         if (! $this->option('skipSeed')) {

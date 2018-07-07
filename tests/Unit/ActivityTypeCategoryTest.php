@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\Contact\ActivityType;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -34,8 +35,8 @@ class ActivityTypeCategoryTest extends TestCase
             'name' => null,
         ]);
 
-        $this->assertTrue(
-            'awesome_key',
+        $this->assertEquals(
+            'people.activity_type_awesome_key',
             $activityTypeCategory->name
         );
 
@@ -44,7 +45,7 @@ class ActivityTypeCategoryTest extends TestCase
             'name' => 'awesome_name',
         ]);
 
-        $this->assertTrue(
+        $this->assertEquals(
             'awesome_name',
             $activityTypeCategory->name
         );

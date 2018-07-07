@@ -3,53 +3,55 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
-class ApiActivityTypeController extends ApiController
+class ApiActivityTypeCategoryController extends ApiController
 {
     /**
-     * Get the list of activity types.
+     * Get the list of activity type categories.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
-            $activityTypes = auth()->user()->account->activityTypes()
+            $activityTypeCategories = auth()->user()->account->activityTypeCategories()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return ActivityTypeResource::collection($activityTypes);
+        return ActivityTypeCategoryResource::collection($activityTypeCategories);
     }
 
     /**
-     * Get the detail of a given activity type.
+     * Get the detail of a given activity type category.
      *
      * @param  Request $request
+     * @param  int $activityTypeCategoryId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $activityTypeId)
+    public function show(Request $request, $activityTypeCategoryId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
+            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityTypeCategoryId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new ActivityTypeResource($activityType);
+        return new ActivityTypeCategoryResource($activityTypeCategory);
     }
 
     /**
-     * Store the activity type.
+     * Store the activity type category.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
@@ -57,34 +59,35 @@ class ApiActivityTypeController extends ApiController
     public function store(Request $request)
     {
         $isValid = $this->validateRequest($request);
+
         if ($isValid !== true) {
             return $isValid;
         }
 
         try {
-            $activityType = ActivityType::create($request->all());
+            $activityTypeCategory = ActivityTypeCategory::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account->id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        $activityType->account_id = auth()->user()->account->id;
-        $activityType->save();
-
-        return new ActivityTypeResource($activityType);
+        return new ActivityTypeCategoryResource($activityTypeCategory);
     }
 
     /**
-     * Update the activity type.
+     * Update the activity type category.
      *
      * @param  Request $request
-     * @param  int $activityTypeId
+     * @param  int $activityTypeCategoryId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $activityTypeId)
+    public function update(Request $request, $activityTypeCategoryId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
+            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityTypeCategoryId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,12 +99,12 @@ class ApiActivityTypeController extends ApiController
         }
 
         try {
-            $activityType->update($request->all());
+            $activityTypeCategory->update($request->all());
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        return new ActivityTypeResource($activityType);
+        return new ActivityTypeCategoryResource($activityTypeCategory);
     }
 
     /**
@@ -114,44 +117,35 @@ class ApiActivityTypeController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'content' => 'required|max:100000',
-            'called_at' => 'required|date',
-            'contact_id' => 'required|integer',
+            'name' => 'required|max:255|string',
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
+            return $this->setHTTPStatusCode(400)
+                        ->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
         }
 
         return true;
     }
 
     /**
-     * Delete an activity type.
+     * Delete an activity type category.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $activityTypeId)
+    public function destroy(Request $request, $activityTypeCategoryId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
+            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityTypeCategoryId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        $activityType->delete();
+        $activityTypeCategory->delete();
 
-        return $this->respondObjectDeleted($activityType->id);
+        return $this->respondObjectDeleted($activityTypeCategory->id);
     }
 }

@@ -12,6 +12,8 @@ use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Contact\Reminder;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
