@@ -1,6 +1,8 @@
 UNRELEASED CHANGES:
 
 * Add U2F/yubikey support and refactor MultiFactor Authentication
+* Add a script to update assets automatically
+* 
 
 RELEASED VERSIONS:
 
@@ -20,7 +22,6 @@ v2.3.0 - 2018-06-13
 * Fix resetting account not working
 * Fix CSV import that can break if dates have the wrong format
 * Add default accounts email confirmation in setup:test
-* Fix CSV import that can break if dates have the wrong format
 * Set the default tooltip delay to 0 so the tooltip does not stay displayed for 200ms by default
 * Replace queries with hardcoded "monica" database name to use the current default connection database
 * Set the default_avatar_color property before saving a contact model.
