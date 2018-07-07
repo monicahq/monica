@@ -63,5 +63,4 @@ Pro might help you with that.
 * Finally, sign in with the same credentials as the ones used on
 https://monicahq.com and you are good to go.
 
-There is one caveat with the SQL exporter: you can't get the photos you've
-uploaded for now.
+There is one caveat with the SQL exporter: you can't get the photos you've uploaded for now.
