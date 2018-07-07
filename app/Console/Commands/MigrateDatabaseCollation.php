@@ -50,10 +50,10 @@ class MigrateDatabaseCollation extends Command
 
                 if (config('database.use_utf8mb4') && $schema == 'utf8') {
                     $this->line('Migrate to utf8mb4 schema collation');
-                    $this->toUtf8mb4($connection);
+                    $this->toUtf8mb4($connection, $databasename);
                 } elseif (! config('database.use_utf8mb4') && $schema == 'utf8mb4') {
                     $this->line('Migrate to utf8 schema collation');
-                    $this->toUtf8($connection);
+                    $this->toUtf8($connection, $databasename);
                 } else {
                     $this->info('Nothing to migrate, everything is ok.');
                 }
@@ -71,8 +71,9 @@ class MigrateDatabaseCollation extends Command
      * Switch to utf8mb4.
      *
      * @param \Illuminate\Database\Connection $connection
+     * @param string $databasename
      */
-    private function toUtf8mb4(\Illuminate\Database\Connection $connection)
+    private function toUtf8mb4($connection, $databasename)
     {
         // Tables
         $tables = $connection->table('information_schema.tables')
@@ -95,8 +96,9 @@ class MigrateDatabaseCollation extends Command
      * Switch to utf8.
      *
      * @param \Illuminate\Database\Connection $connection
+     * @param string $databasename
      */
-    private function toUtf8(\Illuminate\Database\Connection $connection)
+    private function toUtf8($connection, $databasename)
     {
         // Tables
         $tables = $connection->table('information_schema.tables')
