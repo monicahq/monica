@@ -1,7 +1,6 @@
 @extends('layouts.skeleton')
 
 @section('content')
-
 <div class="settings">
 
   {{-- Breadcrumb --}}
@@ -34,28 +33,24 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <h3 class="with-actions">{{ trans('settings.2fa_title') }}</h3>
-            <p>{{ trans('settings.2fa_disable_description') }}</p>
 
-            @include('partials.errors')
+            <p>{{ trans('settings.u2f_enable_description') }}</p>
 
-            <form action="/settings/security/2fa-disable" method="POST">
-              {{ csrf_field() }}
+            <u2f-connector
+              :currentkeys="{{ json_encode($currentKeys) }}"
+              :registerdata="{{ json_encode($registerData) }}"
+              :method="'register'"
+              :callbackurl="{{ json_encode(url('settings/security')) }}">
+            </u2f-connector>
 
-              {{-- code --}}
-              <div class="form-group">
-                <label for="one_time_password">{{ trans('auth.2fa_one_time_password') }}</label>
-                <input type="number" class="form-control" id="one_time_password" name="one_time_password" required />
-              </div>
+            <a href="{{ url('settings/security') }}" class="btn">{{ trans('app.cancel') }}</a>
 
-              <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>
-              <a href="/settings/security" class="btn">{{ trans('app.cancel') }}</a>
-            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
 
 @endsection
