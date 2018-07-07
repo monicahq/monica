@@ -36,7 +36,11 @@ git add public/fonts/*
 # Commit
 if [ -z "${ASSETS_USERNAME:-}" ]; then
   #No username
-  exit 0
+  echo -e "\033[0;31mMonica asset are not up to date.\033[0:37m"
+  echo "Please update the Monica assets yourself by running:"
+  echo " ~ php artisan lang:generate"
+  echo " ~ yarn run production"
+  exit 2
 fi
 git config user.email $ASSETS_EMAIL
 git config user.name $ASSETS_USERNAME
