@@ -75,5 +75,7 @@ elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
   git push gk-origin HEAD:$PULL_REQUEST_BRANCH
 
   # Exit with error to stop the current build
+  echo "...pushed files successfully."
+  echo "Exit with error to stop the current build."
   exit -1
 fi
