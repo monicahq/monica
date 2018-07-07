@@ -12,6 +12,8 @@ steps below to update it, **every single time**, or you will run into problems.
     1. Consider check out a tagged version of Monica since `master` branch may not always be stable.
        Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
        ```sh
+       # Get latest tags from GitHub
+       git fetch
        # Clone the desired version
        git checkout tags/v1.6.2
        ```
