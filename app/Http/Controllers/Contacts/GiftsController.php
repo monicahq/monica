@@ -85,7 +85,7 @@ class GiftsController extends Controller
      */
     public function store(GiftsRequest $request, Contact $contact)
     {
-        updateOrCreate($request, $contact);
+        $this->updateOrCreate($request, $contact);
 
         return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_add_success'));
@@ -118,7 +118,7 @@ class GiftsController extends Controller
      */
     public function update(GiftsRequest $request, Contact $contact, Gift $gift)
     {
-        updateOrCreate($request, $contact, $gift);
+        $this->updateOrCreate($request, $contact, $gift);
 
         return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.gifts_update_success'));
