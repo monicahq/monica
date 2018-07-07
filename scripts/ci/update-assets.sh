@@ -29,9 +29,8 @@ fi
 
 # Add files
 git add public/mix-manifest.json
-git add public/js/*.js
-git add public/js/langs/*.json
-git add public/css/*.css
+git add public/js/*
+git add public/css/*
 git add public/fonts/*
 
 # Commit
