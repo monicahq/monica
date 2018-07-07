@@ -183,19 +183,10 @@ jobs:
           name: Upload yarn lockfile
           command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
 
-      # Build js and css assets
+      # Update js and css assets eventually
       - run:
-          name: Build assets
-          command: |
-            php artisan lang:generate
-            yarn run production
-      - persist_to_workspace:
-          root: *root
-          paths:
-            - public/mix-manifest.json
-            - public/css
-            - public/fonts
-            - public/js
+          name: Update assets
+          command: scripts/ci/update-assets.sh
 
   tests-7.2:
     <<: *defaults
