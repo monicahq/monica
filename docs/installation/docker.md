@@ -110,3 +110,7 @@ Note that uploaded files, like avatars, will disappear when you
 restart the container. Map a volume to
 `/var/www/monica/storage/app/public` if you want that data to persist
 between runs. See `docker-compose.yml` for examples.
+
+#### Other documents to read	
+
+[Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
