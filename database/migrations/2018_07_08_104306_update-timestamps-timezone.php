@@ -85,7 +85,7 @@ class UpdateTimestampsTimezone extends Migration
 
     /**
      * Update the timestamps table.
-     * 
+     *
      * @param string $table
      * @param string $timezone
      * @param string $id
@@ -100,7 +100,7 @@ class UpdateTimestampsTimezone extends Migration
                 DB::table($table)->where($id, $model->$id)
                     ->update([
                         'created_at' => $created,
-                        'updated_at' => $updated
+                        'updated_at' => $updated,
                     ]);
             }
         });
