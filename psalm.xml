@@ -104,7 +104,7 @@
 
         <UndefinedPropertyAssignment>
             <errorLevel type="suppress">
-                <file name="app/Contact.php" />
+                <file name="app/Models/Contact/Contact.php" />
             </errorLevel>
         </UndefinedPropertyAssignment>
 
@@ -116,8 +116,8 @@
 
         <UndefinedPropertyFetch>
             <errorLevel type="suppress">
-                <file name="app/Event.php" />
-                <file name="app/Contact.php" />
+                <file name="app/Models/Account/Event.php" />
+                <file name="app/Models/Contact/Contact.php" />
             </errorLevel>
         </UndefinedPropertyFetch>
     </issueHandlers>
