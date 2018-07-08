@@ -16,7 +16,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'object',
         'name',
         'activity_type_category' => [
-            'id'
+            'id',
         ],
         'account' => [
             'id',
@@ -74,7 +74,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id
+            'account_id' => $user->account->id,
         ]);
 
         $response = $this->json('POST', '/api/activitytypes', [
