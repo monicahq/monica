@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37d0607a8e746e75eb60f09166d44c6d",
+    "content-hash": "78623f1246a1439d231796fdb86cd982",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -6951,24 +6951,24 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.5",
+            "version": "v4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce"
+                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
-                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/35b8caf75e791ba1b2d24fec1552168d72692b12",
+                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": ">=5.5"
+                "php": ">=7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0|~5.0"
+                "phpunit/phpunit": "^6.5 || ^7.0"
             },
             "bin": [
                 "bin/php-parse"
@@ -6976,7 +6976,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -6998,7 +6998,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-02-28T20:30:58+00:00"
+            "time": "2018-06-03T11:33:10+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -8710,27 +8710,28 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "1.1.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "f9cb79d6fe212a1d2098a049d5e7d45b21c52d2d"
+                "reference": "26fa003fe2c16409a87b127a1eedcaf149437988"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f9cb79d6fe212a1d2098a049d5e7d45b21c52d2d",
-                "reference": "f9cb79d6fe212a1d2098a049d5e7d45b21c52d2d",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/26fa003fe2c16409a87b127a1eedcaf149437988",
+                "reference": "26fa003fe2c16409a87b127a1eedcaf149437988",
                 "shasum": ""
             },
             "require": {
                 "composer/xdebug-handler": "^1.0",
                 "muglug/package-versions-56": "1.2.4",
-                "nikic/php-parser": "^3.1.2",
+                "nikic/php-parser": "^4.0",
                 "openlss/lib-array2xml": "^0.0.10||^0.5.1",
-                "php": "^5.6 || ^7.0",
+                "php": "^7.0",
                 "php-cs-fixer/diff": "^1.2"
             },
             "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.2",
                 "friendsofphp/php-cs-fixer": "^2.3|^2.4|^2.5|^2.6|^2.7|^2.8|^2.9",
                 "php-coveralls/php-coveralls": "^2.0",
                 "phpunit/phpunit": "^5.7.4",
@@ -8764,7 +8765,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-04-30T05:57:44+00:00"
+            "time": "2018-06-10T19:41:04+00:00"
         },
         {
             "name": "webmozart/assert",
