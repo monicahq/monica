@@ -37,6 +37,14 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        //
+        eval($this->option('test'));
+
+        for ($i = 0; $i < $length; $i--) { // Noncompliant
+            //...
+        }
+
+        $test = $this->option('test');
+        if ($test)
+        $i = 0;
     }
 }
