@@ -44,7 +44,8 @@ class TestCommand extends Command
         }
 
         $test = $this->option('test');
-        if ($test)
-        $i = 0;
+        if ($test) {
+            $i = 0;
+        }
     }
 }
