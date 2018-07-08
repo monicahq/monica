@@ -1682,16 +1682,16 @@
         },
         {
             "name": "jeroendesloovere/vcard",
-            "version": "1.6",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeroendesloovere/vcard.git",
-                "reference": "2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727"
+                "reference": "6f4627dd36b6ce18cbfdf1375efd78a38c482a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727",
-                "reference": "2ff9bf74ea79ae7c21d6a1a9a3cc601a37019727",
+                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/6f4627dd36b6ce18cbfdf1375efd78a38c482a25",
+                "reference": "6f4627dd36b6ce18cbfdf1375efd78a38c482a25",
                 "shasum": ""
             },
             "require": {
@@ -1727,7 +1727,7 @@
                 "php",
                 "vCard"
             ],
-            "time": "2018-03-12T15:09:51+00:00"
+            "time": "2018-07-04T09:44:33+00:00"
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
