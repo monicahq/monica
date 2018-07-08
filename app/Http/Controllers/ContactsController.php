@@ -184,6 +184,7 @@ class ContactsController extends Controller
                                 ->sortBy('next_expected_date');
         // list of active features
         $modules = $contact->account->modules()->active()->get();
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)

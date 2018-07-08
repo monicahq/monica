@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityType extends Model
