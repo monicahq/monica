@@ -4,6 +4,7 @@ namespace Tests\Api\Activity;
 
 use Tests\ApiTestCase;
 use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivityTypeControllerTest extends ApiTestCase
@@ -14,11 +15,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'id',
         'object',
         'name',
-        'fields_order',
-        'is_list',
-        'is_important',
-        'custom_field_pattern' => [
-            'id',
+        'activity_type_category' => [
+            'id'
         ],
         'account' => [
             'id',
@@ -27,15 +25,15 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_custom_fields()
+    public function test_it_gets_a_list_of_activity_types()
     {
         $user = $this->signin();
 
-        $customFields = factory(CustomField::class, 10)->create([
+        $activityTypes = factory(ActivityType::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('GET', '/api/customfields');
+        $response = $this->json('GET', '/api/activitytypes');
 
         $response->assertJsonStructure([
             'data' => [
@@ -48,11 +46,11 @@ class ApiActivityTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $customFields = factory(CustomField::class, 10)->create([
+        $activityTypes = factory(ActivityType::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('GET', '/api/customfields?limit=1');
+        $response = $this->json('GET', '/api/activitytypes?limit=1');
 
         $response->assertJsonFragment([
             'total' => 10,
@@ -61,7 +59,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
             'last_page' => 10,
         ]);
 
-        $response = $this->json('GET', '/api/customfields?limit=2');
+        $response = $this->json('GET', '/api/activitytypes?limit=2');
 
         $response->assertJsonFragment([
             'total' => 10,
@@ -71,27 +69,24 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_stores_a_custom_field()
+    public function test_it_stores_an_activity_type()
     {
         $user = $this->signin();
 
-        $customFieldPattern = factory(CustomFieldPattern::class)->create([
-            'account_id' => $user->account_id,
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $user->account->id
         ]);
 
-        $response = $this->json('POST', '/api/customfields', [
+        $response = $this->json('POST', '/api/activitytypes', [
                             'name' => 'Movies',
-                            'is_list' => true,
-                            'is_important' => false,
-                            'custom_field_pattern_id' => $customFieldPattern->id,
+                            'activity_type_category_id' => $activityTypeCategory->id,
                         ]);
 
         $response->assertStatus(201);
 
-        $this->assertDatabaseHas('custom_fields', [
+        $this->assertDatabaseHas('activity_types', [
             'name' => 'Movies',
-            'is_list' => 1,
-            'is_important' => 0,
+            'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
         $response->assertJsonStructure([
@@ -99,53 +94,46 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_store_a_custom_field_if_query_not_valid()
+    public function test_it_doesnt_store_an_activity_type_if_query_not_valid()
     {
         $user = $this->signin();
 
-        $response = $this->json('POST', '/api/customfields', [
-                            'name' => 'Movies',
-                            'is_list' => false,
-                            'custom_field_pattern_id' => 1,
+        $response = $this->json('POST', '/api/activitytypes', [
                         ]);
 
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => ['The is important field is required.'],
+            'message' => [
+                'The activity type category id field is required.',
+                'The name field is required.',
+            ],
             'error_code' => 32,
         ]);
     }
 
-    public function test_it_updates_a_custom_field()
+    public function test_it_updates_an_activity_type()
     {
         $user = $this->signin();
 
-        $customFieldPattern = factory(CustomFieldPattern::class)->create([
-            'account_id' => $user->account_id,
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $user->account->id,
         ]);
 
-        $customField = factory(CustomField::class)->create([
-            'account_id' => $user->account_id,
-            'name' => 'France',
-            'is_list' => 0,
-            'is_important' => 0,
+        $activityType = factory(ActivityType::class)->create([
+            'account_id' => $user->account->id,
+            'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
-        $response = $this->json('PUT', '/api/customfields/'.$customField->id, [
+        $response = $this->json('PUT', '/api/activitytypes/'.$activityType->id, [
                             'name' => 'Movies',
-                            'is_list' => true,
-                            'is_important' => true,
-                            'custom_field_pattern_id' => $customFieldPattern->id,
+                            'activity_type_category_id' => $activityTypeCategory->id,
                         ]);
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseHas('custom_fields', [
+        $this->assertDatabaseHas('activity_types', [
             'name' => 'Movies',
-            'is_list' => 1,
-            'is_important' => 1,
-            'custom_field_pattern_id' => $customFieldPattern->id,
         ]);
 
         $response->assertJsonStructure([
@@ -153,13 +141,12 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_doesnt_update_if_custom_field_not_found()
+    public function test_it_doesnt_update_if_activity_type_not_found()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/customfields/2349273984279348', [
+        $response = $this->json('PUT', '/api/activitytypes/2349273984279348', [
                             'name' => 'Movies',
-                            'is_list' => false,
                         ]);
 
         $response->assertStatus(404);
@@ -174,57 +161,50 @@ class ApiActivityTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $customField = factory(CustomField::class)->create([
+        $activityType = factory(ActivityType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'France',
-            'is_list' => 0,
-            'is_important' => 0,
         ]);
 
-        $response = $this->json('PUT', '/api/customfields/'.$customField->id, [
-                            'name' => 'Movies',
-                            'is_list' => true,
-                            'is_important' => true,
-                        ]);
+        $response = $this->json('PUT', '/api/activitytypes/'.$activityType->id, [
+            'activity_type_category_id' => 3,
+        ]);
 
         $response->assertStatus(400);
 
         $response->assertJsonFragment([
-            'message' => ['The custom field pattern id field is required.'],
+            'message' => ['The name field is required.'],
             'error_code' => 32,
         ]);
     }
 
-    public function test_it_deletes_a_custom_field()
+    public function test_it_deletes_an_activity_type()
     {
         $user = $this->signin();
 
-        $customField = factory(CustomField::class)->create([
+        $activityType = factory(ActivityType::class)->create([
             'account_id' => $user->account_id,
-            'name' => 'France',
-            'is_list' => 0,
-            'is_important' => 0,
         ]);
 
-        $response = $this->delete('/api/customfields/'.$customField->id);
+        $response = $this->delete('/api/activitytypes/'.$activityType->id);
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('custom_fields', [
-            'id' => $customField->id,
+        $this->assertDatabaseMissing('activity_types', [
+            'id' => $activityType->id,
         ]);
 
         $response->assertJsonFragment([
             'deleted' => true,
-            'id' => $customField->id,
+            'id' => $activityType->id,
         ]);
     }
 
-    public function test_it_doesnt_delete_the_custom_field_if_not_found()
+    public function test_it_doesnt_delete_the_activity_type_if_not_found()
     {
         $user = $this->signin();
 
-        $response = $this->delete('/api/customfields/2349273984279348');
+        $response = $this->delete('/api/activitytypes/2349273984279348');
 
         $response->assertStatus(404);
 
@@ -234,15 +214,20 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_single_custom_field()
+    public function test_it_gets_a_single_activity_type()
     {
         $user = $this->signin();
 
-        $customField = factory(CustomField::class)->create([
-            'account_id' => $user->account_id,
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('GET', '/api/customfields/'.$customField->id);
+        $activityType = factory(ActivityType::class)->create([
+            'account_id' => $user->account->id,
+            'activity_type_category_id' => $activityTypeCategory->id,
+        ]);
+
+        $response = $this->json('GET', '/api/activitytypes/'.$activityType->id);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureActivityType,

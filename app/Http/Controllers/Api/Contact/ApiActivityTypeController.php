@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityTypeCategory;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -57,18 +59,19 @@ class ApiActivityTypeController extends ApiController
     public function store(Request $request)
     {
         $isValid = $this->validateRequest($request);
+
         if ($isValid !== true) {
             return $isValid;
         }
 
         try {
-            $activityType = ActivityType::create($request->all());
+            $activityType = ActivityType::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account->id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $activityType->account_id = auth()->user()->account->id;
-        $activityType->save();
 
         return new ActivityTypeResource($activityType);
     }
@@ -114,19 +117,19 @@ class ApiActivityTypeController extends ApiController
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'content' => 'required|max:100000',
-            'called_at' => 'required|date',
-            'contact_id' => 'required|integer',
+            'name' => 'required|max:255|string',
+            'activity_type_category_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
+            return $this->setHTTPStatusCode(400)
+                        ->setErrorCode(32)
                         ->respondWithError($validator->errors()->all());
         }
 
         try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
+            ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('activity_type_category_id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

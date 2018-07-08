@@ -20,6 +20,7 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
+        'locale' => 'en',
         'confirmed' => true,
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
@@ -47,7 +48,7 @@ $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generat
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_category_id' => function () {
-            return factory(App\Models\Contact\ActivityTypeCategory::class)->create()->id;
+            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([])->id;
         },
         'translation_key' => $faker->sentence,
         'location_type' => $faker->word,

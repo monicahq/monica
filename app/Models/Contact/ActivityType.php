@@ -11,6 +11,17 @@ class ActivityType extends Model
     protected $table = 'activity_types';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'activity_type_category_id',
+        'account_id',
+    ];
+
+    /**
      * Get the account record associated with the activity type.
      *
      * @return BelongsTo
