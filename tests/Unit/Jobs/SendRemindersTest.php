@@ -5,7 +5,6 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Jobs\SendReminderEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
@@ -38,7 +37,6 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SendReminderEmail::class);
         Bus::assertDispatched(SetNextReminderDate::class);
     }
 
@@ -63,7 +61,6 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SendReminderEmail::class, 2);
         Bus::assertDispatched(SetNextReminderDate::class, 1);
     }
 
@@ -89,7 +86,6 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertNotDispatched(SendReminderEmail::class);
         Bus::assertDispatched(SetNextReminderDate::class, 1);
     }
 }
