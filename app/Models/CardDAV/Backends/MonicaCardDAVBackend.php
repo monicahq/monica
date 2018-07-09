@@ -89,7 +89,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
 
         // Basic information
         $vcard = new VObject\Component\VCard([
-            'FN'  => $contact->getCompleteName(),
+            'FN'  => $contact->name,
             'N'   => [$contact->first_name, $contact->last_name],
         ]);
 
