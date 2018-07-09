@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Account;
-use App\Statistic;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use App\Models\Instance\Statistic;
 use Illuminate\Support\Facades\DB;
 
 class CalculateStatistics extends Command

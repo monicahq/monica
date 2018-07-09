@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Day;
-use App\Entry;
-use App\JournalEntry;
+use App\Models\Journal\Day;
 use Illuminate\Http\Request;
+use App\Models\Journal\Entry;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;

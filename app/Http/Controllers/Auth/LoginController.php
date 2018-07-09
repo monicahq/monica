@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
 use Bestmomo\LaravelEmailConfirmation\Traits\AuthenticatesUsers;
 

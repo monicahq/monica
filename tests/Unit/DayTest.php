@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Day;
 use Tests\TestCase;
+use App\Models\Journal\Day;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DayTest extends TestCase

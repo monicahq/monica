@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Account;
-use App\Reminder;
-use App\Jobs\SendReminderEmail;
+use App\Models\User\User;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
+use Illuminate\Support\Facades\Log;
 
 class SendReminders extends Command
 {
@@ -57,9 +57,10 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($reminder->next_expected_date)) {
+            Log::info('User: '.$user->name.' | Reminder: '.$reminder->id);
+            if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)) {
                 if (! $account->hasLimitations()) {
-                    dispatch(new SendReminderEmail($reminder, $user));
+                    $user->sendReminder($reminder);
                 }
 
                 if ($counter == $numberOfUsersInAccount) {

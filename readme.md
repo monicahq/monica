@@ -103,7 +103,7 @@ After a few months, I decided to open source the project so it would help other 
 There are multiple ways of getting started with Monica.
 
 1. You can use our hosted-version (this is the simplest way to use the product) on [https://monicahq.com](https://monicahq.com).
-1. You can install it on your server: follow installation instructions on the ([wiki](/docs/installation/index.md)).
+1. You can install it on your server: follow installation instructions ([here](/docs/installation/index.md)).
 
 Note: while the .com version has a paid plan, there is no limitations on Monica if you install it on a server that you own.
 

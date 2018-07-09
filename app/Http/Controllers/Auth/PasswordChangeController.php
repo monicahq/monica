@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Support\Str;
 use UnexpectedValueException;
 use App\Http\Requests\Request;

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Gift;
-use App\Contact;
 use Tests\TestCase;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GiftTest extends TestCase

@@ -2,8 +2,9 @@
 
 namespace Tests\Api\Contact;
 
-use App\Contact;
 use Tests\ApiTestCase;
+use App\Models\Contact\Tag;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactTagControllerTest extends ApiTestCase
@@ -74,11 +75,11 @@ class ApiContactTagControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $tag = factory('App\Tag')->create([
+        $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'friend',
         ]);
-        $tag2 = factory('App\Tag')->create([
+        $tag2 = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'family',
         ]);
@@ -110,15 +111,15 @@ class ApiContactTagControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $tag = factory('App\Tag')->create([
+        $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'friend',
         ]);
-        $tag2 = factory('App\Tag')->create([
+        $tag2 = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'family',
         ]);
-        $tag3 = factory('App\Tag')->create([
+        $tag3 = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'work',
         ]);
@@ -151,11 +152,11 @@ class ApiContactTagControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $tag = factory('App\Tag')->create([
+        $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'friend',
         ]);
-        $tag2 = factory('App\Tag')->create([
+        $tag2 = factory(Tag::class)->create([
             'account_id' => $user->account->id,
             'name' => 'family',
         ]);

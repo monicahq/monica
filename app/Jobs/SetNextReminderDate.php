@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Reminder;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Reminder;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;

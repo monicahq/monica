@@ -2,8 +2,8 @@
 
 namespace App\Jobs\StayInTouch;
 
-use App\Contact;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +36,7 @@ class ScheduleStayInTouch implements ShouldQueue
         $mailSent = false;
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($this->contact->stay_in_touch_trigger_date)
+            if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
                 && ! $account->hasLimitations()) {
                 $this->contact->sendStayInTouchEmail($user);
                 $mailSent = true;
