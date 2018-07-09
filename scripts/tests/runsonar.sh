@@ -153,7 +153,6 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
     -Dsonar.pullrequest.key=$PR_NUMBER \
     -Dsonar.pullrequest.base=$PULL_REQUEST_BASEBRANCH \
     -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
-    -Dsonar.pullrequest.github.id=$PR_NUMBER \
     -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=$REPO"
 
