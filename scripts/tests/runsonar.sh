@@ -64,6 +64,7 @@ function CommonParams {
        -Dsonar.analysis.pipeline=$BUILD \
        -Dsonar.analysis.sha1=$SHA1 \
        -Dsonar.analysis.repository=$REPO \
+       -Dsonar.verbose=true \
        $extra
 }
 
