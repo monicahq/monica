@@ -24,6 +24,7 @@ return [
     '2fa_recuperation_code' => 'Bitte gib deinen Zwei-Faktor-Wiederherstellungscode ein',
 
     'login_to_account' => 'In Konto einloggen',
+    'login_again' => 'Bitte loggen Sie sich wieder in Ihren Account ein',
     'email' => 'E-Mail',
     'password' => 'Passwort',
     'login' => 'Einloggen',
@@ -56,7 +57,12 @@ return [
     'register_password_example' => 'Sicheres Kennwort eingeben',
     'register_password_confirmation' => 'Passwortbestätigung',
     'register_action' => 'Anmelden',
-    'register_policy' => 'Die Anmeldung bedeutet, dass Sie unsere <a href=":url" hreflang=":hreflang">Datenschutzerklärung</a> gelesen haben und damit einverstanden sind.',
+    'register_policy' => 'Deine Anmeldung bedeutet, dass du unsere <a href=":url" hreflang=":hreflang">Datenschutzrichtlinien</a> and <a href=":urlterm" hreflang=":hreflang">AGBs</a> gelesen und akzeptiert hast.',
     'register_invitation_email' => 'Aus Sicherheitsgründen geben Sie bitte die E-Mail-Adresse der Person an, die Sie eingeladen hat, diesem Konto beizutreten. Diese Informationen finden Sie in der Einladungs-E-Mail.',
 
+    'confirmation_again' => 'Wenn Sie Ihre E-Mail-Adresse ändern möchten, <a href=":url" class="alert-link">klicken Sie bitte hier</a>.',
+    'email_change_current_email' => 'Aktuelle E-Mail-Adresse:',
+    'email_change_title' => 'E-Mail-Adresse ändern',
+    'email_change_new' => 'Neue E-Mail-Adresse',
+    'email_changed' => 'Ihre E-Mail-Adresse wurde geändert. Überprüfen Sie Ihre E-Mails um sie zu bestätigen.',
 ];

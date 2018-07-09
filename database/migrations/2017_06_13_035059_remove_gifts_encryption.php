@@ -1,6 +1,6 @@
 <?php
 
-use App\Gift;
+use App\Models\Contact\Gift;
 use Illuminate\Database\Migrations\Migration;
 
 class RemoveGiftsEncryption extends Migration

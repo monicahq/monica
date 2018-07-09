@@ -1,17 +1,55 @@
 UNRELEASED CHANGES:
 
-* Add User and Currency support in the API
+* Add U2F/yubikey support and refactor MultiFactor Authentication
+* Add a script to update assets automatically
+* 
+
+RELEASED VERSIONS:
+
+v2.3.1 - 2018-06-21
+-------------------
+
+* Fix journal entries not being displayed
+* Add ability to click on entire row on the contact list
+* Fix first name of a relation which could not be saved
+* Fix last name not being reset when set empty
+
+v2.3.0 - 2018-06-13
+-------------------
+
+* Add a new variable DB_USE_UTF8MB4. Please read instructions carefully for this one.
+* Add support for nicknames
+* Fix resetting account not working
+* Fix CSV import that can break if dates have the wrong format
+* Add default accounts email confirmation in setup:test
+* Set the default tooltip delay to 0 so the tooltip does not stay displayed for 200ms by default
+* Replace queries with hardcoded "monica" database name to use the current default connection database
+* Set the default_avatar_color property before saving a contact model.
+* Move docs folder back to the repository
+
+v2.2.1 - 2018-05-31
+-------------------
+
+* Fix url of confirmation email resend
+* Update translations
+* Fix sonar run on release version
+
+v2.2.0 - 2018-05-30
+-------------------
+
+* Add debts on the dashboard
+* Add support for User and Currency objects in the API
 * Add ability to force users to accept privacy and terms of use
 * Fix journal entry with date different than today's date not working
-* Fixes Contact search dropdown shows non-contacts that link to nowhere
+* Fix Contact search dropdown showing non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
 * Adds ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
 * Add trusted proxies to run behind a ssl terminating loadbalancer
 * Fix reminders for past events are visible on the dashboard
-
-RELEASED VERSIONS:
+* Add email address verification on register, and email change
+* Change table structure to support emojis in texts
 
 v2.1.1 - 2018-05-13
 -------------------

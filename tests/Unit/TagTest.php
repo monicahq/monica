@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Tag;
 use Tests\TestCase;
+use App\Models\Contact\Tag;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TagTest extends TestCase
@@ -12,9 +14,9 @@ class TagTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $tag = factory('App\Tag')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $tag = factory(Tag::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -23,13 +25,13 @@ class TagTest extends TestCase
 
     public function test_it_belongs_to_many_contacts()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $tag = factory('App\Tag')->create(['account_id' => $account->id]);
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $tag = factory(Tag::class)->create(['account_id' => $account->id]);
         $contact->tags()->sync([$tag->id => ['account_id' => $account->id]]);
 
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $tag = factory('App\Tag')->create(['account_id' => $account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $tag = factory(Tag::class)->create(['account_id' => $account->id]);
         $contact->tags()->sync([$tag->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($tag->contacts()->exists());

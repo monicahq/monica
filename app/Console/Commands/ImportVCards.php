@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User\User;
 use App\Traits\VCardImporter;
 use Illuminate\Console\Command;
 use Sabre\VObject\Component\VCard;

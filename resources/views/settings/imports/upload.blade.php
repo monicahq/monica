@@ -64,8 +64,8 @@
                 <div class="form-group">
                     <label for="behaviour">{{ trans('settings.import_upload_behaviour') }}</label>
                     <select class="form-control" name="behaviour" id="behaviour">
-                        <option value="{{ \App\ImportJob::BEHAVIOUR_ADD }}" selected>{{ trans('settings.import_upload_behaviour_add') }}</option>
-                        <option value="{{ \App\ImportJob::BEHAVIOUR_REPLACE }}">{{ trans('settings.import_upload_behaviour_replace') }}</option>
+                        <option value="{{ \App\Models\Account\ImportJob::BEHAVIOUR_ADD }}" selected>{{ trans('settings.import_upload_behaviour_add') }}</option>
+                        <option value="{{ \App\Models\Account\ImportJob::BEHAVIOUR_REPLACE }}">{{ trans('settings.import_upload_behaviour_replace') }}</option>
                     </select>
                     <small id="behaviourHelp" class="form-text text-muted">{{ trans('settings.import_upload_behaviour_help') }}</small>
                 </div>

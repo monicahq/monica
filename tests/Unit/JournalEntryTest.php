@@ -3,7 +3,10 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\JournalEntry;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class JournalEntryTest extends TestCase
@@ -12,9 +15,9 @@ class JournalEntryTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $task = factory('App\JournalEntry')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $task = factory(JournalEntry::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -23,7 +26,7 @@ class JournalEntryTest extends TestCase
 
     public function test_get_add_adds_data_of_the_right_type()
     {
-        $activity = factory(\App\Activity::class)->create();
+        $activity = factory(Activity::class)->create();
         $date = $activity->date_it_happened;
 
         $journalEntry = (new JournalEntry)->add($activity);
@@ -32,13 +35,13 @@ class JournalEntryTest extends TestCase
             'account_id' => $activity->account_id,
             'date' => $date,
             'journalable_id' => $activity->id,
-            'journalable_type' => 'App\Activity',
+            'journalable_type' => 'App\Models\Contact\Activity',
         ]);
     }
 
     public function test_get_object_data_returns_an_object()
     {
-        $activity = factory(\App\Activity::class)->create();
+        $activity = factory(Activity::class)->create();
 
         $journalEntry = (new JournalEntry)->add($activity);
 

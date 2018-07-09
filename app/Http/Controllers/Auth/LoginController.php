@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Bestmomo\LaravelEmailConfirmation\Traits\AuthenticatesUsers;
 
 class LoginController extends Controller
 {

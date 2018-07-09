@@ -4,6 +4,7 @@ namespace Tests\Helper;
 
 use Tests\FeatureTestCase;
 use App\Helpers\SearchHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SearchHelperTest extends FeatureTestCase
@@ -14,7 +15,7 @@ class SearchHelperTest extends FeatureTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->make();
+        $contact = factory(Contact::class)->make();
         $searchResults = SearchHelper::searchContacts($contact->first_name, 1, 'created_at');
 
         $this->assertInstanceOf('Illuminate\Pagination\LengthAwarePaginator', $searchResults);

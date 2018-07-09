@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Gender;
-use App\Contact;
+use App\Models\User\User;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 
 class ImportCSV extends Command
@@ -143,8 +143,8 @@ class ImportCSV extends Command
             $contact->email = null;
         }
 
-        $contact->save();
         $contact->setAvatarColor();
+        $contact->save();
 
         if (! empty($data[14])) {
             $birthdate = new \DateTime(strtotime($data[14]));

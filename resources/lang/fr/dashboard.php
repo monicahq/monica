@@ -11,6 +11,10 @@ return [
     'tab_recent_calls' => 'Appels récents',
     'tab_favorite_notes' => 'Notes favorites',
     'tab_calls_blank' => 'Vous n’avez encore enregistré aucun appel.',
+    'tab_debts' => 'Dettes',
+    'tab_debts_blank' => 'Vous n’avez encore enregistré aucune dette.',
+
+    'debts_you_owe' => 'Vous devez',
 
     'statistics_contacts' => 'Contacts',
     'statistics_activities' => 'Activités',

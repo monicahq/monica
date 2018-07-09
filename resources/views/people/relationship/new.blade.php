@@ -6,7 +6,7 @@
 
   {{-- Breadcrumb --}}
   <div class="mt4 mw7 center mb3">
-    <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->getCompleteName() }}</a></p>
+    <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->name }}</a></p>
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.relationship_form_add') }}</h3>
     </div>
@@ -45,7 +45,7 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}
           <div class="mb3 mb0-ns">
-            @if (auth()->user()->name_order == 'firstname_first')
+            @if (auth()->user()->getNameOrderForForms() == 'firstname')
 
             <div class="dt dt--fixed">
               <div class="dtc pr2">
@@ -75,7 +75,7 @@
                 <form-input
                   value=""
                   v-bind:input-type="'text'"
-                  v-bind:id="'lastname'"
+                  v-bind:id="'last_name'"
                   v-bind:required="false"
                   v-bind:title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
@@ -84,7 +84,7 @@
                 <form-input
                   value=""
                   v-bind:input-type="'text'"
-                  v-bind:id="'firstname'"
+                  v-bind:id="'first_name'"
                   v-bind:required="true"
                   v-bind:title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
@@ -146,7 +146,7 @@
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
           v-bind:required="true"
-          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->getCompleteName()]) }}'"
+          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
           v-bind:id="'relationship_type_id'">
         </form-select>
       </div>

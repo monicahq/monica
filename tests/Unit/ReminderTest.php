@@ -2,10 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Account;
-use App\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\Notification;
+use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends TestCase
@@ -14,8 +17,8 @@ class ReminderTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $reminder = factory('App\Reminder')->create([
+        $account = factory(Account::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -24,8 +27,8 @@ class ReminderTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $contact = factory('App\Contact')->create([]);
-        $reminder = factory('App\Reminder')->create([
+        $contact = factory(Contact::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
             'contact_id' => $contact->id,
         ]);
 
@@ -34,13 +37,13 @@ class ReminderTest extends TestCase
 
     public function test_it_has_many_notifications()
     {
-        $account = factory('App\Account')->create([]);
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create([
+        $account = factory(Account::class)->create([]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'reminder_id' => $reminder->id,
         ]);
-        $notification = factory('App\Notification')->create([
+        $notification = factory(Notification::class)->create([
             'account_id' => $account->id,
             'reminder_id' => $reminder->id,
         ]);
@@ -146,18 +149,18 @@ class ReminderTest extends TestCase
 
     public function test_scheduling_a_notification_returns_a_notification_object()
     {
-        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-07-01']);
+        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-07-01']);
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
-        $this->assertInstanceOf('App\Notification', $reminder->scheduleSingleNotification(30));
+        $this->assertInstanceOf(Notification::class, $reminder->scheduleSingleNotification(30));
     }
 
     public function test_scheduling_a_notification_creates_a_notification_in_db()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
-        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-02-01']);
+        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-02-01']);
 
         $notification = $reminder->scheduleSingleNotification(3);
 
@@ -173,7 +176,7 @@ class ReminderTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
-        $reminder = factory('App\Reminder')->create(['next_expected_date' => '2017-01-25']);
+        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-01-25']);
 
         $this->assertNull($reminder->scheduleSingleNotification(30));
     }
@@ -190,24 +193,24 @@ class ReminderTest extends TestCase
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
 
-        $account = factory('App\Account')->create();
-        $reminderRule = factory('App\ReminderRule')->create([
+        $account = factory(Account::class)->create();
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 3,
             'active' => 0,
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 7,
             'active' => 1,
         ]);
-        $reminderRule = factory('App\ReminderRule')->create([
+        $reminderRule = factory(ReminderRule::class)->create([
             'account_id' => $account->id,
             'number_of_days_before' => 30,
             'active' => 1,
         ]);
 
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
 
         $reminder->scheduleNotifications();
 
@@ -220,9 +223,9 @@ class ReminderTest extends TestCase
     public function test_it_purge_existing_notifications()
     {
         $account = factory(Account::class)->create();
-        $reminder = factory('App\Reminder')->create(['account_id' => $account->id]);
-        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $notification = factory('App\Notification')->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
 
         $reminder->purgeNotifications();
 
