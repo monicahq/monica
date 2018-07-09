@@ -2,12 +2,13 @@
 
 namespace App\Models\CardDAV\Backends;
 
-use Sabre\DAV, Sabre\CalDAV, Sabre\DAVACL;
-use Auth;
 use Log;
+use Auth;
+use Sabre\DAV;
+use Sabre\CalDAV;
 
-class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendInterface {
-
+class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendInterface
+{
     /**
      * Returns a list of principals based on a prefix.
      *
@@ -24,22 +25,27 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param string $prefixPath
      * @return array
      */
-    function getPrincipalsByPrefix($prefixPath) {
+    public function getPrincipalsByPrefix($prefixPath)
+    {
         Log::debug(__CLASS__.' getPrincipalsByPrefix', func_get_args());
         $principals = [
             [
                 'uri'                                   => 'principals/'.Auth::user()->email,
                 '{http://sabredav.org/ns}email-address' => Auth::user()->email,
                 '{DAV:}displayname'                     => Auth::user()->name,
-            ]
+            ],
         ];
 
         $prefixPath = trim($prefixPath, '/');
-        if ($prefixPath) $prefixPath .= '/';
+        if ($prefixPath) {
+            $prefixPath .= '/';
+        }
 
         $return = [];
         foreach ($principals as $principal) {
-            if ($prefixPath && strpos($principal['uri'], $prefixPath) !== 0) continue;
+            if ($prefixPath && strpos($principal['uri'], $prefixPath) !== 0) {
+                continue;
+            }
             $return[] = $principal;
         }
 
@@ -54,11 +60,14 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param string $path
      * @return array
      */
-    function getPrincipalByPath($path) {
+    public function getPrincipalByPath($path)
+    {
         Log::debug(__CLASS__.' getPrincipalByPath', func_get_args());
 
         foreach ($this->getPrincipalsByPrefix('principals') as $principal) {
-            if ($principal['uri'] === $path) return $principal;
+            if ($principal['uri'] === $path) {
+                return $principal;
+            }
         }
     }
 
@@ -78,7 +87,8 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return void
      */
-    function updatePrincipal($path, \Sabre\DAV\PropPatch $propPatch) {
+    public function updatePrincipal($path, DAV\PropPatch $propPatch)
+    {
         Log::debug(__CLASS__.' updatePrincipal', func_get_args());
     }
 
@@ -111,7 +121,8 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param string $test
      * @return array
      */
-    function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof') {
+    public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
+    {
         Log::debug(__CLASS__.' searchPrincipals', func_get_args());
     }
 
@@ -132,31 +143,36 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param string $principalPrefix
      * @return string
      */
-    function findByUri($uri, $principalPrefix) {
+    public function findByUri($uri, $principalPrefix)
+    {
         Log::debug(__CLASS__.' searchPrincipals', func_get_args());
     }
 
     /**
-     * Returns the list of members for a group-principal
+     * Returns the list of members for a group-principal.
      *
      * @param string $principal
      * @return array
      */
-    function getGroupMemberSet($principal) {
+    public function getGroupMemberSet($principal)
+    {
         debug('getGroupMemberSet');
+
         return [
             'principals/'.Auth::user()->email,
         ];
     }
 
     /**
-     * Returns the list of groups a principal is a member of
+     * Returns the list of groups a principal is a member of.
      *
      * @param string $principal
      * @return array
      */
-    function getGroupMembership($principal) {
+    public function getGroupMembership($principal)
+    {
         debug('getGroupMembership');
+
         return [
             'principals/'.Auth::user()->email,
         ];
@@ -171,7 +187,8 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      * @param array $members
      * @return void
      */
-    function setGroupMemberSet($principal, array $members) {
+    public function setGroupMemberSet($principal, array $members)
+    {
         dd('setGroupMemberSet');
     }
 }

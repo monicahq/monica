@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Log;
 use App;
+use Log;
+use Illuminate\Http\Request;
+use App\Models\CardDAV\MonicaAddressBookRoot;
+use App\Models\CardDAV\Backends\MonicaSabreBackend;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
-use App\Models\CardDAV\Backends\MonicaSabreBackend;
-use App\Models\CardDAV\MonicaAddressBookRoot;
-
 
 class CardDAVController extends Controller
 {
@@ -33,7 +30,7 @@ class CardDAVController extends Controller
 
         $nodes = [
                 new \Sabre\DAVACL\PrincipalCollection($principalBackend),
-                new MonicaAddressBookRoot($principalBackend, $carddavBackend)
+                new MonicaAddressBookRoot($principalBackend, $carddavBackend),
         ];
 
         // Initiate Sabre server
@@ -68,6 +65,7 @@ class CardDAVController extends Controller
 
         // Return response through laravel
         Log::debug(__CLASS__.' init', ['status' => $status, 'content' => $content]);
+
         return response($content, $status)->withHeaders($headers);
     }
 }

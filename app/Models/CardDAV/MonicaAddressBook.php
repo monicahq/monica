@@ -2,10 +2,10 @@
 
 namespace App\Models\CardDAV;
 
-use \Sabre\CardDAV\AddressBook;
+use Sabre\CardDAV\AddressBook;
 
-class MonicaAddressBook extends AddressBook {
-
+class MonicaAddressBook extends AddressBook
+{
     /**
      * Returns a list of ACE's for this node.
      *
@@ -18,13 +18,14 @@ class MonicaAddressBook extends AddressBook {
      *
      * @return array
      */
-    function getACL() {
+    public function getACL()
+    {
         return [
             [
                 'privilege' => '{DAV:}read',
                 'principal' => $this->getOwner(),
                 'protected' => true,
-            ]
+            ],
         ];
     }
 
@@ -35,7 +36,8 @@ class MonicaAddressBook extends AddressBook {
      *
      * @return array
      */
-    function getChildACL() {
+    public function getChildACL()
+    {
         return [
             [
                 'privilege' => '{DAV:}read',
@@ -44,5 +46,4 @@ class MonicaAddressBook extends AddressBook {
             ],
         ];
     }
-
 }

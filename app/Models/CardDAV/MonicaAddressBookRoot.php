@@ -2,10 +2,10 @@
 
 namespace App\Models\CardDAV;
 
-use \Sabre\CardDAV\AddressBookRoot;
+use Sabre\CardDAV\AddressBookRoot;
 
-class MonicaAddressBookRoot extends AddressBookRoot {
-
+class MonicaAddressBookRoot extends AddressBookRoot
+{
     /**
      * This method returns a node for a principal.
      *
@@ -16,8 +16,8 @@ class MonicaAddressBookRoot extends AddressBookRoot {
      * @param array $principal
      * @return \Sabre\DAV\INode
      */
-    function getChildForPrincipal(array $principal) {
+    public function getChildForPrincipal(array $principal)
+    {
         return new MonicaAddressBookHome($this->carddavBackend, $principal['uri']);
     }
-
 }
