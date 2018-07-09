@@ -4,18 +4,33 @@
 
 Monica can run on Debian Stretch.
 
-#### 1. Install the required packages:
+## Prerequisites
 
-```
+1. Install the required packages:
+
+```sh
 sudo apt install apache2 mariadb-server php7.1 php7.1-cli php7.1-common \
     php7.1-json php7.1-opcache php7.1-mysql php7.1-mbstring php7.1-mcrypt \
     php7.1-zip php7.1-fpm php7.1-bcmath php7.1-intl php7.1-simplexml \
     php7.1-dom php7.1-curl php7.1-gd git curl
 ```
 
-#### 2. Clone the repository
+2. Install composer
 
-You may install Monica by simply closing the repository. Consider cloning the repository into any folder, example here in `/var/www/monica` directory:
+Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/).
+
+Move it to the bin directory.
+```sh
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+## Installation steps
+
+Once the softwares above are installed:
+
+### 1. Clone the repository
+
+You may install Monica by simply cloning the repository. Consider cloning the repository into any folder, example here in `/var/www/monica` directory:
 ```sh
 sudo git clone https://github.com/monicahq/monica.git /var/www/monica
 ```
@@ -28,29 +43,7 @@ cd /var/www/monica
 sudo git checkout tags/v1.6.2
 ```
 
-#### 3. Change permissions on the new folder
-
-```sh
-sudo chown -R www-data:www-data /var/www/monica
-```
-
-#### 4. Install nodejs (this is needed for npm)
-
-```sh
-curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
-sudo apt install -y nodejs
-```
-
-#### 5. Install composer
-
-Download and install the binary by following the [Command-line installation of composer](https://getcomposer.org/download/).
-
-Move it to the bin directory.
-```sh
-sudo mv composer.phar /usr/local/bin/composer
-```
-
-#### 6. Setup the database
+### 2. Setup the database
 
 First make the database a bit more secure.
 ```sh
@@ -83,36 +76,40 @@ FLUSH PRIVILEGES;
 exit
 ```
 
-#### 7. Configure Monica
+### 3. Configure Monica
 
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
 1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
 1. Run `composer install --no-interaction --no-suggest --no-dev --ignore-platform-reqs` to install all packages.
-1. Run `npm install` to install all the front-end dependencies and tools needed to compile assets.
-1. Run `npm run production` to compile js and css assets.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
 1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
 
-#### 8. Configure cron job
+### 4. Configure cron job
 
-As recommended by the generic installation instructions we create a cronjob which runs `artisan schedule:run` every minute.
+Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33).
+Basically those crons are needed to send reminder emails and check if a new version is available.
+To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
-For this execute this command:
+1. Open the crontab edit:
 ```sh
 sudo crontab -e
 ```
-
-And then add this line to the bottom of the window that opens.
+2. Then, in the text editor window you just opened, copy the following:
 ```
 * * * * * sudo -u www-data php /var/www/monica/artisan schedule:run
 ```
 
-#### 9. Configure Apache webserver
+### 5. Configure Apache webserver
 
-We need to enable the rewrite module of the Apache webserver:
+Give proper permissions to the project directory by running
+```sh
+sudo chown -R www-data:www-data /var/www/monica
+```
+
+Enable the rewrite module of the Apache webserver:
 ```sh
 sudo a2enmod rewrite
 ```
@@ -137,4 +134,7 @@ Finally restart Apache.
 sudo systemctl restart apache2
 ```
 
-Monica will be up and running to `http://localhost`.
+
+### Final step
+
+The final step is to have fun with your newly created instance, which should be up and running to `http://localhost`.

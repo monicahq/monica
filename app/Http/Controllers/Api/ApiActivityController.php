@@ -196,7 +196,7 @@ class ApiActivityController extends ApiController
         $attendeesID = $request->get('contacts');
         foreach ($attendeesID as $attendeeID) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
+                Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $attendeeID)
                     ->firstOrFail();
             } catch (ModelNotFoundException $e) {
