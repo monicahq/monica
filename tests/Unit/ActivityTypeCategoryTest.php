@@ -36,7 +36,7 @@ class ActivityTypeCategoryTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'people.activity_type_awesome_key',
+            'people.activity_type_category_awesome_key',
             $activityTypeCategory->name
         );
 

@@ -49,7 +49,7 @@ class ActivityTypeCategory extends Model
     public function getNameAttribute($value)
     {
         if ($this->translation_key) {
-            return trans('people.activity_type_'.$this->translation_key);
+            return trans('people.activity_type_category_'.$this->translation_key);
         }
 
         return $value;
