@@ -10,6 +10,7 @@ use App;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
 use App\Models\CardDAV\Backends\MonicaSabreBackend;
+use App\Models\CardDAV\MonicaAddressBookRoot;
 
 
 class CardDAVController extends Controller
@@ -32,7 +33,7 @@ class CardDAVController extends Controller
 
         $nodes = [
                 new \Sabre\DAVACL\PrincipalCollection($principalBackend),
-                new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend)
+                new MonicaAddressBookRoot($principalBackend, $carddavBackend)
         ];
 
         // Initiate Sabre server
