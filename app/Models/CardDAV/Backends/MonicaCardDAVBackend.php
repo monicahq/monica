@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV, Sabre\CalDAV, Sabre\DAVACL, Sabre\VObject;
 use Auth;

@@ -1,11 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use App;
+use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
+use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
+use App\Models\CardDAV\Backends\MonicaSabreBackend;
+
 
 class CardDAVController extends Controller
 {
@@ -30,9 +35,6 @@ class CardDAVController extends Controller
                 new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend)
         ];
 
-        
-        dd($carddavBackend->prepareCard($contact));
-
         // Initiate Sabre server
         $server = new \Sabre\DAV\Server($nodes);
         $server->setBaseUri('/carddav');
@@ -44,7 +46,6 @@ class CardDAVController extends Controller
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
-        $server->addPlugin(new \Sabre\DAV\Browser\Plugin());
         $server->addPlugin(new \Sabre\CardDAV\Plugin());
         $aclPlugin = new \Sabre\DAVACL\Plugin();
         $aclPlugin->allowUnauthenticatedAccess = false;
