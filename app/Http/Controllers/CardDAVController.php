@@ -51,6 +51,11 @@ class CardDAVController extends Controller
         $aclPlugin->allowUnauthenticatedAccess = false;
         $server->addPlugin($aclPlugin);
 
+        // In debug mode add browser plugin
+        if (App::environment('local')) {
+            $server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+        }
+
         // Execute requests and catch output
         // We do this because laravel always sends a 200 back, but we need to use the StatusCode and of Sabre
         ob_start();
