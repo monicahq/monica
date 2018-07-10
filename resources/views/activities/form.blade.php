@@ -64,9 +64,15 @@
             @foreach (auth()->user()->account->activityTypeCategories as $activityTypeCategory)
                 <optgroup label="{{ $activityTypeCategory->name }}">
                     @foreach (App\Models\Contact\ActivityType::where('activity_type_category_id', $activityTypeCategory->id)->get() as $activityType)
-                        <option value="{{ $activityType->id }}">
-                            {{ $activityType->name }}
-                        </option>
+                        @if (! is_null($activity->type) && $activity->type->id == $activityType->id)
+                            <option value="{{ $activityType->id }}" selected>
+                                {{ $activityType->name }}
+                            </option>
+                        @else
+                            <option value="{{ $activityType->id }}">
+                                {{ $activityType->name }}
+                            </option>
+                        @endif
                     @endforeach
                 </optgroup>
             @endforeach

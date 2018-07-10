@@ -21,12 +21,12 @@
                   <br>
 
                   <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
-                  <p>{{ $activity->date_it_happened->format('Y-m-d') }}</p>
+                  <p>{{ $activity->date_it_happened->format(trans('format.short_date_year')) }}</p>
                   <br>
 
                   <label for="activity_type_id">{{ trans('people.activities_activity') }}</label>
                   @if (isset($activity->type))
-                     <p>{{ trans('people.activity_type_'.$activity->type->key) }}</p>
+                     <p>{{ $activity->type->name }}</p>
                   @else
                      <p>{{ trans('app.unknown')}}</p>
                   @endif
