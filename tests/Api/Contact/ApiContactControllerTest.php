@@ -465,7 +465,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $firstuser->account->id,
             'first_name' => 'Bad',
         ]);
-        
+
         $user = $this->signin();
         $contact = factory('App\Contact')->create(['account_id' => $user->account->id]);
         $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=1')%20or%20('%'='");

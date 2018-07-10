@@ -72,10 +72,10 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'account_id' => $firstuser->account_id,
             'contact_field_type_id' => $firstfield->id,
         ]);
-        
+
         $user = $this->signin();
         $contact = factory('App\Contact')->create([
-            'account_id' => $user->account->id
+            'account_id' => $user->account->id,
         ]);
         $field = factory('App\ContactFieldType')->create([
             'account_id' => $user->account_id,
@@ -86,7 +86,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'contact_field_type_id' => $field->id,
         ]);
 
-        $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=email:john@doe");
+        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=100&query=email:john@doe');
 
         $response->assertStatus(200);
         // Assure that firstcontact from other account is not get (wrong filter on account id)
