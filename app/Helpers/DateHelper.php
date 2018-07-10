@@ -44,7 +44,7 @@ class DateHelper
         $date = new Date($date);
         $format = trans('format.short_date_year', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
@@ -59,7 +59,7 @@ class DateHelper
         $date = new Date($date);
         $format = trans('format.short_month', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
@@ -74,7 +74,7 @@ class DateHelper
         $date = new Date($date);
         $format = trans('format.short_day', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
@@ -89,7 +89,7 @@ class DateHelper
         $date = new Date($date);
         $format = trans('format.short_date', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
@@ -104,7 +104,7 @@ class DateHelper
         $date = new Date($date);
         $format = trans('format.short_date_year_time', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
@@ -141,7 +141,7 @@ class DateHelper
         $date = Date::now()->addMonthsNoOverflow($month);
         $format = trans('format.short_month_year', [], Date::getLocale());
 
-        return $date->format($format);
+        return $date->format($format) ?: '';
     }
 
     /**
