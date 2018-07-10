@@ -53,4 +53,34 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'data' => $this->jsonStructureContactField,
         ]);
     }
+
+    public function test_contact_query_internationalphone()
+    {
+        $user = $this->signin();
+        $contact = factory('App\Contact')->create([
+            'account_id' => $user->account->id
+        ]);
+        $field = factory('App\ContactFieldType')->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone',
+            'protocol' => 'tel:',
+            'type' => 'phone',
+            ]);
+        $contactField = factory('App\ContactField')->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+            'data' => '+447007007007',
+        ]);
+
+        $response = $this->json('GET', "/api/contacts?query=Phone:%2B447007007007");
+    
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+                'id' => $contact->id,
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'account' => ['id' => $user->account->id],
+        ]);
+    }
 }
