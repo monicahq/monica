@@ -465,7 +465,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $firstuser->account->id,
             'first_name' => 'Bad',
         ]);
-        
+
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id
