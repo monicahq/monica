@@ -94,7 +94,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'id' => $firstcontact->id,
             'first_name' => 'Bad',
             'account' => [
-                'id' => $firstuser->account->id
+                'id' => $firstuser->account->id,
             ],
         ]);
     }
