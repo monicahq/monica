@@ -7,15 +7,15 @@ source $SELF_PATH/realpath.sh
 ROOT=$(realpath $SELF_PATH/../..)
 
 API=https://api.bintray.com
-SLUG=$(jq -r ".package.subject" $ROOT/.travis.deploy.json)
-REPO=$(jq -r ".package.repo" $ROOT/.travis.deploy.json)
-PACKAGE=$(jq -r ".package.name" $ROOT/.travis.deploy.json)
-VERSION=$(jq -r ".version.name" $ROOT/.travis.deploy.json)
+SLUG=$(jq -r ".package.subject" $ROOT/.deploy.json)
+REPO=$(jq -r ".package.repo" $ROOT/.deploy.json)
+PACKAGE=$(jq -r ".package.name" $ROOT/.deploy.json)
+VERSION=$(jq -r ".version.name" $ROOT/.deploy.json)
 
 # Create version
 curl -sS --user "${BINTRAY_USER}:${BINTRAY_APIKEY}" -H "Content-Type: application/json" \
     -X POST "$API/packages/${SLUG}/${REPO}/${PACKAGE}/versions" \
-    -d "$(jq -r ".version" $ROOT/.travis.deploy.json)"
+    -d "$(jq -r ".version" $ROOT/.deploy.json)"
 
 # Upload file
 # TODO
@@ -26,9 +26,9 @@ curl -sS --user "${BINTRAY_USER}:${BINTRAY_APIKEY}" \
 # Update properties
 curl -sS --user "${BINTRAY_USER}:${BINTRAY_APIKEY}" -H "Content-Type: application/json" \
     -X PATCH "$API/packages/${SLUG}/${REPO}/${PACKAGE}/versions/${VERSION}" \
-    -d "$(jq -r ".version" $ROOT/.travis.deploy.json)"
+    -d "$(jq -r ".version" $ROOT/.deploy.json)"
 
 # Update attributes
 curl -sS --user "${BINTRAY_USER}:${BINTRAY_APIKEY}" -H "Content-Type: application/json" \
     -X POST "$API/packages/${SLUG}/${REPO}/${PACKAGE}/versions/${VERSION}/attributes" \
-    -d "$(jq -r ".version.attributes" $ROOT/.travis.deploy.json)"
+    -d "$(jq -r ".version.attributes" $ROOT/.deploy.json)"

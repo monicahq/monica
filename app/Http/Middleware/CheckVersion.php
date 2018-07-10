@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Instance;
+use App\Models\Instance\Instance;
 
 class CheckVersion
 {

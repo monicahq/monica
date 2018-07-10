@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
@@ -19,7 +20,7 @@ When you edit a contact, or manage a relationship, and add a birthday, we used t
             'created_at' => '2018-05-04',
         ]);
 
-        $instance = \App\Instance::first();
+        $instance = Instance::first();
         $instance->addUnreadChangelogEntry($id);
     }
 }

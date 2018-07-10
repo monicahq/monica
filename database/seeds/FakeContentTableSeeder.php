@@ -1,11 +1,12 @@
 <?php
 
-use App\Account;
-use App\Contact;
 use GuzzleHttp\Client;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -27,6 +28,10 @@ class FakeContentTableSeeder extends Seeder
     {
         $this->setUpFaker();
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+
+        // set default admin account to confirmed
+        $adminUser = $this->account->users()->first();
+        $this->confirmUser($adminUser);
 
         // create a random number of contacts
         $this->numberOfContacts = rand(60, 100);
@@ -50,7 +55,9 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->gender_id = $this->getRandomGender()->id;
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
+            $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->has_avatar = false;
+            $this->contact->setAvatarColor();
             $this->contact->save();
 
             // set an external avatar
@@ -61,9 +68,7 @@ class FakeContentTableSeeder extends Seeder
                 $this->contact->save();
             }
 
-            $this->contact->setAvatarColor();
-
-            $this->populateFoodPreferencies();
+            $this->populateFoodPreferences();
             $this->populateDeceasedDate();
             $this->populateBirthday();
             $this->populateFirstMetInformation();
@@ -88,10 +93,12 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $blankUser = $blankAccount->users()->first();
+        $this->confirmUser($blankUser);
     }
 
-    public function populateFoodPreferencies()
+    public function populateFoodPreferences()
     {
         // add food preferencies
         if (rand(1, 2) == 1) {
@@ -194,9 +201,8 @@ class FakeContentTableSeeder extends Seeder
                 if (rand(1, 2) == 1) {
                     $relatedContact->is_partial = true;
                 }
-                $relatedContact->save();
-
                 $relatedContact->setAvatarColor();
+                $relatedContact->save();
 
                 // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
@@ -250,7 +256,7 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->account->id,
                     'date' => $date,
                     'journalable_id' => $activity->id,
-                    'journalable_type' => 'App\Activity',
+                    'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');
@@ -341,10 +347,43 @@ class FakeContentTableSeeder extends Seeder
     public function populateContactFields()
     {
         if (rand(1, 3) == 1) {
-            for ($j = 0; $j < rand(1, 4); $j++) {
+
+            // Fetch number of types
+            $numberOfTypes = ContactFieldType::count();
+
+            for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
+                // Retrieve random ContactFieldType
+                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                // Fake data according to type
+                $data = null;
+                switch ($contactFieldType->name) {
+                    case 'Email':
+                        $data = $this->faker->email;
+                    break;
+                    case 'Phone':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 'Facebook':
+                        $data = 'https://facebook.com/'.$this->faker->userName;
+                    break;
+                    case 'Twitter':
+                        $data = 'https://twitter.com/'.$this->faker->userName;
+                    break;
+                    case 'Whatsapp':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    case 'Telegram':
+                        $data = $this->faker->phoneNumber;
+                    break;
+                    default:
+                        $data = $this->faker->url;
+                    break;
+                }
+
                 $contactField = $this->contact->contactFields()->create([
-                    'contact_field_type_id' => rand(1, 6),
-                    'data' => $this->faker->url,
+                    'contact_field_type_id' => $contactFieldType->id,
+                    'data' => $data,
                     'account_id' => $this->contact->account->id,
                 ]);
             }
@@ -367,7 +406,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $entryId,
-                'journalable_type' => 'App\Entry',
+                'journalable_type' => 'App\Models\Journal\Entry',
                 'created_at' => now(),
             ]);
         }
@@ -406,7 +445,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $dayId,
-                'journalable_type' => 'App\Day',
+                'journalable_type' => 'App\Models\Journal\Day',
                 'created_at' => now(),
             ]);
         }
@@ -431,5 +470,12 @@ class FakeContentTableSeeder extends Seeder
     public function getRandomGender()
     {
         return $this->account->genders->random();
+    }
+
+    public function confirmUser($user)
+    {
+        $user->confirmation_code = null;
+        $user->confirmed = true;
+        $user->save();
     }
 }

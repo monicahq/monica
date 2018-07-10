@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use Exception;
-use App\Contact;
-use App\Relationship;
-use App\ContactFieldType;
+use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,37 +33,29 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $dateFlag = false;
-
-        $date_sort = null;
-
-        if (str_contains($sort, 'lastactivitydate')) {
-            $date_sort = str_after($sort, 'lastactivitydate');
-            $sort = 'firstnameAZ';
-            $dateFlag = true;
-        }
-
         $tags = null;
         $url = '';
-        $tagCount = 1;
+        $count = 1;
 
-        if ($request->get('tag1')) {
-            $tags = Tag::where('name_slug', $request->get('tag1'))
-                        ->where('account_id', auth()->user()->account_id)
-                        ->get();
+        if ($request->get('no_tag')) {
+            //get tag less contacts
+            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+            $contacts = $contacts->tags('NONE')->get();
+        } elseif ($request->get('tag1')) {
+            // get contacts with selected tags
 
-            $count = 2;
+            $tags = collect();
 
-            while (true) {
-                if ($request->get('tag'.$count)) {
-                    $tags = $tags->concat(
-                        Tag::where('name_slug', $request->get('tag'.$count))
-                                    ->where('account_id', auth()->user()->account_id)
-                                    ->get()
-                    );
-                } else {
-                    break;
+            while ($request->get('tag'.$count)) {
+                $tag = Tag::where('name_slug', $request->get('tag'.$count))
+                            ->where('account_id', auth()->user()->account_id)
+                            ->get();
+
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
                 }
+
+                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
 
                 $count++;
             }
@@ -71,38 +65,19 @@ class ContactsController extends Controller
 
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
 
-            foreach ($tags as $tag) {
-                $contacts = $contacts->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('id', $tag->id);
-                });
-
-                $url = $url.'tag'.$tagCount.'='.$tag->name_slug.'&';
-
-                $tagCount++;
-            }
-
-            $contacts = $contacts->get();
+            $contacts = $contacts->tags($tags)->get();
         } else {
+            // get all contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
-        if ($dateFlag) {
-            foreach ($contacts as $contact) {
-                $contact['sort_date'] = $contact->getLastActivityDate();
-            }
-
-            if ($date_sort == 'NewtoOld') {
-                $contacts = $contacts->sortByDesc('sort_date');
-            } elseif ($date_sort == 'OldtoNew') {
-                $contacts = $contacts->sortBy('sort_date');
-            }
-        }
-
         return view('people.index')
-            ->withContacts($contacts)
+            ->withContacts($contacts->unique('id'))
             ->withTags($tags)
+            ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
-            ->withTagCount($tagCount);
+            ->withTagCount($count)
+            ->withTagLess($request->get('no_tag') ?? false);
     }
 
     /**
@@ -135,6 +110,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender' => 'required|integer',
         ]);
 
@@ -150,10 +126,10 @@ class ContactsController extends Controller
 
         $contact->first_name = $request->input('first_name');
         $contact->last_name = $request->input('last_name', null);
-
-        $contact->save();
+        $contact->nickname = $request->input('nickname', null);
 
         $contact->setAvatarColor();
+        $contact->save();
 
         $contact->logEvent('contact', $contact->id, 'create');
 
@@ -162,7 +138,7 @@ class ContactsController extends Controller
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
-                            ->with('status', trans('people.people_add_success', ['name' => $contact->getCompleteName(auth()->user()->name_order)]));
+                            ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
         }
     }
 
@@ -184,7 +160,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = \Carbon\Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
         $contact->save();
 
         $relationships = $contact->relationships;
@@ -245,8 +221,8 @@ class ContactsController extends Controller
 
         return view('people.edit')
             ->withContact($contact)
-            ->withDays(\App\Helpers\DateHelper::getListOfDays())
-            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
             ->withDay($day)
@@ -268,6 +244,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
+            'nickname' => 'max:100',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -286,6 +263,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
             $contact->has_avatar = true;
@@ -334,7 +312,7 @@ class ContactsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
+                $birthdate = new Carbon($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -488,7 +466,13 @@ class ContactsController extends Controller
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
-                $results[$key]->hash = $result->hashID();
+                if ($result->is_partial) {
+                    $real = $result->getRelatedRealContact();
+
+                    $results[$key]->hash = $real->hashID();
+                } else {
+                    $results[$key]->hash = $result->hashID();
+                }
             }
 
             return $results;

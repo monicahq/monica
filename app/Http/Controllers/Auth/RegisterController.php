@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\Account;
+use App\Models\User\User;
+use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Bestmomo\LaravelEmailConfirmation\Traits\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -70,19 +71,26 @@ class RegisterController extends Controller
             'first_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'policy' => 'required',
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array
      * @return User
      */
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
-        $account = Account::createDefault($data['first_name'], $data['last_name'], $data['email'], $data['password']);
+        $account = Account::createDefault(
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            \Request::ip()
+        );
         $user = $account->users()->first();
 
         if (! $first) {
@@ -91,5 +99,27 @@ class RegisterController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+        $first = Account::count() == 1;
+        if (! config('monica.signup_double_optin') || $first) {
+            // if signup_double_optin is disabled, skip the confirm email part
+            $user->confirmation_code = null;
+            $user->confirmed = true;
+            $user->save();
+
+            $this->guard()->login($user);
+
+            return redirect(route('login'));
+        }
     }
 }

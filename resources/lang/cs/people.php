@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Řadit podle příjmení Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Zobrazeny všechny kontakty s tagem ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Vyčistit filtr',
     'people_list_contacts_per_tags' => '1 kontakt|:count kontaktů',
     'people_search' => 'Prohledat kontakty...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Přidat novou osobu',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Jméno',
     'people_add_middlename' => 'Prostřední jméno (volitelné)',
     'people_add_lastname' => 'Příjmení (volitelné)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Přidat tuto osobu',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
@@ -43,6 +46,7 @@ return [
     'people_add_import' => 'Chcete <a href=":url">importovat své kontakty</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -106,10 +110,10 @@ return [
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
-    'information_edit_help' => 'Pokud zadáte přesné datum narození pro tuto osobu, bude vytvořeno nové upozornění – takže budete každoročně upozorněni na oslavu narozenin.',
     'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Aktualizovat informace o práci',
     'work_edit_success' => 'Informace o práci úspěšně aktualizovány',
     'work_edit_title' => 'Aktualizovat informace o práci pro :name',

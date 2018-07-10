@@ -72,9 +72,24 @@ abstract class DuskTestCase extends BaseTestCase
         return count($res) > 0;
     }
 
+    public function hasNotification(Browser $browser)
+    {
+        $res = $browser->elements('.notifications');
+
+        return count($res) > 0;
+    }
+
     public function getDivAlert(Browser $browser)
     {
         $res = $browser->elements('alert');
+        if (count($res) > 0) {
+            return $res[0];
+        }
+    }
+
+    public function getNotification($browser)
+    {
+        $res = $browser->elements('.notification');
         if (count($res) > 0) {
             return $res[0];
         }

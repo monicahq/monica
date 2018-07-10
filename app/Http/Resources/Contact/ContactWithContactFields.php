@@ -21,6 +21,7 @@ class ContactWithContactFields extends Resource
             'hash_id' => $this->hashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'nickname' => $this->nickname,
             'gender' => $this->gender->name,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
@@ -32,19 +33,19 @@ class ContactWithContactFields extends Resource
                 'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('love')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
                     ],
                     'family' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('family')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('family'))),
                     ],
                     'friend' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('friend')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('friend')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('friend'))),
                     ],
                     'work' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('work')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : \App\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work'))),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('work')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('work'))),
                     ],
                 ]),
                 'dates' => [

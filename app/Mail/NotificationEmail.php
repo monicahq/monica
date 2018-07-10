@@ -2,13 +2,13 @@
 
 namespace App\Mail;
 
-use App\User;
-use App\Contact;
-use App\Reminder;
-use App\Notification;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
+use App\Models\Contact\Notification;
 use Illuminate\Queue\SerializesModels;
 
 class NotificationEmail extends Mailable

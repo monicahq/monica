@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -29,9 +30,9 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_get_countries()
     {
-        list($user, $contact) = $this->fetchUser();
+        $user = $this->signIn();
 
-        $response = $this->get('/people/'.$contact->id.'/countries');
+        $response = $this->get('/countries');
 
         $response->assertStatus(200);
 
@@ -44,7 +45,7 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'name' => 'test',
@@ -90,7 +91,7 @@ class AddressTest extends FeatureTestCase
             'name' => 'test2',
         ];
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
@@ -116,7 +117,7 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);

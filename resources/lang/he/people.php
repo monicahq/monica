@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'מיון לפי שם משפחה ת ← א',
     'people_list_lastactivitydateNewtoOld' => 'מיון לפי מועד הפעילות האחרונה מהחדשה לישנה',
     'people_list_lastactivitydateOldtoNew' => 'מיון לפי מועד הפעילות האחרונה מהישנה לחדשה',
-    'people_list_filter_tag' => 'הצגת כל אנשי הקשר עם התגית ',
+    'people_list_filter_tag' => 'מוצגים כל אנשי הקשר עם התגית',
     'people_list_clear_filter' => 'ניקוי מסנן',
     'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
+    'people_list_untagged' => 'הצגת אנשי קשר ללא תיוג',
+    'people_list_filter_untag' => 'מוצגים כל אנשי קשר ללא תיוג',
 
     // people add
     'people_add_title' => 'הוספת אדם חדש',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'שם פרטי',
     'people_add_middlename' => 'שם אמצעי (רשות)',
     'people_add_lastname' => 'שם משפחה (רשות)',
+    'people_add_nickname' => 'כינוי (רשות)',
     'people_add_cta' => 'הוספה',
     'people_save_and_add_another_cta' => 'הגשה והוספת עוד מישהו',
     'people_add_success' => 'היצירה של :name הושלמה בהצלחה',
@@ -43,6 +46,7 @@ return [
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
     'people_edit_email_error' => 'כבר יש איש קשר בחשבון שלך עם כתובת הדוא״ל הזו. נא לבחור באחד אחר.',
     'people_export' => 'ייצוא כ־vCard',
+    'people_add_reminder_for_birthday' => 'יצירת תזכורת שנתית ליום ההולדת',
 
     // show
     'section_contact_information' => 'פרטי קשר',
@@ -106,10 +110,10 @@ return [
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
-    'information_edit_help' => 'ציון יום ההולדת המדויק של האדם הזה, יצור תזכורת עבורך – כדי להודיע לך בכל שנה מתי הגיע לברך את האדם הזה לרגל יום הולדתו.',
     'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
+    'linkedin_profile' => 'פרופיל LinkedIn',
     'work_add_cta' => 'עדכון פרטי עבודה',
     'work_edit_success' => 'פרטי העבודה עודכנו בהצלחה',
     'work_edit_title' => 'עדכון פרטי העבודה של :name',

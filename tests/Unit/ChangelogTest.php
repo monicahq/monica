@@ -3,21 +3,24 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\User\Changelog;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ChangelogTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_many_changelogs()
+    public function test_it_belongs_to_many_users()
     {
-        $account = factory('App\Account')->create([]);
-        $user = factory('App\User')->create(['account_id' => $account->id]);
-        $changelog = factory('App\Changelog')->create([]);
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create(['account_id' => $account->id]);
+        $changelog = factory(Changelog::class)->create([]);
         $changelog->users()->sync($user->id);
 
-        $user = factory('App\User')->create(['account_id' => $account->id]);
-        $changelog = factory('App\Changelog')->create([]);
+        $user = factory(User::class)->create(['account_id' => $account->id]);
+        $changelog = factory(Changelog::class)->create([]);
         $changelog->users()->sync($user->id);
 
         $this->assertTrue($changelog->users()->exists());
@@ -25,7 +28,7 @@ class ChangelogTest extends TestCase
 
     public function test_it_gets_the_description_in_markdown()
     {
-        $changelog = factory('App\Changelog')->make([]);
+        $changelog = factory(Changelog::class)->make([]);
         $changelog->description = '# Test';
         $changelog->save();
 
@@ -37,7 +40,7 @@ class ChangelogTest extends TestCase
 
     public function test_it_gets_the_created_at_date_in_friendly_format()
     {
-        $changelog = factory('App\Changelog')->make([]);
+        $changelog = factory(Changelog::class)->make([]);
         $changelog->created_at = '1998-02-02 10:10:10';
         $changelog->save();
 

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Address;
-use App\Contact;
+use App\Helpers\LocaleHelper;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\People\AddressesRequest;
 
 class AddressesController extends Controller
@@ -43,7 +45,13 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        return CountriesHelper::getAll()->all();
+        $key = 'countries.'.LocaleHelper::getLocale();
+
+        $countries = Cache::rememberForever($key, function () {
+            return CountriesHelper::getAll();
+        });
+
+        return response()->json($countries->all());
     }
 
     /**

@@ -84,6 +84,11 @@ return [
 
     'default_save_success' => 'הנתונים נשמרו.',
 
+    'compliance_title' => 'סליחה על ההפרעה.',
+    'compliance_desc' => 'ערכנו את <a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> ואת <a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> שלנו. מכוח החוק עלינו לבקש ממך לעיין בשינויים ולאשר את הסכמתך להם כדי להמשיך לאפשר לך להשתמש בחשבונך.',
+    'compliance_desc_end' => 'אנו לא משתמשים בנתונים או בחשבון שלך לאף מטרה זדונית וגם לא נעשה זאת בעתיד.',
+    'compliance_terms' => 'קבלת התנאים ומדיניות הפרטיות החדשים',
+
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
     // This is because we need to indicate the name of the relationship type,
@@ -216,4 +221,9 @@ return [
     'relationship_type_protege_female' => 'חניכה',
     'relationship_type_protege_with_name' => 'חניך של :name',
     'relationship_type_protege_female_with_name' => 'חניכה של :name',
+
+    'relationship_type_ex_husband' => 'גרוש',
+    'relationship_type_ex_husband_female' => 'גרושה',
+    'relationship_type_ex_husband_with_name' => 'הגרוש של :name',
+    'relationship_type_ex_husband_female_with_name' => 'הגרושה של :name',
 ];

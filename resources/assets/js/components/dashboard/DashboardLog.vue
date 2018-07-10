@@ -11,6 +11,9 @@
         <li @click.prevent="setActiveTab('notes')" v-bind:class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_favorite_notes') }}
         </li>
+        <li @click.prevent="setActiveTab('debts')" v-bind:class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+          {{ $t('dashboard.tab_debts') }}
+        </li>
       </ul>
     </div>
     <div class="pa3">
@@ -84,6 +87,27 @@
           <p>{{ $t('dashboard.notes_title') }}</p>
         </div>
       </div>
+
+      <!-- Debts -->
+      <div v-if="activeTab == 'debts'">
+        <ul v-if="debts.length != 0">
+          <li class="pb2" v-for="debt in debts">
+            <span class="black-50 mr1 f6">{{ debt.created_at | formatDate }}</span>
+            <span class="mr1 black-50">•</span>
+            <a :href="'/people/' + debt.contact.hash_id">{{ debt.contact.first_name }}</a>
+            <span class="mr1 black-50">•</span>
+            {{ debt.amount_with_currency }}
+            <span class="black-50 f6" v-if="debt.in_debt == 'yes'">
+              <span class="mr1 black-50">•</span>{{ $t('dashboard.debts_you_owe') }}
+            </span>
+          </li>
+        </ul>
+
+        <!-- Debts: Blank state -->
+        <div class="tc mt4 mb4" v-if="debts.length == 0">
+          <p>{{ $t('dashboard.tab_debts_blank') }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -99,9 +123,11 @@
 
               callsAlreadyLoaded: false,
               notesAlreadyLoaded: false,
+              debtsAlreadyLoaded: false,
 
               calls: [],
               notes: [],
+              debts: [],
             };
         },
 
@@ -147,6 +173,13 @@
                         this.notesAlreadyLoaded = true;
                     }
                 }
+
+                if (view == 'debts') {
+                    if (! this.debtsAlreadyLoaded) {
+                        this.getDebts();
+                        this.debtsAlreadyLoaded = true;
+                    }
+                }
             },
 
             saveTab(view) {
@@ -166,6 +199,13 @@
                 axios.get('/dashboard/notes')
                         .then(response => {
                             this.notes = response.data;
+                        });
+            },
+
+            getDebts() {
+                axios.get('/dashboard/debts')
+                        .then(response => {
+                            this.debts = response.data;
                         });
             },
         }

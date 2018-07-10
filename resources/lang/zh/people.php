@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => '以姓Z → A排序',
     'people_list_lastactivitydateNewtoOld' => '以最后活动日期从近到远排序',
     'people_list_lastactivitydateOldtoNew' => '以最后活动日期从远到近排序',
-    'people_list_filter_tag' => '显示所有联系人标签 ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => '清除筛选',
     'people_list_contacts_per_tags' => ':count 个联系人',
     'people_search' => '搜索联系人...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '现在更新',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => '添加新人员',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => '名',
     'people_add_middlename' => '中间名 (可选)',
     'people_add_lastname' => '姓（可选）',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => '添加',
     'people_save_and_add_another_cta' => '提交并添加其他人',
     'people_add_success' => ':name 已成功创建',
@@ -43,6 +46,7 @@ return [
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -106,10 +110,10 @@ return [
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
-    'information_edit_help' => '如果您为此人指明了确切的出生日期, 我们将为您创建一个新的提醒。因此, 系统将在每年庆祝此人生日的时间通知您。',
     'information_no_linkedin_defined' => '没有定义LinkedIn',
     'information_no_work_defined' => '未定义工作信息',
     'information_work_at' => '在 :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => '更新工作信息',
     'work_edit_success' => '工作信息已成功更新',
     'work_edit_title' => '更新:name的工作信息',

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contact;
-use App\Relationship;
-use App\RelationshipType;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
+use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 

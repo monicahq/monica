@@ -31,7 +31,7 @@
   </select>
 
     <select id="{{ $class }}_year" name="{{ $class }}_year" class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'mr2' }}">
-      @if ($specialDate && $specialDate instanceof APP\SpecialDate)
+      @if ($specialDate && $specialDate instanceof APP\Models\Instance\SpecialDate)
         <option value="0" {{ ! $specialDate->is_year_unknown ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
       @else
         <option value="0">{{ trans('app.unknown') }}</option>

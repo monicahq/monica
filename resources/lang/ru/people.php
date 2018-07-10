@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
     'people_search' => 'Поиск по контактам...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Лимиты контактов: :current/:limit',
     'people_list_account_upgrade_title' => 'Перейдите на другой план чтобы получить больше возможностей.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Добавить человека',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Добавить',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
@@ -43,6 +46,7 @@ return [
     'people_add_import' => 'Вы хотите <a href=":url">импортировать ваши контакты</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -106,10 +110,10 @@ return [
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
-    'information_edit_help' => 'Если вы укажите точную дату рождения для этого человека, мы создадим для вас напоминание, которое будет сообщать ежегодно о предстоящем дне рождения.',
     'information_no_linkedin_defined' => 'LinkedIn не указан',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Обновите информацию о работе',
     'work_edit_success' => 'Информация о работе была обновлена',
     'work_edit_title' => 'Обновление информации о работе: :name',

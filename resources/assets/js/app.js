@@ -24,7 +24,9 @@ Vue.use(Notifications);
 // Tooltip
 import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
-Vue.use(Tooltip);
+Vue.use(Tooltip, {
+    delay: 0,
+});
 
 // Toggle Buttons
 import ToggleButton from 'vue-js-toggle-button';
@@ -151,15 +153,21 @@ Vue.component(
     'contact-field-types',
     require('./components/settings/ContactFieldTypes.vue')
 );
-
 Vue.component(
     'genders',
     require('./components/settings/Genders.vue')
 );
-
 Vue.component(
     'reminder-rules',
     require('./components/settings/ReminderRules.vue')
+);
+Vue.component(
+    'mfa-activate',
+    require('./components/settings/MfaActivate.vue')
+);
+Vue.component(
+    'u2f-connector',
+    require('./components/settings/U2fConnector.vue')
 );
 
 Vue.component(
@@ -173,6 +181,14 @@ import axios from 'axios';
 // i18n
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
+
+// Moments
+import moment from 'moment';
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('LL')
+    }
+});
 
 import messages from '../../../public/js/langs/en.json';
 
@@ -207,6 +223,7 @@ export function loadLanguageAsync (lang, set) {
 const app = null;
 const me = this;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+    moment.locale(lang);
 
     // the Vue appplication
     me.app = new Vue({

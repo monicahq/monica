@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'Classificar por sobrenome Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Ordenar por data de última atividade (da mais recente à mais antiga)',
     'people_list_lastactivitydateOldtoNew' => 'Ordenar por data de última atividade (da mais antiga à mais recente)',
-    'people_list_filter_tag' => 'A mostrar todos os contactos marcados com ',
+    'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Limpar filtro',
     'people_list_contacts_per_tags' => '1 contacto|:count contactos',
     'people_search' => 'Procurar nos seus contactos...',
@@ -24,6 +24,8 @@ return [
     'people_list_account_usage' => 'Consumo da sua conta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
+    'people_list_untagged' => 'View untagged contacts',
+    'people_list_filter_untag' => 'Showing all untagged contacts',
 
     // people add
     'people_add_title' => 'Adicione uma nova pessoa',
@@ -31,6 +33,7 @@ return [
     'people_add_firstname' => 'Primeiro nome',
     'people_add_middlename' => 'Nome do meio (Opcional)',
     'people_add_lastname' => 'Sobrenome (Opcional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Adicionar essa pessoa',
     'people_save_and_add_another_cta' => 'Enviar e adicionar outra pessoa',
     'people_add_success' => ':name foi criado com sucesso',
@@ -43,6 +46,7 @@ return [
     'people_add_import' => 'Deseja <a href=":url">importar os seus contatos</a>?',
     'people_edit_email_error' => 'Já existe um contacto na sua conta com este endereço de e-mail. Por favor escolha outro.',
     'people_export' => 'Export as vCard',
+    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
 
     // show
     'section_contact_information' => 'Informações de contacto',
@@ -106,10 +110,10 @@ return [
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'Eu sei o dia e o mês da data de nascimento desta pessoa, mas não o ano…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
-    'information_edit_help' => 'Se você indicar uma data de nascimento exata para essa pessoa, criaremos um novo lembrete para você – então você será notificado todos os anos quando é hora de celebrar a data de nascimento desta pessoa.',
     'information_no_linkedin_defined' => 'Nenhum LinkedIn definido',
     'information_no_work_defined' => 'Nenhuma informação profissional definida',
     'information_work_at' => 'em :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Atualizar informação de trabalho',
     'work_edit_success' => 'Informações profissionais foram atualizadas com sucesso',
     'work_edit_title' => 'Atualizar a informação profissional de :name',

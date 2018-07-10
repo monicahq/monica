@@ -3,7 +3,7 @@
 if [ "$CIRCLECI" == "true" ]; then
   if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi
   REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-  BRANCH=$CIRCLE_BRANCH
+  BRANCH=${CIRCLE_BRANCH:-$CIRCLE_TAG}
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
   BUILD=$CIRCLE_BUILD_NUM
   SHA1=$CIRCLE_SHA1
@@ -24,11 +24,13 @@ function installSonar {
   echo 'Setup sonar scanner'
   
   # set version of sonar scanner to use :
-  sonarversion=3.1.0.1141
+  sonarversion=$SONAR_VERSION
+  echo "Using sonarscanner $sonarversion"
 
   mkdir -p $HOME/sonarscanner
   pushd $HOME/sonarscanner > /dev/null
   if [ ! -d "sonar-scanner-$sonarversion" ]; then
+    echo "Downloading sonarscanner $sonarversion"
     java_path=$(which java || true)
     if [ -x "$java_path" ]; then
       wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
@@ -56,10 +58,12 @@ function CommonParams {
 
   echo -Dsonar.host.url=$SONAR_HOST_URL \
        -Dsonar.organization=$SONAR_ORGANIZATION \
-       -Dsonar.php.tests.reportPath=./results/result.xml \
-       -Dsonar.php.coverage.reportPaths=./results/coverage.xml,./results/coverage2.xml \
+       -Dsonar.php.tests.reportPath=$SONAR_RESULT \
+       -Dsonar.php.coverage.reportPaths=$SONAR_COVERAGE \
        -Dsonar.analysis.buildNumber=$BUILD \
        -Dsonar.analysis.pipeline=$BUILD \
+       -Dsonar.analysis.sha1=$SHA1 \
+       -Dsonar.analysis.repository=$REPO \
        $extra
 }
 
@@ -98,9 +102,7 @@ if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOK
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.projectVersion=master \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.repository=$REPO"
+    -Dsonar.projectVersion=master"
 
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -113,9 +115,7 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.projectVersion=$(php artisan monica:getversion) \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.repository=$REPO"
+    -Dsonar.projectVersion=$(php artisan monica:getversion)"
   
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -150,13 +150,11 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.prNumber=$PR_NUMBER \
-    -Dsonar.analysis.repository=$REPO \
     -Dsonar.pullrequest.key=$PR_NUMBER \
     -Dsonar.pullrequest.base=$PULL_REQUEST_BASEBRANCH \
     -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.github.id=$PR_NUMBER \
+    -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=$REPO"
 
   echo sonar-scanner $SONAR_PARAMS
