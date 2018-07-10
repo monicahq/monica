@@ -60,16 +60,16 @@ class ApiContactFieldControllerTest extends ApiTestCase
     public function test_contact_query_internationalphone()
     {
         $user = $this->signin();
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $field = factory('App\ContactFieldType')->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Phone',
             'protocol' => 'tel:',
             'type' => 'phone',
             ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
@@ -83,7 +83,9 @@ class ApiContactFieldControllerTest extends ApiTestCase
                 'id' => $contact->id,
                 'first_name' => 'John',
                 'last_name' => 'Doe',
-                'account' => ['id' => $user->account->id],
+                'account' => [
+                    'id' => $user->account->id,
+                ],
         ]);
     }
 }
