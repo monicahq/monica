@@ -21,7 +21,7 @@
                   <br>
 
                   <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
-                  <p>{{ $activity->date_it_happened->format('Y-m-d') }}</p>
+                  <p>{{ $activity->date_it_happened->toDateString() }}</p>
                   <br>
 
                   <label for="activity_type_id">{{ trans('people.activities_activity') }}</label>
