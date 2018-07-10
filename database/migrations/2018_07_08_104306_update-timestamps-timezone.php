@@ -29,7 +29,20 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('calls', $timezone);
         $this->update('changelogs', $timezone);
         $this->update('changelog_user', $timezone, 'changelog_id');
-        $this->update('contacts', $timezone);
+        DB::table('contacts')->chunkById(200, function ($models) use ($timezone) {
+            foreach ($models as $model) {
+                $created = is_null($model->created_at) ? null : Carbon::createFromTimeString($model->created_at, $timezone)->setTimezone('UTC');
+                $updated = is_null($model->updated_at) ? null : Carbon::createFromTimeString($model->updated_at, $timezone)->setTimezone('UTC');
+                $last_consulted_at = is_null($model->last_consulted_at) ? null : Carbon::createFromTimeString($model->last_consulted_at, $timezone)->setTimezone('UTC');
+
+                DB::table($table)->where($id, $model->$id)
+                    ->update([
+                        'created_at' => $created,
+                        'updated_at' => $updated,
+                        'last_consulted_at' => $last_consulted_at,
+                    ]);
+            }
+        });
         $this->update('contact_fields', $timezone);
         $this->update('contact_field_types', $timezone);
         $this->update('contact_tag', $timezone, 'contact_id');
@@ -50,7 +63,7 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('invitations', $timezone);
         DB::table('jobs')->chunkById(200, function ($models) use ($timezone) {
             foreach ($models as $model) {
-                $created = Carbon::createFromTimeString($model->created_at, $timezone)->setTimezone('UTC');
+                $created = is_null($model->created_at) ? null : Carbon::createFromTimeString($model->created_at, $timezone)->setTimezone('UTC');
 
                 DB::table('jobs')->where($id, $model->get($id))
                     ->update([
