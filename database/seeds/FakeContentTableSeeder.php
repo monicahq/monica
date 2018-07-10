@@ -93,8 +93,8 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        $this->blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
-        $blankUser = $this->blankAccount->users()->first();
+        $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $blankUser = $blankAccount->users()->first();
         $this->confirmUser($blankUser);
     }
 

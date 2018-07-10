@@ -62,6 +62,8 @@ function CommonParams {
        -Dsonar.php.coverage.reportPaths=$SONAR_COVERAGE \
        -Dsonar.analysis.buildNumber=$BUILD \
        -Dsonar.analysis.pipeline=$BUILD \
+       -Dsonar.analysis.sha1=$SHA1 \
+       -Dsonar.analysis.repository=$REPO \
        $extra
 }
 
@@ -100,9 +102,7 @@ if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOK
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.projectVersion=master \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.repository=$REPO"
+    -Dsonar.projectVersion=master"
 
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -115,9 +115,7 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.projectVersion=$(php artisan monica:getversion) \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.repository=$REPO"
+    -Dsonar.projectVersion=$(php artisan monica:getversion)"
   
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
@@ -152,13 +150,11 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
   gitFetch
 
   SONAR_PARAMS="$(CommonParams) \
-    -Dsonar.analysis.sha1=$SHA1 \
-    -Dsonar.analysis.prNumber=$PR_NUMBER \
-    -Dsonar.analysis.repository=$REPO \
     -Dsonar.pullrequest.key=$PR_NUMBER \
     -Dsonar.pullrequest.base=$PULL_REQUEST_BASEBRANCH \
     -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
     -Dsonar.pullrequest.github.id=$PR_NUMBER \
+    -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=$REPO"
 
   echo sonar-scanner $SONAR_PARAMS
