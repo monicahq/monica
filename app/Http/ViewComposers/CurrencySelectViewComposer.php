@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use App\Currency;
 use Illuminate\View\View;
+use App\Models\Settings\Currency;
 
 class CurrencySelectViewComposer
 {

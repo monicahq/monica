@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -56,7 +56,7 @@ class PersonalizationController extends Controller
     /**
      * Edit a newly created resource in storage.
      *
-     * @param ContactFieldTypeRequest $request
+     * @param Request $request
      * @param string $contactFieldTypeId
      * @return \Illuminate\Http\Response
      */

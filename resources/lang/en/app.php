@@ -84,6 +84,11 @@ return [
 
     'default_save_success' => 'The data has been saved.',
 
+    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_terms' => 'Accept new terms and privacy policy',
+
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
     // This is because we need to indicate the name of the relationship type,

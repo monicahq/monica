@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 
@@ -21,16 +21,6 @@ class SendStayInTouch extends Command
      * @var string
      */
     protected $description = 'Send notifications about staying in touch with contacts';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.

@@ -24,6 +24,7 @@ return [
     '2fa_recuperation_code' => 'Entrez le code de récupération de deux facteurs',
 
     'login_to_account' => 'Connectez-vous à votre compte',
+    'login_again' => 'Merci de vous connecter à nouveau à votre compte',
     'email' => 'Courriel',
     'password' => 'Mot de passe',
     'login' => 'Connexion',
@@ -56,7 +57,12 @@ return [
     'register_password_example' => 'Entrez un mot de passe sécurisé',
     'register_password_confirmation' => 'Confirmez le mot de passe',
     'register_action' => 'Enregistrement',
-    'register_policy' => 'L’enregistrement signifie que vous avez lu et que vous acceptez notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a>.',
+    'register_policy' => 'L’inscription signifie vous avez lu et acceptez notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a> et nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a>.',
     'register_invitation_email' => 'Pour des raisons de sécurité, merci d’indiquer l’adresse courriel de la personne qui vous a invité à joindre son compte. Cette information est indiquée dans le courriel d’invitation.',
 
+    'confirmation_again' => 'Si vous souhaitez modifier votre adresse courriel vous pouvez <a href=":url" class="alert-link">cliquer ici</a>.',
+    'email_change_current_email' => 'Adresse courriel actuelle :',
+    'email_change_title' => 'Modifier votre adresse courriel',
+    'email_change_new' => 'Nouvelle adresse courriel',
+    'email_changed' => 'Votre adresse courriel a été modifée. Vérifiez votre boîte aux lettres pour la valider.',
 ];

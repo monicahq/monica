@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Gift;
-use App\Contact;
+use App\Models\Contact\Gift;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Gift\Gift as GiftResource;

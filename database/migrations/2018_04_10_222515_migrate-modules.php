@@ -1,6 +1,6 @@
 <?php
 
-use App\Account;
+use App\Models\Account\Account;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrateModules extends Migration

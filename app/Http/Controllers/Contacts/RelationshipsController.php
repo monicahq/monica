@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Contact;
-use App\Relationship;
+use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
@@ -34,7 +36,7 @@ class RelationshipsController extends Controller
             }
             $arrayContacts->push([
                 'id' => $existingContact->id,
-                'name' => $existingContact->getCompleteName(),
+                'name' => $existingContact->name,
             ]);
         }
 
@@ -53,8 +55,8 @@ class RelationshipsController extends Controller
             ->withPartner(new Contact)
             ->withGenders(auth()->user()->account->genders)
             ->withRelationshipTypes($arrayRelationshipTypes)
-            ->withDays(\App\Helpers\DateHelper::getListOfDays())
-            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now()->format('Y-m-d'))
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
@@ -104,6 +106,9 @@ class RelationshipsController extends Controller
                 ->withErrors('There has been a problem with saving the name.');
         }
 
+        // set avatar color
+        $partner->setAvatarColor();
+
         $partner->save();
 
         // Handling the case of the birthday
@@ -129,7 +134,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
+                $birthdate = new Carbon($birthdate);
                 $specialDate = $partner->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -143,9 +148,6 @@ class RelationshipsController extends Controller
 
                 break;
         }
-
-        // set avatar color
-        $partner->setAvatarColor();
 
         // create the relationship
         $contact->setRelationship($partner, $request->get('relationship_type_id'));
@@ -170,9 +172,9 @@ class RelationshipsController extends Controller
     public function edit(Contact $contact, Contact $otherContact)
     {
         $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d');
-        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : \Carbon\Carbon::now()->day;
-        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : \Carbon\Carbon::now()->month;
+        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : Carbon::now()->format('Y-m-d');
+        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : Carbon::now()->day;
+        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : Carbon::now()->month;
 
         $hasBirthdayReminder = ! is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
 
@@ -192,8 +194,8 @@ class RelationshipsController extends Controller
         return view('people.relationship.edit')
             ->withContact($contact)
             ->withPartner($otherContact)
-            ->withDays(\App\Helpers\DateHelper::getListOfDays())
-            ->withMonths(\App\Helpers\DateHelper::getListOfMonths())
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($otherContact->getBirthdayState())
             ->withBirthdate($birthdate)
             ->withDay($day)
@@ -261,7 +263,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new \Carbon\Carbon($birthdate);
+                $birthdate = new Carbon($birthdate);
                 $specialDate = $otherContact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,

@@ -127,33 +127,31 @@
 
                 @foreach($contacts as $contact)
 
-                <li class="people-list-item bg-white">
-                  <a href="{{ route('people.show', $contact) }}">
-                    @if ($contact->has_avatar)
-                      <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                <li class="people-list-item bg-white pointer" @click="window.location.href='{{ route('people.show', $contact) }}'">
+                  @if ($contact->has_avatar)
+                    <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                  @else
+                    @if (! is_null($contact->gravatar_url))
+                      <img src="{{ $contact->gravatar_url }}" width="43">
                     @else
-                      @if (! is_null($contact->gravatar_url))
-                        <img src="{{ $contact->gravatar_url }}" width="43">
+                      @if (strlen($contact->getInitials()) == 1)
+                      <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                        {{ $contact->getInitials() }}
+                      </div>
                       @else
-                        @if (strlen($contact->getInitials()) == 1)
-                        <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-                          {{ $contact->getInitials() }}
-                        </div>
-                        @else
-                        <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
-                          {{ $contact->getInitials() }}
-                        </div>
-                        @endif
+                      <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+                        {{ $contact->getInitials() }}
+                      </div>
                       @endif
                     @endif
-                    <span class="people-list-item-name">
-                      {{ $contact->getCompleteName(auth()->user()->name_order) }}
-                    </span>
+                  @endif
+                  <span class="people-list-item-name">
+                    {{ $contact->name }}
+                  </span>
 
-                    <span class="people-list-item-information {{ \App\Helpers\LocaleHelper::getDirection() }}">
-                      {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
-                    </span>
-                  </a>
+                  <span class="people-list-item-information {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                    {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
+                  </span>
                 </li>
 
                 @endforeach
@@ -169,7 +167,7 @@
               @include('partials.components.people-upgrade-sidebar')
 
               <ul>
-              @foreach (auth()->user()->account->tags as $dbtag)
+              @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
                     <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
@@ -177,9 +175,12 @@
                 </li>
                 @endif
               @endforeach
+
+              @if ($userTags->count() != 0)
                 <li class="f7 mt3">
                     <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
+              @endif
               </ul>
             </div>
 
