@@ -60,27 +60,27 @@ class ApiContactFieldControllerTest extends ApiTestCase
     public function test_contact_field_query_all_account()
     {
         $firstuser = $this->signin();
-        $firstcontact = factory('App\Contact')->create([
+        $firstcontact = factory(Contact::class)->create([
             'account_id' => $firstuser->account->id,
             'first_name' => 'Bad',
         ]);
-        $firstfield = factory('App\ContactFieldType')->create([
+        $firstfield = factory(ContactFieldType::class)->create([
             'account_id' => $firstuser->account_id,
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $firstcontact->id,
             'account_id' => $firstuser->account_id,
             'contact_field_type_id' => $firstfield->id,
         ]);
         
         $user = $this->signin();
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id
         ]);
-        $field = factory('App\ContactFieldType')->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
