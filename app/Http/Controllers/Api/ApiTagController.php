@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Tag;
+use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;

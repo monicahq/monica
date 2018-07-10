@@ -69,7 +69,7 @@ docker_push: docker_tag
 	docker push monicahq/monicahq:$(BUILD)
 	docker push monicahq/monicahq:latest
 
-docker_push_bintray: .travis.deploy.json
+docker_push_bintray: .deploy.json
 	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
@@ -141,17 +141,17 @@ assets: results/$(ASSETS).tar.bz2
 DESCRIPTION := $(shell echo "$(COMMIT_MESSAGE)" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
-DEPLOY_TEMPLATE := scripts/tests/.travis.deploy.json.in
+DEPLOY_TEMPLATE := scripts/tests/.deploy.json.in
 endif
 
-.travis.deploy.json: $(DEPLOY_TEMPLATE)
+.deploy.json: $(DEPLOY_TEMPLATE)
 	cp $< $@
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(DESCRIPTION)/" $@
 	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
-	sed -si "s/\$$(travis_tag)/$(TAG)/" $@
-	sed -si "s/\$$(travis_commit)/$(GIT_COMMIT)/" $@
-	sed -si "s/\$$(travis_build_number)/$(BUILD_NUM)/" $@
+	sed -si "s/\$$(vcs_tag)/$(TAG)/" $@
+	sed -si "s/\$$(vcs_commit)/$(GIT_COMMIT)/" $@
+	sed -si "s/\$$(build_number)/$(BUILD_NUM)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<
@@ -167,7 +167,7 @@ results/%.zip: % prepare
 
 clean:
 	rm -rf $(DESTDIR) $(ASSETS)
-	rm -f results/$(DESTDIR).* results/$(ASSETS).* .travis.deploy.json
+	rm -f results/$(DESTDIR).* results/$(ASSETS).* .deploy.json
 
 fullclean: clean
 	rm -rf vendor resources/vendor public/fonts/vendor node_modules
@@ -189,9 +189,9 @@ update: .env build-dev
 vagrant_build:
 	make -C scripts/vagrant/build package
 
-push_bintray_assets: results/$(ASSETS).tar.bz2 .travis.deploy.json
+push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
 	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
 
-push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .travis.deploy.json
+push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
 	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
 	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh

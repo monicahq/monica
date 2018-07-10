@@ -2,8 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Pet;
 use Tests\TestCase;
+use App\Models\Contact\Pet;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PetTest extends TestCase
@@ -12,9 +15,9 @@ class PetTest extends TestCase
 
     public function test_it_belongs_to_an_account()
     {
-        $account = factory('App\Account')->create([]);
-        $contact = factory('App\Contact')->create(['account_id' => $account->id]);
-        $pet = factory('App\Pet')->create([
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $pet = factory(Pet::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
@@ -24,8 +27,8 @@ class PetTest extends TestCase
 
     public function test_it_belongs_to_a_contact()
     {
-        $contact = factory('App\Contact')->create([]);
-        $pet = factory('App\Pet')->create([
+        $contact = factory(Contact::class)->create([]);
+        $pet = factory(Pet::class)->create([
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
@@ -35,8 +38,8 @@ class PetTest extends TestCase
 
     public function test_it_belongs_to_a_pet_category()
     {
-        $petCategory = factory('App\PetCategory')->create([]);
-        $pet = factory('App\Pet')->create([
+        $petCategory = factory(PetCategory::class)->create([]);
+        $pet = factory(Pet::class)->create([
             'pet_category_id' => $petCategory->id,
         ]);
 

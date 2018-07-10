@@ -36,6 +36,16 @@ class SettingsSecurity extends Page
     {
         return [
             'two_factor_link' => "a:contains('Enable Two Factor Authentication')",
+            'barcode' => '#barcode',
+            'secretkey' => '#secretkey',
+            'buttonVerify' => "button[name='verify']",
+            'enableVerify' => '#verify1',
+            'disableVerify' => '#verify2',
+            'otpenable' => '#one_time_password1',
+            'otpdisable' => '#one_time_password2',
+            'enableModal' => '#enableModal',
+            'disableModal' => '#disableModal',
+            'registerModal' => '#registerModal',
         ];
     }
 }

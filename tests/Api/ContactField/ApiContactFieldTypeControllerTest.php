@@ -3,6 +3,9 @@
 namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactFieldTypeControllerTest extends ApiTestCase
@@ -27,15 +30,15 @@ class ApiContactFieldTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $field = factory('App\ContactFieldType')->create([
+        $field = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory('App\ContactField')->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,

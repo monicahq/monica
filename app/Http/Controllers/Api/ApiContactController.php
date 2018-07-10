@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contact;
+use Carbon\Carbon;
 use App\Helpers\DBHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -127,13 +128,14 @@ class ApiContactController extends ApiController
         }
 
         $contact->account_id = auth()->user()->account->id;
+        $contact->setAvatarColor();
         $contact->save();
 
         // birthdate
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = Carbon::parse($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -149,7 +151,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = Carbon::parse($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -165,7 +167,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = Carbon::parse($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -223,7 +225,7 @@ class ApiContactController extends ApiController
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = Carbon::parse($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -240,7 +242,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = Carbon::parse($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -257,7 +259,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = Carbon::parse($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);

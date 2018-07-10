@@ -10,6 +10,9 @@
         <directory name="app" />
         <directory name="routes" />
         <directory name="tests" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
@@ -76,7 +79,7 @@
         <TooManyArguments errorLevel="info" />
         <TypeDoesNotContainType errorLevel="info" />
         <InvalidOperand errorLevel="info" />
-        <MoreSpecificImplementedReturnType errorLevel="info" />
+        <LessSpecificImplementedReturnType errorLevel="info" />
         <MoreSpecificImplementedParamType errorLevel="info" />
 
         <!-- level 6 issues - bad stuff here -->
@@ -87,7 +90,6 @@
         <UnresolvableInclude errorLevel="info" />
         <InvalidReturnStatement errorLevel="info" />
         <InvalidReturnType errorLevel="info" />
-        <UndefinedThisPropertyAssignment errorLevel="info" />
 
         <InvalidArgument errorLevel="info" />
 
@@ -99,5 +101,24 @@
                 <directory name="resources/views" />
             </errorLevel>
         </UndefinedGlobalVariable>
+
+        <UndefinedPropertyAssignment>
+            <errorLevel type="suppress">
+                <file name="app/Models/Contact/Contact.php" />
+            </errorLevel>
+        </UndefinedPropertyAssignment>
+
+        <UndefinedThisPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="tests/DuskTestCase.php" />
+            </errorLevel>
+        </UndefinedThisPropertyFetch>
+
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="app/Models/Account/Event.php" />
+                <file name="app/Models/Contact/Contact.php" />
+            </errorLevel>
+        </UndefinedPropertyFetch>
     </issueHandlers>
 </psalm>
