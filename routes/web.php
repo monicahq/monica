@@ -202,6 +202,11 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::delete('/settings/personalization/genders/{gender}/replaceby/{gender_id}', 'Settings\\GendersController@destroyAndReplaceGender');
         Route::delete('/settings/personalization/genders/{gender}', 'Settings\\GendersController@destroyGender');
 
+        Route::get('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@index');
+        Route::post('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@create');
+        Route::put('/settings/personalization/activitytypecategories/{activitytypecategory}', 'Settings\\ActivityTypeCategoriesController@update');
+        Route::delete('/settings/personalization/activitytypecategories/{activitytypecategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
+
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
 
