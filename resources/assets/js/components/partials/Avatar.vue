@@ -5,7 +5,7 @@
   <div>
     <div v-if="clickable == true">
       <div class="tc" v-if="contact.has_avatar">
-        <img v-if="contact.has_avatar" :src="contact.avatar_url" class="br4 h3 w3 dib" v-tooltip="contact.complete_name" v-on:click="goToContact()">
+        <img v-if="contact.has_avatar" :src="contact.avatar_url" class="br4 h3 w3 dib" v-tooltip.bottom="contact.complete_name" v-on:click="goToContact()">
       </div>
 
       <div class="tc" v-if="contact.gravatar_url">

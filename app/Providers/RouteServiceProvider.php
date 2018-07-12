@@ -17,6 +17,7 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ReminderRule;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Route;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

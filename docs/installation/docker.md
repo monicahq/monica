@@ -111,6 +111,6 @@ restart the container. Map a volume to
 `/var/www/monica/storage/app/public` if you want that data to persist
 between runs. See `docker-compose.yml` for examples.
 
-#### Other documents to read
+#### Other documents to read	
 
-[Connecting to MySQL inside of a Docker container](https://github.com/monicahq/monica/wiki/Installation-with-Docker:-connection-to-MySQL)
+[Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)

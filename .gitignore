@@ -14,5 +14,6 @@ npm-debug.log*
 /results
 .deploy.json
 yarn-error.log
-/tests/cypress/screenshots
-/tests/cypress/videos
+/tests/Cypress/screenshots
+/tests/Cypress/videos
+php-extensions-*.tar.bz2
