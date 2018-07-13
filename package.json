@@ -28,7 +28,7 @@
     "moment": "^2.22.1",
     "pretty-checkbox-vue": "^1.1.8",
     "sweet-modal-vue": "^2.0.0",
-    "tachyons": "^4.9.1",
+    "tachyons": "^7.0.1-3",
     "typeahead.js": "^0.11.1",
     "vue": "^2.5.16",
     "vue-checkbox-radio": "^0.6.0",
