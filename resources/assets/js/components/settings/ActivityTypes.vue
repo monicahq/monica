@@ -43,18 +43,25 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
-        <div class="dtc">
-          <div class="pa2">
-            <i :class="contactFieldType.fontawesome_icon" class="pr2" v-if="contactFieldType.fontawesome_icon"></i>
-            <i class="pr2 fa fa-address-card-o" v-if="!contactFieldType.fontawesome_icon"></i>
-            {{ activityTypeCategory.name }}
+      <div class="bb b--light-gray" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
+        <div class="dt-row ">
+          <div class="dtc">
+            <div class="pa2">
+              {{ activityTypeCategory.name }}
+            </div>
+          </div>
+          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+            <div class="pa2">
+              <i class="fa fa-pencil-square-o pointer pr2" @click="edit(activityTypeCategory)"></i>
+              <i class="fa fa-trash-o pointer" @click="showDelete(activityTypeCategory)"></i>
+            </div>
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="edit(activityTypeCategory)"></i>
-            <i class="fa fa-trash-o pointer" @click="showDelete(activityTypeCategory)"></i>
+        <div class="dt-row">
+          <div class="dtc">
+            <div class="pa2">
+              <a href="">Add a new activity type</a>
+            </div>
           </div>
         </div>
       </div>
