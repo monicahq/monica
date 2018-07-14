@@ -7,7 +7,7 @@
     </p>
 
     <p class="sidebar-box-paragraph">
-      <a href="{{ route('people.food', $contact) }}">{{ trans('app.add') }}</a>
+      <a href="{{ route('people.food.index', $contact) }}">{{ trans('app.add') }}</a>
     </p>
 
   @else
@@ -19,7 +19,7 @@
     {{-- Information about the significant other --}}
     <p class="sidebar-box-paragraph">
       {{ $contact->food_preferencies }}
-      <a href="{{ route('people.food', $contact) }}" class="action-link {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans('app.edit') }}</a>
+      <a href="{{ route('people.food.index', $contact) }}" class="action-link {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans('app.edit') }}</a>
     </p>
 
   @endif

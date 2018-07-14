@@ -21,7 +21,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <a href="{{ route('settings.personalization') }}">{{ trans('settings.sidebar_personalization') }}</a>
+      <a href="{{ route('settings.personalization.index') }}">{{ trans('settings.sidebar_personalization') }}</a>
     </li>
     @endif
 
@@ -49,7 +49,7 @@
     </li>
     @endif
 
-    @if (Route::currentRouteName() == 'settings.users')
+    @if (Route::currentRouteName() == 'settings.users.index')
     <li class="selected">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
       <strong>{{ trans('settings.sidebar_settings_users') }}</strong>
@@ -57,7 +57,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <a href="{{ route('settings.users') }}">{{ trans('settings.sidebar_settings_users') }}</a>
+      <a href="{{ route('settings.users.index') }}">{{ trans('settings.sidebar_settings_users') }}</a>
     </li>
     @endif
 
@@ -83,7 +83,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-tags" aria-hidden="true"></i>
-      <a href="{{ route('settings.tags') }}">{{ trans('settings.sidebar_settings_tags') }}</a>
+      <a href="{{ route('settings.tags.index') }}">{{ trans('settings.sidebar_settings_tags') }}</a>
     </li>
     @endif
 
@@ -107,7 +107,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-cog"></i>
-      <a href="{{ route('settings.security') }}">{{ trans('settings.sidebar_settings_security') }}</a>
+      <a href="{{ route('settings.security.index') }}">{{ trans('settings.sidebar_settings_security') }}</a>
     </li>
     @endif
   </ul>

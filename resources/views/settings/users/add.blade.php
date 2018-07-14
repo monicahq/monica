@@ -16,7 +16,7 @@
                   <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
                 </li>
                 <li>
-                <a href="{{ route('settings.users') }}">{{ trans('app.breadcrumb_settings_users') }}</a>
+                <a href="{{ route('settings.users.index') }}">{{ trans('app.breadcrumb_settings_users') }}</a>
                 </li>
                 <li>
                   {{ trans('app.breadcrumb_settings_users_add') }}
@@ -61,7 +61,7 @@
 
                   <div class="form-group actions">
                     <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">{{ trans('settings.users_add_cta') }}</button>
-                    <a href="{{ route('settings.users') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                    <a href="{{ route('settings.users.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                   </div>
                 </form>
               </div>

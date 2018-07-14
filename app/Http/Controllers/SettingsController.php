@@ -347,7 +347,7 @@ class SettingsController extends Controller
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
         ]);
 
-        return redirect()->route('settings.users')
+        return redirect()->route('settings.users.index')
             ->with('status', trans('settings.settings_success'));
     }
 
@@ -361,7 +361,7 @@ class SettingsController extends Controller
     {
         $invitation->delete();
 
-        return redirect()->route('settings.users')
+        return redirect()->route('settings.users.index')
             ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
     }
 
@@ -439,7 +439,7 @@ class SettingsController extends Controller
         $user = User::find($userID);
         $user->delete();
 
-        return redirect()->route('settings.users')
+        return redirect()->route('settings.users.index')
                 ->with('success', trans('settings.users_list_delete_success'));
     }
 
@@ -463,7 +463,7 @@ class SettingsController extends Controller
 
         $tag->delete();
 
-        return redirect()->route('settings.tags')
+        return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
     }
 
