@@ -50,7 +50,10 @@ aliases:
   - &yarn-install
     run:
       name: yarn install
-      command: yarn install --frozen-lockfile
+      command: |
+        sudo apt-get update
+        sudo apt-get install -y libpng-dev
+        yarn install --frozen-lockfile
   - &update-chrome
     run:
       name: Install chrome
