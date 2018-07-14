@@ -242,7 +242,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = $this->faker->dateTimeThisYear($max = 'now')->format('Y-m-d');
+                $date = $this->faker->dateTimeThisYear($max = 'now')->toDateString();
 
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
