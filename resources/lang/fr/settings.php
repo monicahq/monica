@@ -19,7 +19,7 @@ return [
     'export_sql_link_instructions' => 'Note : <a href=":url">lisez les instructions</a> afin d’apprendre comment importer ce fichier dans votre instance.',
 
     'firstname' => 'Prénom',
-    'lastname' => 'Nom de famille ',
+    'lastname' => 'Nom de famille',
     'name_order' => 'Ordre des noms',
     'name_order_firstname_lastname' => '<Prénom> <Nom> – Jean Dupont',
     'name_order_lastname_firstname' => '<Nom> <Prénom> – Dupont Jean',
@@ -102,8 +102,8 @@ return [
     'users_list_you' => 'C’est vous',
     'users_list_invitations_title' => 'Invitations en attente',
     'users_list_invitations_explanation' => 'Voici les personnes que vous avez invité à rejoindre Monica comme collaborateurs.',
-    'users_list_invitations_invited_by' => 'invité par :name',
-    'users_list_invitations_sent_date' => 'envoyé le :date',
+    'users_list_invitations_invited_by' => 'invité par :name',
+    'users_list_invitations_sent_date' => 'envoyé le :date',
     'users_blank_title' => 'Vous êtes la seule personne qui a accès à ce compte.',
     'users_blank_add_title' => 'Souhaitez-vous inviter quelqu’un d’autre ?',
     'users_blank_description' => 'Cette personne aura le même accès que vous et sera en mesure d’ajouter, modifier ou supprimer les informations de contact.',
@@ -155,7 +155,7 @@ return [
     'subscriptions_upgrade_zip' => 'Code postal',
     'subscriptions_upgrade_credit' => 'Carte de crédit ou de débit',
     'subscriptions_upgrade_submit' => 'Soumettre le Paiement',
-    'subscriptions_upgrade_charge' => 'Nous débiterons votre carte de :price$ USD maintenant. Le prochain paiement aura lieu le :date. Si jamais vous changez d’avis, vous pourrez annuler à tout moment, sans poser de questions.',
+    'subscriptions_upgrade_charge' => 'Nous débiterons votre carte de :price$ USD maintenant. Le prochain paiement aura lieu le :date. Si jamais vous changez d’avis, vous pourrez annuler à tout moment, sans poser de questions.',
     'subscriptions_upgrade_charge_handled' => 'Le paiement est géré par <a href=":url">Stripe</a>. Aucune information bancaire n’arrive sur notre serveur.',
     'subscriptions_upgrade_success' => 'Merci ! Vous êtes maintenant inscrit.',
     'subscriptions_upgrade_thanks' => 'Bienvenue dans la communauté de personnes qui essaient de rendre le monde un peu meilleur.',
@@ -302,7 +302,7 @@ return [
     'personalization_reminder_rule_desc' => 'Pour chaque rappel que vous mettez en place, nous pouvons envoyer un courriel plusieurs jours avant que l’événement ne se passe. Vous pouvez désactiver ces notifications ici. Notez que ces notifications ne s’appliquent qu’aux rappels mensuels et annuels.',
 
     'personalization_module_save' => 'Les modifications ont été enregistrées',
-    'personalization_module_title' => 'Fonctionnalités ',
+    'personalization_module_title' => 'Fonctionnalités',
     'personalization_module_desc' => 'Certaines personnes n’ont pas besoin de toutes ces fonctionnalités. Ci-dessous vous pouvez basculer des fonctionnalités spécifiques qui sont utilisés sur le vue d\'un contact. Ces modifications s’appliqueront à tous vos contacts. Notez que si vous désactivez une de ces fonctionnalité les données ne seront pas perdues – la fonctionnalité sera simplement masquée.',
 
     'personalisation_paid_upgrade' => 'Il s’agit d’une fonctionnalité premium qui nécessite un abonnement payant pour être activée. Mettez à niveau votre compte en visitant Paramètres > Abonnement.',
