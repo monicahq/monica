@@ -24,8 +24,6 @@ Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes();
 
-Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
-
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
 
@@ -226,7 +224,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('.subscriptions.invoice');
         Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
         Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
-        Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('.subscriptions.upgrade.success');
+        Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('.subscriptions.downgrade.success');
 
         Route::get('/settings/tags', 'SettingsController@tags')->name('.tags');
         Route::get('/settings/tags/add', 'SettingsController@addUser')->name('.tags.add');
