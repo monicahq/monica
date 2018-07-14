@@ -31,11 +31,6 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc">
-          <div class="pa2 b">
-            {{ $t('settings.personalization_contact_field_type_table_protocol') }}
-          </div>
-        </div>
         <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
@@ -82,25 +77,6 @@
             return {
                 activityTypes: [],
                 activityTypeCategories: [],
-
-                submitted: false,
-                edited: false,
-                deleted: false,
-
-                createForm: {
-                    name: '',
-                    protocol: '',
-                    icon: '',
-                    errors: []
-                },
-
-                editForm: {
-                    id: '',
-                    name: '',
-                    protocol: '',
-                    icon: '',
-                    errors: []
-                },
 
                 dirltr: true,
             };
