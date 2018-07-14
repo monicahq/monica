@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'Prénom',
     'people_add_middlename' => 'Surnom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
+    'people_add_nickname' => 'Surnom (optionnel)',
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
     'people_add_success' => ':name a été crée avec succès',
@@ -64,7 +65,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'Restez en contact',
-    'stay_in_touch_frequency' => 'Rester en contact chaque jour | Rester en contact tous les {count} jours',
+    'stay_in_touch_frequency' => 'Rester en contact chaque jour|Rester en contact chaque jour|Rester en contact tous les {count} jours',
     'stay_in_touch_invalid' => 'La fréquence doit être un nombre supérieur à 0.',
     'stay_in_touch_premium' => 'Vous devez mettre à jour votre compte pour pouvoir profiter de cette fonctionnalité',
     'stay_in_touch_modal_title' => 'Restez en contact',
@@ -112,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
+    'linkedin_profile' => 'Profil LinkedIn',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
     'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',

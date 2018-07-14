@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Entry;
 use Tests\TestCase;
+use App\Models\Journal\Entry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class EntryTest extends TestCase

@@ -2,10 +2,10 @@
 
 namespace Tests\Api\Contact;
 
-use App\Contact;
-use App\ContactField;
 use Tests\ApiTestCase;
-use App\ContactFieldType;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactControllerTest extends ApiTestCase
@@ -454,6 +454,31 @@ class ApiContactControllerTest extends ApiTestCase
             'object' => 'contactfield',
             'account' => [
                 'id' => $user->account_id,
+            ],
+        ]);
+    }
+
+    public function test_contact_query_injection()
+    {
+        $firstuser = $this->signin();
+        $firstcontact = factory(Contact::class)->create([
+            'account_id' => $firstuser->account->id,
+            'first_name' => 'Bad',
+        ]);
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=1')%20or%20('%'='");
+
+        $response->assertStatus(200);
+        // Assure that firstcontact from other account is not get (SQL injection)
+        $response->assertJsonMissing([
+            'id' => $firstcontact->id,
+            'first_name' => 'Bad',
+            'account' => [
+                'id' => $firstuser->account->id,
             ],
         ]);
     }

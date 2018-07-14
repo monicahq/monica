@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use Auth;
-use App\Contact;
-use App\ContactFieldType;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 
 class SearchHelper
 {

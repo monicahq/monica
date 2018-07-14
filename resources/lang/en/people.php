@@ -113,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'No LinkedIn defined',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Update work information',
     'work_edit_success' => 'Work information have been updated with success',
     'work_edit_title' => 'Update :name’s job information',

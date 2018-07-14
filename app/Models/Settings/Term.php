@@ -2,6 +2,7 @@
 
 namespace App\Models\Settings;
 
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Term extends Model
@@ -18,6 +19,6 @@ class Term extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User')->withPivot('user_id')->withTimestamps();
+        return $this->belongsToMany(User::class)->withPivot('user_id')->withTimestamps();
     }
 }

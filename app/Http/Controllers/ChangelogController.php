@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Changelog;
 use Illuminate\Http\Request;
+use App\Models\User\Changelog;
 
 class ChangelogController extends Controller
 {

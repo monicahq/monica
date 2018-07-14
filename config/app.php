@@ -56,16 +56,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone
+    | TIMEZONE
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. We have gone
-    | ahead and set this to a sensible default for you out of the box.
+    | Timezone is not configurable in the .env file as everything is stored in
+    | UTC.
     |
     */
 
-    'timezone' => env('APP_DEFAULT_TIMEZONE', 'US/Eastern'),
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -161,6 +160,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
+        Lahaxearnaud\U2f\U2fServiceProvider::class,
         Ircop\Antiflood\AntifloodServiceProvider::class,
     ],
 
@@ -213,6 +213,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
+        'U2f' => Lahaxearnaud\U2f\U2fFacade::class,
         'Antiflood' => Ircop\Antiflood\Facade\Antiflood::class,
     ],
 

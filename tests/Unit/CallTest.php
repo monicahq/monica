@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Call;
 use Tests\TestCase;
+use App\Models\Contact\Call;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CallTest extends TestCase
