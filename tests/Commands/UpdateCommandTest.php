@@ -40,7 +40,7 @@ class UpdateCommandTest extends TestCase
         $this->assertCommandContains($commandExecutor->buffer[7], 'Maintenance mode: off', 'php artisan up');
     }
 
-    public function assertCommandContains($array, $message, $command)
+    private function assertCommandContains($array, $message, $command)
     {
         $this->assertContains($message, $array['message']);
         $this->assertContains($command, $array['command']);
