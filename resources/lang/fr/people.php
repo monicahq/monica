@@ -185,7 +185,7 @@ return [
     'tasks_form_description' => 'Description (optionnel)',
     'tasks_add_task' => 'Ajouter la tâche',
     'tasks_delete_success' => 'La tâche a été supprimée avec succès.',
-    'tasks_complete_success' => 'La tâche a été mise à jour avec succès.',
+    'tasks_complete_success' => 'La tâche a été mise à jour avec succès',
 
     // activities
     'activity_title' => 'Activités',
