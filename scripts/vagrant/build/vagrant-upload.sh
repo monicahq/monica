@@ -63,7 +63,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Publish the version
+# Publish the version
 response=$(
 curl -sSL --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
     --request PUT \

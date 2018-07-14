@@ -34,7 +34,7 @@ RUN apk add apache2 make netcat-openbsd \
         php7-bcmath \
         #- sentry/sentry
         php7-curl
-# Create apache2 dir needed for httpd
+# Create apache2 dir needed for httpd
 RUN mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
@@ -80,9 +80,9 @@ RUN chmod -R g+w bootstrap/cache storage
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
 # Composer installation
 RUN scripts/docker/install-composer.sh
-# Set crontab for schedules
+# Set crontab for schedules
 RUN echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -
-# Cleanup
+# Cleanup
 RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 # Install composer dependencies and prepare permissions for Apache
