@@ -55,7 +55,7 @@ return [
     'register_email_example' => 'vous@maison',
     'register_firstname' => 'Prénom',
     'register_firstname_example' => 'ex : Pierre',
-    'register_lastname' => 'Nom de famille ',
+    'register_lastname' => 'Nom de famille',
     'register_lastname_example' => 'ex : Dupont',
     'register_password' => 'Mot de passe',
     'register_password_example' => 'Entrez un mot de passe sécurisé',
