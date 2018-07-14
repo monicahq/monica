@@ -27,7 +27,7 @@ Auth::routes();
 Route::get('/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
 
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
-Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation');
+Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
