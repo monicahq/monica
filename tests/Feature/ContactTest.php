@@ -45,7 +45,7 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
+            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->toDateTimeString(),
             'frequency_type' => 'once',
             'description' => $this->faker->sentence(),
         ];
