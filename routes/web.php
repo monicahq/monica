@@ -166,7 +166,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('.store');
         Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
         Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('.update');
-        Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
+        Route::delete('/activities/{activity}/{contact}', 'ActivitiesController@destroy')->name('.delete');
     });
 
     Route::group(['as' => 'journal'], function () {

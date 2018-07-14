@@ -1,7 +1,7 @@
 <nav class="bg-blue-monica">
   <div class="ph3 ph5-ns pv2 cf w-100">
     <div class="mw9 center dt w-100">
-      <div class="w-50-l w-100 ph2 dtc-l v-mid">
+      <div class="w-50-l w-100 dtc-l v-mid">
         <div class="tc tl-l dib-l">
           <a href="/dashboard" class="header-logo mr2">
             <img src="/img/monica_reverse.svg" width="40" height="43" />
@@ -15,7 +15,7 @@
           <ul class="header-search-results"></ul>
         </div>
       </div>
-      <div class="w-50-l w-100 ph2 dtc-l v-mid tl tr-l">
+      <div class="w-50-l w-100 dtc-l v-mid tl tr-l">
         <div class="{{ \App\Helpers\LocaleHelper::getDirection() }} header-nav">
           <a href="/dashboard" class="header-nav-item-link dib">{{ trans('app.main_nav_dashboard') }}</a>
           <a href="/people" class="header-nav-item-link dib">{{ trans('app.main_nav_family') }}</a>
