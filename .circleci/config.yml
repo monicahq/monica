@@ -276,6 +276,7 @@ jobs:
       - *prepare-environment
       - *restore_phpextensions
       - *restore_node
+      - *yarn-install
       - *prepare-db
       - *http-server
       - *wait-for-server
