@@ -159,7 +159,7 @@
             </div>
 
             <div class="col-xs-12 col-md-3 sidebar">
-              <a href="/people/add" class="btn btn-primary sidebar-cta">
+              <a href="{{ route('people.create') }}" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
@@ -178,7 +178,7 @@
 
               @if ($userTags->count() != 0)
                 <li class="f7 mt3">
-                    <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
+                    <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
               @endif
               </ul>

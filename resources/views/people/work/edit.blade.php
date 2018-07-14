@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
-            <form method="POST" action="/people/{{ $contact->id }}/work/update" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('people.work.update', $contact) }}" enctype="multipart/form-data">
               {{ csrf_field() }}
 
               @include('partials.errors')

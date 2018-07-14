@@ -14,7 +14,7 @@
                   <ul class="contacts">
                       <ul class="contacts-list">
                           @foreach ($activity->contacts as $contact)
-                              <li class="pretty-tag"><a href="/people/{{ $contact->hashID() }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                              <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                           @endforeach
                       </ul>
                   </ul>

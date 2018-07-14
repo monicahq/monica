@@ -50,7 +50,7 @@
 
           </ul>
 
-          <form method="POST" action="/settings/subscriptions/downgrade">
+          <form method="POST" action="{{ route('settings.subscriptions.downgrade') }}">
             {{ csrf_field() }}
 
             @if (auth()->user()->account->canDowngrade())

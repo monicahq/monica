@@ -8,7 +8,7 @@
           </a>
         </div>
         <div class="dib w-60-l w-100 header-search">
-          <form role="search" method="POST" action="people/search">
+          <form role="search" method="POST" action="{{ route('people.search') }}">
             {{ csrf_field() }}
             <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control header-search-input">
           </form>

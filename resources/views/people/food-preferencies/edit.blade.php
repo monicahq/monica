@@ -32,7 +32,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
-            <form method="POST" action="/people/{{ $contact->id }}/food/save">
+            <form method="POST" action="{{ route('people.food.update', $contact) }}">
               {{ csrf_field() }}
 
               <h2>{{ trans('people.food_preferencies_edit_title') }}</h2>

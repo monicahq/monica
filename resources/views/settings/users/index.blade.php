@@ -54,7 +54,7 @@
                   @endif
                 </div>
 
-                <form method="POST" action="{{ action('SettingsController@deleteAdditionalUser', $user) }}" class="entry-delete-form hidden">
+                <form method="POST" action="{{ route('settings.users.delete', $user) }}" class="entry-delete-form hidden">
                   {{ method_field('DELETE') }}
                   {{ csrf_field() }}
                 </form>
@@ -85,7 +85,7 @@
                       </a>
                     </div>
 
-                    <form method="POST" action="{{ action('SettingsController@destroyInvitation', $invitation) }}" class="entry-delete-form hidden">
+                    <form method="POST" action="{{ route('settings.users.invitation.delete', $invitation) }}" class="entry-delete-form hidden">
                       {{ method_field('DELETE') }}
                       {{ csrf_field() }}
                     </form>

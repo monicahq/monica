@@ -29,7 +29,7 @@
     <div class="br3 ba b--gray-monica bg-white pa4">
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_infos') }}</p>
-      <form action="/settings/subscriptions/processPayment" method="post" id="payment-form" class="mb4">
+      <form action="{{ route('settings.subscriptions.payment') }}" method="post" id="payment-form" class="mb4">
         {{ csrf_field() }}
 
         <input type="hidden" name="plan" value="{{ $planInformation['type'] }}">

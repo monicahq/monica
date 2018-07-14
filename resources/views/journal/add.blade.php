@@ -25,7 +25,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
-            <form method="POST" action="/journal/create">
+            <form method="POST" action="{{ route('journal.save') }}">
               {{ csrf_field() }}
 
               @include('partials.errors')
