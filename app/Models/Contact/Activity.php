@@ -183,7 +183,7 @@ class Activity extends Model implements IsJournalableInterface
         return [
             'type' => 'activity',
             'id' => $this->id,
-            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'activity_type' => (! is_null($this->type) ? $this->type->name : null),
             'summary' => $this->summary,
             'description' => $this->description,
             'day' => $this->date_it_happened->day,
