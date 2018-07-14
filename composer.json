@@ -34,7 +34,7 @@
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
         "sabre/vobject": "^4.1",
-        "sentry/sentry-laravel": "^0.8",
+        "sentry/sentry-laravel": "^0.9",
         "symfony/translation": "^4.0",
         "vinkla/hashids": "^5.0",
         "vluzrmos/language-detector": "^1.0"
