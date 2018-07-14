@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Aktivitäten',
-    'activity_type_group_simple_activities' => 'Einfache Aktivitäten',
-    'activity_type_group_sport' => 'Sport',
-    'activity_type_group_food' => 'Essen',
-    'activity_type_group_cultural_activities' => 'Kulturelle Aktivitäten',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'einfach zusammen Zeit verbracht',
     'activity_type_watched_movie_at_home' => 'zu Hause einen Film gesehen',
     'activity_type_talked_at_home' => 'zu Hause geredet',
