@@ -48,7 +48,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
     Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::post('/compliance/sign', 'ComplianceController@store');
-    Route::get('/changelog', 'ChangelogController@index');
+    Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
 
     Route::group(['as' => 'people'], function () {
         Route::get('/people', 'ContactsController@index')->name('.index');
@@ -188,7 +188,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::post('/settings/reset', 'SettingsController@reset')->name('.reset');
         Route::post('/settings/save', 'SettingsController@save')->name('.save');
         Route::get('/settings/export', 'SettingsController@export')->name('.export');
-        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL');
+        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
 
         Route::get('/settings/personalization', 'Settings\\PersonalizationController@index')->name('.personalization');
         Route::get('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
@@ -223,7 +223,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('.subscriptions.upgrade');
         Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('.subscriptions.upgrade.success');
         Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment')->name('.subscriptions.payment');
-        Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice');
+        Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('.subscriptions.invoice');
         Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('.subscriptions.downgrade');
         Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
         Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('.subscriptions.upgrade.success');

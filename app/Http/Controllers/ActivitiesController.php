@@ -68,7 +68,7 @@ class ActivitiesController extends Controller
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));
     }
 
@@ -153,7 +153,7 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));
     }
 
@@ -175,7 +175,7 @@ class ActivitiesController extends Controller
 
         $activity->delete();
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_delete_success'));
     }
 }

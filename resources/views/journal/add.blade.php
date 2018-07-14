@@ -8,10 +8,10 @@
       <div class="mw9 center pa2">
           <ul>
             <li class="di">
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li class="di">
-              &gt; <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
+              &gt; <a href="{{ route('journal.index') }}">{{ trans('app.breadcrumb_journal') }}</a>
             </li>
             <li class="di">
               &gt; {{ trans('journal.journal_add') }}
@@ -51,7 +51,7 @@
 
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('journal.journal_add_cta') }}</button>
-                <a href="/journal" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <a href="{{ route('journal.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

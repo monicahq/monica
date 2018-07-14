@@ -20,7 +20,7 @@
           <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
         @endif
 
-        <form action="/people" method="POST">
+        <form action="{{ route('people.store') }}" method="POST">
           {{ csrf_field() }}
 
           {{-- This check is for the cultures that are used to say the last name first --}}

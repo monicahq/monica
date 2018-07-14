@@ -11,13 +11,13 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+                <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
               </li>
               <li>
-              <a href="/settings/import">{{ trans('app.breadcrumb_settings_import') }}</a>
+                <a href="{{ route('settings.import') }}">{{ trans('app.breadcrumb_settings_import') }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_settings_import_upload') }}
@@ -72,7 +72,7 @@
 
                 <div class="form-group actions">
                     <button id="upload" type="submit" class="btn btn-primary">{{ trans('app.upload') }}</button>
-                    <a href="/settings/import" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                    <a href="{{ route('settings.import') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
                 </div> <!-- .form-group -->
               </form>
             </div>

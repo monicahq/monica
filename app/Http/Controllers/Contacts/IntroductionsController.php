@@ -68,7 +68,7 @@ class IntroductionsController extends Controller
 
         $contact->logEvent('contact', $contact->id, 'update');
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.introductions_update_success'));
     }
 
@@ -85,7 +85,7 @@ class IntroductionsController extends Controller
 
         $contact->events()->forObject($gift)->get()->each->delete();
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_delete_success'));
     }
 }

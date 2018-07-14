@@ -58,7 +58,7 @@ class RemindersController extends Controller
 
         $contact->logEvent('reminder', $reminder->id, 'create');
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
     }
 
@@ -114,7 +114,7 @@ class RemindersController extends Controller
 
         $contact->logEvent('reminder', $reminder->id, 'update');
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
     }
 
@@ -127,7 +127,7 @@ class RemindersController extends Controller
     public function destroy(Contact $contact, Reminder $reminder)
     {
         if ($reminder->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         $reminder->purgeNotifications();
@@ -135,7 +135,7 @@ class RemindersController extends Controller
 
         $contact->events()->forObject($reminder)->get()->each->delete();
 
-        return redirect(route('people.show', $contact))
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));
     }
 }
