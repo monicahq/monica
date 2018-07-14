@@ -51,7 +51,7 @@ function installSonar {
 function CommonParams {
   extra=""
   if [ "$REPO" != "$REPOSITORY_OWNER" ]; then
-    # Avoid forks to send reports to the same project
+    # Avoid forks to send reports to the same project
     project="${REPO/\//_}"
     extra="$extra -Dsonar.projectKey=monica:$project -Dsonar.projectName=$project"
   fi

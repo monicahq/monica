@@ -1,4 +1,4 @@
- <?php
+<?php
 
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
