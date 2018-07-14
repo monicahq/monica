@@ -52,7 +52,7 @@
 
               @include('partials.errors')
 
-              <form action="{{ route('settings.storeImport) }}" method="POST" enctype="multipart/form-data">
+              <form action="{{ route('settings.storeImport') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                   <div class="form-group">
