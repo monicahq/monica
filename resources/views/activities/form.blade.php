@@ -61,12 +61,18 @@
             </option>
 
             {{-- Predefined options --}}
-            @foreach (App\Models\Contact\ActivityTypeGroup::all() as $activityTypeGroup)
-                <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
-                    @foreach (App\Models\Contact\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
-                        <option value="{{ $activityType->id }}">
-                            {{ trans('people.activity_type_'.$activityType->key) }}
-                        </option>
+            @foreach (auth()->user()->account->activityTypeCategories as $activityTypeCategory)
+                <optgroup label="{{ $activityTypeCategory->name }}">
+                    @foreach (App\Models\Contact\ActivityType::where('activity_type_category_id', $activityTypeCategory->id)->get() as $activityType)
+                        @if (! is_null($activity->type) && $activity->type->id == $activityType->id)
+                            <option value="{{ $activityType->id }}" selected>
+                                {{ $activityType->name }}
+                            </option>
+                        @else
+                            <option value="{{ $activityType->id }}">
+                                {{ $activityType->name }}
+                            </option>
+                        @endif
                     @endforeach
                 </optgroup>
             @endforeach

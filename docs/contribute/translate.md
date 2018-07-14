@@ -39,6 +39,7 @@ Translation appears in two types of files in the codebase: in Laravel (php) and 
   Example: `:name’s birthday` => `anniversaire de :name`
 - **plural forms**: see [laravel doc](https://laravel.com/docs/5.6/localization#pluralization) for documentation. We support basic and occidental plural variations, each one being defined in [here](https://github.com/laravel/framework/blob/5.6/src/Illuminate/Translation/MessageSelector.php#L110).
   Example: `1 message|:count messages` => `{0,1}:count message|{2,*}:count messages`
+- **format strings**: we use [Carbon](http://carbon.nesbot.com/docs/#api-commonformats) to handle dates. [format.php](https://github.com/monicahq/monica/blob/master/resources/lang/en/format.php) file contains format we use to export dates as strings in the right localized format. See [php doc](http://www.php.net/manual/en/function.date.php) to know which format you can use.
 
 <a id="markdown-with-vuejs" name="with-vuejs"></a>
 ### With Vue.js

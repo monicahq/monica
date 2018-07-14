@@ -3,9 +3,8 @@
 namespace App\Http\Resources\Activity;
 
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
-class ActivityType extends Resource
+class ActivityTypeCategory extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +16,8 @@ class ActivityType extends Resource
     {
         return [
             'id' => $this->id,
-            'object' => 'activityType',
+            'object' => 'activityTypeCategory',
             'name' => $this->name,
-            'location_type' => $this->location_type,
-            'activity_type_category' => new ActivityTypeCategoryResource($this->category),
             'account' => [
                 'id' => $this->account->id,
             ],
