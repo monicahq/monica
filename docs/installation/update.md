@@ -57,7 +57,6 @@ your instance is completely empty (no tables, no data).
 Then, follow the steps:
 
 * `php artisan migrate`
-* `php artisan db:seed --class ActivityTypesTableSeeder`
 * Then import `monica.sql` into your database. Tools like phpmyadmin or Sequel
 Pro might help you with that.
 * Finally, sign in with the same credentials as the ones used on
