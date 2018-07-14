@@ -40,7 +40,7 @@
 
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
-                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(Auth::user()->timezone)->format('Y-m-d') }}">
+                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(Auth::user()->timezone)->toDateString() }}">
               </div>
 
               <div class="form-group">

@@ -203,10 +203,11 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
 

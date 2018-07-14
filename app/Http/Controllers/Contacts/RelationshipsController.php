@@ -57,7 +57,7 @@ class RelationshipsController extends Controller
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
-            ->withBirthdate(now()->format('Y-m-d'))
+            ->withBirthdate(now()->toDateString())
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }
@@ -171,10 +171,11 @@ class RelationshipsController extends Controller
      */
     public function edit(Contact $contact, Contact $otherContact)
     {
+        $now = now();
         $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : Carbon::now()->day;
-        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : Carbon::now()->month;
+        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->toDateString() : $now->toDateString();
+        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : $now->day;
+        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
 

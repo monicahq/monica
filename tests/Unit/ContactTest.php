@@ -1476,7 +1476,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             '2017-01-04',
-            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+            $contact->stay_in_touch_trigger_date->toDateString()
         );
     }
 
