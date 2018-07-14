@@ -1,11 +1,11 @@
 {
   "baseUrl": "http://localhost:8000",
-  "videosFolder": "tests/Cypress/videos",
-  "screenshotsFolder": "tests/Cypress/screenshots",
-  "supportFile": "tests/Cypress/support/index.js",
-  "fixturesFolder": "tests/Cypress/fixtures",
-  "integrationFolder": "tests/Cypress/integration",
-  "pluginsFile": "tests/Cypress/plugins/index.js",
+  "videosFolder": "tests/cypress/videos",
+  "screenshotsFolder": "tests/cypress/screenshots",
+  "supportFile": "tests/cypress/support/index.js",
+  "fixturesFolder": "tests/cypress/fixtures",
+  "integrationFolder": "tests/cypress/integration",
+  "pluginsFile": "tests/cypress/plugins/index.js",
   "video": false,
   "projectId": "2i96ir"
 }
