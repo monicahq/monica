@@ -8728,16 +8728,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.6",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "beeab32f60dcff5959f0578d2893ecb6466fd460"
+                "reference": "ecf4ed65e3d878ec0f7b584b172ef294d5a60433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/beeab32f60dcff5959f0578d2893ecb6466fd460",
-                "reference": "beeab32f60dcff5959f0578d2893ecb6466fd460",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/ecf4ed65e3d878ec0f7b584b172ef294d5a60433",
+                "reference": "ecf4ed65e3d878ec0f7b584b172ef294d5a60433",
                 "shasum": ""
             },
             "require": {
@@ -8747,6 +8747,9 @@
                 "openlss/lib-array2xml": "^0.0.10||^0.5.1",
                 "php": "^7.0",
                 "php-cs-fixer/diff": "^1.2"
+            },
+            "provide": {
+                "psalm/psalm": "self.version"
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
@@ -8763,6 +8766,12 @@
                 "psalter"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev",
+                    "dev-1.x": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Psalm\\": "src/Psalm"
@@ -8783,7 +8792,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-06-30T20:21:29+00:00"
+            "time": "2018-07-10T15:39:38+00:00"
         },
         {
             "name": "webmozart/assert",
