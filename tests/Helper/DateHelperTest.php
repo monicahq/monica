@@ -149,25 +149,39 @@ class DateHelperTest extends FeatureTestCase
         $date = '2018-01-01 00:01:00';
         $timezone = 'America/New_York';
 
-        $testDate = DateHelper::parseDateTime($date, $timezone);
-        $this->assertEquals(
-            '2017-12-31',
-            $testDate->toDateString()
-        );
-    }
-
-    public function test_datetime_parse_timezone2()
-    {
-        $date = '2018-01-01 00:01:00';
-        $timezone = 'America/New_York';
-
         $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2018-01-01',
             $testDate->toDateString()
         );
+        $this->assertEquals(
+            '2018-01-01T00:01:00Z',
+            DateHelper::getTimestamp($testDate)
+        );
 
         $testDate2 = DateHelper::parseDateTime($testDate, $timezone);
+        $this->assertEquals(
+            '2017-12-31',
+            $testDate2->toDateString()
+        );
+        $this->assertEquals(
+            '2017-12-31T19:01:00Z',
+            DateHelper::getTimestamp($testDate2)
+        );
+    }
+
+    public function test_date_parse_timezone()
+    {
+        $date = '2018-01-01 00:01:00';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDate($date);
+        $this->assertEquals(
+            '2018-01-01',
+            $testDate->toDateString()
+        );
+
+        $testDate2 = DateHelper::parseDate($testDate, $timezone);
         $this->assertEquals(
             '2017-12-31',
             $testDate2->toDateString()
@@ -267,6 +281,42 @@ class DateHelperTest extends FeatureTestCase
         $this->assertEquals(
             '2018-01-01',
             DateHelper::getNextTheoriticalBillingDate('yearly')->toDateString()
+        );
+    }
+
+    public function test_it_returns_a_list_with_years()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertCount(
+            3,
+            DateHelper::getListOfYears(2)
+        );
+    }
+
+    public function test_it_returns_a_list_with_years2()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertEquals(
+            now()->year,
+            DateHelper::getListOfYears(2)[0]
+        );
+        $this->assertEquals(
+            now()->subYears(2)->year,
+            DateHelper::getListOfYears(2)[2]
+        );
+        $this->assertEquals(
+            now()->subYears(-2)->year,
+            DateHelper::getListOfYears(2,-2)[0]
+        );
+        $this->assertEquals(
+            now()->year,
+            DateHelper::getListOfYears(2,-2)[2]
         );
     }
 
