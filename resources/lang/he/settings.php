@@ -94,7 +94,7 @@ return [
     'u2f_error_other_error' => 'אירעה שגיאה.',
     'u2f_error_bad_request' => 'הכתובת המבוקשת אינה תואמת את מזהה היישום או שהחיבור שלך אינו HTTPS',
     'u2f_error_configuration_unsupported' => 'אין תמיכה בתצורת לקוח.',
-    'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
+    'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
     'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
 
     'users_list_title' => 'משתמשים עם גישה לחשבון שלך',
