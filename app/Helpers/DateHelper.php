@@ -222,10 +222,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return Date::now()->addMonth();
+            return now(static::getTimezone())->addMonth();
         }
 
-        return Date::now()->addYear();
+        return now(static::getTimezone())->addYear();
     }
 
     /**

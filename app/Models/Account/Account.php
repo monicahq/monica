@@ -644,12 +644,13 @@ class Account extends Model
      */
     public function getRemindersForMonth(int $month)
     {
-        $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
+        $now = now(DateHelper::getTimezone());
+        $startOfMonth = $now->addMonthsNoOverflow($month)->startOfMonth();
         // don't get reminders for past events:
         if ($startOfMonth->isPast()) {
-            $startOfMonth = now();
+            $startOfMonth = $now;
         }
-        $endOfMonth = now()->addMonthsNoOverflow($month)->endOfMonth();
+        $endOfMonth = $now->addMonthsNoOverflow($month)->endOfMonth();
 
         return auth()->user()->account->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])

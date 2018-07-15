@@ -56,7 +56,7 @@ class RelationshipsController extends Controller
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
-            ->withBirthdate(now()->toDateString())
+            ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }
