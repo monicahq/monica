@@ -31,7 +31,7 @@ class DateHelper
     public static function parseDateTime($date, $timezone = null)
     {
         if (is_null($date)) {
-            return null;
+            return;
         }
         if ($date instanceof \DateTime) {
             $date = Carbon::instance($date);
@@ -43,6 +43,7 @@ class DateHelper
         if ($timezone !== null) {
             $date->setTimezone($timezone);
         }
+
         return $date;
     }
 
@@ -57,15 +58,16 @@ class DateHelper
         if (! $date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
-        $date =  Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
         if ($timezone !== null) {
             $date->setTimezone($timezone);
         }
+
         return $date;
     }
 
     /**
-     * Return timestamp date format
+     * Return timestamp date format.
      *
      * @param Carbon|\App\Models\Instance\SpecialDate|string $date
      * @return string
@@ -73,20 +75,21 @@ class DateHelper
     public static function getTimestamp($date)
     {
         if (is_null($date)) {
-            return null;
+            return;
         }
         if ($date instanceof \App\Models\Instance\SpecialDate) {
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-          $date = Carbon::create($date, config('app.timezone'));
+            $date = Carbon::create($date, config('app.timezone'));
         }
+
         return $date->format(config('api.timestamp_format'));
     }
 
     /**
      * Get timezone of the current user, or null.
-     * 
+     *
      * @return string|null
      */
     public static function getTimezone()
@@ -94,8 +97,6 @@ class DateHelper
         if (Auth::check()) {
             return auth()->user()->timezone;
         }
-
-        return null;
     }
 
     /**
@@ -228,11 +229,11 @@ class DateHelper
     }
 
     /**
-     * Gets a list of all the year from min to max (0 is the current year)
+     * Gets a list of all the year from min to max (0 is the current year).
      *
      * @param int min
      * @param int max
-     * 
+     *
      * @return array
      */
     public static function getListOfYears($max = 120, $min = 0)

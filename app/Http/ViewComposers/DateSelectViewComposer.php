@@ -3,7 +3,6 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
-use Jenssegers\Date\Date;
 use App\Helpers\DateHelper;
 
 class DateSelectViewComposer

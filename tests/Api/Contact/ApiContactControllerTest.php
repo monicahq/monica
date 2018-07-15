@@ -502,7 +502,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => null,
                 'is_age_based' => null,
                 'is_year_unknown' => null,
-            ]
+            ],
         ]);
 
         $datas = array_only($response->json()['data'], [
@@ -528,7 +528,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2008-10-25T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('special_dates', [
@@ -557,7 +557,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => null,
                 'is_age_based' => null,
                 'is_year_unknown' => null,
-            ]
+            ],
         ]);
 
         $datas = array_only($response->json()['data'], [
@@ -585,7 +585,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => DateHelper::getTimestamp($date),
                 'is_age_based' => true,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('special_dates', [
@@ -596,5 +596,4 @@ class ApiContactControllerTest extends ApiTestCase
             'is_year_unknown' => '0',
         ]);
     }
-
 }
