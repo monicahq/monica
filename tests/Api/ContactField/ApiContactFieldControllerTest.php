@@ -56,4 +56,78 @@ class ApiContactFieldControllerTest extends ApiTestCase
             'data' => $this->jsonStructureContactField,
         ]);
     }
+
+    public function test_contact_field_query_all_account()
+    {
+        $firstuser = $this->signin();
+        $firstcontact = factory(Contact::class)->create([
+            'account_id' => $firstuser->account->id,
+            'first_name' => 'Bad',
+        ]);
+        $firstfield = factory(ContactFieldType::class)->create([
+            'account_id' => $firstuser->account_id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $firstcontact->id,
+            'account_id' => $firstuser->account_id,
+            'contact_field_type_id' => $firstfield->id,
+        ]);
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=100&query=email:john@doe');
+
+        $response->assertStatus(200);
+        // Assure that firstcontact from other account is not get (wrong filter on account id)
+        $response->assertJsonMissing([
+            'id' => $firstcontact->id,
+            'first_name' => 'Bad',
+            'account' => [
+                'id' => $firstuser->account->id,
+            ],
+        ]);
+    }
+
+    public function test_contact_query_internationalphone()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone',
+            'protocol' => 'tel:',
+            'type' => 'phone',
+            ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+            'data' => '+447007007007',
+        ]);
+
+        $response = $this->json('GET', '/api/contacts?query=Phone:%2B447007007007');
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+                'id' => $contact->id,
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'account' => [
+                    'id' => $user->account->id,
+                ],
+        ]);
+    }
 }

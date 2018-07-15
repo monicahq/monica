@@ -27,7 +27,7 @@ class SettingsController extends Controller
 {
     protected $ignoredTables = [
         'accounts',
-        'activity_type_groups',
+        'activity_type_activities',
         'activity_types',
         'api_usage',
         'cache',
@@ -35,6 +35,8 @@ class SettingsController extends Controller
         'changelogs',
         'countries',
         'currencies',
+        'default_activity_types',
+        'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
         'default_relationship_type_groups',

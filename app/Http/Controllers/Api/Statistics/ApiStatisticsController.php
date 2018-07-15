@@ -34,8 +34,8 @@ class ApiStatisticsController extends ApiController
         $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
 
         // Get the number of users last monday
-        $instanceLastMonday = Statistic::whereDate('created_at', '=', $dateMondayLastWeek->format('Y-m-d'))->first();
-        $instanceLastSunday = Statistic::whereDate('created_at', '=', $dateSundayLastWeek->format('Y-m-d'))->first();
+        $instanceLastMonday = Statistic::whereDate('created_at', '=', $dateMondayLastWeek->toDateString())->first();
+        $instanceLastSunday = Statistic::whereDate('created_at', '=', $dateSundayLastWeek->toDateString())->first();
 
         $numberNewUsers = 0;
         if ($instanceLastMonday && $instanceLastSunday) {

@@ -21,6 +21,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
 use App\Models\Relationship\Relationship;
+use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -175,6 +177,26 @@ class Account extends Model
     public function activityStatistics()
     {
         return $this->hasMany(ActivityStatistic::class);
+    }
+
+    /**
+     * Get the activity type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypes()
+    {
+        return $this->hasMany(ActivityType::class);
+    }
+
+    /**
+     * Get the activity type category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function activityTypeCategories()
+    {
+        return $this->hasMany(ActivityTypeCategory::class);
     }
 
     /**
@@ -489,6 +511,34 @@ class Account extends Model
     }
 
     /**
+     * Populates the Activity Type table right after an account is
+     * created.
+     */
+    public function populateActivityTypeTable()
+    {
+        $defaultActivityTypeCategories = DB::table('default_activity_type_categories')->get();
+
+        foreach ($defaultActivityTypeCategories as $defaultActivityTypeCategory) {
+            $activityTypeCategoryId = DB::table('activity_type_categories')->insertGetId([
+                'account_id' => $this->id,
+                'translation_key' => $defaultActivityTypeCategory->translation_key,
+            ]);
+
+            $defaultActivityTypes = DB::table('default_activity_types')
+                                        ->where('default_activity_type_category_id', $defaultActivityTypeCategory->id)
+                                        ->get();
+
+            foreach ($defaultActivityTypes as $defaultActivityType) {
+                DB::table('activity_types')->insert([
+                  'account_id' => $this->id,
+                  'activity_type_category_id' => $activityTypeCategoryId,
+                  'translation_key' => $defaultActivityType->translation_key,
+              ]);
+            }
+        }
+    }
+
+    /**
      * Populates the default genders in a new account.
      *
      * @return void
@@ -697,6 +747,7 @@ class Account extends Model
         $account->populateRelationshipTypesTable();
         $account->populateModulesTable();
         $account->populateChangelogsTable();
+        $account->populateActivityTypeTable();
     }
 
     /**

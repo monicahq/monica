@@ -27,7 +27,7 @@ class ApiContactController extends ApiController
     public function index(Request $request)
     {
         if ($request->get('query')) {
-            $needle = $request->get('query');
+            $needle = rawurldecode($request->get('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(

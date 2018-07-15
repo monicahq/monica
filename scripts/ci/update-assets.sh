@@ -11,8 +11,8 @@ REPOSITORY_OWNER=monicahq/monica
 
 set -euo pipefail
 
-# Update assets
-echo -e "\033[1;32m# Build assets ...\033[0:37m"
+# Update assets
+echo -e "\033[1;32m# Build assets ...\033[0:37m"
 echo -e "\033[1;36mphp artisan lang:generate\033[0:37m"
 php artisan lang:generate
 echo ""
