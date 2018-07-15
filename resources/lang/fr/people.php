@@ -291,7 +291,7 @@ return [
     'introductions_first_met_date' => 'Date de la rencontre',
     'introductions_no_first_met_date' => 'Je ne connais pas la date de cette rencontre',
     'introductions_first_met_date_known' => 'Voici la date de notre rencontre',
-    'introductions_add_reminder' => 'Ajouter un rappel pour célébrer la rencontre à la date d\'anniversaire, rappelant chaque année quand cet événement s’est passé',
+    'introductions_add_reminder' => 'Ajouter un rappel pour célébrer la rencontre à la date d’anniversaire, rappelant chaque année quand cet événement s’est passé',
     'introductions_update_success' => 'Vous avez mis à jour avec succès vos informations de rencontre',
     'introductions_met_through' => 'Rencontré·e via <a href=":url">:name</a>',
     'introductions_met_date' => 'Rencontré le :date',
