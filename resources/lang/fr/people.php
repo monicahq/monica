@@ -77,7 +77,7 @@ return [
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_date' => 'Cet appel téléphonique s’est passé plus tôt dans la journée.',
     'modal_call_change' => 'Changer',
-    'modal_call_exact_date' => 'L\'appel s’est passé le',
+    'modal_call_exact_date' => 'L’appel s’est passé le',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
