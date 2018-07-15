@@ -14,7 +14,7 @@ return [
     'export_title' => 'Exporter les données de votre compte',
     'export_be_patient' => 'Cliquez sur le bouton pour commencer l’export. Cela peut prendre plusieurs minutes pour préparer l’export – merci d’être patient et de ne pas spammer le bouton.',
     'export_title_sql' => 'Exporter en SQL',
-    'export_sql_explanation' => 'Exporter les données au format SQL vous permet de récupérer vos données et de les importer dans votre propre instance de Monica. Ceci n’a d\'intérêt que si vous avez votre propre serveur.',
+    'export_sql_explanation' => 'Exporter les données au format SQL vous permet de récupérer vos données et de les importer dans votre propre instance de Monica. Ceci n’a d’intérêt que si vous avez votre propre serveur.',
     'export_sql_cta' => 'Exporter en SQL',
     'export_sql_link_instructions' => 'Note : <a href=":url">lisez les instructions</a> afin d’apprendre comment importer ce fichier dans votre instance.',
 
@@ -303,7 +303,7 @@ return [
 
     'personalization_module_save' => 'Les modifications ont été enregistrées',
     'personalization_module_title' => 'Fonctionnalités',
-    'personalization_module_desc' => 'Certaines personnes n’ont pas besoin de toutes ces fonctionnalités. Ci-dessous vous pouvez basculer des fonctionnalités spécifiques qui sont utilisés sur le vue d\'un contact. Ces modifications s’appliqueront à tous vos contacts. Notez que si vous désactivez une de ces fonctionnalité les données ne seront pas perdues – la fonctionnalité sera simplement masquée.',
+    'personalization_module_desc' => 'Certaines personnes n’ont pas besoin de toutes ces fonctionnalités. Ci-dessous vous pouvez activer ou désactiver des fonctionnalités spécifiques qui sont utilisées sur la vue d’un contact. Ces modifications s’appliqueront à tous vos contacts. Notez que si vous désactivez une de ces fonctionnalités les données ne seront pas perdues, la fonctionnalité sera simplement masquée.',
 
     'personalisation_paid_upgrade' => 'Il s’agit d’une fonctionnalité premium qui nécessite un abonnement payant pour être activée. Mettez à niveau votre compte en visitant Paramètres > Abonnement.',
 
