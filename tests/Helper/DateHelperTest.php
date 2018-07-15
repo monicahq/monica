@@ -312,11 +312,11 @@ class DateHelperTest extends FeatureTestCase
         );
         $this->assertEquals(
             now()->subYears(-2)->year,
-            DateHelper::getListOfYears(2,-2)[0]
+            DateHelper::getListOfYears(2, -2)[0]
         );
         $this->assertEquals(
             now()->year,
-            DateHelper::getListOfYears(2,-2)[2]
+            DateHelper::getListOfYears(2, -2)[2]
         );
     }
 
