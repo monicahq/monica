@@ -166,7 +166,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('.store');
         Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
         Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('.update');
-        Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
+        Route::delete('/activities/{activity}/{contact}', 'ActivitiesController@destroy')->name('.delete');
     });
 
     Route::group(['as' => 'journal'], function () {
@@ -204,8 +204,8 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         Route::get('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@index');
         Route::post('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@create');
-        Route::put('/settings/personalization/activitytypecategories/{activitytypecategory}', 'Settings\\ActivityTypeCategoriesController@update');
-        Route::delete('/settings/personalization/activitytypecategories/{activitytypecategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
+        Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
+        Route::delete('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@destroy');
 
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');

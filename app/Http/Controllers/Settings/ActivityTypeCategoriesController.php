@@ -18,13 +18,12 @@ class ActivityTypeCategoriesController extends Controller
     public function index()
     {
         $activityTypeCategoriesData = collect([]);
-        $genders = auth()->user()->account->genders;
+        $activityTypeCategories = auth()->user()->account->activityTypeCategories;
 
-        foreach ($genders as $gender) {
+        foreach ($activityTypeCategories as $activityTypeCategory) {
             $data = [
-                'id' => $gender->id,
-                'name' => $gender->name,
-                'numberOfContacts' => $gender->contacts->count(),
+                'id' => $activityTypeCategory->id,
+                'name' => $activityTypeCategory->name,
             ];
             $activityTypeCategoriesData->push($data);
         }
@@ -33,15 +32,15 @@ class ActivityTypeCategoriesController extends Controller
     }
 
     /**
-     * Store the gender.
+     * Store the activity type category.
      */
-    public function storeGender(Request $request)
+    public function create(Request $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
         ])->validate();
 
-        $gender = auth()->user()->account->genders()->create(
+        $activityTypeCategory = ActivityTypeCategory::create(
             $request->only([
                 'name',
             ])
@@ -51,24 +50,35 @@ class ActivityTypeCategoriesController extends Controller
         );
 
         return [
-            'id' => $gender->id,
-            'name' => $gender->name,
-            'numberOfContacts' => $gender->contacts->count(),
+            'id' => $activityTypeCategory->id,
+            'name' => $activityTypeCategory->name,
         ];
     }
 
     /**
-     * Update the given gender.
+     * Update the given activity type category.
      */
-    public function updateGender(GendersRequest $request, Gender $gender)
+    public function update(Request $request)
     {
-        $gender->update(
+        Validator::make($request->all(), [
+            'name' => 'required|max:255',
+        ])->validate();
+
+        try {
+            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->get('id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
+
+        $activityTypeCategory->update(
             $request->only([
                 'name',
             ])
         );
 
-        return $gender;
+        return $activityTypeCategory;
     }
 
     /**
