@@ -25,7 +25,7 @@ return [
     '2fa_one_time_password' => 'קוד אימות דו־שלבי',
     '2fa_recuperation_code' => 'נא להקליד את קוד השחזור לאימות הדו־שלבי',
     '2fa_otp_help' => 'יש לפתוח את יישומון האימות הדו־שלבי שלך ולהעתיק את הקוד',
-    'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
+    'u2f_otp_extension' => 'ב־Chrome, ב־<a href="{urlquantum}" lang="en">Firefox</a> וב־Opera קיימת תמיכה מובנית ב־U2F. בגרסאות ישנות של Firefox יש להתקין את <a href="{urlext}">תוספת התמיכה ב־U2F</a>.',
 
     'login_to_account' => 'כניסה לחשבון שלך',
     'login_again' => 'נא להיכנס לחשבונך פעם נוספת',
