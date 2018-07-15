@@ -113,10 +113,10 @@ class Activity extends Model implements IsJournalableInterface
     public function getDateItHappenedAttribute($value)
     {
         if (auth()->user()) {
-            return Carbon::parse($value, auth()->user()->timezone);
+            return DateHelper::parseDate($value, auth()->user()->timezone);
         }
 
-        return Carbon::parse($value);
+        return DateHelper::parseDate($value);
     }
 
     /**

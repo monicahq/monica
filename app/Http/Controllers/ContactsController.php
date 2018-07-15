@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
@@ -158,7 +157,7 @@ class ContactsController extends Controller
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
-        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = now(auth()->user()->timezone);
         $contact->save();
         $relationships = $contact->relationships;
         // get love relationship type
@@ -304,7 +303,7 @@ class ContactsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,

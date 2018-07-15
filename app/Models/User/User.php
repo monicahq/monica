@@ -359,7 +359,7 @@ class User extends Authenticatable
         }
 
         $compliance = Term::find($termId);
-        $signedDate = DateHelper::createDateFromFormat($termUser->created_at, $this->timezone);
+        $signedDate = DateHelper::parseDateTime($termUser->created_at, $this->timezone);
 
         return [
             'signed' => true,

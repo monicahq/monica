@@ -8,12 +8,12 @@ use App\Helpers\DateHelper;
 
 class DateHelperTest extends FeatureTestCase
 {
-    public function testCreateDateFromFormat()
+    public function testParseDateTime()
     {
         $date = '2017-01-22 17:56:03';
         $timezone = 'America/New_York';
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
 
         $this->assertInstanceOf(Carbon::class, $testDate);
     }
@@ -125,19 +125,19 @@ class DateHelperTest extends FeatureTestCase
         $date = '2017-01-22 17:56:03';
         $timezone = 'America/New_York';
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2017-01-29',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
         );
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2017-02-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
         );
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2018-01-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()

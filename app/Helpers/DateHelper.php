@@ -21,15 +21,27 @@ class DateHelper
     }
 
     /**
-     * Creates a Carbon object.
+     * Creates a Carbon object from DateTime format.
      *
      * @param string date
      * @param string timezone
      * @return Carbon
      */
-    public static function createDateFromFormat($date, $timezone)
+    public static function parseDateTime($date, $timezone = null)
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
+    }
+
+    /**
+     * Creates a Carbon object from Date format.
+     *
+     * @param string date
+     * @param string timezone
+     * @return Carbon
+     */
+    public static function parseDate($date, $timezone = null)
+    {
+        return Carbon::createFromFormat('Y-m-d', $date, $timezone);
     }
 
     /**

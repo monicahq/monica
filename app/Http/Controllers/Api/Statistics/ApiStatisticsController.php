@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Instance\Instance;
 use App\Models\Instance\Statistic;
@@ -26,11 +25,11 @@ class ApiStatisticsController extends ApiController
         $instance = Instance::first();
 
         // Get the date of the monday of last week
-        $dateMondayLastWeek = Carbon::now()->subDays(7);
+        $dateMondayLastWeek = now()->subDays(7);
         $dateMondayLastWeek = $dateMondayLastWeek->startOfWeek();
 
         // Get the date of the sunday of last week
-        $dateSundayLastWeek = Carbon::now()->subDays(7);
+        $dateSundayLastWeek = now()->subDays(7);
         $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
 
         // Get the number of users last monday

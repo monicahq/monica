@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
@@ -1503,7 +1502,7 @@ class Contact extends Model
      */
     public function setStayInTouchTriggerDate($frequency, $timezone)
     {
-        $now = Carbon::now($timezone);
+        $now = now($timezone);
         $newTriggerDate = $now->addDays($frequency);
         $this->stay_in_touch_trigger_date = $newTriggerDate;
 

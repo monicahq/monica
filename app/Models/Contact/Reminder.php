@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
@@ -80,10 +79,10 @@ class Reminder extends Model
     public function getNextExpectedDateAttribute($value)
     {
         if (auth()->user()) {
-            return Carbon::parse($value, auth()->user()->timezone);
+            return DateHelper::parseDate($value, auth()->user()->timezone);
         }
 
-        return Carbon::parse($value);
+        return DateHelper::parseDate($value);
     }
 
     /**
