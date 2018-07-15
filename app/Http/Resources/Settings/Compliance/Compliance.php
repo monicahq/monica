@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Settings\Compliance;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 
 class Compliance extends Resource
@@ -21,8 +22,8 @@ class Compliance extends Resource
             'term_content' => $this->term_content,
             'privacy_version' => $this->privacy_version,
             'privacy_content' => $this->privacy_content,
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

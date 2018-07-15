@@ -144,6 +144,36 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function test_datetime_parse_timezone()
+    {
+        $date = '2018-01-01 00:01:00';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDateTime($date, $timezone);
+        $this->assertEquals(
+            '2017-12-31',
+            $testDate->toDateString()
+        );
+    }
+
+    public function test_datetime_parse_timezone2()
+    {
+        $date = '2018-01-01 00:01:00';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDateTime($date);
+        $this->assertEquals(
+            '2018-01-01',
+            $testDate->toDateString()
+        );
+
+        $testDate2 = DateHelper::parseDateTime($testDate, $timezone);
+        $this->assertEquals(
+            '2017-12-31',
+            $testDate2->toDateString()
+        );
+    }
+
     public function testGetShortMonthWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';

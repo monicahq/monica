@@ -112,11 +112,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getDateItHappenedAttribute($value)
     {
-        if (auth()->user()) {
-            return DateHelper::parseDate($value, auth()->user()->timezone);
-        }
-
-        return DateHelper::parseDate($value);
+        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
     }
 
     /**

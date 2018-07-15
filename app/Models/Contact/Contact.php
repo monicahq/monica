@@ -1502,12 +1502,12 @@ class Contact extends Model
      */
     public function setStayInTouchTriggerDate($frequency, $timezone)
     {
-        $now = now($timezone);
-        $newTriggerDate = $now->addDays($frequency);
-        $this->stay_in_touch_trigger_date = $newTriggerDate;
-
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
+        } else {
+            $now = now($timezone);
+            $newTriggerDate = $now->addDays($frequency);
+            $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
         $this->save();
