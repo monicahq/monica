@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Activités',
-    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_simple_activities' => 'Activités simples',
     'activity_type_category_sport' => 'Sport',
-    'activity_type_category_food' => 'Food',
-    'activity_type_category_cultural_activities' => 'Cultural activities',
+    'activity_type_category_food' => 'Gastronomie',
+    'activity_type_category_cultural_activities' => 'Activités culturelles',
     'activity_type_just_hung_out' => 'traîner ensemble',
     'activity_type_watched_movie_at_home' => 'regarder un film à la maison ensemble',
     'activity_type_talked_at_home' => 'parler ensemble à la maison',
@@ -214,7 +214,7 @@ return [
     'activities_add_title' => 'Qu’avez-vous fait avec :name ?',
     'activities_summary' => 'Décrivez ce que vous avez fait',
     'activities_add_pick_activity' => '(optionnel) Souhaitez-vous catégoriser cette activité ? Vous n’avez pas à le faire, mais cela nous permettra de faire des statistiques plus tard',
-    'activities_add_date_occured' => 'Date où l’activité s\'est passée',
+    'activities_add_date_occured' => 'Date où l’activité s’est passée',
     'activities_add_optional_comment' => 'Commentaire (optionnel)',
     'activities_add_cta' => 'Enregistrer l’activité',
     'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec :name par le passé',
