@@ -171,7 +171,7 @@ return [
     'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
     'relationship_form_associate_dropdown' => 'Sélectionnez un contact existant dans la liste déroulante ci-dessous',
-    'relationship_form_also_create_contact' => 'Créer un Contact pour cette personne.',
+    'relationship_form_also_create_contact' => 'Créer un contact pour cette personne.',
     'relationship_form_add_description' => 'Ceci vous permettra de traiter cette personne comme tous les autres contacts de votre compte.',
     'relationship_form_add_no_existing_contact' => 'Vous n’avez aucun contact qui puisse être associé à :name pour le moment.',
     'relationship_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette relation ? La suppression est permanente.',
