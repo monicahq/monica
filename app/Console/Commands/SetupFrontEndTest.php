@@ -47,7 +47,7 @@ class SetupFrontEndTest extends Command
         if (file_exists('monicadump.sql')) {
             $cmd = 'mysql -u '.$connection->getConfig('username');
             if ($connection->getConfig('password') != '') {
-              $cmd .= ' -p'.$connection->getConfig('password');
+                $cmd .= ' -p'.$connection->getConfig('password');
             }
             $cmd .= ' -h '.$connection->getConfig('host');
             $cmd .= ' -P '.$connection->getConfig('port');
