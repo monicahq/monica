@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SetupFrontEndTest extends Command
 {
@@ -20,6 +21,8 @@ class SetupFrontEndTest extends Command
      * @var string
      */
     protected $description = 'Create the test environment exclusively for front-end testing with Cypress.';
+
+    private $dumpfile = 'monicadump.sql';
 
     private $account;
 
@@ -40,8 +43,13 @@ class SetupFrontEndTest extends Command
      */
     public function handle()
     {
-        $this->artisan('migrate:fresh');
-        $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
+        $connection = DB::connection();
+        if (file_exists('monicadump.sql')) {
+            exec('mysql -u ' . $connection->getConfig('username') . ' -p' . $connection->getConfig('password') . ' ' . $connection->getDatabaseName() . ' < ' . $this->dumpfile);
+        } else {
+            $this->artisan('migrate:fresh');
+            $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
+        }        
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         // get first user
