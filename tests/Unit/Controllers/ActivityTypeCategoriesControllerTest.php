@@ -64,4 +64,23 @@ class ActivityTypeCategoriesControllerTest extends FeatureTestCase
             'name' => 'Movies',
         ]);
     }
+
+    public function test_it_deletes_a_activity_type_category()
+    {
+        $user = $this->signin();
+
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('DELETE', '/settings/personalization/activitytypecategories', [
+                            'id' => $activityTypeCategory->id,
+                        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('activity_type_categories', [
+            'name' => 'Movies',
+        ]);
+    }
 }

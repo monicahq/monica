@@ -48,12 +48,11 @@
       </div>
     </div>
 
-
-    <div class="dt dt--fixed w-100 collapse br--top br--bottom">
+    <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
       <div class="dt-row bb b--light-gray">
         <div class="dtc">
           <div class="pa2 b">
-            Test
+            <strong>Test</strong>
           </div>
         </div>
         <div class="dtc">
@@ -63,7 +62,7 @@
           </div>
         </div>
       </div>
-      <div class="dt-row bb b--light-gray">
+      <div class="dt-row bb b--light-gray" v-for="activityType in activityTypesForCategory(activityTypeCategory)">
         <div class="dtc">
           <div class="pa2 pl4">
             Test
@@ -73,74 +72,6 @@
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2"></i>
             <i class="fa fa-trash-o pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row bb b--light-gray">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            Test
-          </div>
-        </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
-            <i class="fa fa-trash-o pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            <a href="">Add a new activity type</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dt dt--fixed w-100 collapse br--top br--bottom">
-      <div class="dt-row bb b--light-gray">
-        <div class="dtc">
-          <div class="pa2 b">
-            Test
-          </div>
-        </div>
-        <div class="dtc">
-          <div class="pa2" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
-            <i class="fa fa-trash-o pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row bb b--light-gray">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            Test
-          </div>
-        </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
-            <i class="fa fa-trash-o pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row bb b--light-gray">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            Test
-          </div>
-        </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
-            <i class="fa fa-trash-o pointer"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            <a href="">Add a new activity type</a>
           </div>
         </div>
       </div>
@@ -297,6 +228,13 @@
                           this.updatedCategory.name = this.updateCategoryForm.name;
                           this.updateCategoryForm.name = '';
                       });
+            },
+
+            activityTypesForCategory(category) {
+                axios.get('/settings/personalization/activitytypes/'.category.id)
+                        .then(response => {
+                            return response.data;
+                        });
             }
         }
     }
