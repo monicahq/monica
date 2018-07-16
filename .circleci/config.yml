@@ -91,7 +91,7 @@ aliases:
     run:
       name: Run browser tests (cypress)
       command: |
-        mysqldump -u root -p'' monica > monicadump.sql
+        mysqldump -u root -h 127.0.0.1 -P 3306 monica > monicadump.sql
         $(yarn bin)/cypress run --config "baseUrl=http://localhost:8000" --record --reporter mocha-multi-reporters --reporter-options configFile=.circleci/cypressmocha.json
   - &fix-coverage
     run:
