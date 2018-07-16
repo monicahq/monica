@@ -45,11 +45,11 @@ class SetupFrontEndTest extends Command
     {
         $connection = DB::connection();
         if (file_exists('monicadump.sql')) {
-            exec('mysql -u ' . $connection->getConfig('username') . ' -p' . $connection->getConfig('password') . ' ' . $connection->getDatabaseName() . ' < ' . $this->dumpfile);
+            exec('mysql -u '.$connection->getConfig('username').' -p'.$connection->getConfig('password').' '.$connection->getDatabaseName().' < '.$this->dumpfile);
         } else {
             $this->artisan('migrate:fresh');
             $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
-        }        
+        }
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         // get first user
