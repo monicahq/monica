@@ -45,7 +45,14 @@ class SetupFrontEndTest extends Command
     {
         $connection = DB::connection();
         if (file_exists('monicadump.sql')) {
-            exec('mysql -u '.$connection->getConfig('username').' -p'.$connection->getConfig('password').' '.$connection->getDatabaseName().' < '.$this->dumpfile);
+            $cmd = 'mysql -u '.$connection->getConfig('username');
+            if ($connection->getConfig('password') != '') {
+              $cmd .= ' -p'.$connection->getConfig('password');
+            }
+            $cmd .= ' -h '.$connection->getConfig('host');
+            $cmd .= ' -P '.$connection->getConfig('port');
+            $cmd .= ' '.$connection->getDatabaseName();
+            exec($cmd.' < '.$this->dumpfile);
         } else {
             $this->artisan('migrate:fresh');
             $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
