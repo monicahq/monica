@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Settings;
 
 use Exception;
 use Illuminate\Http\Request;
-use App\Models\Contact\ActivityType;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\ActivityType;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Settings\ActivityTypeRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypesController extends Controller
