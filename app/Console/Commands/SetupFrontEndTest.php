@@ -49,10 +49,16 @@ class SetupFrontEndTest extends Command
             if ($connection->getConfig('password') != '') {
                 $cmd .= ' -p'.$connection->getConfig('password');
             }
-            $cmd .= ' -h '.$connection->getConfig('host');
-            $cmd .= ' -P '.$connection->getConfig('port');
+            if ($connection->getConfig('host') != '') {
+                $cmd .= ' -h '.$connection->getConfig('host');
+            }
+            if ($connection->getConfig('port') != '') {
+                $cmd .= ' -P '.$connection->getConfig('port');
+            }
             $cmd .= ' '.$connection->getDatabaseName();
-            exec($cmd.' < '.$this->dumpfile);
+            $cmd .= ' < '.$this->dumpfile;
+            $this->line($cmd);
+            exec($cmd);
         } else {
             $this->artisan('migrate:fresh');
             $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
