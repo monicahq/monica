@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -53,7 +52,7 @@ class ActivityType extends Model
      */
     public function getNameAttribute($value)
     {
-        if ($this->translation_key && !$value) {
+        if ($this->translation_key && ! $value) {
             return trans('people.activity_type_'.$this->translation_key);
         }
 

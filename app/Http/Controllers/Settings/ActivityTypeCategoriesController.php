@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Tests\Unit\ActivityTypeTest;
 
 class ActivityTypeCategoriesController extends Controller
 {
@@ -21,7 +20,6 @@ class ActivityTypeCategoriesController extends Controller
         $activityTypeCategories = auth()->user()->account->activityTypeCategories;
 
         foreach ($activityTypeCategories as $activityTypeCategory) {
-
             $activityTypesData = collect([]);
             $activityTypes = $activityTypeCategory->activityTypes;
 
