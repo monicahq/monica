@@ -17,26 +17,6 @@ class ActivityTypesControllerTest extends FeatureTestCase
         'location_type',
     ];
 
-    public function test_it_gets_activity_types()
-    {
-        $user = $this->signin();
-
-        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account->id,
-        ]);
-
-        $activityTypes = factory(ActivityType::class, 10)->create([
-            'account_id' => $user->account_id,
-            'activity_type_category_id' => $activityTypeCategory->id,
-        ]);
-
-        $response = $this->json('GET', '/settings/personalization/activitytypes/'.$activityTypeCategory->id);
-
-        $response->assertJsonStructure([
-            '*' => $this->jsonStructureActivityType,
-        ]);
-    }
-
     public function test_it_stores_a_activity_type()
     {
         $user = $this->signin();

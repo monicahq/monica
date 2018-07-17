@@ -12,7 +12,6 @@
     <p>{{ $t('settings.personalization_activity_type_category_description') }}</p>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
-
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
@@ -25,58 +24,43 @@
           </div>
         </div>
       </div>
-
-      <div class="dt-row bb b--light-gray" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
-        <div class="dtc">
-          <div class="pa2">
-            {{ activityTypeCategory.name }}
-          </div>
-        </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="showEditCategory(activityTypeCategory)"></i>
-            <i class="fa fa-trash-o pointer" @click="showDeleteCategory(activityTypeCategory)"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row">
-        <div class="dtc">
-          <div class="pa2">
-            <a href="">Add a new activity type</a>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
       <div class="dt-row bb b--light-gray">
         <div class="dtc">
           <div class="pa2 b">
-            <strong>Test</strong>
+            <strong>{{ activityTypeCategory.name }}</strong>
           </div>
         </div>
         <div class="dtc">
           <div class="pa2" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
-            <i class="fa fa-trash-o pointer"></i>
+            <i class="fa fa-pencil-square-o pointer pr2" @click="showEditCategory(activityTypeCategory)"></i>
+            <i class="fa fa-trash-o pointer" @click="showDeleteCategory(activityTypeCategory)"></i>
           </div>
         </div>
       </div>
-      <div class="dt-row bb b--light-gray" v-for="activityType in activityTypesForCategory(activityTypeCategory)">
+      <div class="dt-row bb b--light-gray" v-for="activityType in activityTypeCategory.activityTypes" :key="activityType.id">
         <div class="dtc">
           <div class="pa2 pl4">
-            Test
+            {{ activityType.name }}
           </div>
         </div>
         <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
           <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2"></i>
+            <i class="fa fa-pencil-square-o pointer pr2" @click="showEditType(activityType)"></i>
             <i class="fa fa-trash-o pointer"></i>
           </div>
         </div>
       </div>
+      <div class="dt-row">
+        <div class="dtc">
+          <div class="pa2 pl4">
+            <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">Add a new activity type</a>
+          </div>
+        </div>
+      </div>
     </div>
-
 
     <!-- Create Activity Type Category -->
     <sweet-modal ref="createCategoryModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_category_modal_add')">
@@ -122,6 +106,50 @@
       </div>
     </sweet-modal>
 
+    <!-- Create Activity Type -->
+    <sweet-modal ref="createTypeModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_category_modal_add')">
+      <form v-on:submit.prevent="storeType()">
+        <div class="mb4">
+          <p class="b mb2"></p>
+          <form-input
+            v-model="createTypeForm.name"
+            v-bind:input-type="'text'"
+            v-bind:id="''"
+            v-bind:required="true"
+            v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
+          </form-input>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeCreateTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="storeType()" class="btn btn-primary">{{ $t('app.save') }}</a>
+        </span>
+      </div>
+    </sweet-modal>
+
+    <!-- Update Activity Type -->
+    <sweet-modal ref="updateTypeModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_category_modal_edit')">
+      <form v-on:submit.prevent="updateType()">
+        <div class="mb4">
+          <p class="b mb2"></p>
+          <form-input
+            v-model="updateTypeForm.name"
+            v-bind:input-type="'text'"
+            v-bind:id="''"
+            v-bind:required="true"
+            v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
+          </form-input>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeUpdateTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="updateType()" class="btn btn-primary">{{ $t('app.update') }}</a>
+        </span>
+      </div>
+    </sweet-modal>
+
   </div>
 </template>
 
@@ -147,7 +175,19 @@
                     errors: []
                 },
 
+                createTypeForm: {
+                    name: '',
+                    activity_type_category_id: '',
+                    errors: []
+                },
+
                 updateCategoryForm: {
+                    id: '',
+                    name: '',
+                    errors: []
+                },
+
+                updateTypeForm: {
                     id: '',
                     name: '',
                     errors: []
@@ -188,6 +228,7 @@
             getActivityTypeCategories() {
                 axios.get('/settings/personalization/activitytypecategories')
                         .then(response => {
+                          console.log(response.data)
                             this.activityTypeCategories = response.data;
                         });
             },
@@ -217,8 +258,23 @@
                 this.$refs.updateCategoryModal.open();
             },
 
+            showEditType(type) {
+                this.updateTypeForm.id = type.id;
+                this.updateTypeForm.name = type.name;
+
+                this.$refs.updateTypeModal.open();
+            },
+
             closeUpdateCategoryModal() {
                 this.$refs.updateCategoryModal.close();
+            },
+
+            closeCreateTypeModal() {
+                this.$refs.createTypeModal.close();
+            },
+
+            closeUpdateTypeModal() {
+                this.$refs.updateTypeModal.close();
             },
 
             updateCategory() {
@@ -230,12 +286,29 @@
                       });
             },
 
-            activityTypesForCategory(category) {
-                axios.get('/settings/personalization/activitytypes/'.category.id)
-                        .then(response => {
-                            return response.data;
-                        });
-            }
+            showCreateTypeModal(category) {
+                this.$refs.createTypeModal.open();
+                this.createTypeForm.activity_type_category_id = category.id;
+            },
+
+            storeType() {
+                axios.post('/settings/personalization/activitytypes', this.createTypeForm)
+                      .then(response => {
+                          this.$refs.createTypeModal.close();
+                          this.activityTypes.push(response.data);
+                          this.createTypeForm.name = '';
+                          this.getActivityTypeCategories();
+                      });
+            },
+
+            updateType() {
+                axios.put('/settings/personalization/activitytypes/', this.updateTypeForm)
+                      .then(response => {
+                          this.$refs.updateTypeModal.close();
+                          this.updateTypeForm.name = '';
+                          this.getActivityTypeCategories();
+                      });
+            },
         }
     }
 </script>
