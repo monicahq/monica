@@ -205,12 +205,12 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@index');
         Route::post('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@create');
         Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
-        Route::delete('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@destroy');
+        Route::delete('/settings/personalization/activitytypecategories/{activityTypeCategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
 
         Route::get('/settings/personalization/activitytypes/{activityTypeCategoryId}', 'Settings\\ActivityTypesController@index');
         Route::post('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@create');
         Route::put('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@update');
-        Route::delete('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@destroy');
+        Route::delete('/settings/personalization/activitytypes/{activityType}', 'Settings\\ActivityTypesController@destroy');
 
         Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
         Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');

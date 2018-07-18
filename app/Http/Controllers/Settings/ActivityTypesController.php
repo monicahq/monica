@@ -65,29 +65,19 @@ class ActivityTypesController extends Controller
     }
 
     /**
-     * Destroy a gender type.
+     * Destroy an activity type.
      */
-    public function destroyAndReplaceGender(GendersRequest $request, Gender $genderToDelete, $genderToReplaceWithId)
+    public function destroy(Request $request, $activityTypeId)
     {
         try {
-            $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $genderToReplaceWithId)
+            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
+                ->where('id', $activityTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             throw new Exception(trans('settings.personalization_genders_modal_error'));
         }
 
-        // We get the new gender to associate the contacts with.
-        auth()->user()->account->replaceGender($genderToDelete, $genderToReplaceWith);
-
-        $genderToDelete->delete();
-    }
-
-    /**
-     * Destroy a gender type.
-     */
-    public function destroyGender(GendersRequest $request, Gender $gender)
-    {
-        $gender->delete();
+        $activityType->resetAssociationWithActivities();
+        $activityType->delete();
     }
 }
