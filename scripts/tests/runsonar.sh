@@ -121,7 +121,7 @@ elif [ -n "${BRANCH:-}" ] && [ "$PR_NUMBER" == "false" ] && [ -n "${SONAR_TOKEN:
   echo sonar-scanner $SONAR_PARAMS
   $SONAR_SCANNER_HOME/bin/sonar-scanner $SONAR_PARAMS -Dsonar.login=$SONAR_TOKEN
 
-elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ] && [ -z "${GITHUB_TOKEN:-}" ]; then
+elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ] && [ -n "${GITHUB_TOKEN:-}" ]; then
 
   REPOS_VALUES=($(curl -H "Authorization: token $GITHUB_TOKEN" -sSL https://api.github.com/repos/$REPO/pulls/$PR_NUMBER | jq -r -c ".head.repo.full_name, .head.repo.owner.login, .base.ref, .head.ref"))
 
