@@ -49,7 +49,7 @@
         <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="showEditType(activityType)"></i>
-            <i class="fa fa-trash-o pointer"></i>
+            <i class="fa fa-trash-o pointer" @click="showDeleteType(activityType)"></i>
           </div>
         </div>
       </div>
@@ -170,6 +170,26 @@
       </div>
     </sweet-modal>
 
+    <!-- Delete Activiy type  -->
+    <sweet-modal ref="deleteTypeModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_modal_delete')">
+      <form>
+        <div class="form-error-message mb3" v-if="errorMessage != ''">
+          <div class="pa2">
+            <p class="mb0">{{ errorMessage }}</p>
+          </div>
+        </div>
+        <div class="mb4">
+          <p class="mb2">{{ $t('settings.personalization_activity_type_modal_delete_desc') }}</p>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+            <a @click="closeDeleteTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
+            <a @click="destroyType()" class="btn btn-primary">{{ $t('app.delete') }}</a>
+        </span>
+      </div>
+    </sweet-modal>
+
   </div>
 </template>
 
@@ -214,6 +234,11 @@
                 },
 
                 destroyCategoryForm: {
+                    id: '',
+                    errors: []
+                },
+
+                destroyTypeForm: {
                     id: '',
                     errors: []
                 },
@@ -293,6 +318,12 @@
                 this.$refs.deleteCategoryModal.open();
             },
 
+            showDeleteType(type) {
+                this.destroyTypeForm.id = type.id;
+
+                this.$refs.deleteTypeModal.open();
+            },
+
             showEditType(type) {
                 this.updateTypeForm.id = type.id;
                 this.updateTypeForm.name = type.name;
@@ -312,8 +343,8 @@
                 this.$refs.updateTypeModal.close();
             },
 
-            closeDeleteCategoryModal() {
-                this.$refs.deleteCategoryModal.close();
+            closeDeleteTypeModal() {
+                this.$refs.deleteTypeModal.close();
             },
 
             updateCategory() {
@@ -345,6 +376,15 @@
                       .then(response => {
                           this.$refs.deleteCategoryModal.close();
                           this.destroyCategoryForm.id = '';
+                          this.getActivityTypeCategories();
+                      });
+            },
+
+            destroyType() {
+                axios.delete('/settings/personalization/activitytypes/' + this.destroyTypeForm.id)
+                      .then(response => {
+                          this.$refs.deleteTypeModal.close();
+                          this.destroyTypeForm.id = '';
                           this.getActivityTypeCategories();
                       });
             },
