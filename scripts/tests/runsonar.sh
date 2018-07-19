@@ -64,6 +64,7 @@ function CommonParams {
        -Dsonar.analysis.pipeline=$BUILD \
        -Dsonar.analysis.sha1=$SHA1 \
        -Dsonar.analysis.repository=$REPO \
+       -Dsonar.verbose=true \
        $extra
 }
 
@@ -148,12 +149,14 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ]; then
 
   installSonar
   gitFetch
+  git fetch --all
+  git branch -D $PULL_REQUEST_BASEBRANCH
+  git rev-parse origin/$PULL_REQUEST_BASEBRANCH
 
   SONAR_PARAMS="$(CommonParams) \
     -Dsonar.pullrequest.key=$PR_NUMBER \
     -Dsonar.pullrequest.base=$PULL_REQUEST_BASEBRANCH \
     -Dsonar.pullrequest.branch=$PULL_REQUEST_BRANCH \
-    -Dsonar.pullrequest.github.id=$PR_NUMBER \
     -Dsonar.pullrequest.provider=GitHub \
     -Dsonar.pullrequest.github.repository=$REPO"
 
