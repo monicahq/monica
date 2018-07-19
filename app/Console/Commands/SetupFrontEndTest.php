@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use App\Console\Commands\Helpers\CommandExecutor;
+use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class SetupFrontEndTest extends Command
 {
@@ -27,12 +29,20 @@ class SetupFrontEndTest extends Command
     private $account;
 
     /**
-     * Create a new command instance.
+     * The Command Executor.
      *
-     * @return void
+     * @var CommandExecutorInterface
+     */
+    public $commandExecutor;
+
+    /**
+     * Create a new command.
+     *
+     * @param CommandExecutorInterface
      */
     public function __construct()
     {
+        $this->commandExecutor = new CommandExecutor($this);
         parent::__construct();
     }
 
@@ -57,23 +67,18 @@ class SetupFrontEndTest extends Command
             }
             $cmd .= ' '.$connection->getDatabaseName();
             $cmd .= ' < '.$this->dumpfile;
-            $this->line($cmd);
-            exec($cmd);
+            $this->commandExecutor->exec('mysql import ...', $cmd);
         } else {
-            $this->artisan('migrate:fresh');
-            $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
+            $this->commandExecutor->artisan('migrate:fresh', 'migrate:fresh');
+            $this->commandExecutor->artisan('db:seed', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         }
+        $this->info('Create account');
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
         // get first user
+        $this->info('Fix first user');
         $user = $this->account->users()->first();
         $user->confirmed = true;
         $user->save();
-    }
-
-    public function artisan($command, array $arguments = [])
-    {
-        $this->line('php artisan '.$command);
-        $this->callSilent($command, $arguments);
     }
 }

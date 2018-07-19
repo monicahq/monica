@@ -1,5 +1,5 @@
 Cypress.Commands.add('login', () => {
-    cy.exec('php artisan setup:frontendtesting')
+    cy.exec('php artisan setup:frontendtesting -vvv')
 
     cy.visit('/')
 
