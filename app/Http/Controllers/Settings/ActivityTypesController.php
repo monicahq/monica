@@ -74,7 +74,7 @@ class ActivityTypesController extends Controller
                 ->where('id', $activityTypeId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exception(trans('settings.personalization_genders_modal_error'));
+            throw new Exception(trans('settings.personalization_activity_type_modal_delete_error'));
         }
 
         $activityType->resetAssociationWithActivities();

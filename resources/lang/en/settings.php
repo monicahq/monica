@@ -325,4 +325,6 @@ return [
     'personalization_activity_type_category_modal_delete_desc' => 'Are you sure you want to delete this category? Deleting it will delete all associated activity types. However, activities that belong to this category will not be affected by this deletion.',
     'personalization_activity_type_modal_delete' => 'Delete an activity type',
     'personalization_activity_type_modal_delete_desc' => 'Are you sure you want to delete this activity type? Activities that belong to this category will not be affected by this deletion.',
+    'personalization_activity_type_modal_delete_error' => 'We can’t find this activity type.',
+    'personalization_activity_type_category_modal_delete_error' => 'We can’t find this activity type category.',
 ];

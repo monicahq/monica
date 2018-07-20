@@ -204,6 +204,7 @@
             return {
                 activityTypes: [],
                 activityTypeCategories: [],
+                errorMessage: '',
 
                 updatedCategory: {
                     id: '',
@@ -372,10 +373,23 @@
             },
 
             destroyCategory() {
-                axios.delete('/settings/personalization/activitytypes/' + this.destroyCategoryForm.id)
+                axios.delete('/settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
                       .then(response => {
                           this.$refs.deleteCategoryModal.close();
                           this.destroyCategoryForm.id = '';
+                          this.getActivityTypeCategories();
+                      })
+                      .catch(error => {
+                          this.errorMessage = error.response.data.message;
+                      });
+            },
+
+            updateType() {
+                axios.put('/settings/personalization/activitytypes/', this.updateTypeForm)
+                      .then(response => {
+                          this.$refs.updateTypeModal.close();
+                          this.updatedCategory.name = this.updateTypeForm.name;
+                          this.updateTypeForm.name = '';
                           this.getActivityTypeCategories();
                       });
             },
@@ -386,6 +400,9 @@
                           this.$refs.deleteTypeModal.close();
                           this.destroyTypeForm.id = '';
                           this.getActivityTypeCategories();
+                      })
+                      .catch(error => {
+                          this.errorMessage = error.response.data.message;
                       });
             },
         }
