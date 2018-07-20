@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\IdHasher;
-use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
