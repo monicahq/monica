@@ -226,7 +226,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2017-02-01',
-            DateHelper::getNextTheoriticalBillingDate('monthly')->format('Y-m-d')
+            DateHelper::getNextTheoriticalBillingDate('monthly')->toDateString()
         );
     }
 
@@ -236,7 +236,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2018-01-01',
-            DateHelper::getNextTheoriticalBillingDate('yearly')->format('Y-m-d')
+            DateHelper::getNextTheoriticalBillingDate('yearly')->toDateString()
         );
     }
 
@@ -343,7 +343,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2016-12-25',
-            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->format('Y-m-d')
+            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->toDateString()
         );
     }
 

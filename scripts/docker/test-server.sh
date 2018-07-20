@@ -19,7 +19,7 @@ else
   echo "APP_KEY already set"
 fi
 
-# Run migrations
+# Run migrations
 ${ARTISAN} monica:update --force
 
 # Run cron
