@@ -4,11 +4,14 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ActivityType extends Model
+class ActivityTypeCategory extends Model
 {
-    protected $table = 'activity_types';
+    protected $table = 'activity_type_categories';
+
+    protected $appends = ['name'];
 
     /**
      * The attributes that are mass assignable.
@@ -17,12 +20,11 @@ class ActivityType extends Model
      */
     protected $fillable = [
         'name',
-        'activity_type_category_id',
         'account_id',
     ];
 
     /**
-     * Get the account record associated with the activity type.
+     * Get the account record associated with the activity type group.
      *
      * @return BelongsTo
      */
@@ -32,20 +34,24 @@ class ActivityType extends Model
     }
 
     /**
-     * Get the activity type category record associated with the activity types.
+     * Get the activity type records associated with the category.
+     *
+     * @return HasMany
      */
-    public function category()
+    public function activityTypes()
     {
-        return $this->belongsTo(ActivityTypeCategory::class, 'activity_type_category_id');
+        return $this->hasMany(ActivityType::class);
     }
 
     /**
-     * Get the activity type's attribute.
+     * Get the activity type category's attribute.
+     *
+     * @return string
      */
     public function getNameAttribute($value)
     {
         if ($this->translation_key) {
-            return trans('people.activity_type_'.$this->translation_key);
+            return trans('people.activity_type_category_'.$this->translation_key);
         }
 
         return $value;

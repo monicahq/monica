@@ -15,7 +15,9 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ActivityType;
 use App\Models\Contact\Notification;
+use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -94,6 +96,26 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->modules()->exists());
+    }
+
+    public function test_it_has_many_activity_types()
+    {
+        $account = factory(Account::class)->create();
+        $activityType = factory(ActivityType::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->activityTypes()->exists());
+    }
+
+    public function test_it_has_many_activity_type_categories()
+    {
+        $account = factory(Account::class)->create();
+        $ActivityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->activityTypeCategories()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()

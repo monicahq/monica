@@ -130,7 +130,7 @@ class Reminder extends Model
      */
     public function getNextExpectedDate()
     {
-        return $this->next_expected_date->format('Y-m-d');
+        return $this->next_expected_date->toDateString();
     }
 
     /**

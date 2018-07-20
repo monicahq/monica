@@ -1472,11 +1472,11 @@ class ContactTest extends FeatureTestCase
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
 
-        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(3, 'UTC');
 
         $this->assertEquals(
             '2017-01-04',
-            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+            $contact->stay_in_touch_trigger_date->toDateString()
         );
     }
 

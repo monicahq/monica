@@ -216,7 +216,7 @@ class User extends Authenticatable
     {
         try {
             Day::where('account_id', $this->account_id)
-                ->where('date', now($this->timezone)->format('Y-m-d'))
+                ->where('date', now($this->timezone)->toDateString())
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return false;

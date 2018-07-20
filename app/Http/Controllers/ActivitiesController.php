@@ -166,7 +166,7 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Activity $activity)
+    public function destroy(Activity $activity, Contact $contact)
     {
         $contactHashedId = $request->get('contact');
         $contactId = app('idhasher')->decodeId($contactHashedId);
@@ -174,11 +174,12 @@ class ActivitiesController extends Controller
 
         $activity->deleteJournalEntry();
 
+        foreach ($activity->contacts as $contactActivity) {
+            $contactActivity->events()->forObject($activity)->get()->each->delete();
+            $contactActivity->calculateActivitiesStatistics();
+        }
+
         $activity->delete();
-
-        $contact->events()->forObject($activity)->get()->each->delete();
-
-        $contact->calculateActivitiesStatistics();
 
         return redirect('/people/'.$contact->hashID())
             ->with('success', trans('people.activities_delete_success'));
