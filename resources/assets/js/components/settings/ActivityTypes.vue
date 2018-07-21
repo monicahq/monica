@@ -279,7 +279,6 @@
             getActivityTypeCategories() {
                 axios.get('/settings/personalization/activitytypecategories')
                         .then(response => {
-                          console.log(response.data)
                             this.activityTypeCategories = response.data;
                         });
             },
