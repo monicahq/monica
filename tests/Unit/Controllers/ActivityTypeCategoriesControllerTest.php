@@ -73,7 +73,7 @@ class ActivityTypeCategoriesControllerTest extends FeatureTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('DELETE', '/settings/personalization/activitytypecategories/'. $activityTypeCategory->id);
+        $response = $this->json('DELETE', '/settings/personalization/activitytypecategories/'.$activityTypeCategory->id);
 
         $response->assertStatus(200);
 
