@@ -1,9 +1,9 @@
 UNRELEASED CHANGES:
 
+* Add ability to define custom activity types and activity type categories through the API and the UI
 * Add U2F/yubikey support and refactor MultiFactor Authentication
 * Add a script to update assets automatically
 * Allow for plus sign search in contacts api (contact_fields_data)
-* 
 
 RELEASED VERSIONS:
 
