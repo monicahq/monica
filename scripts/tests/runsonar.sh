@@ -43,7 +43,6 @@ function installSonar {
       mv sonar-scanner-$sonarversion-linux sonar-scanner-$sonarversion
     fi
   fi
-  echo "== Using sonarscanner $sonarversion"
   export SONAR_SCANNER_HOME=$HOME/sonarscanner/sonar-scanner-$sonarversion
   export PATH=$SONAR_SCANNER_HOME/bin:$PATH
   popd > /dev/null
