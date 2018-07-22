@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl tr' : 'fr tl' }} w-30 ph2">
-          <a href="/people/add" class="btn btn-primary" style="padding: 15px 45px;">
+          <a href="{{ route('people.create') }}" class="btn btn-primary" style="padding: 15px 45px;">
             {{ trans('people.people_list_blank_cta') }}
           </a>
         </div>

@@ -13,11 +13,11 @@
         <ul class="contacts">
             <ul class="contacts-list">
                 @if ($contact && $method == 'POST')
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endif
                 @foreach ($activity->contacts as $contact)
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endforeach
             </ul>

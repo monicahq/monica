@@ -19,7 +19,7 @@ class Validate2faController extends Controller
             return redirect(urldecode($request->get('url')));
         }
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     public static function loginCallback()

@@ -43,7 +43,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('ActivitiesController@destroy', compact('contact', 'activity')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ route('activities.delete', [$activity, $contact]) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

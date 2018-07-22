@@ -11,7 +11,7 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings') }}
@@ -39,7 +39,7 @@
               </div>
             @endif
 
-            <form action="/settings/save" method="POST">
+            <form action="{{ route('settings.save') }}" method="POST">
               {{ csrf_field() }}
 
               {{-- id --}}
@@ -265,7 +265,7 @@
           </div>
         </div>
 
-        <form method="POST" action="{{ action('SettingsController@reset') }}" class="settings-reset bg-white" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
+        <form method="POST" action="{{ route('settings.reset') }}" class="settings-reset bg-white" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
           {{ csrf_field() }}
 
           <h2>{{ trans('settings.reset_title') }}</h2>
@@ -273,7 +273,7 @@
           <button type="submit" class="btn">{{ trans('settings.reset_cta') }}</button>
         </form>
 
-        <form method="POST" action="{{ action('SettingsController@delete') }}" class="settings-delete bg-white" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
+        <form method="POST" action="{{ route('settings.delete') }}" class="settings-delete bg-white" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
           {{ csrf_field() }}
 
           <h2>{{ trans('settings.delete_title') }}</h2>
