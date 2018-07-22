@@ -12,20 +12,7 @@ class ActivitiesController extends Controller
      */
     public function index(Contact $contact)
     {
-        $contactActivities = collect([]);
-
-        foreach ($contact->activities as $activity) {
-            $data = [
-                'id' => $activity->id,
-                'activity_type_id' => $activity->getGoogleMapAddress(),
-                'activity_type_name' => $activity->getFullAddress(),
-                'summary' => $activity->country,
-                'description' => $activity->country_name,
-                'date_it_happened' => $activity->street,
-            ];
-            $contactActivities->push($data);
-        }
-
-        return $contactActivities;
+        return view('people.activities.index')
+            ->withContact($contact);
     }
 }

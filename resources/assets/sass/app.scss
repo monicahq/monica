@@ -424,6 +424,30 @@ input:disabled {
   }
 }
 
+.full-page-modal {
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+
+  .full-page-modal-year-selector {
+    &:hover, &.selected {
+      background-color: #f7fbfc;
+    }
+  }
+}
+
+.full-page-modal-header {
+  background: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.column-list {
+  column-count: 3;
+  column-gap: 20px;
+}
+
 footer {
   .badge-success {
     font-size: 12px;
