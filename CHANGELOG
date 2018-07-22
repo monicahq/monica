@@ -3,7 +3,7 @@ UNRELEASED CHANGES:
 * Add U2F/yubikey support and refactor MultiFactor Authentication
 * Add a script to update assets automatically
 * Allow for plus sign search in contacts api (contact_fields_data)
-* 
+* Fix sonar run for pull requests
 
 RELEASED VERSIONS:
 

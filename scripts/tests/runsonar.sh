@@ -71,7 +71,7 @@ function gitFetch {
   echo '== gitFetch'
   echo '# git fetch --all'
   git fetch --all
-  if [ -n "$PULL_REQUEST_BASEBRANCH"]; then
+  if [ -n "$PULL_REQUEST_BASEBRANCH" ]; then
     echo "# git branch -D $PULL_REQUEST_BASEBRANCH"
     git branch -D $PULL_REQUEST_BASEBRANCH
     echo "# git rev-parse origin/$PULL_REQUEST_BASEBRANCH"
