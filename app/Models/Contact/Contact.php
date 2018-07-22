@@ -1503,7 +1503,7 @@ class Contact extends Model
      */
     public function setStayInTouchTriggerDate($frequency)
     {
-        $now = Carbon::now();
+        $now = now();
         $newTriggerDate = $now->addDays($frequency);
         $this->stay_in_touch_trigger_date = $newTriggerDate;
 

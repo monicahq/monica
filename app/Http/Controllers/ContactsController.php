@@ -159,7 +159,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = Carbon::now();
+        $contact->last_consulted_at = now();
 
         $contact->save();
         $relationships = $contact->relationships;
