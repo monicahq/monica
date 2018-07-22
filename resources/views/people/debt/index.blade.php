@@ -4,7 +4,7 @@
     {{ trans('people.debt_title') }}
 
     <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
-      <a href="/people/{{ $contact->hashID() }}/debt/add" class="btn">{{ trans('people.debt_add_cta') }}</a>
+      <a href="{{ route('people.debt.add', $contact) }}" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -14,7 +14,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.debts_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="/people/{{ $contact->hashID() }}/debt/add">{{ trans('people.debt_add_cta') }}</a>
+      <a href="{{ route('people.debt.add', $contact) }}">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('Contacts\\DebtController@destroy', compact('contact', 'debt')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ route('people.debt.delete', [$contact, $debt]) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

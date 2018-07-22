@@ -8,11 +8,11 @@
 
         @if ($reminder->contact->is_partial)
 
-        <a href="/people/{{ $reminder->contact->getRelatedRealContact()->hashID() }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
+        <a href="{{ route('people.show', $reminder->contact->getRelatedRealContact()) }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
 
         @else
 
-        <a href="/people/{{ $reminder->contact->hashID() }}">{{ $reminder->contact->getIncompleteName() }}</a>
+        <a href="{{ route('people.show', $reminder->contact) }}">{{ $reminder->contact->getIncompleteName() }}</a>
 
         @endif
       </span>

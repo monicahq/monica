@@ -153,12 +153,14 @@ class ContactsController extends Controller
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
-            return redirect('/people');
+            return redirect()->route('people.index');
         }
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
-        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
+
+        $contact->last_consulted_at = now();
+
         $contact->save();
         $relationships = $contact->relationships;
         // get love relationship type
@@ -325,7 +327,7 @@ class ContactsController extends Controller
 
         $contact->updateGravatar();
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -339,7 +341,7 @@ class ContactsController extends Controller
     public function delete(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         Relationship::where('contact_is', $contact->id)->delete();
@@ -383,7 +385,7 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -413,7 +415,7 @@ class ContactsController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
@@ -516,7 +518,7 @@ class ContactsController extends Controller
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

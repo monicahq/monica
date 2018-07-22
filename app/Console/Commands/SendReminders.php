@@ -66,7 +66,7 @@ class SendReminders extends Command
                 if ($counter == $numberOfUsersInAccount) {
                     // We should only do this when we are sure that this is
                     // the last user who should be warned in this account.
-                    dispatch(new SetNextReminderDate($reminder, $user->timezone));
+                    dispatch(new SetNextReminderDate($reminder));
                 }
             }
             $counter++;

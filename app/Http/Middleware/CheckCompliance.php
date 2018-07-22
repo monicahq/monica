@@ -27,7 +27,7 @@ class CheckCompliance
 
         if (Auth::check()) {
             if (! auth()->user()->isPolicyCompliant()) {
-                return redirect('compliance');
+                return redirect()->route('compliance');
             }
         }
 

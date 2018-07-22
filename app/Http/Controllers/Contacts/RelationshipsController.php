@@ -76,7 +76,7 @@ class RelationshipsController extends Controller
             $partner = Contact::findOrFail($request->get('existing_contact_id'));
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
-            return redirect('/people/'.$contact->id)
+            return redirect()->route('people.show', $contact)
                 ->with('success', trans('people.relationship_form_add_success'));
         }
 
@@ -158,7 +158,7 @@ class RelationshipsController extends Controller
             $partner->save();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -288,7 +288,7 @@ class RelationshipsController extends Controller
             $otherContact->save();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -302,11 +302,11 @@ class RelationshipsController extends Controller
     public function destroy(Contact $contact, Contact $otherContact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         if ($otherContact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         $type = $contact->getRelationshipNatureWith($otherContact);
@@ -318,7 +318,7 @@ class RelationshipsController extends Controller
             $otherContact->deleteEverything();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));
     }
 }
