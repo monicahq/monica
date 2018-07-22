@@ -359,11 +359,10 @@ class User extends Authenticatable
         }
 
         $compliance = Term::find($termId);
-        $signedDate = DateHelper::parseDateTime($termUser->created_at);
 
         return [
             'signed' => true,
-            'signed_date' => DateHelper::getTimestamp($signedDate),
+            'signed_date' => DateHelper::getTimestamp($termUser->created_at),
             'ip_address' => $termUser->ip_address,
             'user' => new UserResource($this),
             'term' => new ComplianceResource($compliance),
