@@ -61,7 +61,6 @@ class SetupFrontEndTest extends Command
             exec($cmd);
         } else {
             $this->artisan('migrate:fresh');
-            $this->artisan('db:seed', ['--class' => 'ActivityTypesTableSeeder']);
         }
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 

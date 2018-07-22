@@ -69,10 +69,6 @@ aliases:
     run:
       name: Seed database
       command: php artisan db:seed --env=testing --no-interaction -vvv
-  - &seed-prod-db
-    run:
-      name: Seed database
-      command: php artisan db:seed --env=testing --class ActivityTypesTableSeeder -vvv
   - &http-server
     run:
       name: Run http server
