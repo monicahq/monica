@@ -25,6 +25,7 @@ use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
+use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
@@ -277,6 +278,16 @@ class Account extends Model
     public function journalEntries()
     {
         return $this->hasMany(JournalEntry::class)->orderBy('date', 'desc');
+    }
+
+    /**
+     * Get the special dates records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function specialDates()
+    {
+        return $this->hasMany(SpecialDate::class);
     }
 
     /**

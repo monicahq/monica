@@ -85,7 +85,7 @@ class JournalController extends Controller
     public function storeDay(DaysRequest $request)
     {
         $day = auth()->user()->account->days()->create([
-            'date' => now(auth()->user()->timezone),
+            'date' => now(),
             'rate' => $request->get('rate'),
         ]);
 
