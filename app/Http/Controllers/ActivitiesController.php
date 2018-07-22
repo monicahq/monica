@@ -74,18 +74,6 @@ class ActivitiesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Activity $activity
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Activity $activity)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact

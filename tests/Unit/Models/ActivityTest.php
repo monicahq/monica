@@ -34,7 +34,7 @@ class ActivityTest extends TestCase
     {
         $activity = factory(Activity::class)->make();
 
-        $this->assertInstanceOf(Carbon::class, $activity->getDateItHappened());
+        $this->assertInstanceOf(Carbon::class, $activity->date_it_happened);
     }
 
     public function testGetTitleReturnsAString()

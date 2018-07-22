@@ -40,12 +40,11 @@ class ScheduleStayInTouch implements ShouldQueue
                 && ! $account->hasLimitations()) {
                 $this->contact->sendStayInTouchEmail($user);
                 $mailSent = true;
-                $timezone = $user->timezone;
             }
         }
 
         if ($mailSent) {
-            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency, $timezone);
+            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency);
         }
     }
 }
