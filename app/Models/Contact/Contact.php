@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
