@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Change how dates are stored, from local timezone to UTC
+* Remove the APP_TIMEZONE env variable
 * Add U2F/yubikey support and refactor MultiFactor Authentication
 * Add a script to update assets automatically
 * Allow for plus sign search in contacts api (contact_fields_data)
@@ -45,7 +47,7 @@ v2.2.0 - 2018-05-30
 * Fix Contact search dropdown showing non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
-* Adds ex wife/husband relationship
+* Add ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
 * Add trusted proxies to run behind a ssl terminating loadbalancer
 * Fix reminders for past events are visible on the dashboard
