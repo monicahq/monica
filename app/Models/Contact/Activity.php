@@ -105,7 +105,7 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date_it_happened field according to user's timezone.
+     * Get the date_it_happened field.
      *
      * @param string $value
      * @return string
@@ -133,16 +133,6 @@ class Activity extends Model implements IsJournalableInterface
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Get the date the activity happened.
-     *
-     * @return Carbon
-     */
-    public function getDateItHappened()
-    {
-        return $this->date_it_happened;
     }
 
     /**

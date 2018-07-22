@@ -11,7 +11,6 @@ class VCardHelper
      * Export a contact as vCard.
      *
      * @param string date
-     * @param string timezone
      * @return VCard
      */
     public static function prepareVCard(Contact $contact)
