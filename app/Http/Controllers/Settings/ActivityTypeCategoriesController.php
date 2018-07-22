@@ -80,7 +80,7 @@ class ActivityTypeCategoriesController extends Controller
                 ->where('id', $request->get('id'))
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exception(trans('settings.personalization_activity_type_modal_delete_error'));
+            return trans('settings.personalization_activity_type_modal_delete_error');
         }
 
         $activityTypeCategory->update(
@@ -102,7 +102,7 @@ class ActivityTypeCategoriesController extends Controller
                 ->where('id', $activityTypeCategoryId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            throw new Exception(trans('settings.personalization_activity_type_modal_delete_error'));
+            return trans('settings.personalization_activity_type_modal_delete_error');
         }
 
         $activityTypeCategory->deleteAllAssociatedActivityTypes();
