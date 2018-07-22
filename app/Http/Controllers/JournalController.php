@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
@@ -85,7 +86,7 @@ class JournalController extends Controller
     public function storeDay(DaysRequest $request)
     {
         $day = auth()->user()->account->days()->create([
-            'date' => now(),
+            'date' => now(DateHelper::getTimezone()),
             'rate' => $request->get('rate'),
         ]);
 

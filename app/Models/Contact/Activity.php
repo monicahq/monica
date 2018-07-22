@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
@@ -112,7 +111,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getDateItHappenedAttribute($value)
     {
-        return Carbon::parse($value);
+        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
     }
 
     /**

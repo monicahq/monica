@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -57,7 +56,7 @@ class RelationshipsController extends Controller
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
-            ->withBirthdate(now()->toDateString())
+            ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }
@@ -134,7 +133,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $partner->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -264,7 +263,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $otherContact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,

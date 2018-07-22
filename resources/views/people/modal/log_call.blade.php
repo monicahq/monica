@@ -26,9 +26,9 @@
             <p class="exact-date">
               {{ trans('people.modal_call_exact_date') }}
               <input type="date" name="called_at" class="form-control"
-                           value="{{ now()->toDateString() }}"
-                           min="{{ now(Auth::user()->timezone)->subYears(120)->toDateString() }}"
-                           max="{{ now(Auth::user()->timezone)->toDateString() }}">
+                           value="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
+                           min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(120)->toDateString() }}"
+                           max="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}">
             </p>
           </div>
         </form>
