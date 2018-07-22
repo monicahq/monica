@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Add a script to update assets automatically
 * Allow for plus sign search in contacts api (contact_fields_data)
 * Fix sonar run for pull requests
+* Improve date and datetime parsing
 
 RELEASED VERSIONS:
 
