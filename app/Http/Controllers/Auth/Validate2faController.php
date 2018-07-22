@@ -16,9 +16,14 @@ class Validate2faController extends Controller
     public function index(Request $request)
     {
         if ($request->has('url')) {
-            return redirect($request->get('url'));
+            return redirect(urldecode($request->get('url')));
         }
 
         return redirect('/');
+    }
+
+    public static function loginCallback()
+    {
+        app('pragmarx.google2fa')->login();
     }
 }

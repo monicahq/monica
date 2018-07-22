@@ -37,7 +37,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
     Route::post('/validate2fa', 'Auth\Validate2faController@index');
 });
 
-Route::middleware(['auth', 'auth.confirm', '2fa'])->group(function () {
+Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
     Route::group(['as' => 'dashboard'], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('.index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -166,7 +166,7 @@ Route::middleware(['auth', 'auth.confirm', '2fa'])->group(function () {
         Route::post('/activities/store/{contact}', 'ActivitiesController@store')->name('.store');
         Route::get('/activities/{activity}/edit/{contact}', 'ActivitiesController@edit')->name('.edit');
         Route::put('/activities/{activity}/{contact}', 'ActivitiesController@update')->name('.update');
-        Route::delete('/activities/{activity}', 'ActivitiesController@destroy')->name('.delete');
+        Route::delete('/activities/{activity}/{contact}', 'ActivitiesController@destroy')->name('.delete');
     });
 
     Route::group(['as' => 'journal'], function () {
@@ -241,5 +241,6 @@ Route::middleware(['auth', 'auth.confirm', '2fa'])->group(function () {
         Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
         Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('.security.2fa-disable');
         Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
+        Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('.security.u2f-register');
     });
 });

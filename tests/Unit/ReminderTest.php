@@ -96,7 +96,7 @@ class ReminderTest extends TestCase
 
     public function test_calculate_next_expected_date()
     {
-        $timezone = 'US/Eastern';
+        $timezone = 'UTC';
         $reminder = new Reminder;
         $reminder->next_expected_date = '1980-01-01 10:10:10';
         $reminder->frequency_number = 1;

@@ -10,7 +10,8 @@ class UpdateCommandTest extends TestCase
     public function test_update_command_default()
     {
         $commandExecutor = new CommandExecutorTester();
-        $command = new Update($commandExecutor);
+        $command = new Update();
+        $command->commandExecutor = $commandExecutor;
         $command->setLaravel($this->createApplication());
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput([]), new \Symfony\Component\Console\Output\NullOutput());
@@ -25,7 +26,8 @@ class UpdateCommandTest extends TestCase
     public function test_update_command_composer()
     {
         $commandExecutor = new CommandExecutorTester();
-        $command = new Update($commandExecutor);
+        $command = new Update();
+        $command->commandExecutor = $commandExecutor;
         $command->setLaravel($this->createApplication());
 
         $command->run(new \Symfony\Component\Console\Input\ArrayInput(['--composer-install' => true]), new \Symfony\Component\Console\Output\NullOutput());
@@ -38,7 +40,7 @@ class UpdateCommandTest extends TestCase
         $this->assertCommandContains($commandExecutor->buffer[7], 'Maintenance mode: off', 'php artisan up');
     }
 
-    public function assertCommandContains($array, $message, $command)
+    private function assertCommandContains($array, $message, $command)
     {
         $this->assertContains($message, $array['message']);
         $this->assertContains($command, $array['command']);

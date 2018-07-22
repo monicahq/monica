@@ -155,42 +155,35 @@ class ContactsController extends Controller
         if ($contact->is_partial) {
             return redirect('/people');
         }
-
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
 
         $contact->last_consulted_at = Carbon::now();
+
         $contact->save();
-
         $relationships = $contact->relationships;
-
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'love';
         });
-
         // get family relationship type
         $familyRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'family';
         });
-
         // get friend relationship type
         $friendRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'friend';
         });
-
         // get work relationship type
         $workRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
-
         // reminders
         $reminders = $contact->reminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
                                 ->sortBy('next_expected_date');
-
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
@@ -212,10 +205,11 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
 

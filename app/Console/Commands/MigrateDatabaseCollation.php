@@ -50,40 +50,10 @@ class MigrateDatabaseCollation extends Command
 
                 if (config('database.use_utf8mb4') && $schema == 'utf8') {
                     $this->line('Migrate to utf8mb4 schema collation');
-
-                    // Tables
-                    $tables = $connection->table('information_schema.tables')
-                        ->select('table_name')
-                        ->where('table_schema', '=', $databasename)
-                        ->get();
-
-                    foreach ($tables as $table) {
-                        DB::statement('ALTER TABLE `'.$table->table_name.'` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
-                    }
-
-                    // Database
-                    $pdo = $connection->getPdo();
-                    $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-                    DB::statement('ALTER DATABASE `'.$databasename.'` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;');
-                    $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+                    $this->toUtf8mb4($connection, $databasename);
                 } elseif (! config('database.use_utf8mb4') && $schema == 'utf8mb4') {
                     $this->line('Migrate to utf8 schema collation');
-
-                    // Tables
-                    $tables = $connection->table('information_schema.tables')
-                        ->select('table_name')
-                        ->where('table_schema', '=', $databasename)
-                        ->get();
-
-                    foreach ($tables as $table) {
-                        DB::statement('ALTER TABLE `'.$table->table_name.'` CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
-                    }
-
-                    // Database
-                    $pdo = $connection->getPdo();
-                    $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-                    DB::statement('ALTER DATABASE `'.$databasename.'` CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;');
-                    $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+                    $this->toUtf8($connection, $databasename);
                 } else {
                     $this->info('Nothing to migrate, everything is ok.');
                 }
@@ -95,5 +65,55 @@ class MigrateDatabaseCollation extends Command
                 throw $e;
             }
         }
+    }
+
+    /**
+     * Switch to utf8mb4.
+     *
+     * @param \Illuminate\Database\Connection $connection
+     * @param string $databasename
+     */
+    private function toUtf8mb4($connection, $databasename)
+    {
+        // Tables
+        $tables = $connection->table('information_schema.tables')
+                        ->select('table_name')
+                        ->where('table_schema', '=', $databasename)
+                        ->get();
+
+        foreach ($tables as $table) {
+            DB::statement('ALTER TABLE `'.$table->table_name.'` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+        }
+
+        // Database
+        $pdo = $connection->getPdo();
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        DB::statement('ALTER DATABASE `'.$databasename.'` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;');
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+    }
+
+    /**
+     * Switch to utf8.
+     *
+     * @param \Illuminate\Database\Connection $connection
+     * @param string $databasename
+     */
+    private function toUtf8($connection, $databasename)
+    {
+        // Tables
+        $tables = $connection->table('information_schema.tables')
+                            ->select('table_name')
+                            ->where('table_schema', '=', $databasename)
+                            ->get();
+
+        foreach ($tables as $table) {
+            DB::statement('ALTER TABLE `'.$table->table_name.'` CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
+        }
+
+        // Database
+        $pdo = $connection->getPdo();
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        DB::statement('ALTER DATABASE `'.$databasename.'` CHARACTER SET = utf8 COLLATE = utf8_unicode_ci;');
+        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
     }
 }

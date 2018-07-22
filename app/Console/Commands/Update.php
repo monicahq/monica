@@ -32,16 +32,16 @@ class Update extends Command
      *
      * @var CommandExecutorInterface
      */
-    protected $commandExecutor;
+    public $commandExecutor;
 
     /**
      * Create a new command.
      *
      * @param CommandExecutorInterface
      */
-    public function __construct(CommandExecutorInterface $commandExecutor = null)
+    public function __construct()
     {
-        $this->commandExecutor = $commandExecutor ?: new CommandExecutor($this);
+        $this->commandExecutor = new CommandExecutor($this);
         parent::__construct();
     }
 
@@ -86,9 +86,6 @@ class Update extends Command
                 }
                 $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force' => 'true']);
 
-                if (DB::table('activity_types')->count() == 0) {
-                    $this->commandExecutor->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => 'true']);
-                }
                 if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Activity;
 
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
 class ActivityType extends Resource
 {
@@ -17,10 +18,13 @@ class ActivityType extends Resource
         return [
             'id' => $this->id,
             'object' => 'activityType',
-            'type' => $this->key,
-            'group' => $this->group->key,
+            'name' => $this->name,
             'location_type' => $this->location_type,
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
+            'activity_type_category' => new ActivityTypeCategoryResource($this->category),
+            'account' => [
+                'id' => $this->account->id,
+            ],
+            'created_at' => (is_null($this->created_at) ? null : $this->created_at->format(config('api.timestamp_format'))),
             'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
         ];
     }

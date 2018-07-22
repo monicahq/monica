@@ -12,6 +12,8 @@ steps below to update it, **every single time**, or you will run into problems.
     1. Consider check out a tagged version of Monica since `master` branch may not always be stable.
        Find the latest official version on the [release page](https://github.com/monicahq/monica/releases)
        ```sh
+       # Get latest tags from GitHub
+       git fetch
        # Clone the desired version
        git checkout tags/v1.6.2
        ```
@@ -55,11 +57,9 @@ your instance is completely empty (no tables, no data).
 Then, follow the steps:
 
 * `php artisan migrate`
-* `php artisan db:seed --class ActivityTypesTableSeeder`
 * Then import `monica.sql` into your database. Tools like phpmyadmin or Sequel
 Pro might help you with that.
 * Finally, sign in with the same credentials as the ones used on
 https://monicahq.com and you are good to go.
 
-There is one caveat with the SQL exporter: you can't get the photos you've
-uploaded for now.
+There is one caveat with the SQL exporter: you can't get the photos you've uploaded for now.
