@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="/people/{{ $contact->hashID() }}/call/store">
+        <form method="POST" action="{{ route('people.call.store', $contact) }}">
           {{ csrf_field() }}
 
           <div class="form-group">
