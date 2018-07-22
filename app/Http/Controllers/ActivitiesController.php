@@ -155,10 +155,6 @@ class ActivitiesController extends Controller
      */
     public function destroy(Activity $activity, Contact $contact)
     {
-        $contactHashedId = $request->get('contact');
-        $contactId = app('idhasher')->decodeId($contactHashedId);
-        $contact = Contact::find($contactId);
-
         $activity->deleteJournalEntry();
 
         foreach ($activity->contacts as $contactActivity) {
