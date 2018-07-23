@@ -24,7 +24,10 @@ function installSonar {
   echo '== Setup sonar scanner'
   
   # set version of sonar scanner to use :
-  sonarversion=$SONAR_VERSION
+  sonarversion=${SONAR_VERSION:-}
+  if [ -z "${sonarversion:-}" ]; then
+    sonarversion=3.2.0.1227
+  fi
   echo "== Using sonarscanner $sonarversion"
 
   mkdir -p $HOME/sonarscanner
