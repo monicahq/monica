@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_security') }}
@@ -45,7 +45,7 @@
             <h3 class="with-actions">{{ trans('settings.security_title') }}</h3>
             <p>{{ trans('settings.security_help') }}</p>
 
-            <form method="POST" action="/settings/security/passwordChange" class="settings-reset">
+            <form method="POST" action="{{ route('settings.security.passwordChange') }}" class="settings-reset">
               {{ csrf_field() }}
 
               <h2>{{ trans('settings.password_change') }}</h2>

@@ -87,7 +87,7 @@ class GiftsController extends Controller
     {
         $this->updateOrCreate($request, $contact);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_add_success'));
     }
 
@@ -120,7 +120,7 @@ class GiftsController extends Controller
     {
         $this->updateOrCreate($request, $contact, $gift);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_update_success'));
     }
 

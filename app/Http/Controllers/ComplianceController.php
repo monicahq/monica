@@ -25,6 +25,6 @@ class ComplianceController extends Controller
     {
         auth()->user()->acceptPolicy(\Request::ip());
 
-        return redirect('/dashboard');
+        return redirect()->route('dashboard.index');
     }
 }

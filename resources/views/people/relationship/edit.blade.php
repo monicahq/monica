@@ -6,7 +6,7 @@
 
   {{-- Breadcrumb --}}
   <div class="mt4 mw7 center mb3">
-    <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->name }}</a></p>
+    <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.relationship_form_edit') }}</h3>
     </div>
@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="/people/{{ $contact->hashID() }}/relationships/{{ $partner->hashID() }}" method="POST">
+    <form action="{{ route('people.relationships.update', [$contact, $partner]) }}" method="POST">
       {{ csrf_field() }}
       <input type="hidden" name="type" value="{{ $type }}">
 
@@ -127,7 +127,7 @@
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
           <div class="">
-            <a href="/people/{{ $contact->hashID() }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+            <a href="{{ route ('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-if="global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.save') }}</button>

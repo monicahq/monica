@@ -32,7 +32,7 @@ class CallsController extends Controller
 
         $contact->updateLastCalledInfo($call);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.calls_add_success'));
     }
 
@@ -46,7 +46,7 @@ class CallsController extends Controller
     public function destroy(Contact $contact, Call $call)
     {
         if ($contact->account_id != $call->account_id) {
-            return redirect('/people');
+            return redirect()->route('people.index');
         }
 
         $call->delete();
@@ -58,7 +58,7 @@ class CallsController extends Controller
             $contact->save();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.call_delete_success'));
     }
 }

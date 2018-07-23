@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Facades\Auth;
 
 class DateHelper
 {
@@ -21,15 +22,81 @@ class DateHelper
     }
 
     /**
-     * Creates a Carbon object.
+     * Creates a Carbon object from DateTime format.
      *
-     * @param string date
+     * @param \DateTime|Carbon|string date
      * @param string timezone
      * @return Carbon
      */
-    public static function createDateFromFormat($date, $timezone)
+    public static function parseDateTime($date, $timezone = null)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date, $timezone);
+        if (is_null($date)) {
+            return;
+        }
+        if ($date instanceof \DateTime) {
+            $date = Carbon::instance($date);
+        }
+        if ($date instanceof Carbon) {
+            $date = $date->toDateTimeString();
+        }
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, config('app.timezone'));
+        if ($timezone !== null) {
+            $date->setTimezone($timezone);
+        }
+
+        return $date;
+    }
+
+    /**
+     * Creates a Carbon object from Date format.
+     *
+     * @param string date
+     * @return Carbon
+     */
+    public static function parseDate($date, $timezone = null)
+    {
+        if (! $date instanceof Carbon) {
+            $date = Carbon::parse($date);
+        }
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
+        if ($timezone !== null) {
+            $date->setTimezone($timezone);
+        }
+
+        return $date;
+    }
+
+    /**
+     * Return timestamp date format.
+     *
+     * @param Carbon|\App\Models\Instance\SpecialDate|string $date
+     * @return string
+     */
+    public static function getTimestamp($date)
+    {
+        if (is_null($date)) {
+            return;
+        }
+        if ($date instanceof \App\Models\Instance\SpecialDate) {
+            $date = $date->date;
+        }
+        if (! $date instanceof Carbon) {
+            $date = Carbon::create($date, config('app.timezone'));
+        }
+
+        return $date->format(config('api.timestamp_format'));
+    }
+
+    /**
+     * Get timezone of the current user, or null.
+     *
+     * @return string|null
+     */
+    public static function getTimezone()
+    {
+        if (Auth::check()) {
+            return auth()->user()->timezone;
+        }
     }
 
     /**
@@ -41,7 +108,7 @@ class DateHelper
      */
     public static function getShortDate($date)
     {
-        $date = new Date($date);
+        $date = new Date($date, static::getTimezone());
         $format = trans('format.short_date_year', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -56,7 +123,7 @@ class DateHelper
      */
     public static function getShortMonth($date)
     {
-        $date = new Date($date);
+        $date = new Date($date, static::getTimezone());
         $format = trans('format.short_month', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -71,7 +138,7 @@ class DateHelper
      */
     public static function getShortDay($date)
     {
-        $date = new Date($date);
+        $date = new Date($date, static::getTimezone());
         $format = trans('format.short_day', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -86,7 +153,7 @@ class DateHelper
      */
     public static function getShortDateWithoutYear($date)
     {
-        $date = new Date($date);
+        $date = new Date($date, static::getTimezone());
         $format = trans('format.short_date', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -101,7 +168,7 @@ class DateHelper
      */
     public static function getShortDateWithTime($date)
     {
-        $date = new Date($date);
+        $date = new Date($date, static::getTimezone());
         $format = trans('format.short_date_year_time', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -155,10 +222,31 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(String $interval)
     {
         if ($interval == 'monthly') {
-            return Date::now()->addMonth();
+            return now(static::getTimezone())->addMonth();
         }
 
-        return Date::now()->addYear();
+        return now(static::getTimezone())->addYear();
+    }
+
+    /**
+     * Gets a list of all the year from min to max (0 is the current year).
+     *
+     * @param int min
+     * @param int max
+     *
+     * @return array
+     */
+    public static function getListOfYears($max = 120, $min = 0)
+    {
+        $years = [];
+        $maxYear = now(static::getTimezone())->subYears($min)->year;
+        $minYear = now(static::getTimezone())->subYears($max)->year;
+
+        for ($year = $maxYear; $year >= $minYear; $year--) {
+            array_push($years, $year);
+        }
+
+        return $years;
     }
 
     /**

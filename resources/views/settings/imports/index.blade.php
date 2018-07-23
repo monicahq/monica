@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_import') }}
@@ -34,7 +34,7 @@
 
         <h3 class="with-actions">
           {{ trans('settings.import_title') }}
-          <a href="/settings/import/upload" class="btn">{{ trans('settings.import_cta') }}</a>
+          <a href="{{ route('settings.upload') }}" class="btn">{{ trans('settings.import_cta') }}</a>
         </h3>
 
         <p>{{ trans('settings.import_stat', ['number' => auth()->user()->account->importjobs->count()]) }}</p>
@@ -65,7 +65,7 @@
             </div>
             <div class="table-cell">
               @if (! is_null($importJob->ended_at))
-              <a href="/settings/import/report/{{ $importJob->id }}">{{ trans('settings.import_view_report') }}</a>
+              <a href="{{ route('settings.report', $importJob) }}">{{ trans('settings.import_view_report') }}</a>
               @else
               {{ trans('settings.import_in_progress') }}
               @endif

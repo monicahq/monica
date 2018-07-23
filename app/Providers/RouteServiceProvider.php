@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
                     ->where('id', $value)
                     ->firstOrFail();
             } catch (ModelNotFoundException $ex) {
-                redirect('/people/notfound')->send();
+                redirect()->route('people.missing')->send();
             }
         });
 
