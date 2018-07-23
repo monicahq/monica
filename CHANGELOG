@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix export feature which exported 'changelog_user' table, which it shouldn't
 * Change how dates are stored, from local timezone to UTC
 * Remove the APP_TIMEZONE env variable
 * Add U2F/yubikey support and refactor MultiFactor Authentication

@@ -18,6 +18,7 @@ class ExportAccountAsSQL
         'activity_types',
         'api_usage',
         'cache',
+        'changelog_user',
         'currencies',
         'default_activity_types',
         'default_activity_type_categories',
