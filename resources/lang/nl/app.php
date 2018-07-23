@@ -22,7 +22,7 @@ return [
     'with' => 'met',
     'days' => 'dag|dagen',
 
-    'application_title' => 'Monica - persoonlijke relatie manager',
+    'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
     'application_og_title' => 'Bouw betere relaties met uw dierbaren. Gratis Online CRM voor vrienden en familie.',
 
