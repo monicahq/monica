@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix account deletion, reset and export
 * Change how dates are stored, from local timezone to UTC
 * Remove the APP_TIMEZONE env variable
 * Add U2F/yubikey support and refactor MultiFactor Authentication
