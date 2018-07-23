@@ -93,150 +93,150 @@
               <div class="form-group">
                 <label for="timezone">{{ trans('settings.timezone') }}</label>
                 <select class="form-control" name="timezone" id="timezone">
-                  <option value='US/Eastern' {{ (DateHelper::getTimezone() == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Montreal/New-York</option>
-                  <option value='US/Central' {{ (DateHelper::getTimezone() == 'US/Central')?'selected':'' }}>(UTC-06:00) Central Time (US &amp; Canada)</option>
-                  <option value='America/Los_Angeles' {{ (DateHelper::getTimezone() == 'America/Los_Angeles')?'selected':'' }}>(UTC-08:00) Pacific Time (US &amp; Canada)</option>
-                  <option value='Pacific/Midway' {{ (DateHelper::getTimezone() == 'Pacific/Midway')?'selected':'' }}>(UTC-11:00) Midway Island</option>
-                  <option value='Pacific/Samoa' {{ (DateHelper::getTimezone() == 'Pacific/Samoa')?'selected':'' }}>(UTC-11:00) Samoa</option>
-                  <option value='Pacific/Honolulu' {{ (DateHelper::getTimezone() == 'Pacific/Honolulu')?'selected':'' }}>(UTC-10:00) Hawaii</option>
-                  <option value='US/Alaska' {{ (DateHelper::getTimezone() == 'US/Alaska')?'selected':'' }}>(UTC-09:00) Alaska</option>
-                  <option value='America/Tijuana' {{ (DateHelper::getTimezone() == 'America/Tijuana')?'selected':'' }}>(UTC-08:00) Tijuana</option>
-                  <option value='US/Arizona' {{ (DateHelper::getTimezone() == 'US/Arizona')?'selected':'' }}>(UTC-07:00) Arizona</option>
-                  <option value='America/Chihuahua' {{ (DateHelper::getTimezone() == 'America/Chihuahua')?'selected':'' }}>(UTC-07:00) Chihuahua</option>
-                  <option value='America/Chihuahua' {{ (DateHelper::getTimezone() == 'America/Chihuahua')?'selected':'' }}>(UTC-07:00) La Paz</option>
-                  <option value='America/Mazatlan' {{ (DateHelper::getTimezone() == 'America/Mazatlan')?'selected':'' }}>(UTC-07:00) Mazatlan</option>
-                  <option value='US/Mountain' {{ (DateHelper::getTimezone() == 'US/Mountain')?'selected':'' }}>(UTC-07:00) Mountain Time (US &amp; Canada)</option>
-                  <option value='America/Managua' {{ (DateHelper::getTimezone() == 'America/Managua')?'selected':'' }}>(UTC-06:00) Central America</option>
-                  <option value='US/Central' {{ (DateHelper::getTimezone() == 'US/Central')?'selected':'' }}>(UTC-06:00) Central Time (US &amp; Canada)</option>
-                  <option value='America/Mexico_City' {{ (DateHelper::getTimezone() == 'America/Mexico_City')?'selected':'' }}>(UTC-06:00) Guadalajara</option>
-                  <option value='America/Mexico_City' {{ (DateHelper::getTimezone() == 'America/Mexico_City')?'selected':'' }}>(UTC-06:00) Mexico City</option>
-                  <option value='America/Monterrey' {{ (DateHelper::getTimezone() == 'America/Monterrey')?'selected':'' }}>(UTC-06:00) Monterrey</option>
-                  <option value='Canada/Saskatchewan' {{ (DateHelper::getTimezone() == 'Canada/Saskatchewan')?'selected':'' }}>(UTC-06:00) Saskatchewan</option>
-                  <option value='America/Bogota' {{ (DateHelper::getTimezone() == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Bogota</option>
-                  <option value='US/Eastern' {{ (DateHelper::getTimezone() == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Eastern Time (US &amp; Canada)</option>
-                  <option value='US/East-Indiana' {{ (DateHelper::getTimezone() == 'US/East')?'selected':'' }}>(UTC-05:00) Indiana (East)</option>
-                  <option value='America/Lima' {{ (DateHelper::getTimezone() == 'America/Lima')?'selected':'' }}>(UTC-05:00) Lima</option>
-                  <option value='America/Bogota' {{ (DateHelper::getTimezone() == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Quito</option>
-                  <option value='Canada/Atlantic' {{ (DateHelper::getTimezone() == 'Canada/Atlantic')?'selected':'' }}>(UTC-04:00) Atlantic Time (Canada)</option>
-                  <option value='America/Caracas' {{ (DateHelper::getTimezone() == 'America/Caracas')?'selected':'' }}>(UTC-04:30) Caracas</option>
-                  <option value='America/La_Paz' {{ (DateHelper::getTimezone() == 'America/La_Paz')?'selected':'' }}>(UTC-04:00) La Paz</option>
-                  <option value='America/Santiago' {{ (DateHelper::getTimezone() == 'America/Santiago')?'selected':'' }}>(UTC-04:00) Santiago</option>
-                  <option value='Canada/Newfoundland' {{ (DateHelper::getTimezone() == 'Canada/Newfoundland')?'selected':'' }}>(UTC-03:30) Newfoundland</option>
-                  <option value='America/Sao_Paulo' {{ (DateHelper::getTimezone() == 'America/Sao_Paulo')?'selected':'' }}>(UTC-03:00) Brasilia</option>
-                  <option value='America/Argentina/Buenos_Aires' {{ (DateHelper::getTimezone() == 'America/Argentina')?'selected':'' }}>(UTC-03:00) Buenos Aires</option>
-                  <option value='America/Godthab' {{ (DateHelper::getTimezone() == 'America/Godthab')?'selected':'' }}>(UTC-03:00) Greenland</option>
-                  <option value='America/Noronha' {{ (DateHelper::getTimezone() == 'America/Noronha')?'selected':'' }}>(UTC-02:00) Mid-Atlantic</option>
-                  <option value='Atlantic/Azores' {{ (DateHelper::getTimezone() == 'Atlantic/Azores')?'selected':'' }}>(UTC-01:00) Azores</option>
-                  <option value='Atlantic/Cape_Verde' {{ (DateHelper::getTimezone() == 'Atlantic/Cape_Verde')?'selected':'' }}>(UTC-01:00) Cape Verde Is.</option>
-                  <option value='Africa/Casablanca' {{ (DateHelper::getTimezone() == 'Africa/Casablanca')?'selected':'' }}>(UTC+00:00) Casablanca</option>
-                  <option value='Europe/London' {{ (DateHelper::getTimezone() == 'Europe/London')?'selected':'' }}>(UTC+00:00) Edinburgh</option>
-                  <option value='Etc/Greenwich' {{ (DateHelper::getTimezone() == 'Etc/Greenwich')?'selected':'' }}>(UTC+00:00) Greenwich Mean Time : Dublin</option>
-                  <option value='Europe/Lisbon' {{ (DateHelper::getTimezone() == 'Europe/Lisbon')?'selected':'' }}>(UTC+00:00) Lisbon</option>
-                  <option value='Europe/London' {{ (DateHelper::getTimezone() == 'Europe/London')?'selected':'' }}>(UTC+00:00) London</option>
-                  <option value='Africa/Monrovia' {{ (DateHelper::getTimezone() == 'Africa/Monrovia')?'selected':'' }}>(UTC+00:00) Monrovia</option>
-                  <option value='UTC' {{ (DateHelper::getTimezone() == 'UTC')?'selected':'' }}>(UTC+00:00) UTC</option>
-                  <option value='Europe/Amsterdam' {{ (DateHelper::getTimezone() == 'Europe/Amsterdam')?'selected':'' }}>(UTC+01:00) Amsterdam</option>
-                  <option value='Europe/Belgrade' {{ (DateHelper::getTimezone() == 'Europe/Belgrade')?'selected':'' }}>(UTC+01:00) Belgrade</option>
-                  <option value='Europe/Berlin' {{ (DateHelper::getTimezone() == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Berlin</option>
-                  <option value='Europe/Bratislava' {{ (DateHelper::getTimezone() == 'Europe/Bratislava')?'selected':'' }}>(UTC+01:00) Bratislava</option>
-                  <option value='Europe/Brussels' {{ (DateHelper::getTimezone() == 'Europe/Brussels')?'selected':'' }}>(UTC+01:00) Brussels</option>
-                  <option value='Europe/Budapest' {{ (DateHelper::getTimezone() == 'Europe/Budapest')?'selected':'' }}>(UTC+01:00) Budapest</option>
-                  <option value='Europe/Copenhagen' {{ (DateHelper::getTimezone() == 'Europe/Copenhagen')?'selected':'' }}>(UTC+01:00) Copenhagen</option>
-                  <option value='Europe/Ljubljana' {{ (DateHelper::getTimezone() == 'Europe/Ljubljana')?'selected':'' }}>(UTC+01:00) Ljubljana</option>
-                  <option value='Europe/Madrid' {{ (DateHelper::getTimezone() == 'Europe/Madrid')?'selected':'' }}>(UTC+01:00) Madrid</option>
-                  <option value='Europe/Paris' {{ (DateHelper::getTimezone() == 'Europe/Paris')?'selected':'' }}>(UTC+01:00) Paris</option>
-                  <option value='Europe/Prague' {{ (DateHelper::getTimezone() == 'Europe/Prague')?'selected':'' }}>(UTC+01:00) Prague</option>
-                  <option value='Europe/Rome' {{ (DateHelper::getTimezone() == 'Europe/Rome')?'selected':'' }}>(UTC+01:00) Rome</option>
-                  <option value='Europe/Sarajevo' {{ (DateHelper::getTimezone() == 'Europe/Sarajevo')?'selected':'' }}>(UTC+01:00) Sarajevo</option>
-                  <option value='Europe/Skopje' {{ (DateHelper::getTimezone() == 'Europe/Skopje')?'selected':'' }}>(UTC+01:00) Skopje</option>
-                  <option value='Europe/Stockholm' {{ (DateHelper::getTimezone() == 'Europe/Stockholm')?'selected':'' }}>(UTC+01:00) Stockholm</option>
-                  <option value='Europe/Vienna' {{ (DateHelper::getTimezone() == 'Europe/Vienna')?'selected':'' }}>(UTC+01:00) Vienna</option>
-                  <option value='Europe/Warsaw' {{ (DateHelper::getTimezone() == 'Europe/Warsaw')?'selected':'' }}>(UTC+01:00) Warsaw</option>
-                  <option value='Africa/Lagos' {{ (DateHelper::getTimezone() == 'Africa/Lagos')?'selected':'' }}>(UTC+01:00) West Central Africa</option>
-                  <option value='Europe/Zagreb' {{ (DateHelper::getTimezone() == 'Europe/Zagreb')?'selected':'' }}>(UTC+01:00) Zagreb</option>
-                  <option value='Europe/Zurich' {{ (DateHelper::getTimezone() == 'Europe/Zurich')?'selected':'' }}>(UTC+01:00) Zurich</option>
-                  <option value='Europe/Athens' {{ (DateHelper::getTimezone() == 'Europe/Athens')?'selected':'' }}>(UTC+02:00) Athens</option>
-                  <option value='Europe/Bucharest' {{ (DateHelper::getTimezone() == 'Europe/Bucharest')?'selected':'' }}>(UTC+02:00) Bucharest</option>
-                  <option value='Africa/Cairo' {{ (DateHelper::getTimezone() == 'Africa/Cairo')?'selected':'' }}>(UTC+02:00) Cairo</option>
-                  <option value='Africa/Harare' {{ (DateHelper::getTimezone() == 'Africa/Harare')?'selected':'' }}>(UTC+02:00) Harare</option>
-                  <option value='Europe/Helsinki' {{ (DateHelper::getTimezone() == 'Europe/Helsinki')?'selected':'' }}>(UTC+02:00) Helsinki</option>
-                  <option value='Europe/Istanbul' {{ (DateHelper::getTimezone() == 'Europe/Istanbul')?'selected':'' }}>(UTC+02:00) Istanbul</option>
-                  <option value='Asia/Jerusalem' {{ (DateHelper::getTimezone() == 'Asia/Jerusalem')?'selected':'' }}>(UTC+02:00) Jerusalem</option>
-                  <option value='Europe/Helsinki' {{ (DateHelper::getTimezone() == 'Europe/Helsinki')?'selected':'' }}>(UTC+02:00) Kyiv</option>
-                  <option value='Africa/Johannesburg' {{ (DateHelper::getTimezone() == 'Africa/Johannesburg')?'selected':'' }}>(UTC+02:00) Pretoria</option>
-                  <option value='Europe/Riga' {{ (DateHelper::getTimezone() == 'Europe/Riga')?'selected':'' }}>(UTC+02:00) Riga</option>
-                  <option value='Europe/Sofia' {{ (DateHelper::getTimezone() == 'Europe/Sofia')?'selected':'' }}>(UTC+02:00) Sofia</option>
-                  <option value='Europe/Tallinn' {{ (DateHelper::getTimezone() == 'Europe/Tallinn')?'selected':'' }}>(UTC+02:00) Tallinn</option>
-                  <option value='Europe/Vilnius' {{ (DateHelper::getTimezone() == 'Europe/Vilnius')?'selected':'' }}>(UTC+02:00) Vilnius</option>
-                  <option value='Asia/Baghdad' {{ (DateHelper::getTimezone() == 'Asia/Baghdad')?'selected':'' }}>(UTC+03:00) Baghdad</option>
-                  <option value='Asia/Kuwait' {{ (DateHelper::getTimezone() == 'Asia/Kuwait')?'selected':'' }}>(UTC+03:00) Kuwait</option>
-                  <option value='Europe/Minsk' {{ (DateHelper::getTimezone() == 'Europe/Minsk')?'selected':'' }}>(UTC+03:00) Minsk</option>
-                  <option value='Africa/Nairobi' {{ (DateHelper::getTimezone() == 'Africa/Nairobi')?'selected':'' }}>(UTC+03:00) Nairobi</option>
-                  <option value='Asia/Riyadh' {{ (DateHelper::getTimezone() == 'Asia/Riyadh')?'selected':'' }}>(UTC+03:00) Riyadh</option>
-                  <option value='Europe/Volgograd' {{ (DateHelper::getTimezone() == 'Europe/Volgograd')?'selected':'' }}>(UTC+03:00) Volgograd</option>
-                  <option value='Asia/Tehran' {{ (DateHelper::getTimezone() == 'Asia/Tehran')?'selected':'' }}>(UTC+03:30) Tehran</option>
-                  <option value='Asia/Muscat' {{ (DateHelper::getTimezone() == 'Asia/Muscat')?'selected':'' }}>(UTC+04:00) Abu Dhabi</option>
-                  <option value='Asia/Baku' {{ (DateHelper::getTimezone() == 'Asia/Baku')?'selected':'' }}>(UTC+04:00) Baku</option>
-                  <option value='Europe/Moscow' {{ (DateHelper::getTimezone() == 'Europe/Moscow')?'selected':'' }}>(UTC+04:00) Moscow</option>
-                  <option value='Asia/Muscat' {{ (DateHelper::getTimezone() == 'Asia/Muscat')?'selected':'' }}>(UTC+04:00) Muscat</option>
-                  <option value='Europe/Moscow' {{ (DateHelper::getTimezone() == 'Europe/Moscow')?'selected':'' }}>(UTC+04:00) St. Petersburg</option>
-                  <option value='Asia/Tbilisi' {{ (DateHelper::getTimezone() == 'Asia/Tbilisi')?'selected':'' }}>(UTC+04:00) Tbilisi</option>
-                  <option value='Asia/Yerevan' {{ (DateHelper::getTimezone() == 'Asia/Yerevan')?'selected':'' }}>(UTC+04:00) Yerevan</option>
-                  <option value='Asia/Kabul' {{ (DateHelper::getTimezone() == 'Asia/Kabul')?'selected':'' }}>(UTC+04:30) Kabul</option>
-                  <option value='Asia/Karachi' {{ (DateHelper::getTimezone() == 'Asia/Karachi')?'selected':'' }}>(UTC+05:00) Islamabad</option>
-                  <option value='Asia/Karachi' {{ (DateHelper::getTimezone() == 'Asia/Karachi')?'selected':'' }}>(UTC+05:00) Karachi</option>
-                  <option value='Asia/Tashkent' {{ (DateHelper::getTimezone() == 'Asia/Tashkent')?'selected':'' }}>(UTC+05:00) Tashkent</option>
-                  <option value='Asia/Calcutta' {{ (DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Chennai</option>
-                  <option value='Asia/Kolkata' {{ (DateHelper::getTimezone() == 'Asia/Kolkata')?'selected':'' }}>(UTC+05:30) Kolkata</option>
-                  <option value='Asia/Calcutta' {{ (DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Mumbai</option>
-                  <option value='Asia/Calcutta' {{ (DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) New Delhi</option>
-                  <option value='Asia/Calcutta' {{ (DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Sri Jayawardenepura</option>
-                  <option value='Asia/Katmandu' {{ (DateHelper::getTimezone() == 'Asia/Katmandu')?'selected':'' }}>(UTC+05:45) Kathmandu</option>
-                  <option value='Asia/Almaty' {{ (DateHelper::getTimezone() == 'Asia/Almaty')?'selected':'' }}>(UTC+06:00) Almaty</option>
-                  <option value='Asia/Dhaka' {{ (DateHelper::getTimezone() == 'Asia/Dhaka')?'selected':'' }}>(UTC+06:00) Astana</option>
-                  <option value='Asia/Dhaka' {{ (DateHelper::getTimezone() == 'Asia/Dhaka')?'selected':'' }}>(UTC+06:00) Dhaka</option>
-                  <option value='Asia/Yekaterinburg' {{ (DateHelper::getTimezone() == 'Asia/Yekaterinburg')?'selected':'' }}>(UTC+06:00) Ekaterinburg</option>
-                  <option value='Asia/Rangoon' {{ (DateHelper::getTimezone() == 'Asia/Rangoon')?'selected':'' }}>(UTC+06:30) Rangoon</option>
-                  <option value='Asia/Bangkok' {{ (DateHelper::getTimezone() == 'Asia/Bangkok')?'selected':'' }}>(UTC+07:00) Bangkok</option>
-                  <option value='Asia/Bangkok' {{ (DateHelper::getTimezone() == 'Asia/Bangkok')?'selected':'' }}>(UTC+07:00) Hanoi</option>
-                  <option value='Asia/Jakarta' {{ (DateHelper::getTimezone() == 'Asia/Jakarta')?'selected':'' }}>(UTC+07:00) Jakarta</option>
-                  <option value='Asia/Novosibirsk' {{ (DateHelper::getTimezone() == 'Asia/Novosibirsk')?'selected':'' }}>(UTC+07:00) Novosibirsk</option>
-                  <option value='Asia/Hong_Kong' {{ (DateHelper::getTimezone() == 'Asia/Hong_Kong')?'selected':'' }}>(UTC+08:00) Beijing</option>
-                  <option value='Asia/Chongqing' {{ (DateHelper::getTimezone() == 'Asia/Chongqing')?'selected':'' }}>(UTC+08:00) Chongqing</option>
-                  <option value='Asia/Hong_Kong' {{ (DateHelper::getTimezone() == 'Asia/Hong_Kong')?'selected':'' }}>(UTC+08:00) Hong Kong</option>
-                  <option value='Asia/Krasnoyarsk' {{ (DateHelper::getTimezone() == 'Asia/Krasnoyarsk')?'selected':'' }}>(UTC+08:00) Krasnoyarsk</option>
-                  <option value='Asia/Kuala_Lumpur' {{ (DateHelper::getTimezone() == 'Asia/Kuala_Lumpur')?'selected':'' }}>(UTC+08:00) Kuala Lumpur</option>
-                  <option value='Australia/Perth' {{ (DateHelper::getTimezone() == 'Australia/Perth')?'selected':'' }}>(UTC+08:00) Perth</option>
-                  <option value='Asia/Singapore' {{ (DateHelper::getTimezone() == 'Asia/Singapore')?'selected':'' }}>(UTC+08:00) Singapore</option>
-                  <option value='Asia/Taipei' {{ (DateHelper::getTimezone() == 'Asia/Taipei')?'selected':'' }}>(UTC+08:00) Taipei</option>
-                  <option value='Asia/Ulan_Bator' {{ (DateHelper::getTimezone() == 'Asia/Ulan_Bator')?'selected':'' }}>(UTC+08:00) Ulaan Bataar</option>
-                  <option value='Asia/Urumqi' {{ (DateHelper::getTimezone() == 'Asia/Urumqi')?'selected':'' }}>(UTC+08:00) Urumqi</option>
-                  <option value='Asia/Irkutsk' {{ (DateHelper::getTimezone() == 'Asia/Irkutsk')?'selected':'' }}>(UTC+09:00) Irkutsk</option>
-                  <option value='Asia/Tokyo' {{ (DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Osaka</option>
-                  <option value='Asia/Tokyo' {{ (DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Sapporo</option>
-                  <option value='Asia/Seoul' {{ (DateHelper::getTimezone() == 'Asia/Seoul')?'selected':'' }}>(UTC+09:00) Seoul</option>
-                  <option value='Asia/Tokyo' {{ (DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Tokyo</option>
-                  <option value='Australia/Adelaide' {{ (DateHelper::getTimezone() == 'Australia/Adelaide')?'selected':'' }}>(UTC+09:30) Adelaide</option>
-                  <option value='Australia/Darwin' {{ (DateHelper::getTimezone() == 'Australia/Darwin')?'selected':'' }}>(UTC+09:30) Darwin</option>
-                  <option value='Australia/Brisbane' {{ (DateHelper::getTimezone() == 'Australia/Brisbane')?'selected':'' }}>(UTC+10:00) Brisbane</option>
-                  <option value='Australia/Canberra' {{ (DateHelper::getTimezone() == 'Australia/Canberra')?'selected':'' }}>(UTC+10:00) Canberra</option>
-                  <option value='Pacific/Guam' {{ (DateHelper::getTimezone() == 'Pacific/Guam')?'selected':'' }}>(UTC+10:00) Guam</option>
-                  <option value='Australia/Hobart' {{ (DateHelper::getTimezone() == 'Australia/Hobart')?'selected':'' }}>(UTC+10:00) Hobart</option>
-                  <option value='Australia/Melbourne' {{ (DateHelper::getTimezone() == 'Australia/Melbourne')?'selected':'' }}>(UTC+10:00) Melbourne</option>
-                  <option value='Pacific/Port_Moresby' {{ (DateHelper::getTimezone() == 'Pacific/Port_Moresby')?'selected':'' }}>(UTC+10:00) Port Moresby</option>
-                  <option value='Australia/Sydney' {{ (DateHelper::getTimezone() == 'Australia/Sydney')?'selected':'' }}>(UTC+10:00) Sydney</option>
-                  <option value='Asia/Yakutsk' {{ (DateHelper::getTimezone() == 'Asia/Yakutsk')?'selected':'' }}>(UTC+10:00) Yakutsk</option>
-                  <option value='Asia/Vladivostok' {{ (DateHelper::getTimezone() == 'Asia/Vladivostok')?'selected':'' }}>(UTC+11:00) Vladivostok</option>
-                  <option value='Pacific/Auckland' {{ (DateHelper::getTimezone() == 'Pacific/Auckland')?'selected':'' }}>(UTC+12:00) Auckland</option>
-                  <option value='Pacific/Fiji' {{ (DateHelper::getTimezone() == 'Pacific/Fiji')?'selected':'' }}>(UTC+12:00) Fiji</option>
-                  <option value='Pacific/Kwajalein' {{ (DateHelper::getTimezone() == 'Pacific/Kwajalein')?'selected':'' }}>(UTC+12:00) International Date Line West</option>
-                  <option value='Asia/Kamchatka' {{ (DateHelper::getTimezone() == 'Asia/Kamchatka')?'selected':'' }}>(UTC+12:00) Kamchatka</option>
-                  <option value='Asia/Magadan' {{ (DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) Magadan</option>
-                  <option value='Pacific/Fiji' {{ (DateHelper::getTimezone() == 'Pacific/Fiji')?'selected':'' }}>(UTC+12:00) Marshall Is.</option>
-                  <option value='Asia/Magadan' {{ (DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) New Caledonia</option>
-                  <option value='Asia/Magadan' {{ (DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) Solomon Is.</option>
-                  <option value='Pacific/Auckland' {{ (DateHelper::getTimezone() == 'Pacific/Auckland')?'selected':'' }}>(UTC+12:00) Wellington</option>
-                  <option value='Pacific/Tongatapu' {{ (DateHelper::getTimezone() == 'Pacific/Tongatapu')?'selected':'' }}>(UTC+13:00) Nuku'alofa</option>
+                  <option value='US/Eastern' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Montreal/New-York</option>
+                  <option value='US/Central' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Central')?'selected':'' }}>(UTC-06:00) Central Time (US &amp; Canada)</option>
+                  <option value='America/Los_Angeles' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Los_Angeles')?'selected':'' }}>(UTC-08:00) Pacific Time (US &amp; Canada)</option>
+                  <option value='Pacific/Midway' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Midway')?'selected':'' }}>(UTC-11:00) Midway Island</option>
+                  <option value='Pacific/Samoa' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Samoa')?'selected':'' }}>(UTC-11:00) Samoa</option>
+                  <option value='Pacific/Honolulu' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Honolulu')?'selected':'' }}>(UTC-10:00) Hawaii</option>
+                  <option value='US/Alaska' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Alaska')?'selected':'' }}>(UTC-09:00) Alaska</option>
+                  <option value='America/Tijuana' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Tijuana')?'selected':'' }}>(UTC-08:00) Tijuana</option>
+                  <option value='US/Arizona' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Arizona')?'selected':'' }}>(UTC-07:00) Arizona</option>
+                  <option value='America/Chihuahua' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Chihuahua')?'selected':'' }}>(UTC-07:00) Chihuahua</option>
+                  <option value='America/Chihuahua' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Chihuahua')?'selected':'' }}>(UTC-07:00) La Paz</option>
+                  <option value='America/Mazatlan' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Mazatlan')?'selected':'' }}>(UTC-07:00) Mazatlan</option>
+                  <option value='US/Mountain' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Mountain')?'selected':'' }}>(UTC-07:00) Mountain Time (US &amp; Canada)</option>
+                  <option value='America/Managua' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Managua')?'selected':'' }}>(UTC-06:00) Central America</option>
+                  <option value='US/Central' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Central')?'selected':'' }}>(UTC-06:00) Central Time (US &amp; Canada)</option>
+                  <option value='America/Mexico_City' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Mexico_City')?'selected':'' }}>(UTC-06:00) Guadalajara</option>
+                  <option value='America/Mexico_City' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Mexico_City')?'selected':'' }}>(UTC-06:00) Mexico City</option>
+                  <option value='America/Monterrey' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Monterrey')?'selected':'' }}>(UTC-06:00) Monterrey</option>
+                  <option value='Canada/Saskatchewan' {{ (\App\Helpers\DateHelper::getTimezone() == 'Canada/Saskatchewan')?'selected':'' }}>(UTC-06:00) Saskatchewan</option>
+                  <option value='America/Bogota' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Bogota</option>
+                  <option value='US/Eastern' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/Eastern')?'selected':'' }}>(UTC-05:00) Eastern Time (US &amp; Canada)</option>
+                  <option value='US/East-Indiana' {{ (\App\Helpers\DateHelper::getTimezone() == 'US/East')?'selected':'' }}>(UTC-05:00) Indiana (East)</option>
+                  <option value='America/Lima' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Lima')?'selected':'' }}>(UTC-05:00) Lima</option>
+                  <option value='America/Bogota' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Bogota')?'selected':'' }}>(UTC-05:00) Quito</option>
+                  <option value='Canada/Atlantic' {{ (\App\Helpers\DateHelper::getTimezone() == 'Canada/Atlantic')?'selected':'' }}>(UTC-04:00) Atlantic Time (Canada)</option>
+                  <option value='America/Caracas' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Caracas')?'selected':'' }}>(UTC-04:30) Caracas</option>
+                  <option value='America/La_Paz' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/La_Paz')?'selected':'' }}>(UTC-04:00) La Paz</option>
+                  <option value='America/Santiago' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Santiago')?'selected':'' }}>(UTC-04:00) Santiago</option>
+                  <option value='Canada/Newfoundland' {{ (\App\Helpers\DateHelper::getTimezone() == 'Canada/Newfoundland')?'selected':'' }}>(UTC-03:30) Newfoundland</option>
+                  <option value='America/Sao_Paulo' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Sao_Paulo')?'selected':'' }}>(UTC-03:00) Brasilia</option>
+                  <option value='America/Argentina/Buenos_Aires' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Argentina')?'selected':'' }}>(UTC-03:00) Buenos Aires</option>
+                  <option value='America/Godthab' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Godthab')?'selected':'' }}>(UTC-03:00) Greenland</option>
+                  <option value='America/Noronha' {{ (\App\Helpers\DateHelper::getTimezone() == 'America/Noronha')?'selected':'' }}>(UTC-02:00) Mid-Atlantic</option>
+                  <option value='Atlantic/Azores' {{ (\App\Helpers\DateHelper::getTimezone() == 'Atlantic/Azores')?'selected':'' }}>(UTC-01:00) Azores</option>
+                  <option value='Atlantic/Cape_Verde' {{ (\App\Helpers\DateHelper::getTimezone() == 'Atlantic/Cape_Verde')?'selected':'' }}>(UTC-01:00) Cape Verde Is.</option>
+                  <option value='Africa/Casablanca' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Casablanca')?'selected':'' }}>(UTC+00:00) Casablanca</option>
+                  <option value='Europe/London' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/London')?'selected':'' }}>(UTC+00:00) Edinburgh</option>
+                  <option value='Etc/Greenwich' {{ (\App\Helpers\DateHelper::getTimezone() == 'Etc/Greenwich')?'selected':'' }}>(UTC+00:00) Greenwich Mean Time : Dublin</option>
+                  <option value='Europe/Lisbon' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Lisbon')?'selected':'' }}>(UTC+00:00) Lisbon</option>
+                  <option value='Europe/London' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/London')?'selected':'' }}>(UTC+00:00) London</option>
+                  <option value='Africa/Monrovia' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Monrovia')?'selected':'' }}>(UTC+00:00) Monrovia</option>
+                  <option value='UTC' {{ (\App\Helpers\DateHelper::getTimezone() == 'UTC')?'selected':'' }}>(UTC+00:00) UTC</option>
+                  <option value='Europe/Amsterdam' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Amsterdam')?'selected':'' }}>(UTC+01:00) Amsterdam</option>
+                  <option value='Europe/Belgrade' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Belgrade')?'selected':'' }}>(UTC+01:00) Belgrade</option>
+                  <option value='Europe/Berlin' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Berlin')?'selected':'' }}>(UTC+01:00) Berlin</option>
+                  <option value='Europe/Bratislava' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Bratislava')?'selected':'' }}>(UTC+01:00) Bratislava</option>
+                  <option value='Europe/Brussels' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Brussels')?'selected':'' }}>(UTC+01:00) Brussels</option>
+                  <option value='Europe/Budapest' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Budapest')?'selected':'' }}>(UTC+01:00) Budapest</option>
+                  <option value='Europe/Copenhagen' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Copenhagen')?'selected':'' }}>(UTC+01:00) Copenhagen</option>
+                  <option value='Europe/Ljubljana' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Ljubljana')?'selected':'' }}>(UTC+01:00) Ljubljana</option>
+                  <option value='Europe/Madrid' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Madrid')?'selected':'' }}>(UTC+01:00) Madrid</option>
+                  <option value='Europe/Paris' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Paris')?'selected':'' }}>(UTC+01:00) Paris</option>
+                  <option value='Europe/Prague' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Prague')?'selected':'' }}>(UTC+01:00) Prague</option>
+                  <option value='Europe/Rome' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Rome')?'selected':'' }}>(UTC+01:00) Rome</option>
+                  <option value='Europe/Sarajevo' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Sarajevo')?'selected':'' }}>(UTC+01:00) Sarajevo</option>
+                  <option value='Europe/Skopje' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Skopje')?'selected':'' }}>(UTC+01:00) Skopje</option>
+                  <option value='Europe/Stockholm' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Stockholm')?'selected':'' }}>(UTC+01:00) Stockholm</option>
+                  <option value='Europe/Vienna' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Vienna')?'selected':'' }}>(UTC+01:00) Vienna</option>
+                  <option value='Europe/Warsaw' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Warsaw')?'selected':'' }}>(UTC+01:00) Warsaw</option>
+                  <option value='Africa/Lagos' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Lagos')?'selected':'' }}>(UTC+01:00) West Central Africa</option>
+                  <option value='Europe/Zagreb' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Zagreb')?'selected':'' }}>(UTC+01:00) Zagreb</option>
+                  <option value='Europe/Zurich' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Zurich')?'selected':'' }}>(UTC+01:00) Zurich</option>
+                  <option value='Europe/Athens' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Athens')?'selected':'' }}>(UTC+02:00) Athens</option>
+                  <option value='Europe/Bucharest' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Bucharest')?'selected':'' }}>(UTC+02:00) Bucharest</option>
+                  <option value='Africa/Cairo' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Cairo')?'selected':'' }}>(UTC+02:00) Cairo</option>
+                  <option value='Africa/Harare' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Harare')?'selected':'' }}>(UTC+02:00) Harare</option>
+                  <option value='Europe/Helsinki' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Helsinki')?'selected':'' }}>(UTC+02:00) Helsinki</option>
+                  <option value='Europe/Istanbul' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Istanbul')?'selected':'' }}>(UTC+02:00) Istanbul</option>
+                  <option value='Asia/Jerusalem' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Jerusalem')?'selected':'' }}>(UTC+02:00) Jerusalem</option>
+                  <option value='Europe/Helsinki' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Helsinki')?'selected':'' }}>(UTC+02:00) Kyiv</option>
+                  <option value='Africa/Johannesburg' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Johannesburg')?'selected':'' }}>(UTC+02:00) Pretoria</option>
+                  <option value='Europe/Riga' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Riga')?'selected':'' }}>(UTC+02:00) Riga</option>
+                  <option value='Europe/Sofia' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Sofia')?'selected':'' }}>(UTC+02:00) Sofia</option>
+                  <option value='Europe/Tallinn' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Tallinn')?'selected':'' }}>(UTC+02:00) Tallinn</option>
+                  <option value='Europe/Vilnius' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Vilnius')?'selected':'' }}>(UTC+02:00) Vilnius</option>
+                  <option value='Asia/Baghdad' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Baghdad')?'selected':'' }}>(UTC+03:00) Baghdad</option>
+                  <option value='Asia/Kuwait' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Kuwait')?'selected':'' }}>(UTC+03:00) Kuwait</option>
+                  <option value='Europe/Minsk' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Minsk')?'selected':'' }}>(UTC+03:00) Minsk</option>
+                  <option value='Africa/Nairobi' {{ (\App\Helpers\DateHelper::getTimezone() == 'Africa/Nairobi')?'selected':'' }}>(UTC+03:00) Nairobi</option>
+                  <option value='Asia/Riyadh' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Riyadh')?'selected':'' }}>(UTC+03:00) Riyadh</option>
+                  <option value='Europe/Volgograd' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Volgograd')?'selected':'' }}>(UTC+03:00) Volgograd</option>
+                  <option value='Asia/Tehran' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tehran')?'selected':'' }}>(UTC+03:30) Tehran</option>
+                  <option value='Asia/Muscat' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Muscat')?'selected':'' }}>(UTC+04:00) Abu Dhabi</option>
+                  <option value='Asia/Baku' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Baku')?'selected':'' }}>(UTC+04:00) Baku</option>
+                  <option value='Europe/Moscow' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Moscow')?'selected':'' }}>(UTC+04:00) Moscow</option>
+                  <option value='Asia/Muscat' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Muscat')?'selected':'' }}>(UTC+04:00) Muscat</option>
+                  <option value='Europe/Moscow' {{ (\App\Helpers\DateHelper::getTimezone() == 'Europe/Moscow')?'selected':'' }}>(UTC+04:00) St. Petersburg</option>
+                  <option value='Asia/Tbilisi' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tbilisi')?'selected':'' }}>(UTC+04:00) Tbilisi</option>
+                  <option value='Asia/Yerevan' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Yerevan')?'selected':'' }}>(UTC+04:00) Yerevan</option>
+                  <option value='Asia/Kabul' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Kabul')?'selected':'' }}>(UTC+04:30) Kabul</option>
+                  <option value='Asia/Karachi' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Karachi')?'selected':'' }}>(UTC+05:00) Islamabad</option>
+                  <option value='Asia/Karachi' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Karachi')?'selected':'' }}>(UTC+05:00) Karachi</option>
+                  <option value='Asia/Tashkent' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tashkent')?'selected':'' }}>(UTC+05:00) Tashkent</option>
+                  <option value='Asia/Calcutta' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Chennai</option>
+                  <option value='Asia/Kolkata' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Kolkata')?'selected':'' }}>(UTC+05:30) Kolkata</option>
+                  <option value='Asia/Calcutta' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Mumbai</option>
+                  <option value='Asia/Calcutta' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) New Delhi</option>
+                  <option value='Asia/Calcutta' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Calcutta')?'selected':'' }}>(UTC+05:30) Sri Jayawardenepura</option>
+                  <option value='Asia/Katmandu' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Katmandu')?'selected':'' }}>(UTC+05:45) Kathmandu</option>
+                  <option value='Asia/Almaty' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Almaty')?'selected':'' }}>(UTC+06:00) Almaty</option>
+                  <option value='Asia/Dhaka' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Dhaka')?'selected':'' }}>(UTC+06:00) Astana</option>
+                  <option value='Asia/Dhaka' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Dhaka')?'selected':'' }}>(UTC+06:00) Dhaka</option>
+                  <option value='Asia/Yekaterinburg' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Yekaterinburg')?'selected':'' }}>(UTC+06:00) Ekaterinburg</option>
+                  <option value='Asia/Rangoon' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Rangoon')?'selected':'' }}>(UTC+06:30) Rangoon</option>
+                  <option value='Asia/Bangkok' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Bangkok')?'selected':'' }}>(UTC+07:00) Bangkok</option>
+                  <option value='Asia/Bangkok' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Bangkok')?'selected':'' }}>(UTC+07:00) Hanoi</option>
+                  <option value='Asia/Jakarta' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Jakarta')?'selected':'' }}>(UTC+07:00) Jakarta</option>
+                  <option value='Asia/Novosibirsk' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Novosibirsk')?'selected':'' }}>(UTC+07:00) Novosibirsk</option>
+                  <option value='Asia/Hong_Kong' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Hong_Kong')?'selected':'' }}>(UTC+08:00) Beijing</option>
+                  <option value='Asia/Chongqing' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Chongqing')?'selected':'' }}>(UTC+08:00) Chongqing</option>
+                  <option value='Asia/Hong_Kong' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Hong_Kong')?'selected':'' }}>(UTC+08:00) Hong Kong</option>
+                  <option value='Asia/Krasnoyarsk' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Krasnoyarsk')?'selected':'' }}>(UTC+08:00) Krasnoyarsk</option>
+                  <option value='Asia/Kuala_Lumpur' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Kuala_Lumpur')?'selected':'' }}>(UTC+08:00) Kuala Lumpur</option>
+                  <option value='Australia/Perth' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Perth')?'selected':'' }}>(UTC+08:00) Perth</option>
+                  <option value='Asia/Singapore' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Singapore')?'selected':'' }}>(UTC+08:00) Singapore</option>
+                  <option value='Asia/Taipei' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Taipei')?'selected':'' }}>(UTC+08:00) Taipei</option>
+                  <option value='Asia/Ulan_Bator' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Ulan_Bator')?'selected':'' }}>(UTC+08:00) Ulaan Bataar</option>
+                  <option value='Asia/Urumqi' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Urumqi')?'selected':'' }}>(UTC+08:00) Urumqi</option>
+                  <option value='Asia/Irkutsk' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Irkutsk')?'selected':'' }}>(UTC+09:00) Irkutsk</option>
+                  <option value='Asia/Tokyo' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Osaka</option>
+                  <option value='Asia/Tokyo' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Sapporo</option>
+                  <option value='Asia/Seoul' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Seoul')?'selected':'' }}>(UTC+09:00) Seoul</option>
+                  <option value='Asia/Tokyo' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Tokyo')?'selected':'' }}>(UTC+09:00) Tokyo</option>
+                  <option value='Australia/Adelaide' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Adelaide')?'selected':'' }}>(UTC+09:30) Adelaide</option>
+                  <option value='Australia/Darwin' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Darwin')?'selected':'' }}>(UTC+09:30) Darwin</option>
+                  <option value='Australia/Brisbane' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Brisbane')?'selected':'' }}>(UTC+10:00) Brisbane</option>
+                  <option value='Australia/Canberra' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Canberra')?'selected':'' }}>(UTC+10:00) Canberra</option>
+                  <option value='Pacific/Guam' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Guam')?'selected':'' }}>(UTC+10:00) Guam</option>
+                  <option value='Australia/Hobart' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Hobart')?'selected':'' }}>(UTC+10:00) Hobart</option>
+                  <option value='Australia/Melbourne' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Melbourne')?'selected':'' }}>(UTC+10:00) Melbourne</option>
+                  <option value='Pacific/Port_Moresby' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Port_Moresby')?'selected':'' }}>(UTC+10:00) Port Moresby</option>
+                  <option value='Australia/Sydney' {{ (\App\Helpers\DateHelper::getTimezone() == 'Australia/Sydney')?'selected':'' }}>(UTC+10:00) Sydney</option>
+                  <option value='Asia/Yakutsk' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Yakutsk')?'selected':'' }}>(UTC+10:00) Yakutsk</option>
+                  <option value='Asia/Vladivostok' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Vladivostok')?'selected':'' }}>(UTC+11:00) Vladivostok</option>
+                  <option value='Pacific/Auckland' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Auckland')?'selected':'' }}>(UTC+12:00) Auckland</option>
+                  <option value='Pacific/Fiji' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Fiji')?'selected':'' }}>(UTC+12:00) Fiji</option>
+                  <option value='Pacific/Kwajalein' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Kwajalein')?'selected':'' }}>(UTC+12:00) International Date Line West</option>
+                  <option value='Asia/Kamchatka' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Kamchatka')?'selected':'' }}>(UTC+12:00) Kamchatka</option>
+                  <option value='Asia/Magadan' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) Magadan</option>
+                  <option value='Pacific/Fiji' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Fiji')?'selected':'' }}>(UTC+12:00) Marshall Is.</option>
+                  <option value='Asia/Magadan' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) New Caledonia</option>
+                  <option value='Asia/Magadan' {{ (\App\Helpers\DateHelper::getTimezone() == 'Asia/Magadan')?'selected':'' }}>(UTC+12:00) Solomon Is.</option>
+                  <option value='Pacific/Auckland' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Auckland')?'selected':'' }}>(UTC+12:00) Wellington</option>
+                  <option value='Pacific/Tongatapu' {{ (\App\Helpers\DateHelper::getTimezone() == 'Pacific/Tongatapu')?'selected':'' }}>(UTC+13:00) Nuku'alofa</option>
 
                 </select>
               </div>
