@@ -373,7 +373,6 @@ workflows:
             tags:
               only: /.*/
       - reporting:
-          context: SONAR
           requires:
             - tests-7.2
             - tests-browser-7.2
