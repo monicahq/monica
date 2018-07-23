@@ -40,7 +40,7 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
         },
         'description' => $faker->sentence,
         'summary' => $faker->sentence,
-        'date_it_happened' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'date_it_happened' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -92,7 +92,7 @@ $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -102,7 +102,7 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -112,7 +112,7 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -122,8 +122,8 @@ $factory->define(App\Models\Instance\SpecialDate::class, function (Faker\Generat
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 

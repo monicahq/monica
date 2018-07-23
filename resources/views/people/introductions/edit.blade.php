@@ -86,7 +86,7 @@
                       >
 
                       {{ trans('people.introductions_first_met_date_known') }}
-                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate ?? Carbon\Carbon::now(), 'class' => 'first_met'])
+                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate ?? now(\App\Helpers\DateHelper::getTimezone()), 'class' => 'first_met'])
                     </label>
                   </div>
                 </fieldset>

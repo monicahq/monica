@@ -2,11 +2,9 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,11 +77,7 @@ class Reminder extends Model
      */
     public function getNextExpectedDateAttribute($value)
     {
-        if (auth()->user()) {
-            return Carbon::parse($value, auth()->user()->timezone);
-        }
-
-        return Carbon::parse($value);
+        return DateHelper::parseDate($value, DateHelper::getTimezone());
     }
 
     /**
