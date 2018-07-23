@@ -84,7 +84,7 @@ function gitFetch {
 }
 
 function getSonarlauncher {
-  sonarlauncherversion=0.4.2
+  sonarlauncherversion=0.5.0
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then
