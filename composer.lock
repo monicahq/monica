@@ -6837,16 +6837,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.0.2",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12"
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/35b8caf75e791ba1b2d24fec1552168d72692b12",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bd088dc940a418f09cda079a9b5c7c478890fb8d",
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d",
                 "shasum": ""
             },
             "require": {
@@ -6884,7 +6884,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-06-03T11:33:10+00:00"
+            "time": "2018-07-15T17:25:16+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -8599,20 +8599,20 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.8",
+            "version": "2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "ecf4ed65e3d878ec0f7b584b172ef294d5a60433"
+                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/ecf4ed65e3d878ec0f7b584b172ef294d5a60433",
-                "reference": "ecf4ed65e3d878ec0f7b584b172ef294d5a60433",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d3fc9a51e0519379a27c05318e5f6fd41d46f797",
+                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797",
                 "shasum": ""
             },
             "require": {
-                "composer/xdebug-handler": "^1.0",
+                "composer/xdebug-handler": "^1.1",
                 "muglug/package-versions-56": "1.2.4",
                 "nikic/php-parser": "^4.0",
                 "openlss/lib-array2xml": "^0.0.10||^0.5.1",
@@ -8624,9 +8624,8 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
-                "friendsofphp/php-cs-fixer": "^2.3|^2.4|^2.5|^2.6|^2.7|^2.8|^2.9",
                 "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^5.7.4",
+                "phpunit/phpunit": "^6.0 || ^7.0",
                 "squizlabs/php_codesniffer": "^3.0"
             },
             "suggest": {
@@ -8663,7 +8662,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-07-10T15:39:38+00:00"
+            "time": "2018-07-22T23:15:40+00:00"
         },
         {
             "name": "webmozart/assert",
