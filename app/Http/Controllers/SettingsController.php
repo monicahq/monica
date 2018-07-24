@@ -56,6 +56,7 @@ class SettingsController extends Controller
         'statistics',
         'subscriptions',
         'terms',
+        'u2f_key',
         'users',
     ];
 

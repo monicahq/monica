@@ -1,8 +1,14 @@
 #!/bin/bash
 
 if [ "$CIRCLECI" == "true" ]; then
-  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi
-  REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
+    CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
+    REPO=$CIRCLE_PULL_REQUEST
+    REPO=${REPO##https://github.com/}
+    REPO=${REPO%%/pull/$CIRCLE_PR_NUMBER}
+  else
+    REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+  fi
   BRANCH=${CIRCLE_BRANCH:-$CIRCLE_TAG}
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
   BUILD=$CIRCLE_BUILD_NUM
@@ -24,7 +30,10 @@ function installSonar {
   echo '== Setup sonar scanner'
   
   # set version of sonar scanner to use :
-  sonarversion=$SONAR_VERSION
+  sonarversion=${SONAR_VERSION:-}
+  if [ -z "${sonarversion:-}" ]; then
+    sonarversion=3.2.0.1227
+  fi
   echo "== Using sonarscanner $sonarversion"
 
   mkdir -p $HOME/sonarscanner
@@ -81,7 +90,7 @@ function gitFetch {
 }
 
 function getSonarlauncher {
-  sonarlauncherversion=0.4.2
+  sonarlauncherversion=0.5.0
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then
