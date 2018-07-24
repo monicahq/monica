@@ -34,7 +34,7 @@ RUN apk update && apk upgrade; \
         php7-bcmath \
         #- sentry/sentry
         php7-curl; \
-    # Create apache2 dir needed for httpd
+    # Create apache2 dir needed for httpd
     mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
@@ -54,7 +54,7 @@ RUN chown -R monica:monica . && \
     cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
     # Composer installation
     scripts/docker/install-composer.sh; \
-    # Cleanup
+    # Cleanup
     apk del .build-deps && rm -rf /var/cache/apk/*
 
 

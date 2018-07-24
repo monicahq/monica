@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
@@ -712,7 +711,7 @@ class Contact extends Model
      * @param  string $type
      * @return Collection|null
      */
-    public function getRelationshipsByRelationshipTypeGroup(String $type)
+    public function getRelationshipsByRelationshipTypeGroup(string $type)
     {
         $relationshipTypeGroup = $this->account->getRelationshipTypeGroupByType($type);
 
@@ -812,17 +811,15 @@ class Contact extends Model
      * @param  string $lastName
      * @return bool
      */
-    public function setName(String $firstName, String $lastName = null, String $middleName = null)
+    public function setName(string $firstName, string $lastName = null, string $middleName = null)
     {
-        if ($firstName == '') {
+        if ($firstName === '') {
             return false;
         }
 
         $this->first_name = $firstName;
         $this->middle_name = $middleName;
         $this->last_name = $lastName;
-
-        $this->save();
 
         return true;
     }
@@ -1501,16 +1498,15 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
-     * @param string $timezone
      */
-    public function setStayInTouchTriggerDate($frequency, $timezone)
+    public function setStayInTouchTriggerDate($frequency)
     {
-        $now = Carbon::now($timezone);
-        $newTriggerDate = $now->addDays($frequency);
-        $this->stay_in_touch_trigger_date = $newTriggerDate;
-
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
+        } else {
+            $now = now();
+            $newTriggerDate = $now->addDays($frequency);
+            $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
         $this->save();

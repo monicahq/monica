@@ -68,20 +68,8 @@ class ActivitiesController extends Controller
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Activity $activity
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Activity $activity)
-    {
-        //
     }
 
     /**
@@ -153,7 +141,7 @@ class ActivitiesController extends Controller
             $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));
     }
 
@@ -164,17 +152,18 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Activity $activity)
+    public function destroy(Activity $activity, Contact $contact)
     {
         $activity->deleteJournalEntry();
 
+        foreach ($activity->contacts as $contactActivity) {
+            $contactActivity->events()->forObject($activity)->get()->each->delete();
+            $contactActivity->calculateActivitiesStatistics();
+        }
+
         $activity->delete();
 
-        $contact->events()->forObject($activity)->get()->each->delete();
-
-        $contact->calculateActivitiesStatistics();
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_delete_success'));
     }
 }

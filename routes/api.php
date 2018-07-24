@@ -104,8 +104,18 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
     Route::get('/contacts/{contact}/debts', 'Api\\ApiDebtController@debts');
 
-    // Debts
+    // Journal
     Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
+    // Activity Types
+    Route::resource('activitytypes', 'Api\\Contact\\ApiActivityTypeController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
+    // Activity Type Categories
+    Route::resource('activitytypecategories', 'Api\\Contact\\ApiActivityTypeCategoryController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
 

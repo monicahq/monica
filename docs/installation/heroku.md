@@ -23,7 +23,7 @@ You cannot generate personal access tokens from the UI. Instead:
 * Run `php artisan passport:install`.
 * Store the tokens that are generated.
 
-Read the general [setup instructions](https://github.com/monicahq/monica/wiki/Installing-Monica-(Generic)#3-configure-monica) for more ways to customize your app and enable background alerts.
+Read the general [setup instructions](https://github.com/monicahq/monica/blob/master/docs/installation/generic.md#3-configure-monica) for more ways to customize your app and enable background alerts.
 
 ## Limitations
 

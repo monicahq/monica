@@ -85,29 +85,9 @@ class GiftsController extends Controller
      */
     public function store(GiftsRequest $request, Contact $contact)
     {
-        $gift = $contact->gifts()->create(
-            $request->only([
-                'name',
-                'comment',
-                'url',
-                'value',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
-                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
-                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
-            ]
-        );
+        $this->updateOrCreate($request, $contact);
 
-        if ($request->get('has_recipient')) {
-            $gift->recipient = $request->get('recipient');
-            $gift->save();
-        }
-
-        $contact->logEvent('gift', $gift->id, 'create');
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_add_success'));
     }
 
@@ -138,29 +118,9 @@ class GiftsController extends Controller
      */
     public function update(GiftsRequest $request, Contact $contact, Gift $gift)
     {
-        $gift->update(
-            $request->only([
-                'name',
-                'comment',
-                'url',
-                'value',
-            ])
-            + [
-                'account_id' => $contact->account_id,
-                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
-                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
-                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
-            ]
-        );
+        $this->updateOrCreate($request, $contact, $gift);
 
-        if ($request->get('has_recipient')) {
-            $gift->recipient = $request->get('recipient');
-            $gift->save();
-        }
-
-        $contact->logEvent('gift', $gift->id, 'update');
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_update_success'));
     }
 
@@ -175,5 +135,44 @@ class GiftsController extends Controller
     {
         $gift->delete();
         $contact->events()->forObject($gift)->get()->each->delete();
+    }
+
+    /**
+     * Save resource in storage.
+     *
+     * @param GiftsRequest $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function updateOrCreate(GiftsRequest $request, Contact $contact, Gift $gift = null)
+    {
+        $array =
+            $request->only([
+                'name',
+                'comment',
+                'url',
+                'value',
+            ])
+            + [
+                'account_id' => $contact->account_id,
+                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
+                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
+                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
+            ];
+
+        if (is_null($gift)) {
+            $gift = $contact->gifts()->create($array);
+        } else {
+            $gift->update($array);
+        }
+
+        if ($request->get('has_recipient')) {
+            $gift->recipient = $request->get('recipient');
+            $gift->save();
+        }
+
+        $contact->logEvent('gift', $gift->id, 'create');
+
+        return $gift;
     }
 }

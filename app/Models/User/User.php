@@ -216,7 +216,7 @@ class User extends Authenticatable
     {
         try {
             Day::where('account_id', $this->account_id)
-                ->where('date', now($this->timezone)->format('Y-m-d'))
+                ->where('date', now($this->timezone)->toDateString())
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return false;
@@ -359,11 +359,11 @@ class User extends Authenticatable
         }
 
         $compliance = Term::find($termId);
-        $signedDate = DateHelper::createDateFromFormat($termUser->created_at, $this->timezone);
+        $signedDate = DateHelper::parseDateTime($termUser->created_at);
 
         return [
             'signed' => true,
-            'signed_date' => $signedDate->format(config('api.timestamp_format')),
+            'signed_date' => DateHelper::getTimestamp($signedDate),
             'ip_address' => $termUser->ip_address,
             'user' => new UserResource($this),
             'term' => new ComplianceResource($compliance),

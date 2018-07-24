@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Reminder;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -22,14 +23,14 @@ class Reminder extends Resource
             'description' => $this->description,
             'frequency_type' => $this->frequency_type,
             'frequency_number' => $this->frequency_number,
-            'last_triggered_date' => (is_null($this->last_triggered) ? null : $this->last_triggered->format(config('api.timestamp_format'))),
-            'next_expected_date' => (is_null($this->next_expected_date) ? null : $this->next_expected_date->format(config('api.timestamp_format'))),
+            'last_triggered_date' => DateHelper::getTimestamp($this->last_triggered),
+            'next_expected_date' => DateHelper::getTimestamp($this->next_expected_date),
             'account' => [
                 'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

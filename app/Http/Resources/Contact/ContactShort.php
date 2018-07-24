@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Contact;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 
 class ContactShort extends Resource
@@ -30,12 +31,12 @@ class ContactShort extends Resource
                 'birthdate' => [
                     'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),
                     'is_year_unknown' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_year_unknown),
-                    'date' => (is_null($this->birthdate) ? null : $this->birthdate->date->format(config('api.timestamp_format'))),
+                    'date' => DateHelper::getTimestamp($this->birthdate),
                 ],
                 'deceased_date' => [
                     'is_age_based' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_age_based),
                     'is_year_unknown' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_year_unknown),
-                    'date' => (is_null($this->deceasedDate) ? null : $this->deceasedDate->date->format(config('api.timestamp_format'))),
+                    'date' => DateHelper::getTimestamp($this->deceasedDate),
                 ],
                 'avatar' => [
                     'has_avatar' => $this->has_avatar,

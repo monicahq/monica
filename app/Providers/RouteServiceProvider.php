@@ -17,6 +17,7 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ReminderRule;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Route;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -50,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
                     ->where('id', $value)
                     ->firstOrFail();
             } catch (ModelNotFoundException $ex) {
-                redirect('/people/notfound')->send();
+                redirect()->route('people.missing')->send();
             }
         });
 

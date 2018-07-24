@@ -855,7 +855,8 @@ class ContactTest extends FeatureTestCase
     public function test_set_name_returns_true()
     {
         $contact = factory(Contact::class)->create();
-        $contact->setName('John', 'Doe', 'Jr');
+        $this->assertTrue($contact->setName('John', 'Doe', 'Jr'));
+        $contact->save();
 
         $this->assertDatabaseHas(
             'contacts',
@@ -1471,11 +1472,11 @@ class ContactTest extends FeatureTestCase
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
 
-        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(3, 'UTC');
 
         $this->assertEquals(
             '2017-01-04',
-            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+            $contact->stay_in_touch_trigger_date->toDateString()
         );
     }
 
@@ -1489,7 +1490,7 @@ class ContactTest extends FeatureTestCase
             'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
         ]);
 
-        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(0);
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
     }

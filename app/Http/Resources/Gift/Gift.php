@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Gift;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -30,8 +31,8 @@ class Gift extends Resource
                 'id' => $this->account_id,
             ],
             'contact' => new ContactShortResource($this->contact),
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }
