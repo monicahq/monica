@@ -8462,16 +8462,16 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v4.1.1",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "3350cacf151b48d903114ab8f7a4ccb23e07e10a"
+                "reference": "eb501fa8aab8c8e2db790d8d0f945697769f6c41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/3350cacf151b48d903114ab8f7a4ccb23e07e10a",
-                "reference": "3350cacf151b48d903114ab8f7a4ccb23e07e10a",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/eb501fa8aab8c8e2db790d8d0f945697769f6c41",
+                "reference": "eb501fa8aab8c8e2db790d8d0f945697769f6c41",
                 "shasum": ""
             },
             "require": {
@@ -8515,7 +8515,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-01T23:02:13+00:00"
+            "time": "2018-07-05T11:54:23+00:00"
         },
         {
             "name": "theseer/fdomdocument",
