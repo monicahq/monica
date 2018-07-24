@@ -38,7 +38,7 @@
     </ul>
 
     <p class="sidebar-box-paragraph">
-      <a href="/people/{{ $contact->hashID() }}/work/edit">{{ trans('people.work_add_cta') }}</a>
+      <a href="{{ route('people.work.edit', $contact) }}">{{ trans('people.work_add_cta') }}</a>
     </p>
   </div>
 

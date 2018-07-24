@@ -21,7 +21,7 @@ class AuthEmailConfirm
             Auth::guard()->logout();
             $request->session()->invalidate();
 
-            return redirect('/')
+            return redirect()->route('login')
                 ->with('confirmation-danger', trans('confirmation::confirmation.again'));
         }
 

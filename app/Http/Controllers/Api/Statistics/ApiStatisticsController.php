@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
-use Carbon\Carbon;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Instance\Instance;
 use App\Models\Instance\Statistic;
@@ -26,11 +26,11 @@ class ApiStatisticsController extends ApiController
         $instance = Instance::first();
 
         // Get the date of the monday of last week
-        $dateMondayLastWeek = Carbon::now()->subDays(7);
+        $dateMondayLastWeek = now()->subDays(7);
         $dateMondayLastWeek = $dateMondayLastWeek->startOfWeek();
 
         // Get the date of the sunday of last week
-        $dateSundayLastWeek = Carbon::now()->subDays(7);
+        $dateSundayLastWeek = now()->subDays(7);
         $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
 
         // Get the number of users last monday
@@ -44,7 +44,7 @@ class ApiStatisticsController extends ApiController
 
         $statistics = collect();
         $statistics->push([
-            'instance_creation_date' => $instance->created_at->format(config('api.timestamp_format')),
+            'instance_creation_date' => DateHelper::getTimestamp($instance->created_at),
             'number_of_contacts' => ($statistic ? $statistic->number_of_contacts : 0),
             'number_of_users' => ($statistic ? $statistic->number_of_users : 0),
             'number_of_activities' => ($statistic ? $statistic->number_of_activities : 0),

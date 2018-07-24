@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_import') }}
@@ -43,7 +43,7 @@
 
             <p>{{ trans('settings.import_blank_description') }}</p>
 
-            <p class="cta"><a href="/settings/import/upload" class="btn">{{ trans('settings.import_blank_cta') }}</a></p>
+            <p class="cta"><a href="{{ route('settings.upload') }}" class="btn">{{ trans('settings.import_blank_cta') }}</a></p>
 
             @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
               <p class="requires-subscription">{{ trans('settings.import_need_subscription') }}</p>

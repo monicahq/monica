@@ -5,7 +5,7 @@
 
     {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
-      <p><a href="{{ url('/people/'.$contact->hashID()) }}">< {{ $contact->name }}</a></p>
+      <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
@@ -14,7 +14,7 @@
     </div>
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
-      <form method="POST" action="/people/{{ $contact->id }}/update" enctype="multipart/form-data">
+      <form method="POST" action="{{ route('people.update', $contact) }}" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         @include('partials.errors')
@@ -157,7 +157,7 @@
         <div class="ph4-ns ph3 pv3 bb b--gray-monica">
           <div class="flex-ns justify-between">
             <div class="">
-              <a href="{{ url('/people/'.$contact->hashID()) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+              <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
             </div>
             <div class="">
               <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>
@@ -168,7 +168,7 @@
     </div>
   </div>
 
-  <form method="POST" action="{{ action('ContactsController@delete', $contact) }}" id="contact-delete-form" class="hidden">
+  <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
     {{ method_field('DELETE') }}
     {{ csrf_field() }}
   </form>

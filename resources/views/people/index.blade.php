@@ -11,7 +11,7 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_list_contacts') }}
@@ -39,19 +39,19 @@
                             {{ $tag->name }}
                             </span>
                         @endforeach
-                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
                         <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
-                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                        <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
 
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
-                  <a href="/people/add" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
+                  <a href="{{ route('people.create') }}" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
                 </div>
                 <div class="illustration-blank">
                   <img src="/img/people/blank.svg">
@@ -76,13 +76,13 @@
                         {{ $tag->name }}
                         </span>
                     @endforeach
-                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}" href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
               @if ($tagLess)
                   <p class="clear-filter">
                     <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
-                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="/people">{{ trans('people.people_list_clear_filter') }}</a>
+                    <a class="{{ \App\Helpers\LocaleHelper::getDirection() }}"  href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                   </p>
               @endif
 
@@ -96,27 +96,27 @@
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
                       <div class="dropdown-menu" aria-labelledby="dropdownSort">
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameAZ')?'selected':'' }}" href="/people?sort=firstnameAZ">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameAZ')?'selected':'' }}" href="{{ route('people.index') }}?sort=firstnameAZ">
                           {{ trans('people.people_list_firstnameAZ') }}
                         </a>
 
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameZA')?'selected':'' }}" href="/people?sort=firstnameZA">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameZA')?'selected':'' }}" href="{{ route('people.index') }}?sort=firstnameZA">
                           {{ trans('people.people_list_firstnameZA') }}
                         </a>
 
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameAZ')?'selected':'' }}" href="/people?sort=lastnameAZ">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameAZ')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastnameAZ">
                           {{ trans('people.people_list_lastnameAZ') }}
                         </a>
 
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="/people?sort=lastnameZA">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastnameZA">
                           {{ trans('people.people_list_lastnameZA') }}
                         </a>
 
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateNewtoOld')?'selected':'' }}" href="/people?sort=lastactivitydateNewtoOld">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateNewtoOld')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastactivitydateNewtoOld">
                           {{ trans('people.people_list_lastactivitydateNewtoOld') }}
                         </a>
 
-                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateOldtoNew')?'selected':'' }}" href="/people?sort=lastactivitydateOldtoNew">
+                        <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateOldtoNew')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastactivitydateOldtoNew">
                           {{ trans('people.people_list_lastactivitydateOldtoNew') }}
                         </a>
                       </div>
@@ -159,7 +159,7 @@
             </div>
 
             <div class="col-xs-12 col-md-3 sidebar">
-              <a href="/people/add" class="btn btn-primary sidebar-cta">
+              <a href="{{ route('people.create') }}" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
@@ -170,7 +170,7 @@
               @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
-                    <span class="pretty-tag"><a href="/people?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
+                    <span class="pretty-tag"><a href="{{ route('people.index') }}?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
                     <span class="number-contacts-per-tag {{ \App\Helpers\LocaleHelper::getDirection() }}">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
@@ -178,7 +178,7 @@
 
               @if ($userTags->count() != 0)
                 <li class="f7 mt3">
-                    <a href="/people?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
+                    <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
               @endif
               </ul>

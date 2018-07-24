@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
         // hopefully catches those pesky token expiries
         // and send them back to login.
         if ($e instanceof TokenMismatchException) {
-            return redirect('login');
+            return redirect()->route('login');
         }
 
         return parent::render($request, $e);

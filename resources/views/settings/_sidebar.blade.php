@@ -9,7 +9,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-cog" aria-hidden="true"></i>
-      <a href="/settings">{{ trans('settings.sidebar_settings') }}</a>
+      <a href="{{ route('settings.index') }}">{{ trans('settings.sidebar_settings') }}</a>
     </li>
     @endif
 
@@ -21,7 +21,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <a href="/settings/personalization">{{ trans('settings.sidebar_personalization') }}</a>
+      <a href="{{ route('settings.personalization.index') }}">{{ trans('settings.sidebar_personalization') }}</a>
     </li>
     @endif
 
@@ -33,7 +33,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-cloud-download" aria-hidden="true"></i>
-      <a href="/settings/export">{{ trans('settings.sidebar_settings_export') }}</a>
+      <a href="{{ route('settings.export') }}">{{ trans('settings.sidebar_settings_export') }}</a>
     </li>
     @endif
 
@@ -45,11 +45,11 @@
     @else
     <li class="bg-white">
       <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-      <a href="/settings/import">{{ trans('settings.sidebar_settings_import') }}</a>
+      <a href="{{ route('settings.import') }}">{{ trans('settings.sidebar_settings_import') }}</a>
     </li>
     @endif
 
-    @if (Route::currentRouteName() == 'settings.users')
+    @if (Route::currentRouteName() == 'settings.users.index')
     <li class="selected">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
       <strong>{{ trans('settings.sidebar_settings_users') }}</strong>
@@ -57,7 +57,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <a href="/settings/users">{{ trans('settings.sidebar_settings_users') }}</a>
+      <a href="{{ route('settings.users.index') }}">{{ trans('settings.sidebar_settings_users') }}</a>
     </li>
     @endif
 
@@ -70,7 +70,7 @@
       @else
       <li class="bg-white">
         <i class="fa fa-money" aria-hidden="true"></i>
-        <a href="/settings/subscriptions">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
+        <a href="{{ route('settings.subscriptions') }}">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
       </li>
       @endif
     @endif
@@ -83,7 +83,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-tags" aria-hidden="true"></i>
-      <a href="/settings/tags">{{ trans('settings.sidebar_settings_tags') }}</a>
+      <a href="{{ route('settings.tags.index') }}">{{ trans('settings.sidebar_settings_tags') }}</a>
     </li>
     @endif
 
@@ -95,7 +95,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-random"></i>
-      <a href="/settings/api">{{ trans('settings.sidebar_settings_api') }}</a>
+      <a href="{{ route('settings.api') }}">{{ trans('settings.sidebar_settings_api') }}</a>
     </li>
     @endif
 
@@ -107,7 +107,7 @@
     @else
     <li class="bg-white">
       <i class="fa fa-cog"></i>
-      <a href="/settings/security">{{ trans('settings.sidebar_settings_security') }}</a>
+      <a href="{{ route('settings.security.index') }}">{{ trans('settings.sidebar_settings_security') }}</a>
     </li>
     @endif
   </ul>

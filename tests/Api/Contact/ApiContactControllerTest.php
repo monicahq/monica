@@ -2,7 +2,9 @@
 
 namespace Tests\Api\Contact;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -480,6 +482,118 @@ class ApiContactControllerTest extends ApiTestCase
             'account' => [
                 'id' => $firstuser->account->id,
             ],
+        ]);
+    }
+
+    public function test_contact_update_birthdate()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id);
+
+        $response->assertOk();
+
+        $response->assertJsonFragment([
+            'birthdate' => [
+                'date' => null,
+                'is_age_based' => null,
+                'is_year_unknown' => null,
+            ],
+        ]);
+
+        $datas = array_only($response->json()['data'], [
+            'first_name',
+            'last_name',
+            'nickname',
+            'is_partial',
+            'is_dead',
+        ]) + [
+            'gender_id' => $contact->gender_id,
+            'birthdate' => '2008-10-25',
+            'birthdate_is_age_based' => false,
+            'birthdate_is_year_unknown' => false,
+        ];
+
+        $response2 = $this->json('PUT', '/api/contacts/'.$contact->id, $datas);
+
+        $response2->assertOk();
+        $response2->assertJsonMissing(['error_code']);
+
+        $response2->assertJsonFragment([
+            'birthdate' => [
+                'date' => '2008-10-25T00:00:00Z',
+                'is_age_based' => false,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'date' => '2008-10-25',
+            'is_age_based' => '0',
+            'is_year_unknown' => '0',
+        ]);
+    }
+
+    public function test_contact_update_birthdate_age()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id);
+
+        $response->assertOk();
+
+        $response->assertJsonFragment([
+            'birthdate' => [
+                'date' => null,
+                'is_age_based' => null,
+                'is_year_unknown' => null,
+            ],
+        ]);
+
+        $datas = array_only($response->json()['data'], [
+            'first_name',
+            'last_name',
+            'nickname',
+            'is_partial',
+            'is_dead',
+        ]) + [
+            'gender_id' => $contact->gender_id,
+            'birthdate_age' => '18',
+            'birthdate_is_age_based' => true,
+            'birthdate_is_year_unknown' => false,
+        ];
+
+        $response2 = $this->json('PUT', '/api/contacts/'.$contact->id, $datas);
+
+        $response2->assertOk();
+        $response2->assertJsonMissing(['error_code']);
+
+        $date = Carbon::create(now()->subYears(18)->year, 1, 1, 0, 0, 0);
+
+        $response2->assertJsonFragment([
+            'birthdate' => [
+                'date' => DateHelper::getTimestamp($date),
+                'is_age_based' => true,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'date' => $date->toDateString(),
+            'is_age_based' => '1',
+            'is_year_unknown' => '0',
         ]);
     }
 }
