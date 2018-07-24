@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.4.0 - 2018-07-23
+-------------------
+
 * Fix account deletion, reset and export
 * Fix export feature which exported 'changelog_user' table, which it shouldn't
 * Change how dates are stored, from local timezone to UTC
@@ -9,8 +16,6 @@ UNRELEASED CHANGES:
 * Allow for plus sign search in contacts api (contact_fields_data)
 * Fix sonar run for pull requests
 * Improve date and datetime parsing
-
-RELEASED VERSIONS:
 
 v2.3.1 - 2018-06-21
 -------------------
