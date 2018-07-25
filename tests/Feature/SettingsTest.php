@@ -66,4 +66,16 @@ class SettingsTest extends FeatureTestCase
 
         $response->assertSee('Sorry for the interruption');
     }
+
+    public function test_user_can_delete_account()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $response = $this->followingRedirects()
+            ->post(route('settings.delete'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('Login');
+    }
 }
