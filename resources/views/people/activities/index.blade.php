@@ -20,7 +20,7 @@
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica mb5">
         <div class="mw8 center full-page-modal">
             <h1 class="tc normal bb b--gray-monica pb3">All your activities</h1>
-            <h2 class="tc pt3 pb4 normal">🚀 You’ve logged 321 activities with Marion in total and 321 in the last 12 months so far.</h2>
+            <h2 class="tc pt3 pb4 normal">🚀 You’ve logged {{ $totalActivities }} activities with Roger in total and {{ $activitiesLastTwelveMonths }} in the last 12 months so far.</h2>
             <div class="cf ph2-ns">
 
                 {{-- Left sidebar --}}

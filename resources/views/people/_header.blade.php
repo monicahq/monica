@@ -70,13 +70,13 @@
             </li>
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="/people?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+                <li class="pretty-tag"><a href="{{ route('people.index') }}?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
             <li class="mr3"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
-          <form method="POST" action="/people/{{ $contact->hashID() }}/tags/update" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
+          <form method="POST" action="{{ route('people.tags.update', $contact) }}" id="tagsForm" class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
             {{ csrf_field() }}
             <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
             <div class="tagsFormActions">
@@ -87,7 +87,7 @@
 
           <ul class="horizontal quick-actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li>
-              <a href="/people/{{ $contact->hashID() }}/edit" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+              <a href="{{ route('people.edit', $contact) }}" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
             </li>
           </ul>
         </div>

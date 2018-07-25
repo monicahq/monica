@@ -1490,7 +1490,7 @@ class ContactTest extends FeatureTestCase
             'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
         ]);
 
-        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(0);
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
     }

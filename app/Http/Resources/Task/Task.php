@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Task;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -21,13 +22,13 @@ class Task extends Resource
             'title' => $this->title,
             'description' => $this->description,
             'completed' => (bool) $this->completed,
-            'completed_at' => (is_null($this->completed_at) ? null : $this->completed_at->format(config('api.timestamp_format'))),
+            'completed_at' => DateHelper::getTimestamp($this->completed_at),
             'account' => [
                 'id' => $this->account->id,
             ],
             'contact' => new ContactShortResource($this->contact),
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

@@ -13,6 +13,8 @@ class ActivitiesController extends Controller
     public function index(Contact $contact)
     {
         return view('people.activities.index')
+            ->withTotalActivities($contact->activities->count())
+            ->withActivitiesLastTwelveMonths($contact->activitiesSinceMonths(12)->count())
             ->withContact($contact);
     }
 }

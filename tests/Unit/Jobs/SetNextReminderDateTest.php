@@ -46,7 +46,7 @@ class SetNextReminderDateTest extends TestCase
             'frequency_number' => '1',
         ]);
 
-        dispatch(new SetNextReminderDate($reminder, $user->timezone));
+        dispatch(new SetNextReminderDate($reminder));
 
         $this->assertDatabaseHas('reminders', [
             'next_expected_date' => '2017-02-01 00:00:00',
@@ -82,7 +82,7 @@ class SetNextReminderDateTest extends TestCase
             'id' => $reminder->id,
         ]);
 
-        dispatch(new SetNextReminderDate($reminder, $user->timezone));
+        dispatch(new SetNextReminderDate($reminder));
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,

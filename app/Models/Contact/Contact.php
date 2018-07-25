@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
@@ -1499,16 +1498,15 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
-     * @param string $timezone
      */
-    public function setStayInTouchTriggerDate($frequency, $timezone)
+    public function setStayInTouchTriggerDate($frequency)
     {
-        $now = Carbon::now($timezone);
-        $newTriggerDate = $now->addDays($frequency);
-        $this->stay_in_touch_trigger_date = $newTriggerDate;
-
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
+        } else {
+            $now = now();
+            $newTriggerDate = $now->addDays($frequency);
+            $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
         $this->save();
@@ -1523,5 +1521,11 @@ class Contact extends Model
     public function sendStayInTouchEmail(User $user)
     {
         Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
+    }
+
+    public function activitiesSinceMonths(int $months)
+    {
+        $activities = $this->activities()->where('date_it_happened', '>=', now()->subMonths($months))->get();
+        return $activities;
     }
 }

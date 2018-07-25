@@ -16,7 +16,7 @@
 
             @include ('partials.errors')
 
-            <form class="" action="/invitations/accept/{{ $key }}" method="post">
+            <form class="" action="{{ route('invitations.accept', $key) }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
