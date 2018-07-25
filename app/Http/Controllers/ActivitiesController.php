@@ -46,6 +46,21 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+
+        try
+        {
+            // Test if every attached contact are found before creating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                Contact::where('account_id', $account->id)
+                    ->findOrFail($newContactId);
+            }
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity = Activity::create(
             $request->only([
@@ -58,33 +73,12 @@ class ActivitiesController extends Controller
         );
 
         // New attendees
-        $specifiedContacts = $request->get('contacts');
-        $contactsAttached = 0;
         foreach ($specifiedContacts as $newContactId) {
-            try
-            {
-              $newContact = Contact::findOrFail($newContactId);
-            }
-            catch(ModelNotFoundException $e)
-            {
-                continue;
-            }
-            if ($newContact->account_id != $account->id)
-            {
-                continue;
-            }
+            $newContact = Contact::where('account_id', $account->id)
+                ->findOrFail($newContactId);
             $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
-            $contactsAttached++;
-        }
-        if ($contactsAttached == 0)
-        {
-            // No contact has been attached with this activity
-            $activity->deleteJournalEntry();
-            $activity->delete();
-            return redirect()->route('people.show', $contact)
-                ->with('error', trans('people.activities_add_error'));
         }
 
         // Log a journal entry
@@ -120,6 +114,21 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+
+        try
+        {
+            // Test if every attached contact are found before updating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                Contact::where('account_id', $account->id)
+                    ->findOrFail($newContactId);
+            }
+        }
+        catch (ModelNotFoundException $e)
+        {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity->update(
             $request->only([
@@ -130,9 +139,6 @@ class ActivitiesController extends Controller
             ])
             + ['account_id' => $account->id]
         );
-
-        // Who did we send through via the form?
-        $specifiedContacts = $request->get('contacts');
 
         // Find existing attendees
         $existing = $activity->contacts()->get();
@@ -158,7 +164,8 @@ class ActivitiesController extends Controller
 
         // New attendees
         foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
+            $newContact = Contact::where('account_id', $account->id)
+                ->findOrFail($newContactId);
             $newContact->activities()->save($activity);
             $newContact->logEvent('activity', $activity->id, 'create');
         }
