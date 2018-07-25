@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91b01291060e6795e5bb19748f77b743",
+    "content-hash": "c374d2a70b96a84a87d1e20858185436",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1486,6 +1486,59 @@
             "time": "2017-07-28T13:16:03+00:00"
         },
         {
+            "name": "ixudra/curl",
+            "version": "6.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ixudra/curl.git",
+                "reference": "1ab270e48082ee6e7f32fa72412c2c81eb974516"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ixudra/curl/zipball/1ab270e48082ee6e7f32fa72412c2c81eb974516",
+                "reference": "1ab270e48082ee6e7f32fa72412c2c81eb974516",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ixudra\\Curl\\CurlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Curl": "Ixudra\\Curl\\Facades\\Curl"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ixudra\\Curl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Oris",
+                    "email": "jan.oris@ixudra.be"
+                }
+            ],
+            "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
+            "homepage": "http://ixudra.be",
+            "keywords": [
+                "Ixudra",
+                "curl",
+                "laravel"
+            ],
+            "time": "2017-12-08T14:31:13+00:00"
+        },
+        {
             "name": "jenssegers/date",
             "version": "v3.4.0",
             "source": {
@@ -1598,6 +1651,62 @@
                 "vCard"
             ],
             "time": "2018-07-04T09:44:33+00:00"
+        },
+        {
+            "name": "karakus/laravel-cloudflare",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ogunkarakus/laravel-cloudflare.git",
+                "reference": "ec4b0e342463bdfbd793f676b59b8a70ba8d2053"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ogunkarakus/laravel-cloudflare/zipball/ec4b0e342463bdfbd793f676b59b8a70ba8d2053",
+                "reference": "ec4b0e342463bdfbd793f676b59b8a70ba8d2053",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.6.*",
+                "illuminate/http": "5.6.*",
+                "illuminate/support": "5.6.*",
+                "ixudra/curl": "6.16.*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Karakus\\Cloudflare\\TrustedProxyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Karakus\\Cloudflare\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ogün Karakuş",
+                    "email": "kirk5bucuk@gmail.com",
+                    "homepage": "https://github.com/ogunkarakus",
+                    "role": "developer"
+                }
+            ],
+            "description": "Loads IP blocks of Cloudflare to trusted proxies for Laravel.",
+            "homepage": "https://github.com/ogunkarakus",
+            "keywords": [
+                "cloudflare",
+                "laravel",
+                "load balancing",
+                "proxy",
+                "trusted proxy"
+            ],
+            "time": "2018-07-16T23:31:04+00:00"
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
@@ -3021,16 +3130,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3.0",
+            "version": "v0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9"
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/8f543ede60386faec9b0012833536de4b6083bb9",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
+                "reference": "a85f7fe9fe08d093a4a8583cdd306b553ff918aa",
                 "shasum": ""
             },
             "require": {
@@ -3057,7 +3166,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2018-04-14T14:36:18+00:00"
+            "time": "2017-05-24T10:07:27+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
