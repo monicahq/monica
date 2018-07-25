@@ -6,6 +6,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
 {
@@ -58,11 +59,32 @@ class ActivitiesController extends Controller
 
         // New attendees
         $specifiedContacts = $request->get('contacts');
+        $contactsAttached = 0;
         foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
+            try
+            {
+              $newContact = Contact::findOrFail($newContactId);
+            }
+            catch(ModelNotFoundException $e)
+            {
+                continue;
+            }
+            if ($newContact->account_id != $account->id)
+            {
+                continue;
+            }
             $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
+            $contactsAttached++;
+        }
+        if ($contactsAttached == 0)
+        {
+            // No contact has been attached with this activity
+            $activity->deleteJournalEntry();
+            $activity->delete();
+            return redirect()->route('people.show', $contact)
+                ->with('error', trans('people.activities_add_error'));
         }
 
         // Log a journal entry
