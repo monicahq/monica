@@ -58,8 +58,7 @@ class DateHelper
         if (! $date instanceof Carbon) {
             try {
                 $date = Carbon::parse($date);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 // Parse error
                 return;
             }
