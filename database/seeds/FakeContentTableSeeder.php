@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -242,7 +243,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = $this->faker->dateTimeThisYear($max = 'now')->toDateString();
+                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->toDateString();
 
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
