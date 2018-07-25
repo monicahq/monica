@@ -54,4 +54,16 @@ class SettingsTest extends FeatureTestCase
         $response->assertStatus(200);
         $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica.sql');
     }
+
+    public function test_user_can_reset_account()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $response = $this->followingRedirects()
+                        ->post(route('settings.reset'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('Sorry for the interruption');
+    }
 }
