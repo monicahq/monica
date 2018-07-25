@@ -4,6 +4,14 @@ UNRELEASED CHANGES:
 
 RELEASED VERSIONS:
 
+v2.4.1 - 2018-07-25
+-------------------
+
+* Add ability to discover Cloudflare trusted proxies automatically. This adds a new ENV variable.
+* Fix avatar link in journal page
+* Fix broken migration
+* Fix Settings not displaying under some conditions
+
 v2.4.0 - 2018-07-23
 -------------------
 
