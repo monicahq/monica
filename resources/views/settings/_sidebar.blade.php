@@ -70,7 +70,7 @@
       @else
       <li class="bg-white">
         <i class="fa fa-money" aria-hidden="true"></i>
-        <a href="{{ route('settings.subscriptions') }}">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
+        <a href="{{ route('settings.subscriptions.index') }}">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
       </li>
       @endif
     @endif
