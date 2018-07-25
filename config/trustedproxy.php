@@ -44,6 +44,6 @@ return [
     /*
      * Enable cloudflare trusted proxies
      */
-    'cloudflare' => env('APP_TRUSTED_CLOUDFLARE', false)
+    'cloudflare' => env('APP_TRUSTED_CLOUDFLARE', false),
 
 ];
