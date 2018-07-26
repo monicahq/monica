@@ -56,7 +56,12 @@ class DateHelper
     public static function parseDate($date, $timezone = null)
     {
         if (! $date instanceof Carbon) {
-            $date = Carbon::parse($date);
+            try {
+                $date = Carbon::parse($date);
+            } catch (\Exception $e) {
+                // Parse error
+                return;
+            }
         }
         $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
         if ($timezone !== null) {
