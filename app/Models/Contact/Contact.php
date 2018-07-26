@@ -1526,7 +1526,6 @@ class Contact extends Model
     public function activitiesSinceMonths(int $months)
     {
         $activities = $this->activities()->where('date_it_happened', '>=', now()->subMonths($months))->get();
-
         return $activities;
     }
 }
