@@ -183,7 +183,7 @@ return [
     'tasks_blank_title' => 'Vous n’avez aucune tâche pour le moment.',
     'tasks_form_title' => 'Titre',
     'tasks_form_description' => 'Description (optionnel)',
-    'tasks_add_task' => 'Ajouter la tâche',
+    'tasks_add_task' => 'Ajouter une tâche',
     'tasks_delete_success' => 'La tâche a été supprimée avec succès.',
     'tasks_complete_success' => 'La tâche a été mise à jour avec succès',
 
@@ -206,7 +206,7 @@ return [
     'activity_type_went_concert' => 'aller à un concert',
     'activity_type_went_play' => 'aller au théâtre',
     'activity_type_went_museum' => 'aller au musée',
-    'activities_add_activity' => 'Ajouter activité',
+    'activities_add_activity' => 'Ajouter une activité',
     'activities_more_details' => 'Voir détails',
     'activities_hide_details' => 'Cacher les détails',
     'activities_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer l’activité ?',
