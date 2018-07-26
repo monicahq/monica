@@ -31,7 +31,7 @@ class ApiCurrencyControllerTest extends ApiTestCase
         );
 
         $response->assertJsonFragment([
-            'total' => 15,
+            'total' => 156,
             'current_page' => 1,
         ]);
 
