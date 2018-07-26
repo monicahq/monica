@@ -170,21 +170,21 @@ return [
     'relationship_type_nephew' => 'sobrino',
     'relationship_type_nephew_female' => 'sobrina',
     'relationship_type_nephew_with_name' => 'sobrino de :name',
-    'relationship_type_nephew_female_with_name' => ':name’s niece',
+    'relationship_type_nephew_female_with_name' => 'sobrina de :name',
 
-    'relationship_type_cousin' => 'cousin',
-    'relationship_type_cousin_female' => 'cousin',
-    'relationship_type_cousin_with_name' => ':name’s cousin',
-    'relationship_type_cousin_female_with_name' => ':name’s cousin',
+    'relationship_type_cousin' => 'primo/a',
+    'relationship_type_cousin_female' => 'prima',
+    'relationship_type_cousin_with_name' => 'primo de :name',
+    'relationship_type_cousin_female_with_name' => 'prima de :name',
 
-    'relationship_type_godfather' => 'godfather',
-    'relationship_type_godfather_female' => 'godmother',
-    'relationship_type_godfather_with_name' => ':name’s godfather',
-    'relationship_type_godfather_female_with_name' => ':name’s godmother',
+    'relationship_type_godfather' => 'padrino',
+    'relationship_type_godfather_female' => 'madrina',
+    'relationship_type_godfather_with_name' => 'padrino de :name',
+    'relationship_type_godfather_female_with_name' => 'madrina de :name',
 
-    'relationship_type_godson' => 'godson',
-    'relationship_type_godson_female' => 'goddaughter',
-    'relationship_type_godson_with_name' => ':name’s godson',
+    'relationship_type_godson' => 'ahijado',
+    'relationship_type_godson_female' => 'ahijada',
+    'relationship_type_godson_with_name' => 'ahijado de :name',
     'relationship_type_godson_female_with_name' => ':name’s goddaughter',
 
     'relationship_type_friend' => 'friend',
@@ -224,6 +224,6 @@ return [
 
     'relationship_type_ex_husband' => 'ex husband',
     'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband_with_name' => 'exmarido de :name',
+    'relationship_type_ex_husband_female_with_name' => 'exmujer de :name',
 ];
