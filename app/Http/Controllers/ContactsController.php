@@ -239,6 +239,7 @@ class ContactsController extends Controller
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
