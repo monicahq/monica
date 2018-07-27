@@ -118,6 +118,26 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->activityTypeCategories()->exists());
     }
 
+    public function test_it_has_many_conversations()
+    {
+        $account = factory(Account::class)->create([]);
+        $conversation = factory(Conversation::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->conversations()->exists());
+    }
+
+    public function test_it_has_many_messages()
+    {
+        $account = factory(Account::class)->create([]);
+        $message = factory(Message::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->messages()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
     {
         $contact = factory(Contact::class)->create();

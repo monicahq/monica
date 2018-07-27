@@ -8,6 +8,7 @@ use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
@@ -358,6 +359,26 @@ class Account extends Model
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the Conversation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    /**
+     * Get the Message records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
     /**
