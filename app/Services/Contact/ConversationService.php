@@ -5,7 +5,6 @@ namespace App\Services\Contact;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Message;
-use App\Http\Resources\Conversation\Conversation as ConversationResource;
 
 class ConversationService
 {
@@ -15,7 +14,7 @@ class ConversationService
      * @param  ConversationRequest $request
      * @param  Account             $account
      * @param  int             $contactId
-     * @return Illuminate\Http\Resources\Json\Resource
+     * @return Conversation
      */
     public function create(ConversationRequest $request, Account $account, int $contactId)
     {
@@ -39,7 +38,7 @@ class ConversationService
             throw $e;
         }
 
-        return new ConversationResource($conversation);
+        return $conversation;
     }
 
     /**
@@ -47,7 +46,7 @@ class ConversationService
      *
      * @param  ConversationRequest $request
      * @param  Contact             $contact
-     * @return Illuminate\Http\Resources\Json\Resource
+     * @return Conversation
      */
     public function update(ConversationRequest $request, Conversation $conversation)
     {
@@ -57,6 +56,24 @@ class ConversationService
             throw $e;
         }
 
-        return new ConversationResource($conversation);
+        return $conversation;
+    }
+
+    /**
+     * Delete a conversation.
+     *
+     * @param  ConversationRequest $request
+     * @param  Contact             $contact
+     * @return boolean
+     */
+    public function destroy(Conversation $conversation)
+    {
+        try {
+            $conversation->delete();
+        } catch (QueryException $e) {
+            throw $e;
+        }
+
+        return true;
     }
 }
