@@ -179,6 +179,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         // Activities
         Route::get('/people/{contact}/activities', 'Contacts\\ActivitiesController@index')->name('.activities.index');
+        Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('.activities.year');
     });
 
     // Activities

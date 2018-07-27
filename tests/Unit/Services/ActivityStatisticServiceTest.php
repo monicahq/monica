@@ -8,12 +8,13 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityStatistic;
 use App\Services\ActivityStatisticService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityStatisticServiceTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
 
     public function test_it_gets_a_list_of_activities_since_a_given_number_of_months()
     {
@@ -29,12 +30,12 @@ class ActivityStatisticServiceTest extends TestCase
 
         $this->assertCount(
             3,
-            $service->activitiesWithContactInTimeframe($contact, Carbon::now()->subMonths(2), Carbon::now())
+            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())
         );
 
         $this->assertInstanceOf(
             Activity::class,
-            $service->activitiesWithContactInTimeframe($contact, Carbon::now()->subMonths(2), Carbon::now())[1]
+            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())[1]
         );
     }
 
@@ -52,7 +53,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         $this->assertCount(
             0,
-            $service->activitiesWithContactInTimeframe($contact, Carbon::now()->subMonths(2), Carbon::now())
+            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())
         );
     }
 
@@ -91,7 +92,7 @@ class ActivityStatisticServiceTest extends TestCase
         $contact->activities()->attach($activity);
 
         // here we should have 2 uniques activity types, one with 3 and the other with 1 occurence
-        $response = $service->uniqueActivityTypesInTimeframe($contact, Carbon::now()->subMonths(2), Carbon::now());
+        $response = $service->uniqueActivityTypesInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now());
 
         $this->assertCount(
             2,
@@ -143,11 +144,99 @@ class ActivityStatisticServiceTest extends TestCase
             $contact->activities()->attach($activity);
         }
 
-        $contact->calculateActivitiesStatistics();
-dd($contact->activityStatistics);
+        $activityStatistic = $contact->activityStatistics()->make();
+        $activityStatistic->account_id = $contact->account_id;
+        $activityStatistic->contact_id = $contact->id;
+        $activityStatistic->year = Carbon::now()->year;
+        $activityStatistic->count = 6;
+        $activityStatistic->save();
+
+        $activityStatistic = $contact->activityStatistics()->make();
+        $activityStatistic->account_id = $contact->account_id;
+        $activityStatistic->contact_id = $contact->id;
+        $activityStatistic->year = Carbon::now()->subYears(2)->year;
+        $activityStatistic->count = 3;
+        $activityStatistic->save();
+
+        $response = $service->activitiesPerYearWithContact($contact);
+
         $this->assertCount(
             2,
-            $service->activitiesPerYearWithContact($contact)
+            $response
+        );
+
+        $this->assertEquals(
+            6,
+            $response[0]->count
+        );
+
+        $this->assertEquals(
+            3,
+            $response[1]->count
+        );
+
+        $this->assertInstanceOf(
+            ActivityStatistic::class,
+            $response[0]
+        );
+    }
+
+    public function test_it_gets_a_list_of_activities_per_month_for_given_year()
+    {
+        $service = new ActivityStatisticService;
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+
+        for ($i = 0; $i <= 2; $i++) {
+            $activity = factory(Activity::class)->create([
+                'date_it_happened' => '2017-01-02',
+                'account_id' => $account->id,
+            ]);
+            $contact->activities()->attach($activity);
+        }
+
+        for ($i = 0; $i <= 5; $i++) {
+            $activity = factory(Activity::class)->create([
+                'date_it_happened' => '2017-02-01',
+                'account_id' => $account->id,
+            ]);
+            $contact->activities()->attach($activity);
+        }
+
+        $response = $service->activitiesPerMonthForYear($contact, 2017);
+
+        $this->assertCount(
+            2,
+            $response
+        );
+
+        $this->assertEquals(
+            1,
+            $response[0]['month']
+        );
+
+        $this->assertEquals(
+            3,
+            $response[0]['occurences']
+        );
+
+        $this->assertEquals(
+            2,
+            $response[1]['month']
+        );
+
+        $this->assertEquals(
+            6,
+            $response[1]['occurences']
+        );
+
+        $this->assertInstanceOf(
+            Activity::class,
+            $response[1]['activities'][0]
         );
     }
 }

@@ -17,7 +17,7 @@ class ActivityStatisticService
      * @param Carbon $endDate
      * @return Collection
      */
-    public function activitiesWithContactInTimeframe(Contact $contact, Carbon $startDate, Carbon $endDate)
+    public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
         return $contact->activities()
                             ->where('date_it_happened', '>=', $startDate)
@@ -39,6 +39,42 @@ class ActivityStatisticService
     }
 
     /**
+     * Get the list of activities per month for a given year.
+     *
+     * @param  Contact $contact
+     * @param  int     $year
+     * @return Collection
+     */
+    public function activitiesPerMonthForYear(Contact $contact, int $year)
+    {
+        $startDate = Carbon::create($year, 1, 1);
+        $endDate = Carbon::create($year, 12, 31);
+
+        $activities = $this->activitiesWithContactInTimeRange($contact, $startDate, $endDate);
+
+        $activitiesPerMonth = collect([]);
+        for ($month = 1; $month < 13; $month++) {
+            $activitiesInMonth = collect([]);
+
+            foreach ($activities as $activity) {
+                if ($activity->date_it_happened->month === $month) {
+                    $activitiesInMonth->push($activity);
+                }
+            }
+
+            if ($activitiesInMonth->count() != 0) {
+                $activitiesPerMonth->push([
+                    'month' => $month,
+                    'occurences' => $activitiesInMonth->count(),
+                    'activities' => $activitiesInMonth,
+                ]);
+            }
+        }
+
+        return $activitiesPerMonth;
+    }
+
+    /**
      * Get the list of unique activity types for activities done with
      * a contact in a given timeframe, along with the number of occurences.
      *
@@ -46,9 +82,9 @@ class ActivityStatisticService
      * @param integer $year
      * @return Collection
      */
-    public function uniqueActivityTypesInTimeframe(Contact $contact, Carbon $startDate, Carbon $endDate)
+    public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
-        $activities = $this->activitiesWithContactInTimeframe($contact, $startDate, $endDate);
+        $activities = $this->activitiesWithContactInTimeRange($contact, $startDate, $endDate);
 
         // group activities by activity type id
         $grouped = $activities->groupBy(function ($item, $key) {
