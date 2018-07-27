@@ -2,64 +2,77 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+use App\Models\Contact\ActivityType;
+use App\Models\Contact\ActivityStatistic;
+use App\Models\Contact\Contact;
 
 class ActivityStatisticService
 {
-    use Hasher;
     /**
-     * The attributes that aren't mass assignable.
+     * Return the activities with the contact in a given timeframe.
      *
-     * @var array
+     * @param Contact $contact
+     * @param Carbon $startDate
+     * @param Carbon $endDate
+     * @return Collection
      */
-    protected $guarded = ['id'];
-
-    /**
-     * Get the account record associated with the debt.
-     */
-    public function account()
+    public function activitiesWithContactInTimeframe(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
-        return $this->belongsTo(Account::class);
+        return $contact->activities()
+                            ->where('date_it_happened', '>=', $startDate)
+                            ->where('date_it_happened', '<=', $endDate)
+                            ->orderBy('date_it_happened', 'desc')
+                            ->get();
     }
 
     /**
-     * Get the contact record associated with the debt.
+     * Get the list of number of activities per year in total done with
+     * the contact.
+     *
+     * @param  Contact $contact
+     * @return Collection
      */
-    public function contact()
+    public function activitiesPerYearWithContact(Contact $contact)
     {
-        return $this->belongsTo(Contact::class);
+        return $contact->activityStatistics;
     }
 
     /**
-     * Limit results to unpaid/unreceived debt.
+     * Get the list of unique activity types for activities done with
+     * a contact in a given timeframe, along with the number of occurences.
      *
-     * @param Builder $query
-     * @return Builder
+     * @param Contact $contact
+     * @param integer $year
+     * @return Collection
      */
-    public function scopeInProgress(Builder $query)
+    public function uniqueActivityTypesInTimeframe(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
-        return $query->where('status', 'inprogress');
-    }
+        $activities = $this->activitiesWithContactInTimeframe($contact, $startDate, $endDate);
 
-    /**
-     * Limit results to due debt.
-     *
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeDue(Builder $query)
-    {
-        return $query->where('in_debt', 'yes');
-    }
+        // group activities by activity type id
+        $grouped = $activities->groupBy(function ($item, $key) {
+            return $item['activity_type_id'];
+        });
 
-    /**
-     * Limit results to owed debt.
-     *
-     * @param Builder $query
-     * @return Builder
-     */
-    public function scopeOwed(Builder $query)
-    {
-        return $query->where('in_debt', 'no');
+        // remove activity type id that are null
+        $grouped = $grouped->reject(function ($value, $key) {
+            return $key == '';
+        });
+
+        // calculate how many occurences of unique activity type id
+        $activities = $grouped->map(function ($item, $key) {
+            return collect($item)->count();
+        });
+
+        $activityTypes = collect([]);
+        foreach ($activities as $key => $value) {
+            $activityTypes->push([
+                'object' => ActivityType::find($key),
+                'occurences' => $value,
+            ]);
+        }
+
+        return $activityTypes;
     }
 }

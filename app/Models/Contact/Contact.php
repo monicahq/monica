@@ -163,7 +163,7 @@ class Contact extends Model
      */
     public function activityStatistics()
     {
-        return $this->hasMany(ActivityStatistic::class);
+        return $this->hasMany(ActivityStatistic::class)->orderBy('year', 'desc');
     }
 
     /**
@@ -1521,12 +1521,5 @@ class Contact extends Model
     public function sendStayInTouchEmail(User $user)
     {
         Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
-    }
-
-    public function activitiesSinceMonths(int $months)
-    {
-        $activities = $this->activities()->where('date_it_happened', '>=', now()->subMonths($months))->get();
-
-        return $activities;
     }
 }

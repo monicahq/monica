@@ -26,19 +26,16 @@
                 {{-- Left sidebar --}}
                 <div class="fl w-100 w-25-ns pa2">
                     <div class="bg-white">
+                        <p>Everything you've ever done</p>
                         <ul>
+                            @foreach($activitiesPerYear as $activityStatistic)
                             <li class="full-page-modal-year-selector pv2 b selected">
                                 <span class="ph3">
-                                    2018
-                                    <span class="fr mr3">13</span>
+                                    {{ $activityStatistic->year }}
+                                    <span class="fr mr3">{{ $activityStatistic->count }}</span>
                                 </span>
                             </li>
-                            <li class="full-page-modal-year-selector pv2 pointer">
-                                <span class="ph3">
-                                    2018
-                                    <span class="fr mr3">13</span>
-                                </span>
-                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -48,18 +45,9 @@
                     <div class="bg-white">
                         <p>Here are the breakdown of your activities in 2018:</p>
                         <ul class="column-list mb4">
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
-                            <li class="mb2">✅ 8 Went to the cinema</li>
+                            @foreach($uniqueActivityTypes as $activityType)
+                            <li class="mb2">✅ {{ $activityType['occurences'] }} {{ $activityType['object']->name }}</li>
+                            @endforeach
                         </ul>
 
                         <h3 class="f5">
