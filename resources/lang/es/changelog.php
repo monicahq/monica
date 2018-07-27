@@ -2,5 +2,5 @@
 
 return [
     'title' => 'Product changes',
-    'note' => 'Note: unfortunately, this page is only in English.',
+    'note' => 'Nota: desafortunadamente, esta página está solo en inglés.',
 ];
