@@ -72,7 +72,8 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
-            $partner = Contact::findOrFail($request->get('existing_contact_id'));
+            $partner = Contact::where('account_id', $request->user()->account_id)
+                ->findOrFail($request->get('existing_contact_id'));
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
             return redirect()->route('people.show', $contact)
