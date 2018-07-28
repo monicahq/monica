@@ -48,16 +48,13 @@ class ActivitiesController extends Controller
         $account = $user->account;
         $specifiedContacts = $request->get('contacts');
 
-        try
-        {
+        try {
             // Test if every attached contact are found before creating the activity
             foreach ($specifiedContacts as $newContactId) {
                 Contact::where('account_id', $account->id)
                     ->findOrFail($newContactId);
             }
-        }
-        catch (ModelNotFoundException $e)
-        {
+        } catch (ModelNotFoundException $e) {
             return redirect()->route('people.show', $contact)
                 ->withErrors(trans('people.activities_add_error'));
         }
@@ -116,16 +113,13 @@ class ActivitiesController extends Controller
         $account = $user->account;
         $specifiedContacts = $request->get('contacts');
 
-        try
-        {
+        try {
             // Test if every attached contact are found before updating the activity
             foreach ($specifiedContacts as $newContactId) {
                 Contact::where('account_id', $account->id)
                     ->findOrFail($newContactId);
             }
-        }
-        catch (ModelNotFoundException $e)
-        {
+        } catch (ModelNotFoundException $e) {
             return redirect()->route('people.show', $contact)
                 ->withErrors(trans('people.activities_add_error'));
         }
