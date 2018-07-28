@@ -118,7 +118,7 @@
       <div class="cf" v-for="journalEntry in journalEntries.data" :key="journalEntry.id">
         <journal-content-rate v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" v-bind:journal-entry="journalEntry"></journal-content-rate>
 
-        <journal-content-activity v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
+        <journal-content-activity v-if="journalEntry.journalable_type == 'App\\Models\\Contact\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
 
         <journal-content-entry v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
       </div>

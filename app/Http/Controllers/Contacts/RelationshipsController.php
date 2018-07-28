@@ -85,6 +85,7 @@ class RelationshipsController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
             'gender_id' => 'required',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
@@ -222,6 +223,7 @@ class RelationshipsController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
             'gender_id' => 'required',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
