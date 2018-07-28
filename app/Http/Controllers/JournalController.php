@@ -107,9 +107,8 @@ class JournalController extends Controller
      * Delete the Day entry.
      * @return mixed
      */
-    public function trashDay($day)
+    public function trashDay(Day $day)
     {
-        $day = Day::findOrFail($day->id);
         $day->deleteJournalEntry();
         $day->delete();
     }
