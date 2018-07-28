@@ -105,16 +105,20 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('relationships', function ($value, $route) {
-            Contact::findOrFail($route->parameter('contact')->id);
+            Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($route->parameter('contact')->id);
 
             $value = app('idhasher')->decodeId($value);
+
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($value);
 
             Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_is', $route->parameter('contact')->id)
                 ->where('of_contact', $value)
                 ->firstOrFail();
 
-            return Contact::findOrFail($value);
+            return $contact;
         });
 
         Route::bind('note', function ($value, $route) {
