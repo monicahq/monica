@@ -1093,7 +1093,7 @@ class Contact extends Model
      */
     public function setRelationship(self $otherContact, $relationshipTypeId)
     {
-        $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
+        $relationshipType = RelationshipType::where('account_id', $this->account_id)
             ->find($relationshipTypeId);
 
         // Contact A is linked to Contact B
@@ -1141,7 +1141,7 @@ class Contact extends Model
         // Each relationship between two contacts has two Relationship objects.
         // We need to delete both.
 
-        $relationship = Relationship::where('account_id', $this->account->id)
+        $relationship = Relationship::where('account_id', $this->account_id)
                                     ->where('contact_is', $this->id)
                                     ->where('of_contact', $otherContact->id)
                                     ->where('relationship_type_id', $relationshipTypeId)
@@ -1149,11 +1149,11 @@ class Contact extends Model
 
         $relationship->delete();
 
-        $relationshipType = RelationshipType::where('account_id', $this->account->id)
+        $relationshipType = RelationshipType::where('account_id', $this->account_id)
             ->find($relationshipTypeId);
         $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-        $relationship = Relationship::where('account_id', $this->account->id)
+        $relationship = Relationship::where('account_id', $this->account_id)
                                     ->where('contact_is', $otherContact->id)
                                     ->where('of_contact', $this->id)
                                     ->where('relationship_type_id', $reverseRelationshipType->id)
@@ -1339,7 +1339,7 @@ class Contact extends Model
         $tag->name_slug = str_slug($tag->name);
         $tag->save();
 
-        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account->id]]);
+        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account_id]]);
 
         return $tag;
     }
@@ -1370,7 +1370,7 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        return Relationship::where('account_id', auth()->user()->account_id)
+        return Relationship::where('account_id', $this->account_id)
                                     ->where('contact_is', $this->id)
                                     ->where('of_contact', $otherContact->id)
                                     ->first();
@@ -1418,7 +1418,7 @@ class Contact extends Model
         });
 
         foreach ($relationships as $relationship) {
-            $reminder = Reminder::where('account_id', $this->account->id)
+            $reminder = Reminder::where('account_id', $this->account_id)
                 ->find($relationship->ofContact->birthdate->reminder_id);
 
             if ($reminder) {
@@ -1435,12 +1435,12 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account->id)
+        $relatedContact = Relationship::where('account_id', $this->account_id)
             ->where('contact_is', $this->id)
             ->first();
 
         if ($relatedContact) {
-            return self::where('account_id', $this->account->id)
+            return self::where('account_id', $this->account_id)
                 ->find($relatedContact->of_contact);
         }
     }
