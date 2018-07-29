@@ -44,8 +44,8 @@ class ApiActivityController extends ApiController
     public function show(Request $request, $activityId)
     {
         try {
-            $activity = Activity::where('account_id', $request->user()->account->id)
-                ->firstOrFail($activityId);
+            $activity = Activity::where('account_id', auth()->user()->account_id)
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -73,7 +73,7 @@ class ApiActivityController extends ApiController
                     'activity_type_id',
                     'description',
                 ])
-                + ['account_id' => $request->user()->account_id]
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -85,7 +85,7 @@ class ApiActivityController extends ApiController
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
         foreach ($attendeesID as $attendeeID) {
-            $contact = Contact::where('account_id', $request->user()->account_id)
+            $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
             $contact->logEvent('activity', $activity->id, 'create');
@@ -104,8 +104,8 @@ class ApiActivityController extends ApiController
     public function update(Request $request, $activityId)
     {
         try {
-            $activity = Activity::where('account_id', $request->user()->account_id)
-                ->firstOrFail($activityId);
+            $activity = Activity::where('account_id', auth()->user()->account_id)
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -160,7 +160,7 @@ class ApiActivityController extends ApiController
 
         // New attendees
         foreach ($attendeesID as $attendeeID) {
-            $contact = Contact::where('account_id', $request->user()->account_id)
+            $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
             $contact->logEvent('activity', $activity->id, 'create');
@@ -196,8 +196,8 @@ class ApiActivityController extends ApiController
         $attendeesID = $request->get('contacts');
         foreach ($attendeesID as $attendeeID) {
             try {
-                Contact::where('account_id', $request->user()->account_id)
-                    ->firstOrFail($attendeeID);
+                Contact::where('account_id', auth()->user()->account_id)
+                    ->findOrFail($attendeeID);
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -215,7 +215,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $activity = Note::where('account_id', auth()->user()->account_id)
-                ->firstOrFail($activityId);
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -236,7 +236,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->firstOrFail($contactId);
+                ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
