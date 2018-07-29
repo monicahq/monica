@@ -106,7 +106,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         // Food preferencies
         Route::name('food.')->group(function () {
             Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('index');
-            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('food.update');
+            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('update');
         });
 
         // Relationships

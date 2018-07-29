@@ -9,7 +9,7 @@ return [
     'journal_entry_type_journal' => 'Note de journal',
     'journal_entry_type_activity' => 'Activité',
     'journal_entry_rate' => 'Vous avez évalué votre journée.',
-    'entry_delete_success' => 'L\'entrée a été supprimée avec succès.',
+    'entry_delete_success' => 'L’entrée a été supprimée avec succès.',
     'journal_add_title' => 'Titre (optionnel)',
     'journal_add_date' => 'Date',
     'journal_add_post' => 'Entrée',
