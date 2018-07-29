@@ -86,7 +86,7 @@ class ApiNoteController extends ApiController
             $note->save();
         }
 
-        $note->account_id = auth()->user()->account->id;
+        $note->account_id = auth()->user()->account_id;
         $note->save();
 
         return new NoteResource($note);

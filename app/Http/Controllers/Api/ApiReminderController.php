@@ -68,7 +68,7 @@ class ApiReminderController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $reminder->account_id = auth()->user()->account->id;
+        $reminder->account_id = auth()->user()->account_id;
         $reminder->save();
 
         return new ReminderResource($reminder);

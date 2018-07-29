@@ -48,7 +48,7 @@ class PersonalizationController extends Controller
             ])
             + [
                 'fontawesome_icon' => $request->get('icon'),
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
     }
