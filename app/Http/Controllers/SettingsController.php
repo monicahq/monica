@@ -103,12 +103,12 @@ class SettingsController extends Controller
                 'currency_id',
                 'name_order',
             ]) + [
-                'fluid_container' => $request->get('layout'),
+                'fluid_container' => $request->input('layout'),
             ]
         );
 
-        if ($user->email != $request->get('email')) {
-            $user->email = $request->get('email');
+        if ($user->email != $request->input('email')) {
+            $user->email = $request->input('email');
             $user->confirmation_code = str_random(30);
             $user->confirmed = false;
             $user->save();
@@ -116,7 +116,7 @@ class SettingsController extends Controller
             $user->notify(new ConfirmEmail);
         }
 
-        $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $user->account->default_time_reminder_is_sent = $request->input('reminder_time');
         $user->account->save();
 
         return redirect()->route('settings.index')
@@ -255,7 +255,7 @@ class SettingsController extends Controller
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->get('behaviour')));
+        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
 
         return redirect()->route('settings.import');
     }
@@ -312,7 +312,7 @@ class SettingsController extends Controller
     public function inviteUser(InvitationRequest $request)
     {
         // Make sure the confirmation to invite has not been bypassed
-        if (! $request->get('confirmation')) {
+        if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 

@@ -47,7 +47,7 @@ class PersonalizationController extends Controller
                 'protocol',
             ])
             + [
-                'fontawesome_icon' => $request->get('icon'),
+                'fontawesome_icon' => $request->input('icon'),
                 'account_id' => auth()->user()->account_id,
             ]
         );
@@ -86,7 +86,7 @@ class PersonalizationController extends Controller
                 'protocol',
             ])
             + [
-                'fontawesome_icon' => $request->get('icon'),
+                'fontawesome_icon' => $request->input('icon'),
             ]
         );
 

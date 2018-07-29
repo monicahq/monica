@@ -130,7 +130,7 @@ class ApiReminderController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        $date = DateHelper::parseDate($request->get('next_expected_date'));
+        $date = DateHelper::parseDate($request->input('next_expected_date'));
         if ($date->isPast()) {
             return $this->setErrorCode(38)
                         ->respondWithError('Date should be in the future');

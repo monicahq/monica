@@ -26,8 +26,8 @@ class ApiContactController extends ApiController
      */
     public function index(Request $request)
     {
-        if ($request->get('query')) {
-            $needle = rawurldecode($request->get('query'));
+        if ($request->input('query')) {
+            $needle = rawurldecode($request->input('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(
@@ -112,19 +112,19 @@ class ApiContactController extends ApiController
                     'is_dead',
                     'deceased_date',
                 ]) + [
-                'avatar_external_url' => $request->get('avatar_url'),
+                'avatar_external_url' => $request->input('avatar_url'),
             ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('avatar_url')) {
+        if ($request->input('avatar_url')) {
             $contact->has_avatar = true;
             $contact->avatar_location = 'external';
         }
 
-        if ($request->get('first_met_information')) {
-            $contact->first_met_additional_info = $request->get('first_met_information');
+        if ($request->input('first_met_information')) {
+            $contact->first_met_additional_info = $request->input('first_met_information');
         }
 
         $contact->account_id = auth()->user()->account_id;
@@ -132,50 +132,50 @@ class ApiContactController extends ApiController
         $contact->save();
 
         // birthdate
-        if ($request->get('birthdate')) {
+        if ($request->input('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->input('birthdate'));
 
-            if ($request->get('birthdate_is_year_unknown')) {
+            if ($request->input('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('birthdate_is_age_based')) {
+        } elseif ($request->input('birthdate_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
         }
 
         // first met date
-        if ($request->get('first_met_date')) {
+        if ($request->input('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->input('first_met_date'));
 
-            if ($request->get('first_met_date_is_year_unknown')) {
+            if ($request->input('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('first_met_date_is_age_based')) {
+        } elseif ($request->input('first_met_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
         }
 
         // deceased date
-        if ($request->get('deceased_date')) {
+        if ($request->input('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->input('deceased_date'));
 
-            if ($request->get('deceased_date_is_year_unknown')) {
+            if ($request->input('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('deceased_date_is_age_based')) {
+        } elseif ($request->input('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
 
@@ -212,8 +212,8 @@ class ApiContactController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('first_met_information')) {
-            $contact->first_met_additional_info = $request->get('first_met_information');
+        if ($request->input('first_met_information')) {
+            $contact->first_met_additional_info = $request->input('first_met_information');
         } else {
             $contact->first_met_additional_info = null;
         }
@@ -222,52 +222,52 @@ class ApiContactController extends ApiController
 
         // birthdate
         $contact->removeSpecialDate('birthdate');
-        if ($request->get('birthdate')) {
+        if ($request->input('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->input('birthdate'));
 
-            if ($request->get('birthdate_is_year_unknown')) {
+            if ($request->input('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('birthdate_is_age_based')) {
+        } elseif ($request->input('birthdate_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
         }
 
         // first met date
         $contact->removeSpecialDate('first_met');
-        if ($request->get('first_met_date')) {
+        if ($request->input('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->input('first_met_date'));
 
-            if ($request->get('first_met_date_is_year_unknown')) {
+            if ($request->input('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('first_met_date_is_age_based')) {
+        } elseif ($request->input('first_met_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
         }
 
         // deceased date
         $contact->removeSpecialDate('deceased_date');
-        if ($request->get('deceased_date')) {
+        if ($request->input('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->input('deceased_date'));
 
-            if ($request->get('deceased_date_is_year_unknown')) {
+            if ($request->input('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
             } else {
                 $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
                 $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-        } elseif ($request->get('deceased_date_is_age_based')) {
+        } elseif ($request->input('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
 
@@ -320,7 +320,7 @@ class ApiContactController extends ApiController
 
         // Make sure the `first_met_through_contact_id` is a contact id that the
         // user is authorized to access
-        if ($request->get('first_met_through_contact_id')) {
+        if ($request->input('first_met_through_contact_id')) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
                     ->where('id', $request->input('first_met_through_contact_id'))
