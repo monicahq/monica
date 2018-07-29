@@ -156,7 +156,7 @@ class ApiRelationshipController extends ApiController
         if ($request->get('relationship_type_id')) {
             try {
                 RelationshipType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('relationship_type_id'));
+                    ->findOrFail($request->input('relationship_type_id'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -165,7 +165,7 @@ class ApiRelationshipController extends ApiController
         if ($request->get('contact_is')) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('contact_is'));
+                    ->findOrFail($request->input('contact_is'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -174,7 +174,7 @@ class ApiRelationshipController extends ApiController
         if ($request->get('of_contact')) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('of_contact'));
+                    ->findOrFail($request->input('of_contact'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
