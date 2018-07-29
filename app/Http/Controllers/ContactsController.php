@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
