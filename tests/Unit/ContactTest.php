@@ -8,7 +8,6 @@ use Tests\FeatureTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
-use App\Models\Contact\Convesation;
 use App\Mail\StayInTouchEmail;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
