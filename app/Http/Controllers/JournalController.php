@@ -177,11 +177,8 @@ class JournalController extends Controller
      */
     public function deleteEntry(Request $request, $entryId)
     {
-        $entry = Entry::findOrFail($entryId);
-
-        if ($entry->account_id != Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
+        $entry = Entry::where('account_id', $request->user()->account_id)
+            ->findOrFail($entryId);
 
         $entry->deleteJournalEntry();
         $entry->delete();

@@ -46,8 +46,8 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
-                $tag = Tag::where('name_slug', $request->get('tag'.$count))
-                            ->where('account_id', auth()->user()->account_id)
+                $tag = Tag::where('account_id', auth()->user()->account_id)
+                            ->where('name_slug', $request->get('tag'.$count))
                             ->get();
 
                 if (! ($tags->contains($tag[0]))) {
@@ -342,8 +342,12 @@ class ContactsController extends Controller
             return redirect()->route('people.index');
         }
 
-        Relationship::where('contact_is', $contact->id)->delete();
-        Relationship::where('of_contact', $contact->id)->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('contact_is', $contact->id)
+            ->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('of_contact', $contact->id)
+            ->delete();
 
         $contact->deleteEverything();
 
@@ -442,11 +446,13 @@ class ContactsController extends Controller
             $search_field = $matches[1];
             $search_term = $matches[2];
 
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
+            $field = ContactFieldType::where('account_id', accountId)
+                ->where('name', 'LIKE', $search_field)
+                ->first();
 
             $field_id = $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
+            $results = Contact::whereHas('contactFields', function ($query) use ($field_id, $search_term) {
                 $query->where([
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],

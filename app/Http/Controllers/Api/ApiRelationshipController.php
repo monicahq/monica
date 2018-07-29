@@ -63,7 +63,8 @@ class ApiRelationshipController extends ApiController
             return $validParameters;
         }
 
-        $relationshipType = RelationshipType::find($request->get('relationship_type_id'));
+        $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
+            ->find($request->get('relationship_type_id'));
 
         $contact = Contact::where('account_id', auth()->user()->account_id)
             ->find($request->get('contact_is'));
@@ -94,8 +95,10 @@ class ApiRelationshipController extends ApiController
             return $validParameters;
         }
 
-        $relationshipType = RelationshipType::find($request->get('relationship_type_id'));
-        $relationship = Relationship::find($relationshipId);
+        $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
+            ->find($request->get('relationship_type_id'));
+        $relationship = Relationship::where('account_id', auth()->user()->account_id)
+            ->find($relationshipId);
         $relationship->relationship_type_id = $relationshipType->id;
         $relationship->save();
 

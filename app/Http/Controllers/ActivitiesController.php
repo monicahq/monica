@@ -44,14 +44,12 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $user = $request->user();
-        $account = $user->account;
         $specifiedContacts = $request->get('contacts');
 
         try {
             // Test if every attached contact are found before creating the activity
             foreach ($specifiedContacts as $newContactId) {
-                Contact::where('account_id', $account->id)
+                Contact::where('account_id', $request->user()->account_id)
                     ->findOrFail($newContactId);
             }
         } catch (ModelNotFoundException $e) {
@@ -66,14 +64,14 @@ class ActivitiesController extends Controller
                 'activity_type_id',
                 'description',
             ])
-            + ['account_id' => $account->id]
+            + ['account_id' => $request->user()->account_id]
         );
 
         // New attendees
         foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::where('account_id', $account->id)
+            $newContact = Contact::where('account_id', $request->user()->account_id)
                 ->findOrFail($newContactId);
-            $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
+            $newContact->activities()->attach($activity, ['account_id' => $request->user()->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }
