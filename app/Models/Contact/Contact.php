@@ -998,8 +998,7 @@ class Contact extends Model
             if (! app('gravatar')->exists($email)) {
                 return false;
             }
-        }
-        catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
+        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
             return false;
         }
 
