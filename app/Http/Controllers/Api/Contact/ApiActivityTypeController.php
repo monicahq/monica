@@ -153,6 +153,7 @@ class ApiActivityTypeController extends ApiController
             return $this->respondNotFound();
         }
 
+        $activityType->resetAssociationWithActivities();
         $activityType->delete();
 
         return $this->respondObjectDeleted($activityType->id);

@@ -448,6 +448,12 @@ input:disabled {
   column-gap: 20px;
 }
 
+.dt-row.hover {
+  &:hover {
+    background-color: #f6fbff;
+  }
+}
+
 footer {
   .badge-success {
     font-size: 12px;

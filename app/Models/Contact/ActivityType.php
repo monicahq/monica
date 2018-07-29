@@ -40,14 +40,35 @@ class ActivityType extends Model
     }
 
     /**
+     * Get the activity records associated with the activity type.
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
+    /**
      * Get the activity type's attribute.
      */
     public function getNameAttribute($value)
     {
-        if ($this->translation_key) {
+        if ($this->translation_key && ! $value) {
             return trans('people.activity_type_'.$this->translation_key);
         }
 
         return $value;
+    }
+
+    /**
+     * Reset all associated activities with this category type.
+     *
+     * @return void
+     */
+    public function resetAssociationWithActivities()
+    {
+        foreach ($this->activities as $activity) {
+            $activity->activity_type_id = null;
+            $activity->save();
+        }
     }
 }
