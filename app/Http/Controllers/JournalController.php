@@ -156,7 +156,7 @@ class JournalController extends Controller
         }
 
         $entry = new Entry;
-        $entry->account_id = Auth::user()->account_id;
+        $entry->account_id = $request->user()->account_id;
         $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {

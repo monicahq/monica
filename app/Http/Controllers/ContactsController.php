@@ -120,7 +120,7 @@ class ContactsController extends Controller
         }
 
         $contact = new Contact;
-        $contact->account_id = Auth::user()->account_id;
+        $contact->account_id = $request->user()->account_id;
         $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
