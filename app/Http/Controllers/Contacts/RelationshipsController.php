@@ -58,7 +58,7 @@ class RelationshipsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts($arrayContacts)
-            ->withType($request->input('type'));
+            ->withType($request->get('type'));
     }
 
     /**
@@ -71,10 +71,10 @@ class RelationshipsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         // case of linking to an existing contact
-        if ($request->input('relationship_type') == 'existing') {
+        if ($request->get('relationship_type') == 'existing') {
             $partner = Contact::where('account_id', $request->user()->account_id)
-                ->findOrFail($request->input('existing_contact_id'));
-            $contact->setRelationship($partner, $request->input('relationship_type_id'));
+                ->findOrFail($request->get('existing_contact_id'));
+            $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
             return redirect()->route('people.show', $contact)
                 ->with('success', trans('people.relationship_form_add_success'));
@@ -151,10 +151,10 @@ class RelationshipsController extends Controller
         }
 
         // create the relationship
-        $contact->setRelationship($partner, $request->input('relationship_type_id'));
+        $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
         // check if the contact is partial
-        if ($request->input('realContact')) {
+        if ($request->get('realContact')) {
             $partner->is_partial = false;
             $partner->save();
         }
@@ -282,10 +282,10 @@ class RelationshipsController extends Controller
         }
 
         // update the relationship
-        $contact->updateRelationship($otherContact, $request->input('type'), $request->input('relationship_type_id'));
+        $contact->updateRelationship($otherContact, $request->get('type'), $request->get('relationship_type_id'));
 
         // check if the contact is partial
-        if ($request->input('realContact')) {
+        if ($request->get('realContact')) {
             $otherContact->is_partial = false;
             $otherContact->save();
         }

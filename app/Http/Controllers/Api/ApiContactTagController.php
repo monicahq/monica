@@ -23,7 +23,7 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = $request->input('tags');
+        $tags = $request->get('tags');
         foreach ($tags as $tag) {
             $contact->setTag($tag);
         }
@@ -63,7 +63,7 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = $request->input('tags');
+        $tags = $request->get('tags');
         foreach ($tags as $tag) {
             // does the tag exist?
             try {

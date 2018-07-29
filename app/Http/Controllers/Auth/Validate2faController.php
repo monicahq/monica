@@ -16,7 +16,7 @@ class Validate2faController extends Controller
     public function index(Request $request)
     {
         if ($request->has('url')) {
-            return redirect(urldecode($request->input('url')));
+            return redirect(urldecode($request->get('url')));
         }
 
         return redirect()->route('login');

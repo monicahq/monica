@@ -23,7 +23,7 @@ class CallsController extends Controller
                 'called_at',
             ])
             + [
-                'content' => ($request->input('content') == '' ? null : $request->input('content')),
+                'content' => ($request->get('content') == '' ? null : $request->get('content')),
                 'account_id' => $contact->account_id,
             ]
         );

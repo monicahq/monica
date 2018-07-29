@@ -40,8 +40,8 @@ class TasksController extends Controller
     {
         $task = $contact->tasks()->create([
             'account_id' => auth()->user()->account_id,
-            'title' => $request->input('title'),
-            'description' => ($request->input('description') == '' ? null : $request->input('description')),
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
 
         $contact->logEvent('task', $task->id, 'create');
@@ -55,9 +55,9 @@ class TasksController extends Controller
     public function update(TasksRequest $request, Contact $contact, Task $task)
     {
         $task->update([
-            'title' => $request->input('title'),
-            'description' => ($request->input('description') == '' ? null : $request->input('description')),
-            'completed' => $request->input('completed'),
+            'title' => $request->get('title'),
+            'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            'completed' => $request->get('completed'),
         ]);
 
         $contact->logEvent('task', $task->id, 'update');

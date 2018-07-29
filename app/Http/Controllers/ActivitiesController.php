@@ -44,7 +44,7 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $specifiedContacts = $request->input('contacts');
+        $specifiedContacts = $request->get('contacts');
 
         try {
             // Test if every attached contact are found before creating the activity
@@ -109,7 +109,7 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
-        $specifiedContacts = $request->input('contacts');
+        $specifiedContacts = $request->get('contacts');
 
         try {
             // Test if every attached contact are found before updating the activity

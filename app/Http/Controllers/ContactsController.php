@@ -26,7 +26,7 @@ class ContactsController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $sort = $request->input('sort') ?? $user->contacts_sort_order;
+        $sort = $request->get('sort') ?? $user->contacts_sort_order;
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
@@ -36,18 +36,18 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        if ($request->input('no_tag')) {
+        if ($request->get('no_tag')) {
             //get tag less contacts
             $contacts = $user->account->contacts()->real()->sortedBy($sort);
             $contacts = $contacts->tags('NONE')->get();
-        } elseif ($request->input('tag1')) {
+        } elseif ($request->get('tag1')) {
             // get contacts with selected tags
 
             $tags = collect();
 
-            while ($request->input('tag'.$count)) {
+            while ($request->get('tag'.$count)) {
                 $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->input('tag'.$count))
+                            ->where('name_slug', $request->get('tag'.$count))
                             ->get();
 
                 if (! ($tags->contains($tag[0]))) {
@@ -76,7 +76,7 @@ class ContactsController extends Controller
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
             ->withTagCount($count)
-            ->withTagLess($request->input('no_tag') ?? false);
+            ->withTagLess($request->get('no_tag') ?? false);
     }
 
     /**
@@ -133,7 +133,7 @@ class ContactsController extends Controller
         $contact->logEvent('contact', $contact->id, 'create');
 
         // Did the user press "Save" or "Submit and add another person"
-        if (! is_null($request->input('save'))) {
+        if (! is_null($request->get('save'))) {
             return redirect()->route('people.show', ['id' => $contact->hashID()]);
         } else {
             return redirect()->route('people.create')
@@ -413,7 +413,7 @@ class ContactsController extends Controller
      */
     public function updateFoodPreferencies(Request $request, Contact $contact)
     {
-        $food = ! empty($request->input('food')) ? $request->input('food') : null;
+        $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
         $contact->updateFoodPreferencies($food);
 
@@ -478,8 +478,8 @@ class ContactsController extends Controller
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
-        $frequency = intval($request->input('frequency'));
-        $state = $request->input('state');
+        $frequency = intval($request->get('frequency'));
+        $state = $request->get('state');
 
         if (auth()->user()->account->hasLimitations()) {
             throw new Exception(trans('people.stay_in_touch_premium'));

@@ -147,7 +147,7 @@ class DashboardController extends Controller
      */
     public function setTab(Request $request)
     {
-        auth()->user()->dashboard_active_tab = $request->input('tab');
+        auth()->user()->dashboard_active_tab = $request->get('tab');
         auth()->user()->save();
     }
 }

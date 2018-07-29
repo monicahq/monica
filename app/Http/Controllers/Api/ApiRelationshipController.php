@@ -64,12 +64,12 @@ class ApiRelationshipController extends ApiController
         }
 
         $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
-            ->find($request->input('relationship_type_id'));
+            ->find($request->get('relationship_type_id'));
 
         $contact = Contact::where('account_id', auth()->user()->account_id)
-            ->find($request->input('contact_is'));
+            ->find($request->get('contact_is'));
         $partner = Contact::where('account_id', auth()->user()->account_id)
-            ->find($request->input('of_contact'));
+            ->find($request->get('of_contact'));
 
         try {
             $contact->setRelationship($partner, $relationshipType->id);
@@ -96,7 +96,7 @@ class ApiRelationshipController extends ApiController
         }
 
         $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
-            ->find($request->input('relationship_type_id'));
+            ->find($request->get('relationship_type_id'));
         $relationship = Relationship::where('account_id', auth()->user()->account_id)
             ->find($relationshipId);
         $relationship->relationship_type_id = $relationshipType->id;
@@ -153,28 +153,28 @@ class ApiRelationshipController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        if ($request->input('relationship_type_id')) {
+        if ($request->get('relationship_type_id')) {
             try {
                 RelationshipType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('relationship_type_id'));
+                    ->findOrFail($request->get('relationship_type_id'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
         }
 
-        if ($request->input('contact_is')) {
+        if ($request->get('contact_is')) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('contact_is'));
+                    ->findOrFail($request->get('contact_is'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
         }
 
-        if ($request->input('of_contact')) {
+        if ($request->get('of_contact')) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('of_contact'));
+                    ->findOrFail($request->get('of_contact'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -201,10 +201,10 @@ class ApiRelationshipController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        if ($request->input('relationship_type_id')) {
+        if ($request->get('relationship_type_id')) {
             try {
                 RelationshipType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('relationship_type_id'));
+                    ->findOrFail($request->get('relationship_type_id'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }

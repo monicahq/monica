@@ -38,8 +38,8 @@ class OAuthController extends Controller
             return $this->handleError();
         }
 
-        $email = $request->input('email');
-        $password = $request->input('password');
+        $email = $request->get('email');
+        $password = $request->get('password');
 
         $count = User::where('email', $email)->count();
         if ($count === 0) {

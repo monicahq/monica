@@ -79,7 +79,7 @@ class EmailChangeController extends Controller
         $user = auth()->user();
 
         // Change email of the user
-        $user->email = $request->input('newmail');
+        $user->email = $request->get('newmail');
 
         // Resend validation token
         $user->confirmation_code = str_random(30);

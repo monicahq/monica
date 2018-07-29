@@ -61,12 +61,12 @@ class AddressesController extends Controller
     {
         return $contact->addresses()->create([
             'account_id' => auth()->user()->account_id,
-            'country' => ($request->input('country') == '0' ? null : $request->input('country')),
-            'name' => ($request->input('name') == '' ? null : $request->input('name')),
-            'street' => ($request->input('street') == '' ? null : $request->input('street')),
-            'city' => ($request->input('city') == '' ? null : $request->input('city')),
-            'province' => ($request->input('province') == '' ? null : $request->input('province')),
-            'postal_code' => ($request->input('postal_code') == '' ? null : $request->input('postal_code')),
+            'country' => ($request->get('country') == '0' ? null : $request->get('country')),
+            'name' => ($request->get('name') == '' ? null : $request->get('name')),
+            'street' => ($request->get('street') == '' ? null : $request->get('street')),
+            'city' => ($request->get('city') == '' ? null : $request->get('city')),
+            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
         ]);
     }
 
@@ -76,12 +76,12 @@ class AddressesController extends Controller
     public function edit(AddressesRequest $request, Contact $contact, Address $address)
     {
         $address->update([
-            'country' => ($request->input('country') == '' ? null : $request->input('country')),
-            'name' => ($request->input('name') == '' ? null : $request->input('name')),
-            'street' => ($request->input('street') == '' ? null : $request->input('street')),
-            'city' => ($request->input('city') == '' ? null : $request->input('city')),
-            'province' => ($request->input('province') == '' ? null : $request->input('province')),
-            'postal_code' => ($request->input('postal_code') == '' ? null : $request->input('postal_code')),
+            'country' => ($request->get('country') == '' ? null : $request->get('country')),
+            'name' => ($request->get('name') == '' ? null : $request->get('name')),
+            'street' => ($request->get('street') == '' ? null : $request->get('street')),
+            'city' => ($request->get('city') == '' ? null : $request->get('city')),
+            'province' => ($request->get('province') == '' ? null : $request->get('province')),
+            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
         ]);
 
         return $address;
