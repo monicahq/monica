@@ -131,6 +131,9 @@ class ApiActivityTypeCategoryController extends ApiController
 
     /**
      * Delete an activity type category.
+     * When an activity type category is deleted, all the activity types that
+     * belong to it are also deleted.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -144,6 +147,7 @@ class ApiActivityTypeCategoryController extends ApiController
             return $this->respondNotFound();
         }
 
+        $activityTypeCategory->deleteAllAssociatedActivityTypes();
         $activityTypeCategory->delete();
 
         return $this->respondObjectDeleted($activityTypeCategory->id);
