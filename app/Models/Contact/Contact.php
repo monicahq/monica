@@ -1159,7 +1159,7 @@ class Contact extends Model
                                     ->where('relationship_type_id', $reverseRelationshipType->id)
                                     ->first();
 
-        $relationship->delete();                                
+        $relationship->delete();
     }
 
     /**
