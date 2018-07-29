@@ -21,7 +21,7 @@ class ActivityStatisticServiceTest extends TestCase
         $service = new ActivityStatisticService;
         $contact = factory(Contact::class)->create();
 
-        for ($i=0; $i<=2; $i++) {
+        for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
                 'date_it_happened' => Carbon::now()->subMonth(),
             ]);

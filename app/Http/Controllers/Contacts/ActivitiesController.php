@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Contacts;
 
 use Carbon\Carbon;
-use App\Models\Contact\Contact;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\ActivityStatisticService;
 
 class ActivitiesController extends Controller
 {
     /**
-     * Statistics about an activity
+     * Statistics about an activity.
      *
      * @var ActivityStatisticService
      */

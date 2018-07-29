@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use Carbon\Carbon;
-use App\Models\Contact\ActivityType;
-use App\Models\Contact\ActivityStatistic;
 use App\Models\Contact\Contact;
+use App\Models\Contact\ActivityType;
 
 class ActivityStatisticService
 {
@@ -79,7 +78,7 @@ class ActivityStatisticService
      * a contact in a given timeframe, along with the number of occurences.
      *
      * @param Contact $contact
-     * @param integer $year
+     * @param int $year
      * @return Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
