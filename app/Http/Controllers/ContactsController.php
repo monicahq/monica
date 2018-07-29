@@ -8,6 +8,7 @@ use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
@@ -428,40 +429,12 @@ class ContactsController extends Controller
     public function search(Request $request)
     {
         $needle = $request->needle;
-        $accountId = $request->accountId;
-
-        if ($accountId != auth()->user()->account_id) {
-            return;
-        }
 
         if ($needle == null) {
             return;
         }
 
-        if ($accountId == null) {
-            return;
-        }
-
-        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
-            $search_field = $matches[1];
-            $search_term = $matches[2];
-
-            $field = ContactFieldType::where('account_id', accountId)
-                ->where('name', 'LIKE', $search_field)
-                ->first();
-
-            $field_id = $field->id;
-
-            $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
-                $query->where([
-                    ['account_id', $accountId],
-                    ['data', 'like', "$search_term%"],
-                    ['contact_field_type_id', $field_id],
-                ]);
-            })->get();
-        } else {
-            $results = Contact::search($needle, $accountId, 20, 'created_at');
-        }
+        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
