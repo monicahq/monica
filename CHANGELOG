@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add ability to define custom activity types and activity type categories through the API and the UI
+* Show reminders for the current date on the dashboard
 
 RELEASED VERSIONS:
 
