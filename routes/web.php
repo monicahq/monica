@@ -224,6 +224,16 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
             Route::get('/settings/personalization/modules', 'Settings\\ModulesController@get');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
+
+            Route::get('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@index');
+            Route::post('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@create');
+            Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
+            Route::delete('/settings/personalization/activitytypecategories/{activityTypeCategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
+
+            Route::get('/settings/personalization/activitytypes/{activityTypeCategoryId}', 'Settings\\ActivityTypesController@index');
+            Route::post('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@create');
+            Route::put('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@update');
+            Route::delete('/settings/personalization/activitytypes/{activityType}', 'Settings\\ActivityTypesController@destroy');
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');

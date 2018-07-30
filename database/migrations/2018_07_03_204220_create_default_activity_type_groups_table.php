@@ -265,5 +265,6 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
     {
         Schema::dropIfExists('default_activity_type_categories');
         Schema::dropIfExists('default_activity_types');
+        Schema::dropIfExists('activity_type_categories');
     }
 }
