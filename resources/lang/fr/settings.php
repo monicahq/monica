@@ -326,5 +326,5 @@ return [
     'personalization_activity_type_modal_delete' => 'Supprimer un type d’activité',
     'personalization_activity_type_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer ce type d’activité ? Les activités qui appartiennent à cette catégorie ne seront pas affectées par cette suppression.',
     'personalization_activity_type_modal_delete_error' => 'Impossible de trouver ce type d’activité.',
-    'personalization_activity_type_category_modal_delete_error' => 'We can’t find this activity type category.',
+    'personalization_activity_type_category_modal_delete_error' => 'Impossible de trouver cette catégorie de type d’activité.',
 ];
