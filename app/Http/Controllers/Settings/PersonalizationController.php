@@ -64,8 +64,7 @@ class PersonalizationController extends Controller
     {
         try {
             $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldTypeId)
-                ->firstOrFail();
+                ->findOrFail($contactFieldTypeId);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'errors' => [
@@ -100,8 +99,7 @@ class PersonalizationController extends Controller
     {
         try {
             $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldTypeId)
-                ->firstOrFail();
+                ->findOrFail($contactFieldTypeId);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'errors' => [

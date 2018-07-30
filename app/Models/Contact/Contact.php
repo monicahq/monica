@@ -1207,8 +1207,7 @@ class Contact extends Model
 
         try {
             $contact = self::where('account_id', $this->account_id)
-                ->where('id', $this->first_met_through_contact_id)
-                ->firstOrFail();
+                ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
             return;
         }

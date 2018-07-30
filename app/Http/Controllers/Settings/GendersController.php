@@ -78,8 +78,7 @@ class GendersController extends Controller
     {
         try {
             $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $genderToReplaceWithId)
-                ->firstOrFail();
+                ->findOrFail($genderToReplaceWithId);
         } catch (ModelNotFoundException $e) {
             throw new Exception(trans('settings.personalization_genders_modal_error'));
         }
