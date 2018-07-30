@@ -543,6 +543,23 @@ class ContactTest extends FeatureTestCase
         $this->assertNull($contact->getAvatarURL());
     }
 
+    public function test_gravatar_set_emailbadformat()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => ' bad%20<email@bad.com',
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
     public function test_gravatar_set_emailreal()
     {
         $account = factory(Account::class)->create();
