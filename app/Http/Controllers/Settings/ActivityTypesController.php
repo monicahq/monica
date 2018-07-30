@@ -26,7 +26,7 @@ class ActivityTypesController extends Controller
                 'activity_type_category_id',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 
