@@ -37,7 +37,9 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SetNextReminderDate::class);
+        Bus::assertDispatched(SetNextReminderDate::class, function ($job) {
+            return $job->delay == now()->addDay();
+        });
     }
 
     public function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
