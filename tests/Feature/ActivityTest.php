@@ -153,7 +153,7 @@ class ActivityTest extends FeatureTestCase
         ];
 
         $response = $this->post('/activities/store/'.$contact1->id, $params + ['contacts' => [$contact2->id]]);
-        $response->assertStatus(404);
+        $response->assertStatus(302);
     }
 
     public function test_user_can_edit_an_activity()
