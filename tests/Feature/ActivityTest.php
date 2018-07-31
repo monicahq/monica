@@ -109,10 +109,10 @@ class ActivityTest extends FeatureTestCase
         list($user1, $contact1) = $this->fetchUser();
         $account2 = factory(Account::class)->create();
         $user2 = factory(User::class)->create([
-            'account_id' => $account2->id,            
+            'account_id' => $account2->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $account2->id,            
+            'account_id' => $account2->id,
         ]);
 
         $activityTitle = 'This is the title';
@@ -138,10 +138,10 @@ class ActivityTest extends FeatureTestCase
         list($user1, $contact1) = $this->fetchUser();
         $account2 = factory(Account::class)->create();
         $user2 = factory(User::class)->create([
-            'account_id' => $account2->id,            
+            'account_id' => $account2->id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $account2->id,            
+            'account_id' => $account2->id,
         ]);
 
         $activityTitle = 'This is the title';
