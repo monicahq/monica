@@ -17,7 +17,7 @@ class SubscriptionsController extends Controller
     public function index()
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
@@ -42,11 +42,11 @@ class SubscriptionsController extends Controller
     public function upgrade(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (auth()->user()->account->isSubscribed()) {
-            return redirect('/settings/subscriptions');
+            return redirect()->route('settings.subscriptions.index');
         }
 
         $plan = $request->query('plan');
@@ -65,7 +65,7 @@ class SubscriptionsController extends Controller
     public function upgradeSuccess(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.success');
@@ -79,7 +79,7 @@ class SubscriptionsController extends Controller
     public function downgradeSuccess(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.downgrade-success');
@@ -93,11 +93,11 @@ class SubscriptionsController extends Controller
     public function downgrade()
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.downgrade-checklist');
@@ -111,16 +111,16 @@ class SubscriptionsController extends Controller
     public function processDowngrade()
     {
         if (! auth()->user()->account->canDowngrade()) {
-            return redirect('/settings/users/subscriptions/downgrade');
+            return redirect()->route('settings.subscriptions.downgrade');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings');
+            return redirect()->route('settings.index');
         }
 
         auth()->user()->account->subscription(auth()->user()->account->getSubscribedPlanName())->cancelNow();
 
-        return redirect('/settings/subscriptions/downgrade/success');
+        return redirect()->route('settings.subscriptions.downgrade.success');
     }
 
     /**
@@ -131,7 +131,7 @@ class SubscriptionsController extends Controller
     public function processPayment(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         $stripeToken = $request->input('stripeToken');
@@ -143,7 +143,7 @@ class SubscriptionsController extends Controller
                         'email' => auth()->user()->email,
                     ]);
 
-        return redirect('settings/subscriptions/upgrade/success');
+        return redirect()->route('settings.subscriptions.upgrade.success');
     }
 
     /**

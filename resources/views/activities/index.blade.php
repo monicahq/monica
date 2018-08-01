@@ -26,7 +26,7 @@
       @foreach($contact->activities as $activity)
       <li class="table-row">
         <div class="table-cell date">
-          {{ \App\Helpers\DateHelper::getShortDate($activity->getDateItHappened()) }}
+          {{ \App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}
         </div>
         <div class="table-cell">
           {{ $activity->getSummary() }}
@@ -38,12 +38,12 @@
           <a href="{{ route('activities.edit', [$activity, $contact]) }}" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
-          <a href="#" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
+          <a href="{{ route('people.show', $contact) }}" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>
 
-        <form method="POST" action="{{ action('ActivitiesController@destroy', compact('contact', 'activity')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ route('activities.delete', [$activity, $contact]) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

@@ -14,19 +14,19 @@
                   <ul class="contacts">
                       <ul class="contacts-list">
                           @foreach ($activity->contacts as $contact)
-                              <li class="pretty-tag"><a href="/people/{{ $contact->hashID() }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                              <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                           @endforeach
                       </ul>
                   </ul>
                   <br>
 
                   <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
-                  <p>{{ $activity->date_it_happened->format('Y-m-d') }}</p>
+                  <p>{{ \App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}</p>
                   <br>
 
                   <label for="activity_type_id">{{ trans('people.activities_activity') }}</label>
                   @if (isset($activity->type))
-                     <p>{{ trans('people.activity_type_'.$activity->type->key) }}</p>
+                     <p>{{ $activity->type->name }}</p>
                   @else
                      <p>{{ trans('app.unknown')}}</p>
                   @endif

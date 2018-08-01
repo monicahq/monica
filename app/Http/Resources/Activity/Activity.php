@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Activity;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
@@ -20,7 +21,7 @@ class Activity extends Resource
             'object' => 'activity',
             'summary' => $this->summary,
             'description' => $this->description,
-            'date_it_happened' => $this->date_it_happened->format(config('api.timestamp_format')),
+            'date_it_happened' => DateHelper::getTimestamp($this->date_it_happened),
             'activity_type' => new ActivityTypeResource($this->type),
             'attendees' => [
                 'total' => $this->contacts()->count(),
@@ -29,8 +30,8 @@ class Activity extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use Carbon\Carbon;
 use App\Helpers\DBHelper;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
@@ -135,7 +135,7 @@ class ApiContactController extends ApiController
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -151,7 +151,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -167,7 +167,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -225,7 +225,7 @@ class ApiContactController extends ApiController
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -242,7 +242,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -259,7 +259,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);

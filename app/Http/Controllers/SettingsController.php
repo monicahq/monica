@@ -27,7 +27,7 @@ class SettingsController extends Controller
 {
     protected $ignoredTables = [
         'accounts',
-        'activity_type_groups',
+        'activity_type_activities',
         'activity_types',
         'api_usage',
         'cache',
@@ -35,6 +35,8 @@ class SettingsController extends Controller
         'changelogs',
         'countries',
         'currencies',
+        'default_activity_types',
+        'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
         'default_relationship_type_groups',
@@ -54,6 +56,7 @@ class SettingsController extends Controller
         'statistics',
         'subscriptions',
         'terms',
+        'u2f_key',
         'users',
     ];
 
@@ -116,7 +119,7 @@ class SettingsController extends Controller
         $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
         $user->account->save();
 
-        return redirect('settings')
+        return redirect()->route('settings.index')
             ->with('status', trans('settings.settings_success', [], $request['locale']));
     }
 
@@ -155,7 +158,7 @@ class SettingsController extends Controller
         auth()->logout();
         $user->forceDelete();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     /**
@@ -186,7 +189,7 @@ class SettingsController extends Controller
 
         $account->populateDefaultFields($account);
 
-        return redirect('/settings')
+        return redirect()->route('settings.index')
                     ->with('status', trans('settings.reset_success'));
     }
 
@@ -236,7 +239,7 @@ class SettingsController extends Controller
     public function upload()
     {
         if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings/subscriptions');
+            return redirect()->route('settings.subscriptions.index');
         }
 
         return view('settings.imports.upload');
@@ -297,7 +300,7 @@ class SettingsController extends Controller
     public function addUser()
     {
         if (config('monica.requires_subscription') && ! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings/subscriptions');
+            return redirect()->route('settings.subscriptions.index');
         }
 
         return view('settings.users.add');
@@ -345,7 +348,7 @@ class SettingsController extends Controller
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
         ]);
 
-        return redirect('settings/users')
+        return redirect()->route('settings.users.index')
             ->with('status', trans('settings.settings_success'));
     }
 
@@ -359,7 +362,7 @@ class SettingsController extends Controller
     {
         $invitation->delete();
 
-        return redirect('/settings/users')
+        return redirect()->route('settings.users.index')
             ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
     }
 
@@ -372,7 +375,7 @@ class SettingsController extends Controller
     public function acceptInvitation($key)
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect()->route('login');
         }
 
         Invitation::where('invitation_key', $key)
@@ -411,7 +414,7 @@ class SettingsController extends Controller
         dispatch(new SendNewUserAlert($user));
 
         if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
-            return redirect('dashboard');
+            return redirect()->route('dashboard.index');
         }
     }
 
@@ -426,18 +429,18 @@ class SettingsController extends Controller
         $user = User::find($userID);
 
         if ($user->account_id != auth()->user()->account_id) {
-            return redirect('/');
+            return redirect()->route('login');
         }
 
         // make sure you don't delete yourself from this screen
         if ($user->id == auth()->user()->id) {
-            return redirect('/');
+            return redirect()->route('login');
         }
 
         $user = User::find($userID);
         $user->delete();
 
-        return redirect('/settings/users')
+        return redirect()->route('settings.users.index')
                 ->with('success', trans('settings.users_list_delete_success'));
     }
 
@@ -454,14 +457,14 @@ class SettingsController extends Controller
         $tag = Tag::findOrFail($tagId);
 
         if ($tag->account_id != auth()->user()->account_id) {
-            return redirect('/');
+            return redirect()->route('login');
         }
 
         $tag->contacts()->detach();
 
         $tag->delete();
 
-        return redirect('/settings/tags')
+        return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
     }
 

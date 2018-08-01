@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Aktivity',
-    'activity_type_group_simple_activities' => 'Jednoduché aktivity',
-    'activity_type_group_sport' => 'Sport',
-    'activity_type_group_food' => 'Jídlo',
-    'activity_type_group_cultural_activities' => 'Kulturní aktivity',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'společný čas',
     'activity_type_watched_movie_at_home' => 'sledování filmu doma',
     'activity_type_talked_at_home' => 'promluvili jsme si doma',
