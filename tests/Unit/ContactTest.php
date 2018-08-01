@@ -8,7 +8,8 @@ use Tests\FeatureTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
-use App\Models\Contact\Convesation;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\Message;
 use App\Mail\StayInTouchEmail;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -62,7 +63,7 @@ class ContactTest extends FeatureTestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $relationship = factory(Relationship::class, 2)->create([
             'account_id' => $account->id,
-            'contact_id' => $contact->id,
+            'contact_is' => $contact->id,
         ]);
 
         $this->assertTrue($contact->relationships()->exists());

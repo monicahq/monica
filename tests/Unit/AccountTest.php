@@ -9,6 +9,8 @@ use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Gender;
 use App\Models\User\Changelog;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\Message;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;

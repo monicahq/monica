@@ -28,6 +28,19 @@ class ConversationServiceTest extends TestCase
         'updated_at',
     ];
 
+    protected function createRequest(
+        $method,
+        $content,
+        $uri = '/test',
+        $server = ['CONTENT_TYPE' => 'application/json'],
+        $parameters = [],
+        $cookies = [],
+        $files = []
+    ) {
+        $request = new \Illuminate\Http\Request;
+        return $request->createFromBase(\Symfony\Component\HttpFoundation\Request::create($uri, $method, $parameters, $cookies, $files, $server, $content));
+    }
+
     public function test_it_stores_a_conversation()
     {
         $contact = factory(Contact::class)->create([]);
@@ -37,7 +50,8 @@ class ConversationServiceTest extends TestCase
         ];
 
         $conversationService = new ConversationService;
-        $response = $conversationService->create($request, $contact);
+        $request = $this->createRequest('POST', $request);
+        $response = $conversationService->create($request, $contact->account, $contact);
 
         $this->assertDatabaseHas('conversations', [
             'contact_id' => $contact->id,

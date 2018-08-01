@@ -9,6 +9,7 @@ use App\Models\Journal\Day;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Conversation;
+use App\Models\Contact\Message;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
