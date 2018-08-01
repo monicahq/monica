@@ -658,7 +658,7 @@ class Account extends Model
         $startOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->startOfMonth();
         // don't get reminders for past events:
         if ($startOfMonth->isPast()) {
-            $startOfMonth = now(DateHelper::getTimezone());
+            $startOfMonth = now(DateHelper::getTimezone())->startOfDay();
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 

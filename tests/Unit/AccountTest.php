@@ -344,6 +344,26 @@ class AccountTest extends FeatureTestCase
         );
     }
 
+    public function test_get_reminders_for_month_returns_reminders_for_today()
+    {
+        $user = $this->signIn();
+
+        $account = $user->account;
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12));
+
+        // add a reminder for today
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'next_expected_date' => '2017-01-01 08:00:00',
+        ]);
+
+        $this->assertEquals(
+            1,
+            $account->getRemindersForMonth(0)->count()
+        );
+    }
+
     public function test_it_gets_the_id_of_the_subscribed_plan()
     {
         $user = $this->signIn();
