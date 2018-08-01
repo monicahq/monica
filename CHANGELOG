@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to search a contact by job title
 * Fix invoice page not showing properly
 * Fix translation not being displayed correctly on Subscription page
 * Add ability to define custom activity types and activity type categories through the API and the UI
