@@ -49,6 +49,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'job',
     ];
 
     // The list of columns we want the Searchable trait to select.
@@ -994,7 +995,11 @@ class Contact extends Model
             return false;
         }
 
-        if (! app('gravatar')->exists($email)) {
+        try {
+            if (! app('gravatar')->exists($email)) {
+                return false;
+            }
+        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
             return false;
         }
 
