@@ -8,8 +8,6 @@ use App\Models\User\User;
 use App\Traits\Searchable;
 use App\Models\Account\Event;
 use App\Models\Journal\Entry;
-use App\Models\Contact\Convesation;
-use App\Models\Contact\Message;
 use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
