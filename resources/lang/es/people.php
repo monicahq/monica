@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added successfully',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',
