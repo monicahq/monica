@@ -147,14 +147,13 @@ class SettingsController extends Controller
             DB::table($tableName)->where('account_id', $account->id)->delete();
         }
 
-        DB::table('accounts')->where('id', $account->id)->delete();
-
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && auth()->user()->has_access_to_paid_version_for_free == 0) {
             $account->subscription($account->getSubscribedPlanName())->cancelNow();
         }
 
+        DB::table('accounts')->where('id', $account->id)->delete();
         auth()->logout();
         $user->forceDelete();
 
