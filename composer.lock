@@ -342,21 +342,21 @@
         },
         {
             "name": "defuse/php-encryption",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/defuse/php-encryption.git",
-                "reference": "0d4d27c368ca6798bc162469e43248c363c73495"
+                "reference": "0f407c43b953d571421e0020ba92082ed5fb7620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/defuse/php-encryption/zipball/0d4d27c368ca6798bc162469e43248c363c73495",
-                "reference": "0d4d27c368ca6798bc162469e43248c363c73495",
+                "url": "https://api.github.com/repos/defuse/php-encryption/zipball/0f407c43b953d571421e0020ba92082ed5fb7620",
+                "reference": "0f407c43b953d571421e0020ba92082ed5fb7620",
                 "shasum": ""
             },
             "require": {
                 "ext-openssl": "*",
-                "paragonie/random_compat": "~2.0",
+                "paragonie/random_compat": ">= 2",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -401,7 +401,7 @@
                 "security",
                 "symmetric key cryptography"
             ],
-            "time": "2018-04-23T19:33:40+00:00"
+            "time": "2018-07-24T23:27:56+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1959,16 +1959,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v6.0.3",
+            "version": "v6.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "3abbbca3c58a1a07968bd94096a31891fdb48cad"
+                "reference": "83ac18d903c1446be7344464d37fa006fb6957c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/3abbbca3c58a1a07968bd94096a31891fdb48cad",
-                "reference": "3abbbca3c58a1a07968bd94096a31891fdb48cad",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/83ac18d903c1446be7344464d37fa006fb6957c9",
+                "reference": "83ac18d903c1446be7344464d37fa006fb6957c9",
                 "shasum": ""
             },
             "require": {
@@ -2024,7 +2024,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2018-06-20T14:33:24+00:00"
+            "time": "2018-07-17T13:00:32+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -2090,16 +2090,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.2.2",
+            "version": "3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "0b5930be73582369e10c4d4bb7a12bac927a203c"
+                "reference": "01da822b3c2982ca9f2a1234f802a3ec001527ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/0b5930be73582369e10c4d4bb7a12bac927a203c",
-                "reference": "0b5930be73582369e10c4d4bb7a12bac927a203c",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/01da822b3c2982ca9f2a1234f802a3ec001527ec",
+                "reference": "01da822b3c2982ca9f2a1234f802a3ec001527ec",
                 "shasum": ""
             },
             "require": {
@@ -2144,7 +2144,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2017-09-01T08:23:26+00:00"
+            "time": "2018-07-29T14:38:43+00:00"
         },
         {
             "name": "league/event",
@@ -6085,16 +6085,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.0",
+            "version": "1.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e"
+                "reference": "72c13834fb3db2a962e913758b384ff2e6425d6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/11c9c1835e60eef6f9234377a480fcec096ebd9e",
-                "reference": "11c9c1835e60eef6f9234377a480fcec096ebd9e",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/72c13834fb3db2a962e913758b384ff2e6425d6e",
+                "reference": "72c13834fb3db2a962e913758b384ff2e6425d6e",
                 "shasum": ""
             },
             "require": {
@@ -6107,7 +6107,7 @@
             "require-dev": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "phpunit/phpunit": "^5.7.16 || ^6.0.8",
+                "phpunit/phpunit": "^5.7.16 || ^6.0.8 || ^7.2.7",
                 "zendframework/zend-coding-standard": "~1.0"
             },
             "type": "library",
@@ -6144,7 +6144,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-06-27T18:52:43+00:00"
+            "time": "2018-07-24T21:54:38+00:00"
         }
     ],
     "packages-dev": [
