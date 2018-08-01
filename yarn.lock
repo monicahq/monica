@@ -7231,9 +7231,9 @@ sweet-modal-vue@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/sweet-modal-vue/-/sweet-modal-vue-2.0.0.tgz#205ee28b7e5c8579e44303544b500ef7f4fcab21"
 
-tachyons@^4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-4.9.1.tgz#f88d7059d6e53c833bf9351a26f18314c8fdc76a"
+tachyons@^7.0.1-3:
+  version "7.0.1-4"
+  resolved "https://registry.yarnpkg.com/tachyons/-/tachyons-7.0.1-4.tgz#a02dc8964b9f9c556d4529f90c3aab3bdfc08022"
 
 tapable@^0.2.7:
   version "0.2.8"
