@@ -175,6 +175,11 @@ Vue.component(
     require('./components/settings/Modules.vue')
 );
 
+Vue.component(
+    'activity-types',
+    require('./components/settings/ActivityTypes.vue')
+);
+
 // axios
 import axios from 'axios';
 

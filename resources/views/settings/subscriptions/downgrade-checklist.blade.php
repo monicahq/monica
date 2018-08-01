@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_subscriptions') }}
@@ -50,7 +50,7 @@
 
           </ul>
 
-          <form method="POST" action="/settings/subscriptions/downgrade">
+          <form method="POST" action="{{ route('settings.subscriptions.downgrade') }}">
             {{ csrf_field() }}
 
             @if (auth()->user()->account->canDowngrade())

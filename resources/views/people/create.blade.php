@@ -21,7 +21,7 @@
 
     @include('partials.errors')
 
-    <form action="/people" method="POST">
+    <form action="{{ route('people.store') }}" method="POST">
       {{ csrf_field() }}
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
@@ -100,7 +100,7 @@
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
           <div class="">
-            <a href="/people" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+            <a href="{{ route('people.index') }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
             <button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>

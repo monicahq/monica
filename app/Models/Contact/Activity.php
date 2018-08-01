@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
@@ -105,18 +104,14 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date_it_happened field according to user's timezone.
+     * Get the date_it_happened field.
      *
      * @param string $value
      * @return string
      */
     public function getDateItHappenedAttribute($value)
     {
-        if (auth()->user()) {
-            return Carbon::parse($value, auth()->user()->timezone);
-        }
-
-        return Carbon::parse($value);
+        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
     }
 
     /**
@@ -137,16 +132,6 @@ class Activity extends Model implements IsJournalableInterface
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Get the date the activity happened.
-     *
-     * @return Carbon
-     */
-    public function getDateItHappened()
-    {
-        return $this->date_it_happened;
     }
 
     /**
@@ -183,7 +168,7 @@ class Activity extends Model implements IsJournalableInterface
         return [
             'type' => 'activity',
             'id' => $this->id,
-            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'activity_type' => (! is_null($this->type) ? $this->type->name : null),
             'summary' => $this->summary,
             'description' => $this->description,
             'day' => $this->date_it_happened->day,

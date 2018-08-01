@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Address;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Country\Country as CountryResource;
 
@@ -24,8 +25,8 @@ class AddressShort extends Resource
             'province' => $this->province,
             'postal_code' => $this->postal_code,
             'country' => new CountryResource($this->country),
-            'created_at' => (is_null($this->created_at) ? null : $this->created_at->format(config('api.timestamp_format'))),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

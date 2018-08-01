@@ -76,7 +76,7 @@ update_setting .env APP_DISABLE_SIGNUP "false"
 chown -R www-data:www-data .
 
 echo -e "\n\033[4;32mConfiguring cron script\033[0;40m"
-{ crontab -l -u www-data; echo "* * * * * /usr/bin/php $DESTDIR/artisan schedule:run"; } | crontab -u www-data - || true
+{ crontab -l -u www-data; echo "* * * * * /usr/bin/php $DESTDIR/artisan schedule:run"; } | crontab -u www-data - || true
 
 echo -e "\n\033[4;32mConfiguring apache\033[0;40m"
 a2enmod rewrite

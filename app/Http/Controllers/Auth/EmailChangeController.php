@@ -36,7 +36,7 @@ class EmailChangeController extends Controller
                 ->with('email', $user->email);
         }
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 
     /**
@@ -103,7 +103,7 @@ class EmailChangeController extends Controller
      */
     protected function sendChangedResponse($response)
     {
-        return redirect('/')
+        return redirect()->route('login')
                     ->with('status', trans($response));
     }
 
@@ -115,7 +115,7 @@ class EmailChangeController extends Controller
      */
     protected function sendChangedFailedResponse($response)
     {
-        return redirect('/')
+        return redirect()->route('login')
                     ->withErrors(trans($response));
     }
 }

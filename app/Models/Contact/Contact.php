@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
@@ -995,7 +994,11 @@ class Contact extends Model
             return false;
         }
 
-        if (! app('gravatar')->exists($email)) {
+        try {
+            if (! app('gravatar')->exists($email)) {
+                return false;
+            }
+        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
             return false;
         }
 
@@ -1499,16 +1502,15 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
-     * @param string $timezone
      */
-    public function setStayInTouchTriggerDate($frequency, $timezone)
+    public function setStayInTouchTriggerDate($frequency)
     {
-        $now = Carbon::now($timezone);
-        $newTriggerDate = $now->addDays($frequency);
-        $this->stay_in_touch_trigger_date = $newTriggerDate;
-
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
+        } else {
+            $now = now();
+            $newTriggerDate = $now->addDays($frequency);
+            $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
         $this->save();

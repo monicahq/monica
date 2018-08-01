@@ -13,10 +13,10 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
+                <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
                 {{ $contact->name }}
@@ -42,11 +42,11 @@
 
             @include('people.sidebar')
 
-            <p><a href="{{ url('/people/'.$contact->hashID().'/vcard') }}">{{ trans('people.people_export') }}</a></p>
+            <p><a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a></p>
             <p>
               {{ trans('people.people_delete_message') }}
               <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
-              <form method="POST" action="{{ action('ContactsController@delete', $contact) }}" id="contact-delete-form" class="hidden">
+              <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
                 {{ method_field('DELETE') }}
                 {{ csrf_field() }}
               </form>

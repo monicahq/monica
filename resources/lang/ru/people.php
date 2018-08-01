@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Активности',
-    'activity_type_group_simple_activities' => 'Простые',
-    'activity_type_group_sport' => 'Спорт',
-    'activity_type_group_food' => 'Еда',
-    'activity_type_group_cultural_activities' => 'Культурные',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'просто повеселились',
     'activity_type_watched_movie_at_home' => 'смотрели кино дома',
     'activity_type_talked_at_home' => 'разговаривали дома',
