@@ -67,7 +67,7 @@ class ApiActivityTypeCategoryController extends ApiController
         try {
             $activityTypeCategory = ActivityTypeCategory::create(
                 $request->all()
-                + ['account_id' => auth()->user()->account->id]
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();

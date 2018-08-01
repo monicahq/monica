@@ -26,7 +26,7 @@ class ActivityTypesController extends Controller
                 'activity_type_category_id',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 
@@ -48,8 +48,7 @@ class ActivityTypesController extends Controller
 
         try {
             $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->get('id'))
-                ->firstOrFail();
+                ->findOrFail($request->get('id'));
         } catch (ModelNotFoundException $e) {
             return false;
         }
@@ -70,8 +69,7 @@ class ActivityTypesController extends Controller
     {
         try {
             $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
+                ->findOrFail($activityTypeId);
         } catch (ModelNotFoundException $e) {
             return trans('settings.personalization_activity_type_modal_delete_error');
         }

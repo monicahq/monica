@@ -662,7 +662,7 @@ class Account extends Model
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return auth()->user()->account->reminders()
+        return $this->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
                      ->orderBy('next_expected_date', 'asc')
                      ->get();

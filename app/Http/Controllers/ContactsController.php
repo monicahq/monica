@@ -8,9 +8,9 @@ use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
@@ -46,8 +46,8 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
-                $tag = Tag::where('name_slug', $request->get('tag'.$count))
-                            ->where('account_id', auth()->user()->account_id)
+                $tag = Tag::where('account_id', auth()->user()->account_id)
+                            ->where('name_slug', $request->get('tag'.$count))
                             ->get();
 
                 if (! ($tags->contains($tag[0]))) {
@@ -120,7 +120,7 @@ class ContactsController extends Controller
         }
 
         $contact = new Contact;
-        $contact->account_id = Auth::user()->account_id;
+        $contact->account_id = $request->user()->account_id;
         $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
@@ -342,8 +342,12 @@ class ContactsController extends Controller
             return redirect()->route('people.index');
         }
 
-        Relationship::where('contact_is', $contact->id)->delete();
-        Relationship::where('of_contact', $contact->id)->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('contact_is', $contact->id)
+            ->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('of_contact', $contact->id)
+            ->delete();
 
         $contact->deleteEverything();
 
@@ -424,37 +428,12 @@ class ContactsController extends Controller
     public function search(Request $request)
     {
         $needle = $request->needle;
-        $accountId = $request->accountId;
-
-        if ($accountId != auth()->user()->account_id) {
-            return;
-        }
 
         if ($needle == null) {
             return;
         }
 
-        if ($accountId == null) {
-            return;
-        }
-
-        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
-            $search_field = $matches[1];
-            $search_term = $matches[2];
-
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
-
-            $field_id = $field->id;
-
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
-                $query->where([
-                    ['data', 'like', "$search_term%"],
-                    ['contact_field_type_id', $field_id],
-                ]);
-            })->get();
-        } else {
-            $results = Contact::search($needle, $accountId, 20, 'created_at');
-        }
+        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
