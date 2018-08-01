@@ -1755,16 +1755,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.1.0",
+            "version": "v7.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7"
+                "reference": "3f8b198f85431012d18f9645179bac35a03753e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/24064155f6f9d97e83669455ad305c3dfec908b7",
-                "reference": "24064155f6f9d97e83669455ad305c3dfec908b7",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/3f8b198f85431012d18f9645179bac35a03753e6",
+                "reference": "3f8b198f85431012d18f9645179bac35a03753e6",
                 "shasum": ""
             },
             "require": {
@@ -1816,7 +1816,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2018-03-14T12:22:43+00:00"
+            "time": "2018-06-06T13:37:08+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3130,16 +3130,16 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3.0",
+            "version": "v0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9"
+                "reference": "ccc46ef6340d4b8a4a68047e68d8501ea961442c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/8f543ede60386faec9b0012833536de4b6083bb9",
-                "reference": "8f543ede60386faec9b0012833536de4b6083bb9",
+                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/ccc46ef6340d4b8a4a68047e68d8501ea961442c",
+                "reference": "ccc46ef6340d4b8a4a68047e68d8501ea961442c",
                 "shasum": ""
             },
             "require": {
@@ -3166,7 +3166,7 @@
             ],
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
-            "time": "2018-04-14T14:36:18+00:00"
+            "time": "2018-06-03T10:10:03+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
