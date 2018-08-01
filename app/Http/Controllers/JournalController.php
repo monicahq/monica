@@ -107,9 +107,8 @@ class JournalController extends Controller
      * Delete the Day entry.
      * @return mixed
      */
-    public function trashDay($day)
+    public function trashDay(Day $day)
     {
-        $day = Day::findOrFail($day->id);
         $day->deleteJournalEntry();
         $day->delete();
     }
@@ -157,7 +156,7 @@ class JournalController extends Controller
         }
 
         $entry = new Entry;
-        $entry->account_id = Auth::user()->account_id;
+        $entry->account_id = $request->user()->account_id;
         $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {
@@ -178,11 +177,8 @@ class JournalController extends Controller
      */
     public function deleteEntry(Request $request, $entryId)
     {
-        $entry = Entry::findOrFail($entryId);
-
-        if ($entry->account_id != Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
+        $entry = Entry::where('account_id', $request->user()->account_id)
+            ->findOrFail($entryId);
 
         $entry->deleteJournalEntry();
         $entry->delete();

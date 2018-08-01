@@ -62,7 +62,7 @@ class ApiPetController extends ApiController
             $pet = Pet::create(
               $request->all()
               + [
-                static::ACCOUNT_ID => auth()->user()->account->id,
+                static::ACCOUNT_ID => auth()->user()->account_id,
               ]
             );
         } catch (QueryException $e) {

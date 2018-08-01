@@ -48,8 +48,7 @@ class RouteServiceProvider extends ServiceProvider
                 $value = app('idhasher')->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $value)
-                    ->firstOrFail();
+                    ->findOrFail($value);
             } catch (ModelNotFoundException $ex) {
                 redirect()->route('people.missing')->send();
             }
@@ -60,16 +59,14 @@ class RouteServiceProvider extends ServiceProvider
 
             return ContactField::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $value)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('activity', function ($value, $route) {
             $value = app('idhasher')->decodeId($value);
 
             return  Activity::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('reminder', function ($value, $route) {
@@ -77,22 +74,19 @@ class RouteServiceProvider extends ServiceProvider
 
             return  Reminder::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('task', function ($value, $route) {
             return  Task::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('gift', function ($value, $route) {
             return  Gift::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('debt', function ($value, $route) {
@@ -100,64 +94,60 @@ class RouteServiceProvider extends ServiceProvider
 
             return  Debt::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('relationships', function ($value, $route) {
-            Contact::findOrFail($route->parameter('contact')->id);
+            Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($route->parameter('contact')->id);
 
             $value = app('idhasher')->decodeId($value);
+
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($value);
 
             Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_is', $route->parameter('contact')->id)
                 ->where('of_contact', $value)
                 ->firstOrFail();
 
-            return Contact::findOrFail($value);
+            return $contact;
         });
 
         Route::bind('note', function ($value, $route) {
             return  Note::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('journalEntry', function ($value, $route) {
             return  JournalEntry::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('day', function ($value, $route) {
             return  Day::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('pet', function ($value, $route) {
             return Pet::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('gender', function ($value) {
             return Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('reminderRule', function ($value) {
             return ReminderRule::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
 
         Route::bind('module', function ($value) {
             return Module::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
+                ->findOrFail($value);
         });
     }
 

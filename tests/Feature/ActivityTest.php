@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -100,6 +102,58 @@ class ActivityTest extends FeatureTestCase
         // Check that the Contact view contains the newly created note
         $response = $this->get('/people/'.$contact->id);
         $response->assertSee($activityTitle);
+    }
+
+    public function test_add_an_activity_account_mismatch()
+    {
+        list($user1, $contact1) = $this->fetchUser();
+        $account2 = factory(Account::class)->create();
+        $user2 = factory(User::class)->create([
+            'account_id' => $account2->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $account2->id,
+        ]);
+
+        $activityTitle = 'This is the title';
+        $activityDate = now();
+
+        $params = [
+            'summary' => $activityTitle,
+            'date_it_happened' => $activityDate,
+        ];
+
+        $response = $this->post('/activities/store/'.$contact1->id, $params + ['contacts' => [$contact2->id]]);
+
+        // Assert the activity is missing
+        $params['account_id'] = $user1->account_id;
+        $this->assertDatabaseMissing('activities', $params);
+
+        $params['account_id'] = $user2->account_id;
+        $this->assertDatabaseMissing('activities', $params);
+    }
+
+    public function test_add_an_activity_account_mismatch_return_notfound()
+    {
+        list($user1, $contact1) = $this->fetchUser();
+        $account2 = factory(Account::class)->create();
+        $user2 = factory(User::class)->create([
+            'account_id' => $account2->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $account2->id,
+        ]);
+
+        $activityTitle = 'This is the title';
+        $activityDate = now();
+
+        $params = [
+            'summary' => $activityTitle,
+            'date_it_happened' => $activityDate,
+        ];
+
+        $response = $this->post('/activities/store/'.$contact1->id, $params + ['contacts' => [$contact2->id]]);
+        $response->assertStatus(302);
     }
 
     public function test_user_can_edit_an_activity()
