@@ -266,11 +266,8 @@ class SettingsController extends Controller
      */
     public function report($importJobId)
     {
-        $importJob = ImportJob::findOrFail($importJobId);
-
-        if ($importJob->account_id != auth()->user()->account->id) {
-            return redirect()->route('settings.index');
-        }
+        $importJob = ImportJob::where('account_id', auth()->user()->account_id)
+            ->findOrFail($importJobId);
 
         return view('settings.imports.report', compact('importJob'));
     }
@@ -425,18 +422,14 @@ class SettingsController extends Controller
      */
     public function deleteAdditionalUser(Request $request, $userID)
     {
-        $user = User::find($userID);
-
-        if ($user->account_id != auth()->user()->account_id) {
-            return redirect()->route('login');
-        }
+        $user = User::where('account_id', auth()->user()->account_id)
+            ->findOrFail($userID);
 
         // make sure you don't delete yourself from this screen
         if ($user->id == auth()->user()->id) {
             return redirect()->route('login');
         }
 
-        $user = User::find($userID);
         $user->delete();
 
         return redirect()->route('settings.users.index')
@@ -453,11 +446,8 @@ class SettingsController extends Controller
 
     public function deleteTag(Request $request, $tagId)
     {
-        $tag = Tag::findOrFail($tagId);
-
-        if ($tag->account_id != auth()->user()->account_id) {
-            return redirect()->route('login');
-        }
+        $tag = Tag::where('account_id', auth()->user()->account_id)
+            ->findOrFail($tagId);
 
         $tag->contacts()->detach();
 
