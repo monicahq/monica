@@ -4,7 +4,6 @@ namespace App\Services\Contact;
 
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Message;
 
 class ConversationService
 {
@@ -64,7 +63,7 @@ class ConversationService
      *
      * @param  ConversationRequest $request
      * @param  Contact             $contact
-     * @return boolean
+     * @return bool
      */
     public function destroy(Conversation $conversation)
     {

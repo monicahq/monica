@@ -4,11 +4,10 @@ namespace Tests\Unit\Services;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Models\Account\Account;
-use App\Models\Contact\Conversation;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Contact\Contact;
 use App\Services\Contact\ConversationService;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ConversationServiceTest extends TestCase
 {

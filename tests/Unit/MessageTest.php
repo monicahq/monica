@@ -3,10 +3,10 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Models\Contact\Conversation;
-use App\Models\Contact\Message;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
+use App\Models\Contact\Conversation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MessageTest extends TestCase
