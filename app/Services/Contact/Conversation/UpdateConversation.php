@@ -2,13 +2,12 @@
 
 /**
  * This is a single action class, totally inspired by
- * https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d
+ * https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d.
  */
 
 namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -4,13 +4,11 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Conversation;
 use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
+use App\Models\Contact\Conversation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Contact\Conversation\CreateConversation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Conversation\CreateConversation;
 
 class CreateConversationTest extends TestCase
 {
