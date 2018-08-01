@@ -54,7 +54,7 @@
                       {{ $invoice->total() }}
                     </div>
                     <div class="table-cell">
-                      <a href="{{ route('settings.subscriptions.invoice', $invoice) }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
+                      <a href="{{ route('settings.subscriptions.invoice', $invoice->id) }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
                     </div>
                   </li>
                   @endforeach
