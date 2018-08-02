@@ -8,8 +8,8 @@
 namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
-use App\Models\Contact\Conversation;
 use App\Models\Contact\Message;
+use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

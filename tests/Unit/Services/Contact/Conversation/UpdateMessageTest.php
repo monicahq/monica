@@ -4,12 +4,11 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use App\Services\Contact\Conversation\UpdateMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Conversation\UpdateMessage;
 
 class UpdateMessageTest extends TestCase
 {

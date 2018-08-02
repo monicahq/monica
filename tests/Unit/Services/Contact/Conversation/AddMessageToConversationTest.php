@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -61,7 +60,7 @@ class AddMessageToConversationTest extends TestCase
 
     public function test_it_throws_an_exception_if_conversation_is_not_found()
     {
-       $request = [
+        $request = [
             'conversation_id' => 12343123,
             'contact_id' => 12343123,
             'account_id' => 12343123,
