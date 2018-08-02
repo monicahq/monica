@@ -4,6 +4,7 @@ UNRELEASED CHANGES:
 * Fix invoice page not showing properly
 * Fix translation not being displayed correctly on Subscription page
 * Add ability to define custom activity types and activity type categories through the API and the UI
+* Add the TrimStrings middleware to trim all inputs
 
 RELEASED VERSIONS:
 
