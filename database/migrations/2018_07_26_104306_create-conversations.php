@@ -27,7 +27,7 @@ class CreateConversations extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('contact_id');
-            $table->unsignedInteger('conversation_id')->nullable();
+            $table->unsignedInteger('conversation_id');
             $table->string('content');
             $table->datetime('written_at');
             $table->boolean('written_by_me');

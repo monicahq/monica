@@ -14,12 +14,6 @@ class CreateConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonStructureConversation = [
-        'contact_id',
-        'account_id',
-        'happened_at',
-    ];
-
     public function test_it_stores_a_conversation()
     {
         $contact = factory(Contact::class)->create([]);
