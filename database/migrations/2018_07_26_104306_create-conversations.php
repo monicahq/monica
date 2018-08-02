@@ -17,10 +17,12 @@ class CreateConversations extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('contact_field_type_id');
             $table->datetime('happened_at');
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('contact_field_type_id')->references('id')->on('contact_field_types')->onDelete('cascade');
         });
 
         Schema::create('messages', function (Blueprint $table) {

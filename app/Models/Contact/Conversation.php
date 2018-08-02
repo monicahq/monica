@@ -43,6 +43,16 @@ class Conversation extends Model
     }
 
     /**
+     * Get the contact field type record associated with the conversation.
+     *
+     * @return BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(ContactFieldType::class);
+    }
+
+    /**
      * Get the Message records associated with the conversation.
      *
      * @return HasMany

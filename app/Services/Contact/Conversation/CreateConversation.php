@@ -19,6 +19,7 @@ class CreateConversation extends BaseService
         'happened_at',
         'account_id',
         'contact_id',
+        'contact_field_type',
     ];
 
     /**

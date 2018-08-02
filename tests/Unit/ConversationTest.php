@@ -7,6 +7,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ConversationTest extends TestCase
@@ -31,6 +32,16 @@ class ConversationTest extends TestCase
         ]);
 
         $this->assertTrue($conversation->contact()->exists());
+    }
+
+    public function test_it_belongs_to_a_contact_field_type()
+    {
+        $contactFieldType = factory(ContactFieldType::class)->create();
+        $conversation = factory(Conversation::class)->create([
+            'contact_field_type_id' => $contactFieldType->id,
+        ]);
+
+        $this->assertTrue($conversation->type()->exists());
     }
 
     public function test_it_has_many_messages()
