@@ -112,7 +112,7 @@ return [
     'relationship_type_spouse_with_name' => 'בעלה של :name',
     'relationship_type_spouse_female_with_name' => 'אשתו של :name',
 
-    'relationship_type_date' => 'יוצא קבוע',
+    'relationship_type_date' => 'ליציאה',
     'relationship_type_date_female' => 'יוצאת קבוע',
     'relationship_type_date_with_name' => 'יוצא קבוע עם :name',
     'relationship_type_date_female_with_name' => 'יוצאת קבוע עם :name',
