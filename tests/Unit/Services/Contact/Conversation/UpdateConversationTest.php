@@ -45,36 +45,34 @@ class UpdateConversationTest extends TestCase
         );
     }
 
-    // public function test_it_fails_if_wrong_parameters_are_given()
-    // {
-    //     $contact = factory(Contact::class)->create([]);
+    public function test_it_fails_if_wrong_parameters_are_given()
+    {
+        $contact = factory(Contact::class)->create([]);
 
-    //     $request = [
-    //         'contact_id' => $contact->id,
-    //         'happened_at' => Carbon::now(),
-    //     ];
+        $request = [
+            'contact_id' => $contact->id,
+            'happened_at' => Carbon::now(),
+        ];
 
-    //     $this->expectException(\Exception::class);
+        $this->expectException(\Exception::class);
 
-    //     $createConversation = new CreateConversation;
-    //     $conversation = $createConversation->execute($request);
-    // }
+        $updateConversation = new UpdateConversation;
+        $conversation = $updateConversation->execute($request);
+    }
 
-    // public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
-    // {
-    //     $contact = factory(Contact::class)->create([
-    //         'account_id' => 1,
-    //     ]);
+    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    {
+        $conversation = factory(Conversation::class)->create([]);
 
-    //     $request = [
-    //         'contact_id' => $contact->id,
-    //         'account_id' => 2,
-    //         'happened_at' => Carbon::now(),
-    //     ];
+        $request = [
+            'account_id' => 231,
+            'conversation_id' => $conversation->id,
+            'happened_at' => '2010-02-02',
+        ];
 
-    //     $this->expectException(ModelNotFoundException::class);
+        $this->expectException(ModelNotFoundException::class);
 
-    //     $createConversation = new CreateConversation;
-    //     $conversation = $createConversation->execute($request);
-    // }
+        $updateConversation = new UpdateConversation;
+        $conversation = $updateConversation->execute($request);
+    }
 }
