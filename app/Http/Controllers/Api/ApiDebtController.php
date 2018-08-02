@@ -67,7 +67,7 @@ class ApiDebtController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $debt->account_id = auth()->user()->account->id;
+        $debt->account_id = auth()->user()->account_id;
         $debt->save();
 
         return new DebtResource($debt);

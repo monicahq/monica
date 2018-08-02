@@ -43,7 +43,7 @@ class NotesController extends Controller
     public function store(NotesRequest $request, Contact $contact)
     {
         $note = $contact->notes()->create([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'body' => $request->get('body'),
         ]);
 

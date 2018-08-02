@@ -66,7 +66,7 @@ class ApiGiftController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $gift->account_id = auth()->user()->account->id;
+        $gift->account_id = auth()->user()->account_id;
         $gift->save();
 
         return new GiftResource($gift);

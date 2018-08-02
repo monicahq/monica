@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="contactFieldType in contactFieldTypes">
+      <div class="dt-row hover bb b--light-gray" v-for="contactFieldType in contactFieldTypes">
         <div class="dtc">
           <div class="pa2">
             <i :class="contactFieldType.fontawesome_icon" class="pr2" v-if="contactFieldType.fontawesome_icon"></i>

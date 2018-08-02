@@ -3,6 +3,7 @@
     <div class="row">
       <div class="col-xs-12">
 
+        @include ('partials.errors')
         @include ('partials.notification')
 
         <div class="people-profile-information">

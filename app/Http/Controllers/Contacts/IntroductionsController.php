@@ -37,8 +37,7 @@ class IntroductionsController extends Controller
         if ($request->get('metThroughId') !== null) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->get('metThroughId'))
-                    ->firstOrFail();
+                    ->findOrFail($request->get('metThroughId'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }

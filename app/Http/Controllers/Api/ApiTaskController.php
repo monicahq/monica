@@ -66,7 +66,7 @@ class ApiTaskController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $task->account_id = auth()->user()->account->id;
+        $task->account_id = auth()->user()->account_id;
         $task->save();
 
         return new TaskResource($task);

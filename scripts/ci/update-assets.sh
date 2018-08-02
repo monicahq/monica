@@ -73,9 +73,11 @@ elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
   fi
 
   echo "Pushing files to $PULL_REQUEST_BRANCH branch ..."
-  remote="https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/$REPO"
-  git remote add gk-origin $remote
-  git push gk-origin HEAD:$PULL_REQUEST_BRANCH
+  remote=monica-origin
+  remoteurl="https://$ASSETS_USERNAME:$ASSETS_GITHUB_TOKEN@github.com/$REPO"
+  git remote remove $remote || true
+  git remote add -f $remote $remoteurl || true
+  git push $remote HEAD:$PULL_REQUEST_BRANCH
 
   # Exit with error to stop the current build
   echo "...pushed files successfully."

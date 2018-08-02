@@ -35,7 +35,7 @@ class UpdateTimestampsTimezone extends Migration
                 $updated = is_null($model->updated_at) ? null : Carbon::createFromTimeString($model->updated_at, $timezone)->setTimezone('UTC');
                 $last_consulted_at = is_null($model->last_consulted_at) ? null : Carbon::createFromTimeString($model->last_consulted_at, $timezone)->setTimezone('UTC');
 
-                DB::table($table)->where($id, $model->$id)
+                DB::table('contacts')->where('id', $model->$id)
                     ->update([
                         'created_at' => $created,
                         'updated_at' => $updated,
@@ -67,7 +67,7 @@ class UpdateTimestampsTimezone extends Migration
             foreach ($models as $model) {
                 $created = is_null($model->created_at) ? null : Carbon::createFromTimeString($model->created_at, $timezone)->setTimezone('UTC');
 
-                DB::table('jobs')->where($id, $model->get($id))
+                DB::table('jobs')->where('id', $model->$id)
                     ->update([
                         'created_at' => $created,
                     ]);
