@@ -324,7 +324,7 @@ return [
     'personalization_activity_type_category_modal_delete' => 'מחיקת קטגוריית סוג פעילות',
     'personalization_activity_type_category_modal_delete_desc' => 'למחוק את הקטגוריה הזאת? מחיקתה תמחק את כל סוגי הפעילות המשויכים. עם זאת, פעילויות שאינן שייכות לקטגוריה הזאת לא תושפענה מהמחיקה.',
     'personalization_activity_type_modal_delete' => 'מחיקת סוג פעילות',
-    'personalization_activity_type_modal_delete_desc' => 'Are you sure you want to delete this activity type? Activities that belong to this category will not be affected by this deletion.',
-    'personalization_activity_type_modal_delete_error' => 'We can’t find this activity type.',
-    'personalization_activity_type_category_modal_delete_error' => 'We can’t find this activity type category.',
+    'personalization_activity_type_modal_delete_desc' => 'למחוק את סוג הפעילות הזה? פעילויות ששייכות לקטגוריה זו לא תושפענה מהמחיקה הזאת.',
+    'personalization_activity_type_modal_delete_error' => 'אין לנו אפשרות למצוא את סוג הפעילות.',
+    'personalization_activity_type_category_modal_delete_error' => 'אין לנו אפשרות למצוא את קטגוריית סוג הפעילות הזו.',
 ];
