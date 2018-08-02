@@ -309,9 +309,9 @@ return [
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
 
-    'personalization_activity_type_category_title' => 'Activity type categories',
-    'personalization_activity_type_category_add' => 'Add a new activity type category',
-    'personalization_activity_type_category_table_name' => 'Name',
+    'personalization_activity_type_category_title' => 'קטגוריות סוגי פעילות',
+    'personalization_activity_type_category_add' => 'הוספת קטגוריית סוג פעילות חדשה',
+    'personalization_activity_type_category_table_name' => 'שם',
     'personalization_activity_type_category_description' => 'An activity done with one of your contact can have a type and a category type. Your account comes by default with a set of predefined category types, but you can customize everything here.',
     'personalization_activity_type_category_table_actions' => 'Actions',
     'personalization_activity_type_category_modal_add' => 'Add a new activity type category',
