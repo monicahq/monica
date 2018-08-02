@@ -45,12 +45,7 @@ class AddMessageToConversation extends BaseService
         }
 
         try {
-            $message = Message::create([
-                    'contact_id' => $conversation->contact_id,
-                    'account_id' => $conversation->account_id,
-                ]
-                + $data
-            );
+            $message = Message::create($data);
         } catch (QueryException $e) {
             throw $e;
         }

@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class UpdateMessage extends BaseService
 {
     private $structure = [
+        'account_id',
+        'contact_id',
+        'conversation_id',
         'message_id',
         'written_at',
         'written_by_me',
@@ -35,18 +38,20 @@ class UpdateMessage extends BaseService
         }
 
         try {
-            $conversation = Conversation::findOrFail($data['conversation_id']);
+            $message = Message::where('contact_id', $data['contact_id'])
+                                ->where('conversation_id', $data['conversation_id'])
+                                ->where('account_id', $data['account_id'])
+                                ->findOrFail($data['message_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }
 
         try {
-            $message = Message::create([
-                    'contact_id' => $conversation->contact_id,
-                    'account_id' => $conversation->account_id,
-                ]
-                + $data
-            );
+            $message->update([
+                'written_at' => $data['written_at'],
+                'written_by_me' => $data['written_by_me'],
+                'content' => $data['content'],
+            ]);
         } catch (QueryException $e) {
             throw $e;
         }

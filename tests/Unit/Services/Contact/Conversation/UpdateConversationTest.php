@@ -14,11 +14,6 @@ class UpdateConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonStructureConversation = [
-        'account_id',
-        'happened_at',
-    ];
-
     public function test_it_updates_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([
@@ -60,7 +55,7 @@ class UpdateConversationTest extends TestCase
         $conversation = $updateConversation->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    public function test_it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $conversation = factory(Conversation::class)->create([]);
 
