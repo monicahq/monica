@@ -6085,16 +6085,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "72c13834fb3db2a962e913758b384ff2e6425d6e"
+                "reference": "736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/72c13834fb3db2a962e913758b384ff2e6425d6e",
-                "reference": "72c13834fb3db2a962e913758b384ff2e6425d6e",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba",
+                "reference": "736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba",
                 "shasum": ""
             },
             "require": {
@@ -6144,7 +6144,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-07-24T21:54:38+00:00"
+            "time": "2018-08-01T13:47:49+00:00"
         }
     ],
     "packages-dev": [
