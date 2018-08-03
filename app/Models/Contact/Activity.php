@@ -52,7 +52,7 @@ class Activity extends Model implements IsJournalableInterface
     protected $with = ['type'];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the activity.
      *
      * @return BelongsTo
      */
@@ -62,7 +62,7 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the activity.
      *
      * @return BelongsTo
      */

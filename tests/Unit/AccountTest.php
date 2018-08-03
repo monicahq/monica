@@ -133,8 +133,12 @@ class AccountTest extends FeatureTestCase
     public function test_it_has_many_messages()
     {
         $account = factory(Account::class)->create([]);
+        $conversation = factory(Conversation::class)->create([
+            'account_id' => $account->id,
+        ]);
         $message = factory(Message::class, 2)->create([
             'account_id' => $account->id,
+            'conversation_id' => $conversation->id,
         ]);
 
         $this->assertTrue($account->messages()->exists());

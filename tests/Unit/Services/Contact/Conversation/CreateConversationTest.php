@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\CreateConversation;
@@ -17,11 +18,15 @@ class CreateConversationTest extends TestCase
     public function test_it_stores_a_conversation()
     {
         $contact = factory(Contact::class)->create([]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'happened_at' => Carbon::now(),
+            'contact_field_type_id' => $contactFieldType->id,
         ];
 
         $conversationService = new CreateConversation;
@@ -31,6 +36,7 @@ class CreateConversationTest extends TestCase
             'id' => $conversation->id,
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $this->assertInstanceOf(
@@ -59,11 +65,15 @@ class CreateConversationTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => 1,
         ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
 
         $request = [
             'contact_id' => $contact->id,
             'account_id' => 2,
             'happened_at' => Carbon::now(),
+            'contact_field_type_id' => $contactFieldType->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);

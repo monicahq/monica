@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ConversationTest extends TestCase
 {
-    use DatabaseTransactions;
+    //use DatabaseTransactions;
 
     public function test_it_belongs_to_an_account()
     {
@@ -36,12 +36,16 @@ class ConversationTest extends TestCase
 
     public function test_it_belongs_to_a_contact_field_type()
     {
-        $contactFieldType = factory(ContactFieldType::class)->create();
+        $account = factory(Account::class)->create([]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+        ]);
         $conversation = factory(Conversation::class)->create([
             'contact_field_type_id' => $contactFieldType->id,
+            'account_id' => $account->id,
         ]);
 
-        $this->assertTrue($conversation->type()->exists());
+        $this->assertTrue($conversation->contactFieldType()->exists());
     }
 
     public function test_it_has_many_messages()

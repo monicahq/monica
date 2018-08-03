@@ -34,7 +34,7 @@ class Gender extends Model
     ];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the gender.
      *
      * @return BelongsTo
      */
@@ -44,7 +44,7 @@ class Gender extends Model
     }
 
     /**
-     * Get the contact records associated with the gift.
+     * Get the contact records associated with the gender.
      *
      * @return BelongsTo
      */
