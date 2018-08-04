@@ -697,4 +697,16 @@ class AccountTest extends FeatureTestCase
             'read' => 0,
         ]);
     }
+
+    public function test_it_create_default_account()
+    {
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'account_id' => $account->id,
+        ]);
+    }
 }

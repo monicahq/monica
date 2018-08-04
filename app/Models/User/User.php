@@ -7,6 +7,7 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
+use App\Helpers\CountriesHelper;
 use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -77,9 +78,27 @@ class User extends Authenticatable
         $user->last_name = $last_name;
         $user->email = $email;
         $user->password = bcrypt($password);
-        $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = App::getLocale();
+
+        $locale = App::getLocale();
+        $user->locale = $locale;
+
+        $country = CountriesHelper::getCountryFromLang($locale);
+        if (is_null($country))
+        {
+            $user->timezone = config('app.timezone');
+        }
+        else
+        {
+            $currency = Currency::where('iso', $country->currencies[0])->first();
+            if (! is_null($currency))
+            {
+                $user->currency()->associate($currency);
+            }
+
+            $user->timezone = CountriesHelper::getDefaultTimezone($country);
+        }
+
         $user->save();
 
         $user->acceptPolicy($ipAddress);
