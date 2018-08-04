@@ -26,8 +26,11 @@ class CountriesHelper
 
     public static function get($iso)
     {
-        $country = self::getCountry($iso);
-        if (is_null($country)) {
+        $country = Countries::where('cca2', mb_strtoupper($iso))->first();
+        if ($country->count() === 0) {
+            $country = Countries::where('alt_spellings', mb_strtoupper($iso))->first();
+        }
+        if ($country->count() === 0) {
             return '';
         }
 
@@ -55,28 +58,5 @@ class CountriesHelper
         return array_get($country, 'translations.'.$lang.'.common',
             array_get($country, 'name.common', '')
         );
-    }
-
-    public static function getCurrency($country)
-    {
-        $country = self::getCountry($iso);
-        if (is_null($country)) {
-            return '';
-        }
-
-        return $country->currencies[0];
-    }
-
-    private static function getCountry($iso)
-    {
-        $country = Countries::where('cca2', mb_strtoupper($iso))->first();
-        if ($country->count() === 0) {
-            $country = Countries::where('alt_spellings', mb_strtoupper($iso))->first();
-        }
-        if ($country->count() === 0) {
-            return;
-        }
-
-        return $country;
     }
 }
