@@ -76,6 +76,7 @@ class CountriesHelper
         if ($country->count() === 0) {
             return;
         }
+
         return $country;
     }
 }
