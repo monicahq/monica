@@ -371,7 +371,7 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'en',
             'timezone' => 'US/Central',
-            'currency_id' => 2
+            'currency_id' => 2,
         ]);
     }
 
@@ -390,11 +390,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'fr',
             'timezone' => 'Europe/Paris',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
-    
     public function test_it_create_default_user_cs()
     {
         App::setLocale('cs');
@@ -410,11 +409,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'cs',
             'timezone' => 'Europe/Prague',
-            'currency_id' => 43
+            'currency_id' => 43,
         ]);
     }
 
-    
     public function test_it_create_default_user_de()
     {
         App::setLocale('de');
@@ -430,11 +428,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'de',
             'timezone' => 'Europe/Berlin',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
-    
     public function test_it_create_default_user_es()
     {
         App::setLocale('es');
@@ -450,11 +447,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'es',
             'timezone' => 'Europe/Madrid',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
-    
     public function test_it_create_default_user_he()
     {
         App::setLocale('he');
@@ -470,11 +466,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'he',
             'timezone' => 'Asia/Jerusalem',
-            'currency_id' => 66
+            'currency_id' => 66,
         ]);
     }
 
-    
     public function test_it_create_default_user_it()
     {
         App::setLocale('it');
@@ -490,11 +485,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'it',
             'timezone' => 'Europe/Rome',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
-    
     public function test_it_create_default_user_nl()
     {
         App::setLocale('nl');
@@ -510,11 +504,10 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'nl',
             'timezone' => 'Europe/Amsterdam',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
-    
     public function test_it_create_default_user_pt()
     {
         App::setLocale('pt');
@@ -530,7 +523,7 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'pt',
             'timezone' => 'Europe/Lisbon',
-            'currency_id' => 4
+            'currency_id' => 4,
         ]);
     }
 
@@ -549,7 +542,7 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'ru',
             'timezone' => 'Europe/Moscow',
-            'currency_id' => 5
+            'currency_id' => 5,
         ]);
     }
 
@@ -568,7 +561,7 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'zh',
             'timezone' => 'Asia/Hong_Kong',
-            'currency_id' => 37
+            'currency_id' => 37,
         ]);
     }
 }

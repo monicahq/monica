@@ -39,7 +39,7 @@ class CountriesHelper
 
     /**
      * Find a country by the (english) name of the country.
-     * 
+     *
      * @return string cca2 code of the country
      */
     public static function find($name)
@@ -74,29 +74,27 @@ class CountriesHelper
         if ($country->count() === 0) {
             return;
         }
+
         return $country;
     }
 
     /**
-     * Get country for a specific language
-     * 
+     * Get country for a specific language.
+     *
      * @return object
      */
     public static function getCountryFromLang($locale)
     {
         $country = self::getDefaultCountryFromLang($locale);
 
-        if (is_null($country))
-        {
+        if (is_null($country)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);
             $country = Countries::whereISO639_3($lang);
             if ($country->count() === 0) {
                 return;
             }
             $country = $country->first();
-        }
-        else
-        {
+        } else {
             $country = Countries::where('cca3', $country)->first();
         }
 
@@ -105,8 +103,7 @@ class CountriesHelper
 
     public static function getDefaultCountryFromLang($locale)
     {
-        switch (mb_strtolower($locale))
-        {
+        switch (mb_strtolower($locale)) {
             case 'cs':
                 return 'CZE';
             case 'de':
@@ -134,8 +131,7 @@ class CountriesHelper
 
     public static function getDefaultTimezone($country)
     {
-        switch ($country->cca3)
-        {
+        switch ($country->cca3) {
             case 'CHN':
                 return 'Asia/Hong_Kong';
             case 'ESP':
@@ -147,6 +143,7 @@ class CountriesHelper
             case 'USA':
                 return 'US/Central';
         }
+
         return $country->hydrate('timezones')->timezones->first()->zone_name;
     }
 }

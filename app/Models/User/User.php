@@ -84,15 +84,11 @@ class User extends Authenticatable
         $user->locale = $locale;
 
         $country = CountriesHelper::getCountryFromLang($locale);
-        if (is_null($country))
-        {
+        if (is_null($country)) {
             $user->timezone = config('app.timezone');
-        }
-        else
-        {
+        } else {
             $currency = Currency::where('iso', $country->currencies[0])->first();
-            if (! is_null($currency))
-            {
+            if (! is_null($currency)) {
                 $user->currency()->associate($currency);
             }
 
