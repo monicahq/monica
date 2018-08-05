@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
-use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Conversation\UpdateConversation;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Conversation\UpdateConversation;
 use App\Http\Resources\Conversation\Conversation as ConversationResource;
 
 class ApiConversationController extends ApiController
@@ -63,7 +62,7 @@ class ApiConversationController extends ApiController
                 $request->all()
                 +
                 [
-                    'account_id' => auth()->user()->account->id
+                    'account_id' => auth()->user()->account->id,
                 ]
             );
         } catch (ModelNotFoundException $e) {

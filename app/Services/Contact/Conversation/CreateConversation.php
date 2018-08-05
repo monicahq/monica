@@ -9,9 +9,9 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateConversation extends BaseService

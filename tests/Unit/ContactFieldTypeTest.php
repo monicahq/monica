@@ -2,14 +2,10 @@
 
 namespace Tests\Unit;
 
-use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Relationship\RelationshipType;
-use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactFieldTypeTest extends FeatureTestCase

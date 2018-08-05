@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Conversation;
 use App\Http\Controllers\Controller;
 
 class ConversationsController extends Controller
