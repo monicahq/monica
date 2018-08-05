@@ -105,45 +105,67 @@ class CountriesHelper
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
-                return 'CZE';
+                $country = 'CZE';
+                break;
             case 'de':
-                return 'DEU';
+                $country = 'DEU';
+                break;
             case 'en':
-                return 'USA';
+                $country = 'USA';
+                break;
             case 'es':
-                return 'ESP';
+                $country = 'ESP';
+                break;
             case 'fr':
-                return 'FRA';
+                $country = 'FRA';
+                break;
             case 'he':
-                return 'ISR';
+                $country = 'ISR';
+                break;
             case 'it':
-                return 'ITA';
+                $country = 'ITA';
+                break;
             case 'nl':
-                return 'NLD';
+                $country = 'NLD';
+                break;
             case 'pt':
-                return 'PRT';
+                $country = 'PRT';
+                break;
             case 'ru':
-                return 'RUS';
+                $country = 'RUS';
+                break;
             case 'zh':
-                return 'CHN';
+                $country = 'CHN';
+                break;
+            default:
+                $country = '';
+                break;
         }
+        return $country;
     }
 
     public static function getDefaultTimezone($country)
     {
         switch ($country->cca3) {
             case 'CHN':
-                return 'Asia/Hong_Kong';
+                $timezone = 'Asia/Hong_Kong';
+                break;
             case 'ESP':
-                return 'Europe/Madrid';
+                $timezone = 'Europe/Madrid';
+                break;
             case 'PRT':
-                return 'Europe/Lisbon';
+                $timezone = 'Europe/Lisbon';
+                break;
             case 'RUS':
-                return 'Europe/Moscow';
+                $timezone = 'Europe/Moscow';
+                break;
             case 'USA':
-                return 'US/Central';
+                $timezone = 'US/Central';
+                break;
+            default:
+                $timezone = $country->hydrate('timezones')->timezones->first()->zone_name;
+                break;
         }
-
-        return $country->hydrate('timezones')->timezones->first()->zone_name;
+        return $timezone;
     }
 }
