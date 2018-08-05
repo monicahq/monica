@@ -7,6 +7,7 @@ UNRELEASED CHANGES:
 * Add the TrimStrings middleware to trim all inputs
 * Call to monica:ping when updating instance
 * Fix account id get for acceptPolicy
+* Fix idHasher decode function
 
 RELEASED VERSIONS:
 
