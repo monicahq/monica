@@ -141,6 +141,7 @@ class CountriesHelper
                 $country = '';
                 break;
         }
+
         return $country;
     }
 
@@ -166,6 +167,7 @@ class CountriesHelper
                 $timezone = $country->hydrate('timezones')->timezones->first()->zone_name;
                 break;
         }
+
         return $timezone;
     }
 }
