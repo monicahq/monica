@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Add ability to define custom activity types and activity type categories through the API and the UI
 * Add the TrimStrings middleware to trim all inputs
 * Call to monica:ping when updating instance
+* Fix idHasher decode function
 
 RELEASED VERSIONS:
 
