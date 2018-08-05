@@ -81,4 +81,22 @@ class CreateConversationTest extends TestCase
         $createConversation = new CreateConversation;
         $conversation = $createConversation->execute($request);
     }
+
+    public function test_it_throws_an_exception_if_contactfieldtype_is_not_linked_to_account()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $contactFieldType = factory(ContactFieldType::class)->create([]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'happened_at' => Carbon::now(),
+            'contact_field_type_id' => $contactFieldType->id,
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $createConversation = new CreateConversation;
+        $conversation = $createConversation->execute($request);
+    }
 }

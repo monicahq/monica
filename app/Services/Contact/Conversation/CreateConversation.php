@@ -9,6 +9,7 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -36,8 +37,14 @@ class CreateConversation extends BaseService
 
         try {
             $contact = Contact::where('account_id', $data['account_id'])
-                        ->where('id', $data['contact_id'])
-                        ->firstOrFail();
+                        ->where($data['contact_id']);
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        }
+
+        try {
+            $contactFieldType = ContactFieldType::where('account_id', $data['account_id'])
+                        ->findOrFail($data['contact_field_type_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }

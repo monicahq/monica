@@ -22,8 +22,8 @@ class Conversation extends Resource
             'id' => $this->id,
             'object' => 'conversation',
             'happened_at' => DateHelper::getTimestamp($this->happened_at),
-            'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
             'messages' => MessageResource::collection($this->messages),
+            'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
             'account' => [
                 'id' => $this->account->id,
             ],

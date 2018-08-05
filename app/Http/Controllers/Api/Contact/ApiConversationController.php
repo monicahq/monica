@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Conversation\UpdateConversation;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
@@ -13,148 +15,98 @@ use App\Http\Resources\Conversation\Conversation as ConversationResource;
 class ApiConversationController extends ApiController
 {
     /**
-     * Get the list of activity types.
+     * Get the list of conversations.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
-            $activityTypes = auth()->user()->account->activityTypes()
+            $conversations = auth()->user()->account->conversations()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return ActivityTypeResource::collection($activityTypes);
+        return ConversationResource::collection($conversations);
     }
 
     /**
-     * Get the detail of a given activity type.
+     * Get the detail of a given conversation.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $activityTypeId)
+    public function show(Request $request, $conversationId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
+            $conversation = Conversation::where('account_id', auth()->user()->account_id)
+                ->findOrFail($conversationId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new ActivityTypeResource($activityType);
+        return new ConversationResource($conversation);
     }
 
     /**
-     * Store the activity type.
+     * Store the conversation.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $isValid = $this->validateRequest($request);
-
-        if ($isValid !== true) {
-            return $isValid;
-        }
-
         try {
-            $activityType = ActivityType::create(
+            $conversation = (new CreateConversation)->execute(
                 $request->all()
-                + ['account_id' => auth()->user()->account_id]
+                +
+                [
+                    'account_id' => auth()->user()->account->id
+                ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (\Exception $e) {
+            return $this->setHTTPStatusCode(500)
+                        ->setErrorCode(41)
+                        ->respondWithError(config('api.error_codes.41'));
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
-        return new ActivityTypeResource($activityType);
+        return new ConversationResource($conversation);
     }
 
     /**
-     * Update the activity type.
+     * Update the conversation.
      *
      * @param  Request $request
-     * @param  int $activityTypeId
+     * @param  int $conversationId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $activityTypeId)
+    public function update(Request $request, $conversationId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
+            $conversation = (new UpdateConversation)->execute(
+                $request->all()
+                +
+                [
+                    'account_id' => auth()->user()->account->id,
+                    'conversation_id' => $conversationId,
+                ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isValid = $this->validateRequest($request);
-        if ($isValid !== true) {
-            return $isValid;
-        }
-
-        try {
-            $activityType->update($request->all());
+        } catch (\Exception $e) {
+            return $this->setHTTPStatusCode(500)
+                        ->setErrorCode(41)
+                        ->respondWithError(config('api.error_codes.41'));
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
-        return new ActivityTypeResource($activityType);
-    }
-
-    /**
-     * Validate the request for store/update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateRequest(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|string',
-            'activity_type_category_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setHTTPStatusCode(400)
-                        ->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            ActivityTypeCategory::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('activity_type_category_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
-    }
-
-    /**
-     * Delete an activity type.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $activityTypeId)
-    {
-        try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        $activityType->resetAssociationWithActivities();
-        $activityType->delete();
-
-        return $this->respondObjectDeleted($activityType->id);
+        return new ConversationResource($conversation);
     }
 }

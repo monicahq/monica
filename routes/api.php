@@ -73,6 +73,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
     Route::get('/contacts/{contact}/calls', 'Api\\ApiCallController@calls');
 
+    // Conversations
+    Route::resource('conversations', 'Api\\Contact\\ApiConversationController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     // Activities
     Route::resource('activities', 'Api\\ApiActivityController', ['except' => [
       'create', 'edit', 'patch',

@@ -34,8 +34,7 @@ class UpdateConversation extends BaseService
 
         try {
             $conversation = Conversation::where('account_id', $data['account_id'])
-                        ->where('id', $data['conversation_id'])
-                        ->firstOrFail();
+                        ->findOrFail($data['conversation_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }
