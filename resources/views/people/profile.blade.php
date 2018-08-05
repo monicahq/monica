@@ -63,6 +63,10 @@
             </div>
             @endif
 
+            <div class="row section calls">
+              @include('people.conversations.index')
+            </div>
+
             @if ($modules->contains('key', 'phone_calls'))
             <div class="row section calls">
               @include('people.calls.index')
