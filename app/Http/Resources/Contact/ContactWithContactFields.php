@@ -93,6 +93,8 @@ class ContactWithContactFields extends Resource
                 'number_of_gifts' => $this->gifts->count(),
                 'number_of_debts' => $this->debts->count(),
             ]),
+            'shareable_link' => $this->when(! $this->is_partial, $this->shareable_link),
+            'share_expire_at' => $this->when(! $this->is_partial, DateHelper::getTimestamp($this->share_expire_at)),
             'contactFields' => $this->when(! $this->is_partial, $this->getContactFieldsForAPI()),
             'account' => [
                 'id' => $this->account->id,

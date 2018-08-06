@@ -13,6 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Services\Contact\CreateShareableLink;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
@@ -384,5 +385,31 @@ class ApiContactController extends ApiController
         }
 
         return ContactResource::collection($contacts);
+    }
+
+    /**
+     * Get the link that allows external users to edit contact information.
+     *
+     * @param  Request $request
+     * @param  int $contact
+     */
+    public function share(Request $request, int $contactId)
+    {
+        try {
+            $link = (new CreateShareableLink)->execute([
+                'contact_id' => $contactId,
+                'account_id' => auth()->user()->account->id,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (\Exception $e) {
+            return $this->setHTTPStatusCode(500)
+                        ->setErrorCode(41)
+                        ->respondWithError(config('api.error_codes.41'));
+        }
+
+        $contact = Contact::find($contactId);
+
+        return new ContactResource($contact);
     }
 }

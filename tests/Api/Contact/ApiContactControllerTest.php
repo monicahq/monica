@@ -67,6 +67,8 @@ class ApiContactControllerTest extends ApiTestCase
         'addresses',
         'tags',
         'statistics',
+        'shareable_link',
+        'share_expire_at',
         'account' => [
             'id',
         ],
@@ -126,6 +128,8 @@ class ApiContactControllerTest extends ApiTestCase
         'addresses',
         'tags',
         'statistics',
+        'shareable_link',
+        'share_expire_at',
         'contactFields' => [],
         'account' => [
             'id',
@@ -594,6 +598,23 @@ class ApiContactControllerTest extends ApiTestCase
             'date' => $date->toDateString(),
             'is_age_based' => '1',
             'is_year_unknown' => '0',
+        ]);
+    }
+
+    public function test_it_gets_a_shareable_link()
+    {
+        $user = $this->signin();
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 0, 0, 0));
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id.'/shareable_link');
+
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'share_expire_at' => '2017-01-04T00:00:00Z',
         ]);
     }
 }
