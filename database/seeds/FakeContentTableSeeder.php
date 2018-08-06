@@ -11,6 +11,8 @@ use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -79,6 +81,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateTasks();
             $this->populateDebts();
             $this->populateCalls();
+            $this->populateConversations();
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
@@ -465,6 +468,29 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->contact->account_id,
                 'called_at' => $this->faker->dateTimeThisYear(),
             ]);
+        }
+    }
+
+    public function populateConversations()
+    {
+        if (rand(1, 3) == 1) {
+            for ($j = 0; $j < rand(1, 10); $j++) {
+                $conversation = (new CreateConversation)->execute([
+                    'happened_at' => $this->faker->dateTimeThisCentury(),
+                    'contact_id' => $this->contact->id,
+                    'contact_field_type_id' => ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail(),
+                    'account_id' => auth()->user()->account->id,
+                ]);
+
+                $message = (new AddMessageToConversation)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'contact_id' => $this->contact->id,
+                    'conversation_id' => $conversation->id,
+                    'written_at' => $this->faker->dateTimeThisCentury(),
+                    'written_by_me' => (rand(1, 2) == 1 ? true : false),
+                    'content' => $this->faker->realText(),
+                ]);
+            }
         }
     }
 
