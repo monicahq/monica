@@ -92,6 +92,8 @@ class Contact extends Model
         'avatar_external_url',
         'last_consulted_at',
         'created_at',
+        'shareable_link',
+        'share_expire_at',
     ];
 
     /**
