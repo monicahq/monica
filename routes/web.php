@@ -27,6 +27,9 @@ Auth::routes();
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
 
+// Edition of contact information by an external user without being logged
+Route::get('/edit/{key}', 'ContactsController@editByExternalUser');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
 });
@@ -66,6 +69,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::put('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@editContactField');
         Route::delete('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@destroyContactField');
         Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
+        Route::get('/people/{contact}/share', 'ContactsController@shareView');
 
         // Export as vCard
         Route::get('/people/{contact}/vcard', 'ContactsController@vcard')->name('vcard');

@@ -499,4 +499,25 @@ class ContactsController extends Controller
 
         return $frequency;
     }
+
+    /**
+     * Allow an external user to edit basic contact information.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function shareView(Request $request)
+    {
+        $key = $request->get('key');
+
+        try {
+            $contact = Contact::where('shareable_link', $key)->first();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
+
+        return view('people.share.info')
+                ->withContact($contact);
+    }
 }

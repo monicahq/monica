@@ -44,8 +44,8 @@ class FakeContentTableSeeder extends Seeder
 
         // fetching avatars
         $client = new Client();
-        $res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
-        $arrayPictures = json_decode($res->getBody());
+        //$res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
+        //$arrayPictures = json_decode($res->getBody());
 
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $timezone = config('app.timezone');
@@ -65,7 +65,7 @@ class FakeContentTableSeeder extends Seeder
             if (rand(1, 2) == 1) {
                 $this->contact->has_avatar = true;
                 $this->contact->avatar_location = 'external';
-                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
+                //$this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
                 $this->contact->save();
             }
 

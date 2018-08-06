@@ -14,6 +14,7 @@
     </div>
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
+      <p>Invite Regis or someone else to fill some of these informations. More information.</p>
       <form method="POST" action="{{ route('people.update', $contact) }}" enctype="multipart/form-data">
         {{ csrf_field() }}
 
