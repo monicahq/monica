@@ -67,6 +67,9 @@
 
           <ul class="tags {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li class="mr3">
+              <contact-favorite hash="{!! $contact->hashID() !!}" v-bind:starred="{{ $contact->is_starred }}"></contact-favorite>
+            </li>
+            <li class="mr3">
               <stay-in-touch :contact="{{ $contact }}" hash="{!! $contact->hashID() !!}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
             </li>
             <ul class="tags-list">
