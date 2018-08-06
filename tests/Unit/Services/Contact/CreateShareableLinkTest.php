@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Services\Contact\CreateShareableLink;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateShareableLinkTest extends TestCase
@@ -45,5 +46,30 @@ class CreateShareableLinkTest extends TestCase
             'share_expire_at' => null,
             'shareable_link' => null,
         ]);
+    }
+
+    public function test_it_fails_if_wrong_parameters_are_given()
+    {
+        $request = [
+            'contact_id' => 1,
+        ];
+
+        $this->expectException(\Exception::class);
+
+        $shareableService = new CreateShareableLink;
+        $link = $shareableService->execute($request);
+    }
+
+    public function test_it_throws_an_exception_if_model_is_not_found()
+    {
+        $request = [
+            'contact_id' => 12343123,
+            'account_id' => 12343123,
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $shareableService = new CreateShareableLink;
+        $link = $shareableService->execute($request);
     }
 }
