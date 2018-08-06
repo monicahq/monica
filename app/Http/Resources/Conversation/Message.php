@@ -22,7 +22,6 @@ class Message extends Resource
             'content' => $this->content,
             'written_at' => DateHelper::getTimestamp($this->written_at),
             'written_by_me' => (bool) $this->written_by_me,
-            'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
             'account' => [
                 'id' => $this->account->id,
             ],
