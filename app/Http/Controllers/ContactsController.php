@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contacts\CreateShareableLink;
 
 class ContactsController extends Controller
 {
@@ -498,5 +499,16 @@ class ContactsController extends Controller
         $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
 
         return $frequency;
+    }
+
+    /**
+     * Get the link that allows external users to edit contact information.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     */
+    public function share(Request $request, Contact $contact)
+    {
+
     }
 }

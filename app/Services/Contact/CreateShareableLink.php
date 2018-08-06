@@ -8,6 +8,7 @@
 namespace App\Services\Contact;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
@@ -36,14 +37,14 @@ class CreateShareableLink extends BaseService
 
         try {
             $contact = Contact::where('account_id', $data['account_id'])
-                        ->where($data['contact_id']);
+                        ->findOrFail($data['contact_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }
 
         $link = Str::random(240);
         $contact->shareable_link = $link;
-        $contact->share_expire_at = Carbon::now()->addDays(2);
+        $contact->share_expire_at = Carbon::now()->addDays(3);
         $contact->save();
 
         return $link;

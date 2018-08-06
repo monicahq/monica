@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
       'create', 'edit', 'patch',
     ]]);
+    Route::get('/contacts/{contact}/shareable_link', 'Api\\ApiContactController@share');
 
     // Relationships
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');

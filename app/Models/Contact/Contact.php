@@ -41,6 +41,7 @@ class Contact extends Model
         'stay_in_touch_trigger_date',
         'created_at',
         'updated_at',
+        'share_expire_at',
     ];
 
     // The list of columns we want the Searchable trait to use.
