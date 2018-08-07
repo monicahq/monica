@@ -67,7 +67,7 @@ class ApiTagController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $tag->account_id = auth()->user()->account->id;
+        $tag->account_id = auth()->user()->account_id;
         $tag->name_slug = str_slug($tag->name);
         $tag->save();
 

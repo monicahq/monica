@@ -53,7 +53,7 @@ class ContactFieldsController extends Controller
                 'data',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 
@@ -73,7 +73,7 @@ class ContactFieldsController extends Controller
                 'data',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 

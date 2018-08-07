@@ -46,7 +46,7 @@ class ApiContactFieldController extends ApiController
             $contactField = ContactField::create(
               $request->all()
               + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
               ]
             );
         } catch (QueryException $e) {

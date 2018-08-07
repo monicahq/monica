@@ -89,6 +89,8 @@ class Update extends Command
                 if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
+
+                $this->commandExecutor->artisan('✓ Ping for new version', 'monica:ping', ['--force' => 'true']);
             } finally {
                 $this->commandExecutor->artisan('✓ Maintenance mode: off', 'up');
             }
