@@ -21,7 +21,7 @@ class ApiMessageControllerTest extends ApiTestCase
         'messages' => [
             [
                 'id',
-            ]
+            ],
         ],
         'contact_field_type' => [
             'id',

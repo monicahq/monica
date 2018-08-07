@@ -7,9 +7,9 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Services\Contact\Conversation\UpdateMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Contact\Conversation\UpdateMessage;
 use App\Http\Resources\Conversation\Conversation as ConversationResource;
 
 class ApiMessageController extends ApiController
