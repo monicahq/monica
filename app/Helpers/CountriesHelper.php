@@ -146,9 +146,14 @@ class CountriesHelper
 
     public static function getDefaultTimezone($country)
     {
+        // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        // https://en.wikipedia.org/wiki/List_of_time_zones_by_country
         switch ($country->cca3) {
+            case 'AUS':
+                $timezone = 'Australia/Melbourne';
+                break;
             case 'CHN':
-                $timezone = 'Asia/Hong_Kong';
+                $timezone = 'Asia/Shanghai';
                 break;
             case 'ESP':
                 $timezone = 'Europe/Madrid';
@@ -159,8 +164,11 @@ class CountriesHelper
             case 'RUS':
                 $timezone = 'Europe/Moscow';
                 break;
+            case 'CAN':
+                $timezone = 'America/Toronto';
+                break;
             case 'USA':
-                $timezone = 'US/Central';
+                $timezone = 'America/Chicago';
                 break;
             default:
                 $timezone = $country->hydrate('timezones')->timezones->first()->zone_name;

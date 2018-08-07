@@ -8,6 +8,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
@@ -402,7 +403,12 @@ class SettingsController extends Controller
                     $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),
-                    $request->input('password'));
+                    $request->input('password'),
+                    RequestHelper::ip(),
+                    RequestHelper::country()
+                );
+        $user->invited_by_user_id = $invitation->invited_by_user_id;
+        $user->save();
 
         $invitation->delete();
 

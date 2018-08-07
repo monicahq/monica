@@ -67,9 +67,10 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
+     * @param string $countryCode
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $countryCode = null)
     {
         // create the user
         $user = new self;
@@ -83,13 +84,22 @@ class User extends Authenticatable
         $locale = App::getLocale();
         $user->locale = $locale;
 
-        $country = CountriesHelper::getCountryFromLang($locale);
+        if (is_null($countryCode)) {
+            $country = CountriesHelper::getCountryFromLang($locale);
+        } else {
+            $country = CountriesHelper::getCountry($countryCode);
+        }
+
+        // Associate timezone and currency
         if (is_null($country)) {
             $user->timezone = config('app.timezone');
         } else {
-            $currency = Currency::where('iso', $country->currencies[0])->first();
-            if (! is_null($currency)) {
-                $user->currency()->associate($currency);
+            foreach($country->currencies as $currencie) {
+                $currency = Currency::where('iso', $currencie)->first();
+                if (! is_null($currency)) {
+                    $user->currency()->associate($currency);
+                    break;
+                }
             }
 
             $user->timezone = CountriesHelper::getDefaultTimezone($country);
