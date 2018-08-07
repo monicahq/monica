@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\CreateShareableLink;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
-use App\Services\Contact\CreateShareableLink;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController

@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateShareableLink extends BaseService

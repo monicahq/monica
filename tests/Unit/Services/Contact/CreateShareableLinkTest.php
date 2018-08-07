@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Services\Contact\CreateShareableLink;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateShareableLinkTest extends TestCase
 {
