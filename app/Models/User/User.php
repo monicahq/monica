@@ -94,7 +94,7 @@ class User extends Authenticatable
         if (is_null($country)) {
             $user->timezone = config('app.timezone');
         } else {
-            foreach($country->currencies as $currencie) {
+            foreach ($country->currencies as $currencie) {
                 $currency = Currency::where('iso', $currencie)->first();
                 if (! is_null($currency)) {
                     $user->currency()->associate($currency);

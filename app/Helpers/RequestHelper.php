@@ -17,14 +17,13 @@ class RequestHelper
     {
         $whip = new Whip();
         $ip = $whip->getValidIpAddress();
-        if ($ip === false)
-        {
+        if ($ip === false) {
             $ip = Request::header('Cf-Connecting-Ip');
-            if (is_null($ip))
-            {
+            if (is_null($ip)) {
                 $ip = Request::ip();
             }
         }
+
         return $ip;
     }
 
@@ -36,10 +35,10 @@ class RequestHelper
     public static function country()
     {
         $position = Location::get();
-        if (is_null($position))
-        {
+        if (is_null($position)) {
             return;
         }
+
         return $position->countryCode;
     }
 }
