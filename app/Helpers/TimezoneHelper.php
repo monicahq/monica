@@ -7,8 +7,8 @@ use DateTimeZone;
 class TimezoneHelper
 {
     /**
-     * Get a list of all timezones
-     * 
+     * Get a list of all timezones.
+     *
      * @return array
      */
     public static function listTimezones() : array
@@ -21,14 +21,14 @@ class TimezoneHelper
             array_push($list, [
                 'id' => $tz,
                 'timezone' => $timezone,
-                'name' => $name
+                'name' => $name,
             ]);
         }
 
         return array_values(array_sort($list, function ($value) {
             return $value['id'];
         }));
-    } 
+    }
 
     private static function formatTimezone($timezone) : array
     {
@@ -46,7 +46,7 @@ class TimezoneHelper
             $timezone = str_replace('St_', 'St. ', $timezone);
             $timezone = str_replace('_', ' ', $timezone);
 
-            $formatted = '(UTC ' . $offset . ') ' . $timezone;
+            $formatted = '(UTC '.$offset.') '.$timezone;
         }
 
         $tz = str_replace(':', '', $offset);
@@ -63,28 +63,28 @@ class TimezoneHelper
      * @param mixed $attr
      * @return string
      **/
-    public static function list($name, $selected='', $attr='') : string
+    public static function list($name, $selected = '', $attr = '') : string
     {
         // Attributes for select element
         $attrSet = null;
-        if (!empty($attr)) {
+        if (! empty($attr)) {
             if (is_array($attr)) {
                 foreach ($attr as $attr_name => $attr_value) {
-                    $attrSet .= ' ' .$attr_name. '="' .$attr_value. '"';
+                    $attrSet .= ' '.$attr_name.'="'.$attr_value.'"';
                 }
             } else {
-                $attrSet = ' ' .$attr;
+                $attrSet = ' '.$attr;
             }
         }
 
-        $listbox = '<select name="' .$name. '"' .$attrSet. '>';
+        $listbox = '<select name="'.$name.'"'.$attrSet.'>';
 
         $list = self::listTimezones();
 
         foreach ($list as $key => $timezone) {
             $selected_attr = ($selected == $timezone['timezone']) ? ' selected="selected"' : '';
 
-            $listbox .= '<option value="' .$timezone['timezone']. '"' .$selected_attr. '>';
+            $listbox .= '<option value="'.$timezone['timezone'].'"'.$selected_attr.'>';
             $listbox .= $timezone['name'];
             $listbox .= '</option>';
         }
