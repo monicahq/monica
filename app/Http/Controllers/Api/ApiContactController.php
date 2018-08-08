@@ -127,7 +127,7 @@ class ApiContactController extends ApiController
             $contact->first_met_additional_info = $request->get('first_met_information');
         }
 
-        $contact->account_id = auth()->user()->account->id;
+        $contact->account_id = auth()->user()->account_id;
         $contact->setAvatarColor();
         $contact->save();
 

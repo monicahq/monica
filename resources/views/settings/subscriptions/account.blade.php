@@ -37,8 +37,8 @@
 
             <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
 
-            <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) }}</p>
-            <p>{{ trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => url('/settings/subscriptions/downgrade')]) }}</p>
+            <p>{!! trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) !!}</p>
+            <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => url('/settings/subscriptions/downgrade')]) !!}</p>
 
             {{-- Only display invoices if the subscription exists or existed --}}
             @if (auth()->user()->account->hasInvoices())
@@ -54,7 +54,7 @@
                       {{ $invoice->total() }}
                     </div>
                     <div class="table-cell">
-                      <a href="{{ route('settings.subscriptions.invoice', $invoice) }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
+                      <a href="{{ route('settings.subscriptions.invoice', $invoice->id) }}">{{ trans('settings.subscriptions_account_invoices_download') }}</a>
                     </div>
                   </li>
                   @endforeach

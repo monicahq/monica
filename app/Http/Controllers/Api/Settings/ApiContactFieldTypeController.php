@@ -58,7 +58,7 @@ class ApiContactFieldTypeController extends ApiController
         try {
             $contactFieldType = ContactFieldType::create(
                 $request->all()
-                + ['account_id' => auth()->user()->account->id]
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();

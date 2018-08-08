@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="module in modules" :key="module.id">
+      <div class="dt-row hover bb b--light-gray" v-for="module in modules" :key="module.id">
         <div class="dtc">
           <div class="pa2">
             {{ module.name }}

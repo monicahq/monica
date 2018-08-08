@@ -424,6 +424,12 @@ input:disabled {
   }
 }
 
+.dt-row.hover {
+  &:hover {
+    background-color: #f6fbff;
+  }
+}
+
 footer {
   .badge-success {
     font-size: 12px;
