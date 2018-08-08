@@ -61,14 +61,22 @@ class ActivityStatisticService
                 }
             }
 
-            if ($activitiesInMonth->count() != 0) {
+            //if ($activitiesInMonth->count() != 0) {
                 $activitiesPerMonth->push([
                     'month' => $month,
                     'occurences' => $activitiesInMonth->count(),
                     'activities' => $activitiesInMonth,
                 ]);
-            }
+            //}
         }
+
+        // calculate the percent that each month represents
+        $maxActivitiesInAMonth = $activitiesPerMonth->max('occurences');
+
+        $activitiesPerMonth->transform(function ($activity) use ($maxActivitiesInAMonth) {
+            $activity['percent'] = ($activity['occurences'] * 100 / $maxActivitiesInAMonth);
+            return $activity;
+        });
 
         return $activitiesPerMonth;
     }

@@ -57,16 +57,16 @@
 
                         <p class="tc b">Here is what you two have done in 2018:</p>
 
-                        <div>
-                            @for ($i = 1; $i < 13; $i++)
-                                <div class="activity-graph-item">
-                                    <div class="activity-graph-actual-bar">
+                        {{-- Bar chart --}}
+                        <ul class="chart">
+                            @foreach ($activitiesPerMonthForYear->sortBy('month') as $activityMonth)
+                            <li>
+                                <span class="f6" style="height: {{ $activityMonth['percent'] }}%" title="{{ \App\Helpers\DateHelper::getShortMonth(\Carbon\Carbon::create(1990, $activityMonth['month'], 1)) }}"></span>
+                            </li>
+                            @endforeach
+                        </ul>
 
-                                    </div>
-                                </div>
-                            @endfor
-                        </div>
-
+                        {{-- Details about each month --}}
                         @foreach ($activitiesPerMonthForYear as $activityMonth)
                             <h3 class="f4">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr2">

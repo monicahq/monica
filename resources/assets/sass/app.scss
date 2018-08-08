@@ -48,6 +48,10 @@ $border-color: #dfdfdf;
   width: 95%;
 }
 
+.w-12 {
+  width: calc(100% / 12);
+}
+
 .form-error-message {
   border-top: 1px solid #ed6246;
   background-color: #fbeae5;
@@ -452,6 +456,50 @@ input:disabled {
   &:hover {
     background-color: #f6fbff;
   }
+}
+
+.chart{
+  display: table;
+  table-layout: fixed;
+
+  width: 100%;
+  max-width: 700px;
+  height: 200px;
+  margin: 0 auto 100px;
+
+  background-image:linear-gradient(bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-size: 100% 50px;
+  background-position: left top;
+
+  li{
+    position: relative;
+    display: table-cell;
+    vertical-align: bottom;
+    height: 200px;
+  }
+
+  span{
+    margin: 0 1em;
+    display: block;
+    background: rgba(#d1ecfa, .75);
+    animation: draw 1s ease-in-out;
+
+    &:before{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      padding: 5px 1em 0;
+      display: block;
+      text-align: center;
+      content: attr(title);
+      word-wrap: break-word;
+    }
+  }
+}
+
+@keyframes draw{
+  0%{height:0;}
 }
 
 footer {
