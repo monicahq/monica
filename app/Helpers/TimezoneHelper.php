@@ -25,9 +25,21 @@ class TimezoneHelper
             ]);
         }
 
-        return array_values(array_sort($list, function ($value) {
-            return $value['id'];
-        }));
+        $collect = collect($list)
+            ->groupBy('id')
+            ->sortKeys();
+
+        $result = [];
+        foreach($collect as $item) {
+            $values = array_values(array_sort($item, function ($value) {
+                return $value['name'];
+            }));
+            foreach ($values as $val) {
+                array_push($result, $val);
+            }
+        }
+
+        return $result;
     }
 
     private static function formatTimezone($timezone) : array
@@ -39,14 +51,15 @@ class TimezoneHelper
         if ($timezone == 'UTC') {
             $formatted = '(UTC) Universal Time Coordinated';
         } else {
-            $i = strstr($time->tzName, '/');
+            $name = $time->tzName;
+            $i = strpos($name, '/');
             if ($i > 0) {
-                $timezone = substr(strstr($time->tzName, '/'), 1);
+                $name = substr($name, $i + 1);
             }
-            $timezone = str_replace('St_', 'St. ', $timezone);
-            $timezone = str_replace('_', ' ', $timezone);
+            $name = str_replace('St_', 'St. ', $name);
+            $name = str_replace('_', ' ', $name);
 
-            $formatted = '(UTC '.$offset.') '.$timezone;
+            $formatted = '(UTC '.$offset.') '.$name;
         }
 
         $tz = str_replace(':', '', $offset);
@@ -63,9 +76,8 @@ class TimezoneHelper
      * @param mixed $attr
      * @return string
      **/
-    public static function list($name, $selected = '', $attr = '') : string
+    public static function listbox($name, $selected = '', $attr = '') : string
     {
-        // Attributes for select element
         $attrSet = null;
         if (! empty($attr)) {
             if (is_array($attr)) {
@@ -82,7 +94,7 @@ class TimezoneHelper
         $list = self::listTimezones();
 
         foreach ($list as $key => $timezone) {
-            $selected_attr = ($selected == $timezone['timezone']) ? ' selected="selected"' : '';
+            $selected_attr = adjustEquivalentTimezone($selected) == $timezone['timezone'] ? ' selected="selected"' : '';
 
             $listbox .= '<option value="'.$timezone['timezone'].'"'.$selected_attr.'>';
             $listbox .= $timezone['name'];
@@ -92,5 +104,48 @@ class TimezoneHelper
         $listbox .= '</select>';
 
         return $listbox;
+    }
+
+    public static function adjustEquivalentTimezone($timezone) : string
+    {
+        // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        switch ($timezone) {
+            case 'US/Central':
+                return 'America/Chicago';
+            case 'US/Arizona':
+                return 'America/Phoenix';
+            case 'Asia/Calcutta':
+                return 'Asia/Kolkata';
+            case 'US/Eastern':
+                return 'America/New_York';
+            case 'Etc/Greenwich':
+                return 'UTC';
+            case 'US/Mountain':
+                return 'America/Denver';
+            case 'US/Alaska':
+                return 'America/Anchorage';
+            case 'Canada/Atlantic':
+                return 'America/Halifax';
+            case 'US/East-Indiana':
+                return 'America/Indiana/Indianapolis';
+            case 'Asia/Katmandu':
+                return 'Asia/Kathmandu';
+            case 'Canada/Saskatchewan':
+                return 'America/Regina';
+            case 'Australia/Canberra':
+                return 'Australia/Sydney';
+            case 'Asia/Ulan_Bator':
+                return 'Asia/Ulaanbaatar';
+            case 'Canada/Newfoundland':
+                return 'America/St_Johns';
+            case 'Asia/Chongqing':
+                return 'Asia/Shanghai';
+            case 'Pacific/Samoa':
+                return 'Pacific/Pago_Pago';
+            case 'Asia/Rangoon':
+                return 'Asia/Yangon';
+            default:
+                return $timezone;
+        }
     }
 }

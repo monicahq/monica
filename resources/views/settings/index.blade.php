@@ -92,7 +92,7 @@
               {{-- Timezone --}}
               <div class="form-group">
                 <label for="timezone">{{ trans('settings.timezone') }}</label>
-                {!! \App\Helpers\TimezoneHelper::list('timezone', \App\Helpers\DateHelper::getTimezone(), ['id' => 'timezone', 'class' => 'form-control']) !!}
+                {!! \App\Helpers\TimezoneHelper::listbox('timezone', \App\Helpers\DateHelper::getTimezone(), ['id' => 'timezone', 'class' => 'form-control']) !!}
               </div>
 
               {{-- Layout --}}
