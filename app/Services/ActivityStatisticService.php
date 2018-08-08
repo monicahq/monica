@@ -76,6 +76,7 @@ class ActivityStatisticService
             } else {
                 $activity['percent'] = 0;
             }
+
             return $activity;
         });
 
