@@ -62,7 +62,7 @@ class ActivityStatisticService
             }
 
             //if ($activitiesInMonth->count() != 0) {
-                $activitiesPerMonth->push([
+            $activitiesPerMonth->push([
                     'month' => $month,
                     'occurences' => $activitiesInMonth->count(),
                     'activities' => $activitiesInMonth,
@@ -75,6 +75,7 @@ class ActivityStatisticService
 
         $activitiesPerMonth->transform(function ($activity) use ($maxActivitiesInAMonth) {
             $activity['percent'] = ($activity['occurences'] * 100 / $maxActivitiesInAMonth);
+
             return $activity;
         });
 
