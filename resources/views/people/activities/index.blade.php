@@ -19,7 +19,7 @@
     {{-- Main section --}}
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica mb5">
         <div class="mw8 center full-page-modal pt4">
-            <h2 class="tc bb b--gray-monica">Activities report between Marion and you</h2>
+            <h2 class="tc bb b--gray-monica pb3 mb4">Activities report between Marion and you</h2>
             <h2 class="tc pt3 pb4 normal">🚀 You’ve logged {{ $totalActivities }} activities with Roger in total and {{ $activitiesLastTwelveMonths }} in the last 12 months so far.</h2>
             <div class="cf ph2-ns">
 

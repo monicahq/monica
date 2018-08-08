@@ -210,7 +210,7 @@ class ActivityStatisticServiceTest extends TestCase
         $response = $service->activitiesPerMonthForYear($contact, 2017);
 
         $this->assertCount(
-            2,
+            12,
             $response
         );
 
