@@ -30,7 +30,7 @@ class TimezoneHelper
             ->sortKeys();
 
         $result = [];
-        foreach($collect as $item) {
+        foreach ($collect as $item) {
             $values = array_values(array_sort($item, function ($value) {
                 return $value['name'];
             }));
