@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Instance\Instance;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateChangelogFor250 extends Migration
