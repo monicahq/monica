@@ -8,6 +8,7 @@ UNRELEASED CHANGES:
 * Call to monica:ping when updating instance
 * Fix account id get for acceptPolicy
 * Fix idHasher decode function
+* Fix storage folder not being linked to public if migrations fail
 
 RELEASED VERSIONS:
 
