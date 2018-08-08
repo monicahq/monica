@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Přidat aktivitu',
     'activities_add_success' => 'Aktivita byla úspěšně přidána',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Aktivita byla úspěšně aktualizována',
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',
