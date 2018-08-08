@@ -68,6 +68,8 @@
 
                         {{-- Details about each month --}}
                         @foreach ($activitiesPerMonthForYear as $activityMonth)
+                            @if ($activityMonth['occurences'] != 0)
+
                             <h3 class="f4">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr2">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M16 14V15H0V0H1V14H16ZM5 13H3V8H5V13ZM9 13H7V3H9V13ZM13 13H11V6H13V13Z" fill="#4CA35A"/>
@@ -117,6 +119,7 @@
                             {{-- Activities list --}}
                             @endforeach
 
+                            @endif
                         @endforeach
 
                     </div>
