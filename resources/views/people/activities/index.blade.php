@@ -19,6 +19,7 @@
     {{-- Main section --}}
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica mb5">
         <div class="mw8 center full-page-modal pt4">
+            <h2 class="tc bb b--gray-monica">Activities report between Marion and you</h2>
             <h2 class="tc pt3 pb4 normal">🚀 You’ve logged {{ $totalActivities }} activities with Roger in total and {{ $activitiesLastTwelveMonths }} in the last 12 months so far.</h2>
             <div class="cf ph2-ns">
 
@@ -44,19 +45,34 @@
                 {{-- Right Content --}}
                 <div class="fl w-100 w-75-ns pa2">
                     <div class="bg-white">
-                        <p>Here are the breakdown of your activities in 2018:</p>
+                        <p class="tc b">🤲 Here is a breakdown of the type of activities you’ve done together in 2018:</p>
                         <ul class="column-list mb4">
                             @foreach($uniqueActivityTypes as $activityType)
-                            <li class="mb2">✅ {{ $activityType['occurences'] }} {{ $activityType['object']->name }}</li>
+                            <li class="mb2 relative">
+                                <span class="f2">{{ $activityType['occurences'] }}</span>
+                                <span class="relative" style="top: -10px;">{{ $activityType['object']->name }}</span>
+                            </li>
                             @endforeach
                         </ul>
+
+                        <p class="tc b">Here is what you two have done in 2018:</p>
+
+                        <div>
+                            @for ($i = 1; $i < 13; $i++)
+                                <div class="activity-graph-item">
+                                    <div class="activity-graph-actual-bar">
+
+                                    </div>
+                                </div>
+                            @endfor
+                        </div>
 
                         @foreach ($activitiesPerMonthForYear as $activityMonth)
                             <h3 class="f4">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr2">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M16 14V15H0V0H1V14H16ZM5 13H3V8H5V13ZM9 13H7V3H9V13ZM13 13H11V6H13V13Z" fill="#4CA35A"/>
                                 </svg>
-                                {{ \Carbon\Carbon::create(2018, $activityMonth['month'], 1)->formatLocalized('%B') }}: {{ $activityMonth['occurences'] }} activities
+                                {{ \Carbon\Carbon::create(2018, $activityMonth['month'], 1)->formatLocalized('%B %Y') }}: {{ $activityMonth['occurences'] }} activities
                             </h3>
 
                             @foreach ($activityMonth['activities'] as $activity)
