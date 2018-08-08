@@ -308,4 +308,23 @@ return [
     'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
+
+    'personalization_activity_type_category_title' => 'קטגוריות סוגי פעילות',
+    'personalization_activity_type_category_add' => 'הוספת קטגוריית סוג פעילות חדשה',
+    'personalization_activity_type_category_table_name' => 'שם',
+    'personalization_activity_type_category_description' => 'פעילות שהתרחשה עם אחד מאנשי הקשר שלך יכולה להיות מסוג וסוג קטגוריה מסוימים. החשבון שלך מוגדר מראש עם סוגי קטגוריות כלשהם, אך ניתן להתאים אותן בכל עת דרך כאן.',
+    'personalization_activity_type_category_table_actions' => 'פעולות',
+    'personalization_activity_type_category_modal_add' => 'הוספת קטגוריית סוג פעילות חדשה',
+    'personalization_activity_type_category_modal_edit' => 'עריכת קטגוריית סוג פעילות',
+    'personalization_activity_type_category_modal_question' => 'איך יש לקרוא לקטגוריה החדשה?',
+    'personalization_activity_type_add_button' => 'הוספת סוג פעילות חדש',
+    'personalization_activity_type_modal_add' => 'הוספת סוג פעילות חדש',
+    'personalization_activity_type_modal_question' => 'איך יש לקרוא לסוג הקטגוריה החדש?',
+    'personalization_activity_type_modal_edit' => 'עריכת סוג פעילות',
+    'personalization_activity_type_category_modal_delete' => 'מחיקת קטגוריית סוג פעילות',
+    'personalization_activity_type_category_modal_delete_desc' => 'למחוק את הקטגוריה הזאת? מחיקתה תמחק את כל סוגי הפעילות המשויכים. עם זאת, פעילויות שאינן שייכות לקטגוריה הזאת לא תושפענה מהמחיקה.',
+    'personalization_activity_type_modal_delete' => 'מחיקת סוג פעילות',
+    'personalization_activity_type_modal_delete_desc' => 'למחוק את סוג הפעילות הזה? פעילויות ששייכות לקטגוריה זו לא תושפענה מהמחיקה הזאת.',
+    'personalization_activity_type_modal_delete_error' => 'אין לנו אפשרות למצוא את סוג הפעילות.',
+    'personalization_activity_type_category_modal_delete_error' => 'אין לנו אפשרות למצוא את קטגוריית סוג הפעילות הזו.',
 ];

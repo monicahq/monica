@@ -2,8 +2,8 @@
 
 return [
     'journal_rate' => 'How was your day? You can rate it once a day.',
-    'journal_come_back' => 'Thanks. Come back tomorrow to rate your day again.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
+    'journal_come_back' => 'Gracias. Vuelve mañana para puntuar tu día de nuevo.',
+    'journal_description' => 'Nota: el diario lista las entradas del diario y las automáticas como Actividades con tus contactos. Aunque puedes borrar las entradas del diario manualmente, la actividad tendrás que borrarla directamente en la página del contacto.',
     'journal_add' => 'Add a journal entry',
     'journal_created_automatically' => 'Created automatically',
     'journal_entry_type_journal' => 'Journal entry',

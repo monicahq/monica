@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
     'activities_blank_add_activity' => 'הוספת פעילות',
     'activities_add_success' => 'הפעילות נוספה בהצלחה',
+    'activities_add_error' => 'אירעה שגיאה בעת הוספת הפעילות',
     'activities_update_success' => 'הפעילות עודכנה בהצלחה',
     'activities_delete_success' => 'הפעילות נמחקה בהצלחה',
     'activities_who_was_involved' => 'מי היה מעורב?',
