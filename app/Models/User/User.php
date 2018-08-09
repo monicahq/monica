@@ -12,7 +12,6 @@ use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

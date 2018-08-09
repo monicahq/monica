@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User\User;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Migrations\Migration;
 
 class AcceptTerms extends Migration
