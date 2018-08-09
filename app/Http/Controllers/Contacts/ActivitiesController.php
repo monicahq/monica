@@ -27,28 +27,12 @@ class ActivitiesController extends Controller
      */
     public function index(Contact $contact)
     {
-        $activitiesLastTwelveMonths = $this->activityStatisticService
-                        ->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(12), Carbon::now())
-                        ->count();
-
-        $uniqueActivityTypes = $this->activityStatisticService
-                        ->uniqueActivityTypesInTimeRange($contact, Carbon::now()->startOfYear(), Carbon::now());
-
-        $activitiesPerYear = $this->activityStatisticService->activitiesPerYearWithContact($contact);
-
-        $activitiesPerMonthForYear = $this->activityStatisticService
-                        ->activitiesPerMonthForYear($contact, Carbon::now()->year)
-                        ->sortByDesc('month');
-
-        return view('people.activities.index')
-            ->withTotalActivities($contact->activities->count())
-            ->withActivitiesLastTwelveMonths($activitiesLastTwelveMonths)
-            ->withUniqueActivityTypes($uniqueActivityTypes)
-            ->withActivitiesPerYear($activitiesPerYear)
-            ->withActivitiesPerMonthForYear($activitiesPerMonthForYear)
-            ->withContact($contact);
+        return redirect()->route('people.activities.year', [$contact, \Carbon\Carbon::now()->year]);
     }
 
+    /**
+     * Get all the activities for this contact for a specific year.
+     */
     public function year(Request $request, Contact $contact, int $year)
     {
         $startDate = Carbon::create($year, 1, 1);
@@ -73,6 +57,7 @@ class ActivitiesController extends Controller
             ->withUniqueActivityTypes($uniqueActivityTypes)
             ->withActivitiesPerYear($activitiesPerYear)
             ->withActivitiesPerMonthForYear($activitiesPerMonthForYear)
+            ->withYear($year)
             ->withContact($contact);
     }
 }

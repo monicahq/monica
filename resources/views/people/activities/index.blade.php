@@ -8,7 +8,7 @@
         <div class="mw7 center">
             <div class="full-page-modal-header ph4 pv3 bt br bl b--gray-monica">
                 <ul>
-                    <li class="di"><a href="">Profile of John Doe</a></li>
+                    <li class="di"><a href="">Profile of {{ $contact->name }}</a></li>
                     <li class="di ph2">></li>
                     <li class="di">Activities</li>
                 </ul>
@@ -20,22 +20,29 @@
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica mb5">
         <div class="mw8 center full-page-modal pt4">
             <h2 class="tc bb b--gray-monica pb3 mb4">Activities report between Marion and you</h2>
-            <h2 class="tc pt3 pb4 normal">🚀 You’ve logged {{ $totalActivities }} activities with Roger in total and {{ $activitiesLastTwelveMonths }} in the last 12 months so far.</h2>
+            <h2 class="tc pt3 pb4 ph3 normal">🚀 You’ve logged {{ $totalActivities }} activities with {{ $contact->first_name }} in total and {{ $activitiesLastTwelveMonths }} in the last 12 months so far.</h2>
             <div class="cf ph2-ns">
 
                 {{-- Left sidebar --}}
                 <div class="fl w-100 w-25-ns pa2">
                     <div class="bg-white">
-                        <p>Everything you've ever done</p>
                         <ul>
                             @foreach($activitiesPerYear as $activityStatistic)
-                            <li class="full-page-modal-year-selector pv2 b selected">
-                                <a href="{{ route('people.activities.year', [$contact, $activityStatistic->year]) }}">
-                                    <span class="ph3">
-                                        {{ $activityStatistic->year }}
-                                        <span class="fr mr3">{{ $activityStatistic->count }}</span>
-                                    </span>
-                                </a>
+                            <li class="full-page-modal-year-selector pv2 b {{ $year == $activityStatistic->year ? 'selected' : ''  }}">
+
+                                <span class="ph3">
+                                    @if ($year != $activityStatistic->year)
+                                    <a href="{{ route('people.activities.year', [$contact, $activityStatistic->year]) }}">
+                                    @endif
+
+                                    {{ $activityStatistic->year }}
+
+                                    @if ($year != $activityStatistic->year)
+                                    </a>
+                                    @endif
+
+                                    <span class="fr mr3">{{ $activityStatistic->count }}</span>
+                                </span>
                             </li>
                             @endforeach
                         </ul>
@@ -48,9 +55,9 @@
                         <p class="tc b">🤲 Here is a breakdown of the type of activities you’ve done together in 2018:</p>
                         <ul class="column-list mb4">
                             @foreach($uniqueActivityTypes as $activityType)
-                            <li class="mb2 relative">
-                                <span class="f2">{{ $activityType['occurences'] }}</span>
-                                <span class="relative" style="top: -10px;">{{ $activityType['object']->name }}</span>
+                            <li class="mb2 relative tc">
+                                <span class="f3">{{ $activityType['occurences'] }}</span>
+                                <span class="relative" style="top: -3px;">{{ $activityType['object']->name }}</span>
                             </li>
                             @endforeach
                         </ul>
@@ -80,15 +87,15 @@
                             @foreach ($activityMonth['activities'] as $activity)
                             <div class="pl2 bl b--gray-monica">
                                 <div class="pa3 br2 mb3 ml4">
-                                    <div class="mb3">
-                                        <ul class="mb3 di">
+                                    <div class="mb1">
+                                        <ul class="mb3 di black-70">
                                             <li class="di relative pr1" style="top:2px">
                                                 <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M11.6308 1H10.6615V2.5C10.6615 2.78 10.4483 3 10.1769 3H8.23846C7.96708 3 7.75385 2.78 7.75385 2.5V1H4.84615V2.5C4.84615 2.78 4.63292 3 4.36154 3H2.42308C2.15169 3 1.93846 2.78 1.93846 2.5V1H0.969231C0.436154 1 0 1.45 0 2V13C0 13.55 0.436154 14 0.969231 14H11.6308C12.1638 14 12.6 13.55 12.6 13V2C12.6 1.45 12.1638 1 11.6308 1ZM11.6308 13H0.969231V4H11.6308V13ZM3.87692 2H2.90769V0H3.87692V2ZM9.69231 2H8.72308V0H9.69231V2ZM4.84615 6H3.87692V5H4.84615V6ZM6.78461 6H5.81538V5H6.78461V6ZM8.72308 6H7.75385V5H8.72308V6ZM10.6615 6H9.69231V5H10.6615V6ZM2.90769 8H1.93846V7H2.90769V8ZM4.84615 8H3.87692V7H4.84615V8ZM6.78461 8H5.81538V7H6.78461V8ZM8.72308 8H7.75385V7H8.72308V8ZM10.6615 8H9.69231V7H10.6615V8ZM2.90769 10H1.93846V9H2.90769V10ZM4.84615 10H3.87692V9H4.84615V10ZM6.78461 10H5.81538V9H6.78461V10ZM8.72308 10H7.75385V9H8.72308V10ZM10.6615 10H9.69231V9H10.6615V10ZM2.90769 12H1.93846V11H2.90769V12ZM4.84615 12H3.87692V11H4.84615V12ZM6.78461 12H5.81538V11H6.78461V12ZM8.72308 12H7.75385V11H8.72308V12Z" fill="#CDCDCD"/>
                                                 </svg>
                                             </li>
                                             <li class="di f6 pr3">
-                                                {{ $activity->date_it_happened }}
+                                                {{ \App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}
                                             </li>
                                             @if (!is_null($activity->type))
                                             <li class="di relative pr1" style="top:1px">
@@ -111,7 +118,7 @@
                                         </ul>
                                     </div>
 
-                                    <p><strong>{{ $activity->summary }}</strong></p>
+                                    <p class="mb2"><strong>{{ $activity->summary }}</strong></p>
 
                                     <p class="mb0">{{ $activity->description }}</p>
                                 </div>
