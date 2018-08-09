@@ -11,7 +11,7 @@ class TimezoneHelper
      *
      * @return array
      */
-    public static function listTimezones() : array
+    public static function getListOfTimezones() : array
     {
         $list = [];
         $timezones = DateTimeZone::listIdentifiers();
@@ -69,43 +69,11 @@ class TimezoneHelper
     }
 
     /**
-     * Render listbox of timezones.
-     *
-     * @param string $name
-     * @param string $selected
-     * @param mixed $attr
+     * Adjust a timezone with equivalent name (remove deprecated)
+     * 
+     * @param string $timezone
      * @return string
-     **/
-    public static function listbox($name, $selected = '', $attr = '') : string
-    {
-        $attrSet = null;
-        if (! empty($attr)) {
-            if (is_array($attr)) {
-                foreach ($attr as $attr_name => $attr_value) {
-                    $attrSet .= ' '.$attr_name.'="'.$attr_value.'"';
-                }
-            } else {
-                $attrSet = ' '.$attr;
-            }
-        }
-
-        $listbox = '<select name="'.$name.'"'.$attrSet.'>';
-
-        $list = self::listTimezones();
-
-        foreach ($list as $key => $timezone) {
-            $selected_attr = adjustEquivalentTimezone($selected) == $timezone['timezone'] ? ' selected="selected"' : '';
-
-            $listbox .= '<option value="'.$timezone['timezone'].'"'.$selected_attr.'>';
-            $listbox .= $timezone['name'];
-            $listbox .= '</option>';
-        }
-
-        $listbox .= '</select>';
-
-        return $listbox;
-    }
-
+     */
     public static function adjustEquivalentTimezone($timezone) : string
     {
         // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -119,6 +87,7 @@ class TimezoneHelper
             case 'US/Eastern':
                 return 'America/New_York';
             case 'Etc/Greenwich':
+                // This is not an equivalent, but it the same zone
                 return 'UTC';
             case 'US/Mountain':
                 return 'America/Denver';

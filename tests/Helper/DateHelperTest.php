@@ -585,7 +585,7 @@ class DateHelperTest extends FeatureTestCase
             'Pacific/Tongatapu',
         ];
 
-        $list = TimezoneHelper::listTimezones();
+        $list = TimezoneHelper::getListOfTimezones();
         $list = collect($list);
 
         $missed = '';

@@ -92,7 +92,14 @@
               {{-- Timezone --}}
               <div class="form-group">
                 <label for="timezone">{{ trans('settings.timezone') }}</label>
-                {!! \App\Helpers\TimezoneHelper::listbox('timezone', \App\Helpers\DateHelper::getTimezone(), ['id' => 'timezone', 'class' => 'form-control']) !!}
+                <select name="timezone" id="timezone" class="form-control">
+                  @foreach ($timezones as $timezone)
+                    <option value="{{ $timezone['timezone'] }}"
+                      {{ $selectedTimezone == $timezone['timezone'] ? 'selected="selected"' : '' }}>
+                      {{ $timezone['name'] }}
+                    </option>
+                  @endforeach
+                </select>
               </div>
 
               {{-- Layout --}}
