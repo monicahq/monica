@@ -264,7 +264,7 @@ class User extends Authenticatable
         $isTheRightTime = true;
 
         $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('G:00');
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
         $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
         $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 

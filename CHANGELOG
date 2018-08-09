@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix reminders not being sent for single-digit hours
 
 RELEASED VERSIONS:
 
