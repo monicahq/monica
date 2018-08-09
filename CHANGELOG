@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix reminders not being sent for single-digit hours
+* Fix accounts with an empty reminder time
 
 RELEASED VERSIONS:
 
