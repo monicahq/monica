@@ -69,8 +69,8 @@ class TimezoneHelper
     }
 
     /**
-     * Adjust a timezone with equivalent name (remove deprecated)
-     * 
+     * Adjust a timezone with equivalent name (remove deprecated).
+     *
      * @param string $timezone
      * @return string
      */
