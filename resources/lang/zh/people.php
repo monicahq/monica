@@ -33,7 +33,7 @@ return [
     'people_add_firstname' => '名',
     'people_add_middlename' => '中间名 (可选)',
     'people_add_lastname' => '姓（可选）',
-    'people_add_nickname' => 'Nickname (Optional)',
+    'people_add_nickname' => '昵称（可选）',
     'people_add_cta' => '添加',
     'people_save_and_add_another_cta' => '提交并添加其他人',
     'people_add_success' => ':name 已成功创建',
@@ -45,8 +45,8 @@ return [
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
     'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
-    'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_export' => '导出为 vCard',
+    'people_add_reminder_for_birthday' => '创建一个年度生日提醒事项',
 
     // show
     'section_contact_information' => '联系人信息',
@@ -54,7 +54,7 @@ return [
     'section_personal_reminders' => '提醒',
     'section_personal_tasks' => '任务',
     'section_personal_gifts' => '礼物',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => '便签',
 
     //
     'link_to_list' => '人名单',
