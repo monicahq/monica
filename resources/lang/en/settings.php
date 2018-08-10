@@ -1,5 +1,4 @@
 <?php
-                Log::info($user->id);
 
 return [
     'sidebar_settings' => 'Account settings',
