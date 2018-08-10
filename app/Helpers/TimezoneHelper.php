@@ -44,9 +44,12 @@ class TimezoneHelper
 
     private static function formatTimezone($timezone) : array
     {
+        $dtimezone = new DateTimeZone($timezone); 
         $time = now($timezone);
 
         $offset = $time->format('P');
+
+        $loc = $dtimezone->getLocation();
 
         if ($timezone == 'UTC') {
             $formatted = '(UTC) Universal Time Coordinated';
@@ -56,11 +59,15 @@ class TimezoneHelper
             if ($i > 0) {
                 $name = substr($name, $i + 1);
             }
-            $name = str_replace('St_', 'St. ', $name);
-            $name = str_replace('_', ' ', $name);
+            $name = str_replace(['_', '/', 'St_'], [' ', ', ', 'St. '], $name);
 
-            $formatted = '(UTC '.$offset.') '.$name;
+            if (empty($loc['comments'])) {
+                $formatted = '(UTC '.$offset.') '.$name;
+            } else {
+                $formatted = '(UTC '.$offset.') '.$loc['comments'].' ('.$name.')';
+            }
         }
+
 
         $tz = str_replace(':', '', $offset);
         $tz = intval($tz);
