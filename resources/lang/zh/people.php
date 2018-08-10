@@ -64,13 +64,13 @@ return [
     'call_button' => '记录通话',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
-    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch' => '常联系*',
+    'stay_in_touch_frequency' => '常联系*提醒频率：每天|常联系*提醒频率：每 {count} 天',
+    'stay_in_touch_invalid' => '频率必须大于0。',
+    'stay_in_touch_premium' => '您需要升级到高级账户来使用这个功能！',
+    'stay_in_touch_modal_title' => '常联系*',
+    'stay_in_touch_modal_desc' => '我们将会用邮件提醒您与{firstname}保持联系。',
+    'stay_in_touch_modal_label' => '每几天发送一封提醒邮件...？',
 
     // Calls
     'modal_call_title' => '记录通话',
