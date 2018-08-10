@@ -60,6 +60,7 @@ return [
     'locale_pt' => '葡萄牙文',
     'locale_ru' => '俄文',
     'locale_zh' => 'Chinese Simplified',
+    'locale_tr' => 'Turkish',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
