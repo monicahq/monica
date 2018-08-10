@@ -60,6 +60,7 @@ return [
     'locale_pt' => 'פורטוגלית',
     'locale_ru' => 'רוסית',
     'locale_zh' => 'סינית מפושטת',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'אבטחה',
     'security_help' => 'שינוי נדבכי האבטחה של החשבון שלך.',
