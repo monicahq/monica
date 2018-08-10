@@ -1,4 +1,5 @@
 <?php
+                Log::info($user->id);
 
 return [
     'sidebar_settings' => 'Account settings',
@@ -60,6 +61,7 @@ return [
     'locale_pt' => 'Portuguese',
     'locale_ru' => 'Russian',
     'locale_zh' => 'Chinese Simplified',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
