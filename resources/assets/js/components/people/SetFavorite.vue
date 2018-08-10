@@ -2,10 +2,13 @@
 </style>
 
 <template>
-  <p>
-    <a @click="store(!isFavorite)" v-if="!isFavorite">Mark as favorite</a>
-    <a @click="store(!isFavorite)" v-if="isFavorite">Unmark as favorite</a>
-  </p>
+    <div>
+        <notifications group="favorite" position="top middle" duration="5000" width="400" />
+        <p>
+            <a class="pointer" @click="store(!isFavorite)" v-if="!isFavorite">Mark as favorite</a>
+            <a class="pointer" @click="store(!isFavorite)" v-if="isFavorite">Unmark as favorite</a>
+        </p>
+    </div>
 </template>
 
 <script>
