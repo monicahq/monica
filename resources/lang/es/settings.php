@@ -60,6 +60,7 @@ return [
     'locale_pt' => 'Portugues',
     'locale_ru' => 'Ruso',
     'locale_zh' => 'Chinese Simplified',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
