@@ -60,6 +60,7 @@ return [
     'locale_pt' => 'Portugiesisch',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Vereinfachtes Chinesisch',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
