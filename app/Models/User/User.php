@@ -12,7 +12,6 @@ use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -264,16 +263,14 @@ class User extends Authenticatable
         $isTheRightTime = true;
 
         $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('G:00');
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
         $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
         $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
-        Log::info('Reminder date: '.$dateToCompareTo.' | Today date for user: '.$currentDateOnUserTimezone);
         if ($dateToCompareTo != $currentDateOnUserTimezone) {
             $isTheRightTime = false;
         }
 
-        Log::info('Hour reminder should be sent: '.$defaultHourReminderShouldBeSent.' | Current hour for user: '.$currentHourOnUserTimezone);
         if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
             $isTheRightTime = false;
         }
