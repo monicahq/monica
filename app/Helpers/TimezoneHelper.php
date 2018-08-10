@@ -44,7 +44,7 @@ class TimezoneHelper
 
     private static function formatTimezone($timezone) : array
     {
-        $dtimezone = new DateTimeZone($timezone); 
+        $dtimezone = new DateTimeZone($timezone);
         $time = now($timezone);
 
         $offset = $time->format('P');
@@ -67,7 +67,6 @@ class TimezoneHelper
                 $formatted = '(UTC '.$offset.') '.$loc['comments'].' ('.$name.')';
             }
         }
-
 
         $tz = str_replace(':', '', $offset);
         $tz = intval($tz);
