@@ -217,10 +217,10 @@ return [
     'activities_add_date_occured' => '发生此活动的日期',
     'activities_add_optional_comment' => '可选注释',
     'activities_add_cta' => '记录活动',
-    'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
+    'activities_blank_title' => '记录您与 :name 之间的点滴',
     'activities_blank_add_activity' => '添加活动',
     'activities_add_success' => '已成功添加活动',
-    'activities_add_error' => 'Error when adding the activity',
+    'activities_add_error' => '添加活动时出现错误',
     'activities_update_success' => '活动已成功更新',
     'activities_delete_success' => '活动已成功删除',
     'activities_who_was_involved' => '谁参与了？',
@@ -235,7 +235,7 @@ return [
     'notes_delete_confirmation' => '确实要删除此便笺吗？删除是永久性的',
 
     // gifts
-    'gifts_title' => 'Gifts',
+    'gifts_title' => '礼物',
     'gifts_add_success' => '已成功添加礼品',
     'gifts_delete_success' => '礼品已成功删除',
     'gifts_delete_confirmation' => '是否确实要删除此礼品？',
@@ -254,7 +254,7 @@ return [
     'gifts_add_someone' => 'This gift is for someone in :name’s family in particular',
     'gifts_ideas' => '礼品创意',
     'gifts_offered' => '提供的礼品',
-    'gifts_offered_as_an_idea' => 'Mark as an idea',
+    'gifts_offered_as_an_idea' => '标记为心愿单',
     'gifts_received' => '收到的礼物',
     'gifts_view_comment' => '查看评论',
     'gifts_mark_offered' => '标记为提供',
@@ -280,7 +280,7 @@ return [
 
     // tags
     'tag_edit' => '编辑标签',
-    'tag_add' => 'add a tag',
+    'tag_add' => '添加标签',
 
     // Introductions
     'introductions_sidebar_title' => '你是如何相遇的',
@@ -290,10 +290,10 @@ return [
     'introductions_edit_met_through' => '有人把你介绍给这个人吗？',
     'introductions_no_met_through' => '没有人',
     'introductions_first_met_date' => '你遇见的日期',
-    'introductions_no_first_met_date' => 'I don’t know the date we met',
+    'introductions_no_first_met_date' => '我不记得具体日期',
     'introductions_first_met_date_known' => '这是我们相遇的日子',
     'introductions_add_reminder' => '添加提醒以庆祝此事件发生的周年纪念',
-    'introductions_update_success' => 'You’ve successfully updated the information about how you met this person',
+    'introductions_update_success' => '你成功更新了关于你们相识的故事',
     'introductions_met_through' => '通过 <a href=":url">:name</a>遇到',
     'introductions_met_date' => '在:date遇到',
     'introductions_reminder_title' => '你第一次遇见的那一天的周年纪念日',
