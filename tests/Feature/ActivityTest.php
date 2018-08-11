@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase
 {
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     /**
      * Returns an array containing a user object along with
@@ -70,6 +70,7 @@ class ActivityTest extends FeatureTestCase
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the activity has been added
+        $params = [];
         $params['account_id'] = $user->account_id;
         $params['summary'] = $activityTitle;
         $params['date_it_happened'] = $activityDate;
