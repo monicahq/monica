@@ -27,7 +27,10 @@ class ActivitiesController extends Controller
      */
     public function index(Contact $contact)
     {
-        return redirect()->route('people.activities.year', [$contact, \Carbon\Carbon::now()->year]);
+        // get the year of the most recent activity done with the contact
+        $year = $contact->activities->sortByDesc('date_it_happened')->first()->date_it_happened->year;
+
+        return redirect()->route('people.activities.year', [$contact, $year]);
     }
 
     /**

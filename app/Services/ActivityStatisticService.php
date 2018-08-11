@@ -46,7 +46,7 @@ class ActivityStatisticService
      */
     public function activitiesPerMonthForYear(Contact $contact, int $year)
     {
-        $startDate = Carbon::create($year, 1, 1);
+        $startDate = Carbon::create($year, 1, 1, 0, 0, 0);
         $endDate = Carbon::create($year, 12, 31);
 
         $activities = $this->activitiesWithContactInTimeRange($contact, $startDate, $endDate);
