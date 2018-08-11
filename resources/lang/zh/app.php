@@ -200,7 +200,7 @@ return [
     'relationship_type_colleague' => '同事',
     'relationship_type_colleague_female' => '同事',
     'relationship_type_colleague_with_name' => ':name的同事',
-    'relationship_type_colleague_female_with_name' => '同事',
+    'relationship_type_colleague_female_with_name' => ':name的同事',
 
     'relationship_type_boss' => '上司',
     'relationship_type_boss_female' => '上司',
