@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Hesap oluşturduğunuz için teşekkür ederiz! Lütfen e-posta adresinizi doğrulatmak için e-postanızı kontrol ediniz.',
+    'success' => 'Hesabınızı başarıyla doğruladınız. Şimdi giriş yapabilirsiniz.',
+    'again' => 'Oturum açabilmek için e-posta adresinizi doğrulatmanız gerekmektedir.
+                <br/>Gelen kutunuzda doğrulama mailini göremiyorsanız Spam klasörünü de kontrol ediniz.
+                <br/>Doğrulama mailini tekrar almak için lütfen <a href=":url" class="alert-link">buraya tıklayınız</a>.',
+    'resend' => 'Doğrulama e-postası gönderildi. Lütfen e-postanızı kontrol edin.'
 ];
