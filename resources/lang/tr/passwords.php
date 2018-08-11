@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfuly.',
-    'invalid' => 'Current password you entered is not correct.',
+    'password' => 'Şifreniz en az altı karakterden oluşmalı ve şifre doğrulaması ile eşleşmelidir.',
+    'reset' => 'Şifreniz sıfırlandı!',
+    'sent' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
+    'token' => 'Bu şifre sıfırlama güvenlik anahtarı geçersiz.',
+    'user' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
+    'changed' => 'Şifreniz başarılı bir şekilde değiştirildi.',
+    'invalid' => 'Girdiğiniz güncel şifreniz doğru değil.',
 
 ];
