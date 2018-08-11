@@ -142,7 +142,7 @@ return [
     'subscriptions_downgrade_title' => '将您的帐户降级为免费计划',
     'subscriptions_downgrade_limitations' => '自由计划有限制。为了能够降级, 您需要通过以下清单:',
     'subscriptions_downgrade_rule_users' => '您的帐户中必须只有1个用户',
-    'subscriptions_downgrade_rule_users_constraint' => '您的帐户中当前有 <a href=":url">1 个用户</a> 。|您的帐户中当前有 <a href=":url">: count 个用户</a>。',
+    'subscriptions_downgrade_rule_users_constraint' => '您的帐户中当前有 <a href=":url">1 个用户</a> 。|您的帐户中当前有 <a href=":url">:count 个用户</a>。',
     'subscriptions_downgrade_rule_invitations' => '您不能有挂起的邀请',
     'subscriptions_downgrade_rule_invitations_constraint' => '您的帐户中当前有 <a href=":url">1 个未确认邀请</a> |您的帐户中当前有 <a href=":url">:count 个未确认邀请</a>',
     'subscriptions_downgrade_cta' => '降级',
