@@ -65,8 +65,8 @@
                         <p class="tc b mb4">{{ trans('people.activities_profile_year_summary', ['year' => $year]) }}</p>
 
                         {{-- Bar chart --}}
-                        <div class="ba b--gray-monica mb5 br2">
-                            <ul class="chart">
+                        <div class="ba b--gray-monica mb5-ns mb6 br2">
+                            <ul class="chart-activities">
                                 @foreach ($activitiesPerMonthForYear->sortBy('month') as $activityMonth)
                                 <li>
                                     <span class="f6" style="height: {{ $activityMonth['percent'] }}%" title="{{ \App\Helpers\DateHelper::getShortMonth(\Carbon\Carbon::create(1990, $activityMonth['month'], 1)) }}"></span>
@@ -88,8 +88,8 @@
 
                                 {{-- Activities list --}}
                                 @foreach ($activityMonth['activities'] as $activity)
-                                <div class="pl2 bl b--gray-monica">
-                                    <div class="pa3 br2 mb3 ml4">
+                                <div class="pl2 bl-ns b--gray-monica">
+                                    <div class="pa3-ns pa2 br2 mb3-ns mb2 ml4-ns ml2">
                                         <div class="mb1">
                                             <ul class="mb3 di black-70">
                                                 <li class="di relative pr1" style="top:2px">

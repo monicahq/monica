@@ -458,7 +458,7 @@ input:disabled {
   }
 }
 
-.chart{
+.chart-activities {
   display: table;
   table-layout: fixed;
 
@@ -548,6 +548,17 @@ footer {
 
     li {
       padding: 5px;
+    }
+  }
+
+  .column-list {
+    column-count: 1;
+    column-gap: 20px;
+  }
+
+  .chart-activities {
+    span{
+      margin: 0 4px;
     }
   }
 }
