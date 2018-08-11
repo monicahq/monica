@@ -14,7 +14,7 @@ class ActivityStatisticService
      * @param Contact $contact
      * @param Carbon $startDate
      * @param Carbon $endDate
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function activitiesWithContactInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
@@ -30,7 +30,7 @@ class ActivityStatisticService
      * the contact.
      *
      * @param  Contact $contact
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function activitiesPerYearWithContact(Contact $contact)
     {
@@ -42,7 +42,7 @@ class ActivityStatisticService
      *
      * @param  Contact $contact
      * @param  int     $year
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function activitiesPerMonthForYear(Contact $contact, int $year)
     {
@@ -89,7 +89,7 @@ class ActivityStatisticService
      *
      * @param Contact $contact
      * @param int $year
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)
     {
