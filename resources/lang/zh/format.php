@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'short_date_year_time' => 'M d, Y H:i',
-    'short_date_year' => 'M d, Y',
+    'short_date_year_time' => 'Y M d H:i',
+    'short_date_year' => 'Y M d',
     'short_date' => 'M d',
     'short_month' => 'M',
-    'short_month_year' => 'M Y',
+    'short_month_year' => 'Y M',
     'short_day' => 'D',
     'full_month' => 'F',
     'full_hour' => 'h.i A',
