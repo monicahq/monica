@@ -9,29 +9,29 @@ return [
     'edit' => '编辑',
     'upload' => '上传',
     'close' => '关闭',
-    'create' => 'Create',
+    'create' => '创建',
     'remove' => '删除',
-    'revoke' => 'Revoke',
+    'revoke' => '撤销',
     'done' => '完成',
     'verify' => '验证',
     'for' => '为',
-    'new' => 'new',
+    'new' => '新',
     'unknown' => '我不知道',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
-    'days' => 'day|days',
+    'days' => '天|天',
 
-    'application_title' => 'Monica – personal relationship manager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_title' => 'Monica – 您的私人社交关系管家',
+    'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
+    'application_og_title' => '促进你们之间的感情。一个免费且开源的面向亲朋好友的CRM工具',
 
     'markdown_description' => '想用一种美观的方式格式化文本吗？我们以Markdown语法支持粗体、斜体、列表等样式。',
     'markdown_link' => '阅读文档',
 
     'header_settings_link' => '设置',
     'header_logout_link' => '注销',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => '更新日志',
 
     'main_nav_cta' => '添加人员',
     'main_nav_dashboard' => '仪表盘',
@@ -80,14 +80,14 @@ return [
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => '当储存数据时出现了一个错误',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => '数据已被保存',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => '抱歉，打扰您一下',
+    'compliance_desc' => '我们更新了<a href=":urlterm" hreflang=":hreflang">用户协议</a> 以及 <a href=":url" hreflang=":hreflang">隐私政策</a>，您需要阅读并同意才能继续使用您的账号。',
+    'compliance_desc_end' => '我们会保护您的隐私安全。',
+    'compliance_terms' => '我已阅读并同意',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -96,13 +96,13 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => '恋爱关系',
+    'relationship_type_group_family' => '家庭关系',
+    'relationship_type_group_friend' => '朋友关系',
+    'relationship_type_group_work' => '工作关系',
+    'relationship_type_group_other' => '其他关系',
 
-    'relationship_type_partner' => 'significant other',
+    'relationship_type_partner' => '搭档',
     'relationship_type_partner_female' => 'significant other',
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
