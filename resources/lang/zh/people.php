@@ -251,7 +251,7 @@ return [
     'gifts_add_link' => '链接到网页 (可选)',
     'gifts_add_value' => '值 (可选)',
     'gifts_add_comment' => '注释 (可选)',
-    'gifts_add_someone' => 'This gift is for someone in :name’s family in particular',
+    'gifts_add_someone' => '这个礼物是送给:name的家人',
     'gifts_ideas' => '礼品创意',
     'gifts_offered' => '提供的礼品',
     'gifts_offered_as_an_idea' => '标记为心愿单',
