@@ -438,7 +438,7 @@ class DateHelperTest extends FeatureTestCase
     public function test_old_timezones_exists()
     {
         // These are all currently used timezone in monica
-        $old_timezones = [
+        $oldTimezones = [
             'US/Eastern',
             'US/Central',
             'America/Los_Angeles',
@@ -589,7 +589,7 @@ class DateHelperTest extends FeatureTestCase
         $list = collect($list);
 
         $missed = '';
-        foreach ($old_timezones as $timezone) {
+        foreach ($oldTimezones as $timezone) {
             $timezone = TimezoneHelper::adjustEquivalentTimezone($timezone);
             if ($list->firstWhere('timezone', $timezone) == null) {
                 $missed .= ', '.$timezone;
