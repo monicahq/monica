@@ -44,7 +44,7 @@ class TimezoneHelper
 
     /**
      * Format a timezone to be displayed (english only).
-     * 
+     *
      * @param string $timezone
      * @return array int value of the offset, string formatted timezone
      */
@@ -82,8 +82,8 @@ class TimezoneHelper
 
     /**
      * Equivalent timezone to convert deprecated timezone.
-     * 
-     * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
+     *
+     * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
      */
     protected static $equivalentTimezone = [
         'Australia/Canberra' => 'Australia/Sydney',
@@ -104,7 +104,7 @@ class TimezoneHelper
         'US/Eastern' => 'America/New_York',
         'US/Mountain' => 'America/Denver',
     ];
-    
+
     /**
      * Adjust a timezone with equivalent name (remove deprecated).
      *
@@ -116,6 +116,7 @@ class TimezoneHelper
         if (array_key_exists($timezone, self::$equivalentTimezone)) {
             return self::$equivalentTimezone[$timezone];
         }
+
         return $timezone;
     }
 }
