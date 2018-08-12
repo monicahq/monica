@@ -42,6 +42,12 @@ class TimezoneHelper
         return $result;
     }
 
+    /**
+     * Format a timezone to be displayed (english only).
+     * 
+     * @param string $timezone
+     * @return array int value of the offset, string formatted timezone
+     */
     private static function formatTimezone($timezone) : array
     {
         $dtimezone = new DateTimeZone($timezone);
@@ -75,6 +81,31 @@ class TimezoneHelper
     }
 
     /**
+     * Equivalent timezone to convert deprecated timezone.
+     * 
+     * @see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
+     */
+    protected static $equivalentTimezone = [
+        'Australia/Canberra' => 'Australia/Sydney',
+        'Asia/Calcutta' => 'Asia/Kolkata',
+        'Asia/Chongqing' => 'Asia/Shanghai',
+        'Asia/Katmandu' => 'Asia/Kathmandu',
+        'Asia/Rangoon' => 'Asia/Yangon',
+        'Asia/Ulan_Bator' => 'Asia/Ulaanbaatar',
+        'Canada/Atlantic' => 'America/Halifax',
+        'Canada/Newfoundland' => 'America/St_Johns',
+        'Canada/Saskatchewan' => 'America/Regina',
+        'Etc/Greenwich' => 'UTC', // This is not an equivalent, but it the same zone
+        'Pacific/Samoa' => 'Pacific/Pago_Pago',
+        'US/Alaska' => 'America/Anchorage',
+        'US/Arizona' => 'America/Phoenix',
+        'US/Central' => 'America/Chicago',
+        'US/East-Indiana' => 'America/Indiana/Indianapolis',
+        'US/Eastern' => 'America/New_York',
+        'US/Mountain' => 'America/Denver',
+    ];
+    
+    /**
      * Adjust a timezone with equivalent name (remove deprecated).
      *
      * @param string $timezone
@@ -82,45 +113,9 @@ class TimezoneHelper
      */
     public static function adjustEquivalentTimezone($timezone) : string
     {
-        // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-        switch ($timezone) {
-            case 'US/Central':
-                return 'America/Chicago';
-            case 'US/Arizona':
-                return 'America/Phoenix';
-            case 'Asia/Calcutta':
-                return 'Asia/Kolkata';
-            case 'US/Eastern':
-                return 'America/New_York';
-            case 'Etc/Greenwich':
-                // This is not an equivalent, but it the same zone
-                return 'UTC';
-            case 'US/Mountain':
-                return 'America/Denver';
-            case 'US/Alaska':
-                return 'America/Anchorage';
-            case 'Canada/Atlantic':
-                return 'America/Halifax';
-            case 'US/East-Indiana':
-                return 'America/Indiana/Indianapolis';
-            case 'Asia/Katmandu':
-                return 'Asia/Kathmandu';
-            case 'Canada/Saskatchewan':
-                return 'America/Regina';
-            case 'Australia/Canberra':
-                return 'Australia/Sydney';
-            case 'Asia/Ulan_Bator':
-                return 'Asia/Ulaanbaatar';
-            case 'Canada/Newfoundland':
-                return 'America/St_Johns';
-            case 'Asia/Chongqing':
-                return 'Asia/Shanghai';
-            case 'Pacific/Samoa':
-                return 'Pacific/Pago_Pago';
-            case 'Asia/Rangoon':
-                return 'Asia/Yangon';
-            default:
-                return $timezone;
+        if (array_key_exists($timezone, self::$equivalentTimezone)) {
+            return self::$equivalentTimezone[$timezone];
         }
+        return $timezone;
     }
 }
