@@ -37,7 +37,5 @@ class IdHasher
                 return $result[0]; // result is always an array due to quirk in Hashids libary
             }
         }
-
-        return $hash;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use App\Traits\Binding;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityTypeCategory extends Model
 {
+    use Binding;
+
     protected $table = 'activity_type_categories';
 
     protected $appends = ['name'];

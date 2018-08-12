@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Reminder extends Model
 {
     use Hasher;
+
     /**
      * The attributes that aren't mass assignable.
      *

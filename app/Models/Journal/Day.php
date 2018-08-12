@@ -2,6 +2,7 @@
 
 namespace App\Models\Journal;
 
+use App\Traits\Binding;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
@@ -10,7 +11,7 @@ use App\Interfaces\IsJournalableInterface;
 
 class Day extends Model implements IsJournalableInterface
 {
-    use Journalable;
+    use Binding, Journalable;
 
     /**
      * The attributes that aren't mass assignable.

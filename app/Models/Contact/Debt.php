@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
 class Debt extends Model
 {
     use Hasher;
+
     /**
      * The attributes that aren't mass assignable.
      *
