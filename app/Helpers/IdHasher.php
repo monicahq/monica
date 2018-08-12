@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IdHasher
 {
@@ -37,5 +38,7 @@ class IdHasher
                 return $result[0]; // result is always an array due to quirk in Hashids libary
             }
         }
+
+        throw new ModelNotFoundException($this->get_class());
     }
 }

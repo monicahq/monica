@@ -113,8 +113,8 @@ class ActivitiesController extends Controller
 
         try {
             // Test if every attached contact are found before updating the activity
-            foreach ($specifiedContacts as $newContactId) {
-                Contact::where('account_id', $account->id)
+            foreach ($specifiedContacts as $key => $newContactId) {
+                $specifiedContacts[$key] = Contact::where('account_id', $account->id)
                     ->findOrFail($newContactId);
             }
         } catch (ModelNotFoundException $e) {
@@ -155,9 +155,7 @@ class ActivitiesController extends Controller
         }
 
         // New attendees
-        foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::where('account_id', $account->id)
-                ->findOrFail($newContactId);
+        foreach ($specifiedContacts as $newContact) {
             $newContact->activities()->save($activity);
             $newContact->logEvent('activity', $activity->id, 'create');
         }
