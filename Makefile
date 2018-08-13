@@ -50,7 +50,7 @@ docker:
 	$(MAKE) docker_push
 
 docker_build:
-	docker-compose build
+	docker-compose build --build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") --build-arg VCS_REF=$(CIRCLE_SHA1)
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)

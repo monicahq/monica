@@ -318,6 +318,9 @@ jobs:
             echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
             make docker_tag
             make docker_push
+            # notify microbadger to update
+            # https://microbadger.com/images/monicahq/monicahq
+            curl -X POST $MICROBADGER_WEBHOOK
 
 workflows:
   version: 2
