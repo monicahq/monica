@@ -73,7 +73,7 @@ return [
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
     'breadcrumb_settings_security_2fa' => '双重验证',
-    'breadcrumb_profile' => 'Profile of :name',
+    'breadcrumb_profile' => ':name的资料',
 
     'gender_male' => '男',
     'gender_female' => '女',
