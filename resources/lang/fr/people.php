@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec :name par le passé',
     'activities_blank_add_activity' => 'Ajouter une activité',
     'activities_add_success' => 'L’activité a été ajoutée avec succès',
+    'activities_add_error' => 'Erreur lors de l’ajout de l’activité',
     'activities_update_success' => 'L’activité a été mise à jour avec succès',
     'activities_delete_success' => 'L’activité a été supprimée avec succès',
     'activities_who_was_involved' => 'Qui était impliqué ?',

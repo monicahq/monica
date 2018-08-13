@@ -19595,6 +19595,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   width: 95%;
 }
 
+.w-12 {
+  width: calc(100% / 12);
+}
+
 .form-error-message {
   border-top: 1px solid #ed6246;
   background-color: #fbeae5;
@@ -19712,6 +19716,57 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 .pretty-tag a:hover {
   background-color: transparent;
   color: #fff;
+}
+
+.chart-activities {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  max-width: 700px;
+  height: 200px;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(2%, rgba(0, 0, 0, 0.1)), color-stop(2%, transparent));
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-size: 100% 50px;
+  background-position: left top;
+}
+
+.chart-activities li {
+  position: relative;
+  display: table-cell;
+  vertical-align: bottom;
+  height: 200px;
+}
+
+.chart-activities span {
+  margin: 0 1em;
+  display: block;
+  background: rgba(209, 236, 250, 0.75);
+  -webkit-animation: draw 1s ease-in-out;
+          animation: draw 1s ease-in-out;
+}
+
+.chart-activities span:before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  padding: 5px 1em 0;
+  display: block;
+  text-align: center;
+  content: attr(title);
+  word-wrap: break-word;
+}
+
+@-webkit-keyframes draw {
+  0% {
+    height: 0;
+  }
+}
+
+@keyframes draw {
+  0% {
+    height: 0;
+  }
 }
 
 body {
@@ -19966,6 +20021,32 @@ input:disabled {
   padding: 8px 10px;
 }
 
+.full-page-modal {
+  background: #fff;
+  border: 1px solid #eee;
+  -webkit-box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.25);
+          box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+
+.full-page-modal .full-page-modal-year-selector:hover,
+.full-page-modal .full-page-modal-year-selector.selected {
+  background-color: #f7fbfc;
+}
+
+.full-page-modal-header {
+  background: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.column-list {
+  -webkit-column-count: 3;
+          column-count: 3;
+  -webkit-column-gap: 20px;
+          column-gap: 20px;
+}
+
 .dt-row.hover:hover {
   background-color: #f6fbff;
 }
@@ -20016,6 +20097,17 @@ footer .show-version .note li {
 
   .sidebar-box li {
     padding: 5px;
+  }
+
+  .column-list {
+    -webkit-column-count: 1;
+            column-count: 1;
+    -webkit-column-gap: 20px;
+            column-gap: 20px;
+  }
+
+  .chart-activities span {
+    margin: 0 4px;
   }
 }
 

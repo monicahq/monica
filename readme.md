@@ -72,6 +72,8 @@ Monica allows people to keep track of everything that's important about their fr
 * Export and import of data
 * Export a contact as vCard
 * Ability to set custom genders
+* Ability to define custom activity types
+* Ability to favorite contacts
 * Multi users
 * Labels to organize contacts
 * Ability to define what section should appear on the contact sheet

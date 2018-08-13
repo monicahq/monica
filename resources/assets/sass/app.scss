@@ -48,6 +48,10 @@ $border-color: #dfdfdf;
   width: 95%;
 }
 
+.w-12 {
+  width: calc(100% / 12);
+}
+
 .form-error-message {
   border-top: 1px solid #ed6246;
   background-color: #fbeae5;
@@ -162,6 +166,47 @@ $border-color: #dfdfdf;
       color: #fff;
     }
   }
+}
+
+.chart-activities {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  max-width: 700px;
+  height: 200px;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-size: 100% 50px;
+  background-position: left top;
+
+  li {
+    position: relative;
+    display: table-cell;
+    vertical-align: bottom;
+    height: 200px;
+  }
+
+  span {
+    margin: 0 1em;
+    display: block;
+    background: rgba(#d1ecfa, .75);
+    animation: draw 1s ease-in-out;
+
+    &:before{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      padding: 5px 1em 0;
+      display: block;
+      text-align: center;
+      content: attr(title);
+      word-wrap: break-word;
+    }
+  }
+}
+
+@keyframes draw{
+  0%{height:0;}
 }
 
 // Generic styles
@@ -424,6 +469,30 @@ input:disabled {
   }
 }
 
+.full-page-modal {
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+
+  .full-page-modal-year-selector {
+    &:hover, &.selected {
+      background-color: #f7fbfc;
+    }
+  }
+}
+
+.full-page-modal-header {
+  background: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.column-list {
+  column-count: 3;
+  column-gap: 20px;
+}
+
 .dt-row.hover {
   &:hover {
     background-color: #f6fbff;
@@ -477,6 +546,17 @@ footer {
 
     li {
       padding: 5px;
+    }
+  }
+
+  .column-list {
+    column-count: 1;
+    column-gap: 20px;
+  }
+
+  .chart-activities {
+    span{
+      margin: 0 4px;
     }
   }
 }

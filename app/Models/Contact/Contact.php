@@ -165,7 +165,7 @@ class Contact extends Model
      */
     public function activityStatistics()
     {
-        return $this->hasMany(ActivityStatistic::class);
+        return $this->hasMany(ActivityStatistic::class)->orderBy('year', 'desc');
     }
 
     /**

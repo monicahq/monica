@@ -130,12 +130,15 @@
               <p>{{ trans('people.relationship_form_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
             </div>
           @else
-            <form-select
-              :options="{{ $existingContacts }}"
+            <contact-select
               v-bind:required="true"
               v-bind:title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
-              v-bind:id="'existing_contact_id'">
-            </form-select>
+              v-bind:name="'existing_contact_id'"
+              v-bind:placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
+              v-bind:default-options="{{ $existingContacts }}"
+              v-bind:user-contact-id="'{{ $contact->hashID() }}'"
+              v-bind:inputId="'{{ $contact->hashID() }}'">
+            </contact-select>
           @endif
         </div>
       </div>

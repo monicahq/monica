@@ -513,6 +513,7 @@ class ApiContactControllerTest extends ApiTestCase
             'nickname',
             'is_partial',
             'is_dead',
+            'is_starred',
         ]) + [
             'gender_id' => $contact->gender_id,
             'birthdate' => '2008-10-25',
@@ -568,6 +569,7 @@ class ApiContactControllerTest extends ApiTestCase
             'nickname',
             'is_partial',
             'is_dead',
+            'is_starred',
         ]) + [
             'gender_id' => $contact->gender_id,
             'birthdate_age' => '18',

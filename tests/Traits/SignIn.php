@@ -17,7 +17,7 @@ trait SignIn
     {
         if (is_null($user)) {
             $user = factory(User::class)->create();
-            $user->account->populateDefaultFields($user->account);
+            $user->account->populateDefaultFields();
             $user->acceptPolicy();
         }
 

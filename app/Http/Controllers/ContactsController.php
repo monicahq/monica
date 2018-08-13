@@ -500,6 +500,12 @@ class ContactsController extends Controller
         return $frequency;
     }
 
+    /**
+     * Toggle favorites of a contact.
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return array
+     */
     public function favorite(Request $request, Contact $contact)
     {
         $bool = (bool) $request->get('toggle');
