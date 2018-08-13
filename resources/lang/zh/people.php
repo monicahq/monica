@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => '添加活动',
     'activities_add_success' => '已成功添加活动',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => '活动已成功更新',
     'activities_delete_success' => '活动已成功删除',
     'activities_who_was_involved' => '谁参与了？',

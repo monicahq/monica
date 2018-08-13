@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Acompanhe o que você fez com :name no passado, sobre o que você falou',
     'activities_blank_add_activity' => 'Adicionar uma atividade',
     'activities_add_success' => 'A atividade foi adicionada com sucesso',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'A atividade foi atualizada com sucesso',
     'activities_delete_success' => 'A atividade foi excluída com sucesso',
     'activities_who_was_involved' => 'Quem estava envolvido?',

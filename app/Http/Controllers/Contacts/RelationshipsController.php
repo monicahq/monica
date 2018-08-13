@@ -19,12 +19,13 @@ class RelationshipsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        // getting the list of existing contacts
+        // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()
-                                        ->real()
-                                        ->select(['id', 'first_name', 'last_name'])
-                                        ->sortedBy('name')
-                                        ->get();
+                                    ->real()
+                                    ->select(['id', 'first_name', 'last_name'])
+                                    ->sortedBy('name')
+                                    ->take(100)
+                                    ->get();
 
         // Building the list of contacts specifically for the dropdown which asks
         // for an id and a name. Also filter out the current contact.
