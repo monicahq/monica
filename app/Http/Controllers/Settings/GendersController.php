@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Settings;
 
 use Exception;
-use App\Gender;
 use Illuminate\Http\Request;
+use App\Models\Contact\Gender;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Settings\GendersRequest;
@@ -46,7 +46,7 @@ class GendersController extends Controller
                 'name',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 
@@ -78,8 +78,7 @@ class GendersController extends Controller
     {
         try {
             $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $genderToReplaceWithId)
-                ->firstOrFail();
+                ->findOrFail($genderToReplaceWithId);
         } catch (ModelNotFoundException $e) {
             throw new Exception(trans('settings.personalization_genders_modal_error'));
         }

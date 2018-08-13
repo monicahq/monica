@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Debt;
-use App\Contact;
+use App\Models\Contact\Debt;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
 
@@ -57,7 +57,7 @@ class DebtController extends Controller
 
         $contact->logEvent('debt', $debt->id, 'create');
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_add_success'));
     }
 
@@ -111,7 +111,7 @@ class DebtController extends Controller
 
         $contact->logEvent('debt', $debt->id, 'update');
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_edit_success'));
     }
 
@@ -128,7 +128,7 @@ class DebtController extends Controller
 
         $contact->events()->forObject($debt)->get()->each->delete();
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_delete_success'));
     }
 }

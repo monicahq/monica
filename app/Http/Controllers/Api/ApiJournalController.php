@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Entry;
 use Illuminate\Http\Request;
+use App\Models\Journal\Entry;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
@@ -71,7 +71,7 @@ class ApiJournalController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $entry->account_id = auth()->user()->account->id;
+        $entry->account_id = auth()->user()->account_id;
         $entry->save();
 
         return new JournalResource($entry);

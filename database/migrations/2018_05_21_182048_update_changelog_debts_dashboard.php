@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
@@ -24,7 +25,7 @@ We now display all the debts you owe (or the ones your contacts owe to you) on t
             'created_at' => '2018-05-23',
         ]);
 
-        $instance = \App\Instance::first();
+        $instance = Instance::first();
         $instance->addUnreadChangelogEntry($id);
     }
 }

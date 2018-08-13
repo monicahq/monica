@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Notification;
 
-use App\Notification;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,7 +43,7 @@ class ScheduleNotification implements ShouldQueue
         $this->notification->setNumberOfEmailsNeededForDeletion($numberOfUsersInAccount);
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($this->notification->trigger_date)
+            if ($user->isTheRightTimeToBeReminded($this->notification->trigger_date)
                 && ! $account->hasLimitations()) {
                 dispatch(new SendNotificationEmail($this->notification, $user));
             }

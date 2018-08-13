@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use App\ContactFieldType;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -58,7 +58,7 @@ class ApiContactFieldTypeController extends ApiController
         try {
             $contactFieldType = ContactFieldType::create(
                 $request->all()
-                + ['account_id' => auth()->user()->account->id]
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();

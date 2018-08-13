@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 kid|:count kids',
+    'people_list_number_kids' => '1 niño|:count niños',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
@@ -33,6 +33,7 @@ return [
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
     'people_add_lastname' => 'Last name (Optional)',
+    'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Add',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
@@ -112,6 +113,7 @@ return [
     'information_no_linkedin_defined' => 'No LinkedIn defined',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
+    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Update work information',
     'work_edit_success' => 'Work information have been updated with success',
     'work_edit_title' => 'Update :name’s job information',
@@ -187,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Activities',
-    'activity_type_group_simple_activities' => 'Simple activities',
-    'activity_type_group_sport' => 'Sport',
-    'activity_type_group_food' => 'Food',
-    'activity_type_group_cultural_activities' => 'Cultural activities',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'just hung out',
     'activity_type_watched_movie_at_home' => 'watched a movie at home',
     'activity_type_talked_at_home' => 'just talked at home',
@@ -218,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added successfully',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'The activity has been updated successfully',
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',

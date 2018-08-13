@@ -1,11 +1,13 @@
 <?php
 
-use App\Account;
-use App\Contact;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -56,6 +58,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->has_avatar = false;
+            $this->contact->setAvatarColor();
             $this->contact->save();
 
             // set an external avatar
@@ -66,9 +69,7 @@ class FakeContentTableSeeder extends Seeder
                 $this->contact->save();
             }
 
-            $this->contact->setAvatarColor();
-
-            $this->populateFoodPreferencies();
+            $this->populateFoodPreferences();
             $this->populateDeceasedDate();
             $this->populateBirthday();
             $this->populateFirstMetInformation();
@@ -93,12 +94,12 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        $this->blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
-        $blankUser = $this->blankAccount->users()->first();
+        $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+        $blankUser = $blankAccount->users()->first();
         $this->confirmUser($blankUser);
     }
 
-    public function populateFoodPreferencies()
+    public function populateFoodPreferences()
     {
         // add food preferencies
         if (rand(1, 2) == 1) {
@@ -201,9 +202,8 @@ class FakeContentTableSeeder extends Seeder
                 if (rand(1, 2) == 1) {
                     $relatedContact->is_partial = true;
                 }
-                $relatedContact->save();
-
                 $relatedContact->setAvatarColor();
+                $relatedContact->save();
 
                 // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
@@ -243,7 +243,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = $this->faker->dateTimeThisYear($max = 'now')->format('Y-m-d');
+                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->toDateString();
 
                 $activity = $this->contact->activities()->create([
                     'summary' => $this->faker->realText(rand(40, 100)),
@@ -257,7 +257,7 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->account->id,
                     'date' => $date,
                     'journalable_id' => $activity->id,
-                    'journalable_type' => 'App\Activity',
+                    'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
 
                 $this->contact->logEvent('activity', $activity->id, 'create');
@@ -350,11 +350,11 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
 
             // Fetch number of types
-            $numberOfTypes = \App\ContactFieldType::count();
+            $numberOfTypes = ContactFieldType::count();
 
             for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
                 // Retrieve random ContactFieldType
-                $contactFieldType = \App\ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 // Fake data according to type
                 $data = null;
@@ -407,7 +407,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $entryId,
-                'journalable_type' => 'App\Entry',
+                'journalable_type' => 'App\Models\Journal\Entry',
                 'created_at' => now(),
             ]);
         }
@@ -446,7 +446,7 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $dayId,
-                'journalable_type' => 'App\Day',
+                'journalable_type' => 'App\Models\Journal\Day',
                 'created_at' => now(),
             ]);
         }

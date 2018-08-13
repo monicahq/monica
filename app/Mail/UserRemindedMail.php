@@ -2,11 +2,11 @@
 
 namespace App\Mail;
 
-use App\User;
-use App\Contact;
-use App\Reminder;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 
@@ -35,7 +35,8 @@ class UserRemindedMail extends Mailable
      */
     public function build()
     {
-        $contact = Contact::findOrFail($this->reminder->contact_id);
+        $contact = Contact::where('account_id', $this->user->account_id)
+            ->findOrFail($this->reminder->contact_id);
 
         App::setLocale($this->user->locale);
 

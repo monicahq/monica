@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\ContactFieldType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -48,7 +48,7 @@ class PersonalizationController extends Controller
             ])
             + [
                 'fontawesome_icon' => $request->get('icon'),
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
     }
@@ -56,7 +56,7 @@ class PersonalizationController extends Controller
     /**
      * Edit a newly created resource in storage.
      *
-     * @param ContactFieldTypeRequest $request
+     * @param Request $request
      * @param string $contactFieldTypeId
      * @return \Illuminate\Http\Response
      */
@@ -64,8 +64,7 @@ class PersonalizationController extends Controller
     {
         try {
             $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldTypeId)
-                ->firstOrFail();
+                ->findOrFail($contactFieldTypeId);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'errors' => [
@@ -100,8 +99,7 @@ class PersonalizationController extends Controller
     {
         try {
             $contactFieldType = ContactFieldType::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldTypeId)
-                ->firstOrFail();
+                ->findOrFail($contactFieldTypeId);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'errors' => [

@@ -14,7 +14,7 @@ class MoneyHelper
      * defined, then the amount will be returned without a currency symbol.
      *
      * @param  int|null     $amount   Amount to format.
-     * @param  App\Currency $currency Currency of amount.
+     * @param  Currency     $currency Currency of amount.
      * @return string                 Amount formatted with currency symbol.
      */
     public static function format($amount, Currency $currency = null)

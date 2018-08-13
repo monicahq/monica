@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use Auth;
-use App\Contact;
-use App\ContactFieldType;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 
 class SearchHelper
 {
@@ -18,7 +18,7 @@ class SearchHelper
     public static function searchContacts($query, $limitPerPage, $order)
     {
         $needle = $query;
-        $accountId = auth()->user()->account->id;
+        $accountId = auth()->user()->account_id;
 
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
             $search_field = $matches[1];

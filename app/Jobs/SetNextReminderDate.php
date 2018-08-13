@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Reminder;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Reminder;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,17 +14,15 @@ class SetNextReminderDate implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $reminder;
-    protected $timezone;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Reminder $reminder, $timezone)
+    public function __construct(Reminder $reminder)
     {
         $this->reminder = $reminder;
-        $this->timezone = $timezone;
     }
 
     /**
@@ -41,7 +39,7 @@ class SetNextReminderDate implements ShouldQueue
 
             default:
                 $this->reminder->last_triggered = $this->reminder->next_expected_date;
-                $this->reminder->calculateNextExpectedDate($this->timezone);
+                $this->reminder->calculateNextExpectedDate();
                 $this->reminder->save();
 
                 $this->reminder->purgeNotifications();

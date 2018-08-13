@@ -59,10 +59,10 @@
 
               <div class="form-group links">
                 <ul>
-                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="/password/reset">{{ trans('auth.password_reset') }}</a></li>
+                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="/register">{{ trans('auth.signup') }}</a></li>
-                  @elseif(! \App\Account::hasAny())
+                  @elseif(! \App\Models\Account\Account::hasAny())
                     <li>{!! trans('auth.create_account', ['url' => '/register']) !!}</li>
                   @endif
                 </ul>

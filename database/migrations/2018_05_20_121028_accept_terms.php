@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Database\Migrations\Migration;
 
 class AcceptTerms extends Migration
@@ -14,7 +14,6 @@ class AcceptTerms extends Migration
     {
         User::chunk(200, function ($users) {
             foreach ($users as $user) {
-                \Log::info($user->id);
                 if ($user->account) {
                     $user->acceptPolicy();
                 }

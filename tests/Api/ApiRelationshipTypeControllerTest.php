@@ -3,6 +3,8 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
+use App\Models\Relationship\RelationshipType;
+use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiRelationshipTypeControllerTest extends ApiTestCase
@@ -13,7 +15,7 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipType = factory('App\RelationshipType', 10)->create([
+        $relationshipType = factory(RelationshipType::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -32,18 +34,18 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'father',
             'name_reverse_relationship' => 'son',
             'relationship_type_group_id' => $relationshipTypeGroup->id,
             'delible' => 0,
         ]);
-        $relationshipType2 = factory('App\RelationshipType')->create([
+        $relationshipType2 = factory(RelationshipType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'son',
             'name_reverse_relationship' => 'father',
@@ -67,11 +69,11 @@ class ApiRelationshipTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory('App\RelationshipTypeGroup')->create([
+        $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $relationshipType = factory('App\RelationshipType')->create([
+        $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'father',
             'name_reverse_relationship' => 'son',

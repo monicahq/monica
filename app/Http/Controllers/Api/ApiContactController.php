@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contact;
+use App\Helpers\DBHelper;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -25,7 +27,7 @@ class ApiContactController extends ApiController
     public function index(Request $request)
     {
         if ($request->get('query')) {
-            $needle = $request->get('query');
+            $needle = rawurldecode($request->get('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(
@@ -125,14 +127,15 @@ class ApiContactController extends ApiController
             $contact->first_met_additional_info = $request->get('first_met_information');
         }
 
-        $contact->account_id = auth()->user()->account->id;
+        $contact->account_id = auth()->user()->account_id;
+        $contact->setAvatarColor();
         $contact->save();
 
         // birthdate
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -148,7 +151,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -164,7 +167,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -222,7 +225,7 @@ class ApiContactController extends ApiController
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -239,7 +242,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -256,7 +259,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -345,7 +348,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
         foreach ($tables as $table) {
             $tableName = $table->table_name;
             $tableData = DB::table($tableName)->get();

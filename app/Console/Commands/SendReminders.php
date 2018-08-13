@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Account;
-use App\Reminder;
-use App\Jobs\SendReminderEmail;
+use App\Models\User\User;
+use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 
 class SendReminders extends Command
@@ -57,15 +56,15 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($reminder->next_expected_date)) {
+            if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)) {
                 if (! $account->hasLimitations()) {
-                    dispatch(new SendReminderEmail($reminder, $user));
+                    $user->sendReminder($reminder);
                 }
 
                 if ($counter == $numberOfUsersInAccount) {
                     // We should only do this when we are sure that this is
                     // the last user who should be warned in this account.
-                    dispatch(new SetNextReminderDate($reminder, $user->timezone));
+                    dispatch(new SetNextReminderDate($reminder));
                 }
             }
             $counter++;

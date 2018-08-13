@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Invitation;
 use App\Mail\InvitationSent;
 use Illuminate\Bus\Queueable;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

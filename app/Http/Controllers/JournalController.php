@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Day;
-use App\Entry;
-use App\JournalEntry;
+use App\Helpers\DateHelper;
+use App\Models\Journal\Day;
 use Illuminate\Http\Request;
+use App\Models\Journal\Entry;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
@@ -85,7 +86,7 @@ class JournalController extends Controller
     public function storeDay(DaysRequest $request)
     {
         $day = auth()->user()->account->days()->create([
-            'date' => now(auth()->user()->timezone),
+            'date' => now(DateHelper::getTimezone()),
             'rate' => $request->get('rate'),
         ]);
 
@@ -106,9 +107,8 @@ class JournalController extends Controller
      * Delete the Day entry.
      * @return mixed
      */
-    public function trashDay($day)
+    public function trashDay(Day $day)
     {
-        $day = Day::findOrFail($day->id);
         $day->deleteJournalEntry();
         $day->delete();
     }
@@ -156,7 +156,7 @@ class JournalController extends Controller
         }
 
         $entry = new Entry;
-        $entry->account_id = Auth::user()->account_id;
+        $entry->account_id = $request->user()->account_id;
         $entry->post = $request->input('entry');
 
         if ($request->input('title') != '') {
@@ -177,11 +177,8 @@ class JournalController extends Controller
      */
     public function deleteEntry(Request $request, $entryId)
     {
-        $entry = Entry::findOrFail($entryId);
-
-        if ($entry->account_id != Auth::user()->account_id) {
-            return redirect()->route('people.index');
-        }
+        $entry = Entry::where('account_id', $request->user()->account_id)
+            ->findOrFail($entryId);
 
         $entry->deleteJournalEntry();
         $entry->delete();

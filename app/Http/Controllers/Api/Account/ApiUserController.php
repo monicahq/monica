@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use App\User;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Term;
 use Illuminate\Database\QueryException;
@@ -34,7 +34,7 @@ class ApiUserController extends ApiController
     {
         $userCompliance = auth()->user()->getStatusForCompliance($termId);
 
-        if ($userCompliance == false) {
+        if (! $userCompliance) {
             return $this->respondNotFound();
         }
 

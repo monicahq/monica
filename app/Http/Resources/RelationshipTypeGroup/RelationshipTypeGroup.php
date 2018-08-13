@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\RelationshipTypeGroup;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 
 class RelationshipTypeGroup extends Resource
@@ -22,8 +23,8 @@ class RelationshipTypeGroup extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => (is_null($this->created_at) ? null : $this->created_at->format(config('api.timestamp_format'))),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

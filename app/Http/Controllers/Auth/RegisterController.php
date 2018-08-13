@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use App\Account;
+use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Jobs\SendNewUserAlert;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -119,7 +119,7 @@ class RegisterController extends Controller
 
             $this->guard()->login($user);
 
-            return redirect(route('login'));
+            return redirect()->route('login');
         }
     }
 }

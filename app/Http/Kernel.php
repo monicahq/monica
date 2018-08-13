@@ -15,7 +15,9 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \Karakus\Cloudflare\Http\Middleware\TrustProxies::class,
         \App\Http\Middleware\TrustProxies::class,
     ];
 
@@ -60,6 +62,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+        'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'auth.confirm' => \App\Http\Middleware\AuthEmailConfirm::class,
     ];

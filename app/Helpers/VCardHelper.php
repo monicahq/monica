@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Contact;
+use App\Models\Contact\Contact;
 use JeroenDesloovere\VCard\VCard;
 
 class VCardHelper
@@ -11,7 +11,6 @@ class VCardHelper
      * Export a contact as vCard.
      *
      * @param string date
-     * @param string timezone
      * @return VCard
      */
     public static function prepareVCard(Contact $contact)
