@@ -67,7 +67,11 @@
              * Update the value of hidden input, in exchange format value
              */
             update(date) {
-                this.value = moment(date).format(this.exchangeFormat());
+                var mdate = moment(date);
+                if (! mdate.isValid()) {
+                    mdate = moment();
+                }
+                this.value = mdate.format(this.exchangeFormat());
             },
 
             /** 

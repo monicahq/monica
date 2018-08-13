@@ -3,6 +3,7 @@
 namespace Tests\Api\Activity;
 
 use Tests\ApiTestCase;
+use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -185,6 +186,10 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $activityType = factory(ActivityType::class)->create([
             'account_id' => $user->account_id,
         ]);
+        $activities = factory(Activity::class, 10)->create([
+            'account_id' => $user->account_id,
+            'activity_type_id' => $activityType->id,
+        ]);
 
         $response = $this->delete('/api/activitytypes/'.$activityType->id);
 
@@ -192,6 +197,10 @@ class ApiActivityTypeControllerTest extends ApiTestCase
 
         $this->assertDatabaseMissing('activity_types', [
             'id' => $activityType->id,
+        ]);
+
+        $this->assertDatabaseMissing('activities', [
+            'activity_type_id' => $activityType->id,
         ]);
 
         $response->assertJsonFragment([

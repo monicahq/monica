@@ -52,6 +52,12 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue')
 );
 
+// Vue select
+Vue.component(
+    'contact-select',
+    require('./components/people/ContactSelect.vue')
+);
+
 // Partials
 Vue.component(
     'avatar',
@@ -173,6 +179,11 @@ Vue.component(
 Vue.component(
     'modules',
     require('./components/settings/Modules.vue')
+);
+
+Vue.component(
+    'activity-types',
+    require('./components/settings/ActivityTypes.vue')
 );
 
 // axios

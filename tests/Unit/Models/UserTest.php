@@ -188,7 +188,7 @@ class UserTest extends TestCase
 
     public function test_user_should_not_be_reminded_because_timezone_is_different()
     {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/London'));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/Berlin'));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
@@ -198,8 +198,8 @@ class UserTest extends TestCase
 
     public function test_user_should_be_reminded()
     {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 17, 32, 12));
-        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '17:00']);
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 32, 12));
+        $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 

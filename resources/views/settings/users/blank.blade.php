@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_users') }}
@@ -43,7 +43,7 @@
 
             <p>{{ trans('settings.users_blank_description') }}</p>
 
-            <p class="cta"><a href="/settings/users/add" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
+            <p class="cta"><a href="{{ route('settings.users.add') }}" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
 
             @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
               <p class="requires-subscription">{{ trans('settings.users_invitation_need_subscription') }}</p>

@@ -50,4 +50,24 @@ class ActivityTypeCategoryTest extends TestCase
             $activityTypeCategory->name
         );
     }
+
+    public function test_it_deletes_the_associated_activity_types()
+    {
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([]);
+        $activityType = factory(ActivityType::class, 3)->create([
+            'activity_type_category_id' => $activityTypeCategory->id,
+        ]);
+
+        $this->assertEquals(
+            3,
+            $activityTypeCategory->activityTypes()->count()
+        );
+
+        $activityTypeCategory->deleteAllAssociatedActivityTypes();
+
+        $this->assertEquals(
+            0,
+            $activityTypeCategory->activityTypes()->count()
+        );
+    }
 }

@@ -68,7 +68,7 @@ class ApiCallController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $call->account_id = auth()->user()->account->id;
+        $call->account_id = auth()->user()->account_id;
         $call->save();
 
         return new CallResource($call);

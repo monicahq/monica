@@ -119,7 +119,7 @@ class RegisterController extends Controller
 
             $this->guard()->login($user);
 
-            return redirect(route('login'));
+            return redirect()->route('login');
         }
     }
 }

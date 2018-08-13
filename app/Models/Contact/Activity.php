@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
@@ -112,7 +111,7 @@ class Activity extends Model implements IsJournalableInterface
      */
     public function getDateItHappenedAttribute($value)
     {
-        return Carbon::parse($value);
+        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
     }
 
     /**
@@ -153,7 +152,8 @@ class Activity extends Model implements IsJournalableInterface
         $attendees = collect([]);
 
         foreach ($this->contacts as $contact) {
-            $attendee = Contact::find($contact->id);
+            $attendee = Contact::where('account_id', $this->account_id)
+                ->find($contact->id);
             $attendees->push(new ContactShortResource($attendee));
         }
 

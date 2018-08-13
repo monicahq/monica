@@ -7,7 +7,6 @@ use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
-use Illuminate\Support\Facades\Log;
 
 class SendReminders extends Command
 {
@@ -57,7 +56,6 @@ class SendReminders extends Command
         $counter = 1;
 
         foreach ($account->users as $user) {
-            Log::info('User: '.$user->name.' | Reminder: '.$reminder->id);
             if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)) {
                 if (! $account->hasLimitations()) {
                     $user->sendReminder($reminder);

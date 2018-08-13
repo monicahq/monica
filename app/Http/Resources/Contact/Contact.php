@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Contact;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -28,7 +29,7 @@ class Contact extends Resource
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
-            'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, (is_null($this->stay_in_touch_trigger_date) ? null : $this->stay_in_touch_trigger_date->format(config('api.timestamp_format')))),
+            'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, DateHelper::getTimestamp($this->stay_in_touch_trigger_date)),
             'information' => [
                 'relationships' => $this->when(! $this->is_partial, [
                     'love' => [
@@ -52,12 +53,12 @@ class Contact extends Resource
                     'birthdate' => [
                         'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),
                         'is_year_unknown' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_year_unknown),
-                        'date' => (is_null($this->birthdate) ? null : $this->birthdate->date->format(config('api.timestamp_format'))),
+                        'date' => DateHelper::getTimestamp($this->birthdate),
                     ],
                     'deceased_date' => [
                         'is_age_based' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_age_based),
                         'is_year_unknown' => (is_null($this->deceasedDate) ? null : (bool) $this->deceasedDate->is_year_unknown),
-                        'date' => (is_null($this->deceasedDate) ? null : $this->deceasedDate->date->format(config('api.timestamp_format'))),
+                        'date' => DateHelper::getTimestamp($this->deceasedDate),
                     ],
                 ],
                 'career' => $this->when(! $this->is_partial, [
@@ -76,7 +77,7 @@ class Contact extends Resource
                     'first_met_date' => [
                         'is_age_based' => (is_null($this->firstMetDate) ? null : (bool) $this->firstMetDate->is_age_based),
                         'is_year_unknown' => (is_null($this->firstMetDate) ? null : (bool) $this->firstMetDate->is_year_unknown),
-                        'date' => (is_null($this->firstMetDate) ? null : $this->firstMetDate->date->format(config('api.timestamp_format'))),
+                        'date' => DateHelper::getTimestamp($this->firstMetDate),
                     ],
                     'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
                 ]),
@@ -95,8 +96,8 @@ class Contact extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'created_at' => $this->created_at->format(config('api.timestamp_format')),
-            'updated_at' => (is_null($this->updated_at) ? null : $this->updated_at->format(config('api.timestamp_format'))),
+            'created_at' => DateHelper::getTimestamp($this->created_at),
+            'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
     }
 }

@@ -33,9 +33,11 @@ class IdHasher
         if (starts_with($hash, $this->prefix)) {
             $result = Hashids::decode(str_after($hash, $this->prefix));
 
-            return $result[0]; // result is always an array due to quirk in Hashids libary
-        } else {
-            return $hash;
+            if (! is_null($result) && count($result) > 0) {
+                return $result[0]; // result is always an array due to quirk in Hashids libary
+            }
         }
+
+        return $hash;
     }
 }
