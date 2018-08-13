@@ -73,6 +73,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisierung',
     'breadcrumb_settings_security' => 'Sicherheit',
     'breadcrumb_settings_security_2fa' => 'Zwei-Faktor-Authentifizierung',
+    'breadcrumb_profile' => 'Profile of :name',
 
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
