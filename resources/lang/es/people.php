@@ -225,6 +225,13 @@ return [
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',
     'activities_activity' => 'Activity Category',
+    'activities_view_activities_report' => 'View activities report',
+    'activities_profile_title' => 'Activities report between :name and you',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
+    'activities_profile_year_summary' => 'Here is what you two have done in :year',
+    'activities_profile_number_occurences' => '{0,1}:value activity|{2,*}:value activities',
+
     // notes
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',
