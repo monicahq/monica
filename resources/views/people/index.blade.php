@@ -86,6 +86,76 @@
                   </p>
               @endif
 
+            <ul class="list">
+              {{-- Sorting options --}}
+              <li class="people-list-item sorting">
+                {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
+
+                <div class="options {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                  <div class="options-dropdowns">
+                    <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownSort">
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameAZ')?'selected':'' }}" href="{{ route('people.index') }}?sort=firstnameAZ">
+                        {{ trans('people.people_list_firstnameAZ') }}
+                      </a>
+
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameZA')?'selected':'' }}" href="{{ route('people.index') }}?sort=firstnameZA">
+                        {{ trans('people.people_list_firstnameZA') }}
+                      </a>
+
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameAZ')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastnameAZ">
+                        {{ trans('people.people_list_lastnameAZ') }}
+                      </a>
+
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastnameZA')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastnameZA">
+                        {{ trans('people.people_list_lastnameZA') }}
+                      </a>
+
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateNewtoOld')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastactivitydateNewtoOld">
+                        {{ trans('people.people_list_lastactivitydateNewtoOld') }}
+                      </a>
+
+                      <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'lastactivitydateOldtoNew')?'selected':'' }}" href="{{ route('people.index') }}?sort=lastactivitydateOldtoNew">
+                        {{ trans('people.people_list_lastactivitydateOldtoNew') }}
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+              </li>
+
+              @foreach($starredContacts as $contact)
+
+                <li class="people-list-item bg-white pointer" @click="window.location.href='{{ route('people.show', $contact) }}'">
+                  @if ($contact->has_avatar)
+                    <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                  @else
+                    @if (! is_null($contact->gravatar_url))
+                      <img src="{{ $contact->gravatar_url }}" width="43">
+                    @else
+                      @if (strlen($contact->getInitials()) == 1)
+                      <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                        {{ $contact->getInitials() }}
+                      </div>
+                      @else
+                      <div class="avatar {{ \App\Helpers\LocaleHelper::getDirection() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+                        {{ $contact->getInitials() }}
+                      </div>
+                      @endif
+                    @endif
+                  @endif
+                  <span class="people-list-item-name">
+                    {{ $contact->name }}
+                  </span>
+
+                  <span class="people-list-item-information {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                    {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
+                  </span>
+                </li>
+
+                @endforeach
+              </ul>
+
               <ul class="list">
 
                 {{-- Sorting options --}}
