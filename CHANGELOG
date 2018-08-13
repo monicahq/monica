@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add activity reports page, which shows useful statistics about activities with a specific contact
 * Fix reminders not being sent for single-digit hours
 * Fix accounts with an empty reminder time
 
