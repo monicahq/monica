@@ -110,11 +110,12 @@ class ActivitiesController extends Controller
         $user = $request->user();
         $account = $user->account;
         $specifiedContacts = $request->get('contacts');
+        $specifiedContactsObj = [];
 
         try {
             // Test if every attached contact are found before updating the activity
-            foreach ($specifiedContacts as $key => $newContactId) {
-                $specifiedContacts[$key] = Contact::where('account_id', $account->id)
+            foreach ($specifiedContacts as $newContactId) {
+                $specifiedContactsObj[$newContactId] = Contact::where('account_id', $account->id)
                     ->findOrFail($newContactId);
             }
         } catch (ModelNotFoundException $e) {
@@ -137,7 +138,7 @@ class ActivitiesController extends Controller
 
         foreach ($existing as $existingContact) {
             // Has an existing attendee been removed?
-            if (! in_array($existingContact->id, $specifiedContacts)) {
+            if (! array_key_exists($existingContact->id, $specifiedContactsObj)) {
                 $existingContact->activities()->detach($activity);
                 $existingContact->logEvent('activity', $activity->id, 'delete');
             } else {
@@ -148,14 +149,14 @@ class ActivitiesController extends Controller
 
             // Remove this ID from our list of contacts as we don't
             // want to add them to the activity again
-            $idx = array_search($existingContact->id, $specifiedContacts);
-            unset($specifiedContacts[$idx]);
+            //$idx = array_search($existingContact, $specifiedContacts);
+            unset($specifiedContactsObj[$existingContact->id]);
 
             $existingContact->calculateActivitiesStatistics();
         }
 
         // New attendees
-        foreach ($specifiedContacts as $newContact) {
+        foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->save($activity);
             $newContact->logEvent('activity', $activity->id, 'create');
         }

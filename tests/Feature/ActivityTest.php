@@ -206,7 +206,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -284,6 +284,6 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $date,
         ];
 
-        return $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
+        return $this->post('/activities/store/'.$contact->hashID(), $params + ['contacts' => [$contact->id]]);
     }
 }
