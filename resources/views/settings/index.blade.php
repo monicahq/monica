@@ -94,10 +94,7 @@
                 <label for="timezone">{{ trans('settings.timezone') }}</label>
                 <select name="timezone" id="timezone" class="form-control">
                   @foreach ($timezones as $timezone)
-                    <option value="{{ $timezone['timezone'] }}"
-                      {{ $selectedTimezone == $timezone['timezone'] ? 'selected="selected"' : '' }}>
-                      {{ $timezone['name'] }}
-                    </option>
+                  <option value="{{ $timezone['timezone'] }}" {{ $selectedTimezone == $timezone['timezone'] ? 'selected="selected"' : '' }}>{{ $timezone['name'] }}</option>
                   @endforeach
                 </select>
               </div>
