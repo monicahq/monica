@@ -170,8 +170,8 @@ return [
     'relationship_form_add_choice' => '这是与谁的关系？',
     'relationship_form_create_contact' => '添加一个新的人',
     'relationship_form_associate_contact' => '导入一位已存在的联系人',
-    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
-    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
+    'relationship_form_associate_dropdown' => '请从下拉菜单选择一位联系人',
+    'relationship_form_associate_dropdown_placeholder' => '搜索并选择一位现有联系人',
     'relationship_form_also_create_contact' => '将此人创建为您的联系人',
     'relationship_form_add_description' => '此选项能让您将其创建为您Monica中的联系人',
     'relationship_form_add_no_existing_contact' => '您暂时没有能与 :name 链接的联系人',
@@ -229,9 +229,9 @@ return [
     'activities_view_activities_report' => '查看活动报告',
     'activities_profile_title' => ':name 与您之间的活动报告',
     'activities_profile_subtitle' => '您与:name的活动次数：近一年:activities_last_twelve_month次，总共:total_activities activities次。',
-    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
-    'activities_profile_year_summary' => 'Here is what you two have done in :year',
-    'activities_profile_number_occurences' => '{0,1}:value activity|{2,*}:value activities',
+    'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
+    'activities_profile_year_summary' => ':year年你们一起进行的活动',
+    'activities_profile_number_occurences' => '{0,1}:value 次|{2,*}:value 次',
 
     // notes
     'notes_create_success' => '注释已成功创建',
