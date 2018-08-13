@@ -179,6 +179,10 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         // Set favorite
         Route::post('/people/{contact}/favorite', 'ContactsController@favorite');
+
+        // Activities
+        Route::get('/people/{contact}/activities', 'Contacts\\ActivitiesController@index')->name('activities.index');
+        Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
     });
 
     // Activities

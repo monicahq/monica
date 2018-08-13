@@ -308,4 +308,23 @@ return [
     'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
+
+    'personalization_activity_type_category_title' => 'Activity type categories',
+    'personalization_activity_type_category_add' => 'Add a new activity type category',
+    'personalization_activity_type_category_table_name' => 'Name',
+    'personalization_activity_type_category_description' => 'An activity done with one of your contact can have a type and a category type. Your account comes by default with a set of predefined category types, but you can customize everything here.',
+    'personalization_activity_type_category_table_actions' => 'Actions',
+    'personalization_activity_type_category_modal_add' => 'Add a new activity type category',
+    'personalization_activity_type_category_modal_edit' => 'Edit an activity type category',
+    'personalization_activity_type_category_modal_question' => 'How should we name this new category?',
+    'personalization_activity_type_add_button' => 'Add a new activity type',
+    'personalization_activity_type_modal_add' => 'Add a new activity type',
+    'personalization_activity_type_modal_question' => 'How should we name this new activity type?',
+    'personalization_activity_type_modal_edit' => 'Edit an activity type',
+    'personalization_activity_type_category_modal_delete' => 'Delete an activity type category',
+    'personalization_activity_type_category_modal_delete_desc' => 'Are you sure you want to delete this category? Deleting it will delete all associated activity types. However, activities that belong to this category will not be affected by this deletion.',
+    'personalization_activity_type_modal_delete' => 'Delete an activity type',
+    'personalization_activity_type_modal_delete_desc' => 'Are you sure you want to delete this activity type? Activities that belong to this category will not be affected by this deletion.',
+    'personalization_activity_type_modal_delete_error' => 'We can’t find this activity type.',
+    'personalization_activity_type_category_modal_delete_error' => 'We can’t find this activity type category.',
 ];

@@ -5,8 +5,8 @@
     <div>
         <notifications group="favorite" position="top middle" duration="5000" width="400" />
         <p>
-            <a class="pointer" @click="store(!isFavorite)" v-if="!isFavorite">Mark as favorite</a>
-            <a class="pointer" @click="store(!isFavorite)" v-if="isFavorite">Unmark as favorite</a>
+            <a class="pointer" @click="store(!isFavorite)" v-if="!isFavorite">{{ $t('people.set_favorite') }}</a>
+            <a class="pointer" @click="store(!isFavorite)" v-if="isFavorite">{{ $t('people.unset_favorite') }}</a>
         </p>
     </div>
 </template>
@@ -62,7 +62,7 @@
 
                           this.$notify({
                               group: 'main',
-                              title: this.$t('people.notes_create_success'),
+                              title: this.$t('app.default_save_success'),
                               text: '',
                               type: 'success'
                           });

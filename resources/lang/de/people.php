@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Behalte im Auge, was du mit :name unternommen hast und worüber ihr geredet habt',
     'activities_blank_add_activity' => 'Aktivität hinzufügen',
     'activities_add_success' => 'Aktivität erfolgreich hinzugefügt',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Aktivität erfolgreich aktualisiert',
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
     'activities_who_was_involved' => 'Wer war beteiligt?',
