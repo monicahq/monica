@@ -41,10 +41,6 @@ aliases:
     run:
       name: yarn install
       command: yarn install --frozen-lockfile
-  - &update-chrome
-    run:
-      name: Install chrome
-      command: scripts/tests/install-chrome.sh
   - &prepare-db
     run:
       name: Prepare database
@@ -135,10 +131,6 @@ jobs:
           <<: *post_checkout
       - *prepare-environment
 
-      - persist_to_workspace:
-          root: *root
-          paths: php-extensions*
-
       - run:
           name: Prepare environment
           command: |
@@ -215,7 +207,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *update-chrome
       - *prepare-db
       - *selenium
       - *http-server
