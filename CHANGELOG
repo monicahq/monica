@@ -3,6 +3,7 @@ UNRELEASED CHANGES:
 * Add activity reports page, which shows useful statistics about activities with a specific contact
 * Fix reminders not being sent for single-digit hours
 * Fix accounts with an empty reminder time
+* Fix account id get for acceptPolicy
 
 RELEASED VERSIONS:
 
@@ -15,7 +16,6 @@ v2.5.0 - 2018-08-08
 * Fix translation not being displayed correctly on Subscription page
 * Add the TrimStrings middleware to trim all inputs
 * Call to monica:ping when updating instance
-* Fix account id get for acceptPolicy
 * Fix idHasher decode function
 * Fix storage folder not being linked to public if migrations fail
 
