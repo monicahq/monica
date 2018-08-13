@@ -51,6 +51,10 @@
 
       @endforeach
     </ul>
+
+    @if ($contact->activities->count() != 0)
+    <p class="tc">📗 <a href="{{ route('people.activities.index', $contact) }}">{{ trans('people.activities_view_activities_report') }}</a></p>
+    @endif
   </div>
   @foreach($contact->activities as $activity)
 

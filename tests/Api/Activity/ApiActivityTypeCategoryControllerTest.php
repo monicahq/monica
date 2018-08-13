@@ -89,8 +89,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->json('POST', '/api/activitytypecategories', [
-                        ]);
+        $response = $this->json('POST', '/api/activitytypecategories', []);
 
         $response->assertStatus(400);
 

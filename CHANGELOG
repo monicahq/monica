@@ -1,16 +1,23 @@
 UNRELEASED CHANGES:
 
+* Add activity reports page, which shows useful statistics about activities with a specific contact
+* Fix reminders not being sent for single-digit hours
+* Fix accounts with an empty reminder time
+
+RELEASED VERSIONS:
+
+v2.5.0 - 2018-08-08
+-------------------
+
+* Add ability to define custom activity types and activity type categories
 * Add ability to search a contact by job title
 * Fix invoice page not showing properly
 * Fix translation not being displayed correctly on Subscription page
-* Add ability to define custom activity types and activity type categories through the API and the UI
 * Add the TrimStrings middleware to trim all inputs
 * Call to monica:ping when updating instance
 * Fix account id get for acceptPolicy
 * Fix idHasher decode function
 * Fix storage folder not being linked to public if migrations fail
-
-RELEASED VERSIONS:
 
 v2.4.2 - 2018-07-26
 -------------------
