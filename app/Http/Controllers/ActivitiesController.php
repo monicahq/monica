@@ -45,12 +45,14 @@ class ActivitiesController extends Controller
     public function store(ActivitiesRequest $request, Contact $contact)
     {
         $specifiedContacts = $request->get('contacts');
+        $specifiedContactsObj = [];
 
         try {
             // Test if every attached contact are found before creating the activity
             foreach ($specifiedContacts as $newContactId) {
-                Contact::where('account_id', $request->user()->account_id)
+                $newContact = Contact::where('account_id', $request->user()->account_id)
                     ->findOrFail($newContactId);
+                array_push($specifiedContactsObj, $newContact);
             }
         } catch (ModelNotFoundException $e) {
             return redirect()->route('people.show', $contact)
@@ -68,9 +70,7 @@ class ActivitiesController extends Controller
         );
 
         // New attendees
-        foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::where('account_id', $request->user()->account_id)
-                ->findOrFail($newContactId);
+        foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->attach($activity, ['account_id' => $request->user()->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
@@ -149,7 +149,6 @@ class ActivitiesController extends Controller
 
             // Remove this ID from our list of contacts as we don't
             // want to add them to the activity again
-            //$idx = array_search($existingContact, $specifiedContacts);
             unset($specifiedContactsObj[$existingContact->id]);
 
             $existingContact->calculateActivitiesStatistics();
