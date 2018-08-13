@@ -73,7 +73,7 @@ return [
     'breadcrumb_settings_personalization' => 'התאמה אישית',
     'breadcrumb_settings_security' => 'אבטחה',
     'breadcrumb_settings_security_2fa' => 'אימות דו־שלבי',
-    'breadcrumb_profile' => 'Profile of :name',
+    'breadcrumb_profile' => 'הפרופיל של :name',
 
     'gender_male' => 'גבר',
     'gender_female' => 'אישה',
