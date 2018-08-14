@@ -86,6 +86,12 @@ aliases:
       command: |
         vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
         rm -rf results/coverage
+  - &fix-coverage2
+    run:
+      name: Fix coverage
+      command: |
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
+        rm -rf results/coverage
   - &selenium
     run:
       name: Run selenium chromedriver
@@ -248,8 +254,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_node
-      - *yarn-install
       - *prepare-db
       - *http-server
       - *wait-for-server
