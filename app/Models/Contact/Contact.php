@@ -1178,7 +1178,7 @@ class Contact extends Model
 
     /**
      * How much is the debt.
-     * @return int
+     * @return decimal
      */
     public function totalOutstandingDebtAmount()
     {
