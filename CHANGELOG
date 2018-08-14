@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Fix account id get for acceptPolicy
 * Use our own docker image (central perk) to run tests
 * Render timezone listbox dynamically
+* Use a new formatter to display money (debts), with right locale handle
 
 RELEASED VERSIONS:
 
