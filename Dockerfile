@@ -1,5 +1,18 @@
 FROM alpine:3.6
 
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="MonicaHQ, the Personal Relationship Manager" \
+      org.label-schema.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you." \
+      org.label-schema.url="https://monicahq.com" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/monicahq/monica" \
+      org.label-schema.vendor="Monica" \
+      org.label-schema.version=$VCS_REF \
+      org.label-schema.schema-version="1.0"
+
 EXPOSE 80:80
 
 RUN apk update && apk upgrade
