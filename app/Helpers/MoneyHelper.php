@@ -34,15 +34,16 @@ class MoneyHelper
 
         if (! $currency) {
             $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
+
             return $numberFormatter->format($amount);
         }
 
         $money = new Money($amount * 100, new MoneyCurrency($currency->iso));
         $currencies = new ISOCurrencies();
-        
+
         $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
-        
+
         return $moneyFormatter->format($money);
     }
 }
