@@ -655,14 +655,14 @@ class Account extends Model
      */
     public function getRemindersForMonth(int $month)
     {
-        $startOfMonth = now()->addMonthsNoOverflow($month)->startOfMonth();
+        $startOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->startOfMonth();
         // don't get reminders for past events:
         if ($startOfMonth->isPast()) {
-            $startOfMonth = now();
+            $startOfMonth = now(DateHelper::getTimezone());
         }
-        $endOfMonth = now()->addMonthsNoOverflow($month)->endOfMonth();
+        $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return auth()->user()->account->reminders()
+        return $this->reminders()
                      ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
                      ->orderBy('next_expected_date', 'asc')
                      ->get();
@@ -737,7 +737,7 @@ class Account extends Model
         $account->created_at = now();
         $account->save();
 
-        $account->populateDefaultFields($account);
+        $account->populateDefaultFields();
 
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
@@ -749,16 +749,16 @@ class Account extends Model
      * Populates all the default column that should be there when a new account
      * is created or reset.
      */
-    public static function populateDefaultFields($account)
+    public function populateDefaultFields()
     {
-        $account->populateContactFieldTypeTable();
-        $account->populateDefaultGendersTable();
-        $account->populateDefaultReminderRulesTable();
-        $account->populateRelationshipTypeGroupsTable();
-        $account->populateRelationshipTypesTable();
-        $account->populateModulesTable();
-        $account->populateChangelogsTable();
-        $account->populateActivityTypeTable();
+        $this->populateContactFieldTypeTable();
+        $this->populateDefaultGendersTable();
+        $this->populateDefaultReminderRulesTable();
+        $this->populateRelationshipTypeGroupsTable();
+        $this->populateRelationshipTypesTable();
+        $this->populateModulesTable();
+        $this->populateChangelogsTable();
+        $this->populateActivityTypeTable();
     }
 
     /**

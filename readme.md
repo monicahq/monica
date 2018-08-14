@@ -198,7 +198,7 @@ If you want to have it for free with all the features, run the project yourself 
     * Advanced features
     * Email reminders
     * Importers
-    * People who contribute to the GitHub repository (with a pull request that adds value, that gets merged (not a typo fix, for instance) will also have access to the Paid version for free.
+    * People who contribute to the GitHub repository (with a pull request that adds value, that gets merged—not a typo fix, for instance) will also have access to the Paid version for free.
 * There is a [Patreon account](https://www.patreon.com/monicahq) for those who still want to support the tool. Keep in mind that the best way to support it is to actually talk about it around you.
 
 Note: you can also **run it yourself**. This is sometimes also called on-premise. Download the code, run it on Heroku, with Docker. The choice is yours.

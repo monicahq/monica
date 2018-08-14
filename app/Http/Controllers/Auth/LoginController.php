@@ -42,7 +42,7 @@ class LoginController extends Controller
     {
         $first = ! Account::hasAny();
         if ($first) {
-            return redirect('/register');
+            return redirect()->route('register');
         }
 
         return $this->showLoginForm();

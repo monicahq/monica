@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Активности',
-    'activity_type_group_simple_activities' => 'Простые',
-    'activity_type_group_sport' => 'Спорт',
-    'activity_type_group_food' => 'Еда',
-    'activity_type_group_cultural_activities' => 'Культурные',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'просто повеселились',
     'activity_type_watched_movie_at_home' => 'смотрели кино дома',
     'activity_type_talked_at_home' => 'разговаривали дома',
@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Добавить активность',
     'activities_add_success' => 'Активность была добавлена',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Активность была обновлена',
     'activities_delete_success' => 'Активность была удалена',
     'activities_who_was_involved' => 'Кто был вовлечен?',

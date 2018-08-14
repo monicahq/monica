@@ -12,11 +12,11 @@
         <ul class="contacts">
             <ul class="contacts-list">
                 @if ($contact && $method == 'POST')
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endif
                 @foreach ($activity->contacts as $contact)
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endforeach
             </ul>
@@ -38,9 +38,9 @@
     <div class="form-group{{ $errors->has('date_it_happened') ? ' has-error' : '' }}">
         <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
         <input type="date" id="date_it_happened" name="date_it_happened" class="form-control"
-               value="{{ old('date_it_happened') ?? $activity->date_it_happened->toDateString() ?? now(Auth::user()->timezone)->toDateString() }}"
-               min="{{ now(Auth::user()->timezone)->subYears(10)->toDateString() }}"
-               max="{{ now(Auth::user()->timezone)->toDateString() }}"
+               value="{{ old('date_it_happened') ?? (! is_null($activity->date_it_happened) ? $activity->date_it_happened->toDateString() : now(\App\Helpers\DateHelper::getTimezone())->toDateString()) }}"
+               min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(10)->toDateString() }}"
+               max="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
         >
         @if ($errors->has('date_it_happened'))
             <span class="help-block">

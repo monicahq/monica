@@ -50,10 +50,23 @@ class ActivityTypeCategory extends Model
      */
     public function getNameAttribute($value)
     {
-        if ($this->translation_key) {
+        if ($this->translation_key && ! $value) {
             return trans('people.activity_type_category_'.$this->translation_key);
         }
 
         return $value;
+    }
+
+    /**
+     * Delete all associated activity types with this category.
+     *
+     * @return void
+     */
+    public function deleteAllAssociatedActivityTypes()
+    {
+        foreach ($this->activityTypes as $activityType) {
+            $activityType->resetAssociationWithActivities();
+            $activityType->delete();
+        }
     }
 }

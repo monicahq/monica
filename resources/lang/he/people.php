@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'פעילויות',
-    'activity_type_group_simple_activities' => 'פעילויות פשוטות',
-    'activity_type_group_sport' => 'ספורט',
-    'activity_type_group_food' => 'אוכל',
-    'activity_type_group_cultural_activities' => 'פעילויות תרבותיות',
+    'activity_type_category_simple_activities' => 'פעילויות פשוטות',
+    'activity_type_category_sport' => 'ספורט',
+    'activity_type_category_food' => 'אוכל',
+    'activity_type_category_cultural_activities' => 'פעילויות תרבותיות',
     'activity_type_just_hung_out' => 'בילוי משותף',
     'activity_type_watched_movie_at_home' => 'צפיתם בסרט בבית',
     'activity_type_talked_at_home' => 'דיברתם בבית',
@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
     'activities_blank_add_activity' => 'הוספת פעילות',
     'activities_add_success' => 'הפעילות נוספה בהצלחה',
+    'activities_add_error' => 'אירעה שגיאה בעת הוספת הפעילות',
     'activities_update_success' => 'הפעילות עודכנה בהצלחה',
     'activities_delete_success' => 'הפעילות נמחקה בהצלחה',
     'activities_who_was_involved' => 'מי היה מעורב?',

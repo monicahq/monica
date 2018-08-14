@@ -43,7 +43,7 @@
           </a>
         </div>
 
-        <form method="POST" action="{{ action('ActivitiesController@destroy', compact('contact', 'activity')) }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ route('activities.delete', [$activity, $contact]) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>
@@ -51,6 +51,10 @@
 
       @endforeach
     </ul>
+
+    @if ($contact->activities->count() != 0)
+    <p class="tc">📗 <a href="{{ route('people.activities.index', $contact) }}">{{ trans('people.activities_view_activities_report') }}</a></p>
+    @endif
   </div>
   @foreach($contact->activities as $activity)
 
