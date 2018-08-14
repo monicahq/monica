@@ -90,7 +90,7 @@ aliases:
     run:
       name: Run browser tests
       command: php artisan dusk --log-junit results/junit/dusk/results.xml
-  - &browser-tests2
+  - &browser-cypress
     run:
       name: Run browser tests (cypress)
       command: |
@@ -290,7 +290,7 @@ jobs:
       - *prepare-db
       - *http-server
       - *wait-for-server
-      - *browser-tests2
+      - *browser-cypress
       - *fix-coverage2
       - store_test_results:
           path: results/junit
