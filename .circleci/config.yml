@@ -248,7 +248,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
       - *restore_node
       - *yarn-install
       - *prepare-db
