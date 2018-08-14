@@ -5,6 +5,7 @@ UNRELEASED CHANGES:
 * Fix accounts with an empty reminder time
 * Fix account id get for acceptPolicy
 * Use our own docker image (central perk) to run tests
+* Add end-2-end testing with Cypress
 
 RELEASED VERSIONS:
 

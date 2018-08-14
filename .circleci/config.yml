@@ -239,7 +239,7 @@ jobs:
           root: *root
           paths: results
 
-  tests-browser2-7.2:
+  tests-e2e:
     <<: *defaults
     docker:
       - image: circleci/php:7.2-node-browsers
@@ -394,7 +394,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - tests-browser2-7.2:
+      - tests-e2e:
           requires:
             - build
           filters:
@@ -406,7 +406,7 @@ workflows:
           requires:
             - tests-7.2
             - tests-browser-7.2
-            - tests-browser2-7.2
+            - tests-e2e
           filters:
             branches:
               ignore: /l10n_master.*/
