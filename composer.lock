@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3840b886aced88c99815b5717080458",
+    "content-hash": "8e41df19554015b970bf9120798a57ea",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1959,16 +1959,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v6.0.7",
+            "version": "v7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "5a3dbeb0904573fcfecf11c018eaa42bfc935372"
+                "reference": "90124969cdd4ff39d4cd5a608c23bbe16e772f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/5a3dbeb0904573fcfecf11c018eaa42bfc935372",
-                "reference": "5a3dbeb0904573fcfecf11c018eaa42bfc935372",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/90124969cdd4ff39d4cd5a608c23bbe16e772f7e",
+                "reference": "90124969cdd4ff39d4cd5a608c23bbe16e772f7e",
                 "shasum": ""
             },
             "require": {
@@ -2024,7 +2024,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2018-08-09T19:10:08+00:00"
+            "time": "2018-08-13T14:45:04+00:00"
         },
         {
             "name": "laravel/socialite",
