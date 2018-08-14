@@ -4,6 +4,7 @@ UNRELEASED CHANGES:
 * Fix reminders not being sent for single-digit hours
 * Fix accounts with an empty reminder time
 * Fix account id get for acceptPolicy
+* Use our own docker image (central perk) to run tests
 
 RELEASED VERSIONS:
 
