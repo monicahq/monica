@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Exception;
-use App\Exceptions\WrongIdException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
