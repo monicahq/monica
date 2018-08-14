@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class ModelBinding extends Model

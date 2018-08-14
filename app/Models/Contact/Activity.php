@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;

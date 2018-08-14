@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Hasher;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasherWithContact as Model;

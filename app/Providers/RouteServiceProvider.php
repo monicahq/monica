@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
 use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Route;
 use App\Models\Relationship\Relationship;
