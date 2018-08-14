@@ -7,6 +7,7 @@ use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use Illuminate\Support\Facades\Route;
+use App\Exceptions\IdNotFoundException;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -33,36 +34,21 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('contact', function ($value) {
             try {
-                $value = app('idhasher')->decodeId($value);
+                $id = app('idhasher')->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($value);
+                    ->findOrFail($id);
+            } catch (WrongIdException $ex) {
+                redirect()->route('people.missing')->send();
             } catch (ModelNotFoundException $ex) {
                 redirect()->route('people.missing')->send();
             }
         });
 
-        Route::bind('otherContact', function ($value) {
-            try {
-                $value = app('idhasher')->decodeId($value);
-
-                return Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($value);
-            } catch (ModelNotFoundException $ex) {
-                redirect()->route('people.missing')->send();
-            }
-        });
-
-        Route::bind('activity', function ($value) {
-            $value = app('idhasher')->decodeId($value);
-
-            return  Activity::where('account_id', auth()->user()->account_id)
-                ->findOrFail($value);
-        });
+        Route::model('otherContact', Contact::class);
 
         /*
-         * This route is not used
-         */
+        //This route is not used
         Route::bind('relationships', function ($value, $route) {
             Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($route->parameter('contact')->id);
@@ -79,6 +65,7 @@ class RouteServiceProvider extends ServiceProvider
 
             return $contact;
         });
+        */
     }
 
     /**

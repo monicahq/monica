@@ -220,7 +220,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 

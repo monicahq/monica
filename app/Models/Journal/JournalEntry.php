@@ -2,10 +2,9 @@
 
 namespace App\Models\Journal;
 
-use App\Traits\Binding;
 use App\Models\Contact\Entry;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -14,8 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class JournalEntry extends Model
 {
-    use Binding;
-
     /**
      * The attributes that aren't mass assignable.
      *

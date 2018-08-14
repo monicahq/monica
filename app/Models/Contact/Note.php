@@ -3,11 +3,10 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use App\Traits\Binding;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,8 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Note extends Model
 {
-    use Binding;
-
     /**
      * The attributes that aren't mass assignable.
      *

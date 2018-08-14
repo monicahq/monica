@@ -2,15 +2,12 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Binding;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityType extends Model
 {
-    use Binding;
-
     protected $table = 'activity_types';
 
     /**

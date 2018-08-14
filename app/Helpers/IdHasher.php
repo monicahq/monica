@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use Vinkla\Hashids\Facades\Hashids;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\WrongIdException;
 
 class IdHasher
 {
@@ -39,6 +39,6 @@ class IdHasher
             }
         }
 
-        throw new ModelNotFoundException($this->get_class());
+        throw new WrongIdException();
     }
 }
