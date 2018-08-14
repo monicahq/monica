@@ -5,6 +5,9 @@ namespace App\Traits;
 use App\Helpers\IdHasher;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * @see Illuminate\Contracts\Routing\UrlRoutable
+ */
 trait Hasher
 {
     public function getRouteKey()
