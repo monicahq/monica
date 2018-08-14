@@ -40,10 +40,7 @@ aliases:
   - &yarn-install
     run:
       name: yarn install
-      command: |
-        sudo apt-get update
-        sudo apt-get install -y libpng-dev
-        yarn install --frozen-lockfile
+      command: yarn install --frozen-lockfile
   - &update-chrome
     run:
       name: Install chrome
@@ -55,15 +52,7 @@ aliases:
         dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
         mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         php artisan migrate --env=testing --no-interaction -vvv
-  - &seed-test-db
-    run:
-      name: Seed database
-      command: php artisan db:seed --env=testing --no-interaction -vvv
-  - &http-server
-    run:
-      name: Run http server
-      command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
-      background: true
+        php artisan db:seed --env=testing --no-interaction -vvv
   - &wait-for-server
     run:
       name: Wait for http server
@@ -91,12 +80,6 @@ aliases:
       name: Fix coverage
       command: |
         vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
-        rm -rf results/coverage
-  - &fix-coverage2
-    run:
-      name: Fix coverage
-      command: |
-        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
