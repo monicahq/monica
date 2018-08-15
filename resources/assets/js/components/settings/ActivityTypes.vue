@@ -16,7 +16,7 @@
         <div class="mr3">
           <svg viewBox="0 0 20 20"><g fill-rule="evenodd"><circle cx="10" cy="10" r="9" fill="currentColor"></circle><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0m0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8m1-5v-3a1 1 0 0 0-1-1H9a1 1 0 1 0 0 2v3a1 1 0 0 0 1 1h1a1 1 0 1 0 0-2m-1-5.9a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2"></path></g></svg>
         </div>
-        <div class="">
+        <div cy-name="activity-type-premium-message">
           {{ $t('settings.personalisation_paid_upgrade') }}
         </div>
       </div>
@@ -37,37 +37,39 @@
       </div>
     </div>
 
-    <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
-      <div class="dt-row hover bb b--light-gray">
-        <div class="dtc">
-          <div class="pa2 b">
-            <strong>{{ activityTypeCategory.name }}</strong>
+    <div cy-name="activity-types">
+      <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
+        <div class="dt-row hover bb b--light-gray">
+          <div class="dtc">
+            <div class="pa2 b">
+              <strong>{{ activityTypeCategory.name }}</strong>
+            </div>
+          </div>
+          <div class="dtc">
+            <div class="pa2" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+              <i class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-category-edit-button-' + activityTypeCategory.id" v-if="!limited" @click="showEditCategory(activityTypeCategory)"></i>
+              <i class="fa fa-trash-o pointer" :cy-name="'activity-type-category-delete-button-' + activityTypeCategory.id" v-if="!limited" @click="showDeleteCategory(activityTypeCategory)"></i>
+            </div>
           </div>
         </div>
-        <div class="dtc">
-          <div class="pa2" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-            <i class="fa fa-pencil-square-o pointer pr2" v-if="!limited" @click="showEditCategory(activityTypeCategory)"></i>
-            <i class="fa fa-trash-o pointer" v-if="!limited" @click="showDeleteCategory(activityTypeCategory)"></i>
+        <div class="dt-row hover bb b--light-gray" :cy-name="'activity-type-id-' + activityType.id" v-for="activityType in activityTypeCategory.activityTypes" :key="activityType.id">
+          <div class="dtc">
+            <div class="pa2 pl4">
+              {{ activityType.name }}
+            </div>
+          </div>
+          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+            <div class="pa2">
+              <i class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-edit-button-' + activityType.id" v-if="!limited" @click="showEditType(activityType)"></i>
+              <i class="fa fa-trash-o pointer" :cy-name="'activity-type-delete-button-' + activityType.id" v-if="!limited" @click="showDeleteType(activityType)"></i>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="dt-row hover bb b--light-gray" v-for="activityType in activityTypeCategory.activityTypes" :key="activityType.id">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            {{ activityType.name }}
-          </div>
-        </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
-          <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" v-if="!limited" @click="showEditType(activityType)"></i>
-            <i class="fa fa-trash-o pointer" v-if="!limited" @click="showDeleteType(activityType)"></i>
-          </div>
-        </div>
-      </div>
-      <div class="dt-row" v-if="!limited">
-        <div class="dtc">
-          <div class="pa2 pl4">
-            <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">{{ $t('settings.personalization_activity_type_add_button') }}</a>
+        <div class="dt-row" v-if="!limited">
+          <div class="dtc">
+            <div class="pa2 pl4">
+              <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">{{ $t('settings.personalization_activity_type_add_button') }}</a>
+            </div>
           </div>
         </div>
       </div>
