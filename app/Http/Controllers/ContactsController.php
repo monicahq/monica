@@ -72,11 +72,11 @@ class ContactsController extends Controller
 
         // starred contacts
         $starredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred == true;
+            return $item->is_starred === true;
         });
 
         $unstarredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred == false;
+            return $item->is_starred === false;
         });
 
         return view('people.index')
