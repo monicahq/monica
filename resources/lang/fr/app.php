@@ -125,7 +125,7 @@ return [
 
     'relationship_type_inlovewith' => 'amoureux',
     'relationship_type_inlovewith_female' => 'amoureuse',
-    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux·se',
+    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux',
     'relationship_type_inlovewith_female_with_name' => 'une personne dont :name est amoureuse',
 
     'relationship_type_lovedby' => 'aimé par',
