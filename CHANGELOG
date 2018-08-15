@@ -7,6 +7,7 @@ UNRELEASED CHANGES:
 * Use our own docker image (central perk) to run tests
 * Render timezone listbox dynamically
 * Use a new formatter to display money (debts), with right locale handle
+* Get first existing gravatar of all emails of the contact
 
 RELEASED VERSIONS:
 
