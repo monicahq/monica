@@ -69,8 +69,7 @@ class SetupFrontEndTest extends Command
             $cmd .= ' < '.$this->dumpfile;
             $this->commandExecutor->exec('mysql import ...', $cmd);
         } else {
-            $this->commandExecutor->artisan('migrate:fresh', 'migrate:fresh');
-            $this->commandExecutor->artisan('db:seed', 'db:seed', ['--class' => 'ActivityTypesTableSeeder']);
+            $this->artisan('migrate:fresh');
         }
         $this->info('Create account');
         $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');

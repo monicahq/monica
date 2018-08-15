@@ -5,15 +5,16 @@ namespace Tests\Unit\Helpers;
 use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
+use App\Helpers\TimezoneHelper;
 
 class DateHelperTest extends FeatureTestCase
 {
-    public function testCreateDateFromFormat()
+    public function testParseDateTime()
     {
         $date = '2017-01-22 17:56:03';
         $timezone = 'America/New_York';
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
 
         $this->assertInstanceOf(Carbon::class, $testDate);
     }
@@ -125,22 +126,66 @@ class DateHelperTest extends FeatureTestCase
         $date = '2017-01-22 17:56:03';
         $timezone = 'America/New_York';
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2017-01-29',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
         );
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2017-02-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
         );
 
-        $testDate = DateHelper::createDateFromFormat($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date, $timezone);
         $this->assertEquals(
             '2018-01-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
+        );
+    }
+
+    public function test_datetime_parse_timezone()
+    {
+        $date = '2018-01-01 00:01:00';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDateTime($date);
+        $this->assertEquals(
+            '2018-01-01',
+            $testDate->toDateString()
+        );
+        $this->assertEquals(
+            '2018-01-01T00:01:00Z',
+            DateHelper::getTimestamp($testDate)
+        );
+
+        $testDate2 = DateHelper::parseDateTime($testDate, $timezone);
+        $this->assertEquals(
+            '2017-12-31',
+            $testDate2->toDateString()
+        );
+        $this->assertEquals(
+            '2017-12-31T19:01:00Z',
+            DateHelper::getTimestamp($testDate2)
+        );
+    }
+
+    public function test_date_parse_timezone()
+    {
+        $date = '2018-01-01 00:01:00';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDate($date);
+        $this->assertEquals(
+            '2018-01-01',
+            $testDate->toDateString()
+        );
+
+        $testDate2 = DateHelper::parseDate($testDate, $timezone);
+        $this->assertEquals(
+            '2017-12-31',
+            $testDate2->toDateString()
         );
     }
 
@@ -226,7 +271,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2017-02-01',
-            DateHelper::getNextTheoriticalBillingDate('monthly')->format('Y-m-d')
+            DateHelper::getNextTheoriticalBillingDate('monthly')->toDateString()
         );
     }
 
@@ -236,7 +281,43 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2018-01-01',
-            DateHelper::getNextTheoriticalBillingDate('yearly')->format('Y-m-d')
+            DateHelper::getNextTheoriticalBillingDate('yearly')->toDateString()
+        );
+    }
+
+    public function test_it_returns_a_list_with_years()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertCount(
+            3,
+            DateHelper::getListOfYears(2)
+        );
+    }
+
+    public function test_it_returns_a_list_with_years2()
+    {
+        $user = $this->signIn();
+        $user->locale = 'en';
+        $user->save();
+
+        $this->assertEquals(
+            now()->year,
+            DateHelper::getListOfYears(2)[0]
+        );
+        $this->assertEquals(
+            now()->subYears(2)->year,
+            DateHelper::getListOfYears(2)[2]
+        );
+        $this->assertEquals(
+            now()->subYears(-2)->year,
+            DateHelper::getListOfYears(2, -2)[0]
+        );
+        $this->assertEquals(
+            now()->year,
+            DateHelper::getListOfYears(2, -2)[2]
         );
     }
 
@@ -343,7 +424,7 @@ class DateHelperTest extends FeatureTestCase
 
         $this->assertEquals(
             '2016-12-25',
-            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->format('Y-m-d')
+            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->toDateString()
         );
     }
 
@@ -352,5 +433,169 @@ class DateHelperTest extends FeatureTestCase
         $date = Carbon::create(2017, 1, 1);
 
         $this->assertInstanceOf(Carbon::class, DateHelper::getDateMinusGivenNumberOfDays($date, 7));
+    }
+
+    public function test_old_timezones_exists()
+    {
+        // These are all currently used timezone in monica
+        $oldTimezones = [
+            'US/Eastern',
+            'US/Central',
+            'America/Los_Angeles',
+            'Pacific/Midway',
+            'Pacific/Samoa',
+            'Pacific/Honolulu',
+            'US/Alaska',
+            'America/Tijuana',
+            'US/Arizona',
+            'America/Chihuahua',
+            'America/Chihuahua',
+            'America/Mazatlan',
+            'US/Mountain',
+            'America/Managua',
+            'US/Central',
+            'America/Mexico_City',
+            'America/Mexico_City',
+            'America/Monterrey',
+            'Canada/Saskatchewan',
+            'America/Bogota',
+            'US/Eastern',
+            'US/East-Indiana',
+            'America/Lima',
+            'America/Bogota',
+            'Canada/Atlantic',
+            'America/Caracas',
+            'America/La_Paz',
+            'America/Santiago',
+            'Canada/Newfoundland',
+            'America/Sao_Paulo',
+            'America/Argentina/Buenos_Aires',
+            'America/Godthab',
+            'America/Noronha',
+            'Atlantic/Azores',
+            'Atlantic/Cape_Verde',
+            'Africa/Casablanca',
+            'Europe/London',
+            'Etc/Greenwich',
+            'Europe/Lisbon',
+            'Europe/London',
+            'Africa/Monrovia',
+            'UTC',
+            'Europe/Amsterdam',
+            'Europe/Belgrade',
+            'Europe/Berlin',
+            'Europe/Bratislava',
+            'Europe/Brussels',
+            'Europe/Budapest',
+            'Europe/Copenhagen',
+            'Europe/Ljubljana',
+            'Europe/Madrid',
+            'Europe/Paris',
+            'Europe/Prague',
+            'Europe/Rome',
+            'Europe/Sarajevo',
+            'Europe/Skopje',
+            'Europe/Stockholm',
+            'Europe/Vienna',
+            'Europe/Warsaw',
+            'Africa/Lagos',
+            'Europe/Zagreb',
+            'Europe/Zurich',
+            'Europe/Athens',
+            'Europe/Bucharest',
+            'Africa/Cairo',
+            'Africa/Harare',
+            'Europe/Helsinki',
+            'Europe/Istanbul',
+            'Asia/Jerusalem',
+            'Europe/Helsinki',
+            'Africa/Johannesburg',
+            'Europe/Riga',
+            'Europe/Sofia',
+            'Europe/Tallinn',
+            'Europe/Vilnius',
+            'Asia/Baghdad',
+            'Asia/Kuwait',
+            'Europe/Minsk',
+            'Africa/Nairobi',
+            'Asia/Riyadh',
+            'Europe/Volgograd',
+            'Asia/Tehran',
+            'Asia/Muscat',
+            'Asia/Baku',
+            'Europe/Moscow',
+            'Asia/Muscat',
+            'Europe/Moscow',
+            'Asia/Tbilisi',
+            'Asia/Yerevan',
+            'Asia/Kabul',
+            'Asia/Karachi',
+            'Asia/Karachi',
+            'Asia/Tashkent',
+            'Asia/Calcutta',
+            'Asia/Kolkata',
+            'Asia/Calcutta',
+            'Asia/Calcutta',
+            'Asia/Calcutta',
+            'Asia/Katmandu',
+            'Asia/Almaty',
+            'Asia/Dhaka',
+            'Asia/Dhaka',
+            'Asia/Yekaterinburg',
+            'Asia/Rangoon',
+            'Asia/Bangkok',
+            'Asia/Bangkok',
+            'Asia/Jakarta',
+            'Asia/Novosibirsk',
+            'Asia/Hong_Kong',
+            'Asia/Chongqing',
+            'Asia/Hong_Kong',
+            'Asia/Krasnoyarsk',
+            'Asia/Kuala_Lumpur',
+            'Australia/Perth',
+            'Asia/Singapore',
+            'Asia/Taipei',
+            'Asia/Ulan_Bator',
+            'Asia/Urumqi',
+            'Asia/Irkutsk',
+            'Asia/Tokyo',
+            'Asia/Tokyo',
+            'Asia/Seoul',
+            'Asia/Tokyo',
+            'Australia/Adelaide',
+            'Australia/Darwin',
+            'Australia/Brisbane',
+            'Australia/Canberra',
+            'Pacific/Guam',
+            'Australia/Hobart',
+            'Australia/Melbourne',
+            'Pacific/Port_Moresby',
+            'Australia/Sydney',
+            'Asia/Yakutsk',
+            'Asia/Vladivostok',
+            'Pacific/Auckland',
+            'Pacific/Fiji',
+            'Pacific/Kwajalein',
+            'Asia/Kamchatka',
+            'Asia/Magadan',
+            'Pacific/Fiji',
+            'Asia/Magadan',
+            'Asia/Magadan',
+            'Pacific/Auckland',
+            'Pacific/Tongatapu',
+        ];
+
+        $list = TimezoneHelper::getListOfTimezones();
+        $list = collect($list);
+
+        $missed = '';
+        foreach ($oldTimezones as $timezone) {
+            $timezone = TimezoneHelper::adjustEquivalentTimezone($timezone);
+            if ($list->firstWhere('timezone', $timezone) == null) {
+                $missed .= ', '.$timezone;
+            }
+        }
+
+        $this->assertTrue(empty($missed), 'Missed timezones : '.$missed);
     }
 }

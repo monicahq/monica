@@ -17,7 +17,7 @@ class UploadVCardTest extends DuskTestCase
     public function test_upload_vcard_is_accessible_from_add_contact_view()
     {
         $user = factory(User::class)->create();
-        $user->account->populateDefaultFields($user->account);
+        $user->account->populateDefaultFields();
         $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
@@ -39,7 +39,7 @@ class UploadVCardTest extends DuskTestCase
     public function test_import_button_leads_to_import_screen()
     {
         $user = factory(User::class)->create();
-        $user->account->populateDefaultFields($user->account);
+        $user->account->populateDefaultFields();
         $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
@@ -60,7 +60,7 @@ class UploadVCardTest extends DuskTestCase
     public function test_user_can_import_contacts_from_a_vcf_card()
     {
         $user = factory(User::class)->create();
-        $user->account->populateDefaultFields($user->account);
+        $user->account->populateDefaultFields();
         $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {
@@ -83,7 +83,7 @@ class UploadVCardTest extends DuskTestCase
     public function test_user_see_error_when_importing_broken_vcard()
     {
         $user = factory(User::class)->create();
-        $user->account->populateDefaultFields($user->account);
+        $user->account->populateDefaultFields();
         $user->acceptPolicy();
 
         $this->browse(function ($browser) use ($user) {

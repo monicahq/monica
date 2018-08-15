@@ -71,7 +71,7 @@ class ApiJournalController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $entry->account_id = auth()->user()->account->id;
+        $entry->account_id = auth()->user()->account_id;
         $entry->save();
 
         return new JournalResource($entry);

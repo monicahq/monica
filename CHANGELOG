@@ -1,11 +1,57 @@
 UNRELEASED CHANGES:
 
+* Add activity reports page, which shows useful statistics about activities with a specific contact
+* Fix reminders not being sent for single-digit hours
+* Fix accounts with an empty reminder time
+* Fix account id get for acceptPolicy
+* Use our own docker image (central perk) to run tests
+* Add end-2-end testing with Cypress
+* Render timezone listbox dynamically
+* Use a new formatter to display money (debts), with right locale handle
+
+RELEASED VERSIONS:
+
+v2.5.0 - 2018-08-08
+-------------------
+
+* Add ability to define custom activity types and activity type categories
+* Add ability to search a contact by job title
+* Fix invoice page not showing properly
+* Fix translation not being displayed correctly on Subscription page
+* Add the TrimStrings middleware to trim all inputs
+* Call to monica:ping when updating instance
+* Fix idHasher decode function
+* Fix storage folder not being linked to public if migrations fail
+
+v2.4.2 - 2018-07-26
+-------------------
+
+* Add functional tests for account deletion and account reset
+* Fix activities not being displayed in the journal
+* Fix food preferencies not being able to be updated
+* Add functional test for account exporting
+* Fix fake content seeder for testing purposes
+
+v2.4.1 - 2018-07-25
+-------------------
+
+* Add ability to discover Cloudflare trusted proxies automatically. This adds a new ENV variable.
+* Fix avatar link in journal page
+* Fix broken migration
+* Fix Settings not displaying under some conditions
+
+v2.4.0 - 2018-07-23
+-------------------
+
+* Fix account deletion, reset and export
+* Fix export feature which exported 'changelog_user' table, which it shouldn't
+* Change how dates are stored, from local timezone to UTC
+* Remove the APP_TIMEZONE env variable
 * Add U2F/yubikey support and refactor MultiFactor Authentication
 * Add a script to update assets automatically
 * Allow for plus sign search in contacts api (contact_fields_data)
-* 
-
-RELEASED VERSIONS:
+* Fix sonar run for pull requests
+* Improve date and datetime parsing
 
 v2.3.1 - 2018-06-21
 -------------------
@@ -45,7 +91,7 @@ v2.2.0 - 2018-05-30
 * Fix Contact search dropdown showing non-contacts that link to nowhere
 * Add ability to sort contact list by untagged contacts
 * Allow multiple imported fields and replace existing contacts
-* Adds ex wife/husband relationship
+* Add ex wife/husband relationship
 * Fix duplication of tags when filtering contacts
 * Add trusted proxies to run behind a ssl terminating loadbalancer
 * Fix reminders for past events are visible on the dashboard

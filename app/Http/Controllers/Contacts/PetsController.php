@@ -65,7 +65,7 @@ class PetsController extends Controller
                 'name',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 
@@ -89,7 +89,7 @@ class PetsController extends Controller
                 'name',
             ])
             + [
-                'account_id' => auth()->user()->account->id,
+                'account_id' => auth()->user()->account_id,
             ]
         );
 

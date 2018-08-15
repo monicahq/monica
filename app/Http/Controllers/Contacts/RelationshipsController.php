@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -20,12 +19,13 @@ class RelationshipsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        // getting the list of existing contacts
+        // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()
-                                        ->real()
-                                        ->select(['id', 'first_name', 'last_name'])
-                                        ->sortedBy('name')
-                                        ->get();
+                                    ->real()
+                                    ->select(['id', 'first_name', 'last_name'])
+                                    ->sortedBy('name')
+                                    ->take(100)
+                                    ->get();
 
         // Building the list of contacts specifically for the dropdown which asks
         // for an id and a name. Also filter out the current contact.
@@ -57,7 +57,7 @@ class RelationshipsController extends Controller
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
-            ->withBirthdate(now()->format('Y-m-d'))
+            ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts($arrayContacts)
             ->withType($request->get('type'));
     }
@@ -73,10 +73,11 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
-            $partner = Contact::findOrFail($request->get('existing_contact_id'));
+            $partner = Contact::where('account_id', $request->user()->account_id)
+                ->findOrFail($request->get('existing_contact_id'));
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
 
-            return redirect('/people/'.$contact->id)
+            return redirect()->route('people.show', $contact)
                 ->with('success', trans('people.relationship_form_add_success'));
         }
 
@@ -85,6 +86,7 @@ class RelationshipsController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
             'gender_id' => 'required',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
@@ -134,7 +136,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $partner->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -158,7 +160,7 @@ class RelationshipsController extends Controller
             $partner->save();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -171,10 +173,11 @@ class RelationshipsController extends Controller
      */
     public function edit(Contact $contact, Contact $otherContact)
     {
+        $now = now();
         $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : Carbon::now()->day;
-        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : Carbon::now()->month;
+        $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->toDateString() : $now->toDateString();
+        $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : $now->day;
+        $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
 
@@ -221,6 +224,7 @@ class RelationshipsController extends Controller
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
             'gender_id' => 'required',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
@@ -263,7 +267,7 @@ class RelationshipsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $otherContact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -287,7 +291,7 @@ class RelationshipsController extends Controller
             $otherContact->save();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
     }
 
@@ -301,11 +305,11 @@ class RelationshipsController extends Controller
     public function destroy(Contact $contact, Contact $otherContact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         if ($otherContact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         $type = $contact->getRelationshipNatureWith($otherContact);
@@ -317,7 +321,7 @@ class RelationshipsController extends Controller
             $otherContact->deleteEverything();
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));
     }
 }

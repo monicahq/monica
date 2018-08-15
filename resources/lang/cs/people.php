@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Aktivity',
-    'activity_type_group_simple_activities' => 'Jednoduché aktivity',
-    'activity_type_group_sport' => 'Sport',
-    'activity_type_group_food' => 'Jídlo',
-    'activity_type_group_cultural_activities' => 'Kulturní aktivity',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'společný čas',
     'activity_type_watched_movie_at_home' => 'sledování filmu doma',
     'activity_type_talked_at_home' => 'promluvili jsme si doma',
@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Přidat aktivitu',
     'activities_add_success' => 'Aktivita byla úspěšně přidána',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Aktivita byla úspěšně aktualizována',
     'activities_delete_success' => 'Aktivita byla úspěšně smazána',
     'activities_who_was_involved' => 'Kdo byl zapojen?',

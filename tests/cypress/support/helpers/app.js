@@ -9,3 +9,7 @@ Cypress.Commands.add('login', () => {
 
     cy.url().should('include', '/dashboard')
 })
+
+Cypress.Commands.add('setPremium', (accountId) => {
+    cy.exec('php artisan account:setpremium ' + accountId)
+})

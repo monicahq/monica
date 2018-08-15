@@ -15,9 +15,10 @@ class MoneyHelperTest extends TestCase
     public function testFormatReturnsAmountWithCurrencySymbol()
     {
         $currency = new Currency();
-        $currency->symbol = '€';
+        $currency->iso = 'EUR';
 
-        $this->assertEquals('€500', MoneyHelper::format(500, $currency));
+        $this->assertEquals('€500.00', MoneyHelper::format(500, $currency));
+        $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
     }
 
     public function testFormatUsesCurrencySettingIfDefined()
@@ -28,12 +29,14 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('£75', MoneyHelper::format(75));
+        $this->assertEquals('£75.00', MoneyHelper::format(75));
+        $this->assertEquals('£2,734.12', MoneyHelper::format(2734.12));
     }
 
     public function testFormatReturnsAmountWithoutSymbolIfCurrencyIsUndefined()
     {
         $this->assertEquals('500', MoneyHelper::format(500));
+        $this->assertEquals('5,000', MoneyHelper::format(5000));
     }
 
     public function testFormatReturnsZeroIfAmountIsNull()
@@ -50,6 +53,6 @@ class MoneyHelperTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $this->assertEquals('R$12.345,67', MoneyHelper::format(12345.67));
+        $this->assertEquals('R$12,345.67', MoneyHelper::format(12345.67));
     }
 }

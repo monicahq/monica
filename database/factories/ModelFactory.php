@@ -20,6 +20,7 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
+        'locale' => 'en',
         'confirmed' => true,
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
@@ -39,24 +40,26 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
         },
         'description' => $faker->sentence,
         'summary' => $faker->sentence,
-        'date_it_happened' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'date_it_happened' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
 $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
     return [
-        'activity_type_group_id' => function () {
-            return factory(App\Models\Contact\ActivityTypeGroup::class)->create()->id;
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'activity_type_category_id' => function () {
+            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([])->id;
         },
-        'key' => $faker->sentence,
+        'translation_key' => $faker->sentence,
         'location_type' => $faker->word,
-        'icon' => $faker->word,
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityTypeGroup::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker\Generator $faker) {
     return [
-        'key' => $faker->sentence,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'translation_key' => $faker->sentence,
+        'name' => $faker->sentence,
     ];
 });
 
@@ -89,7 +92,7 @@ $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -99,7 +102,7 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -109,7 +112,7 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -119,8 +122,8 @@ $factory->define(App\Models\Instance\SpecialDate::class, function (Faker\Generat
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
-        'date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
-        'created_at' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeThisCentury()->getTimeStamp()),
+        'date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+        'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 

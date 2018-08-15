@@ -41,4 +41,9 @@ return [
      */
     'headers' => Illuminate\Http\Request::HEADER_X_FORWARDED_ALL,
 
+    /*
+     * Enable cloudflare trusted proxies
+     */
+    'cloudflare' => env('APP_TRUSTED_CLOUDFLARE', false),
+
 ];

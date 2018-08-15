@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\IdHasher;
-use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
 {
@@ -45,8 +44,18 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $user = $request->user();
-        $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+
+        try {
+            // Test if every attached contact are found before creating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                Contact::where('account_id', $request->user()->account_id)
+                    ->findOrFail($newContactId);
+            }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity = Activity::create(
             $request->only([
@@ -55,14 +64,14 @@ class ActivitiesController extends Controller
                 'activity_type_id',
                 'description',
             ])
-            + ['account_id' => $account->id]
+            + ['account_id' => $request->user()->account_id]
         );
 
         // New attendees
-        $specifiedContacts = $request->get('contacts');
         foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
-            $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
+            $newContact = Contact::where('account_id', $request->user()->account_id)
+                ->findOrFail($newContactId);
+            $newContact->activities()->attach($activity, ['account_id' => $request->user()->account_id]);
             $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }
@@ -70,20 +79,8 @@ class ActivitiesController extends Controller
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Activity $activity
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Activity $activity)
-    {
-        //
     }
 
     /**
@@ -112,6 +109,18 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+
+        try {
+            // Test if every attached contact are found before updating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                Contact::where('account_id', $account->id)
+                    ->findOrFail($newContactId);
+            }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity->update(
             $request->only([
@@ -122,9 +131,6 @@ class ActivitiesController extends Controller
             ])
             + ['account_id' => $account->id]
         );
-
-        // Who did we send through via the form?
-        $specifiedContacts = $request->get('contacts');
 
         // Find existing attendees
         $existing = $activity->contacts()->get();
@@ -150,12 +156,13 @@ class ActivitiesController extends Controller
 
         // New attendees
         foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
+            $newContact = Contact::where('account_id', $account->id)
+                ->findOrFail($newContactId);
             $newContact->activities()->save($activity);
             $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));
     }
 
@@ -166,21 +173,18 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Activity $activity)
+    public function destroy(Activity $activity, Contact $contact)
     {
-        $contactHashedId = $request->get('contact');
-        $contactId = app('idhasher')->decodeId($contactHashedId);
-        $contact = Contact::find($contactId);
-
         $activity->deleteJournalEntry();
+
+        foreach ($activity->contacts as $contactActivity) {
+            $contactActivity->events()->forObject($activity)->get()->each->delete();
+            $contactActivity->calculateActivitiesStatistics();
+        }
 
         $activity->delete();
 
-        $contact->events()->forObject($activity)->get()->each->delete();
-
-        $contact->calculateActivitiesStatistics();
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_delete_success'));
     }
 }

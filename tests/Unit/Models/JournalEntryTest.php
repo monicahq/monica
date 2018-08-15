@@ -48,7 +48,7 @@ class JournalEntryTest extends TestCase
         $data = [
             'type' => 'activity',
             'id' => $activity->id,
-            'activity_type' => (! is_null($activity->type) ? $activity->type->getTranslationKeyAsString() : null),
+            'activity_type' => (! is_null($activity->type) ? $activity->type->name : null),
             'summary' => $activity->summary,
             'description' => $activity->description,
             'day' => $activity->date_it_happened->day,

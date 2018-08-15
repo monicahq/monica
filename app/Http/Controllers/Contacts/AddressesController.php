@@ -60,7 +60,7 @@ class AddressesController extends Controller
     public function store(AddressesRequest $request, Contact $contact)
     {
         return $contact->addresses()->create([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'country' => ($request->get('country') == '0' ? null : $request->get('country')),
             'name' => ($request->get('name') == '' ? null : $request->get('name')),
             'street' => ($request->get('street') == '' ? null : $request->get('street')),

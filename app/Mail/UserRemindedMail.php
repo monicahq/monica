@@ -35,7 +35,8 @@ class UserRemindedMail extends Mailable
      */
     public function build()
     {
-        $contact = Contact::findOrFail($this->reminder->contact_id);
+        $contact = Contact::where('account_id', $this->user->account_id)
+            ->findOrFail($this->reminder->contact_id);
 
         App::setLocale($this->user->locale);
 

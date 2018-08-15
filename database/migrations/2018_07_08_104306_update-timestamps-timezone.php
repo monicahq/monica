@@ -23,7 +23,7 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('activities', $timezone);
         $this->update('activity_statistics', $timezone);
         $this->update('activity_types', $timezone);
-        $this->update('activity_type_groups', $timezone);
+        $this->update('activity_type_categories', $timezone);
         $this->update('addresses', $timezone);
         $this->update('api_usage', $timezone);
         $this->update('calls', $timezone);
@@ -35,7 +35,7 @@ class UpdateTimestampsTimezone extends Migration
                 $updated = is_null($model->updated_at) ? null : Carbon::createFromTimeString($model->updated_at, $timezone)->setTimezone('UTC');
                 $last_consulted_at = is_null($model->last_consulted_at) ? null : Carbon::createFromTimeString($model->last_consulted_at, $timezone)->setTimezone('UTC');
 
-                DB::table($table)->where($id, $model->$id)
+                DB::table('contacts')->where('id', $model->id)
                     ->update([
                         'created_at' => $created,
                         'updated_at' => $updated,
@@ -49,8 +49,12 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('currencies', $timezone);
         $this->update('days', $timezone);
         $this->update('debts', $timezone);
+        $this->update('default_activity_type_categories', $timezone);
+        $this->update('default_activity_types', $timezone);
         $this->update('default_contact_field_types', $timezone);
         $this->update('default_contact_modules', $timezone);
+        $this->update('default_activity_types', $timezone);
+        $this->update('default_activity_type_categories', $timezone);
         $this->update('default_relationship_types', $timezone);
         $this->update('default_relationship_type_groups', $timezone);
         $this->update('entries', $timezone);
@@ -65,7 +69,7 @@ class UpdateTimestampsTimezone extends Migration
             foreach ($models as $model) {
                 $created = is_null($model->created_at) ? null : Carbon::createFromTimeString($model->created_at, $timezone)->setTimezone('UTC');
 
-                DB::table('jobs')->where($id, $model->get($id))
+                DB::table('jobs')->where('id', $model->id)
                     ->update([
                         'created_at' => $created,
                     ]);

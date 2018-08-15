@@ -543,6 +543,23 @@ class ContactTest extends FeatureTestCase
         $this->assertNull($contact->getAvatarURL());
     }
 
+    public function test_gravatar_set_emailbadformat()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => ' bad%20<email@bad.com',
+        ]);
+
+        $contact->updateGravatar();
+
+        $this->assertNull($contact->getAvatarURL());
+    }
+
     public function test_gravatar_set_emailreal()
     {
         $account = factory(Account::class)->create();
@@ -1472,11 +1489,11 @@ class ContactTest extends FeatureTestCase
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
 
-        $contact->setStayInTouchTriggerDate(3, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(3, 'UTC');
 
         $this->assertEquals(
             '2017-01-04',
-            $contact->stay_in_touch_trigger_date->format('Y-m-d')
+            $contact->stay_in_touch_trigger_date->toDateString()
         );
     }
 
@@ -1490,7 +1507,7 @@ class ContactTest extends FeatureTestCase
             'stay_in_touch_trigger_date' => '2018-03-03 00:00:00',
         ]);
 
-        $contact->setStayInTouchTriggerDate(0, 'America/Toronto');
+        $contact->setStayInTouchTriggerDate(0);
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
     }

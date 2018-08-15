@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
@@ -47,8 +46,8 @@ class ContactsController extends Controller
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
-                $tag = Tag::where('name_slug', $request->get('tag'.$count))
-                            ->where('account_id', auth()->user()->account_id)
+                $tag = Tag::where('account_id', auth()->user()->account_id)
+                            ->where('name_slug', $request->get('tag'.$count))
                             ->get();
 
                 if (! ($tags->contains($tag[0]))) {
@@ -121,7 +120,7 @@ class ContactsController extends Controller
         }
 
         $contact = new Contact;
-        $contact->account_id = Auth::user()->account_id;
+        $contact->account_id = $request->user()->account_id;
         $contact->gender_id = $request->input('gender');
 
         $contact->first_name = $request->input('first_name');
@@ -153,44 +152,35 @@ class ContactsController extends Controller
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
-            return redirect('/people');
+            return redirect()->route('people.index');
         }
-
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
-
-        $contact->last_consulted_at = Carbon::now(auth()->user()->timezone);
+        $contact->last_consulted_at = now(DateHelper::getTimezone());
         $contact->save();
-
         $relationships = $contact->relationships;
-
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'love';
         });
-
         // get family relationship type
         $familyRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'family';
         });
-
         // get friend relationship type
         $friendRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'friend';
         });
-
         // get work relationship type
         $workRelationships = $relationships->filter(function ($item) {
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
-
         // reminders
         $reminders = $contact->reminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
                                 ->sortBy('next_expected_date');
-
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
@@ -212,10 +202,11 @@ class ContactsController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
-        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->format('Y-m-d') : now()->format('Y-m-d');
-        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : now()->day;
-        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : now()->month;
+        $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
+        $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
 
@@ -248,6 +239,7 @@ class ContactsController extends Controller
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
+            'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
         if ($validator->fails()) {
@@ -312,7 +304,7 @@ class ContactsController extends Controller
                 break;
             case 'exact':
                 $birthdate = $request->input('birthdayDate');
-                $birthdate = new Carbon($birthdate);
+                $birthdate = DateHelper::parseDate($birthdate);
                 $specialDate = $contact->setSpecialDate(
                     'birthdate',
                     $birthdate->year,
@@ -333,7 +325,7 @@ class ContactsController extends Controller
 
         $contact->updateGravatar();
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
     }
 
@@ -347,11 +339,15 @@ class ContactsController extends Controller
     public function delete(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
-        Relationship::where('contact_is', $contact->id)->delete();
-        Relationship::where('of_contact', $contact->id)->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('contact_is', $contact->id)
+            ->delete();
+        Relationship::where('account_id', auth()->user()->account_id)
+            ->where('of_contact', $contact->id)
+            ->delete();
 
         $contact->deleteEverything();
 
@@ -391,7 +387,7 @@ class ContactsController extends Controller
 
         $contact->save();
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.work_edit_success'));
     }
 
@@ -421,7 +417,7 @@ class ContactsController extends Controller
 
         $contact->updateFoodPreferencies($food);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.food_preferencies_add_success'));
     }
 
@@ -432,37 +428,12 @@ class ContactsController extends Controller
     public function search(Request $request)
     {
         $needle = $request->needle;
-        $accountId = $request->accountId;
-
-        if ($accountId != auth()->user()->account_id) {
-            return;
-        }
 
         if ($needle == null) {
             return;
         }
 
-        if ($accountId == null) {
-            return;
-        }
-
-        if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
-            $search_field = $matches[1];
-            $search_term = $matches[2];
-
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
-
-            $field_id = $field->id;
-
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id,$search_term) {
-                $query->where([
-                    ['data', 'like', "$search_term%"],
-                    ['contact_field_type_id', $field_id],
-                ]);
-            })->get();
-        } else {
-            $results = Contact::search($needle, $accountId, 20, 'created_at');
-        }
+        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
             foreach ($results as $key => $result) {
@@ -524,7 +495,7 @@ class ContactsController extends Controller
             throw new Exception(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, auth()->user()->timezone);
+        $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
 
         return $frequency;
     }

@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use Carbon\Carbon;
 use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
@@ -105,18 +104,14 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date_it_happened field according to user's timezone.
+     * Get the date_it_happened field.
      *
      * @param string $value
      * @return string
      */
     public function getDateItHappenedAttribute($value)
     {
-        if (auth()->user()) {
-            return Carbon::parse($value, auth()->user()->timezone);
-        }
-
-        return Carbon::parse($value);
+        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
     }
 
     /**
@@ -140,16 +135,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date the activity happened.
-     *
-     * @return Carbon
-     */
-    public function getDateItHappened()
-    {
-        return $this->date_it_happened;
-    }
-
-    /**
      * Get the key of the title of the activity.
      *
      * @return string or null
@@ -167,7 +152,8 @@ class Activity extends Model implements IsJournalableInterface
         $attendees = collect([]);
 
         foreach ($this->contacts as $contact) {
-            $attendee = Contact::find($contact->id);
+            $attendee = Contact::where('account_id', $this->account_id)
+                ->find($contact->id);
             $attendees->push(new ContactShortResource($attendee));
         }
 
@@ -183,7 +169,7 @@ class Activity extends Model implements IsJournalableInterface
         return [
             'type' => 'activity',
             'id' => $this->id,
-            'activity_type' => (! is_null($this->type) ? $this->type->getTranslationKeyAsString() : null),
+            'activity_type' => (! is_null($this->type) ? $this->type->name : null),
             'summary' => $this->summary,
             'description' => $this->description,
             'day' => $this->date_it_happened->day,

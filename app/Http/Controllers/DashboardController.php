@@ -20,7 +20,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $account = Auth::user()->account()
+        $account = auth()->user()->account()
             ->withCount(
                 'contacts', 'reminders', 'notes', 'activities', 'gifts', 'tasks'
             )->with('debts.contact')

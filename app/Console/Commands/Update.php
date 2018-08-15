@@ -81,17 +81,17 @@ class Update extends Command
                     $this->commandExecutor->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('dev') === false ? '--no-dev' : ''));
                 }
 
-                if ($this->migrateCollationTest()) {
-                    $this->commandExecutor->artisan('✓ Performing collation migrations', 'migrate:collation', ['--force' => 'true']);
-                }
-                $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force' => 'true']);
-
-                if (DB::table('activity_types')->count() == 0) {
-                    $this->commandExecutor->artisan('✓ Filling the Activity Types table', 'db:seed', ['--class' => 'ActivityTypesTableSeeder', '--force' => 'true']);
-                }
                 if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
+
+                if ($this->migrateCollationTest()) {
+                    $this->commandExecutor->artisan('✓ Performing collation migrations', 'migrate:collation', ['--force' => 'true']);
+                }
+
+                $this->commandExecutor->artisan('✓ Performing migrations', 'migrate', ['--force' => 'true']);
+
+                $this->commandExecutor->artisan('✓ Ping for new version', 'monica:ping', ['--force' => 'true']);
             } finally {
                 $this->commandExecutor->artisan('✓ Maintenance mode: off', 'up');
             }

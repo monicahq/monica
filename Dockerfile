@@ -1,5 +1,18 @@
 FROM alpine:3.6
 
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="MonicaHQ, the Personal Relationship Manager" \
+      org.label-schema.description="This is MonicaHQ, your personal memory! MonicaHQ is like a CRM but for the friends, family, and acquaintances around you." \
+      org.label-schema.url="https://monicahq.com" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/monicahq/monica" \
+      org.label-schema.vendor="Monica" \
+      org.label-schema.version=$VERSION \
+      org.label-schema.schema-version="1.0"
+
 EXPOSE 80:80
 
 RUN apk update && apk upgrade
@@ -34,7 +47,7 @@ RUN apk add apache2 make netcat-openbsd \
         php7-bcmath \
         #- sentry/sentry
         php7-curl
-# Create apache2 dir needed for httpd
+# Create apache2 dir needed for httpd
 RUN mkdir -p /run/apache2
 
 # Create a user to own all the code and assets and give them a working
@@ -80,9 +93,9 @@ RUN chmod -R g+w bootstrap/cache storage
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
 # Composer installation
 RUN scripts/docker/install-composer.sh
-# Set crontab for schedules
+# Set crontab for schedules
 RUN echo '* * * * * /usr/bin/php /var/www/monica/artisan schedule:run' | crontab -u monica -
-# Cleanup
+# Cleanup
 RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 # Install composer dependencies and prepare permissions for Apache

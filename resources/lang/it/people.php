@@ -189,10 +189,10 @@ return [
 
     // activities
     'activity_title' => 'Attività',
-    'activity_type_group_simple_activities' => 'Attività semplici',
-    'activity_type_group_sport' => 'Sport',
-    'activity_type_group_food' => 'Cibo',
-    'activity_type_group_cultural_activities' => 'Attività culturali',
+    'activity_type_category_simple_activities' => 'Simple activities',
+    'activity_type_category_sport' => 'Sport',
+    'activity_type_category_food' => 'Food',
+    'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'siamo usciti',
     'activity_type_watched_movie_at_home' => 'visto un film, a casa',
     'activity_type_talked_at_home' => 'parlato, a casa',
@@ -220,6 +220,7 @@ return [
     'activities_blank_title' => 'Tieni traccia di quello che tu e :name avete fatto, e ciò di cui avete parlato',
     'activities_blank_add_activity' => 'Agginugi attività',
     'activities_add_success' => 'Attività aggiunta',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Attività aggiornata',
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
