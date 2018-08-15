@@ -222,6 +222,39 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function testGetFullMonthAndDateWithEnglishLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('en');
+
+        $this->assertEquals(
+            'January 2017',
+            DateHelper::getFullMonthAndDate($date)
+        );
+    }
+
+    public function testGetFullMonthAndDateWithFrenchLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('fr');
+
+        $this->assertEquals(
+            'janvier 2017',
+            DateHelper::getFullMonthAndDate($date)
+        );
+    }
+
+    public function testGetFullMonthAndDateWithUnknownLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('jp');
+
+        $this->assertEquals(
+            'January 2017',
+            DateHelper::getFullMonthAndDate($date)
+        );
+    }
+
     public function testGetShortDayWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
