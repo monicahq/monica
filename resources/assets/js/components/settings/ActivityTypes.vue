@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_activity_type_category_title') }}
-      <a class="btn nt2" v-if="!limited" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">{{ $t('settings.personalization_activity_type_category_add') }}</a>
+      <a class="btn nt2" v-if="!limited" cy-name="add-activity-category-type-button" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">{{ $t('settings.personalization_activity_type_category_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_activity_type_category_description') }}</p>
 
@@ -68,7 +68,7 @@
         <div class="dt-row" v-if="!limited">
           <div class="dtc">
             <div class="pa2 pl4">
-              <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">{{ $t('settings.personalization_activity_type_add_button') }}</a>
+              <a class="pointer" :cy-name="'add-activity-type-button-for-category-' + activityTypeCategory.id" @click="showCreateTypeModal(activityTypeCategory)">{{ $t('settings.personalization_activity_type_add_button') }}</a>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
           <form-input
             v-model="createCategoryForm.name"
             v-bind:input-type="'text'"
-            v-bind:id="''"
+            v-bind:id="'add-category-name'"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
           </form-input>
@@ -92,7 +92,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeCategoryModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="storeCategory()" class="btn btn-primary">{{ $t('app.save') }}</a>
+            <a @click="storeCategory()" cy-name="add-activity-type-category-button" class="btn btn-primary">{{ $t('app.save') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -105,7 +105,7 @@
           <form-input
             v-model="updateCategoryForm.name"
             v-bind:input-type="'text'"
-            v-bind:id="''"
+            v-bind:id="'update-category-name'"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
           </form-input>
@@ -114,7 +114,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeUpdateCategoryModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="updateCategory()" class="btn btn-primary">{{ $t('app.update') }}</a>
+            <a @click="updateCategory()" cy-name="update-activity-type-category-button" class="btn btn-primary">{{ $t('app.update') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -127,7 +127,7 @@
           <form-input
             v-model="createTypeForm.name"
             v-bind:input-type="'text'"
-            v-bind:id="''"
+            v-bind:id="'add-type-name'"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_activity_type_modal_question')">
           </form-input>
@@ -136,7 +136,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeCreateTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="storeType()" class="btn btn-primary">{{ $t('app.save') }}</a>
+            <a @click="storeType()" :cy-name="'add-type-button'" class="btn btn-primary">{{ $t('app.save') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -149,7 +149,7 @@
           <form-input
             v-model="updateTypeForm.name"
             v-bind:input-type="'text'"
-            v-bind:id="''"
+            v-bind:id="'update-type-name'"
             v-bind:required="true"
             v-bind:title="$t('settings.personalization_activity_type_modal_question')">
           </form-input>
@@ -158,7 +158,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeUpdateTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="updateType()" class="btn btn-primary">{{ $t('app.update') }}</a>
+            <a @click="updateType()" :cy-name="'update-type-button'" class="btn btn-primary">{{ $t('app.update') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -178,7 +178,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteCategoryModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="destroyCategory()" class="btn btn-primary">{{ $t('app.delete') }}</a>
+            <a @click="destroyCategory()" :cy-name="'delete-category-button'" class="btn btn-primary">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>
@@ -198,7 +198,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteTypeModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="destroyType()" class="btn btn-primary">{{ $t('app.delete') }}</a>
+            <a @click="destroyType()" :cy-name="'delete-type-button'" class="btn btn-primary">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>
