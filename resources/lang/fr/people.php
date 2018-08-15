@@ -237,7 +237,7 @@ return [
     'notes_create_success' => 'La note a été ajoutée avec succès',
     'notes_update_success' => 'La note a été modifiée avec succès',
     'notes_delete_success' => 'La note a été supprimée avec succès',
-    'notes_add_cta' => 'Ajouter la note',
+    'notes_add_cta' => 'Ajouter une note',
     'notes_favorite' => 'Ajouter/retirer des favoris',
     'notes_delete_title' => 'Supprimer une note',
     'notes_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette note ? La suppression est permanente',
