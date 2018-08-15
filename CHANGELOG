@@ -8,6 +8,7 @@ UNRELEASED CHANGES:
 * Add end-2-end testing with Cypress
 * Render timezone listbox dynamically
 * Use a new formatter to display money (debts), with right locale handle
+* Get first existing gravatar of all emails of the contact
 
 RELEASED VERSIONS:
 

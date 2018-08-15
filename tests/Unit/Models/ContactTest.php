@@ -477,28 +477,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_set_emailcontact()
-    {
-        $account = factory(Account::class)->create();
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
-        $contactField = factory(ContactField::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-            'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'test@test.com',
-        ]);
-        $contactField = factory(ContactField::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-            'contact_field_type_id' => $contactFieldType->id,
-            'data' => 'test2@test.com',
-        ]);
-
-        $email = $contact->getFirstEmail();
-        $this->assertEquals($email, 'test@test.com');
-    }
-
     public function test_get_avatar_returns_gravatar()
     {
         $contact = new Contact;
@@ -565,6 +543,32 @@ class ContactTest extends FeatureTestCase
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'alexis@saettler.org',
+        ]);
+
+        $contact->updateGravatar();
+
+        $url = $contact->getAvatarURL();
+        $this->assertNotNull($url);
+        $this->assertContains('s=250&d=mm&r=g', $url);
+        $this->assertContains('https://www.gravatar.com', $url);
+    }
+
+    public function test_gravatar_set_emailreal_multiple()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contactFieldType = factory(ContactFieldType::class)->create(['account_id' => $account->id]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'test@test.com',
+        ]);
         $contactField = factory(ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
