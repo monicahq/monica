@@ -14,6 +14,7 @@ trait Hasher
     public function resolveRouteBinding($value)
     {
         $id = $this->decodeId($value);
+
         return parent::resolveRouteBinding($id);
     }
 
