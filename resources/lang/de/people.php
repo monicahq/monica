@@ -161,7 +161,7 @@ return [
     'reminders_type_month' => 'Monat',
     'reminders_type_year' => 'Jahr',
     'reminders_birthday' => 'Geburtstag von :name',
-    'reminders_free_plan_warning' => 'Du befindest dich im freiem Angebot. Hier werden keine Emails versendet. Um die Erinnerungs Emails zu erhalten upgrade deinen Account.',
+    'reminders_free_plan_warning' => 'Du befindest dich im kostenlosen Abonnement. Hier werden keine E-Mails versendet. Um die Erinnerungs-E-Mails zu erhalten upgrade deinen Account.',
 
     // relationships
     'relationship_form_add' => 'Eine neue Beziehung hinzufügen',
@@ -261,9 +261,9 @@ return [
     'gifts_add_comment' => 'Kommentar (optional)',
     'gifts_add_someone' => 'Dieses Geschenk ist für jemanden in :name\'s Familie',
     'gifts_ideas' => 'Geschenkideen',
-    'gifts_offered' => 'Geschenke angeboten',
+    'gifts_offered' => 'Verschenkte Geschenke',
     'gifts_offered_as_an_idea' => 'Als Idee markieren',
-    'gifts_received' => 'Geschenke erhalten',
+    'gifts_received' => 'Erhaltene Geschenke',
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
     'gifts_update_success' => 'Das Geschenk wurde erfolgreich aktualisiert',
