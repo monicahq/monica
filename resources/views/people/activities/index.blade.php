@@ -20,7 +20,7 @@
     <section class="ph3 ph5-ns cf w-100 bg-gray-monica mb5">
         <div class="mw8 center full-page-modal pt4">
             <h2 class="tc bb b--gray-monica pb4 mb3 normal">{{ trans('people.activities_profile_title', ['name' => $contact->first_name]) }}</h2>
-            <h2 class="tc pt3 pb4 ph3 f4 normal">🚀 {{ trans('people.activities_profile_subtitle', ['total_activities' => $totalActivities, 'activities_last_twelve_months' => $activitiesLastTwelveMonths, 'name' => $contact->first_name]) }}</h2>
+            <h2 class="tc pt3 pb4 ph3 f4 normal">🚀 {{ trans_choice('people.activities_profile_subtitle', $totalActivities, ['total_activities' => $totalActivities, 'activities_last_twelve_months' => $activitiesLastTwelveMonths, 'name' => $contact->first_name]) }}</h2>
             <div class="cf ph2-ns">
 
                 {{-- Left sidebar --}}
@@ -83,7 +83,7 @@
                                     <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr2">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M16 14V15H0V0H1V14H16ZM5 13H3V8H5V13ZM9 13H7V3H9V13ZM13 13H11V6H13V13Z" fill="#4CA35A"/>
                                     </svg>
-                                    {{ \Carbon\Carbon::create($year, $activityMonth['month'], 1)->formatLocalized('%B %Y') }} <span class="black-70 f4 normal ml3">{{ trans_choice('people.activities_profile_number_occurences', $activityMonth['occurences'], ['value' => $activityMonth['occurences']]) }}</span>
+                                    {{ \App\Helpers\DateHelper::getFullMonthAndDate(\Carbon\Carbon::create($year, $activityMonth['month'])) }} <span class="black-70 f4 normal ml3">{{ trans_choice('people.activities_profile_number_occurences', $activityMonth['occurences'], ['value' => $activityMonth['occurences']]) }}</span>
                                 </h3>
 
                                 {{-- Activities list --}}
