@@ -4,8 +4,8 @@ return [
 
     //index
     'people_list_number_kids' => ':count 个孩子',
-    'people_list_last_updated' => '上次咨询:',
-    'people_list_number_reminders' => ':count 提醒',
+    'people_list_last_updated' => '最近更新:',
+    'people_list_number_reminders' => ':count 个提醒',
     'people_list_blank_title' => '您还没有任何联系人',
     'people_list_blank_cta' => '添加某人',
     'people_list_sort' => '排序',
@@ -23,14 +23,14 @@ return [
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
-    'people_list_account_upgrade_cta' => '现在更新',
+    'people_list_account_upgrade_cta' => '立即升级',
     'people_list_untagged' => '查看未加标签的联系人',
     'people_list_filter_untag' => '所有未加标签的联系人',
 
     // people add
-    'people_add_title' => '添加新人员',
+    'people_add_title' => '添加一位新的联系人',
     'people_add_missing' => '没有联系人，现在添加一个',
-    'people_add_firstname' => '名',
+    'people_add_firstname' => '名字',
     'people_add_middlename' => '中间名 (可选)',
     'people_add_lastname' => '姓（可选）',
     'people_add_nickname' => '昵称（可选）',
@@ -44,7 +44,7 @@ return [
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
-    'people_edit_email_error' => '您的帐户中已经有一个联系人使用此邮件地址，请填写一个其他的。',
+    'people_edit_email_error' => '您的联系人中已经有人使用此电子邮件，请更换一个',
     'people_export' => '导出为 vCard',
     'people_add_reminder_for_birthday' => '创建一个年度生日提醒事项',
 
@@ -57,7 +57,7 @@ return [
     'section_personal_notes' => '便签',
 
     //
-    'link_to_list' => '人名单',
+    'link_to_list' => '联系人',
 
     // Header
     'edit_contact_information' => '编辑联系人信息',
@@ -77,7 +77,7 @@ return [
     'modal_call_comment' => '你们说了什么？（可选）',
     'modal_call_date' => '通话是今天早些时候发生的。',
     'modal_call_change' => '更改',
-    'modal_call_exact_date' => '电话记录发生在',
+    'modal_call_exact_date' => '通话日期',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
@@ -102,17 +102,17 @@ return [
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
     'information_edit_avatar' => '联系人照片/头像',
-    'information_edit_max_size' => '最大值 :size Mb。',
-    'information_edit_firstname' => '名',
-    'information_edit_lastname' => '姓（可选）',
-    'information_edit_linkedin' => 'LinkedIn 信息 (可选)',
+    'information_edit_max_size' => '最大值 :size 兆。',
+    'information_edit_firstname' => '名字',
+    'information_edit_lastname' => '姓氏（可选）',
+    'information_edit_linkedin' => '领英® 链接 (可选)',
     'information_edit_unknown' => '我不知道具体年龄',
     'information_edit_probably' => '此人可能是...',
     'information_edit_not_year' => '我知道这个人的生日的日期和月份, 但不知道哪一年。',
     'information_edit_exact' => '我知道这个人的确切出生日期...',
-    'information_no_linkedin_defined' => '没有定义LinkedIn',
+    'information_no_linkedin_defined' => '未绑定领英®',
     'information_no_work_defined' => '未定义工作信息',
-    'information_work_at' => '在 :company',
+    'information_work_at' => '在 :company工作',
     'linkedin_profile' => '领英®上的个人资料',
     'work_add_cta' => '更新工作信息',
     'work_edit_success' => '工作信息已成功更新',
@@ -228,10 +228,10 @@ return [
     'activities_activity' => '活动类别',
     'activities_view_activities_report' => '查看活动报告',
     'activities_profile_title' => ':name 与您之间的活动报告',
-    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次|截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
-    'activities_profile_number_occurences' => ':value activity|:value activities',
+    'activities_profile_number_occurences' => ':value 次活动|:value 次活动',
 
     // notes
     'notes_create_success' => '注释已成功创建',
