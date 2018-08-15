@@ -73,7 +73,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisatie',
     'breadcrumb_settings_security' => 'Beveiliging',
     'breadcrumb_settings_security_2fa' => 'Tweestapsverificatie',
-    'breadcrumb_profile' => 'Profile of :name',
+    'breadcrumb_profile' => 'Profiel van :name',
 
     'gender_male' => 'Man',
     'gender_female' => 'Vrouw',
