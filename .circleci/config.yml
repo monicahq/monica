@@ -31,30 +31,16 @@ aliases:
   - &post_checkout
     post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
 
-  - &install-extensions
-    run:
-      name: Install php extensions
-      command: |
-        sudo apt-get update
-        sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev
-        sudo docker-php-ext-install -j$(nproc) zip intl json iconv bcmath gd pdo_mysql mysqli mbstring
-        tar cvjf php-extensions-${PHP_VERSION}.tar.bz2 --exclude opcache.a --exclude opcache.so --exclude sodium.a --exclude sodium.so --exclude xdebug.so $(php-config --extension-dir) /usr/local/etc/php/conf.d
   - &prepare-environment
     run:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
-        sudo apt-get update
-        sudo apt-get install -y mysql-client
   - &yarn-install
     run:
       name: yarn install
       command: yarn install --frozen-lockfile
-  - &update-chrome
-    run:
-      name: Install chrome
-      command: scripts/tests/install-chrome.sh
   - &prepare-db
     run:
       name: Prepare database
@@ -132,27 +118,18 @@ aliases:
       keys:
         - *node_key
         - *node_key_base
-  - &restore_phpextensions
-    run:
-      name: Extract php extensions
-      command: sudo tar xvjf php-extensions-${PHP_VERSION}.tar.bz2 --directory=/ --overwrite
 
 
 jobs:
   build:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node
+      - image: monicahq/circleci-docker-centralperk:latest
 
     steps:
       - checkout:
           <<: *post_checkout
       - *prepare-environment
-
-      - *install-extensions
-      - persist_to_workspace:
-          root: *root
-          paths: php-extensions*
 
       - run:
           name: Prepare environment
@@ -191,7 +168,7 @@ jobs:
   tests-7.2:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: monicahq/circleci-docker-centralperk:latest
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -203,7 +180,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
       - *remove-xdebug
       - *prepare-db
       - *unit-tests
@@ -219,7 +195,7 @@ jobs:
   tests-browser-7.2:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: monicahq/circleci-docker-centralperk:latest
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -231,8 +207,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
-      - *update-chrome
       - *prepare-db
       - *selenium
       - *http-server
@@ -260,7 +234,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
       - restore_cache:
           keys:
             - *sonar_key
@@ -345,6 +318,9 @@ jobs:
             echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
             make docker_tag
             make docker_push
+            # notify microbadger to update
+            # https://microbadger.com/images/monicahq/monicahq
+            curl -X POST $MICROBADGER_WEBHOOK
 
 workflows:
   version: 2

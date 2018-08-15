@@ -330,7 +330,7 @@ class User extends Authenticatable
         }
 
         $this->terms()->syncWithoutDetaching([$latestTerm->id => [
-            'account_id' => $this->account->id,
+            'account_id' => $this->account_id,
             'ip_address' => $ipAddress,
         ]]);
 
