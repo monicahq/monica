@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_list_number_kids' => '1 çocuk|: count çocuklar',
+    'people_list_number_kids' => '1 çocuk|:count çocuklar',
     'people_list_last_updated' => 'Son görüşme:',
     'people_list_number_reminders' => '1 hatırlatıcı|:count hatırlatıcı',
     'people_list_blank_title' => 'Hesabınızda kayıtlı kişi yok',
@@ -36,7 +36,7 @@ return [
     'people_add_nickname' => 'Rumuz (isteğe bağlı)',
     'people_add_cta' => 'Ekle',
     'people_save_and_add_another_cta' => 'Kaydet ve başka birini ekle',
-    'people_add_success' => ': name başarıyla kayıt edildi',
+    'people_add_success' => ':name başarıyla kayıt edildi',
     'people_add_gender' => 'Cinsiyet',
     'people_delete_success' => 'Bağlantı silindi',
     'people_delete_message' => 'Bu kişiyi silmeniz gerekirse',
