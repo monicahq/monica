@@ -231,7 +231,7 @@ return [
     'activities_profile_subtitle' => 'Vous avez enregistré :total_activities activité avec :name au total et :activities_last_twelve_months au cours des 12 derniers mois.|Vous avez enregistré :total_activities activités avec :name au total et :activities_last_twelve_months au cours des 12 derniers mois.',
     'activities_profile_year_summary_activity_types' => 'Voici une ventilation du type d’activités que vous avez faites ensemble en :year',
     'activities_profile_year_summary' => 'Voici ce que vous avez fait ensemble en :year',
-    'activities_profile_number_occurences' => ':value activity|:value activities',
+    'activities_profile_number_occurences' => ':value activité|:value activités',
 
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès',
