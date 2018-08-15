@@ -994,7 +994,7 @@ class Contact extends Model
                 $query->where('type', '=', 'email');
             })
             ->get();
-        
+
         foreach ($emails as $email) {
             if (is_null($email) || empty($email->data)) {
                 continue;
