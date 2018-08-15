@@ -47,8 +47,11 @@ aliases:
       command: |
         dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
         mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        php artisan migrate --env=testing --no-interaction -vvv
-        php artisan db:seed --env=testing --no-interaction -vvv
+        php artisan migrate --no-interaction -vvv
+  - &seed-test-db
+    run:
+      name: Seed database
+      command: php artisan db:seed --no-interaction -vvv
   - &http-server
     run:
       name: Run http server
@@ -194,6 +197,7 @@ jobs:
       - *prepare-environment
       - *remove-xdebug
       - *prepare-db
+      - *seed-test-db
       - *unit-tests
       - *psalm
       - store_test_results:
@@ -220,6 +224,7 @@ jobs:
           at: *root
       - *prepare-environment
       - *prepare-db
+      - *seed-test-db
       - *selenium
       - *http-server
       - *wait-for-server
