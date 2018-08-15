@@ -982,31 +982,40 @@ class Contact extends Model
     }
 
     /**
-     * Get the gravatar, if it exits.
+     * Get the first gravatar of all emails, if found.
      *
      * @param  int $size
      * @return string|bool
      */
     public function getGravatar($size)
     {
-        $email = $this->getFirstEmail();
-
-        if (is_null($email) || empty($email)) {
-            return false;
-        }
-
-        try {
-            if (! app('gravatar')->exists($email)) {
-                return false;
+        $emails = $this->contactFields()
+            ->whereHas('contactFieldType', function ($query) {
+                $query->where('type', '=', 'email');
+            })
+            ->get();
+        
+        foreach ($emails as $email) {
+            if (is_null($email) || empty($email->data)) {
+                continue;
             }
-        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
-            return false;
+
+            try {
+                if (! app('gravatar')->exists($email->data)) {
+                    continue;
+                }
+            } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
+                // catch invalid email
+                continue;
+            }
+
+            return app('gravatar')->get($email->data, [
+                'size' => $size,
+                'secure' => config('app.env') === 'production',
+            ]);
         }
 
-        return app('gravatar')->get($email, [
-            'size' => $size,
-            'secure' => config('app.env') === 'production',
-        ]);
+        return false;
     }
 
     public function getFirstEmail()
