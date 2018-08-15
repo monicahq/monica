@@ -12,15 +12,15 @@ select:focus {
 
 <template>
   <div>
-    <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
+    <label :for="id" class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</label>
     <select
-        v-model="selectedOption"
-        @input="event => { $emit('input', event.target.value) }"
+        :value="selectedOption"
+        v-on:input="$emit('input', $event)"
         :id="id"
         :name="id"
         required
-        class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
-        <option v-for="option in options" :value="option.id" v-if="option.id != excludedId">{{ option.name }}</option>
+        :class="formClass != null ? formClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
+        <option v-for="option in options" :key="option.id" :value="option.id" v-if="option.id != excludedId">{{ option.name }}</option>
     </select>
   </div>
 </template>
@@ -32,7 +32,7 @@ select:focus {
          */
         data() {
             return {
-                selectedOption: null
+                selectedOption: null,
             };
         },
 
@@ -59,6 +59,9 @@ select:focus {
             },
             required: {
               type: Boolean,
+            },
+            formClass: {
+                type: String,
             },
         },
 
