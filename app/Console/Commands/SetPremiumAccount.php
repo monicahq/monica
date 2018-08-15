@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class SetPremiumAccount extends Command
 {
