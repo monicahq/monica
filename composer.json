@@ -28,6 +28,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "mariuzzo/laravel-js-localization": "^1.4",
         "matriphe/iso-639": "^1.0",
+        "moneyphp/money": "^3.1",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.5.2",
         "pragmarx/google2fa": "^3.0",
