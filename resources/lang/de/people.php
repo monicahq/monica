@@ -7,7 +7,7 @@ return [
     'people_list_last_updated' => 'Zuletzt aufgerufen:',
     'people_list_number_reminders' => '1 Erinnerung|:count Erinnerungen',
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
-    'people_list_blank_cta' => 'Jemand hinzufügen',
+    'people_list_blank_cta' => 'Neuer Kontakt',
     'people_list_sort' => 'Sortieren',
     'people_list_stats' => '1 Kontakt|:count Kontakte',
     'people_list_firstnameAZ' => 'Nach Vorname sortieren A → Z',
