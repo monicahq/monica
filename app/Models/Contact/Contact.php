@@ -1018,21 +1018,6 @@ class Contact extends Model
         return false;
     }
 
-    public function getFirstEmail()
-    {
-        $contact_email = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->first();
-
-        if (is_null($contact_email)) {
-            return;
-        }
-
-        return $contact_email->data;
-    }
-
     /**
      * Check if the contact has debt (by the contact or the user for this contact).
      *
