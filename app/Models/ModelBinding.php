@@ -9,6 +9,7 @@ abstract class ModelBinding extends Model
     public function resolveRouteBinding($value)
     {
         return $this->where('account_id', auth()->user()->account_id)
-            ->findOrFail($value);
+            ->where($this->getRouteKeyName(), $value)
+            ->firstOrFail();
     }
 }

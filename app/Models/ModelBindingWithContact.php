@@ -13,6 +13,7 @@ abstract class ModelBindingWithContact extends Model
 
         return $this->where('account_id', auth()->user()->account_id)
             ->where('contact_id', $contact->id)
-            ->findOrFail($value);
+            ->where($this->getRouteKeyName(), $value)
+            ->firstOrFail();
     }
 }
