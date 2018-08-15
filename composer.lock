@@ -7940,7 +7940,7 @@
                 "zendframework/zend-validator": ">=2.3,<2.3.6",
                 "zendframework/zend-view": ">=2,<2.2.7|>=2.3,<2.3.1",
                 "zendframework/zend-xmlrpc": ">=2.1,<2.1.6|>=2.2,<2.2.6",
-                "zendframework/zendframework": ">=2,<2.4.11|>=2.5,<2.5.1",
+                "zendframework/zendframework": "<2.5.1",
                 "zendframework/zendframework1": "<1.12.20",
                 "zendframework/zendopenid": ">=2,<2.0.2",
                 "zendframework/zendxml": ">=1,<1.0.1",
@@ -7962,7 +7962,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-08-10T10:05:21+00:00"
+            "time": "2018-08-14T15:39:17+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -8705,16 +8705,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797"
+                "reference": "366f625c83000a701ce0a69b8a05b387c7bf4bce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d3fc9a51e0519379a27c05318e5f6fd41d46f797",
-                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/366f625c83000a701ce0a69b8a05b387c7bf4bce",
+                "reference": "366f625c83000a701ce0a69b8a05b387c7bf4bce",
                 "shasum": ""
             },
             "require": {
@@ -8768,7 +8768,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-07-22T23:15:40+00:00"
+            "time": "2018-08-14T15:51:17+00:00"
         },
         {
             "name": "webmozart/assert",
