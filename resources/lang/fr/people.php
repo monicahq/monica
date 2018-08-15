@@ -228,10 +228,10 @@ return [
     'activities_activity' => 'Catégorie d’activité',
     'activities_view_activities_report' => 'Afficher les rapports d’activités',
     'activities_profile_title' => 'Rapports d’activités entre :name et vous',
-    'activities_profile_subtitle' => 'You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
-    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
-    'activities_profile_year_summary' => 'Here is what you two have done in :year',
-    'activities_profile_number_occurences' => '{0,1}:value activity|{2,*}:value activities',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Voici une ventilation du type d’activités que vous avez faites ensemble en :year',
+    'activities_profile_year_summary' => 'Voici ce que vous avez fait ensemble en :year',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
 
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès',
