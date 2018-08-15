@@ -250,6 +250,7 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
+      - *restore_node
       - *prepare-db
       - *http-server
       - *wait-for-server
