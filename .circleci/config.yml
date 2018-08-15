@@ -41,16 +41,11 @@ aliases:
     run:
       name: yarn install
       command: yarn install --frozen-lockfile
-  - &update-chrome
-    run:
-      name: Install chrome
-      command: scripts/tests/install-chrome.sh
   - &prepare-db
     run:
       name: Prepare database
       command: |
         dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
-        mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         php artisan migrate --env=testing --no-interaction -vvv
         php artisan db:seed --env=testing --no-interaction -vvv
   - &http-server
@@ -242,7 +237,7 @@ jobs:
   tests-e2e:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: monicahq/circleci-docker-centralperk:latest
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
