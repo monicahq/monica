@@ -228,10 +228,10 @@ return [
     'activities_activity' => 'קטגוריית הפעילות',
     'activities_view_activities_report' => 'הצגת דוח פעילות',
     'activities_profile_title' => 'דוח פעילות עבורך ועבור :name',
-    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_subtitle' => 'תיעדת פעילות אחת עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.|תיעדת :total_activities עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.',
     'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
     'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
-    'activities_profile_number_occurences' => ':value activity|:value activities',
+    'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
 
     // notes
     'notes_create_success' => 'ההערה נוצרה בהצלחה',
