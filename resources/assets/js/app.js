@@ -94,6 +94,11 @@ Vue.component(
 
 // Contacts
 Vue.component(
+    'contact-favorite',
+    require('./components/people/SetFavorite.vue')
+);
+
+Vue.component(
     'contact-address',
     require('./components/people/Addresses.vue')
 );

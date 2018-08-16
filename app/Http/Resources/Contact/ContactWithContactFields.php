@@ -24,6 +24,7 @@ class ContactWithContactFields extends Resource
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
             'gender' => $this->gender->name,
+            'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),

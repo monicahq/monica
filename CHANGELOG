@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add ability to set a contact as favorite
+* Add ability to search for a contact in the dropdown when creating a relationship
 * Add activity reports page, which shows useful statistics about activities with a specific contact
 * Fix reminders not being sent for single-digit hours
 * Fix accounts with an empty reminder time
@@ -8,7 +10,7 @@ UNRELEASED CHANGES:
 * Add end-2-end testing with Cypress
 * Render timezone listbox dynamically
 * Use a new formatter to display money (debts), with right locale handle
-* Get first existing gravatar of all emails of the contact
+* Get first existing gravatar if contact has multiple emails
 
 RELEASED VERSIONS:
 
