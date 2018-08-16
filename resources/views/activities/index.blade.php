@@ -4,14 +4,14 @@
     {{ trans('people.section_personal_activities') }}
 
     <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
-      <a href="{{ route('activities.add', $contact) }}" class="btn">{{ trans('people.activities_add_activity') }}</a>
+      <a href="{{ route('activities.add', $contact) }}" cy-name="add-activity-button" class="btn">{{ trans('people.activities_add_activity') }}</a>
     </span>
   </h3>
 </div>
 
 @if ($contact->activities->count() == 0)
 
-  <div class="col-xs-12">
+  <div class="col-xs-12" cy-name="activities-blank-state">
     <div class="section-blank">
       <h3>{{ trans('people.activities_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="{{ route('activities.add', $contact) }}">{{ trans('people.activities_blank_add_activity') }}</a>
@@ -24,7 +24,7 @@
 
     <ul class="table">
       @foreach($contact->activities as $activity)
-      <li class="table-row">
+      <li class="table-row" cy-name="activity-body-{{ $activity->id }}">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}
         </div>
@@ -32,13 +32,13 @@
           {{ $activity->getSummary() }}
         </div>
         <div class="table-cell list-actions">
-            <a href="#activity{{$activity->id}}Modal" data-toggle="modal">
+            <a href="#activity{{$activity->id}}Modal" cy-name="view-activity-button-{{ $activity->id }}" data-toggle="modal">
               <i class="fa fa-eye" aria-hidden="true"></i>
             </a>
-          <a href="{{ route('activities.edit', [$activity, $contact]) }}" class="edit">
+          <a href="{{ route('activities.edit', [$activity, $contact]) }}" cy-name="edit-activity-button-{{ $activity->id }}" class="edit">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </a>
-          <a href="{{ route('people.show', $contact) }}" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
+          <a href="{{ route('people.show', $contact) }}" cy-name="delete-activity-button-{{ $activity->id }}" onclick="if (confirm('{{ trans('people.activities_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>

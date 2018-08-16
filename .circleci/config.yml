@@ -47,8 +47,11 @@ aliases:
       command: |
         dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
         mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        php artisan migrate --env=testing --no-interaction -vvv
-        php artisan db:seed --env=testing --no-interaction -vvv
+        php artisan migrate --no-interaction -vvv
+  - &seed-test-db
+    run:
+      name: Seed database
+      command: php artisan db:seed --no-interaction -vvv
   - &http-server
     run:
       name: Run http server
@@ -70,11 +73,23 @@ aliases:
     run:
       name: Run browser tests
       command: php artisan dusk --log-junit results/junit/dusk/results.xml
+  - &browser-cypress
+    run:
+      name: Run browser tests (cypress)
+      command: |
+        mysqldump -u root -h 127.0.0.1 -P 3306 monica > monicadump.sql
+        $(yarn bin)/cypress run --config "baseUrl=http://localhost:8000" --record --reporter mocha-multi-reporters --reporter-options configFile=.circleci/cypressmocha.json
   - &fix-coverage
     run:
       name: Fix coverage
       command: |
         vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        rm -rf results/coverage
+  - &fix-coverage2
+    run:
+      name: Fix coverage
+      command: |
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
@@ -182,6 +197,7 @@ jobs:
       - *prepare-environment
       - *remove-xdebug
       - *prepare-db
+      - *seed-test-db
       - *unit-tests
       - *psalm
       - store_test_results:
@@ -208,6 +224,7 @@ jobs:
           at: *root
       - *prepare-environment
       - *prepare-db
+      - *seed-test-db
       - *selenium
       - *http-server
       - *wait-for-server
@@ -219,6 +236,38 @@ jobs:
           path: results/junit
       - store_artifacts:
           path: tests/Browser/screenshots
+      - persist_to_workspace:
+          root: *root
+          paths: results
+
+  tests-e2e:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *restore_node
+      - *yarn-install
+      - *prepare-db
+      - *http-server
+      - *wait-for-server
+      - *browser-cypress
+      - *fix-coverage2
+      - store_test_results:
+          path: results/junit
+      - store_artifacts:
+          path: results/junit
+      - store_artifacts:
+          path: tests/cypress/screenshots
       - persist_to_workspace:
           root: *root
           paths: results
@@ -248,7 +297,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml
+            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
             scripts/tests/runsonar.sh
 
       - save_cache:
