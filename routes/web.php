@@ -171,6 +171,11 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::delete('/people/{contact}/call/{call}', 'Contacts\\CallsController@destroy')->name('delete');
         });
 
+        // Conversations
+        Route::name('conversation.')->group(function () {
+            Route::get('/people/{contact}/conversation/new', 'Contacts\\ConversationsController@new')->name('new');
+        });
+
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');
 

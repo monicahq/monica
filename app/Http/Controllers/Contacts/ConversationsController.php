@@ -2,10 +2,24 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 
 class ConversationsController extends Controller
 {
+    /**
+     * Display the Create conversation page.
+     *
+     * @param  Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function new(Request $request, Contact $contact)
+    {
+        return view('people.conversation.new')
+            ->withContact($contact);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
