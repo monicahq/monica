@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => '编辑联系人信息',
     'call_button' => '记录通话',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => '常联系*',
