@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Upravit informace kontaktu',
     'call_button' => 'Zaznamenat telefonát',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
