@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendStayInTouch',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\SetupTest',
+        'App\Console\Commands\SetupFrontEndTest',
+        'App\Console\Commands\SetPremiumAccount',
         'App\Console\Commands\Update',
         'App\Console\Commands\MigrateDatabaseCollation',
         'App\Console\Commands\Reminder\ProcessOldReminders',

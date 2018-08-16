@@ -6,6 +6,7 @@
 Homestead.yaml
 Homestead.json
 .env
+cypress.env.json
 /storage/oauth-private.key
 /storage/oauth-public.key
 .DS_Store
@@ -13,4 +14,7 @@ npm-debug.log*
 /results
 .deploy.json
 yarn-error.log
+/tests/Cypress/screenshots
+/tests/Cypress/videos
 php-extensions-*.tar.bz2
+monicadump.sql

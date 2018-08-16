@@ -23,7 +23,7 @@ class ScheduleStayInTouchTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
         $contact = factory(Contact::class)->create([
@@ -57,7 +57,7 @@ class ScheduleStayInTouchTest extends TestCase
         config(['monica.requires_subscription' => true]);
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 0,
         ]);
         $contact = factory(Contact::class)->create([

@@ -308,4 +308,23 @@ return [
     'personalisation_paid_upgrade' => 'Il s’agit d’une fonctionnalité premium qui nécessite un abonnement payant pour être activée. Mettez à niveau votre compte en visitant Paramètres > Abonnement.',
 
     'reminder_time_to_send' => 'Heure du jour à laquelle les rappels doivent être envoyés',
+
+    'personalization_activity_type_category_title' => 'Catégories de types d’activité',
+    'personalization_activity_type_category_add' => 'Ajouter une nouvelle catégorie de type d’activité',
+    'personalization_activity_type_category_table_name' => 'Nom',
+    'personalization_activity_type_category_description' => 'Une activité effectuée avec l’un de vos contacts peut avoir un type et un type de catégorie. Votre compte est configuré par défaut avec un ensemble de types de catégories prédéfinies, mais vous pouvez tout personnaliser ici.',
+    'personalization_activity_type_category_table_actions' => 'Actions',
+    'personalization_activity_type_category_modal_add' => 'Ajouter une nouvelle catégorie de type d’activité',
+    'personalization_activity_type_category_modal_edit' => 'Modifier une catégorie de type d’activité',
+    'personalization_activity_type_category_modal_question' => 'Comment nommer cette nouvelle catégorie ?',
+    'personalization_activity_type_add_button' => 'Ajouter un nouveau type d’activité',
+    'personalization_activity_type_modal_add' => 'Ajouter un nouveau type d’activité',
+    'personalization_activity_type_modal_question' => 'Comment nommer ce nouveau type d’activité ?',
+    'personalization_activity_type_modal_edit' => 'Modifier un type d’activité',
+    'personalization_activity_type_category_modal_delete' => 'Supprimer une catégorie de type d’activité',
+    'personalization_activity_type_category_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer cette catégorie ? La suppression entraînera la suppression de tous les types d’activités associées. Toutefois, les activités qui appartiennent à cette catégorie ne seront pas affectées par cette suppression.',
+    'personalization_activity_type_modal_delete' => 'Supprimer un type d’activité',
+    'personalization_activity_type_modal_delete_desc' => 'Êtes-vous sûr de vouloir supprimer ce type d’activité ? Les activités qui appartiennent à cette catégorie ne seront pas affectées par cette suppression.',
+    'personalization_activity_type_modal_delete_error' => 'Impossible de trouver ce type d’activité.',
+    'personalization_activity_type_category_modal_delete_error' => 'Impossible de trouver cette catégorie de type d’activité.',
 ];

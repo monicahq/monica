@@ -35,7 +35,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-        <button type="button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
+        <button type="button" cy-name="save-call-button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
       </div>
     </div>
   </div>
