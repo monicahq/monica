@@ -22,16 +22,6 @@ class SetPremiumAccount extends Command
     protected $description = 'Give a premium access to an account.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
