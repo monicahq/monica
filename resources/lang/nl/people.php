@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
     'call_button' => 'Registreer een belgesprek',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
