@@ -62,8 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Edit contact information',
     'call_button' => 'Log a call',
-    'set_favorite' => 'Set as favorite',
-    'unset_favorite' => 'Remove favorite',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
@@ -230,10 +229,10 @@ return [
     'activities_activity' => 'Activity Category',
     'activities_view_activities_report' => 'View activities report',
     'activities_profile_title' => 'Activities report between :name and you',
-    'activities_profile_subtitle' => 'You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Here is what you two have done in :year',
-    'activities_profile_number_occurences' => '{0,1}:value activity|{2,*}:value activities',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
 
     // notes
     'notes_create_success' => 'The note has been created successfully',

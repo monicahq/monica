@@ -9,6 +9,7 @@ use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Jobs\SendNewUserAlert;
+use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
@@ -81,7 +82,9 @@ class SettingsController extends Controller
         return view('settings.index')
                 ->withNamesOrder($namesOrder)
                 ->withLocales(LocaleHelper::getLocaleList())
-                ->withHours(DateHelper::getListOfHours());
+                ->withHours(DateHelper::getListOfHours())
+                ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
+                ->withTimezones(TimezoneHelper::getListOfTimezones());
     }
 
     /**

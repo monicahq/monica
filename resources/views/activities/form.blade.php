@@ -4,7 +4,6 @@
 
     <h2>{{ trans('people.activities_add_title', ['name' => $contact->first_name]) }}</h2>
 
-
     <div class="form-group user-input">
         <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
         <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control user-input-search-input">
@@ -95,7 +94,7 @@
     </div>
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.activities_add_cta') }}</button>
+        <button type="submit" cy-name="save-activity-button" class="btn btn-primary">{{ trans('people.activities_add_cta') }}</button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>
