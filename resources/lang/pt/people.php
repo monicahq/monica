@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Editar informação do contato',
     'call_button' => 'Registar uma chamada',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
