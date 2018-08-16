@@ -88,7 +88,7 @@
 
           <ul class="horizontal quick-actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li>
-              <a href="{{ route('people.edit', $contact) }}" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+              <a href="{{ route('people.edit', $contact) }}" class="btn edit-information" id="button-edit-contact">{{ trans('people.edit_contact_information') }}</a>
             </li>
           </ul>
         </div>

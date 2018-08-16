@@ -51,7 +51,7 @@
 
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
-                  <a href="{{ route('people.create') }}" class="btn btn-primary">{{ trans('people.people_list_blank_cta') }}</a>
+                  <a href="{{ route('people.create') }}" class="btn btn-primary" id="button-add-contact">{{ trans('people.people_list_blank_cta') }}</a>
                 </div>
                 <div class="illustration-blank">
                   <img src="/img/people/blank.svg">

@@ -10,7 +10,7 @@
       <img src="/img/people/gifts.svg" class="icon-section icon-tasks">
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/add'" class="btn f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + hash + '/gifts/add'" cy-name="add-gift-button" class="btn f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -29,7 +29,7 @@
         </ul>
 
         <div v-if="activeTab == 'ideas'">
-            <div v-for="gift in ideas" class="ba b--gray-monica mb3 br2" :key="gift.id">
+            <div v-for="gift in ideas" class="ba b--gray-monica mb3 br2" :key="gift.id" :cy-name="'gift-idea-item-' + gift.id">
                 <p class="mb1 bb b--gray-monica pa2">
                     <strong>{{ gift.name }}</strong>
 
@@ -50,8 +50,8 @@
                     </span>
                     <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
                     <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_mark_offered') }}</a>
-                    <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
-                    <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
+                    <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">{{ $t('app.edit') }}</a>
+                    <a @click="showDeleteModal(gift)" class="mr1 pointer"  :cy-name="'delete-gift-button-' + gift.id">{{ $t('app.delete') }}</a>
                     <div v-if="gift.show_comment" class="mb1 mt1">
                         {{ gift.comment }}
                     </div>
@@ -81,8 +81,8 @@
                 </span>
                 <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
                 <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_offered_as_an_idea') }}</a>
-                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
-                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
+                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">{{ $t('app.edit') }}</a>
+                <a @click="showDeleteModal(gift)" class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id">{{ $t('app.delete') }}</a>
                 <div v-if="gift.show_comment" class="mb1 mt1">
                     {{ gift.comment }}
                 </div>
@@ -127,7 +127,7 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="trash(giftToTrash)" class="btn">{{ $t('app.delete') }}</a>
+            <a @click="trash(giftToTrash)" class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id">{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>
