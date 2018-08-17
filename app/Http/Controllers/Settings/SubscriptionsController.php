@@ -138,12 +138,18 @@ class SubscriptionsController extends Controller
 
         $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
 
-        auth()->user()->account->newSubscription($plan['name'], $plan['id'])
-                    ->create($stripeToken, [
-                        'email' => auth()->user()->email,
-                    ]);
+        try {
+            auth()->user()->account->newSubscription($plan['name'], $plan['id'])
+                        ->create($stripeToken, [
+                            'email' => auth()->user()->email,
+                        ]);
 
-        return redirect()->route('settings.subscriptions.upgrade.success');
+            return redirect()->route('settings.subscriptions.upgrade.success');
+        } catch(\Stripe\Error\Base $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
     }
 
     /**
