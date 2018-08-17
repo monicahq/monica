@@ -33,10 +33,10 @@ return [
     'header_logout_link' => '注销',
     'header_changelog_link' => '更新日志',
 
-    'main_nav_cta' => '添加人员',
+    'main_nav_cta' => '联系人',
     'main_nav_dashboard' => '仪表盘',
     'main_nav_family' => '联系人',
-    'main_nav_journal' => '记录',
+    'main_nav_journal' => '日记',
     'main_nav_activities' => '活动',
     'main_nav_tasks' => '任务',
 
@@ -72,7 +72,7 @@ return [
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
-    'breadcrumb_settings_security_2fa' => '双重验证',
+    'breadcrumb_settings_security_2fa' => '二次验证',
     'breadcrumb_profile' => ':name的资料',
 
     'gender_male' => '男',
