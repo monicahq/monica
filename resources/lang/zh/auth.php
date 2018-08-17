@@ -20,10 +20,10 @@ return [
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
     'mfa_auth_u2f' => '使用U2F设备进行认证',
-    '2fa_title' => '双重验证',
-    '2fa_wrong_validation' => '双重验证失败。',
+    '2fa_title' => '二次验证',
+    '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',
-    '2fa_recuperation_code' => '输入双重验证恢复码',
+    '2fa_recuperation_code' => '输入二次验证恢复码',
     '2fa_otp_help' => '打开您的二次验证APP并复制验证码',
     'u2f_otp_extension' => 'U2F验证已受Chrome、<a href="{urlquantum}" lang="en">FireFox</a>、Opera支持。如果您用的是旧版FireFox，请您安装<a href="{urlext}">U2F支持</a>插件。',
 
