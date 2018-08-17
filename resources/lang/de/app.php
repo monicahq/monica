@@ -26,7 +26,7 @@ return [
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
-    'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
+    'markdown_description' => 'Du möchtest deinen Text schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
