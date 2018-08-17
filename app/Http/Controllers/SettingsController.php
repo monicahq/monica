@@ -84,7 +84,9 @@ class SettingsController extends Controller
                 ->withLocales(LocaleHelper::getLocaleList())
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
-                ->withTimezones(TimezoneHelper::getListOfTimezones());
+                ->withTimezones(collect(TimezoneHelper::getListOfTimezones())->map(function ($timezone) {
+                    return ['id' => $timezone['timezone'], 'name'=>$timezone['name']];
+                }));
     }
 
     /**

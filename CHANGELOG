@@ -11,6 +11,7 @@ UNRELEASED CHANGES:
 * Render timezone listbox dynamically
 * Use a new formatter to display money (debts), with right locale handle
 * Get first existing gravatar if contact has multiple emails
+* Display the date and time of the next reminder sent in settings page
 
 RELEASED VERSIONS:
 

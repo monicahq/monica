@@ -173,6 +173,10 @@ Vue.component(
     require('./components/settings/ReminderRules.vue')
 );
 Vue.component(
+    'reminder-time',
+    require('./components/settings/ReminderTime.vue')
+);
+Vue.component(
     'mfa-activate',
     require('./components/settings/MfaActivate.vue')
 );
