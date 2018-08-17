@@ -309,6 +309,7 @@ return [
     'personalisation_paid_upgrade' => 'תכונה זו היא תכונת פרמיום שדורשת הפעלת מינוי בתשלום. ניתן לשדרג את החשבון שלך על ידי מעבר להגדרות > מינוי.',
 
     'reminder_time_to_send' => 'השעה ביום בה אמורות להישלח התזכורות',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on {dateTime}.',
 
     'personalization_activity_type_category_title' => 'קטגוריות סוגי פעילות',
     'personalization_activity_type_category_add' => 'הוספת קטגוריית סוג פעילות חדשה',
