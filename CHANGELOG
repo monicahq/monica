@@ -1,7 +1,17 @@
 UNRELEASED CHANGES:
 
+* Add ability to set a contact as favorite
+* Add ability to search for a contact in the dropdown when creating a relationship
+* Add activity reports page, which shows useful statistics about activities with a specific contact
 * Fix reminders not being sent for single-digit hours
 * Fix accounts with an empty reminder time
+* Fix account id get for acceptPolicy
+* Use our own docker image (central perk) to run tests
+* Add end-2-end testing with Cypress
+* Render timezone listbox dynamically
+* Use a new formatter to display money (debts), with right locale handle
+* Get first existing gravatar if contact has multiple emails
+* Display the date and time of the next reminder sent in settings page
 
 RELEASED VERSIONS:
 

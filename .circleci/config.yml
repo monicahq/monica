@@ -31,38 +31,27 @@ aliases:
   - &post_checkout
     post: git pull --ff-only origin "refs/pull/${CIRCLE_PULL_REQUEST//*pull\//}/merge"
 
-  - &install-extensions
-    run:
-      name: Install php extensions
-      command: |
-        sudo apt-get update
-        sudo apt-get install -y zlib1g-dev libicu-dev libpng-dev
-        sudo docker-php-ext-install -j$(nproc) zip intl json iconv bcmath gd pdo_mysql mysqli mbstring
-        tar cvjf php-extensions-${PHP_VERSION}.tar.bz2 --exclude opcache.a --exclude opcache.so --exclude sodium.a --exclude sodium.so --exclude xdebug.so $(php-config --extension-dir) /usr/local/etc/php/conf.d
   - &prepare-environment
     run:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
-        sudo apt-get update
-        sudo apt-get install -y mysql-client
   - &yarn-install
     run:
       name: yarn install
       command: yarn install --frozen-lockfile
-  - &update-chrome
-    run:
-      name: Install chrome
-      command: scripts/tests/install-chrome.sh
   - &prepare-db
     run:
       name: Prepare database
       command: |
         dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
         mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        php artisan migrate --env=testing --no-interaction -vvv
-        php artisan db:seed --env=testing --no-interaction -vvv
+        php artisan migrate --no-interaction -vvv
+  - &seed-test-db
+    run:
+      name: Seed database
+      command: php artisan db:seed --no-interaction -vvv
   - &http-server
     run:
       name: Run http server
@@ -84,11 +73,23 @@ aliases:
     run:
       name: Run browser tests
       command: php artisan dusk --log-junit results/junit/dusk/results.xml
+  - &browser-cypress
+    run:
+      name: Run browser tests (cypress)
+      command: |
+        mysqldump -u root -h 127.0.0.1 -P 3306 monica > monicadump.sql
+        $(yarn bin)/cypress run --config "baseUrl=http://localhost:8000" --record --reporter mocha-multi-reporters --reporter-options configFile=.circleci/cypressmocha.json
   - &fix-coverage
     run:
       name: Fix coverage
       command: |
         vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        rm -rf results/coverage
+  - &fix-coverage2
+    run:
+      name: Fix coverage
+      command: |
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
@@ -132,27 +133,18 @@ aliases:
       keys:
         - *node_key
         - *node_key_base
-  - &restore_phpextensions
-    run:
-      name: Extract php extensions
-      command: sudo tar xvjf php-extensions-${PHP_VERSION}.tar.bz2 --directory=/ --overwrite
 
 
 jobs:
   build:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node
+      - image: monicahq/circleci-docker-centralperk:latest
 
     steps:
       - checkout:
           <<: *post_checkout
       - *prepare-environment
-
-      - *install-extensions
-      - persist_to_workspace:
-          root: *root
-          paths: php-extensions*
 
       - run:
           name: Prepare environment
@@ -191,7 +183,7 @@ jobs:
   tests-7.2:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: monicahq/circleci-docker-centralperk:latest
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -203,9 +195,9 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
       - *remove-xdebug
       - *prepare-db
+      - *seed-test-db
       - *unit-tests
       - *psalm
       - store_test_results:
@@ -219,7 +211,7 @@ jobs:
   tests-browser-7.2:
     <<: *defaults
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: monicahq/circleci-docker-centralperk:latest
       - image: circleci/mysql:5.7-ram
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -231,9 +223,8 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
-      - *update-chrome
       - *prepare-db
+      - *seed-test-db
       - *selenium
       - *http-server
       - *wait-for-server
@@ -249,6 +240,38 @@ jobs:
           root: *root
           paths: results
 
+  tests-e2e:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+      - image: circleci/mysql:5.7-ram
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *restore_node
+      - *yarn-install
+      - *prepare-db
+      - *http-server
+      - *wait-for-server
+      - *browser-cypress
+      - *fix-coverage2
+      - store_test_results:
+          path: results/junit
+      - store_artifacts:
+          path: results/junit
+      - store_artifacts:
+          path: tests/cypress/screenshots
+      - persist_to_workspace:
+          root: *root
+          paths: results
+
   reporting:
     <<: *defaults
     docker:
@@ -260,7 +283,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *restore_phpextensions
       - restore_cache:
           keys:
             - *sonar_key
@@ -275,7 +297,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml
+            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
             scripts/tests/runsonar.sh
 
       - save_cache:
@@ -345,6 +367,9 @@ jobs:
             echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
             make docker_tag
             make docker_push
+            # notify microbadger to update
+            # https://microbadger.com/images/monicahq/monicahq
+            curl -X POST $MICROBADGER_WEBHOOK
 
 workflows:
   version: 2

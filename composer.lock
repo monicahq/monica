@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3fe78ed2b84d13a62da36eb4e497ccd4",
+    "content-hash": "67f55fc3ef1cdf3c29ec2edf060dfce6",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.55.4",
+            "version": "3.63.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "8c3093d7cbd30a94ab781777bd1f67c29b2bf7fc"
+                "reference": "255574137faa6cb4204b6c58df329dafd297df0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8c3093d7cbd30a94ab781777bd1f67c29b2bf7fc",
-                "reference": "8c3093d7cbd30a94ab781777bd1f67c29b2bf7fc",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/255574137faa6cb4204b6c58df329dafd297df0a",
+                "reference": "255574137faa6cb4204b6c58df329dafd297df0a",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-04-30T23:04:55+00:00"
+            "time": "2018-07-19T19:09:51+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1820,16 +1820,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.6.31",
+            "version": "v5.6.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b11fbad84cd90d109c6d817ff3c9af428746edfd"
+                "reference": "8a708b989adc320c451ee639d812af81f884666b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b11fbad84cd90d109c6d817ff3c9af428746edfd",
-                "reference": "b11fbad84cd90d109c6d817ff3c9af428746edfd",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/8a708b989adc320c451ee639d812af81f884666b",
+                "reference": "8a708b989adc320c451ee639d812af81f884666b",
                 "shasum": ""
             },
             "require": {
@@ -1955,20 +1955,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-08-08T20:56:17+00:00"
+            "time": "2018-08-09T20:36:39+00:00"
         },
         {
             "name": "laravel/passport",
-            "version": "v6.0.6",
+            "version": "v7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "83ac18d903c1446be7344464d37fa006fb6957c9"
+                "reference": "90124969cdd4ff39d4cd5a608c23bbe16e772f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/83ac18d903c1446be7344464d37fa006fb6957c9",
-                "reference": "83ac18d903c1446be7344464d37fa006fb6957c9",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/90124969cdd4ff39d4cd5a608c23bbe16e772f7e",
+                "reference": "90124969cdd4ff39d4cd5a608c23bbe16e772f7e",
                 "shasum": ""
             },
             "require": {
@@ -2024,20 +2024,20 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2018-07-17T13:00:32+00:00"
+            "time": "2018-08-13T14:45:04+00:00"
         },
         {
             "name": "laravel/socialite",
-            "version": "v3.0.12",
+            "version": "v3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "b5f465847b1d637efa86bbfe2fc1c9d2bd12f60f"
+                "reference": "65f771ff4f266ebae23de1a3f18efd80a1da2f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/b5f465847b1d637efa86bbfe2fc1c9d2bd12f60f",
-                "reference": "b5f465847b1d637efa86bbfe2fc1c9d2bd12f60f",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/65f771ff4f266ebae23de1a3f18efd80a1da2f8d",
+                "reference": "65f771ff4f266ebae23de1a3f18efd80a1da2f8d",
                 "shasum": ""
             },
             "require": {
@@ -2046,7 +2046,7 @@
                 "illuminate/http": "~5.4",
                 "illuminate/support": "~5.4",
                 "league/oauth1-client": "~1.0",
-                "php": ">=5.4.0"
+                "php": ">=5.6.4"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9",
@@ -2082,24 +2082,25 @@
                 }
             ],
             "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries.",
+            "homepage": "https://laravel.com",
             "keywords": [
                 "laravel",
                 "oauth"
             ],
-            "time": "2018-06-01T15:06:47+00:00"
+            "time": "2018-08-16T12:51:21+00:00"
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.2.3",
+            "version": "3.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "01da822b3c2982ca9f2a1234f802a3ec001527ec"
+                "reference": "c9704b751315d21735dc98d78d4f37bd73596da7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/01da822b3c2982ca9f2a1234f802a3ec001527ec",
-                "reference": "01da822b3c2982ca9f2a1234f802a3ec001527ec",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/c9704b751315d21735dc98d78d4f37bd73596da7",
+                "reference": "c9704b751315d21735dc98d78d4f37bd73596da7",
                 "shasum": ""
             },
             "require": {
@@ -2144,7 +2145,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2018-07-29T14:38:43+00:00"
+            "time": "2018-08-03T11:23:50+00:00"
         },
         {
             "name": "league/event",
@@ -2588,6 +2589,86 @@
             "time": "2017-07-19T15:11:19+00:00"
         },
         {
+            "name": "moneyphp/money",
+            "version": "v3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "5e6a3c98ba2cb190d48d35656967eacf30716034"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/5e6a3c98ba2cb190d48d35656967eacf30716034",
+                "reference": "5e6a3c98ba2cb190d48d35656967eacf30716034",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "cache/taggable-cache": "^0.4.0",
+                "doctrine/instantiator": "^1.0.5",
+                "ext-bcmath": "*",
+                "ext-gmp": "*",
+                "ext-intl": "*",
+                "florianv/swap": "^3.0",
+                "leanphp/phpspec-code-coverage": "^3.0 || ^4.0",
+                "moneyphp/iso-currencies": "^3.0",
+                "php-http/message": "^1.4",
+                "php-http/mock-client": "^0.3.3",
+                "phpspec/phpspec": "^3.0",
+                "phpunit/phpunit": "^5",
+                "psr/cache": "^1.0",
+                "sllh/php-cs-fixer-styleci-bridge": "^2.1",
+                "symfony/phpunit-bridge": "^4"
+            },
+            "suggest": {
+                "ext-bcmath": "Calculate without integer limits",
+                "ext-gmp": "Calculate without integer limits",
+                "ext-intl": "Format Money objects with intl",
+                "florianv/swap": "Exchange rates library for PHP",
+                "psr/cache-implementation": "Used for Currency caching"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Money\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net",
+                    "homepage": "http://verraes.net"
+                },
+                {
+                    "name": "Frederik Bosch",
+                    "email": "f.bosch@genkgo.nl"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagi-kazar@gmail.com"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+            "keywords": [
+                "Value Object",
+                "money",
+                "vo"
+            ],
+            "time": "2018-02-16T11:04:16+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.23.0",
             "source": {
@@ -2844,27 +2925,27 @@
         },
         {
             "name": "nette/finder",
-            "version": "v2.4.1",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/finder.git",
-                "reference": "4d43a66d072c57d585bf08a3ef68d3587f7e9547"
+                "reference": "ee951a656cb8ac622e5dd33474a01fd2470505a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/finder/zipball/4d43a66d072c57d585bf08a3ef68d3587f7e9547",
-                "reference": "4d43a66d072c57d585bf08a3ef68d3587f7e9547",
+                "url": "https://api.github.com/repos/nette/finder/zipball/ee951a656cb8ac622e5dd33474a01fd2470505a0",
+                "reference": "ee951a656cb8ac622e5dd33474a01fd2470505a0",
                 "shasum": ""
             },
             "require": {
-                "nette/utils": "^2.4 || ~3.0.0",
+                "nette/utils": "~2.4",
                 "php": ">=5.6.0"
             },
             "conflict": {
                 "nette/nette": "<2.2"
             },
             "require-dev": {
-                "nette/tester": "^2.0",
+                "nette/tester": "~2.0",
                 "tracy/tracy": "^2.3"
             },
             "type": "library",
@@ -2894,22 +2975,28 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "Nette Finder: Files Searching",
+            "description": "🔍 Nette Finder: find files and directories with an intuitive API.",
             "homepage": "https://nette.org",
-            "time": "2017-07-10T23:47:08+00:00"
+            "keywords": [
+                "filesystem",
+                "glob",
+                "iterator",
+                "nette"
+            ],
+            "time": "2018-06-28T11:49:23+00:00"
         },
         {
             "name": "nette/utils",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "8a85ce76298c8a8941f912b8fa3ee93ca17d2ebc"
+                "reference": "183069866dc477fcfbac393ed486aaa6d93d19a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/8a85ce76298c8a8941f912b8fa3ee93ca17d2ebc",
-                "reference": "8a85ce76298c8a8941f912b8fa3ee93ca17d2ebc",
+                "url": "https://api.github.com/repos/nette/utils/zipball/183069866dc477fcfbac393ed486aaa6d93d19a5",
+                "reference": "183069866dc477fcfbac393ed486aaa6d93d19a5",
                 "shasum": ""
             },
             "require": {
@@ -2978,7 +3065,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2018-02-19T14:42:42+00:00"
+            "time": "2018-05-02T17:16:08+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -4811,16 +4898,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v4.0.9",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "03f965583147957f1ecbad7ea1c9d6fd5e525ec2"
+                "reference": "03ac71606ecb0b0ce792faa17d74cc32c2949ef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/03f965583147957f1ecbad7ea1c9d6fd5e525ec2",
-                "reference": "03f965583147957f1ecbad7ea1c9d6fd5e525ec2",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/03ac71606ecb0b0ce792faa17d74cc32c2949ef4",
+                "reference": "03ac71606ecb0b0ce792faa17d74cc32c2949ef4",
                 "shasum": ""
             },
             "require": {
@@ -4829,7 +4916,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -4860,7 +4947,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-19T22:35:49+00:00"
+            "time": "2018-05-30T07:26:09+00:00"
         },
         {
             "name": "symfony/debug",
@@ -6088,16 +6175,16 @@
         },
         {
             "name": "zendframework/zend-diactoros",
-            "version": "1.8.4",
+            "version": "1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-diactoros.git",
-                "reference": "736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba"
+                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba",
-                "reference": "736ffa7c2bfa4a60e8a10acb316fa2ac456c5fba",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/3e4edb822c942f37ade0d09579cfbab11e2fee87",
+                "reference": "3e4edb822c942f37ade0d09579cfbab11e2fee87",
                 "shasum": ""
             },
             "require": {
@@ -6147,7 +6234,7 @@
                 "psr",
                 "psr-7"
             ],
-            "time": "2018-08-01T13:47:49+00:00"
+            "time": "2018-08-10T14:16:32+00:00"
         }
     ],
     "packages-dev": [
@@ -6319,16 +6406,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.40",
+            "version": "2.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "8cfd4c627f77615ae03882c7e6afa2fb97430224"
+                "reference": "f5ba7325e1952248c5b7db406fbab75f2289a740"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/8cfd4c627f77615ae03882c7e6afa2fb97430224",
-                "reference": "8cfd4c627f77615ae03882c7e6afa2fb97430224",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f5ba7325e1952248c5b7db406fbab75f2289a740",
+                "reference": "f5ba7325e1952248c5b7db406fbab75f2289a740",
                 "shasum": ""
             },
             "bin": [
@@ -6353,7 +6440,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-06-17T20:44:35+00:00"
+            "time": "2018-08-08T19:01:47+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -6626,16 +6713,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v3.0.10",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "8bfb9f01ae09d1d9ca3ce53e36b1f020c0f8dc8f"
+                "reference": "5facdb15f5952ed28c711e89b30adce74fa388c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/8bfb9f01ae09d1d9ca3ce53e36b1f020c0f8dc8f",
-                "reference": "8bfb9f01ae09d1d9ca3ce53e36b1f020c0f8dc8f",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/5facdb15f5952ed28c711e89b30adce74fa388c7",
+                "reference": "5facdb15f5952ed28c711e89b30adce74fa388c7",
                 "shasum": ""
             },
             "require": {
@@ -6683,7 +6770,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-08-06T20:22:46+00:00"
+            "time": "2018-08-12T01:53:48+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
@@ -7846,11 +7933,12 @@
                 "gregwar/rst": "<1.0.3",
                 "guzzlehttp/guzzle": ">=6,<6.2.1|>=4.0.0-rc2,<4.2.4|>=5,<5.3.1",
                 "illuminate/auth": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.10",
+                "illuminate/cookie": ">=4,<=4.0.11|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.42|>=5.6,<5.6.30",
                 "illuminate/database": ">=4,<4.0.99|>=4.1,<4.1.29",
                 "illuminate/encryption": ">=4,<=4.0.11|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.40|>=5.6,<5.6.15",
                 "joomla/session": "<1.3.1",
                 "kreait/firebase-php": ">=3.2,<3.8.1",
-                "laravel/framework": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.40|>=5.6,<5.6.15",
+                "laravel/framework": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.42|>=5.6,<5.6.30",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "magento/magento1ce": "<1.9.3.9",
                 "magento/magento1ee": ">=1.9,<1.14.3.2",
@@ -7907,7 +7995,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.30|>=8,<8.7.17|>=9,<9.3.2",
@@ -7939,7 +8027,7 @@
                 "zendframework/zend-validator": ">=2.3,<2.3.6",
                 "zendframework/zend-view": ">=2,<2.2.7|>=2.3,<2.3.1",
                 "zendframework/zend-xmlrpc": ">=2.1,<2.1.6|>=2.2,<2.2.6",
-                "zendframework/zendframework": ">=2,<2.4.11|>=2.5,<2.5.1",
+                "zendframework/zendframework": "<2.5.1",
                 "zendframework/zendframework1": "<1.12.20",
                 "zendframework/zendopenid": ">=2,<2.0.2",
                 "zendframework/zendxml": ">=1,<1.0.1",
@@ -7961,7 +8049,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-08-07T14:47:17+00:00"
+            "time": "2018-08-14T15:39:17+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -8704,16 +8792,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.9",
+            "version": "2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797"
+                "reference": "366f625c83000a701ce0a69b8a05b387c7bf4bce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d3fc9a51e0519379a27c05318e5f6fd41d46f797",
-                "reference": "d3fc9a51e0519379a27c05318e5f6fd41d46f797",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/366f625c83000a701ce0a69b8a05b387c7bf4bce",
+                "reference": "366f625c83000a701ce0a69b8a05b387c7bf4bce",
                 "shasum": ""
             },
             "require": {
@@ -8767,7 +8855,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-07-22T23:15:40+00:00"
+            "time": "2018-08-14T15:51:17+00:00"
         },
         {
             "name": "webmozart/assert",

@@ -121,7 +121,7 @@ class DateHelper
 
     /**
      * Return the month of the date according to the timezone of the user
-     * like "Oct", or "Dec.
+     * like "Oct", or "Dec".
      *
      * @param Carbon $date
      * @return string
@@ -135,8 +135,23 @@ class DateHelper
     }
 
     /**
+     * Return the month and year of the date according to the timezone of the user
+     * like "October 2010", or "March 2032".
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    public static function getFullMonthAndDate($date)
+    {
+        $date = new Date($date, static::getTimezone());
+        $format = trans('format.full_month_year', [], Date::getLocale());
+
+        return $date->format($format) ?: '';
+    }
+
+    /**
      * Return the day of the date according to the timezone of the user
-     * like "Mon", or "Wed.
+     * like "Mon", or "Wed".
      *
      * @param Carbon $date
      * @return string
