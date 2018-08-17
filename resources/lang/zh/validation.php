@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accepted'             => ':attribute 必须接受',
+    'accepted'             => '您必须同意 :attribute。',
     'active_url'           => ':attribute 不是一个有效的URL网址',
     'after'                => ':attribute 必须是一个在 :date 之后的日期。',
     'after_or_equal'       => ':attribute 必须是一个在 :date 或之后的日期。',
@@ -25,7 +25,7 @@ return [
     'before_or_equal'      => ':attribute 必须在 :date 或之前',
     'between'              => [
         'numeric' => ':attribute 必须在 :min 和 :max 之间。',
-        'file'    => ':attribute 必须在 :min kB到 :max kB之间。',
+        'file'    => ':attribute 必须在 :min 千字节到 :max 千字节之间。',
         'string'  => ':attribute 必须在 :min 到 :max 字符之间',
         'array'   => ':attribute 必须在 :min 到 :max 个数目之间',
     ],
@@ -60,7 +60,7 @@ return [
     'mimetypes'            => ':attribute 文件类型必须是 :values。',
     'min'                  => [
         'numeric' => ':attribute 最少是 :min',
-        'file'    => ':attribute 最小是 :min Kb',
+        'file'    => ':attribute 最小是 :min 千字节',
         'string'  => ':attribute 最少为 :min个字符',
         'array'   => ':attribute 至少为 :min 个',
     ],
