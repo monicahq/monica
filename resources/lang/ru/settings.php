@@ -309,6 +309,7 @@ return [
     'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on {dateTime}.',
 
     'personalization_activity_type_category_title' => 'Activity type categories',
     'personalization_activity_type_category_add' => 'Add a new activity type category',
