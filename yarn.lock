@@ -5095,9 +5095,9 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
+marked@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.5.0.tgz#9e590bad31584a48ff405b33ab1c0dd25172288e"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
