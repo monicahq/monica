@@ -175,8 +175,8 @@ jobs:
           name: Upload yarn lockfile
           command: |
             CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
-            cat gk-lockfile-git-push.err
-            rm -f gk-lockfile-git-push.err
+            cat gk-lockfile-git-push.err || true
+            rm -f gk-lockfile-git-push.err || true
 
       # Update js and css assets eventually
       - run:
