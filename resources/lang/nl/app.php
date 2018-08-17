@@ -73,6 +73,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisatie',
     'breadcrumb_settings_security' => 'Beveiliging',
     'breadcrumb_settings_security_2fa' => 'Tweestapsverificatie',
+    'breadcrumb_profile' => 'Profiel van :name',
 
     'gender_male' => 'Man',
     'gender_female' => 'Vrouw',
@@ -179,13 +180,13 @@ return [
 
     'relationship_type_godfather' => 'peetoom',
     'relationship_type_godfather_female' => 'peet moeder',
-    'relationship_type_godfather_with_name' => ':naam\'s peetvader',
-    'relationship_type_godfather_female_with_name' => ':naam\'s peetmoeder',
+    'relationship_type_godfather_with_name' => ':name\'s peetvader',
+    'relationship_type_godfather_female_with_name' => ':name\'s peetmoeder',
 
     'relationship_type_godson' => 'peetzoon',
     'relationship_type_godson_female' => 'peetdochter',
-    'relationship_type_godson_with_name' => ':naam\'s schoonzoon',
-    'relationship_type_godson_female_with_name' => ':naam\'s schoondochter',
+    'relationship_type_godson_with_name' => ':name\'s schoonzoon',
+    'relationship_type_godson_female_with_name' => ':name\'s schoondochter',
 
     'relationship_type_friend' => 'vriend',
     'relationship_type_friend_female' => 'vriend',

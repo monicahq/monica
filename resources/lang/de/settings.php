@@ -60,6 +60,7 @@ return [
     'locale_pt' => 'Portugiesisch',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Vereinfachtes Chinesisch',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'Sicherheit',
     'security_help' => 'Ändere die Sicherheitseinstellungen für dein Konto.',
@@ -265,7 +266,7 @@ return [
     'personalization_tab_title' => 'Personalisiere deine Konto',
 
     'personalization_title' => 'Hier findest du verschiedene Einstellungsoptionen für deinen Account. Diese Funktionen sind eher für erfahrene Nutzer gedacht, die maximale Kontrolle über Monica möchten.',
-    'personalization_contact_field_type_title' => 'Kontakt Felder',
+    'personalization_contact_field_type_title' => 'Kontaktfelder',
     'personalization_contact_field_type_add' => 'Neues Feld hinzufügen',
     'personalization_contact_field_type_description' => 'Hier kannst du Kontaktfelder verwalten, um z.b. verschiedene Soziale Netzwerke hinzuzufügen.',
     'personalization_contact_field_type_table_name' => 'Name',
@@ -285,19 +286,19 @@ return [
     'personalization_contact_field_type_edit_success' => 'Das Kontakfeld wurde erfolgreich editiert.',
 
     'personalization_genders_title' => 'Geschlechter Typen',
-    'personalization_genders_add' => 'Neuen Geschlechtstyp hinzufügen',
-    'personalization_genders_desc' => 'Du kannst so viele Geschlechtstypen anlegen wie du möchtest. Du brauchst mindestens ein Geschlechtstyp in deinem Account.',
-    'personalization_genders_modal_add' => 'Neuen Geschlechtstyp hinzufügen',
+    'personalization_genders_add' => 'Neue Geschlechtsidentität hinzufügen',
+    'personalization_genders_desc' => 'Du kannst so viele Geschlechtsidentitäten anlegen wie du möchtest. Du brauchst mindestens eine Geschlechtsidentität in deinem Account.',
+    'personalization_genders_modal_add' => 'Neue Geschlechtsidentität hinzufügen',
     'personalization_genders_modal_question' => 'Wie soll dieses neue Geschlecht werden genannt?',
-    'personalization_genders_modal_edit' => 'Geschlechtstyp aktualisieren',
+    'personalization_genders_modal_edit' => 'Geschlechtsidentität bearbeiten',
     'personalization_genders_modal_edit_question' => 'Wie soll dieses neue Geschlecht umbenannt werden?',
-    'personalization_genders_modal_delete' => 'Geschlechtstyp löschen',
+    'personalization_genders_modal_delete' => 'Geschlechtsidentität löschen',
     'personalization_genders_modal_delete_desc' => 'Möchten Sie {name} wirklich löschen?',
     'personalization_genders_modal_delete_question' => 'Du hast aktuell {count} Kontakt mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht soll der Kontakt dann haben?|Du hast aktuell {count} Kontakte mit diesem Geschlecht. Wenn du dieses Geschlecht löschst, welches Geschlecht sollen die Kontakte dann haben?',
     'personalization_genders_modal_error' => 'Bitte wähle ein gültiges Geschlecht aus der Liste.',
 
     'personalization_reminder_rule_save' => 'Die Änderung wurde gespeichert',
-    'personalization_reminder_rule_title' => 'Erinnerungs Regeln',
+    'personalization_reminder_rule_title' => 'Erinnerungen',
     'personalization_reminder_rule_line' => '{count} Tag zuvor|{count} Tage zuvor',
     'personalization_reminder_rule_desc' => 'Für jede Erinnerung die du setzt, können wir dir ein paar Tage befor das Ereignis stattfindet eine Email senden. Du kannst diese Benachrichtigungen hier umschaten. Bedenke dass diese Benachrichtigungen nur monatliche und jährliche Erinnerungen betreffen.',
 
@@ -308,6 +309,7 @@ return [
     'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'Activity type categories',
     'personalization_activity_type_category_add' => 'Add a new activity type category',

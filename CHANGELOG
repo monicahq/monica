@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.6.0 - 2018-08-17
+-------------------
+
 * Add ability to set a contact as favorite
 * Add ability to search for a contact in the dropdown when creating a relationship
 * Add activity reports page, which shows useful statistics about activities with a specific contact
@@ -12,8 +19,6 @@ UNRELEASED CHANGES:
 * Use a new formatter to display money (debts), with right locale handle
 * Get first existing gravatar if contact has multiple emails
 * Display the date and time of the next reminder sent in settings page
-
-RELEASED VERSIONS:
 
 v2.5.0 - 2018-08-08
 -------------------

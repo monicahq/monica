@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => '感谢您的注册！请检查您的邮箱来验证您的邮件。',
+    'success' => '您已成功验证邮件地址！现在您可以正常登录了。',
+    'again' => '您需要验证邮件地址才能访问此网站。
+                <br/>如果您没有收到电子邮件，您可以检查一下垃圾箱。
+                <br/>请 <a href=":url" class="alert-link">点击此处</a>来重新发送验证邮件',
+    'resend' => '验证邮件已发送，请检查您的收件箱。'
 ];
