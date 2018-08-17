@@ -62,7 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'call_button' => 'תיעוד שיחה',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
