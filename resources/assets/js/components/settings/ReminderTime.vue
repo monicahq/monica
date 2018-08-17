@@ -28,7 +28,7 @@
                 :formClass="'form-control'">
             </form-select>
             <small class="form-text text-muted">
-                {{ $t('settings.reminder_time_to_send_help', {dateTime:formatted, dateTimeUtc:formattedUtc}) }}
+                {{ $t('settings.reminder_time_to_send_help', {dateTime:formatted}) }}
             </small>
         </div>
     </div>
@@ -93,8 +93,7 @@
                   date = date.add(1, 'days');
                 }
 
-                this.formatted = date.format('LLL Z zz');
-                this.formattedUtc = date.utc().format('YYYY-MM-DD HH:mm z');
+                this.formatted = date.format('lll');
             },
 
             timezoneUpdate: function(event) {
