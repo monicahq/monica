@@ -309,7 +309,7 @@ return [
     'personalisation_paid_upgrade' => 'Dies ist eine Premium-Funktion, die nur im kostenpflichtigen Abo aktiv ist. Upgrade deinen Account unter Einstellungen > Abonnement.',
 
     'reminder_time_to_send' => 'Zeitpunkt für den Versand von Erinnerungen',
-    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on {dateTime}.',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'Activity type categories',
     'personalization_activity_type_category_add' => 'Add a new activity type category',
