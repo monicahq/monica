@@ -4,7 +4,7 @@ return [
 
     'subject_line' => '提醒:contact',
     'greetings' => '您好:username',
-    'want_reminded_of' => '您想被提醒',
+    'want_reminded_of' => '您的提醒事项：',
     'for' => '为:',
     'footer_contact_info' => '添加、查看、完成和更改有关此联系人的信息:',
 
