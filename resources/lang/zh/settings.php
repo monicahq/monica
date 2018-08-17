@@ -309,7 +309,7 @@ return [
     'personalisation_paid_upgrade' => '这是一个高级版的功能. 在设置-订阅内进行高级版订阅。',
 
     'reminder_time_to_send' => '应发送每日提醒的时间',
-    'reminder_time_to_send_help' => '基于您提供的信息, 您的下一次提醒将在 {dateTime} 送达。',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => '活动分类',
     'personalization_activity_type_category_add' => '增加一个活动分类',
