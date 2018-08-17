@@ -6,11 +6,11 @@ return [
     'dashboard_blank_cta' => '添加您的第一个联系人',
     'dashboard_blank_illustration' => '插画： <a href=":url">Freepik</a>',
 
-    'notes_title' => '你还没有任何便签。',
+    'notes_title' => '您还没有任何便签。',
 
     'tab_recent_calls' => '最近通话',
     'tab_favorite_notes' => '收藏便签',
-    'tab_calls_blank' => '你还没有电话拨打记录。',
+    'tab_calls_blank' => '您还没有电话拨打记录。',
     'tab_debts' => '债务',
     'tab_debts_blank' => '您还没有添加债务信息。',
 
