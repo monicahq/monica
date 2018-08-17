@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'call_button' => 'תיעוד שיחה',
+    'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
@@ -170,7 +171,8 @@ return [
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
-    'relationship_form_associate_dropdown' => 'נא לבחור איש קשר קיים מהרשימה הנגללת שלהלן',
+    'relationship_form_associate_dropdown' => 'ניתן לחפש ולבחור איש קשר קיים מהרשימה הנגללת שלהלן',
+    'relationship_form_associate_dropdown_placeholder' => 'חיפוש ובחירה באיש קשר קיים',
     'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
     'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
     'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
@@ -225,6 +227,13 @@ return [
     'activities_delete_success' => 'הפעילות נמחקה בהצלחה',
     'activities_who_was_involved' => 'מי היה מעורב?',
     'activities_activity' => 'קטגוריית הפעילות',
+    'activities_view_activities_report' => 'הצגת דוח פעילות',
+    'activities_profile_title' => 'דוח פעילות עבורך ועבור :name',
+    'activities_profile_subtitle' => 'תיעדת פעילות אחת עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.|תיעדת :total_activities עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.',
+    'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
+    'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
+    'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
+
     // notes
     'notes_create_success' => 'ההערה נוצרה בהצלחה',
     'notes_update_success' => 'ההערה נשמרה בהצלחה',

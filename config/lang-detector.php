@@ -37,6 +37,7 @@ return [
             'nl',
             'pt',
             'ru',
+            'tr',
             'zh',
         ])
     ),
