@@ -145,7 +145,7 @@ class SubscriptionsController extends Controller
                         ]);
 
             return redirect()->route('settings.subscriptions.upgrade.success');
-        } catch(\Stripe\Error\Base $e) {
+        } catch (\Stripe\Error\Base $e) {
             return back()
                 ->withInput()
                 ->withErrors($e->getMessage());
