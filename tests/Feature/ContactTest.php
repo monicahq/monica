@@ -241,6 +241,7 @@ class ContactTest extends FeatureTestCase
         ]);
 
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        config(['monica.requires_subscription' => true]);
 
         $response = $this->get('/people/add');
 
