@@ -99,7 +99,7 @@ class ContactsController extends Controller
     {
         if (auth()->user()->account->hasReachedContactLimit()
         && auth()->user()->account->hasLimitations()
-        && auth()->user()->account->legacy_free_plan_unlimited_contacts == false) {
+        && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
