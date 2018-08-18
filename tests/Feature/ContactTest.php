@@ -232,6 +232,38 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
+    public function test_user_cant_add_new_contacts_if_limit_reached()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $contacts = factory(Contact::class, 3)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        config(['monica.requires_subscription' => true]);
+
+        $response = $this->get('/people/add');
+
+        $response->assertRedirect('/settings/subscriptions');
+    }
+
+    public function test_user_can_add_new_contacts_when_instance_requires_no_subscription()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $contacts = factory(Contact::class, 3)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        config(['monica.requires_subscription' => false]);
+
+        $response = $this->get('/people/add');
+
+        $response->assertStatus(200);
+    }
+
     private function changeArrayKey($from, $to, &$array = [])
     {
         $array[$to] = $array[$from];

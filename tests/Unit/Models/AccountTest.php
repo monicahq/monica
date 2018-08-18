@@ -118,8 +118,9 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->activityTypeCategories()->exists());
     }
 
-    public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations()
+    public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
     {
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
         $contact = factory(Contact::class)->create();
         $account = $contact->account;
 
@@ -162,6 +163,20 @@ class AccountTest extends FeatureTestCase
 
         $this->assertEquals(
             false,
+            $account->canDowngrade()
+        );
+    }
+
+    public function test_user_cant_downgrade_with_too_many_contacts()
+    {
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        $account = factory(Account::class)->create();
+
+        $contact = factory(Contact::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertFalse(
             $account->canDowngrade()
         );
     }
@@ -696,5 +711,25 @@ class AccountTest extends FeatureTestCase
             'changelog_id' => $changelog->id,
             'read' => 0,
         ]);
+    }
+
+    public function test_account_has_reached_contact_limit_on_free_plan()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class, 11)->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 10]);
+
+        $this->assertTrue(
+            $account->hasReachedContactLimit()
+        );
+
+        config(['monica.number_of_allowed_contacts_free_account' => 100]);
+
+        $this->assertFalse(
+            $account->hasReachedContactLimit()
+        );
     }
 }
