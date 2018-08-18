@@ -145,36 +145,28 @@ class SubscriptionsController extends Controller
                         ]);
 
             return redirect()->route('settings.subscriptions.upgrade.success');
-        } catch (\Stripe\Error\Card $e) {
+        } catch(\Stripe\Error\Card $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
-            $err = $body['error'];
-            $message = $err['message'];
-
-            return back()
-                ->withInput()
-                ->withErrors(trans('settings.stripe_error_card', ['message' => $message]));
+            $err  = $body['error'];
+            $message = trans('settings.stripe_error_card', ['message' => $err['message']]);
         } catch (\Stripe\Error\RateLimit $e) {
             // Too many requests made to the API too quickly
-            return back()
-                ->withInput()
-                ->withErrors(trans('settings.stripe_error_rate_limit'));
+            $message = trans('settings.stripe_error_rate_limit');
         } catch (\Stripe\Error\Authentication $e) {
             // Authentication with Stripe's API failed
             // (maybe you changed API keys recently)
-            return back()
-                ->withInput()
-                ->withErrors(trans('settings.stripe_error_authentication'));
+            $message = trans('settings.stripe_error_authentication');
         } catch (\Stripe\Error\ApiConnection $e) {
             // Network communication with Stripe failed
-            return back()
-                ->withInput()
-                ->withErrors(trans('settings.stripe_error_api_connection_error'));
+            $message = trans('settings.stripe_error_api_connection_error');
         } catch (\Stripe\Error\Base $e) {
-            return back()
-                ->withInput()
-                ->withErrors($e->getMessage());
+            $message = $e->getMessage();
         }
+
+        return back()
+            ->withInput()
+            ->withErrors($message);
     }
 
     /**
