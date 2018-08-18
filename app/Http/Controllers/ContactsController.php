@@ -86,6 +86,12 @@ class ContactsController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->account->hasReachedContactLimit()
+        && auth()->user()->account->hasLimitations()
+        && auth()->user()->account->legacy_free_plan_unlimited_contacts == false) {
+            return redirect()->route('settings.subscriptions.index');
+        }
+
         $data = [
             'genders' => auth()->user()->account->genders,
         ];
