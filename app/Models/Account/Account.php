@@ -492,7 +492,7 @@ class Account extends Model
      * Indicate whether an account has reached the contact limit if the account
      * is on a free trial.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasReachedContactLimit()
     {
