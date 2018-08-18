@@ -145,10 +145,10 @@ class SubscriptionsController extends Controller
                         ]);
 
             return redirect()->route('settings.subscriptions.upgrade.success');
-        } catch(\Stripe\Error\Card $e) {
+        } catch (\Stripe\Error\Card $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
-            $err  = $body['error'];
+            $err = $body['error'];
             $message = trans('settings.stripe_error_card', ['message' => $err['message']]);
         } catch (\Stripe\Error\RateLimit $e) {
             // Too many requests made to the API too quickly
