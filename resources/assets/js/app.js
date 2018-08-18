@@ -94,6 +94,11 @@ Vue.component(
 
 // Contacts
 Vue.component(
+    'contact-favorite',
+    require('./components/people/SetFavorite.vue')
+);
+
+Vue.component(
     'contact-address',
     require('./components/people/Addresses.vue')
 );
@@ -166,6 +171,10 @@ Vue.component(
 Vue.component(
     'reminder-rules',
     require('./components/settings/ReminderRules.vue')
+);
+Vue.component(
+    'reminder-time',
+    require('./components/settings/ReminderTime.vue')
 );
 Vue.component(
     'mfa-activate',

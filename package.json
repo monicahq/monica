@@ -33,6 +33,7 @@
     "lodash": "^4.17.5",
     "marked": "^0.4.0",
     "moment": "^2.22.1",
+    "moment-timezone": "^0.5.21",
     "pretty-checkbox-vue": "^1.1.8",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
