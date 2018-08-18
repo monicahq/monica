@@ -145,11 +145,12 @@ class SubscriptionsController extends Controller
                         ]);
 
             return redirect()->route('settings.subscriptions.upgrade.success');
-        } catch(\Stripe\Error\Card $e) {
+        } catch (\Stripe\Error\Card $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
-            $err  = $body['error'];
+            $err = $body['error'];
             $message = $err['message'];
+
             return back()
                 ->withInput()
                 ->withErrors(trans('settings.stripe_error_card', ['message' => $message]));
