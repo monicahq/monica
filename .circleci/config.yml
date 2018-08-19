@@ -199,7 +199,6 @@ jobs:
       - *prepare-db
       - *seed-test-db
       - *unit-tests
-      - *psalm
       - store_test_results:
           path: results/junit
       - store_artifacts:
@@ -207,6 +206,19 @@ jobs:
       - persist_to_workspace:
           root: *root
           paths: results
+
+  psalm:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *psalm
 
   tests-browser-7.2:
     <<: *defaults
@@ -382,6 +394,14 @@ workflows:
             tags:
               only: /.*/
       - tests-7.2:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - psalm:
           requires:
             - build
           filters:
