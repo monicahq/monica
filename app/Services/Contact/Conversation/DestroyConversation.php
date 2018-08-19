@@ -27,7 +27,7 @@ class DestroyConversation extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
+        if (! $this->validateDataStructure($data, $this->structure)) {
             throw new \Exception('Missing parameters');
         }
 
