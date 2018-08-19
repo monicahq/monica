@@ -177,7 +177,7 @@ return [
     'subscriptions_help_opensource_title' => 'What is an open source project?',
     'subscriptions_help_opensource_desc' => 'Monica is an open source project. This means it is built by an entirely benevolent community who just wants to provide a great tool for the greater good. Being open source means the code is publicly available on GitHub, and everyone can inspect it, modify it or enhance it. All the money we raise is dedicated to build better features, have more powerful servers, help pay the bills. Thanks for your help. We couldn’t do it without you – litterally.',
     'subscriptions_help_limits_title' => 'Is there any limit to the number of contacts we can have on the free plan?',
-    'subscriptions_help_limits_plan' => 'Absolutely not. Free plans do not have limitations on the number of contacts you can have.',
+    'subscriptions_help_limits_plan' => 'Yes. Free plans let you manage :number contacts.',
     'subscriptions_help_discounts_title' => 'Do you have discounts for non-profits and education?',
     'subscriptions_help_discounts_desc' => 'We do! Monica is free for students, and free for non-profits and charities. Just contact <a href=":support">the support</a> with a proof of your status and we’ll apply this special status in your account.',
     'subscriptions_help_change_title' => 'What if I change my mind?',
