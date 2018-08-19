@@ -185,6 +185,11 @@ return [
     'subscriptions_help_change_title' => 'What if I change my mind?',
     'subscriptions_help_change_desc' => 'You can cancel anytime, no questions asked, and all by yourself – no need to contact support or whatever. However, you will not be refunded for the current period.',
 
+    'stripe_error_card' => 'Your card was declined. Decline message is: :message',
+    'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
+    'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
+    'stripe_error_authentication' => 'Wrong authentication with Stripe',
+
     'import_title' => 'Import contacts in your account',
     'import_cta' => 'Upload contacts',
     'import_stat' => 'You’ve imported :number files so far.',
