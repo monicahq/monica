@@ -185,6 +185,11 @@ return [
     'subscriptions_help_change_title' => 'מה אם התחרטתי?',
     'subscriptions_help_change_desc' => 'ניתן לבטל בכל עת, ללא שאלות מיותרות ובאופן עצמאי לחלוטין - אין צורך ליצור קשר עם התמיכה או משהו בסגנון. עם זאת, לא יבוצע זיכוי על התקופה הנוכחית.',
 
+    'stripe_error_card' => 'Your card was declined. Decline message is: :message',
+    'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
+    'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
+    'stripe_error_authentication' => 'Wrong authentication with Stripe',
+
     'import_title' => 'יבוא אנשי קשר לחשבון שלך',
     'import_cta' => 'עדכון אנשי קשר',
     'import_stat' => 'ייבאת :number קבצים עד כה.',
