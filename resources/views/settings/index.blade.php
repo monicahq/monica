@@ -47,12 +47,12 @@
 
               {{-- names --}}
               <div class="form-group">
-                <label for="firstname">{{ trans('settings.firstname') }}</label>
+                <label for="first_name">{{ trans('settings.firstname') }}</label>
                 <input type="text" class="form-control" name="first_name" id="first_name" required value="{{ auth()->user()->first_name }}">
               </div>
 
               <div class="form-group">
-                <label for="firstname">{{ trans('settings.lastname') }}</label>
+                <label for="last_name">{{ trans('settings.lastname') }}</label>
                 <input type="text" class="form-control" name="last_name" id="last_name" required value="{{ auth()->user()->last_name }}">
               </div>
 
@@ -75,26 +75,16 @@
 
               {{-- currency for user --}}
               <div class="form-group">
-                <label for="layout">{{ trans('settings.currency') }}</label>
+                <label for="currency_id">{{ trans('settings.currency') }}</label>
                 @include('partials.components.currency-select', ['selectionID' => auth()->user()->currency_id ])
               </div>
 
               {{-- Way of displaying names --}}
               <div class="form-group">
                 <label for="name_order">{{ trans('settings.name_order') }}</label>
-                <select name="name_order" class="form-control">
+                <select id="name_order" name="name_order" class="form-control">
                   @foreach ($namesOrder as $nameOrder)
                   <option value="{{ $nameOrder }}" {{ (auth()->user()->name_order == $nameOrder) ? 'selected':'' }}>{{ trans('settings.name_order_'.$nameOrder) }}</option>
-                  @endforeach
-                </select>
-              </div>
-
-              {{-- Timezone --}}
-              <div class="form-group">
-                <label for="timezone">{{ trans('settings.timezone') }}</label>
-                <select name="timezone" id="timezone" class="form-control">
-                  @foreach ($timezones as $timezone)
-                  <option value="{{ $timezone['timezone'] }}" {{ $selectedTimezone == $timezone['timezone'] ? 'selected="selected"' : '' }}>{{ $timezone['name'] }}</option>
                   @endforeach
                 </select>
               </div>
@@ -108,14 +98,14 @@
                 </select>
               </div>
 
-              {{-- Layout --}}
+              {{-- Reminder --}}
               <div class="form-group">
-                <form-select
-                  :value="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
-                  :options="{{ $hours }}"
-                  v-bind:id="'reminder_time'"
-                  v-bind:title="'{{ trans('settings.reminder_time_to_send') }}'">
-                </form-select>
+                <reminder-time
+                :reminder="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
+                :timezone="'{{ $selectedTimezone }}'"
+                :timezones="{{ json_encode($timezones) }}"
+                :hours="{{ json_encode($hours) }}">
+                </reminder-time>
               </div>
 
               <button type="submit" class="btn btn-primary">{{ trans('settings.save') }}</button>

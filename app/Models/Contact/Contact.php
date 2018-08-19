@@ -117,6 +117,7 @@ class Contact extends Model
         'is_partial' => 'boolean',
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
+        'is_starred' => 'boolean',
     ];
 
     /**
