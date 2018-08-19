@@ -15,6 +15,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateMessage extends BaseService
 {
+    /**
+     * The structure that the method expects to receive as parameter.
+     *
+     * @var array
+     */
     private $structure = [
         'account_id',
         'contact_id',

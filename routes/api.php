@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
     Route::post('/conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController@store');
     Route::put('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@update');
+    Route::delete('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@destroy');
 
     // Activities
     Route::resource('activities', 'Api\\ApiActivityController', ['except' => [

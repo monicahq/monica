@@ -8,6 +8,7 @@ use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use App\Services\Contact\Conversation\UpdateMessage;
+use App\Services\Contact\Conversation\DestroyMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 use App\Http\Resources\Conversation\Conversation as ConversationResource;
@@ -22,7 +23,11 @@ class ApiMessageController extends ApiController
      */
     public function store(Request $request, int $conversationId)
     {
-        $conversation = Conversation::findOrFail($conversationId);
+        try {
+            $conversation = Conversation::findOrFail($conversationId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
 
         try {
             $message = (new AddMessageToConversation)->execute(
@@ -52,12 +57,22 @@ class ApiMessageController extends ApiController
      *
      * @param  Request $request
      * @param  int $conversationId
-     * * @param  int $messageId
+     * @param  int $messageId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, int $conversationId, int $messageId)
     {
-        $conversation = Conversation::findOrFail($conversationId);
+        try {
+            $conversation = Conversation::findOrFail($conversationId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        try {
+            $message = Message::findOrFail($messageId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
 
         try {
             $message = (new UpdateMessage)->execute(
@@ -81,5 +96,46 @@ class ApiMessageController extends ApiController
         }
 
         return new ConversationResource($conversation);
+    }
+
+    /**
+     * Destroy the message.
+     *
+     * @param  Request $request
+     * @param  int $conversationId
+     * @param  int $messageId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, int $conversationId, int $messageId)
+    {
+        try {
+            $conversation = Conversation::findOrFail($conversationId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        try {
+            $message = Message::findOrFail($messageId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        try {
+            $conversation = (new DestroyMessage)->execute([
+                'account_id' => auth()->user()->account->id,
+                'conversation_id' => $conversationId,
+                'message_id' => $messageId,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (\Exception $e) {
+            return $this->setHTTPStatusCode(500)
+                ->setErrorCode(41)
+                ->respondWithError(config('api.error_codes.41'));
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return $this->respondObjectDeleted((int) $messageId);
     }
 }

@@ -9,11 +9,10 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Message;
-use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AddMessageToConversation extends BaseService
+class DestroyMessage extends BaseService
 {
     /**
      * The structure that the method expects to receive as parameter.
@@ -22,39 +21,36 @@ class AddMessageToConversation extends BaseService
      */
     private $structure = [
         'account_id',
-        'contact_id',
         'conversation_id',
-        'written_at',
-        'written_by_me',
-        'content',
+        'message_id',
     ];
 
     /**
-     * Add message to a conversation.
+     * Destroy a message.
      *
      * @param array $data
-     * @return Message
+     * @return bool
      */
-    public function execute(array $data): Message
+    public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
+        if (!$this->validateDataStructure($data, $this->structure)) {
             throw new \Exception('Missing parameters');
         }
 
         try {
-            $conversation = Conversation::where('contact_id', $data['contact_id'])
-                                ->where('account_id', $data['account_id'])
-                                ->findOrFail($data['conversation_id']);
+            $message = Message::where('account_id', $data['account_id'])
+                ->where('conversation_id', $data['conversation_id'])
+                ->findOrFail($data['message_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }
 
         try {
-            $message = Message::create($data);
+            $message->delete();
         } catch (QueryException $e) {
             throw $e;
         }
 
-        return $message;
+        return true;
     }
 }

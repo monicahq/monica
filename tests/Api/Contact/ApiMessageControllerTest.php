@@ -104,4 +104,21 @@ class ApiMessageControllerTest extends ApiTestCase
             'data' => $this->jsonConversations,
         ]);
     }
+
+    public function test_it_destroys_a_message()
+    {
+        $user = $this->signin();
+
+        $conversation = $this->createConversation($user);
+        $message = $this->addMessage($conversation);
+
+        $response = $this->delete('/api/conversations/' . $conversation->id . '/messages/' . $message->id);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'deleted' => true,
+            'id' => $message->id,
+        ]);
+    }
 }

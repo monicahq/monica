@@ -14,6 +14,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyConversation extends BaseService
 {
+    /**
+     * The structure that the method expects to receive as parameter.
+     *
+     * @var array
+     */
     private $structure = [
         'account_id',
         'conversation_id',
