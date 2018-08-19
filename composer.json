@@ -25,6 +25,7 @@
         "laravel/framework": "5.6.*",
         "laravel/passport": "^7.0",
         "laravel/socialite": "^3.0",
+        "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "mariuzzo/laravel-js-localization": "^1.4",
         "matriphe/iso-639": "^1.0",
