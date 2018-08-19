@@ -59,7 +59,7 @@ docker_build:
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
-ifeq ($(TAG),)
+ifeq ($(DOCKER_SQUASH),)
   DOCKER_SQUASH := ~/.local/bin/docker-squash
 endif
 
