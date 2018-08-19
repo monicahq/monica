@@ -20,7 +20,7 @@ return [
     'statistics_activities' => 'Aktivitäten',
     'statistics_gifts' => 'Geschenke',
 
-    'reminders_next_months' => 'Ereignisse in den letzten 3 Monaten',
+    'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
     'reminders_none' => 'Keine Erinnerungen für diesen Monat',
 
     'linkedin_profile' => 'LinkedIn',

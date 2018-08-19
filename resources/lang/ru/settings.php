@@ -60,6 +60,7 @@ return [
     'locale_pt' => 'Portuguese',
     'locale_ru' => 'Русский',
     'locale_zh' => 'Chinese Simplified',
+    'locale_tr' => 'Turkish',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
@@ -308,6 +309,7 @@ return [
     'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
 
     'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'Activity type categories',
     'personalization_activity_type_category_add' => 'Add a new activity type category',

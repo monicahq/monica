@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Mettre à jour les informations',
     'call_button' => 'Enregistrer un appel téléphonique',
+    'set_favorite' => 'Les contacts favoris sont placés en haut de la liste des contacts',
 
     // Stay in touch
     'stay_in_touch' => 'Restez en contact',
@@ -170,7 +171,8 @@ return [
     'relationship_form_add_choice' => 'Quelle est cette relation ?',
     'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
-    'relationship_form_associate_dropdown' => 'Sélectionnez un contact existant dans la liste déroulante ci-dessous',
+    'relationship_form_associate_dropdown' => 'Recherchez et sélectionnez un contact existant dans la liste déroulante ci-dessous',
+    'relationship_form_associate_dropdown_placeholder' => 'Recherchez et sélectionnez un contact existant',
     'relationship_form_also_create_contact' => 'Créer un contact pour cette personne.',
     'relationship_form_add_description' => 'Ceci vous permettra de traiter cette personne comme tous les autres contacts de votre compte.',
     'relationship_form_add_no_existing_contact' => 'Vous n’avez aucun contact qui puisse être associé à :name pour le moment.',
@@ -225,11 +227,18 @@ return [
     'activities_delete_success' => 'L’activité a été supprimée avec succès',
     'activities_who_was_involved' => 'Qui était impliqué ?',
     'activities_activity' => 'Catégorie d’activité',
+    'activities_view_activities_report' => 'Afficher les rapports d’activités',
+    'activities_profile_title' => 'Rapports d’activités entre :name et vous',
+    'activities_profile_subtitle' => 'Vous avez enregistré :total_activities activité avec :name au total et :activities_last_twelve_months au cours des 12 derniers mois.|Vous avez enregistré :total_activities activités avec :name au total et :activities_last_twelve_months au cours des 12 derniers mois.',
+    'activities_profile_year_summary_activity_types' => 'Voici une ventilation du type d’activités que vous avez faites ensemble en :year',
+    'activities_profile_year_summary' => 'Voici ce que vous avez fait ensemble en :year',
+    'activities_profile_number_occurences' => ':value activité|:value activités',
+
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès',
     'notes_update_success' => 'La note a été modifiée avec succès',
     'notes_delete_success' => 'La note a été supprimée avec succès',
-    'notes_add_cta' => 'Ajouter la note',
+    'notes_add_cta' => 'Ajouter une note',
     'notes_favorite' => 'Ajouter/retirer des favoris',
     'notes_delete_title' => 'Supprimer une note',
     'notes_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette note ? La suppression est permanente',

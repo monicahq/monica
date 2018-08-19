@@ -11,10 +11,10 @@
 
 @if (!$contact->hasDebt())
 
-  <div class="col-xs-12">
+  <div class="col-xs-12" cy-name="debt-blank-state">
     <div class="section-blank">
       <h3>{{ trans('people.debts_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="{{ route('people.debt.add', $contact) }}">{{ trans('people.debt_add_cta') }}</a>
+      <a href="{{ route('people.debt.add', $contact) }}" cy-name="add-debt-button">{{ trans('people.debt_add_cta') }}</a>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
 
     <ul class="table">
       @foreach($contact->debts as $debt)
-      <li class="table-row">
+      <li class="table-row" cy-name="debt-item-{{ $debt->id }}">
         <div class="table-cell date">
           {{ \App\Helpers\DateHelper::getShortDate($debt->created_at) }}
         </div>
@@ -46,10 +46,10 @@
           @endif
         </div>
         <div class="table-cell list-actions">
-          <a href="{{ route('people.debt.edit', [$contact, $debt]) }}">
+          <a href="{{ route('people.debt.edit', [$contact, $debt]) }}" cy-name="edit-debt-button-{{ $debt->id }}">
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </a>
-          <a href="#" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
+          <a href="#" cy-name="delete-debt-button-{{ $debt->id }}" onclick="if (confirm('{{ trans('people.debt_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </a>
         </div>

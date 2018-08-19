@@ -73,6 +73,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personnalisation',
     'breadcrumb_settings_security' => 'Sécurité',
     'breadcrumb_settings_security_2fa' => 'Authentification à deux facteurs',
+    'breadcrumb_profile' => 'Profil de :name',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',
@@ -124,7 +125,7 @@ return [
 
     'relationship_type_inlovewith' => 'amoureux',
     'relationship_type_inlovewith_female' => 'amoureuse',
-    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux·se',
+    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux',
     'relationship_type_inlovewith_female_with_name' => 'une personne dont :name est amoureuse',
 
     'relationship_type_lovedby' => 'aimé par',

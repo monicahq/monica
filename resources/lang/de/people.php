@@ -7,7 +7,7 @@ return [
     'people_list_last_updated' => 'Zuletzt aufgerufen:',
     'people_list_number_reminders' => '1 Erinnerung|:count Erinnerungen',
     'people_list_blank_title' => 'Du hast noch niemanden in deinem Konto angelegt',
-    'people_list_blank_cta' => 'Jemand hinzufügen',
+    'people_list_blank_cta' => 'Neuer Kontakt',
     'people_list_sort' => 'Sortieren',
     'people_list_stats' => '1 Kontakt|:count Kontakte',
     'people_list_firstnameAZ' => 'Nach Vorname sortieren A → Z',
@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'call_button' => 'Telefonat vermerken',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'In Kontakt bleiben',
@@ -161,7 +162,7 @@ return [
     'reminders_type_month' => 'Monat',
     'reminders_type_year' => 'Jahr',
     'reminders_birthday' => 'Geburtstag von :name',
-    'reminders_free_plan_warning' => 'Du befindest dich im freiem Angebot. Hier werden keine Emails versendet. Um die Erinnerungs Emails zu erhalten upgrade deinen Account.',
+    'reminders_free_plan_warning' => 'Du befindest dich im kostenlosen Abonnement. Hier werden keine E-Mails versendet. Um die Erinnerungs-E-Mails zu erhalten upgrade deinen Account.',
 
     // relationships
     'relationship_form_add' => 'Eine neue Beziehung hinzufügen',
@@ -170,7 +171,8 @@ return [
     'relationship_form_add_choice' => 'Wer ist die Beziehung zu?',
     'relationship_form_create_contact' => 'Neue Person hinzufügen',
     'relationship_form_associate_contact' => 'Ein bestehender Kontakt',
-    'relationship_form_associate_dropdown' => 'Wählen Sie einen vorhandenen Kontakt aus der Dropdown-Liste unten aus',
+    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Erstellen Sie einen Kontakt-Eintrag für diese Person.',
     'relationship_form_add_description' => 'Auf diese Weise können Sie diese Lebensgefährten wie jeden anderen Kontakt zu behandeln.',
     'relationship_form_add_no_existing_contact' => 'Sie haben zur Zeit keine Kontakte, die mit :name in Verbindung gebracht werden können.',
@@ -225,6 +227,13 @@ return [
     'activities_delete_success' => 'Aktivität erfolgreich gelöscht',
     'activities_who_was_involved' => 'Wer war beteiligt?',
     'activities_activity' => 'Kategorie',
+    'activities_view_activities_report' => 'View activities report',
+    'activities_profile_title' => 'Activities report between :name and you',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
+    'activities_profile_year_summary' => 'Here is what you two have done in :year',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
+
     // notes
     'notes_create_success' => 'Die Notiz wurde erfolgreich hinzugefügt',
     'notes_update_success' => 'Die Notiz wurde erfolgreich aktualisiert',
@@ -253,9 +262,9 @@ return [
     'gifts_add_comment' => 'Kommentar (optional)',
     'gifts_add_someone' => 'Dieses Geschenk ist für jemanden in :name\'s Familie',
     'gifts_ideas' => 'Geschenkideen',
-    'gifts_offered' => 'Geschenke angeboten',
+    'gifts_offered' => 'Verschenkte Geschenke',
     'gifts_offered_as_an_idea' => 'Als Idee markieren',
-    'gifts_received' => 'Geschenke erhalten',
+    'gifts_received' => 'Erhaltene Geschenke',
     'gifts_view_comment' => 'Kommentar anzeigen',
     'gifts_mark_offered' => 'Als angeboten markieren',
     'gifts_update_success' => 'Das Geschenk wurde erfolgreich aktualisiert',
