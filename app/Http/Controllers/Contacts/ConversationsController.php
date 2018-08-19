@@ -16,8 +16,9 @@ class ConversationsController extends Controller
      */
     public function new(Request $request, Contact $contact)
     {
-        return view('people.conversation.new')
-            ->withContact($contact);
+        return view('people.conversations.new')
+            ->withContact($contact)
+            ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 
     /**

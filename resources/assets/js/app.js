@@ -85,6 +85,10 @@ Vue.component(
     'form-radio',
     require('./components/partials/form/Radio.vue')
 );
+Vue.component(
+    'form-textarea',
+    require('./components/partials/form/Textarea.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -131,6 +135,16 @@ Vue.component(
 Vue.component(
     'stay-in-touch',
     require('./components/people/StayInTouch.vue')
+);
+
+Vue.component(
+    'conversation',
+    require('./components/people/conversation/Conversation.vue')
+);
+
+Vue.component(
+    'message',
+    require('./components/people/conversation/Message.vue')
 );
 
 // Journal
