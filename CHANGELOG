@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix phpunit not parsing all test files
 
 RELEASED VERSIONS:
 
