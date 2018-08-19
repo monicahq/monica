@@ -185,6 +185,11 @@ return [
     'subscriptions_help_change_title' => 'Was passiert, wenn ich meine Meinung ändere?',
     'subscriptions_help_change_desc' => 'Du kannst jederzeit ohne weiteres selber kündigen, du musst dazu auch nicht den Support oder sonst wen kontaktieren. Laufende Abos werden jedoch nicht zurück erstattet.',
 
+    'stripe_error_card' => 'Your card was declined. Decline message is: :message',
+    'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
+    'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
+    'stripe_error_authentication' => 'Wrong authentication with Stripe',
+
     'import_title' => 'Importiere Kontakte in dein Konto',
     'import_cta' => 'Kontakte hochladen',
     'import_stat' => 'Du hast bisher :number Dateien importiert.',
