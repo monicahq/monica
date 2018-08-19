@@ -185,6 +185,11 @@ return [
     'subscriptions_help_change_title' => '如果我改变主意怎么办？',
     'subscriptions_help_change_desc' => '您可以随时取消您的订阅。但是，目前为止我们无法提供退款服务。',
 
+    'stripe_error_card' => 'Your card was declined. Decline message is: :message',
+    'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
+    'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
+    'stripe_error_authentication' => 'Wrong authentication with Stripe',
+
     'import_title' => '在您的帐户中导入联系人',
     'import_cta' => '上载联系人',
     'import_stat' => '您目前为止导入了:number个文件。',
