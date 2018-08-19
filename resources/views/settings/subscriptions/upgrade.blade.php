@@ -34,6 +34,7 @@
 
         <input type="hidden" name="plan" value="{{ $planInformation['type'] }}">
         <div class="b--gray-monica ba pa4 br2 mb3 bg-black-05">
+          @include('partials.errors')
           <div class="form-row">
             <div class="mb3">
               <span>{{ trans('settings.subscriptions_upgrade_name') }}</span>
