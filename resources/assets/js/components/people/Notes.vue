@@ -11,16 +11,16 @@
     <div>
       <div>
         <form class="bg-near-white pa2 br2 mb3">
-          <textarea class="w-100 br2 pa2 b--light-gray" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="$t('people.notes_add_cta')"></textarea>
-          <a class="pointer btn btn-primary" @click.prevent="store" v-if="addMode">{{ $t('app.add') }}</a>
-          <a class="pointer btn btn-secondary" @click="addMode = false" v-if="addMode">{{ $t('app.cancel') }}</a>
+          <textarea class="w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="$t('people.notes_add_cta')"></textarea>
+          <a class="pointer btn btn-primary" cy-name="add-note-button" @click.prevent="store" v-if="addMode">{{ $t('app.add') }}</a>
+          <a class="pointer btn btn-secondary" cy-name="cancel-note-button" @click="addMode = false" v-if="addMode">{{ $t('app.cancel') }}</a>
         </form>
       </div>
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
         <li v-for="note in notes" class="note">
-          <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit">
+          <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
               <span v-html="note.parsed_body"></span>
             </div>
@@ -32,17 +32,17 @@
                 {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" @click="toggleEditMode(note)">{{ $t('app.edit') }}</a>
+                <a class="pointer" @click="toggleEditMode(note)" :cy-name="'edit-note-button-' + note.id">{{ $t('app.edit') }}</a>
                 |
-                <a class="pointer" @click.prevent="showDelete(note)">{{ $t('app.delete') }}</a>
+                <a class="pointer" @click.prevent="showDelete(note)" :cy-name="'delete-note-button-' + note.id">{{ $t('app.delete') }}</a>
               </div>
             </div>
           </div>
 
           <!-- EDIT MODE -->
           <form class="bg-near-white pa2 br2 mt3 mb3" v-show="note.edit">
-            <textarea class="w-100 br2 pa2 b--light-gray" v-model="note.body" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" @click.prevent="update(note)">{{ $t('app.update') }}</a>
+            <textarea class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" v-model="note.body" @keyup.esc="note.edit = false"></textarea>
+            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" @click.prevent="update(note)">{{ $t('app.update') }}</a>
           </form>
 
         </li>
@@ -65,7 +65,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('app.cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click.prevent="trash(note)">{{ $t('app.delete') }}</button>
+            <button type="button" class="btn btn-danger" :cy-name="'delete-mode-note-button-' + note.id" @click.prevent="trash(note)">{{ $t('app.delete') }}</button>
           </div>
         </div>
       </div>

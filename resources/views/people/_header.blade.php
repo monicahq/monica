@@ -27,7 +27,10 @@
           @endif
 
           <h3 class="{{ \App\Helpers\LocaleHelper::getDirection() }}">
-            {{ $contact->name }}
+            <span class="mr1">{{ $contact->name }}</span>
+
+            <contact-favorite hash="{!! $contact->hashID() !!}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
+
             @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
                 <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
@@ -88,7 +91,7 @@
 
           <ul class="horizontal quick-actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
             <li>
-              <a href="{{ route('people.edit', $contact) }}" class="btn edit-information">{{ trans('people.edit_contact_information') }}</a>
+              <a href="{{ route('people.edit', $contact) }}" class="btn edit-information" id="button-edit-contact">{{ trans('people.edit_contact_information') }}</a>
             </li>
           </ul>
         </div>
