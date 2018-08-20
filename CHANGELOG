@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix phpunit not parsing all test files
+* Improve automatic route binding
 
 RELEASED VERSIONS:
 
