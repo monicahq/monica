@@ -237,7 +237,6 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
             Route::delete('/settings/personalization/activitytypecategories/{activityTypeCategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
 
-            Route::get('/settings/personalization/activitytypes/{activityTypeCategoryId}', 'Settings\\ActivityTypesController@index');
             Route::post('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@create');
             Route::put('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@update');
             Route::delete('/settings/personalization/activitytypes/{activityType}', 'Settings\\ActivityTypesController@destroy');

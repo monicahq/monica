@@ -33,7 +33,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -50,7 +50,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/activities/add/'.$contact->id);
+        $response = $this->get('/activities/add/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -96,7 +96,7 @@ class ActivityTest extends FeatureTestCase
         $this->assertDatabaseHas('events', $eventParams);
 
         // Check that the Contact view contains the newly created note
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
         $response->assertSee($activityTitle);
     }
 
@@ -119,7 +119,7 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $activityDate,
         ];
 
-        $response = $this->post('/activities/store/'.$contact1->id, $params + ['contacts' => [$contact2->id]]);
+        $response = $this->post('/activities/store/'.$contact1->hashID(), $params + ['contacts' => [$contact2->id]]);
 
         // Assert the activity is missing
         $params['account_id'] = $user1->account_id;
@@ -148,7 +148,7 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $activityDate,
         ];
 
-        $response = $this->post('/activities/store/'.$contact1->id, $params + ['contacts' => [$contact2->id]]);
+        $response = $this->post('/activities/store/'.$contact1->hashID(), $params + ['contacts' => [$contact2->id]]);
         $response->assertStatus(302);
     }
 
@@ -166,7 +166,7 @@ class ActivityTest extends FeatureTestCase
         $contact->activities()->save($activity);
 
         // check that we can access the edit activity view
-        $response = $this->get('/activities/'.$activity->id.'/edit/'.$contact->id);
+        $response = $this->get('/activities/'.$activity->hashID().'/edit/'.$contact->hashID());
         $response->assertStatus(200);
 
         // now edit the activity
@@ -178,7 +178,8 @@ class ActivityTest extends FeatureTestCase
             'description' => null,
         ];
 
-        $this->put('/activities/'.$activity->id.'/'.$contact->id, $params);
+        $response = $this->put('/activities/'.$activity->hashID().'/'.$contact->hashID(), $params);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         $newParams = [];
 
@@ -205,7 +206,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -219,7 +220,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -283,6 +284,6 @@ class ActivityTest extends FeatureTestCase
             'date_it_happened' => $date,
         ];
 
-        return $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
+        return $this->post('/activities/store/'.$contact->hashID(), $params + ['contacts' => [$contact->id]]);
     }
 }

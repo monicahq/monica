@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Vinkla\Hashids\Facades\Hashids;
+use App\Exceptions\WrongIdException;
 
 class IdHasher
 {
@@ -38,6 +39,6 @@ class IdHasher
             }
         }
 
-        return $hash;
+        throw new WrongIdException();
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Helpers\CountriesHelper;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
