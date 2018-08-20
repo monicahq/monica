@@ -285,7 +285,7 @@ return [
     'debt_add_add_cta' => '增加债务',
     'debt_edit_update_cta' => '更新债务',
     'debt_edit_success' => '债务已成功更新',
-    'debts_blank_title' => '管理您欠的债务您欠:name的或:name欠您的',
+    'debts_blank_title' => '管理您与:name之间的债务关系',
 
     // tags
     'tag_edit' => '编辑标签',
