@@ -5,19 +5,20 @@
   <div class="bg-white pa3">
     <span class="di mr3">Who wrote this message?</span>
     <div class="di mr3">
-      <input type="radio" id="me" :name="'who_wrote_' + uid" value="me" :checked="author == 'me'">
-      <label for="me" class="pointer">You</label>
+      <input type="radio" :id="'me_' + uid" :name="'who_wrote_' + uid" v-model="author" value="me" :checked="author == 'me'">
+      <label :for="'me_' + uid" class="pointer">You</label>
     </div>
     <div class="di">
-      <input type="radio" id="other" :name="'who_wrote_' + uid" value="other" :checked="author == 'other'">
-      <label for="other" class="pointer">{{ participantName }}</label>
+      <input type="radio" :id="'other_' + uid" :name="'who_wrote_' + uid" v-model="author" value="other" :checked="author == 'other'">
+      <label :for="'other_' + uid" class="pointer">{{ participantName }}</label>
     </div>
 
     <form-textarea
+      v-model="buffer"
       v-bind:required="true"
       v-bind:noLabel="true"
+      @input="$emit('input', buffer)"
       v-bind:rows="4"
-      v-bind:content="content"
       v-bind:placeholder="'Write down what was said'"
       v-bind:id="'content_' + uid">
     </form-textarea>
@@ -31,6 +32,7 @@
          */
         data() {
             return {
+                buffer: this.content
             };
         },
 
@@ -80,6 +82,12 @@
               type: String,
             }
         },
+
+        // watch: {
+        //   buffer (value) {
+
+        //   }
+        // },
 
         methods: {
             /**

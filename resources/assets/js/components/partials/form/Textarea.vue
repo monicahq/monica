@@ -13,14 +13,15 @@ textarea:focus {
   <div>
     <p class="mb2" v-bind:class="{ b: required }" v-if="! noLabel">{{ title }}</p>
     <textarea
-            @input="updateTextarea($event.target.content)"
+            v-model="buffer"
+            @input="$emit('input', buffer)"
             autofocus
             :required="required"
             :name="id"
             :placeholder="placeholder"
             :id="id"
             :rows="rows"
-            class="br2 f5 w-100 ba b--black-40 pa2 outline-0" :style="'width:' + width + 'px'">{{ content }}</textarea>
+            class="br2 f5 w-100 ba b--black-40 pa2 outline-0" :style="'width:' + width + 'px'">{{ buffer }}</textarea>
   </div>
 </template>
 
@@ -31,6 +32,7 @@ textarea:focus {
          */
         data() {
             return {
+                buffer: this.value
             };
         },
 
@@ -49,7 +51,7 @@ textarea:focus {
         },
 
         props: {
-            content: {
+            value: {
                 type: String,
             },
             title: {
@@ -80,10 +82,6 @@ textarea:focus {
              * Prepare the component.
              */
             prepareComponent() {
-            },
-
-            updateTextarea(text) {
-                this.$emit('textarea', text)
             }
         }
     }
