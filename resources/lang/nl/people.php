@@ -62,7 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
     'call_button' => 'Registreer een belgesprek',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'Favoriete contacten worden bovenaan de lijst met contactpersonen geplaatst',
 
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
@@ -171,8 +171,8 @@ return [
     'relationship_form_add_choice' => 'Wie is de relatie met?',
     'relationship_form_create_contact' => 'Voeg een nieuwe persoon toe',
     'relationship_form_associate_contact' => 'Toevoegen aan bestaand persoon',
-    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
-    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
+    'relationship_form_associate_dropdown' => 'Zoek en selecteer een bestaande contactpersoon met het dropdown menu hieronder',
+    'relationship_form_associate_dropdown_placeholder' => 'Zoek en selecteer een bestaande contactpersoon',
     'relationship_form_also_create_contact' => 'Een contact-kaart maken voor deze persoon.',
     'relationship_form_add_description' => 'Hierdoor kan je deze partner bewerken, net als elk ander contact.',
     'relationship_form_add_no_existing_contact' => 'Je hebt nog geen contacten die een :name gekoppeld kunnen worden.',
