@@ -118,13 +118,13 @@ return [
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 
-    'relationship_type_lover' => 'lover',
-    'relationship_type_lover_female' => 'lover',
+    'relationship_type_lover' => 'عاشق',
+    'relationship_type_lover_female' => 'عاشقة',
     'relationship_type_lover_with_name' => ':name’s lover',
     'relationship_type_lover_female_with_name' => ':name’s lover',
 
-    'relationship_type_inlovewith' => 'in love with',
-    'relationship_type_inlovewith_female' => 'in love with',
+    'relationship_type_inlovewith' => 'مغرم بـ',
+    'relationship_type_inlovewith_female' => 'مغرمة بـ',
     'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
     'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
 
@@ -138,28 +138,28 @@ return [
     'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
     'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
-    'relationship_type_parent' => 'father',
-    'relationship_type_parent_female' => 'mother',
+    'relationship_type_parent' => 'أب',
+    'relationship_type_parent_female' => 'أم',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
 
-    'relationship_type_child' => 'son',
-    'relationship_type_child_female' => 'daughter',
+    'relationship_type_child' => 'ابن',
+    'relationship_type_child_female' => 'ابنة',
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
 
-    'relationship_type_sibling' => 'brother',
-    'relationship_type_sibling_female' => 'sister',
+    'relationship_type_sibling' => 'أخ',
+    'relationship_type_sibling_female' => 'أخت',
     'relationship_type_sibling_with_name' => ':name’s brother',
     'relationship_type_sibling_female_with_name' => ':name’s sister',
 
-    'relationship_type_grandparent' => 'grand parent',
-    'relationship_type_grandparent_female' => 'grand parent',
+    'relationship_type_grandparent' => 'جد',
+    'relationship_type_grandparent_female' => 'جدة',
     'relationship_type_grandparent_with_name' => ':name’s grand parent',
     'relationship_type_grandparent_female_with_name' => ':name’s grand parent',
 
-    'relationship_type_grandchild' => 'grand child',
-    'relationship_type_grandchild_female' => 'grand child',
+    'relationship_type_grandchild' => 'حفيد',
+    'relationship_type_grandchild_female' => 'حفيدة',
     'relationship_type_grandchild_with_name' => ':name’s grand child',
     'relationship_type_grandchild_female_with_name' => ':name’s grand child',
 
@@ -188,8 +188,8 @@ return [
     'relationship_type_godson_with_name' => ':name’s godson',
     'relationship_type_godson_female_with_name' => ':name’s goddaughter',
 
-    'relationship_type_friend' => 'friend',
-    'relationship_type_friend_female' => 'friend',
+    'relationship_type_friend' => 'صديق',
+    'relationship_type_friend_female' => 'صديقة',
     'relationship_type_friend_with_name' => ':name’s friend',
     'relationship_type_friend_female_with_name' => ':name’s friend',
 
@@ -198,8 +198,8 @@ return [
     'relationship_type_bestfriend_with_name' => ':name’s best friend',
     'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
 
-    'relationship_type_colleague' => 'colleague',
-    'relationship_type_colleague_female' => 'colleague',
+    'relationship_type_colleague' => 'زميل',
+    'relationship_type_colleague_female' => 'زميلة',
     'relationship_type_colleague_with_name' => ':name’s colleague',
     'relationship_type_colleague_female_with_name' => ':name’s colleague',
 
@@ -223,8 +223,8 @@ return [
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband' => 'طليق',
+    'relationship_type_ex_husband_female' => 'طليقة',
     'relationship_type_ex_husband_with_name' => ':name’s ex husband',
     'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 ];
