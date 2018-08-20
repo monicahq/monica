@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
     'call_button' => 'Registreer een belgesprek',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
@@ -102,7 +103,7 @@ return [
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
     'information_edit_avatar' => 'Foto/avatar van het contact',
-    'information_edit_max_size' => 'Max: grootte Mb.',
+    'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_linkedin' => 'LinkedIn profiel (optioneel)',
@@ -112,7 +113,7 @@ return [
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
     'information_no_linkedin_defined' => 'Geen LinkedIn gedefinieerd',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
-    'information_work_at' => 'bij :bedrijf',
+    'information_work_at' => 'bij :company',
     'linkedin_profile' => 'LinkedIn profiel',
     'work_add_cta' => 'Werk informatie bijwerken',
     'work_edit_success' => 'Werkgegevens zijn met succes bijgewerkt',
@@ -170,7 +171,8 @@ return [
     'relationship_form_add_choice' => 'Wie is de relatie met?',
     'relationship_form_create_contact' => 'Voeg een nieuwe persoon toe',
     'relationship_form_associate_contact' => 'Toevoegen aan bestaand persoon',
-    'relationship_form_associate_dropdown' => 'Kies een bestaande persoon uit de lijst hieronder',
+    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Een contact-kaart maken voor deze persoon.',
     'relationship_form_add_description' => 'Hierdoor kan je deze partner bewerken, net als elk ander contact.',
     'relationship_form_add_no_existing_contact' => 'Je hebt nog geen contacten die een :name gekoppeld kunnen worden.',
@@ -225,6 +227,13 @@ return [
     'activities_delete_success' => 'The activity has been deleted successfully',
     'activities_who_was_involved' => 'Who was involved?',
     'activities_activity' => 'Activity Category',
+    'activities_view_activities_report' => 'View activities report',
+    'activities_profile_title' => 'Activities report between :name and you',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
+    'activities_profile_year_summary' => 'Here is what you two have done in :year',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
+
     // notes
     'notes_create_success' => 'The note has been created successfully',
     'notes_update_success' => 'The note has been saved successfully',

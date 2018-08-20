@@ -38,7 +38,7 @@ class NoteTest extends FeatureTestCase
             'is_favorited' => 0,
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/notes', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/notes', $params);
 
         // Assert the note has been added for the correct user.
         $this->assertDatabaseHas('notes', [
@@ -72,7 +72,7 @@ class NoteTest extends FeatureTestCase
             'is_favorited' => 0,
         ];
 
-        $this->put('/people/'.$contact->id.'/notes/'.$note->id, $params);
+        $this->put('/people/'.$contact->hashID().'/notes/'.$note->id, $params);
 
         // Assert the note has been added for the correct user.
         $this->assertDatabaseHas('notes', [
@@ -101,7 +101,7 @@ class NoteTest extends FeatureTestCase
             'body' => 'this is a test',
         ]);
 
-        $response = $this->delete('/people/'.$contact->id.'/notes/'.$note->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/notes/'.$note->id);
 
         $params = [];
         $params['id'] = $note->id;

@@ -27,9 +27,7 @@
                 :required="true"
                 :formClass="'form-control'">
             </form-select>
-            <small class="form-text text-muted">
-                {{ $t('settings.reminder_time_to_send_help', {dateTime:formatted}) }}
-            </small>
+            <small class="form-text text-muted" v-html="message"></small>
         </div>
     </div>
 </template>
@@ -41,8 +39,7 @@
          */
         data() {
             return {
-                formatted: '',
-                formattedUtc: '',
+                message: '',
             };
         },
 
@@ -93,7 +90,10 @@
                   date = date.add(1, 'days');
                 }
 
-                this.formatted = date.format('lll');
+                this.message = this.$t('settings.reminder_time_to_send_help', {
+                    dateTime: date.format('LLL'),
+                    dateTimeUtc: date.utc().format('YYYY-MM-DD HH:mm z')
+                });
             },
 
             timezoneUpdate: function(event) {

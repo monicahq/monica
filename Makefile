@@ -59,12 +59,12 @@ docker_build:
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
-ifeq ($(TAG),)
+ifeq ($(DOCKER_SQUASH),)
   DOCKER_SQUASH := ~/.local/bin/docker-squash
 endif
 
 docker_squash:
-	docker-squash -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
 	docker images
 
 docker_tag:

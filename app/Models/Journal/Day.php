@@ -5,7 +5,7 @@ namespace App\Models\Journal;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
 
 class Day extends Model implements IsJournalableInterface

@@ -180,7 +180,7 @@ Here what we should do in order to realize our vision:
 * Be the central point of contact management, by supporting CardDav protocol.
 * Be the central point of calendar events, by supporting CalDav protocol.
 * (**done**) Be available on [mobile apps](https://github.com/monicahq/chandler), not just a responsive site.
-* Build great reports so people can have interesting insights on how they interact with their loved ones.
+* (**partially done**) Build great reports so people can have interesting insights on how they interact with their loved ones.
 * Create a smart recommendation system for gifts. For instance, if my nephew is soon 6 years old in a month, I will be able to receive an email with a list of 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...
 * Create Chrome extensions to load Monica's data in a sidebar when viewing a contact on Facebook, letting us take additional notes as we see them on Facebook.
@@ -194,9 +194,10 @@ If you want to have it for free with all the features, run the project yourself 
 
 * On https://monicahq.com, Monica will be offered in two versions. Note that this can change anytime as we are trying different business models to see if this project can be sustained in the long run:
   * a free plan:
-    * No limits of contacts
+    * 10 contacts
     * Exporters
   * a paid plan:
+    * unlimited contacts
     * Advanced features
     * Email reminders
     * Importers

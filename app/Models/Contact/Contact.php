@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -15,11 +14,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingHasher as Model;
 use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,7 +32,6 @@ use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 class Contact extends Model
 {
     use Searchable;
-    use Hasher;
 
     protected $dates = [
         'last_talked_to',

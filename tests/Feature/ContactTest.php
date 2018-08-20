@@ -76,7 +76,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/tasks',
+            '/people/'.$contact->hashID().'/tasks',
             $task
         );
 
@@ -102,7 +102,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts/store',
             $gift
         );
 
@@ -137,7 +137,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/update',
+            '/people/'.$contact->hashID().'/gifts/'.$old_gift->id.'/update',
             $gift
         );
 
@@ -204,7 +204,7 @@ class ContactTest extends FeatureTestCase
 
         $food = ['food' => $this->faker->sentence()];
 
-        $this->post('/people/'.$contact->id.'/food/save', $food);
+        $this->post('/people/'.$contact->hashID().'/food/save', $food);
 
         $food['id'] = $contact->id;
         $this->changeArrayKey('food', 'food_preferencies', $food);
@@ -223,13 +223,45 @@ class ContactTest extends FeatureTestCase
             'birthdate' => 'unknown',
         ];
 
-        $this->post('/people/'.$contact->id.'/update', $data);
+        $this->post('/people/'.$contact->hashID().'/update', $data);
 
         $data['id'] = $contact->id;
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'last_name' => null,
         ]);
+    }
+
+    public function test_user_cant_add_new_contacts_if_limit_reached()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $contacts = factory(Contact::class, 3)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        config(['monica.requires_subscription' => true]);
+
+        $response = $this->get('/people/add');
+
+        $response->assertRedirect('/settings/subscriptions');
+    }
+
+    public function test_user_can_add_new_contacts_when_instance_requires_no_subscription()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $contacts = factory(Contact::class, 3)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 1]);
+        config(['monica.requires_subscription' => false]);
+
+        $response = $this->get('/people/add');
+
+        $response->assertStatus(200);
     }
 
     private function changeArrayKey($from, $to, &$array = [])
