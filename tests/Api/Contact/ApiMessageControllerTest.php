@@ -112,7 +112,7 @@ class ApiMessageControllerTest extends ApiTestCase
         $conversation = $this->createConversation($user);
         $message = $this->addMessage($conversation);
 
-        $response = $this->delete('/api/conversations/' . $conversation->id . '/messages/' . $message->id);
+        $response = $this->delete('/api/conversations/'.$conversation->id.'/messages/'.$message->id);
 
         $response->assertStatus(200);
 
