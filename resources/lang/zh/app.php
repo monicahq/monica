@@ -226,5 +226,5 @@ return [
     'relationship_type_ex_husband' => '前夫',
     'relationship_type_ex_husband_female' => '前妻',
     'relationship_type_ex_husband_with_name' => ':name的前夫',
-    'relationship_type_ex_husband_female_with_name' => '前妻',
+    'relationship_type_ex_husband_female_with_name' => ':name的前妻',
 ];
