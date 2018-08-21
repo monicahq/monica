@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use App\Helpers\RequestHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
@@ -67,10 +68,9 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @param string $countryCode
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $countryCode = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
     {
         // create the user
         $user = new self;
@@ -84,25 +84,30 @@ class User extends Authenticatable
         $locale = App::getLocale();
         $user->locale = $locale;
 
-        if (is_null($countryCode)) {
-            $country = CountriesHelper::getCountryFromLang($locale);
-        } else {
-            $country = CountriesHelper::getCountry($countryCode);
-        }
+        $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
-        if (is_null($country)) {
-            $user->timezone = config('app.timezone');
-        } else {
-            foreach ($country->currencies as $currencie) {
-                $currency = Currency::where('iso', $currencie)->first();
-                if (! is_null($currency)) {
-                    $user->currency()->associate($currency);
-                    break;
+        if (is_null($infos)) {
+            $country = CountriesHelper::getCountryFromLang($locale);
+            if (is_null($country)) {
+                $user->timezone = config('app.timezone');
+            } else {
+                foreach ($country->currencies as $currency) {
+                    $currency2 = Currency::where('iso', $currency)->first();
+                    if (! is_null($currency2)) {
+                        $user->currency()->associate($currency2);
+                        break;
+                    }
                 }
+                $user->timezone = CountriesHelper::getDefaultTimezone($country);
             }
-
-            $user->timezone = CountriesHelper::getDefaultTimezone($country);
+        } else {
+            $currencyCode = $infos['currencyCode'];
+            $currency = Currency::where('iso', $currencyCode)->first();
+            if (!is_null($currency)) {
+                $user->currency()->associate($currency);
+            }
+            $user->timezone = $infos['timezone'];
         }
 
         $user->save();

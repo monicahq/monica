@@ -90,8 +90,7 @@ class RegisterController extends Controller
             $data['last_name'],
             $data['email'],
             $data['password'],
-            RequestHelper::ip(),
-            RequestHelper::country()
+            RequestHelper::ip()
         );
         $user = $account->users()->first();
 

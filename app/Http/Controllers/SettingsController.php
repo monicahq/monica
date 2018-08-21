@@ -404,8 +404,7 @@ class SettingsController extends Controller
                     $request->input('last_name'),
                     $request->input('email'),
                     $request->input('password'),
-                    RequestHelper::ip(),
-                    RequestHelper::country()
+                    RequestHelper::ip()
                 );
         $user->invited_by_user_id = $invitation->invited_by_user_id;
         $user->save();

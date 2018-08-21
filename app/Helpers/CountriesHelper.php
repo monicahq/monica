@@ -26,6 +26,9 @@ class CountriesHelper
 
     /**
      * Get country name.
+     * 
+     * @param string $iso code of the country
+     * @return string common name (localized) of the country
      */
     public static function get($iso)
     {
@@ -40,7 +43,8 @@ class CountriesHelper
     /**
      * Find a country by the (english) name of the country.
      *
-     * @return string cca2 code of the country
+     * @param string $name  Common name of a country
+     * @return string  cca2 code of the country
      */
     public static function find($name)
     {
@@ -65,6 +69,7 @@ class CountriesHelper
         );
     }
 
+
     private static function getCountry($iso)
     {
         $country = Countries::where('cca2', mb_strtoupper($iso))->first();
@@ -81,7 +86,8 @@ class CountriesHelper
     /**
      * Get country for a specific language.
      *
-     * @return object
+     * @param string $locale  language code (iso)
+     * @return object  the Country element
      */
     public static function getCountryFromLang($locale)
     {
@@ -101,6 +107,12 @@ class CountriesHelper
         return $country;
     }
 
+    /**
+     * Get default country for a language.
+     * 
+     * @param string $locale   language code (iso)
+     * @return string  cca3 code
+     */
     public static function getDefaultCountryFromLang($locale)
     {
         switch (mb_strtolower($locale)) {
@@ -145,6 +157,12 @@ class CountriesHelper
         return $country;
     }
 
+    /**
+     * Get default timezone for the country.
+     * 
+     * @param mixed $country  Country element
+     * @return string  timezone fo this sountry
+     */
     public static function getDefaultTimezone($country)
     {
         // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
