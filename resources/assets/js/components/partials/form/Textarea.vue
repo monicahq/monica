@@ -11,10 +11,10 @@ textarea:focus {
 
 <template>
   <div>
-    <p class="mb2" v-bind:class="{ b: required }" v-if="! noLabel">{{ title }}</p>
+    <p class="mb2" v-bind:class="{ b: required }" v-if="! noLabel">{{ label }}</p>
     <textarea
             v-model="buffer"
-            @input="$emit('input', buffer)"
+            @input="$emit('contentChange', buffer)"
             autofocus
             :required="required"
             :name="id"
@@ -54,7 +54,7 @@ textarea:focus {
             value: {
                 type: String,
             },
-            title: {
+            label: {
                 type: String,
             },
             id: {

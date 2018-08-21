@@ -9,10 +9,13 @@
                     :author="message.author"
                     :content="message.content"
                     :uid="message.uid"
-                    :participant-name="participantName">
+                    :participant-name="participantName"
+                    v-on:contentChange="updateContent($event, message)"
+                    v-on:deleteMessage="deleteMessage($event, message)"
+                    :display-trash="displayTrash">
                 </message>
             </div>
-            <a @click="addMessage()">Add another message</a>
+            <p class="tc"><a @click="addMessage" class="btn btn-secondary pointer">Add another message</a></p>
         </div>
     </div>
 </template>
@@ -25,14 +28,15 @@
         data() {
             return {
                 messages: [],
-                uid: 1
+                uid: 1,
+                displayTrash: false,
             };
         },
 
         props: {
             participantName: {
                 type: String,
-            }
+            },
         },
 
         /**
@@ -56,7 +60,7 @@
             prepareComponent() {
                 this.messages.push({
                     uid: this.uid++,
-                    content: 'fuck',
+                    content: '',
                     author: 'me'
                 })
             },
@@ -67,7 +71,21 @@
                     content: '',
                     author: 'me'
                 })
-            }
+                if (this.messages.length > 1) {
+                    this.displayTrash = true
+                }
+            },
+
+            updateContent(updatedContent, message) {
+              message.content = updatedContent
+            },
+
+            deleteMessage(uid, message) {
+              this.messages.splice(this.messages.indexOf(uid), 1)
+              if (this.messages.length <= 1) {
+                this.displayTrash = false
+              }
+            },
         }
     }
 </script>
