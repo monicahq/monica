@@ -173,7 +173,7 @@ return [
     'subscriptions_plan_month_cost' => '$5 美元/月',
     'subscriptions_plan_month_bonus' => '随时取消',
     'subscriptions_plan_include1' => '您将享有以下特权：',
-    'subscriptions_plan_include2' => '无限添加联系人·电子邮件提醒·导入 vCard ·个性化的联系人信息',
+    'subscriptions_plan_include2' => '无限添加联系人·无限的用户数量·电子邮件提醒·导入 vCard ·个性化的联系人信息',
     'subscriptions_plan_include3' => '收入的100% 用于此项目的开发。',
     'subscriptions_help_title' => '您可能还关心',
     'subscriptions_help_opensource_title' => '什么是开源项目？',
