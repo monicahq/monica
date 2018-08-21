@@ -168,7 +168,7 @@ class ApiConversationControllerTest extends ApiTestCase
 
         $conversation = $this->createConversation($user);
 
-        $response = $this->delete('/api/conversations/' . $conversation->id);
+        $response = $this->delete('/api/conversations/'.$conversation->id);
 
         $response->assertStatus(200);
 
