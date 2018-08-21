@@ -1,5 +1,7 @@
 # Contribute as a developer
 
+<!-- TOC -->
+
 - [Considerations](#considerations)
 - [Design rules](#design-rules)
 - [Install Monica locally](#install-monica-locally)
@@ -10,6 +12,9 @@
     - [Setup](#setup)
     - [Run the test suite](#run-the-test-suite)
     - [Run browser tests](#run-browser-tests)
+- [Coding guidelines](#coding-guidelines)
+    - [Feature branch](#feature-branch)
+    - [Conventional commits](#conventional-commits)
 - [Backend](#backend)
     - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
         - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
@@ -29,6 +34,8 @@
         - [Application](#application)
             - [Laravel](#laravel)
             - [VueJS](#vuejs)
+
+<!-- /TOC -->
 
 Are you interested in giving a hand? We can't be more excited about it. Thanks in advance!
 
@@ -147,6 +154,44 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
 * Then you can run the test suite:
 `php artisan dusk`
+
+<a id="markdown-coding-guidelines" name="coding-guidelines"></a>
+## Coding guidelines
+
+<a id="markdown-feature-branch" name="feature-branch"></a>
+### Feature branch
+
+We follow [GitHub Flow](https://guides.github.com/introduction/flow/) to manage the development of features.
+
+<a id="markdown-conventional-commits" name="conventional-commits"></a>
+### Conventional commits
+
+We follow the [conventional commit message](https://conventionalcommits.org/) syntax for our commits. For instance, `feat: allow provided config object to extend other configs` or `feat(lang): added polish language`.
+
+Every feature branch that is squashed onto master must follow these rules.
+
+The benefits are:
+* a standard way of writing commit messages for every contributor,
+* a way to quickly see and understand what the commit does and what it affects,
+* automatic changelog creation based on those keywords.
+
+The keywords that support (heavily inspired by [config-conventional](https://github.com/marionebl/commitlint/tree/master/%40commitlint/config-conventional)):
+* `ci`,
+* `chore`,
+* `docs`,
+* `feat`,
+* `fix`,
+* `perf`,
+* `refactor`,
+* `revert`,
+* `style`,
+* `test`.
+
+Moreover, every commit message needs to be written in lowercase.
+* ✅  feat(lang): added polish language
+* ❌  feat(lang): Added polish language
+
+All the commits in a pull request are squashed when merged into master. That means *only the commit message of the squashed branch needs to follow this commit message convention*. That also means that you don't need to follow this convention for commits within a branch, which will usually contains a lot of commits with a `wip` title.
 
 <a id="markdown-backend" name="backend"></a>
 ## Backend
