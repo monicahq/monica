@@ -185,10 +185,10 @@ return [
     'subscriptions_help_change_title' => 'Que se passe-t-il si je change d’avis ?',
     'subscriptions_help_change_desc' => 'Vous pouvez annuler à tout moment, sans question, et par vous-même – aucun support requis. Toutefois, vous ne serez pas remboursé pour la période en cours.',
 
-    'stripe_error_card' => 'Your card was declined. Decline message is: :message',
-    'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
-    'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
-    'stripe_error_authentication' => 'Wrong authentication with Stripe',
+    'stripe_error_card' => 'Votre carte est refusée. Le message de refus est : :message',
+    'stripe_error_api_connection' => 'Problèmes de communication avec Stripe. Veuillez réessayer plus tard.',
+    'stripe_error_rate_limit' => 'Trop de requêtes avec Stripe actuellement. Veuillez réessayer plus tard.',
+    'stripe_error_authentication' => 'Mauvaise authentification avec Stripe',
 
     'import_title' => 'Importer les contacts dans votre compte',
     'import_cta' => 'Importer des contacts',
