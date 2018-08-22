@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Estas credenciales no concuerdas con nuestros registros.',
-    'throttle' => 'Demasiados intentos de ingreso. Por favor intente nuevamente en :seconds segundos.',
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
     'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
     'back_homepage' => 'Volver al inicio',
