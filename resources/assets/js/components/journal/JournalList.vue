@@ -19,10 +19,10 @@
             </div>
             <div class="w-30">
               <div class="flex items-center h-100">
-                <div class="flex-none tr w-100">
+                <div class="flex-none w-100" :class="[ dirltr ? 'tr' : 'tl' ]">
 
                   <!-- sad smiley monochrome -->
-                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(1)" @mouseover="showSadSmileyColor = true" v-if="!showSadSmileyColor" cy-name="sad-reaction-button">
+                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :class="[ dirltr ? 'mr3' : 'ml3' ]" @click="rate(1)" @mouseover="showSadSmileyColor = true" v-if="!showSadSmileyColor" cy-name="sad-reaction-button">
                       <defs></defs>
                       <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g id="Desktop" transform="translate(-695.000000, -165.000000)">
@@ -38,7 +38,7 @@
                   </svg>
 
                   <!-- sad smiley color -->
-                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(1)" v-if="showSadSmileyColor" @mouseleave="showSadSmileyColor = false" cy-name="sad-reaction-button">
+                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="[ dirltr ? 'mr3' : 'ml3' ]" @click="rate(1)" v-if="showSadSmileyColor" @mouseleave="showSadSmileyColor = false" cy-name="sad-reaction-button">
                       <defs></defs>
                       <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g id="Desktop" transform="translate(-695.000000, -345.000000)">
@@ -54,7 +54,7 @@
                   </svg>
 
                   <!-- mediocre day monochrome -->
-                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(2)" cy-name="medium-reaction-button">
+                  <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="[ dirltr ? 'mr3' : 'ml3' ]" @click="rate(2)" cy-name="medium-reaction-button">
                       <defs></defs>
                       <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g id="Desktop" transform="translate(-754.000000, -165.000000)">
@@ -69,7 +69,7 @@
                   </svg>
 
                   <!-- happy day monochrome -->
-                  <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3" @click="rate(3)" @mouseover="showHappySmileyColor = true" v-if="!showHappySmileyColor" cy-name="happy-reaction-button">
+                  <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :class="[ dirltr ? 'mr3' : 'ml3' ]" @click="rate(3)" @mouseover="showHappySmileyColor = true" v-if="!showHappySmileyColor" cy-name="happy-reaction-button">
                       <defs></defs>
                       <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g id="Desktop" transform="translate(-814.000000, -165.000000)">
@@ -86,7 +86,7 @@
                   </svg>
 
                   <!-- happy day color -->
-                  <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer" @click="rate(3)" v-if="showHappySmileyColor" @mouseleave="showHappySmileyColor = false" cy-name="happy-reaction-button">
+                  <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer" :class="[ dirltr ? 'mr3' : 'ml3' ]" @click="rate(3)" v-if="showHappySmileyColor" @mouseleave="showHappySmileyColor = false" cy-name="happy-reaction-button">
                       <defs></defs>
                       <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <g id="Desktop" transform="translate(-814.000000, -345.000000)">
@@ -167,6 +167,8 @@
               showSadSmileyColor: false,
               showHappySmileyColor: false,
               loadingMore: false,
+
+              dirltr: true,
             };
         },
 
@@ -201,6 +203,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.getEntries();
                 this.hasAlreadyRatedToday();
             },

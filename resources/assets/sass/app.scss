@@ -131,9 +131,10 @@ $border-color: #dfdfdf;
   font-size: 11px;
   height: 22px;
   line-height: 22px;
-  padding: 0 10px 0 19px;
+  padding-right: 10px;
+  padding-left: 19px;
   position: relative;
-  margin: 0 10px 0 0;
+  margin-right: 10px;
   text-decoration: none;
   -webkit-transition: color 0.2s;
 
@@ -165,6 +166,11 @@ $border-color: #dfdfdf;
       background-color: transparent;
       color: #fff;
     }
+  }
+
+  &.rtl {
+    margin-right: 0;  
+    margin-left: 10px;
   }
 }
 
@@ -358,6 +364,14 @@ input:disabled {
       content: '>';
       margin-left: 5px;
       margin-right: 1px;
+    }
+  }
+  &.rtl {
+    ul {
+      li:not(:last-child):after {
+        margin-right: 5px !important;
+        margin-left: 1px !important;
+      }
     }
   }
 }

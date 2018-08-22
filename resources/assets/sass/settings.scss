@@ -33,6 +33,14 @@
         color: #999;
       }
     }
+    &.rtl {
+      ul {
+        i {
+          margin-right: 0px !important;
+          margin-left: 5px;
+        }
+      }
+    }
   }
 
   .settings-reset,

@@ -164,6 +164,15 @@
       }
     }
   }
+
+  &.rtl {
+    .sidebar {
+      li {
+        padding-left: 0;
+        padding-right: 15px;
+      }
+    }
+  }
 }
 
 .blank-people-state {
@@ -268,6 +277,15 @@
             margin-right: 10px;
           }
         }
+
+        &.rtl {
+          li {
+            &:not(:last-child) {
+              margin-right: 0;
+              margin-left: 10px;
+            }
+          }
+        }
       }
 
       #tagsForm {
@@ -292,6 +310,10 @@
           width: 150px !important;
         }
 
+        &.rtl {
+          padding-left: 0;
+          padding-right: 100px;
+        }
         &.rtl #tags_addTag {
           float: right;
           overflow: true;

@@ -5,7 +5,7 @@
 <div class="settings">
 
   {{-- Breadcrumb --}}
-  <div class="breadcrumb">
+  <div class="breadcrumb {{ direction() }}">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
@@ -44,7 +44,7 @@
                 <div class="table-cell">
                   {{ $user->name }} ({{ $user->email }})
                 </div>
-                <div class="table-cell actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                <div class="table-cell actions {{ direction() }}">
                   @if ($user->id == auth()->user()->id)
                     {{ trans('settings.users_list_you') }}
                   @else
@@ -79,7 +79,7 @@
                     <div class="table-cell">
                       {{ trans('settings.users_list_invitations_sent_date', ['date' => \App\Helpers\DateHelper::getShortDate($invitation->created_at)]) }}
                     </div>
-                    <div class="table-cell actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                    <div class="table-cell actions {{ direction() }}">
                       <a href="#" onclick="if (confirm('{{ trans('settings.users_invitations_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                       </a>

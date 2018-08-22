@@ -7,7 +7,7 @@
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
-    <div class="breadcrumb">
+    <div class="breadcrumb {{ direction() }}">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12">
@@ -57,7 +57,7 @@
 
             @if ($modules->contains('key', 'notes'))
             <div class="row section notes">
-              <div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
+              <div class="col-xs-12 section-title {{ direction() }}">
                 <contact-note hash={{ $contact->hashID() }}></contact-note>
               </div>
             </div>
