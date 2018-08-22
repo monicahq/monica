@@ -18,6 +18,7 @@ class ConversationsController extends Controller
     {
         return view('people.conversations.new')
             ->withContact($contact)
+            ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 

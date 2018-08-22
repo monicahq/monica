@@ -87,6 +87,13 @@ return [
     'call_blank_title' => 'Keep track of the phone calls you’ve done with :name',
     'call_blank_desc' => 'You called :name',
 
+    // Conversation
+    'conversation_add_who_wrote' => 'Who said this message?',
+    'conversation_add_you' => 'You',
+    'conversation_add_content' => 'Write down what was said',
+    'conversation_add_what_was_said' => 'What did you say?',
+    'conversation_add_another' => 'Add another message',
+
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set',
     'age_approximate_in_years' => 'around :age years old',

@@ -28,18 +28,25 @@
       {{-- When did it take place --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <p class="mb2 b">When did you have this conversation?</p>
-        <div class="dt dt--fixed">
-          <div class="dtc pr2">
-            <input type="radio" id="new" name="relationship_type" value="new" checked>
-            <label for="new" class="pointer">Today</label>
+        <div class="">
+          <div class="di mr3">
+            <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today" checked>
+            <label for="today" class="pointer">Today</label>
           </div>
-          <div class="dtc pr2">
-            <input type="radio" id="existing" name="relationship_type" value="existing">
-            <label for="existing" class="pointer">Yesterday</label>
+          <div class="di mr3">
+            <input type="radio" class="mr1" id="yesterday" name="conversationDateRadio" value="yesterday">
+            <label for="yesterday" class="pointer">Yesterday</label>
           </div>
-          <div class="dtc">
-            <input type="radio" id="existing" name="relationship_type" value="existing">
-            <label for="existing" class="pointer">Another day</label>
+          <div class="di mr3">
+            <input type="radio" id="another" name="conversationDateRadio" value="another">
+            <label for="another" class="pointer mr2">Another day</label>
+            <div class="dib">
+              <form-date
+                v-bind:id="'conversationDate'"
+                v-bind:default-date="'{{ now() }}'"
+                v-bind:locale="'{{ $locale }}'">
+              </form-date>
+            </div>
           </div>
         </div>
       </div>
@@ -56,6 +63,18 @@
 
       {{-- Conversation --}}
       <conversation participant-name="{{ $contact->first_name }}"></conversation>
+
+      {{-- Form actions --}}
+      <div class="ph4-ns ph3 pv3 bb b--gray-monica">
+        <div class="flex-ns justify-between">
+          <div class="">
+            <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+          </div>
+          <div class="">
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.add') }}</button>
+          </div>
+        </div>
+      </div>
 
     </form>
   </div>

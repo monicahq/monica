@@ -1,21 +1,48 @@
 <style scoped>
+  .me {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+    top: 120px;
+    right: -10px;
+  }
+
+  .other {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right:10px solid #fff;
+    top: 120px;
+    left: -10px;
+  }
+
+  .conversation-block {
+    background-color: #D8E2E7;
+  }
 </style>
 
 <template>
     <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-        <div class="pa3 ba b--gray-monica br3 bg-gray-monica">
-            <div v-for="message in messages">
-                <message class="mb3"
+      <p class="mb2 b">{{ $t('people.conversation_add_what_was_said') }}</p>
+        <div class="pa3 ba b--gray-monica br3 conversation-block">
+            <div v-for="message in messages" class="relative">
+                <div v-bind:class="message.author + ' absolute'"></div>
+                <message
+                    v-bind:class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
                     :author="message.author"
                     :content="message.content"
                     :uid="message.uid"
                     :participant-name="participantName"
+                    v-on:updateAuthor="updateAuthor($event, message)"
                     v-on:contentChange="updateContent($event, message)"
                     v-on:deleteMessage="deleteMessage($event, message)"
                     :display-trash="displayTrash">
                 </message>
             </div>
-            <p class="tc"><a @click="addMessage" class="btn btn-secondary pointer">Add another message</a></p>
+            <p class="tc mb0"><a @click="addMessage" class="btn btn-secondary pointer">{{ $t('people.conversation_add_another') }}</a></p>
         </div>
     </div>
 </template>
@@ -78,6 +105,10 @@
 
             updateContent(updatedContent, message) {
               message.content = updatedContent
+            },
+
+            updateAuthor(updatedAuthor, message) {
+              message.author = updatedAuthor
             },
 
             deleteMessage(uid, message) {
