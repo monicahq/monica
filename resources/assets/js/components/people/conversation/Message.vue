@@ -26,12 +26,12 @@
     <div class="mb3">
       <span class="di mr3">{{ $t('people.conversation_add_who_wrote') }}</span>
       <div class="di mr3">
-        <input @click="updateAuthor('me')" class="pointer" type="radio" :id="'me_' + uid" :name="'who_wrote_' + uid" v-model="updatedAuthor" value="me" :checked="updatedAuthor == 'me'">
-        <label :for="'me_' + uid" class="pointer">{{ $t('people.conversation_add_you') }}</label>
-      </div>
-      <div class="di">
         <input @click="updateAuthor('other')" class="pointer" type="radio" :id="'other_' + uid" :name="'who_wrote_' + uid" v-model="updatedAuthor" value="other" :checked="updatedAuthor == 'other'">
         <label :for="'other_' + uid" class="pointer">{{ participantName }}</label>
+      </div>
+      <div class="di">
+        <input @click="updateAuthor('me')" class="pointer" type="radio" :id="'me_' + uid" :name="'who_wrote_' + uid" v-model="updatedAuthor" value="me" :checked="updatedAuthor == 'me'">
+        <label :for="'me_' + uid" class="pointer">{{ $t('people.conversation_add_you') }}</label>
       </div>
     </div>
 
