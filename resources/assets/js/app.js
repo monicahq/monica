@@ -36,6 +36,10 @@ Vue.use(ToggleButton);
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
 
+// Select used on list items to display edit and delete buttons
+import vSelectMenu from 'v-selectmenu';
+Vue.use(vSelectMenu);
+
 // Custom components
 Vue.component(
     'passport-clients',
