@@ -16,7 +16,7 @@ return [
     'people_list_lastnameZA' => 'فرز حسب اسم العائلة Z → A',
     'people_list_lastactivitydateNewtoOld' => 'فرز حسب تاريخ النشاط الأخير من الأحدث إلى الأقدم',
     'people_list_lastactivitydateOldtoNew' => 'فرز حسب تاريخ النشاط الأخير من الأقدم إلى الأحدث',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with',
+    'people_list_filter_tag' => 'عرض كل جهات الاتصال ذات الوسم',
     'people_list_clear_filter' => 'مسح التصفية',
     'people_list_contacts_per_tags' => 'جهة اتصال واحدة|:count جهات اتصال',
     'people_search' => 'البحث في جهات الاتصال الخاصة بك...',
@@ -24,8 +24,8 @@ return [
     'people_list_account_usage' => 'استخدام حسابك: :current/:limit جهة اتصال',
     'people_list_account_upgrade_title' => 'قم بترقية حسابك لتفعيل كامل إمكانياته.',
     'people_list_account_upgrade_cta' => 'قم بالترقية الان',
-    'people_list_untagged' => 'View untagged contacts',
-    'people_list_filter_untag' => 'Showing all untagged contacts',
+    'people_list_untagged' => 'عرض جهات الاتصال الغير موسومة',
+    'people_list_filter_untag' => 'عرض كل جهات الاتصال الغير موسومة',
 
     // people add
     'people_add_title' => 'إضافة شخص جديد',
@@ -96,8 +96,8 @@ return [
     // Last called
     'last_called' => 'آخر مكالمة: :date',
     'last_called_empty' => 'آخر مكالمة: غير معلوم',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_activity_date' => 'آخر نشاط معا: :date',
+    'last_activity_date_empty' => 'آخر نشاط معا: غير معروف',
 
     // additional information
     'information_edit_success' => 'تم تحديث الملف الشخصي بنجاح',
