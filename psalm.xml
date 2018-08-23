@@ -120,5 +120,11 @@
                 <file name="app/Models/Contact/Contact.php" />
             </errorLevel>
         </UndefinedPropertyFetch>
+
+        <UnexpectedValue>
+            <errorLevel type="suppress">
+                <file name="app/Helpers/helpers.php" />
+            </errorLevel>
+        </UnexpectedValue>
     </issueHandlers>
 </psalm>
