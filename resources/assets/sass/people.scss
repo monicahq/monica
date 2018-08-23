@@ -267,10 +267,6 @@
       .profile-detail-summary {
         margin-top: 3px;
         padding-left: 100px;
-        &.rtl {
-          padding-left: 0;
-          padding-right: 100px;
-        }
 
         li {
           &:not(:last-child) {
@@ -279,6 +275,9 @@
         }
 
         &.rtl {
+          padding-left: 0;
+          padding-right: 100px;
+
           li {
             &:not(:last-child) {
               margin-right: 0;
