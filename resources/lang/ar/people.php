@@ -124,7 +124,7 @@ return [
 
     // food preferencies
     'food_preferencies_add_success' => 'تم حفظ التفضيلات الغذائية',
-    'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferencies_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_title' => 'حدد التفضيلات الغذائية',
     'food_preferencies_edit_cta' => 'حفظ التفضيلات الغذائية',
@@ -162,7 +162,7 @@ return [
     'reminders_type_month' => 'شهر',
     'reminders_type_year' => 'سنة',
     'reminders_birthday' => 'عيد ميلاد :name',
-    'reminders_free_plan_warning' => 'You are on the Free plan. No emails are sent on this plan. To receive your reminders by email, upgrade your account.',
+    'reminders_free_plan_warning' => 'أنت على الخطة المجانية. لا يتم إرسال رسائل الكترونية في هذه الخطة. قم بترقية حسابك لاستلام رسائل الكترونية.',
 
     // relationships
     'relationship_form_add' => 'إضافة علاقة جديدة',
@@ -195,7 +195,7 @@ return [
     'activity_type_category_sport' => 'رياضة',
     'activity_type_category_food' => 'طعام',
     'activity_type_category_cultural_activities' => 'أنشطة ثقافية',
-    'activity_type_just_hung_out' => 'just hung out',
+    'activity_type_just_hung_out' => 'قضينا الوقت معا',
     'activity_type_watched_movie_at_home' => 'شاهدنا فيلم في المنزل',
     'activity_type_talked_at_home' => 'تحدثنا في المنزل',
     'activity_type_did_sport_activities_together' => 'مارسنا الرياضة مع بعض',
@@ -219,7 +219,7 @@ return [
     'activities_add_date_occured' => 'تاريخ حدوث هذا النشاط',
     'activities_add_optional_comment' => 'تعليق اختياري',
     'activities_add_cta' => 'سجل النشاط',
-    'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
+    'activities_blank_title' => 'تابع ما فعلته مع :name في الماضي وعما تحدثتم',
     'activities_blank_add_activity' => 'إضافة نشاط',
     'activities_add_success' => 'تم إضافة النشاط بنجاح',
     'activities_add_error' => 'خطأ عند إضافة نشاط',
@@ -266,7 +266,7 @@ return [
     'gifts_offered_as_an_idea' => 'وضع علامة كفكرة',
     'gifts_received' => 'استلام هدية',
     'gifts_view_comment' => 'عرض التعليق',
-    'gifts_mark_offered' => 'Mark as offered',
+    'gifts_mark_offered' => 'ضع علامة بأنه تم عرضها',
     'gifts_update_success' => 'تم بنجاح تحديث هدية',
 
     // debts
@@ -325,7 +325,7 @@ return [
 
     // Addresses
     'contact_address_title' => 'عناوين',
-    'contact_address_form_name' => 'Label (optional)',
+    'contact_address_form_name' => 'تسمية (اختياري)',
     'contact_address_form_street' => 'الشارع (اختياري)',
     'contact_address_form_city' => 'المدينة (اختياري)',
     'contact_address_form_province' => 'المنطقة (اختياري)',
