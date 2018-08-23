@@ -71,8 +71,8 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_' . $messageId) == 'me' ? true : false),
-                'content' => $request->get('content_' . $messageId)
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me' ? true : false),
+                'content' => $request->get('content_'.$messageId),
             ];
 
             try {
