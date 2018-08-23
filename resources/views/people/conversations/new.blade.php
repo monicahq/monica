@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.relationships.store', $contact) }}" method="POST">
+    <form action="{{ route('people.conversation.store', $contact) }}" method="POST">
       {{ csrf_field() }}
 
       {{-- When did it take place --}}
@@ -57,7 +57,7 @@
           :options="{{ $contactFieldTypes }}"
           v-bind:required="true"
           v-bind:title="'How did you communicate?'"
-          v-bind:id="'gender'">
+          v-bind:id="'contactFieldTypeId'">
         </form-select>
       </div>
 

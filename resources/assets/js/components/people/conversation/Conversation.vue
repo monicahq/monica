@@ -28,7 +28,7 @@
     <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
       <p class="mb2 b">{{ $t('people.conversation_add_what_was_said') }}</p>
         <div class="pa3 ba b--gray-monica br3 conversation-block">
-            <div v-for="message in messages" class="relative">
+            <div v-for="message in messages" class="relative" v-bind:key="message.uid">
                 <div v-bind:class="message.author + ' absolute'"></div>
                 <message
                     v-bind:class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
@@ -43,6 +43,7 @@
                 </message>
             </div>
             <p class="tc mb0"><a @click="addMessage" class="btn btn-secondary pointer">{{ $t('people.conversation_add_another') }}</a></p>
+            <input type="hidden" name="messages" :value="messages.map(a => a.uid)" />
         </div>
     </div>
 </template>
@@ -112,7 +113,7 @@
             },
 
             deleteMessage(uid, message) {
-              this.messages.splice(this.messages.indexOf(uid), 1)
+              this.messages.splice(this.messages.indexOf(this.messages.find(item => item.uid === uid)), 1)
               if (this.messages.length <= 1) {
                 this.displayTrash = false
               }

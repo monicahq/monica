@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {
@@ -23,55 +25,70 @@ class ConversationsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store the conversation.
      *
-     * @param CallsRequest $request
+     * @param Request $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(CallsRequest $request, Contact $contact)
+    public function store(Request $request, Contact $contact)
     {
-        $call = $contact->calls()->create(
-            $request->only([
-                'called_at',
-            ])
-            + [
-                'content' => ($request->get('content') == '' ? null : $request->get('content')),
-                'account_id' => $contact->account_id,
-            ]
-        );
-
-        $contact->logEvent('call', $call->id, 'create');
-
-        $contact->updateLastCalledInfo($call);
-
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.calls_add_success'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Contact $contact
-     * @param Call $call
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contact $contact, Call $call)
-    {
-        if ($contact->account_id != $call->account_id) {
-            return redirect()->route('people.index');
+        // find out what the date is
+        $chosenDate = $request->get('conversationDateRadio');
+        if ($chosenDate == 'today') {
+            $date = now()->format('Y-m-d');
+        } elseif ($chosenDate == 'yesterday') {
+            $date = now()->subDay()->format('Y-m-d');
+        } else {
+            $date = $request->get('conversationDate');
         }
 
-        $call->delete();
+        $data = [
+            'happened_at' => $date,
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $request->get('contactFieldTypeId'),
+        ];
 
-        $contact->events()->forObject($call)->get()->each->delete();
+        // create the conversation
+        try {
+            $conversation = (new CreateConversation)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (\Exception $e) {
+            return $this->setHTTPStatusCode(500)
+                ->setErrorCode(41)
+                ->respondWithError(config('api.error_codes.41'));
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
-        if ($contact->calls()->count() == 0) {
-            $contact->last_talked_to = null;
-            $contact->save();
+        // add the messages to the conversation
+        $messages = explode(',', $request->get('messages'));
+        foreach ($messages as $messageId) {
+            $data = [
+                'account_id' => auth()->user()->account->id,
+                'conversation_id' => $conversation->id,
+                'contact_id' => $conversation->contact->id,
+                'written_at' => $date,
+                'written_by_me' => ($request->get('who_wrote_' . $messageId) == 'me' ? true : false),
+                'content' => $request->get('content_' . $messageId)
+            ];
+
+            try {
+                $message = (new AddMessageToConversation)->execute($data);
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            } catch (\Exception $e) {
+                return $this->setHTTPStatusCode(500)
+                    ->setErrorCode(41)
+                    ->respondWithError(config('api.error_codes.41'));
+            } catch (QueryException $e) {
+                return $this->respondInvalidQuery();
+            }
         }
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.call_delete_success'));
+            ->with('success', trans('people.relationship_form_add_success'));
     }
 }

@@ -10,10 +10,11 @@
 
 <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-100 pa2">
   <div class="br3 ba b--gray-monica bg-white mb4">
+    @foreach ($contact->conversations as $conversation)
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
       <div class="dt-row">
         <div class="dtc">
-          July 29
+          {{ $conversation->messages->count() }}
         </div>
         <div class="dtc">
           <span>3 messages</span>
@@ -24,8 +25,7 @@
           <i class="fa fa-trash-o pointer"></i>
         </div>
       </div>
-
+      @endforeach
     </div>
   </div>
 </div>
-
