@@ -121,4 +121,5 @@
                 <file name="app/Models/Contact/Contact.php" />
             </errorLevel>
         </UndefinedPropertyFetch>
+    </issueHandlers>
 </psalm>
