@@ -4,7 +4,7 @@ namespace App\Models\Contact;
 
 use Parsedown;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Call extends Model

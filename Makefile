@@ -33,6 +33,7 @@ endif
 
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
+DOCKER_IMAGE := monicahq/monicahq
 
 test:
 	echo $(BUILD)
@@ -50,28 +51,32 @@ docker:
 	$(MAKE) docker_push
 
 docker_build:
-	docker-compose build
+	docker build \
+		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg VCS_REF=$(CIRCLE_SHA1) \
+		--build-arg VERSION=$(BUILD) \
+		-t $(DOCKER_IMAGE) .
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
-ifeq ($(TAG),)
+ifeq ($(DOCKER_SQUASH),)
   DOCKER_SQUASH := ~/.local/bin/docker-squash
 endif
 
 docker_squash:
-	docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
 	docker images
 
 docker_tag:
-	docker tag monicahq/monicahq monicahq/monicahq:$(BUILD)
+	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(BUILD)
 
 docker_push: docker_tag
-	docker push monicahq/monicahq:$(BUILD)
-	docker push monicahq/monicahq:latest
+	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):latest
 
 docker_push_bintray: .deploy.json
-	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
-	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
