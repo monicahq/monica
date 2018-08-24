@@ -108,7 +108,7 @@
          * Prepare the component (Vue 2.x).
          */
         mounted() {
-             this.dirltr = $('html').attr('dir') == 'ltr';
+             this.dirltr = this.$root.htmldir == 'ltr';
              this.selectedOption = this.value
              this.selectedMonth = this.month
              this.selectedDay = this.day

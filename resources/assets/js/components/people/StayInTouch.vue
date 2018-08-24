@@ -148,7 +148,6 @@
             return {
                 frequency: '0',
                 isActive: false,
-                dirltr: true,
                 errorMessage: '',
                 initialFrequency: 0,
                 initialState: false,
@@ -180,8 +179,6 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
-
                 if (this.contact.stay_in_touch_frequency == null) {
                     this.frequency = '0';
                 } else {
