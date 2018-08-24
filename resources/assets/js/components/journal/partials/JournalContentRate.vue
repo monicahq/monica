@@ -106,7 +106,7 @@
           <div class="flex-none w-90 mt2 pt0 pr3 pb2">
             <ul class="f7">
               <li class="di">
-                <a class="pointer" v-on:click="destroy()">{{ $t('app.delete') }}</a>
+                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" v-on:click="destroy()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>

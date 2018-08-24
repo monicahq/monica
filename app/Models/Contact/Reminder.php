@@ -2,12 +2,11 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
@@ -15,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Reminder extends Model
 {
-    use Hasher;
     /**
      * The attributes that aren't mass assignable.
      *

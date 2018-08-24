@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Hasher;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -15,11 +14,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingHasher as Model;
 use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,7 +32,6 @@ use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 class Contact extends Model
 {
     use Searchable;
-    use Hasher;
 
     protected $dates = [
         'last_talked_to',
@@ -117,6 +115,7 @@ class Contact extends Model
         'is_partial' => 'boolean',
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
+        'is_starred' => 'boolean',
     ];
 
     /**
@@ -164,7 +163,7 @@ class Contact extends Model
      */
     public function activityStatistics()
     {
-        return $this->hasMany(ActivityStatistic::class);
+        return $this->hasMany(ActivityStatistic::class)->orderBy('year', 'desc');
     }
 
     /**
@@ -982,46 +981,40 @@ class Contact extends Model
     }
 
     /**
-     * Get the gravatar, if it exits.
+     * Get the first gravatar of all emails, if found.
      *
      * @param  int $size
      * @return string|bool
      */
     public function getGravatar($size)
     {
-        $email = $this->getFirstEmail();
-
-        if (is_null($email) || empty($email)) {
-            return false;
-        }
-
-        try {
-            if (! app('gravatar')->exists($email)) {
-                return false;
-            }
-        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
-            return false;
-        }
-
-        return app('gravatar')->get($email, [
-            'size' => $size,
-            'secure' => config('app.env') === 'production',
-        ]);
-    }
-
-    public function getFirstEmail()
-    {
-        $contact_email = $this->contactFields()
+        $emails = $this->contactFields()
             ->whereHas('contactFieldType', function ($query) {
                 $query->where('type', '=', 'email');
             })
-            ->first();
+            ->get();
 
-        if (is_null($contact_email)) {
-            return;
+        foreach ($emails as $email) {
+            if (is_null($email) || empty($email->data)) {
+                continue;
+            }
+
+            try {
+                if (! app('gravatar')->exists($email->data)) {
+                    continue;
+                }
+            } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
+                // catch invalid email
+                continue;
+            }
+
+            return app('gravatar')->get($email->data, [
+                'size' => $size,
+                'secure' => config('app.env') === 'production',
+            ]);
         }
 
-        return $contact_email->data;
+        return false;
     }
 
     /**

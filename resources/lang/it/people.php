@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Modifica informazioni del contatto',
     'call_button' => 'Aggiungi chiamata',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Rimani in contatto',
@@ -170,7 +171,8 @@ return [
     'relationship_form_add_choice' => 'Con chi è la relazione?',
     'relationship_form_create_contact' => 'Aggiungi persona',
     'relationship_form_associate_contact' => 'Un contatto esistente',
-    'relationship_form_associate_dropdown' => 'Seleziona un contatto esistente dal menu a tendina',
+    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Aggiungi questa persona anche come Contatto.',
     'relationship_form_add_description' => 'Ció ti permetterá di trattare questo partner come un qualsiasi altro contatto.',
     'relationship_form_add_no_existing_contact' => 'Al momento non hai contatti che possono essere una relazione :name.',
@@ -225,6 +227,13 @@ return [
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
     'activities_activity' => 'Categoria dell\'attività',
+    'activities_view_activities_report' => 'View activities report',
+    'activities_profile_title' => 'Activities report between :name and you',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
+    'activities_profile_year_summary' => 'Here is what you two have done in :year',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
+
     // notes
     'notes_create_success' => 'Nota creata',
     'notes_update_success' => 'Nota aggiornata',

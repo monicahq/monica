@@ -70,8 +70,19 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
+        // starred contacts
+        $starredContacts = $contacts->filter(function ($item) {
+            return $item->is_starred === true;
+        });
+
+        $unstarredContacts = $contacts->filter(function ($item) {
+            return $item->is_starred === false;
+        });
+
         return view('people.index')
             ->withContacts($contacts->unique('id'))
+            ->withUnstarredContacts($unstarredContacts)
+            ->withStarredContacts($starredContacts)
             ->withTags($tags)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
@@ -86,6 +97,12 @@ class ContactsController extends Controller
      */
     public function create()
     {
+        if (auth()->user()->account->hasReachedContactLimit()
+        && auth()->user()->account->hasLimitations()
+        && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            return redirect()->route('settings.subscriptions.index');
+        }
+
         $data = [
             'genders' => auth()->user()->account->genders,
         ];
@@ -134,7 +151,7 @@ class ContactsController extends Controller
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
-            return redirect()->route('people.show', ['id' => $contact->hashID()]);
+            return redirect()->route('people.show', $contact);
         } else {
             return redirect()->route('people.create')
                             ->with('status', trans('people.people_add_success', ['name' => $contact->name]));
@@ -498,5 +515,23 @@ class ContactsController extends Controller
         $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
 
         return $frequency;
+    }
+
+    /**
+     * Toggle favorites of a contact.
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return array
+     */
+    public function favorite(Request $request, Contact $contact)
+    {
+        $bool = (bool) $request->get('toggle');
+
+        $contact->is_starred = $bool;
+        $contact->save();
+
+        return [
+            'is_starred' => $bool,
+        ];
     }
 }

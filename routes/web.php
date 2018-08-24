@@ -176,6 +176,13 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         // Stay in touch information
         Route::post('/people/{contact}/stayintouch', 'ContactsController@stayInTouch');
+
+        // Set favorite
+        Route::post('/people/{contact}/favorite', 'ContactsController@favorite');
+
+        // Activities
+        Route::get('/people/{contact}/activities', 'Contacts\\ActivitiesController@index')->name('activities.index');
+        Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
     });
 
     // Activities
@@ -230,7 +237,6 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
             Route::delete('/settings/personalization/activitytypecategories/{activityTypeCategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
 
-            Route::get('/settings/personalization/activitytypes/{activityTypeCategoryId}', 'Settings\\ActivityTypesController@index');
             Route::post('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@create');
             Route::put('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@update');
             Route::delete('/settings/personalization/activitytypes/{activityType}', 'Settings\\ActivityTypesController@destroy');

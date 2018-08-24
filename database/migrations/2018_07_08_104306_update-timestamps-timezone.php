@@ -53,6 +53,8 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('default_activity_types', $timezone);
         $this->update('default_contact_field_types', $timezone);
         $this->update('default_contact_modules', $timezone);
+        $this->update('default_activity_types', $timezone);
+        $this->update('default_activity_type_categories', $timezone);
         $this->update('default_relationship_types', $timezone);
         $this->update('default_relationship_type_groups', $timezone);
         $this->update('entries', $timezone);

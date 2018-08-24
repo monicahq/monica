@@ -13,13 +13,18 @@ trait Hasher
 
     public function resolveRouteBinding($value)
     {
-        $value = app('idhasher')->decodeId($value);
+        $id = $this->decodeId($value);
 
-        return $this->where($this->getRouteKeyName(), $value)->first();
+        return parent::resolveRouteBinding($id);
+    }
+
+    protected function decodeId($value)
+    {
+        return app('idhasher')->decodeId($value);
     }
 
     public function hashID()
     {
-        return app('idhasher')->encodeId($this->id);
+        return $this->getRouteKey();
     }
 }
