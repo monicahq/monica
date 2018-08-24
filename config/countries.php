@@ -5,7 +5,7 @@ return [
     'cache' => [
         'enabled' => true,
 
-        'service' => PragmaRX\Countries\Package\Services\Cache::class,
+        'service' => PragmaRX\Countries\Package\Services\Cache\Service::class,
 
         'duration' => 180,
 
@@ -25,7 +25,7 @@ return [
             'geometry' => false,
             'states' => false,
             'taxes' => false,
-            'timezones' => false,
+            'timezones' => true,
             'timezones_times' => false,
             'topology' => false,
         ],
