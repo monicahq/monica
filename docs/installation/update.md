@@ -27,6 +27,10 @@ steps below to update it, **every single time**, or you will run into problems.
    php artisan monica:update --force
    ```
 
+The `monica:update` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
+As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
+
+
 Your instance should be updated.
 
 ## Importing vCards (CLI only)
