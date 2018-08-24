@@ -95,6 +95,9 @@ exit
 1. Run `php artisan setup:production` to run the migrations, seed the database and symlink folders.
 1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
 
+The `setup:production` command will run migrations scripts for database, and flush all cache for config, route, and view, as an optimization process.
+As the configuration of the application is cached, any update on the `.env` file will not be detected after that. You may have to run `php artisan config:cache` manually after every update of `.env` file.
+
 ### 4. Configure cron job
 
 Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33).

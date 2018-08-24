@@ -15,7 +15,7 @@ class UpdateTimestampsTimezone extends Migration
     {
         $timezone = env('APP_DEFAULT_TIMEZONE', 'UTC');
 
-        if ($timezone == 'UTC') {
+        if ($timezone == null || $timezone == 'UTC') {
             return;
         }
 
