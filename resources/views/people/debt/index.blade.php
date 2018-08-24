@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title {{ direction() }}">
+<div class="col-xs-12 section-title {{ htmldir() }}">
   <img src="/img/people/debt/bill.svg" class="icon-section icon-money">
   <h3>
     {{ trans('people.debt_title') }}
 
-    <span class="{{ direction() == 'ltr' ? 'fr' : 'fl' }}">
+    <span class="{{ htmldir() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="{{ route('people.debt.add', $contact) }}" class="btn">{{ trans('people.debt_add_cta') }}</a>
     </span>
   </h3>

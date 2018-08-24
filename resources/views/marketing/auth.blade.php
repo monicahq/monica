@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ \App::getLocale() }}" dir="{{ direction() }}">
+<html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

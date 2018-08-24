@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-3 sidebar-menu {{ direction() }}">
+<div class="col-xs-12 col-sm-3 sidebar-menu {{ htmldir() }}">
   <ul class="mb4">
 
     @if (Route::currentRouteName() == 'settings.index')

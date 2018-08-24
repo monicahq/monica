@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title {{ direction() }}">
+<div class="col-xs-12 section-title {{ htmldir() }}">
   <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
-    <span class="{{ direction() == 'ltr' ? 'fr' : 'fl' }}">
+    <span class="{{ htmldir() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="{{ route('people.reminders.add', $contact) }}" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>

@@ -5,7 +5,7 @@
 <div>
 
   {{-- Breadcrumb --}}
-  <div class="breadcrumb {{ direction() }}">
+  <div class="breadcrumb {{ htmldir() }}">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
@@ -38,7 +38,7 @@
 
               <h3 class="tc">{{ trans('settings.subscriptions_account_payment') }}</h3>
               <div class="cf mb4">
-                <div class="{{ direction() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3 mt0-ns mt4">
+                <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3 mt0-ns mt4">
                   <div class="b--purple ba pt3 br3 bw1 relative">
                     <img src="{{ url('/img/settings/subscription/best_value.png') }}" class="absolute" style="top: -30px; left: -20px;">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_year_title') }}</h3>
@@ -73,7 +73,7 @@
                     </ul>
                   </div>
                 </div>
-                <div class="{{ direction() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3">
+                <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3">
                   <div class="b--gray-monica ba pt3 br3 bw1">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_month_title') }}</h3>
                     <p class="tc mb4">

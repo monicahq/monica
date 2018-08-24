@@ -5,7 +5,7 @@
 <div class="settings">
 
   {{-- Breadcrumb --}}
-  <div class="breadcrumb {{ direction() }}">
+  <div class="breadcrumb {{ htmldir() }}">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
@@ -66,7 +66,7 @@
                     {{ $tag->name }}
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                   </div>
-                  <div class="table-cell actions {{ direction() }}">
+                  <div class="table-cell actions {{ htmldir() }}">
                     <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
