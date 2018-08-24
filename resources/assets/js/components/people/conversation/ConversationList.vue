@@ -3,6 +3,11 @@
 
 <template>
     <div>
+        https://xaksis.github.io/vue-good-table/guide/configuration/pagination-options.html#mode
+        <vue-good-table
+            :columns="columns"
+            :rows="rows" />
+
         <div class="cf collapse br--top br--bottom pa3 bb b--gray-monica" v-for="conversation in conversations" v-bind:key="conversation.id">
             <div class="fl fn-l w-50 dib-l w-auto-l mr3-l silver f6">
                 {{ conversation.happened_at }}
@@ -40,6 +45,26 @@
         data() {
             return {
                 conversations: [],
+
+                columns: [
+                    {
+                        label: 'Date',
+                        field: 'date',
+                        type: 'date',
+                    },
+                    {
+                        label: 'Type',
+                        field: 'type',
+                    },
+                    {
+                        label: 'Messages',
+                        field: 'messages',
+                    },
+                    {
+                        label: 'Content',
+                        field: 'content',
+                    },
+                ],
             };
         },
 

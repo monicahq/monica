@@ -40,6 +40,11 @@ Vue.use(PrettyCheckbox);
 import vSelectMenu from 'v-selectmenu';
 Vue.use(vSelectMenu);
 
+// Tables
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
+
 // Custom components
 Vue.component(
     'passport-clients',
