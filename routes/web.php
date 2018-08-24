@@ -173,6 +173,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         // Conversations
         Route::name('conversation.')->group(function () {
+            Route::get('/people/{contact}/conversations', 'Contacts\\ConversationsController@index')->name('index');
             Route::get('/people/{contact}/conversation/new', 'Contacts\\ConversationsController@new')->name('new');
             Route::post('/people/{contact}/conversation/store', 'Contacts\\ConversationsController@store')->name('store');
         });

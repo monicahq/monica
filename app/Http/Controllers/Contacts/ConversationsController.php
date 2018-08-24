@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
@@ -22,6 +23,32 @@ class ConversationsController extends Controller
             ->withContact($contact)
             ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
+    }
+
+    /**
+     * Display the list of conversations.
+     *
+     * @param  Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request, Contact $contact)
+    {
+        $conversationsCollection = collect([]);
+        $conversations = $contact->conversations()->latest()->get();
+
+        foreach ($conversations as $conversation) {
+            $data = [
+                'id' => $conversation->id,
+                'message_count' => $conversation->messages->count(),
+                'contact_field_type' => $conversation->contactFieldType->name,
+                'icon' => $conversation->contactFieldType->fontawesome_icon,
+                'content' => $conversation->messages()->first()->content,
+                'happened_at' => DateHelper::getShortDate($conversation->happened_at),
+            ];
+            $conversationsCollection->push($data);
+        }
+
+        return $conversationsCollection;
     }
 
     /**

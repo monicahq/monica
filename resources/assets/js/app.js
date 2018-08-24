@@ -142,6 +142,11 @@ Vue.component(
 );
 
 Vue.component(
+    'conversation-list',
+    require('./components/people/conversation/ConversationList.vue')
+);
+
+Vue.component(
     'conversation',
     require('./components/people/conversation/Conversation.vue')
 );
