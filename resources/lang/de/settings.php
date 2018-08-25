@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Konto löschen',
     'settings_success' => 'Einstellungen aktualisiert!',
     'locale' => 'Sprache der Anwendung',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Tschechisch',
     'locale_de' => 'Deutsch',
     'locale_en' => 'Englisch',
