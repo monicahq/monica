@@ -9,7 +9,7 @@
 </div>
 
 <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-100 pa3">
-  <div class="br2 ba b--gray-monica bg-white mb4">
+  <div class="br2 bg-white mb4">
     <conversation-list :contact-id="{{ $contact->id }}"></conversation-list>
   </div>
 </div>
