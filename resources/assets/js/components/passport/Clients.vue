@@ -251,7 +251,7 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.getClients();
 
                 $('#modal-create-client').on('shown.bs.modal', () => {

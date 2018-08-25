@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
+<div class="col-xs-12 section-title">
   <img src="/img/people/activities.svg" class="icon-section icon-activities">
   <h3>
     {{ trans('people.section_personal_activities') }}
 
-    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
+    <span class="{{ htmldir() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="{{ route('activities.add', $contact) }}" cy-name="add-activity-button" class="btn">{{ trans('people.activities_add_activity') }}</a>
     </span>
   </h3>

@@ -198,7 +198,7 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.getGifts();
                 this.setActiveTab(this.giftsActiveTab);
             },

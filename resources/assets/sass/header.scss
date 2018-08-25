@@ -31,21 +31,21 @@
 }
 
 .header-nav {
-  text-align: right;
+  @if $htmldir == ltr {
+    text-align: right;
+  } @else {
+    text-align: left;
+  }
 
   .header-nav-item {
     display: inline;
     margin-right: 10px;
 
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-
-  &.rtl {
-    text-align: left;
-
-    .header-nav-item {
+    @if $htmldir == ltr {
+      &:last-child {
+        margin-right: 0;
+      }
+    } @else {
       &:last-child {
         margin-right: 10px;
       }

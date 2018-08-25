@@ -7,7 +7,7 @@
     <div class="pa4-ns ph3 pv2 bb b--gray-monica">
       <div class="mb3 mb0-ns">
         <div class="flex mb3">
-          <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
+          <div :class="[dirltr ? 'mr2' : 'ml2']">
             <input type="radio" id="" v-model="selectedOption" name="birthdate" selected value="unknown">
           </div>
           <div class="pointer" @click="selectedOption = 'unknown'">
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="flex mb3">
-          <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
+          <div :class="[dirltr ? 'mr2' : 'ml2']">
             <input type="radio" id="" v-model="selectedOption" name="birthdate" value="approximate">
           </div>
           <div class="pointer" @click="selectedOption = 'approximate'">
@@ -23,16 +23,16 @@
             <div v-if="selectedOption == 'approximate'">
               <form-input
                 :value="age"
-                v-bind:input-type="'number'"
-                v-bind:id="'age'"
-                v-bind:width="50"
-                v-bind:required="true">
+                :input-type="'number'"
+                :id="'age'"
+                :width="50"
+                :required="true">
               ></form-input>
             </div>
           </div>
         </div>
         <div class="flex mb3">
-          <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
+          <div :class="[dirltr ? 'mr2' : 'ml2']">
             <input type="radio" id="" v-model="selectedOption" name="birthdate" value="almost">
           </div>
           <div class="pointer" @click="selectedOption = 'almost'">
@@ -42,31 +42,32 @@
                 <form-select
                   v-model="selectedMonth"
                   :options="months"
-                  v-bind:id="'month'"
-                  v-bind:title="''" v-bind:class="[ dirltr ? 'mr3' : '' ]">
+                  :id="'month'"
+                  :title="''" :class="[ dirltr ? 'mr3' : '' ]">
                 </form-select>
                 <form-select
                   v-model="selectedDay"
                   :options="days"
-                  v-bind:id="'day'"
-                  v-bind:title="''" v-bind:class="[ dirltr ? '' : 'mr3' ]">
+                  :id="'day'"
+                  :title="''" :class="[ dirltr ? '' : 'mr3' ]">
                 </form-select>
               </div>
             </div>
           </div>
         </div>
         <div class="flex">
-          <div v-bind:class="[dirltr ? 'mr2' : 'ml2']">
+          <div :class="[dirltr ? 'mr2' : 'ml2']">
             <input type="radio" id="" v-model="selectedOption" name="birthdate" value="exact">
           </div>
           <div class="pointer" @click="selectedOption = 'exact'">
             {{ $t('people.information_edit_exact') }}
-            <div v-if="selectedOption == 'exact'" class="mt3" v-bind:class="[ dirltr ? '' : 'fr' ]">
+            <div v-if="selectedOption == 'exact'" class="mt3">
 
               <form-date
-                v-bind:id="'birthdayDate'"
-                v-bind:default-date="defaultDate"
-                v-bind:locale="locale" v-bind:class="[ dirltr ? '' : 'fr' ]">
+                :id="'birthdayDate'"
+                :default-date="defaultDate"
+                :locale="locale"
+                :class="[ dirltr ? '' : 'fr' ]">
               </form-date>
             </div>
           </div>
@@ -77,7 +78,7 @@
     <div class="pa4-ns ph3 pv2 bb b--gray-monica" v-if="selectedOption == 'exact' || selectedOption == 'almost'">
       <div class="mb2 mb0-ns">
         <div class="form-check">
-          <label v-bind:class="[dirltr ? 'mr2 form-check-label pointer' : 'ml2 form-check-label pointer']">
+          <label :class="[dirltr ? 'mr2 form-check-label pointer' : 'ml2 form-check-label pointer']">
             <input class="form-check-input" id="addReminder" name="addReminder" type="checkbox" value="addReminder" :checked="hasBirthdayReminder">
             {{ $t('people.people_add_reminder_for_birthday') }}
           </label>
@@ -107,7 +108,7 @@
          * Prepare the component (Vue 2.x).
          */
         mounted() {
-             this.dirltr = $('html').attr('dir') == 'ltr';
+             this.dirltr = this.$root.htmldir == 'ltr';
              this.selectedOption = this.value
              this.selectedMonth = this.month
              this.selectedDay = this.day

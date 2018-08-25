@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <div class="fl journal-calendar-box relative">
+  <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-box relative">
     <template v-if="journalEntry.show_calendar">
       <div class="journal-calendar-text absolute tc">
         <span class="db w-100">{{ journalEntry.object.month_name }}</span>
@@ -65,6 +65,7 @@
          */
         data() {
             return {
+                dirltr: true,
             };
         },
 
@@ -89,6 +90,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = this.$root.htmldir == 'ltr';
             },
         }
     }

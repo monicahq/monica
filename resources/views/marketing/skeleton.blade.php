@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ \App::getLocale() }}" dir="{{ \App\Helpers\LocaleHelper::getDirection() }}">
+<html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,7 @@
     <title>{{ trans('app.application_title') }}</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app'.htmldir().'.css') }}">
     <meta name="description" content="{{ trans('app.application_description') }}">
     <link rel="author" href="@djaiss">
     <meta property="og:title" content="{{ trans('app.application_og_title') }}" />
