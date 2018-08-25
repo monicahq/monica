@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23ed2d1548867d081fb7ba168f207565",
+    "content-hash": "de7b5f59627f23eb8d26f4848d355fc4",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3583,16 +3583,16 @@
         },
         {
             "name": "pragmarx/coollection",
-            "version": "v0.5.7",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/coollection.git",
-                "reference": "87405353ef1947839c7768c3b024c8ecf923ae9f"
+                "reference": "fdc6df241d7d631ffac0093378874200638f03e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/87405353ef1947839c7768c3b024c8ecf923ae9f",
-                "reference": "87405353ef1947839c7768c3b024c8ecf923ae9f",
+                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/fdc6df241d7d631ffac0093378874200638f03e4",
+                "reference": "fdc6df241d7d631ffac0093378874200638f03e4",
                 "shasum": ""
             },
             "require": {
@@ -3643,7 +3643,7 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2018-02-19T02:50:22+00:00"
+            "time": "2018-08-19T20:13:00+00:00"
         },
         {
             "name": "pragmarx/countries",
@@ -3651,19 +3651,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries.git",
-                "reference": "028b295dbd8b09384956e1c9fdb3e5eccdbae1da"
+                "reference": "df4a00d7567b412e9426e341c6aa5fa71b6fa15e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/028b295dbd8b09384956e1c9fdb3e5eccdbae1da",
-                "reference": "028b295dbd8b09384956e1c9fdb3e5eccdbae1da",
+                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/df4a00d7567b412e9426e341c6aa5fa71b6fa15e",
+                "reference": "df4a00d7567b412e9426e341c6aa5fa71b6fa15e",
                 "shasum": ""
             },
             "require": {
                 "colinodell/json5": "^1.0",
                 "nette/caching": "^2.5",
                 "php": ">=7.0",
-                "pragmarx/coollection": "^0.5",
+                "pragmarx/coollection": "^0.6",
                 "psr/simple-cache": "^1.0"
             },
             "require-dev": {
@@ -3705,27 +3705,27 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2018-03-13T16:14:30+00:00"
+            "time": "2018-08-19T21:44:15+00:00"
         },
         {
             "name": "pragmarx/countries-laravel",
-            "version": "v0.5.2",
+            "version": "v0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries-laravel.git",
-                "reference": "822e453d608e289742ecd9c6e1ff7b867df27c0e"
+                "reference": "234bda05277cde3e6cec47c1c7280bae273c6023"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/822e453d608e289742ecd9c6e1ff7b867df27c0e",
-                "reference": "822e453d608e289742ecd9c6e1ff7b867df27c0e",
+                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/234bda05277cde3e6cec47c1c7280bae273c6023",
+                "reference": "234bda05277cde3e6cec47c1c7280bae273c6023",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": ">=5.3",
                 "php": ">=7.0",
-                "pragmarx/coollection": ">=0.5",
-                "pragmarx/countries": "^0.5.0",
+                "pragmarx/coollection": ">=0.6",
+                "pragmarx/countries": "^0.5.8",
                 "psr/simple-cache": "^1.0"
             },
             "require-dev": {
@@ -3776,7 +3776,7 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2018-02-17T16:38:10+00:00"
+            "time": "2018-08-19T22:00:14+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -3912,16 +3912,16 @@
         },
         {
             "name": "pragmarx/ia-arr",
-            "version": "v5.6.12",
+            "version": "v5.6.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-arr.git",
-                "reference": "de495d1dbd5c1331314e130f4c58f837a6978838"
+                "reference": "4c0fd512616064822b6d50ca0e6bc8aa8eb3c067"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-arr/zipball/de495d1dbd5c1331314e130f4c58f837a6978838",
-                "reference": "de495d1dbd5c1331314e130f4c58f837a6978838",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-arr/zipball/4c0fd512616064822b6d50ca0e6bc8aa8eb3c067",
+                "reference": "4c0fd512616064822b6d50ca0e6bc8aa8eb3c067",
                 "shasum": ""
             },
             "require": {
@@ -3974,20 +3974,20 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2018-03-15T21:30:18+00:00"
+            "time": "2018-08-19T20:20:32+00:00"
         },
         {
             "name": "pragmarx/ia-collection",
-            "version": "v5.6.12",
+            "version": "v5.6.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-collection.git",
-                "reference": "0dfca0b93ea8cd55c067b474f9ab1e0272490e90"
+                "reference": "0625ac534a31fe91cfb1d48ab8d8cb31694034a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/0dfca0b93ea8cd55c067b474f9ab1e0272490e90",
-                "reference": "0dfca0b93ea8cd55c067b474f9ab1e0272490e90",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/0625ac534a31fe91cfb1d48ab8d8cb31694034a1",
+                "reference": "0625ac534a31fe91cfb1d48ab8d8cb31694034a1",
                 "shasum": ""
             },
             "require": {
@@ -4038,20 +4038,20 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2018-03-15T21:29:24+00:00"
+            "time": "2018-08-19T20:16:53+00:00"
         },
         {
             "name": "pragmarx/ia-str",
-            "version": "v5.6.12",
+            "version": "v5.6.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-str.git",
-                "reference": "61eea1881a011202f6cff8370fdf12ea4a42249d"
+                "reference": "1572361ef0472404e3f3c53d9448a933fa86e33b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-str/zipball/61eea1881a011202f6cff8370fdf12ea4a42249d",
-                "reference": "61eea1881a011202f6cff8370fdf12ea4a42249d",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-str/zipball/1572361ef0472404e3f3c53d9448a933fa86e33b",
+                "reference": "1572361ef0472404e3f3c53d9448a933fa86e33b",
                 "shasum": ""
             },
             "require": {
@@ -4110,7 +4110,7 @@
                 "str",
                 "string"
             ],
-            "time": "2018-03-15T22:33:25+00:00"
+            "time": "2018-08-19T20:21:49+00:00"
         },
         {
             "name": "pragmarx/random",
