@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Удалить аккаунт',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Язык',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Czech',
     'locale_de' => 'немецкий',
     'locale_en' => 'Английский',
