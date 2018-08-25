@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Hesabı sil',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Çekce',
     'locale_de' => 'Almanca',
     'locale_en' => 'İngilizce',
