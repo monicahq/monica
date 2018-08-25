@@ -9,7 +9,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="/img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('auth.login_to_account') }}</h2>
@@ -34,7 +34,7 @@
               </div>
             @endif
 
-            <form class="" action="/login" method="post">
+            <form action="/login" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">

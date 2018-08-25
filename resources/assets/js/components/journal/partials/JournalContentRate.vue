@@ -8,7 +8,7 @@
     <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
-    <div class="fl journal-calendar-content">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
       <div class="br3 ba b--gray-monica bg-white mb3 journal-line">
         <!-- Actual log -->
         <div class="flex pb2 pt3">
@@ -27,7 +27,7 @@
           <div class="flex-none">
 
             <!-- sad smiley color -->
-            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer mt1" v-if="day.rate == 1">
+            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 1">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-695.000000, -345.000000)">
@@ -43,7 +43,7 @@
             </svg>
 
             <!-- mediocre day monochrome -->
-            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer mt1" v-if="day.rate == 2">
+            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 2">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-754.000000, -165.000000)">
@@ -58,7 +58,7 @@
             </svg>
 
             <!-- happy day color -->
-            <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mr3 pointer mt1" v-if="day.rate == 3">
+            <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 3">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-814.000000, -345.000000)">
@@ -123,7 +123,9 @@
          */
         data() {
             return {
-                day: []
+                day: [],
+
+                dirltr: true,
             };
         },
 
@@ -148,6 +150,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.day = this.journalEntry.object;
             },
 

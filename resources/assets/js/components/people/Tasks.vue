@@ -36,7 +36,7 @@
 
           <!-- EDIT BOX -->
           <form class="bg-near-white pa2 br2 mt3 mb3" v-show="task.edit">
-            <div class="">
+            <div>
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.tasks_form_title') }}
               </label>
@@ -64,7 +64,7 @@
       <!-- ADD A TASK VIEW -->
       <div v-if="addMode" cy-name="task-add-view">
         <form class="bg-near-white pa2 br2 mt3 mb3">
-          <div class="">
+          <div>
             <label class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_title') }}
             </label>
@@ -151,7 +151,7 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.getTasks();
             },
 

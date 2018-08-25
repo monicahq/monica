@@ -157,10 +157,10 @@
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
-          <div class="">
+          <div>
             <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
-          <div class="">
+          <div>
             @if ($existingContacts->count() == 0)
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" disabled v-if="!global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.add') }}</button>
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-if="global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.add') }}</button>

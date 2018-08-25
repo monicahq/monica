@@ -4,7 +4,7 @@
     @foreach (auth()->user()->account->getRemindersForMonth($month) as $reminder)
     <li class="pb2">
       <span class="ttu f6 mr2 black-60">{{ \App\Helpers\DateHelper::getShortDateWithoutYear($reminder->next_expected_date) }}</span>
-      <span class="">
+      <span>
 
         @if ($reminder->contact->is_partial)
 

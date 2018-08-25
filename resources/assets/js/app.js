@@ -254,6 +254,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
         accept_invite_user: false,
         date_met_the_contact: 'known',
         global_relationship_form_new_contact: true,
+        htmldir: window.Laravel.htmldir,
       },
       methods: {
       },
