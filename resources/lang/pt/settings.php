@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Deletar conta',
     'settings_success' => 'Preferências atualizadas!',
     'locale' => 'Idioma usado no aplicativo',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Checo',
     'locale_de' => 'Alemão',
     'locale_en' => 'Inglês',
