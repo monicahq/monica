@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Rimuovi account',
     'settings_success' => 'Impostazioni aggiornate',
     'locale' => 'Lingua',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Ceco',
     'locale_de' => 'Tedesco',
     'locale_en' => 'Inglese',
