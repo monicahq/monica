@@ -49,7 +49,7 @@ return [
     'delete_cta' => 'Effacer le compte',
     'settings_success' => 'Préférences mises à jour',
     'locale' => 'Langue',
-    'locale_ar' => 'Arabic',
+    'locale_ar' => 'Arabe',
     'locale_cs' => 'Tchèque',
     'locale_de' => 'Allemand',
     'locale_en' => 'Anglais',
