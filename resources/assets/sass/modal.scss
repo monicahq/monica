@@ -10,7 +10,7 @@
 
   .close {
     position: absolute;
-    @if $text-direction == ltr {
+    @if $htmldir == ltr {
       right: 19px;
     } @else {
       left: 19px;

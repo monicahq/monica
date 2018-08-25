@@ -6,7 +6,7 @@
 
 .journal-calendar-box {
   width: 62px;
-  @if $text-direction == ltr {
+  @if $htmldir == ltr {
     margin-right: 11px;
   } @else {
     margin-left: 11px;

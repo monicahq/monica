@@ -31,7 +31,7 @@
 }
 
 .header-nav {
-  @if $text-direction == ltr {
+  @if $htmldir == ltr {
     text-align: right;
   } @else {
     text-align: left;
@@ -41,7 +41,7 @@
     display: inline;
     margin-right: 10px;
 
-    @if $text-direction == ltr {
+    @if $htmldir == ltr {
       &:last-child {
         margin-right: 0;
       }

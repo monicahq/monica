@@ -17,7 +17,7 @@
 
     li {
       margin-bottom: 7px;
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         padding-left: 15px;
       } @else {
         padding-right: 15px;
@@ -32,7 +32,7 @@
       }
 
       .number-contacts-per-tag {
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           float: right;
         } @else {
           float: left;
@@ -54,7 +54,7 @@
 
     a {
       position: absolute;
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         right: 10px;
       } @else {
         left: 10px;
@@ -78,7 +78,7 @@
       .options {
         display: inline;
         position: absolute;
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           right: 10px;
         } @else {
           left: 10px;
@@ -127,7 +127,7 @@
       padding-top: 10px;
       vertical-align: middle;
       width: 43px;
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         padding-left: 5px;
       } @else {
         padding-right: 5px;
@@ -161,7 +161,7 @@
       position: relative;
       text-align: right;
       top: 16px;
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         float: right;
       } @else {
         float: left;
@@ -217,7 +217,7 @@
         padding-top: 21px;
         position: absolute;
         width: 87px;
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 5px;
         } @else {
           padding-right: 5px;
@@ -243,7 +243,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         width: calc(100% - 245px);
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 100px;
           margin-right: -9999px;
         } @else {
@@ -260,7 +260,7 @@
 
       .profile-detail-summary {
         margin-top: 3px;
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 100px;
         } @else {
           padding-right: 100px;
@@ -268,7 +268,7 @@
 
         li {
           &:not(:last-child) {
-            @if $text-direction == ltr {
+            @if $htmldir == ltr {
               margin-right: 10px;
             } @else {
               margin-left: 10px;
@@ -278,7 +278,7 @@
       }
 
       #tagsForm {
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 100px;
         } @else {
           padding-right: 100px;
@@ -301,13 +301,13 @@
 
         #tags_tag {
           width: 150px !important;
-          @if $text-direction == rtl {
+          @if $htmldir == rtl {
             float: left;
           }
         }
 
         #tags_addTag {
-          @if $text-direction == rtl {
+          @if $htmldir == rtl {
             float: right;
             overflow: true;
           }
@@ -321,14 +321,14 @@
         margin: 0;
         overflow: hidden;
         margin-top: 8px;
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 100px;
         } @else {
           padding-right: 100px;
         }
 
         li {
-          @if $text-direction == ltr {
+          @if $htmldir == ltr {
             float: left;
           } @else {
             float: right;
@@ -341,7 +341,7 @@
       position: absolute;
       top: 14px;
 
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         right: 0;
       } @else {
         left: 0;
@@ -363,7 +363,7 @@
         font-weight: 400;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           padding-left: 23px;
         } @else {
           padding-right: 23px;
@@ -685,7 +685,7 @@
         margin-top: 10px;
 
         h2 {
-          @if $text-direction == ltr {
+          @if $htmldir == ltr {
             padding-left: 80px;
           } @else {
             padding-right: 80px;

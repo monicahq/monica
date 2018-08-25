@@ -29,7 +29,7 @@
       }
 
       i {
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           margin-right: 5px;
         } @else {
           margin-left: 5px;
@@ -85,7 +85,7 @@
     }
 
     .table-cell.actions {
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         text-align: right;
       } @else {
         text-align: left;
@@ -264,7 +264,7 @@
       padding: 20px 15px;
 
       ul {
-        @if $text-direction == ltr {
+        @if $htmldir == ltr {
           margin-left: 20px;
         } @else {
           margin-right: 20px;
@@ -281,7 +281,7 @@
     }
 
     .actions {
-      @if $text-direction == ltr {
+      @if $htmldir == ltr {
         text-align: right;
       } @else {
         text-align: left;
