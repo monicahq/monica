@@ -136,6 +136,9 @@ v2.1.0 - 2018-05-03
 * Add ability to stay in touch with a contact by sending reminders at a given interval
 * Add secure Oauth route for the API login
 * Fix removal of tags
+* Support Arabic language
+* Split app css in two files for better support of ltr/rtl text direction
+* Add helper function htmldir()
 
 v2.0.1 - 2018-04-17
 -------------------
