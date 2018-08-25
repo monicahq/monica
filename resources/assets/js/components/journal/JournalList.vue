@@ -8,7 +8,7 @@
   <div class="mw9 center">
 
     <!-- Left sidebar -->
-    <div class="fl w-70-ns w-100 pa2">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns w-100 pa2">
 
       <!-- How was your day -->
       <div class="br3 ba b--gray-monica bg-white pa3 mb4" v-if="hasRated != true">
@@ -140,7 +140,7 @@
     </div>
 
     <!-- Right sidebar -->
-    <div class="fl w-30 pa2">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30 pa2">
       <a href="/journal/add" class="btn btn-primary w-100 mb4" cy-name="add-entry-button">
         {{ $t('journal.journal_add') }}
       </a>

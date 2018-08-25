@@ -8,7 +8,7 @@
     <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
-    <div class="fl journal-calendar-content">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
       <div class="br3 ba b--gray-monica bg-white mb3 journal-line">
         <!-- Actual log -->
         <div class="flex pb2 pt3">
