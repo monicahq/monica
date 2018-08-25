@@ -49,6 +49,7 @@ return [
     'delete_cta' => 'Smazat účet',
     'settings_success' => 'Předvolby aktualizovány!',
     'locale' => 'Jazyk použitý v aplikaci',
+    'locale_ar' => 'Arabic',
     'locale_cs' => 'Czech',
     'locale_de' => 'Němčina',
     'locale_en' => 'Angličtina',
