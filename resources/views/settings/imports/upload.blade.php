@@ -5,7 +5,7 @@
 <div class="settings upload">
 
   {{-- Breadcrumb --}}
-  <div class="breadcrumb {{ htmldir() }}">
+  <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">
@@ -37,7 +37,7 @@
             <div class="pa3 bb b--gray-monica">
               <h2>{{ trans('settings.import_upload_title') }}</h2>
 
-              <div class="warning-zone {{ htmldir() }}">
+              <div class="warning-zone">
                 <p>{{ trans('settings.import_upload_rules_desc') }}</p>
                 <ul>
                     <li>{!! trans('settings.import_upload_rule_format') !!}</li>

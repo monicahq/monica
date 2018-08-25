@@ -8,7 +8,12 @@
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="/manifest.webmanifest">
 
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app-'.htmldir().'.css') }}">
+    {{-- Required only for the Upgrade account page --}}
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
+      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
+    @endif
+
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
       window.Laravel = {!! json_encode([
@@ -44,7 +49,6 @@
       </script>
       <script src="{{ mix('js/manifest.js') }}"></script>
       <script src="{{ mix('js/stripe.js') }}"></script>
-      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
     @endif
 
     @stack('scripts')

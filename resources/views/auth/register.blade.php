@@ -9,7 +9,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="/img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             @if($first)
@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <form class="" action="/register" method="post">
+            <form action="/register" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">

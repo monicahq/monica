@@ -17,7 +17,11 @@
 
     li {
       margin-bottom: 7px;
-      padding-left: 15px;
+      @if $text-direction == ltr {
+        padding-left: 15px;
+      } @else {
+        padding-right: 15px;
+      }
       position: relative;
 
       &.selected::before {
@@ -28,8 +32,9 @@
       }
 
       .number-contacts-per-tag {
-        float: right;
-        &.rtl {
+        @if $text-direction == ltr {
+          float: right;
+        } @else {
           float: left;
         }
       }
@@ -49,10 +54,9 @@
 
     a {
       position: absolute;
-      &.ltr {
+      @if $text-direction == ltr {
         right: 10px;
-      }
-      &.rtl {
+      } @else {
         left: 10px;
       }
     }
@@ -74,10 +78,9 @@
       .options {
         display: inline;
         position: absolute;
-        &.ltr {
+        @if $text-direction == ltr {
           right: 10px;
-        }
-        &.rtl {
+        } @else {
           left: 10px;
         }
 
@@ -124,9 +127,9 @@
       padding-top: 10px;
       vertical-align: middle;
       width: 43px;
-      padding-left: 5px;
-      &.rtl {
-        padding-left: 0px;
+      @if $text-direction == ltr {
+        padding-left: 5px;
+      } @else {
         padding-right: 5px;
       }
 
@@ -158,18 +161,10 @@
       position: relative;
       text-align: right;
       top: 16px;
-      float: right;
-      &.rtl {
+      @if $text-direction == ltr {
+        float: right;
+      } @else {
         float: left;
-      }
-    }
-  }
-
-  &.rtl {
-    .sidebar {
-      li {
-        padding-left: 0;
-        padding-right: 15px;
       }
     }
   }
@@ -222,9 +217,9 @@
         padding-top: 21px;
         position: absolute;
         width: 87px;
-        padding-left: 5px;
-        &.rtl {
-          padding-left: 0px;
+        @if $text-direction == ltr {
+          padding-left: 5px;
+        } @else {
           padding-right: 5px;
         }
 
@@ -248,11 +243,10 @@
         text-overflow: ellipsis;
         overflow: hidden;
         width: calc(100% - 245px);
-        padding-left: 100px;
-        margin-right: -9999px;
-        &.rtl {
-          padding-left: 0;
-          margin-right: 0;
+        @if $text-direction == ltr {
+          padding-left: 100px;
+          margin-right: -9999px;
+        } @else {
           padding-right: 100px;
           margin-left: -9999px;
         }
@@ -266,21 +260,17 @@
 
       .profile-detail-summary {
         margin-top: 3px;
-        padding-left: 100px;
+        @if $text-direction == ltr {
+          padding-left: 100px;
+        } @else {
+          padding-right: 100px;
+        }
 
         li {
           &:not(:last-child) {
-            margin-right: 10px;
-          }
-        }
-
-        &.rtl {
-          padding-left: 0;
-          padding-right: 100px;
-
-          li {
-            &:not(:last-child) {
-              margin-right: 0;
+            @if $text-direction == ltr {
+              margin-right: 10px;
+            } @else {
               margin-left: 10px;
             }
           }
@@ -288,7 +278,11 @@
       }
 
       #tagsForm {
-        padding-left: 100px;
+        @if $text-direction == ltr {
+          padding-left: 100px;
+        } @else {
+          padding-right: 100px;
+        }
         position: relative;
 
         #tags_tagsinput {
@@ -307,18 +301,16 @@
 
         #tags_tag {
           width: 150px !important;
+          @if $text-direction == rtl {
+            float: left;
+          }
         }
 
-        &.rtl {
-          padding-left: 0;
-          padding-right: 100px;
-        }
-        &.rtl #tags_addTag {
-          float: right;
-          overflow: true;
-        }
-        &.rtl #tags_tag {
-          float: left;
+        #tags_addTag {
+          @if $text-direction == rtl {
+            float: right;
+            overflow: true;
+          }
         }
       }
 
@@ -329,23 +321,17 @@
         margin: 0;
         overflow: hidden;
         margin-top: 8px;
-        padding-left: 100px;
-
-        li {
-          float: left;
+        @if $text-direction == ltr {
+          padding-left: 100px;
+        } @else {
+          padding-right: 100px;
         }
 
-        &.rtl {
-          padding-left: 0;
-          padding-right: 100px;
-
-          li {
+        li {
+          @if $text-direction == ltr {
+            float: left;
+          } @else {
             float: right;
-          }
-
-          .pretty-tag {
-            margin-right: 0;
-            margin-left: 10px
           }
         }
       }
@@ -355,10 +341,9 @@
       position: absolute;
       top: 14px;
 
-      &.ltr {
+      @if $text-direction == ltr {
         right: 0;
-      }
-      &.rtl {
+      } @else {
         left: 0;
       }
     }
@@ -378,7 +363,11 @@
         font-weight: 400;
         margin-bottom: 20px;
         padding-bottom: 10px;
-        padding-left: 23px;
+        @if $text-direction == ltr {
+          padding-left: 23px;
+        } @else {
+          padding-right: 23px;
+        }
         padding-top: 10px;
         position: relative;
       }
@@ -387,13 +376,6 @@
         position: absolute;
         top: 14px;
         width: 17px;
-      }
-
-      &.rtl {
-        h3 {
-          padding-left: 0;
-          padding-right: 23px;
-        }
       }
     }
 
@@ -703,9 +685,9 @@
         margin-top: 10px;
 
         h2 {
-          padding-left: 80px;
-          &.rtl {
-            padding-left: 0;
+          @if $text-direction == ltr {
+            padding-left: 80px;
+          } @else {
             padding-right: 80px;
           }
 

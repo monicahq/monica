@@ -99,10 +99,10 @@
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
-          <div class="">
+          <div>
             <a href="{{ route('people.index') }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
-          <div class="">
+          <div>
             <button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" value="true" type="submit">{{ trans('people.people_add_cta') }}</button>
           </div>

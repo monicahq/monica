@@ -1,11 +1,11 @@
 @extends('layouts.skeleton')
 
 @section('content')
-  <div class="people-list {{ htmldir() }}">
+  <div class="people-list">
     {{ csrf_field() }}
 
     {{-- Breadcrumb --}}
-    <div class="breadcrumb {{ htmldir() }}">
+    <div class="breadcrumb">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12">
@@ -35,17 +35,17 @@
                       <p class="clear-filter">
                         {{ trans('people.people_list_filter_tag') }}
                         @foreach ($tags as $tag)
-                            <span class="pretty-tag {{ htmldir() }}">
+                            <span class="pretty-tag">
                             {{ $tag->name }}
                             </span>
                         @endforeach
-                        <a class="{{ htmldir() }}" href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
+                        <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
                   @if ($tagLess)
                       <p class="clear-filter">
                         <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
-                        <a class="{{ htmldir() }}"  href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
+                        <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
                       </p>
                   @endif
 
@@ -72,18 +72,18 @@
               <p class="clear-filter">
                 {{ trans('people.people_list_filter_tag') }}
                 @foreach ($tags as $tag)
-                  <span class="pretty-tag {{ htmldir() }}">
+                  <span class="pretty-tag">
                     {{ $tag->name }}
                   </span>
                 @endforeach
-                <a class="{{ htmldir() }}" href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
+                <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
               </p>
               @endif
 
               @if ($tagLess)
               <p class="clear-filter">
                 <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
-                <a class="{{ htmldir() }}"  href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
+                <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
               </p>
               @endif
 
@@ -92,7 +92,7 @@
                 {{-- Sorting options --}}
                 <li class="people-list-item sorting">
                   {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
-                  <div class="options {{ htmldir() }}">
+                  <div class="options">
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
                       <div class="dropdown-menu" aria-labelledby="dropdownSort">
@@ -138,7 +138,7 @@
                         {{ $contact->getInitials() }}
                       </div>
                       @else
-                      <div class="avatar {{ htmldir() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+                      <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
                         {{ $contact->getInitials() }}
                       </div>
                       @endif
@@ -151,7 +151,7 @@
                     </svg>
                   </span>
 
-                  <span class="people-list-item-information {{ htmldir() }}">
+                  <span class="people-list-item-information">
                     {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                   </span>
                 </li>
@@ -172,7 +172,7 @@
                         {{ $contact->getInitials() }}
                       </div>
                       @else
-                      <div class="avatar {{ htmldir() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+                      <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
                         {{ $contact->getInitials() }}
                       </div>
                       @endif
@@ -182,7 +182,7 @@
                     {{ $contact->name }}
                   </span>
 
-                  <span class="people-list-item-information {{ htmldir() }}">
+                  <span class="people-list-item-information">
                     {{ trans('people.people_list_last_updated') }} {{ \App\Helpers\DateHelper::getShortDate($contact->last_consulted_at) }}
                   </span>
                 </li>
@@ -203,8 +203,8 @@
               @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>
-                    <span class="pretty-tag {{ htmldir() }}"><a href="{{ route('people.index') }}?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
-                    <span class="number-contacts-per-tag {{ htmldir() }}">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
+                    <span class="pretty-tag"><a href="{{ route('people.index') }}?{{$url}}tag{{$tagCount}}={{ $dbtag->name_slug }}">{{ $dbtag->name }}</a></span>
+                    <span class="number-contacts-per-tag">{{ trans_choice('people.people_list_contacts_per_tags', $dbtag->contacts()->count(), ['count' => $dbtag->contacts()->count()]) }}</span>
                 </li>
                 @endif
               @endforeach

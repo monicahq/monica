@@ -1,4 +1,4 @@
-<div class="col-xs-12 section-title {{ htmldir() }}">
+<div class="col-xs-12 section-title">
   <img src="/img/people/calls/phone.svg" class="icon-section">
   <h3>
     {{ trans('people.call_title') }}

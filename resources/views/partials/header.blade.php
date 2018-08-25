@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="w-50-l w-100 dtc-l v-mid tl tr-l">
-        <div class="{{ htmldir() }} header-nav">
+        <div class="header-nav">
           <a href="{{ route('dashboard.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_dashboard') }}</a>
           <a href="{{ route('people.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_family') }}</a>
           <a href="{{ route('journal.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_journal') }}</a>

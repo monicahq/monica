@@ -9,14 +9,14 @@
         <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control user-input-search-input">
         <ul class="user-input-search-results"></ul>
         <br />
-        <ul class="contacts {{ htmldir() }}">
+        <ul class="contacts">
             <ul class="contacts-list">
                 @if ($contact && $method == 'POST')
-                    <li class="pretty-tag {{ htmldir() }}"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endif
                 @foreach ($activity->contacts as $contact)
-                    <li class="pretty-tag {{ htmldir() }}"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endforeach
             </ul>

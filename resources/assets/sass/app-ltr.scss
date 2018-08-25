@@ -16,6 +16,7 @@
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
+$text-direction: ltr !default;
 
 @import "buttons";
 @import "header";
@@ -134,7 +135,11 @@ $border-color: #dfdfdf;
   padding-right: 10px;
   padding-left: 19px;
   position: relative;
-  margin-right: 10px;
+  @if $text-direction == ltr {
+    margin-right: 10px;
+  } @else {
+    margin-left: 10px;
+  }
   text-decoration: none;
   -webkit-transition: color 0.2s;
 
@@ -166,11 +171,6 @@ $border-color: #dfdfdf;
       background-color: transparent;
       color: #fff;
     }
-  }
-
-  &.rtl {
-    margin-right: 0;  
-    margin-left: 10px;
   }
 }
 
@@ -236,7 +236,7 @@ a {
     font-size: 11px;
     text-decoration: underline;
     margin-right: 5px;
-    &.rtl {
+    @if $text-direction == rtl {
       float: right;
     }
   }
@@ -362,15 +362,12 @@ input:disabled {
 
     li:not(:last-child):after {
       content: '>';
-      margin-left: 5px;
-      margin-right: 1px;
-    }
-  }
-  &.rtl {
-    ul {
-      li:not(:last-child):after {
-        margin-right: 5px !important;
-        margin-left: 1px !important;
+      @if $text-direction == ltr {
+        margin-left: 5px;
+        margin-right: 1px;
+      } @else {
+        margin-right: 5px;
+        margin-left: 1px;
       }
     }
   }

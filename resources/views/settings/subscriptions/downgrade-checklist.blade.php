@@ -5,7 +5,7 @@
 <div class="settings">
 
   {{-- Breadcrumb --}}
-  <div class="breadcrumb {{ htmldir() }}">
+  <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-xs-12">

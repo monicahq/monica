@@ -15,18 +15,18 @@
               <img src="{{ $contact->gravatar_url }}" width="87">
             @else
               @if (strlen($contact->getInitials()) == 1)
-              <div class="avatar one-letter {{ htmldir() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @else
-              <div class="avatar {{ htmldir() }}" style="background-color: {{ $contact->getAvatarColor() }};">
+              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
                 {{ $contact->getInitials() }}
               </div>
               @endif
             @endif
           @endif
 
-          <h3 class="{{ htmldir() }}">
+          <h3>
             <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
 
             <contact-favorite hash="{!! $contact->hashID() !!}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
@@ -42,7 +42,7 @@
             @endif
           </h3>
 
-          <ul class="horizontal profile-detail-summary {{ htmldir() }}">
+          <ul class="horizontal profile-detail-summary">
             @if ($contact->is_dead)
               <li>
                 @if (! is_null($contact->deceasedDate))
@@ -68,19 +68,19 @@
             </li>
           </ul>
 
-          <ul class="tags {{ htmldir() }}">
+          <ul class="tags">
             <li class="{{ htmldir() == 'rtl' ? 'ml3' : 'mr3' }}">
               <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
             </li>
             <ul class="tags-list">
               @foreach ($contact->tags as $tag)
-                <li class="pretty-tag {{ htmldir() }}"><a href="{{ route('people.index') }}?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
+                <li class="pretty-tag"><a href="{{ route('people.index') }}?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
               @endforeach
             </ul>
             <li class="{{ htmldir() == 'rtl' ? 'ml3' : 'mr3' }}"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
           </ul>
 
-          <form method="POST" action="{{ route('people.tags.update', $contact) }}" id="tagsForm" class="{{ htmldir() }}">
+          <form method="POST" action="{{ route('people.tags.update', $contact) }}" id="tagsForm">
             {{ csrf_field() }}
             <input name="tags" id="tags" value="{{ $contact->getTagsAsString() }}" />
             <div class="tagsFormActions">
@@ -89,7 +89,7 @@
             </div>
           </form>
 
-          <ul class="horizontal quick-actions {{ htmldir() }}">
+          <ul class="horizontal quick-actions">
             <li>
               <a href="{{ route('people.edit', $contact) }}" class="btn edit-information" id="button-edit-contact">{{ trans('people.edit_contact_information') }}</a>
             </li>

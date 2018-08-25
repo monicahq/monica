@@ -4,17 +4,17 @@
     <div class="modal-content">
       <div class="modal-header">
         {{ $activity->getSummary() }}
-        <button type="button" class="close {{ htmldir() }}" data-dismiss="modal">
+        <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
               <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
-                  <ul class="contacts {{ htmldir() }}">
+                  <ul class="contacts">
                       <ul class="contacts-list">
                           @foreach ($activity->contacts as $contact)
-                              <li class="pretty-tag {{ htmldir() }}"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                              <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                           @endforeach
                       </ul>
                   </ul>
