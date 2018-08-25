@@ -49,6 +49,7 @@ return [
     'delete_cta' => '删除帐户',
     'settings_success' => '偏好设置已更新',
     'locale' => '应用程序中使用的语言',
+    'locale_ar' => 'Arabic',
     'locale_cs' => '捷克文',
     'locale_de' => '德文',
     'locale_en' => '英文',
