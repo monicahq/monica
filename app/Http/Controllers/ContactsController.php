@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
@@ -275,9 +276,14 @@ class ContactsController extends Controller
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
+
+            if ($contact->has_avatar) {
+                $contact->deleteAvatar();
+            }
+
             $contact->has_avatar = true;
             $contact->avatar_location = config('filesystems.default');
-            $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
+            $contact->avatar_file_name = $request->avatar->store('avatars', $contact->avatar_location);
         }
 
         // Is the person deceased?

@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'cloud' => 's3',
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,14 @@ return [
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'endpoint' => 'https://'.env('AWS_SERVER'),
+
+            /* TODO
+            'cache' => [
+                'store' => env('AWS_CACHE_STORE', 'memcached'),
+                'expire' => env('AWS_CACHE_EXPIRE', 600),
+                'prefix' => env('AWS_CACHE_PREFIX'),
+            ],
+            */
         ],
 
     ],
