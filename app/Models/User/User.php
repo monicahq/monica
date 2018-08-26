@@ -12,7 +12,6 @@ use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -249,16 +248,6 @@ class User extends Authenticatable
         }
 
         return decrypt($value);
-    }
-
-    /**
-     * U2fkeys.
-     *
-     * @return HasMany
-     */
-    public function u2fKeys()
-    {
-        return $this->hasMany(U2fKey::class);
     }
 
     /**

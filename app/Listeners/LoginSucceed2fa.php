@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use Lahaxearnaud\U2f\Models\U2fKey;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 
 class LoginSucceed2fa
@@ -14,7 +15,7 @@ class LoginSucceed2fa
      */
     public function handle(LoginSucceeded $event)
     {
-        if (config('u2f.enable') && $event->user->u2fKeys()->count() > 0) {
+        if (config('u2f.enable') && U2fKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
             session([config('u2f.sessionU2fName') => true]);
         }
     }
