@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix gifts not showing when value was not set
 * Fix phpunit not parsing all test files
 * Improve automatic route binding
 
