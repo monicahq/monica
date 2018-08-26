@@ -18,8 +18,8 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\LoginSucceed2fa',
         ],
         'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LoginListener'
-        ]
+            'App\Listeners\LoginListener',
+        ],
     ];
 
     /**

@@ -253,10 +253,11 @@ class User extends Authenticatable
 
     /**
      * U2fkeys.
-     * 
+     *
      * @return HasMany
      */
-    public function u2fKeys() {
+    public function u2fKeys()
+    {
         return $this->hasMany(U2fKey::class);
     }
 
