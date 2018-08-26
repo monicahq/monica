@@ -36,10 +36,8 @@ class ResizeAvatars implements ShouldQueue
     public function handle()
     {
         if ($this->contact->has_avatar) {
-
             $storage = Storage::disk($this->contact->avatar_location);
             if ($storage->exists($this->contact->avatar_file_name)) {
-
                 try {
                     $avatar_file = $storage->get($this->contact->avatar_file_name);
                     $filename = pathinfo($this->contact->avatar_file_name, PATHINFO_FILENAME);

@@ -276,7 +276,6 @@ class ContactsController extends Controller
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
-
             if ($contact->has_avatar) {
                 $contact->deleteAvatar();
             }

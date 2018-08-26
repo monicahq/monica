@@ -977,12 +977,9 @@ class Contact extends Model
             if ($storage->exists($avatar_file_name)) {
                 $storage->delete($avatar_file_name);
             }
-        }
-        catch (FileNotFoundException $e) {
+        } catch (FileNotFoundException $e) {
             // not an error
-        }
-        catch (\Exception $e) {
-            
+        } catch (\Exception $e) {
         }
     }
 
