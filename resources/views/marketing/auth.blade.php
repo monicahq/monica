@@ -8,7 +8,7 @@
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="/manifest.webmanifest">
 
-    <link rel="stylesheet" href="{{ mix('css/app'.htmldir().'.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app-'.htmldir().'.css') }}">
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
       window.Laravel = {!! json_encode([
