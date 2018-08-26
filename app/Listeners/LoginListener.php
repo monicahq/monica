@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\Validate2faController;
 
 class LoginListener
@@ -15,7 +16,7 @@ class LoginListener
      */
     public function handle(Login $event)
     {
-        if ($event->remember) {
+        if (Auth::viaRemember()) {
             if (config('google2fa.enabled') && ! empty($event->user->google2fa_secret)) {
                 Validate2faController::loginCallback();
             }
