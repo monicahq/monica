@@ -3,7 +3,7 @@
     🗣 Conversations
 
     <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
-      <a href="#logCallModal" class="btn edit-information" data-toggle="modal">{{ trans('people.call_button') }}</a>
+      <a href="{{ route('people.conversation.new', $contact) }}" class="btn edit-information">Log conversation</a>
     </span>
   </h3>
 </div>

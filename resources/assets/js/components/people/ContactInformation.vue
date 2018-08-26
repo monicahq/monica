@@ -18,7 +18,7 @@
     </p>
 
     <ul v-if="contactInformationData.length > 0">
-      <li v-for="contactInformation in contactInformationData" class="mb2">
+      <li v-for="contactInformation in contactInformationData" class="mb2" v-bind:key="contactInformation.id">
 
         <div class="w-100 dt" v-show="!contactInformation.edit">
           <div class="dtc">
@@ -62,7 +62,7 @@
             {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ $t('people.contact_info_form_personalize') }}</a>
           </label>
           <select class="db w-100 h2" v-model="createForm.contact_field_type_id">
-            <option v-for="contactFieldType in contactFieldTypes" v-bind:value="contactFieldType.id">
+            <option v-for="contactFieldType in contactFieldTypes" v-bind:key="contactFieldType.id" v-bind:value="contactFieldType.id">
               {{ contactFieldType.name }}
             </option>
           </select>
