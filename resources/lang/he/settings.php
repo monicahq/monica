@@ -49,7 +49,7 @@ return [
     'delete_cta' => 'מחיקת חשבון',
     'settings_success' => 'ההעדפות עודכנו!',
     'locale' => 'שפה בה נעשה שימוש ביישום',
-    'locale_ar' => 'Arabic',
+    'locale_ar' => 'ערבית',
     'locale_cs' => 'צ׳כית',
     'locale_de' => 'גרמנית',
     'locale_en' => 'אנגלית',
