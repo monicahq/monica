@@ -7,7 +7,7 @@
 
     <h3 class="mb3">
       {{ $t('settings.personalization_genders_title') }}
-      <a class="btn nt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateModal">{{ $t('settings.personalization_genders_add') }}</a>
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateModal">{{ $t('settings.personalization_genders_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_genders_desc') }}</p>
 
@@ -19,7 +19,7 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -33,7 +33,7 @@
             <span class="i">({{ gender.numberOfContacts }} contacts)</span>
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></i>
             <i class="fa fa-trash-o pointer" @click="showDelete(gender)" v-if="genders.length > 1"></i>
@@ -50,10 +50,10 @@
           <p class="b mb2"></p>
           <form-input
             v-model="createForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="''"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_genders_modal_question')">
+            :input-type="'text'"
+            :id="''"
+            :required="true"
+            :title="$t('settings.personalization_genders_modal_question')">
           </form-input>
         </div>
       </form>
@@ -71,10 +71,10 @@
         <div class="mb4">
           <form-input
             v-model="updateForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="''"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_genders_modal_edit_question')">
+            :input-type="'text'"
+            :id="''"
+            :required="true"
+            :title="$t('settings.personalization_genders_modal_edit_question')">
           </form-input>
         </div>
       </form>
@@ -101,10 +101,10 @@
             <form-select
               v-model="deleteForm.newId"
               :options="genders"
-              v-bind:id="'first_name'"
-              v-bind:required="true"
-              v-bind:title="''"
-              v-bind:excluded-id="deleteForm.id">
+              :id="'deleteNewId'"
+              :required="true"
+              :title="''"
+              :excluded-id="deleteForm.id">
             </form-select>
           </div>
         </div>
@@ -221,7 +221,7 @@
             },
 
             showEdit(gender) {
-                this.updateForm.id = gender.id;
+                this.updateForm.id = gender.id.toString();
                 this.updateForm.name = gender.name;
                 this.updatedGender = gender;
 
@@ -238,8 +238,9 @@
             },
 
             showDelete(gender) {
+                this.errorMessage = '';
                 this.deleteForm.name = gender.name;
-                this.deleteForm.id = gender.id;
+                this.deleteForm.id = gender.id.toString();
                 this.numberOfContacts = gender.numberOfContacts;
 
                 this.$refs.deleteModal.open();
@@ -248,8 +249,7 @@
             trash() {
                 axios.delete('/settings/personalization/genders/' + this.deleteForm.id)
                       .then(response => {
-                          this.$refs.deleteModal.close();
-
+                          this.closeDeleteModal();
                           this.getGenders();
                       });
             },
@@ -257,11 +257,15 @@
             trashAndReplace() {
                 axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
                       .then(response => {
-                          this.$refs.deleteModal.close();
+                          this.closeDeleteModal();
                           this.getGenders();
                       })
                       .catch(error => {
-                          this.errorMessage = error.response.data.message;
+                          if (typeof error.response.data === 'object') {
+                              this.errorMessage = error.response.data.message;
+                          } else {
+                              this.errorMessage = this.$t('app.error_try_again');
+                          }
                       });
             },
         }
