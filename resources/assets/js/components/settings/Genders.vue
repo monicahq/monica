@@ -264,7 +264,7 @@
                           if (typeof error.response.data === 'object') {
                               this.errorMessage = error.response.data.message;
                           } else {
-                              this.errorMessage = $t('app.error_try_again');
+                              this.errorMessage = this.$t('app.error_try_again');
                           }
                       });
             },
