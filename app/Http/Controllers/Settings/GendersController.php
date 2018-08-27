@@ -74,19 +74,21 @@ class GendersController extends Controller
     /**
      * Destroy a gender type.
      */
-    public function destroyAndReplaceGender(GendersRequest $request, Gender $genderToDelete, $genderToReplaceWithId)
+    public function destroyAndReplaceGender(GendersRequest $request, Gender $gender, $genderId)
     {
         try {
             $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
-                ->findOrFail($genderToReplaceWithId);
+                ->findOrFail($genderId);
         } catch (ModelNotFoundException $e) {
-            throw new Exception(trans('settings.personalization_genders_modal_error'));
+            return response()->json([
+                'message' => trans('settings.personalization_genders_modal_error'),
+            ], 403);
         }
 
         // We get the new gender to associate the contacts with.
-        auth()->user()->account->replaceGender($genderToDelete, $genderToReplaceWith);
+        auth()->user()->account->replaceGender($gender, $genderToReplaceWith);
 
-        $genderToDelete->delete();
+        $gender->delete();
     }
 
     /**
