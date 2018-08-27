@@ -82,6 +82,7 @@ return [
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 
