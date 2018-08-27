@@ -82,7 +82,7 @@ return [
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
     'error_save' => '当储存数据时出现了一个错误',
-    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_try_again' => '出了点问题，请再试一次。',
 
     'default_save_success' => '数据已被保存',
 
