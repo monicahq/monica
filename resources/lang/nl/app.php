@@ -82,6 +82,7 @@ return [
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
