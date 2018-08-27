@@ -82,6 +82,7 @@ return [
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
     'error_save' => 'We had an error trying to save the data.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'The data has been saved.',
 
