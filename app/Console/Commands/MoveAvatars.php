@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Console\ConfirmableTrait;
 
 class MoveAvatars extends Command
@@ -36,28 +35,28 @@ class MoveAvatars extends Command
         }
 
         Contact::where('has_avatar', true)
-            ->chunk(200, function($contact){
-            if ($contact->avatar_location == config('filesystems.default')) {
-                return;
-            }
+            ->chunk(200, function ($contact) {
+                if ($contact->avatar_location == config('filesystems.default')) {
+                    return;
+                }
 
-            $storage = Storage::disk($contact->avatar_location);
-            if (! $storage->exists($contact->avatar_file_name)) {
-                return;
-            }
-    
-            try {
-                // move avatars to new location
-                $this->moveAvatarSize($contact);
-                $this->moveAvatarSize($contact, 110);
-                $this->moveAvatarSize($contact, 174);
+                $storage = Storage::disk($contact->avatar_location);
+                if (! $storage->exists($contact->avatar_file_name)) {
+                    return;
+                }
 
-                $contact->deleteAvatars();
-                $contact->avatar_location = config('filesystems.default');
-            } catch (FileNotFoundException $e) {
-                return;
-            }    
-        });
+                try {
+                    // move avatars to new location
+                    $this->moveAvatarSize($contact);
+                    $this->moveAvatarSize($contact, 110);
+                    $this->moveAvatarSize($contact, 174);
+
+                    $contact->deleteAvatars();
+                    $contact->avatar_location = config('filesystems.default');
+                } catch (FileNotFoundException $e) {
+                    return;
+                }
+            });
     }
 
     private function moveAvatarSize($contact, $size = null)
@@ -69,7 +68,7 @@ class MoveAvatars extends Command
         if (! is_null($size)) {
             $avatar_file_name = 'avatars/'.$filename.'_'.$size.'.'.$extension;
         }
-    
+
         $storage = Storage::disk($contact->avatar_location);
         $avatar_file = $storage->get('avatars/'.$avatar_file_name);
 
