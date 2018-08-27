@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Exception;
 use Illuminate\Http\Request;
 use App\Models\Contact\Gender;
 use App\Http\Controllers\Controller;
