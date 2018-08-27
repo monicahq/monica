@@ -60,14 +60,6 @@ return [
             'secret' => env('AWS_SECRET'),
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
-
-            /* TODO
-            'cache' => [
-                'store' => env('AWS_CACHE_STORE', 'memcached'),
-                'expire' => env('AWS_CACHE_EXPIRE', 600),
-                'prefix' => env('AWS_CACHE_PREFIX'),
-            ],
-            */
         ],
 
     ],
