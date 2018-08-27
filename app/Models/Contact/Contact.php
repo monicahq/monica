@@ -947,9 +947,9 @@ class Contact extends Model
     }
 
     /**
-     * Delete avatar files.
+     * Delete avatars files.
      */
-    public function deleteAvatar()
+    public function deleteAvatars()
     {
         if ($this->avatar_location == 'external') {
             return;
@@ -978,8 +978,7 @@ class Contact extends Model
                 $storage->delete($avatar_file_name);
             }
         } catch (FileNotFoundException $e) {
-            // not an error
-        } catch (\Exception $e) {
+            return;
         }
     }
 
