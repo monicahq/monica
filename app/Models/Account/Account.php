@@ -694,7 +694,9 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->stripe_plan;
+        if (! is_null($plan)) {
+            return $plan->stripe_plan;
+        }
     }
 
     /**
@@ -706,7 +708,9 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->name;
+        if (! is_null($plan)) {
+            return $plan->name;
+        }
     }
 
     /**
