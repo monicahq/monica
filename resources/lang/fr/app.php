@@ -82,7 +82,7 @@ return [
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
-    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
