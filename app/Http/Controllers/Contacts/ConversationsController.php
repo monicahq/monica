@@ -170,6 +170,8 @@ class ConversationsController extends Controller
 
         $data = [
             'happened_at' => $date,
+            'account_id' => auth()->user()->account->id,
+            'conversation_id' => $conversation->id,
             'contact_field_type_id' => $request->get('contactFieldTypeId'),
         ];
 
