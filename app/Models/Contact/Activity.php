@@ -3,13 +3,12 @@
 namespace App\Models\Contact;
 
 use Parsedown;
-use App\Traits\Hasher;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\Journal\JournalEntry;
-use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
+use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
@@ -21,7 +20,6 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;
-    use Hasher;
 
     /**
      * The table associated with the model.

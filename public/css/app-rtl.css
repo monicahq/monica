@@ -17930,7 +17930,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .header-nav {
-  text-align: right;
+  text-align: left;
 }
 
 .header-nav .header-nav-item {
@@ -17939,18 +17939,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .header-nav .header-nav-item:last-child {
-  margin-right: 0;
-}
-
-.header-nav.rtl {
-  text-align: left;
-}
-
-.header-nav.rtl .header-nav-item:last-child {
   margin-right: 10px;
 }
 
-.header-nav.rtl .header-nav-item:first-child {
+.header-nav .header-nav-item:first-child {
   margin-right: 0;
 }
 
@@ -18154,7 +18146,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .people-list .sidebar li {
   margin-bottom: 7px;
-  padding-left: 15px;
+  padding-right: 15px;
   position: relative;
 }
 
@@ -18166,10 +18158,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .people-list .sidebar li .number-contacts-per-tag {
-  float: right;
-}
-
-.people-list .sidebar li .number-contacts-per-tag.rtl {
   float: left;
 }
 
@@ -18187,13 +18175,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .people-list .clear-filter a {
   position: absolute;
-}
-
-.people-list .clear-filter a.ltr {
-  right: 10px;
-}
-
-.people-list .clear-filter a.rtl {
   left: 10px;
 }
 
@@ -18215,13 +18196,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 .people-list .people-list-item.sorting .options {
   display: inline;
   position: absolute;
-}
-
-.people-list .people-list-item.sorting .options.ltr {
-  right: 10px;
-}
-
-.people-list .people-list-item.sorting .options.rtl {
   left: 10px;
 }
 
@@ -18262,11 +18236,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   padding-top: 10px;
   vertical-align: middle;
   width: 43px;
-  padding-left: 5px;
-}
-
-.people-list .people-list-item .avatar.rtl {
-  padding-left: 0px;
   padding-right: 5px;
 }
 
@@ -18297,10 +18266,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   position: relative;
   text-align: right;
   top: 16px;
-  float: right;
-}
-
-.people-list .people-list-item .people-list-item-information.rtl {
   float: left;
 }
 
@@ -18350,11 +18315,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   padding-top: 21px;
   position: absolute;
   width: 87px;
-  padding-left: 5px;
-}
-
-.people-show .pagehead .people-profile-information .avatar.rtl {
-  padding-left: 0px;
   padding-right: 5px;
 }
 
@@ -18377,13 +18337,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   text-overflow: ellipsis;
   overflow: hidden;
   width: calc(100% - 245px);
-  padding-left: 100px;
-  margin-right: -9999px;
-}
-
-.people-show .pagehead .people-profile-information h3.rtl {
-  padding-left: 0;
-  margin-right: 0;
   padding-right: 100px;
   margin-left: -9999px;
 }
@@ -18396,20 +18349,15 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .people-show .pagehead .people-profile-information .profile-detail-summary {
   margin-top: 3px;
-  padding-left: 100px;
-}
-
-.people-show .pagehead .people-profile-information .profile-detail-summary.rtl {
-  padding-left: 0;
   padding-right: 100px;
 }
 
 .people-show .pagehead .people-profile-information .profile-detail-summary li:not(:last-child) {
-  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .people-show .pagehead .people-profile-information #tagsForm {
-  padding-left: 100px;
+  padding-right: 100px;
   position: relative;
 }
 
@@ -18429,15 +18377,12 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .people-show .pagehead .people-profile-information #tagsForm #tags_tag {
   width: 150px !important;
+  float: left;
 }
 
-.people-show .pagehead .people-profile-information #tagsForm.rtl #tags_addTag {
+.people-show .pagehead .people-profile-information #tagsForm #tags_addTag {
   float: right;
   overflow: true;
-}
-
-.people-show .pagehead .people-profile-information #tagsForm.rtl #tags_tag {
-  float: left;
 }
 
 .people-show .pagehead .people-profile-information .tags {
@@ -18447,37 +18392,16 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   margin: 0;
   overflow: hidden;
   margin-top: 8px;
-  padding-left: 100px;
-}
-
-.people-show .pagehead .people-profile-information .tags li {
-  float: left;
-}
-
-.people-show .pagehead .people-profile-information .tags.rtl {
-  padding-left: 0;
   padding-right: 100px;
 }
 
-.people-show .pagehead .people-profile-information .tags.rtl li {
+.people-show .pagehead .people-profile-information .tags li {
   float: right;
-}
-
-.people-show .pagehead .people-profile-information .tags.rtl .pretty-tag {
-  margin-right: 0;
-  margin-left: 10px;
 }
 
 .people-show .pagehead .quick-actions {
   position: absolute;
   top: 14px;
-}
-
-.people-show .pagehead .quick-actions.ltr {
-  right: 0;
-}
-
-.people-show .pagehead .quick-actions.rtl {
   left: 0;
 }
 
@@ -18497,7 +18421,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   font-weight: 400;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  padding-left: 23px;
+  padding-right: 23px;
   padding-top: 10px;
   position: relative;
 }
@@ -18506,11 +18430,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   position: absolute;
   top: 14px;
   width: 17px;
-}
-
-.people-show .main-content .section-title.rtl h3 {
-  padding-left: 0;
-  padding-right: 23px;
 }
 
 .people-show .main-content .sidebar .sidebar-cta a {
@@ -18830,11 +18749,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   }
 
   .people-show .pagehead .people-profile-information h2 {
-    padding-left: 80px;
-  }
-
-  .people-show .pagehead .people-profile-information h2.rtl {
-    padding-left: 0;
     padding-right: 80px;
   }
 
@@ -18960,7 +18874,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .journal-calendar-box {
   width: 62px;
-  margin-right: 11px;
+  margin-left: 11px;
 }
 
 .journal-calendar-content {
@@ -19295,7 +19209,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .settings .sidebar-menu li i {
-  margin-right: 5px;
+  margin-left: 5px;
   color: #999;
 }
 
@@ -19346,10 +19260,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .settings .users-list .table-cell.actions {
-  text-align: right;
-}
-
-.settings .users-list .table-cell.actions.rtl {
   text-align: left;
 }
 
@@ -19512,13 +19422,8 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .settings.upload .warning-zone ul {
-  margin-left: 20px;
-  list-style-type: disc;
-}
-
-.settings.upload .warning-zone.rtl ul {
-  margin-left: 0;
   margin-right: 20px;
+  list-style-type: disc;
 }
 
 .settings .tags-list .tags-list-contact-number {
@@ -19527,10 +19432,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 .settings .tags-list .actions {
-  text-align: right;
-}
-
-.settings .tags-list .actions.rtl {
   text-align: left;
 }
 
@@ -19550,14 +19451,9 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .modal .close {
   position: absolute;
-  right: 19px;
+  left: 19px;
   top: 14px;
   font-size: 30px;
-}
-
-.modal .close.rtl {
-  right: auto;
-  left: 19px;
 }
 
 .modal.log-call .date-it-happened {
@@ -19685,9 +19581,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   font-size: 11px;
   height: 22px;
   line-height: 22px;
-  padding: 0 10px 0 19px;
+  padding-right: 10px;
+  padding-left: 19px;
   position: relative;
-  margin: 0 10px 0 0;
+  margin-left: 10px;
   text-decoration: none;
   -webkit-transition: color 0.2s;
 }
@@ -19795,9 +19692,6 @@ a.action-link {
   font-size: 11px;
   text-decoration: underline;
   margin-right: 5px;
-}
-
-a.action-link.rtl {
   float: right;
 }
 
@@ -19915,8 +19809,8 @@ input:disabled {
 
 .breadcrumb ul li:not(:last-child):after {
   content: '>';
-  margin-left: 5px;
-  margin-right: 1px;
+  margin-right: 5px;
+  margin-left: 1px;
 }
 
 .btn {

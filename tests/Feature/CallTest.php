@@ -31,7 +31,7 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -48,7 +48,7 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -62,7 +62,7 @@ class CallTest extends FeatureTestCase
         list($user, $contact) = $this->fetchUser();
 
         // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Last called: unknown');
 
         $params = [
@@ -70,7 +70,7 @@ class CallTest extends FeatureTestCase
             'content' => null,
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -81,7 +81,7 @@ class CallTest extends FeatureTestCase
         $this->assertDatabaseHas('calls', $params);
 
         // Check that the Contact view contains the newly created call
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('Last called: Jan 01, 2013');
 
@@ -104,7 +104,7 @@ class CallTest extends FeatureTestCase
             'content' => 'This is a test call',
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -115,7 +115,7 @@ class CallTest extends FeatureTestCase
         $this->assertDatabaseHas('calls', $params);
 
         // Check that the Contact view contains the newly created call
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('This is a test call');
 
@@ -140,9 +140,9 @@ class CallTest extends FeatureTestCase
             'called_at' => '2013-01-01 00:00:00',
         ]);
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
-        $response = $this->delete('/people/'.$contact->id.'/call/'.$call->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/call/'.$call->id);
         $response->assertStatus(302);
 
         $params = [];
@@ -159,7 +159,7 @@ class CallTest extends FeatureTestCase
         $eventParams['object_id'] = $call->id;
 
         // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Last called: unknown');
 
         $this->assertDatabaseMissing('events', $eventParams);

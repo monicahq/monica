@@ -151,7 +151,7 @@ class ContactsController extends Controller
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
-            return redirect()->route('people.show', ['id' => $contact->hashID()]);
+            return redirect()->route('people.show', $contact);
         } else {
             return redirect()->route('people.create')
                             ->with('status', trans('people.people_add_success', ['name' => $contact->name]));

@@ -76,7 +76,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/tasks',
+            '/people/'.$contact->hashID().'/tasks',
             $task
         );
 
@@ -102,7 +102,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts/store',
             $gift
         );
 
@@ -137,7 +137,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->id.'/gifts/'.$old_gift->id.'/update',
+            '/people/'.$contact->hashID().'/gifts/'.$old_gift->id.'/update',
             $gift
         );
 
@@ -204,7 +204,7 @@ class ContactTest extends FeatureTestCase
 
         $food = ['food' => $this->faker->sentence()];
 
-        $this->post('/people/'.$contact->id.'/food/save', $food);
+        $this->post('/people/'.$contact->hashID().'/food/save', $food);
 
         $food['id'] = $contact->id;
         $this->changeArrayKey('food', 'food_preferencies', $food);
@@ -223,7 +223,7 @@ class ContactTest extends FeatureTestCase
             'birthdate' => 'unknown',
         ];
 
-        $this->post('/people/'.$contact->id.'/update', $data);
+        $this->post('/people/'.$contact->hashID().'/update', $data);
 
         $data['id'] = $contact->id;
         $this->assertDatabaseHas('contacts', [

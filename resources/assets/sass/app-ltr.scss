@@ -16,6 +16,7 @@
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
+$htmldir: ltr !default;
 
 @import "buttons";
 @import "header";
@@ -131,9 +132,14 @@ $border-color: #dfdfdf;
   font-size: 11px;
   height: 22px;
   line-height: 22px;
-  padding: 0 10px 0 19px;
+  padding-right: 10px;
+  padding-left: 19px;
   position: relative;
-  margin: 0 10px 0 0;
+  @if $htmldir == ltr {
+    margin-right: 10px;
+  } @else {
+    margin-left: 10px;
+  }
   text-decoration: none;
   -webkit-transition: color 0.2s;
 
@@ -230,7 +236,7 @@ a {
     font-size: 11px;
     text-decoration: underline;
     margin-right: 5px;
-    &.rtl {
+    @if $htmldir == rtl {
       float: right;
     }
   }
@@ -356,8 +362,13 @@ input:disabled {
 
     li:not(:last-child):after {
       content: '>';
-      margin-left: 5px;
-      margin-right: 1px;
+      @if $htmldir == ltr {
+        margin-left: 5px;
+        margin-right: 1px;
+      } @else {
+        margin-right: 5px;
+        margin-left: 1px;
+      }
     }
   }
 }

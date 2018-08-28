@@ -113,21 +113,21 @@
         },
 
         props: {
-            contactId: {
+            hash: {
                 type: Number,
             },
         },
 
         mounted() {
-            this.prepareComponent(this.contactId)
+            this.prepareComponent(this.hash)
         },
 
         methods: {
             /**
              * Prepare the component.
              */
-            prepareComponent(contactId) {
-                axios.get('/people/' + contactId + '/conversations')
+            prepareComponent(hash) {
+                axios.get('/people/' + hash + '/conversations')
                     .then(response => {
                         this.conversations = response.data;
                     });

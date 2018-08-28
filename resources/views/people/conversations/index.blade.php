@@ -10,6 +10,6 @@
 
 <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-100 pa3">
   <div class="br2 bg-white mb4">
-    <conversation-list :contact-id="{{ $contact->id }}"></conversation-list>
+    <conversation-list hash="{{ $contact->hashID() }}"></conversation-list>
   </div>
 </div>

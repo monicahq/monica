@@ -3,7 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model

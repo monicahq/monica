@@ -18,7 +18,7 @@ else
 fi
 
 # Run migrations
-${ARTISAN} monica:update --force
+${ARTISAN} monica:update --force -v
 
 echo -e "\n\n\033[1;32mDone! You can access Monica by visiting \033[4;96mhttp://localhost:8080\033[0;40m\033[1;32m from your host machine\033[0;40m"
 

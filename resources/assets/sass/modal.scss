@@ -10,13 +10,13 @@
 
   .close {
     position: absolute;
-    right: 19px;
-    top: 14px;
-    font-size: 30px;
-    &.rtl {
-      right: auto;
+    @if $htmldir == ltr {
+      right: 19px;
+    } @else {
       left: 19px;
     }
+    top: 14px;
+    font-size: 30px;
   }
 
   &.log-call {

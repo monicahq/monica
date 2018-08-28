@@ -1,9 +1,9 @@
-<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
+<div class="col-xs-12 section-title">
   <img src="/img/people/calls/phone.svg" class="icon-section">
   <h3>
     {{ trans('people.call_title') }}
 
-    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
+    <span class="{{ htmldir() == 'ltr' ? 'fr' : 'fl' }}">
       <a href="#logCallModal" cy-name="add-call-button" class="btn edit-information" data-toggle="modal">{{ trans('people.call_button') }}</a>
     </span>
   </h3>
@@ -33,10 +33,10 @@
           @endif
         </div>
         <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
-          <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-50">
+          <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50">
             {{ \App\Helpers\DateHelper::getShortDate($call->called_at) }}
           </div>
-          <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl tr' : 'fr tl' }} w-50">
+          <div class="{{ htmldir() == 'ltr' ? 'fl tr' : 'fr tl' }} w-50">
             <a href="#" cy-name="edit-call-button-{{ $call->id }}" onclick="if (confirm('{{ trans('people.call_delete_confirmation') }}')) { $(this).parent().find('.entry-delete-form').submit(); } return false;">
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
