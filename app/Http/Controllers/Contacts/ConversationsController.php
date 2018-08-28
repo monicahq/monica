@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Conversation;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\Conversation;
+use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
-use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
@@ -200,8 +200,8 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_' . $messageId) == 'me' ? true : false),
-                'content' => $request->get('content_' . $messageId),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me' ? true : false),
+                'content' => $request->get('content_'.$messageId),
             ];
 
             try {
