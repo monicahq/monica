@@ -714,6 +714,18 @@ class Account extends Model
     }
 
     /**
+     * Cancel the plan the account is subscribed to.
+     */
+    public function subscriptionCancel()
+    {
+        $plan = $this->subscriptions()->first();
+
+        if (! is_null($plan)) {
+            return $plan->cancelNow();
+        }
+    }
+
+    /**
      * Replaces a specific gender of all the contacts in the account with another
      * gender.
      *

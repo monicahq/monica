@@ -155,10 +155,7 @@ class SettingsController extends Controller
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $plan = $account->getSubscribedPlanName();
-            if (! is_null($plan)) {
-                $account->subscription($plan)->cancelNow();
-            }
+            $account->subscriptionCancel();
         }
 
         DB::table('accounts')->where('id', $account->id)->delete();
