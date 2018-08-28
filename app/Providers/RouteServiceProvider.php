@@ -9,6 +9,7 @@ use App\Models\User\Module;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Task;
 use App\Models\Contact\Gender;
 use Illuminate\Routing\Router;
@@ -85,6 +86,12 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('gift', function ($value, $route) {
             return  Gift::where('account_id', auth()->user()->account_id)
+                ->where('contact_id', $route->parameter('contact')->id)
+                ->findOrFail($value);
+        });
+
+        Route::bind('conversation', function ($value, $route) {
+            return Conversation::where('account_id', auth()->user()->account_id)
                 ->where('contact_id', $route->parameter('contact')->id)
                 ->findOrFail($value);
         });

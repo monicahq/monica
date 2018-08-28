@@ -62,9 +62,8 @@
         },
 
         props: {
-            participantName: {
-                type: String,
-            },
+            participantName: String,
+            existingMessages: Array,
         },
 
         /**
@@ -86,11 +85,16 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.messages.push({
-                    uid: this.uid++,
-                    content: '',
-                    author: 'me'
-                })
+                if (this.existingMessages) {
+                    this.messages = this.existingMessages
+                    this.uid = this.messages[this.messages.length - 1].uid + 1
+                } else {
+                    this.messages.push({
+                        uid: this.uid++,
+                        content: '',
+                        author: 'me'
+                    })
+                }
             },
 
             addMessage() {

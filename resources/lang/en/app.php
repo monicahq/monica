@@ -21,6 +21,9 @@ return [
     'loading' => 'Loading...',
     'with' => 'with',
     'days' => 'day|days',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',

@@ -176,6 +176,8 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::get('/people/{contact}/conversations', 'Contacts\\ConversationsController@index')->name('index');
             Route::get('/people/{contact}/conversation/new', 'Contacts\\ConversationsController@new')->name('new');
             Route::post('/people/{contact}/conversation/store', 'Contacts\\ConversationsController@store')->name('store');
+            Route::get('/people/{contact}/conversation/{conversation}/edit', 'Contacts\\ConversationsController@edit')->name('edit');
+            Route::post('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@update')->name('update');
         });
 
         // Search

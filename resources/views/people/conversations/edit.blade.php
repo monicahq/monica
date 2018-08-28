@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.conversation.store', $contact) }}" method="POST">
+    <form action="{{ route('people.conversation.update', [$contact, $conversation]) }}" method="POST">
       {{ csrf_field() }}
 
       {{-- When did it take place --}}
@@ -56,13 +56,14 @@
         <form-select
           :options="{{ $contactFieldTypes }}"
           v-bind:required="true"
+          value="{{ $conversation->contact_field_type_id }}"
           v-bind:title="'{{ trans('people.conversation_add_how') }}'"
           v-bind:id="'contactFieldTypeId'">
         </form-select>
       </div>
 
       {{-- Conversation --}}
-      <conversation participant-name="{{ $contact->first_name }}"></conversation>
+      <conversation participant-name="{{ $contact->first_name }}" v-bind:existing-messages="{{ $messages }}"></conversation>
 
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
@@ -71,7 +72,7 @@
             <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
-            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.add') }}</button>
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.update') }}</button>
           </div>
         </div>
       </div>

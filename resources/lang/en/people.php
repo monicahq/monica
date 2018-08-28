@@ -88,7 +88,10 @@ return [
     'call_blank_desc' => 'You called :name',
 
     // Conversation
+    'conversation_add_title' => 'Record a new conversation?',
+    'conversation_add_when' => 'When did you have this conversation?',
     'conversation_add_who_wrote' => 'Who said this message?',
+    'conversation_add_how' => 'How did you communicate?',
     'conversation_add_you' => 'You',
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',

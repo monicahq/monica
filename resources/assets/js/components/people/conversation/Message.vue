@@ -75,30 +75,14 @@
         },
 
         props: {
-            uid: {
-                type: Number,
-            },
-            id: {
-                type: String,
-            },
-            participantName: {
-                type: String,
-            },
-            author: {
-              type: String,
-            },
-            placeholder: {
-                type: String,
-            },
-            required: {
-                type: Boolean,
-            },
-            content: {
-              type: String,
-            },
-            displayTrash: {
-              type: Boolean,
-            }
+            uid: Number,
+            id: String,
+            participantName: String,
+            author: String,
+            placeholder: String,
+            required: Boolean,
+            content: String,
+            displayTrash: Boolean,
         },
 
         methods: {
