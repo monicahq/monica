@@ -8,6 +8,7 @@ UNRELEASED CHANGES:
 * Add helper function htmldir()
 * Fix login remember with 2fa and u2f enabled
 * Fix gender update
+* Fix how comparing version is done
 
 RELEASED VERSIONS:
 
