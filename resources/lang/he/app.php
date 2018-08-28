@@ -82,7 +82,7 @@ return [
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
-    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 
