@@ -15,6 +15,7 @@
                     type: 'desc'
                     }
             }"
+            @on-row-click="onRowClick"
             :pagination-options="{
                 enabled: true
             }">
@@ -27,30 +28,8 @@
                         </svg>
                     </span>
                 </span>
-                <span v-else-if="props.column.field == 'after'">
-                    <div class="action-btn pointer absolute" style="right: 20px;">
-                        <v-selectmenu :data="menu" :regular="true" position="right">
-                            <svg width="24" height="6" viewBox="0 0 24 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="24" height="6" fill="black" fill-opacity="0"/>
-                                <circle cx="4.5" cy="2.5" r="2.5" fill="#505473" fill-opacity="0.86"/>
-                                <circle cx="11.5" cy="2.5" r="2.5" fill="#505473" fill-opacity="0.86"/>
-                                <circle cx="18.5" cy="2.5" r="2.5" fill="#505473" fill-opacity="0.86"/>
-                            </svg>
-                        </v-selectmenu>
-                    </div>
-                </span>
                 <span v-else>
                     {{props.formattedRow[props.column.field]}}
-                </span>
-            </template>
-
-            <!-- Actions column -->
-            <template slot="table-column" slot-scope="props">
-                <div v-if="props.column.field =='after'" class="tr">
-                    {{props.column.label}}
-                </div>
-                <span v-else>
-                    {{props.column.label}}
                 </span>
             </template>
         </vue-good-table>
@@ -67,46 +46,25 @@
             return {
                 conversations: [],
 
-                menu: [
-                    {
-                        content: '<svg class="mr1 relative" style="top: -1px;" width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="13" height="7.96449" fill="black" fill-opacity="0"/><path d="M0 3.98225C0.610995 2.78374 1.54146 1.77749 2.68856 1.07472C3.83566 0.371941 5.15474 0 6.5 0C7.84527 0 9.16434 0.371941 10.3114 1.07472C11.4585 1.77749 12.389 2.78374 13 3.98225C12.389 5.18076 11.4585 6.187 10.3114 6.88978C9.16434 7.59255 7.84527 7.96449 6.5 7.96449C5.15474 7.96449 3.83566 7.59255 2.68856 6.88978C1.54146 6.187 0.610995 5.18076 0 3.98225V3.98225ZM6.5 6.63531C7.20364 6.63531 7.87845 6.35579 8.376 5.85824C8.87354 5.3607 9.15306 4.68588 9.15306 3.98225C9.15306 3.27861 8.87354 2.60379 8.376 2.10625C7.87845 1.6087 7.20364 1.32918 6.5 1.32918C5.79636 1.32918 5.12155 1.6087 4.624 2.10625C4.12646 2.60379 3.84694 3.27861 3.84694 3.98225C3.84694 4.68588 4.12646 5.3607 4.624 5.85824C5.12155 6.35579 5.79636 6.63531 6.5 6.63531V6.63531ZM6.5 5.30878C6.14818 5.30878 5.81077 5.16902 5.562 4.92025C5.31323 4.67147 5.17347 4.33406 5.17347 3.98225C5.17347 3.63043 5.31323 3.29302 5.562 3.04425C5.81077 2.79548 6.14818 2.65572 6.5 2.65572C6.85182 2.65572 7.18923 2.79548 7.438 3.04425C7.68677 3.29302 7.82653 3.63043 7.82653 3.98225C7.82653 4.33406 7.68677 4.67147 7.438 4.92025C7.18923 5.16902 6.85182 5.30878 6.5 5.30878Z" fill="#748494"/></svg> View',
-                        url : 'http://www.163.com'
-                    },
-                    {
-                        content: '<svg class="mr1" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.995 2.405L10.595 5.005L2.6 13H0V10.4L7.995 2.405ZM8.905 1.495L10.4 0L13 2.6L11.505 4.095L8.905 1.495V1.495Z" fill="#748494"/></svg> Edit',
-                        url : 'http://www.163.com'
-                    },
-                    {
-                        content: '<svg class="mr1 relative" style="top: 1px;" width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="11" height="13" fill="black" fill-opacity="0"/><path d="M2.75 1.3L4.125 0H6.875L8.25 1.3H11V2.6H0V1.3H2.75ZM0.6875 3.9H10.3125L9.625 13H1.375L0.6875 3.9ZM4.125 5.2V11.7H4.8125V5.2H4.125ZM6.1875 5.2V11.7H6.875V5.2H6.1875Z" fill="#748494"/></svg> Delete',
-                        url : 'https://github.com'
-                    },
-                ],
-
                 columns: [
                     {
-                        label: 'Date',
+                        label: this.$t('app.date'),
                         field: 'happened_at',
                         tdClass: 'vgt-table-date',
                     },
                     {
-                        label: 'Type',
+                        label: this.$t('app.type'),
                         field: 'contact_field_type',
                         width: '110px',
                     },
                     {
-                        label: 'Messages',
+                        label: this.$t('people.conversation_list_table_messages'),
                         field: 'message_count',
                         width: '110px',
                     },
                     {
-                        label: 'Partial content (last message)',
+                        label: this.$t('people.conversation_list_table_content'),
                         field: 'content',
-                    },
-                    {
-                        label: 'Actions',
-                        field: 'after',
-                        sortable: false,
-                        tdClass: 'vgt-table-action',
                     }
                 ],
             };
@@ -114,7 +72,7 @@
 
         props: {
             hash: {
-                type: Number,
+                type: String,
             },
         },
 
@@ -132,6 +90,10 @@
                         this.conversations = response.data;
                     });
             },
+
+            onRowClick(params) {
+                window.location.href = params.row.route;
+            }
         }
     }
 </script>

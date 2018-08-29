@@ -10,6 +10,7 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateConversation extends BaseService
@@ -21,6 +22,7 @@ class UpdateConversation extends BaseService
      */
     private $structure = [
         'happened_at',
+        'contact_field_type_id',
         'account_id',
         'conversation_id',
     ];
@@ -45,8 +47,16 @@ class UpdateConversation extends BaseService
         }
 
         try {
+            $contactFieldType = ContactFieldType::where('account_id', $data['account_id'])
+                                ->findOrFail($data['contact_field_type_id']);
+        } catch (ModelNotFoundException $e) {
+            throw $e;
+        }
+
+        try {
             $conversation->update([
                 'happened_at' => $data['happened_at'],
+                'contact_field_type_id' => $data['contact_field_type_id'],
             ]);
         } catch (QueryException $e) {
             throw $e;

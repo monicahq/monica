@@ -45,8 +45,9 @@ class ConversationsController extends Controller
                 'message_count' => $conversation->messages->count(),
                 'contact_field_type' => $conversation->contactFieldType->name,
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
-                'content' => $conversation->messages()->first()->content,
+                'content' => $conversation->messages->last()->content,
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
+                'route' => route('people.conversation.edit', [$contact, $conversation]),
             ];
             $conversationsCollection->push($data);
         }

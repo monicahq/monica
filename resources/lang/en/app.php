@@ -24,6 +24,8 @@ return [
     'today' => 'today',
     'yesterday' => 'yesterday',
     'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',

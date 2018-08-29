@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -28,10 +29,12 @@ class UpdateConversationTest extends TestCase
 
         $conversationService = new UpdateConversation;
         $conversation = $conversationService->execute($request);
+        $contactFieldType = factory(ContactFieldType::class)->create([]);
 
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
             'happened_at' => '2010-02-02 00:00:00',
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $this->assertInstanceOf(

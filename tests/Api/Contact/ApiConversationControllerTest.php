@@ -150,9 +150,13 @@ class ApiConversationControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $conversation = $this->createConversation($user);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
         $response = $this->json('PUT', '/api/conversations/'.$conversation->id, [
             'happened_at' => '1989-02-02',
+            'contact_field_type_id' => $contactFieldType->id,
         ]);
 
         $response->assertStatus(200);
