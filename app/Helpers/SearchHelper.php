@@ -28,11 +28,7 @@ class SearchHelper
                 ->where('name', 'LIKE', $search_field)
                 ->first();
 
-            if (is_null($field)) {
-                return new \Illuminate\Database\Eloquent\Collection([]);
-            }
-
-            $field_id = $field->id;
+            $field_id = is_null($field) ? 0 : $field->id;
 
             $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
