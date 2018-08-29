@@ -20,16 +20,19 @@ class UpdateConversationTest extends TestCase
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
         ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $conversation->account->id,
+        ]);
 
         $request = [
             'account_id' => $conversation->account->id,
             'conversation_id' => $conversation->id,
             'happened_at' => '2010-02-02',
+            'contact_field_type_id' => $contactFieldType->id,
         ];
 
         $conversationService = new UpdateConversation;
         $conversation = $conversationService->execute($request);
-        $contactFieldType = factory(ContactFieldType::class)->create([]);
 
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
@@ -61,11 +64,15 @@ class UpdateConversationTest extends TestCase
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $conversation = factory(Conversation::class)->create([]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $conversation->account->id,
+        ]);
 
         $request = [
             'account_id' => 231,
             'conversation_id' => $conversation->id,
             'happened_at' => '2010-02-02',
+            'contact_field_type_id' => $contactFieldType->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
