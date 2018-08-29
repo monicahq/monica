@@ -99,13 +99,13 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me' ? true : false),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
                 'content' => $request->get('content_'.$messageId),
             ];
 
             try {
                 $message = (new AddMessageToConversation)->execute($data);
-            } catch (ModelNotFoundException $e) {
+            } catch (\Exception $e) {
                 return back()
                     ->withInput()
                     ->withErrors(trans('app.error_save'));
@@ -196,13 +196,13 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me' ? true : false),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
                 'content' => $request->get('content_'.$messageId),
             ];
 
             try {
-                $message = (new AddMessageToConversation)->execute($data);
-            } catch (ModelNotFoundException $e) {
+                (new AddMessageToConversation)->execute($data);
+            } catch (\Exception $e) {
                 return back()
                     ->withInput()
                     ->withErrors(trans('app.error_save'));
@@ -229,8 +229,8 @@ class ConversationsController extends Controller
         ];
 
         try {
-            $conversation = (new DestroyConversation)->execute($data);
-        } catch (ModelNotFoundException $e) {
+            (new DestroyConversation)->execute($data);
+        } catch (\Exception $e) {
             return $this->respondNotFound();
         }
 

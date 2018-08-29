@@ -30,7 +30,7 @@ class ApiMessageController extends ApiController
         }
 
         try {
-            $message = (new AddMessageToConversation)->execute(
+            (new AddMessageToConversation)->execute(
                 $request->all()
                 +
                 [
@@ -64,18 +64,13 @@ class ApiMessageController extends ApiController
     {
         try {
             $conversation = Conversation::findOrFail($conversationId);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        try {
             $message = Message::findOrFail($messageId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
         try {
-            $message = (new UpdateMessage)->execute(
+            (new UpdateMessage)->execute(
                 $request->all()
                 +
                 [
@@ -109,19 +104,14 @@ class ApiMessageController extends ApiController
     public function destroy(Request $request, int $conversationId, int $messageId)
     {
         try {
-            $conversation = Conversation::findOrFail($conversationId);
+            Conversation::findOrFail($conversationId);
+            Message::findOrFail($messageId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
         try {
-            $message = Message::findOrFail($messageId);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        try {
-            $conversation = (new DestroyMessage)->execute([
+            (new DestroyMessage)->execute([
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversationId,
                 'message_id' => $messageId,
