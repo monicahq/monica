@@ -178,6 +178,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::post('/people/{contact}/conversation/store', 'Contacts\\ConversationsController@store')->name('store');
             Route::get('/people/{contact}/conversation/{conversation}/edit', 'Contacts\\ConversationsController@edit')->name('edit');
             Route::post('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@update')->name('update');
+            Route::delete('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@destroy')->name('destroy');
         });
 
         // Search

@@ -10,6 +10,7 @@ use App\Models\Contact\Conversation;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
+use App\Services\Contact\Conversation\DestroyConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
@@ -84,14 +85,10 @@ class ConversationsController extends Controller
         // create the conversation
         try {
             $conversation = (new CreateConversation)->execute($data);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
         } catch (\Exception $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
+            return back()
+                ->withInput()
+                ->withErrors(trans('app.error_save'));
         }
 
         // add the messages to the conversation
@@ -109,13 +106,9 @@ class ConversationsController extends Controller
             try {
                 $message = (new AddMessageToConversation)->execute($data);
             } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            } catch (\Exception $e) {
-                return $this->setHTTPStatusCode(500)
-                    ->setErrorCode(41)
-                    ->respondWithError(config('api.error_codes.41'));
-            } catch (QueryException $e) {
-                return $this->respondInvalidQuery();
+                return back()
+                    ->withInput()
+                    ->withErrors(trans('app.error_save'));
             }
         }
 
@@ -179,8 +172,10 @@ class ConversationsController extends Controller
         // update the conversation
         try {
             $conversation = (new UpdateConversation)->execute($data);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(trans('app.error_save'));
         }
 
         // delete all current messages
@@ -208,17 +203,38 @@ class ConversationsController extends Controller
             try {
                 $message = (new AddMessageToConversation)->execute($data);
             } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            } catch (\Exception $e) {
-                return $this->setHTTPStatusCode(500)
-                    ->setErrorCode(41)
-                    ->respondWithError(config('api.error_codes.41'));
-            } catch (QueryException $e) {
-                return $this->respondInvalidQuery();
+                return back()
+                    ->withInput()
+                    ->withErrors(trans('app.error_save'));
             }
         }
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
+    }
+
+    /**
+     * Delete the conversation.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @param Conversation $conversation
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, Contact $contact, Conversation $conversation)
+    {
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'conversation_id' => $conversation->id,
+        ];
+
+        try {
+            $conversation = (new DestroyConversation)->execute($data);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        return redirect()->route('people.show', $contact)
+            ->with('success', trans('people.conversation_delete_success'));
     }
 }

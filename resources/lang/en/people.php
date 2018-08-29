@@ -88,7 +88,10 @@ return [
     'call_blank_desc' => 'You called :name',
 
     // Conversation
+    'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
+    'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_delete_success' => 'The conversation has been successfully deleted.',
     'conversation_add_title' => 'Record a new conversation',
     'conversation_add_when' => 'When did you have this conversation?',
     'conversation_add_who_wrote' => 'Who said this message?',

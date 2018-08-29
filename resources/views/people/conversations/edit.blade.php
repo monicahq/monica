@@ -9,6 +9,11 @@
     <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.conversation_edit_title') }}</h3>
+      <p><a href="#" onclick="if (confirm('{{ trans('people.conversation_edit_delete') }}')) { $('#conversation-delete-form').submit(); } return false;" class="w-auto-ns w-100 mb2 pb0-ns">{{ trans('people.conversation_delete_link') }}</a></p>
+      <form method="POST" action="{{ route('people.conversation.destroy', [$contact, $conversation]) }}" id="conversation-delete-form" class="hidden">
+        {{ method_field('DELETE') }}
+        {{ csrf_field() }}
+      </form>
     </div>
   </div>
 
@@ -72,7 +77,6 @@
             <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
-            <a class="btn btn-danger w-auto-ns w-100 mb2 pb0-ns" href="">{{ trans('app.delete') }}</a>
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.update') }}</button>
           </div>
         </div>
