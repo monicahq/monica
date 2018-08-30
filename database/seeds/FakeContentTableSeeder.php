@@ -474,17 +474,19 @@ class FakeContentTableSeeder extends Seeder
 
     public function populateConversations()
     {
-        if (rand(1, 3) == 1) {
-            for ($j = 0; $j < rand(1, 10); $j++) {
+        if (rand(1, 1) == 1) {
+            for ($j = 0; $j < rand(1, 20); $j++) {
+                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
                 $conversation = (new CreateConversation)->execute([
                     'happened_at' => $this->faker->dateTimeThisCentury(),
                     'contact_id' => $this->contact->id,
-                    'contact_field_type_id' => ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail(),
-                    'account_id' => auth()->user()->account->id,
+                    'contact_field_type_id' => $contactFieldType->id,
+                    'account_id' => $this->contact->account->id,
                 ]);
 
                 $message = (new AddMessageToConversation)->execute([
-                    'account_id' => auth()->user()->account->id,
+                    'account_id' => $this->contact->account->id,
                     'contact_id' => $this->contact->id,
                     'conversation_id' => $conversation->id,
                     'written_at' => $this->faker->dateTimeThisCentury(),
