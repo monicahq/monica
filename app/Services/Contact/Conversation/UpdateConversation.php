@@ -47,7 +47,7 @@ class UpdateConversation extends BaseService
         }
 
         try {
-            $contactFieldType = ContactFieldType::where('account_id', $data['account_id'])
+            ContactFieldType::where('account_id', $data['account_id'])
                                 ->findOrFail($data['contact_field_type_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;

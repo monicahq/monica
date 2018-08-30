@@ -34,15 +34,15 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <p class="mb2 b">{{ trans('people.conversation_add_when') }}</p>
         <div class="">
-          <div class="di mr3">
+          <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
             <input type="radio" class="mr1" id="today" name="conversationDateRadio" value="today" checked>
             <label for="today" class="pointer">{{ trans('app.today') }}</label>
           </div>
-          <div class="di mr3">
+          <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
             <input type="radio" class="mr1" id="yesterday" name="conversationDateRadio" value="yesterday">
             <label for="yesterday" class="pointer">{{ trans('app.yesterday') }}</label>
           </div>
-          <div class="di mr3">
+          <div class="di {{ htmldir() == 'ltr' ? 'mr3' : 'ml3' }}">
             <input type="radio" id="another" name="conversationDateRadio" value="another">
             <label for="another" class="pointer mr2">{{ trans('app.another_day') }}</label>
             <div class="dib">

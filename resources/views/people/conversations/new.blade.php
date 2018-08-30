@@ -71,7 +71,7 @@
             <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
           <div class="">
-            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.add') }}</button>
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" cy-name="save-conversation-button" name="save" type="submit">{{ trans('app.add') }}</button>
           </div>
         </div>
       </div>

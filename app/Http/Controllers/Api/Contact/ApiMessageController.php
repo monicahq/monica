@@ -76,7 +76,7 @@ class ApiMessageController extends ApiController
                 [
                     'account_id' => auth()->user()->account->id,
                     'conversation_id' => $conversationId,
-                    'message_id' => $messageId,
+                    'message_id' => $message->id,
                     'contact_id' => $conversation->contact->id,
                 ]
             );

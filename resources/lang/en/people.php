@@ -88,6 +88,7 @@ return [
     'call_blank_desc' => 'You called :name',
 
     // Conversation
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
     'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
@@ -102,6 +103,8 @@ return [
     'conversation_add_another' => 'Add another message',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_title' => 'Conversations',
+    'conversation_list_cta' => 'Log conversation',
 
     // age - birthday
     'birthdate_not_set' => 'Birthdate is not set',

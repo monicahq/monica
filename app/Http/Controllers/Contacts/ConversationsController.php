@@ -104,7 +104,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                $message = (new AddMessageToConversation)->execute($data);
+                (new AddMessageToConversation)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()

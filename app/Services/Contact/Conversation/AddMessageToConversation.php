@@ -42,7 +42,7 @@ class AddMessageToConversation extends BaseService
         }
 
         try {
-            $conversation = Conversation::where('contact_id', $data['contact_id'])
+            Conversation::where('contact_id', $data['contact_id'])
                                 ->where('account_id', $data['account_id'])
                                 ->findOrFail($data['conversation_id']);
         } catch (ModelNotFoundException $e) {

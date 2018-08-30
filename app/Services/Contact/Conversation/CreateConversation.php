@@ -41,15 +41,15 @@ class CreateConversation extends BaseService
         }
 
         try {
-            $contact = Contact::where('account_id', $data['account_id'])
-                        ->where($data['contact_id']);
+            Contact::where('account_id', $data['account_id'])
+                    ->where($data['contact_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }
 
         try {
-            $contactFieldType = ContactFieldType::where('account_id', $data['account_id'])
-                        ->findOrFail($data['contact_field_type_id']);
+            ContactFieldType::where('account_id', $data['account_id'])
+                            ->findOrFail($data['contact_field_type_id']);
         } catch (ModelNotFoundException $e) {
             throw $e;
         }

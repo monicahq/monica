@@ -120,7 +120,7 @@ class ApiConversationController extends ApiController
     public function destroy(Request $request, $conversationId)
     {
         try {
-            $conversation = (new DestroyConversation)->execute([
+            (new DestroyConversation)->execute([
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversationId,
             ]);
