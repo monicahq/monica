@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to log conversations made on social networks or SMS
 * Fix gifts not showing when value was not set
 * Fix phpunit not parsing all test files
 * Improve automatic route binding
