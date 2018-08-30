@@ -38,7 +38,7 @@ class ConversationsController extends Controller
     public function index(Request $request, Contact $contact)
     {
         $conversationsCollection = collect([]);
-        $conversations = $contact->conversations()->latest()->get();
+        $conversations = $contact->conversations()->get();
 
         foreach ($conversations as $conversation) {
             $data = [
@@ -46,7 +46,7 @@ class ConversationsController extends Controller
                 'message_count' => $conversation->messages->count(),
                 'contact_field_type' => $conversation->contactFieldType->name,
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
-                'content' => $conversation->messages->last()->content,
+                'content' => str_limit($conversation->messages->last()->content, 50),
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
                 'route' => route('people.conversation.edit', [$contact, $conversation]),
             ];

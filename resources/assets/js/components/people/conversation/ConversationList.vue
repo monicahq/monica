@@ -3,17 +3,12 @@
 
 <template>
     <div>
-        <!-- https://xaksis.github.io/vue-good-table/guide/configuration/pagination-options.html#mode -->
         <vue-good-table
             :columns="columns"
             :rows="conversations"
             styleClass="vgt-table"
             :sort-options="{
-                enabled: true,
-                initialSortBy: {
-                    field: 'happened_at',
-                    type: 'desc'
-                    }
+                enabled: false
             }"
             @on-row-click="onRowClick"
             :pagination-options="{

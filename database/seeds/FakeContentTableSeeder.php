@@ -485,14 +485,16 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->contact->account->id,
                 ]);
 
-                $message = (new AddMessageToConversation)->execute([
-                    'account_id' => $this->contact->account->id,
-                    'contact_id' => $this->contact->id,
-                    'conversation_id' => $conversation->id,
-                    'written_at' => $this->faker->dateTimeThisCentury(),
-                    'written_by_me' => (rand(1, 2) == 1 ? true : false),
-                    'content' => $this->faker->realText(),
-                ]);
+                for ($k = 0; $k < rand(1, 20); $k++) {
+                    $message = (new AddMessageToConversation)->execute([
+                        'account_id' => $this->contact->account->id,
+                        'contact_id' => $this->contact->id,
+                        'conversation_id' => $conversation->id,
+                        'written_at' => $this->faker->dateTimeThisCentury(),
+                        'written_by_me' => (rand(1, 2) == 1 ? true : false),
+                        'content' => $this->faker->realText(),
+                    ]);
+                }
             }
         }
     }

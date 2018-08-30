@@ -353,7 +353,7 @@ class Contact extends Model
      */
     public function conversations()
     {
-        return $this->hasMany(Conversation::class);
+        return $this->hasMany(Conversation::class)->orderBy('conversations.happened_at', 'desc');
     }
 
     /**
