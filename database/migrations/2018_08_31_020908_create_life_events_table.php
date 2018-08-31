@@ -77,7 +77,6 @@ class CreateLifeEventsTable extends Migration
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
 
-
         // POPULATE DEFAULT TABLES
         // WORK AND EDUCATION
         $defaultCategory = DB::table('default_life_event_categories')->insertGetId([
@@ -136,7 +135,6 @@ class CreateLifeEventsTable extends Migration
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
 
         // HOME LIVING
         $defaultCategory = DB::table('default_life_event_categories')->insertGetId([
