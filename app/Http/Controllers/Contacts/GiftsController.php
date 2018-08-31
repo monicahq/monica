@@ -172,7 +172,9 @@ class GiftsController extends Controller
             $gift->update($array);
         }
 
-        if ($request->get('has_recipient')) {
+        if ($request->get('has_recipient')
+            && Contact::where('account_id', auth()->user()->account_id)
+                ->find($request->get('recipient')) != null) {
             $gift->recipient = $request->get('recipient');
             $gift->save();
         }

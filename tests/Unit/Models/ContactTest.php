@@ -12,8 +12,10 @@ use App\Mail\StayInTouchEmail;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
@@ -65,6 +67,30 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->relationships()->exists());
+    }
+
+    public function test_it_has_many_conversations()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $conversation = factory(Conversation::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->conversations()->exists());
+    }
+
+    public function test_it_has_many_messages()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $messages = factory(Message::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->messages()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

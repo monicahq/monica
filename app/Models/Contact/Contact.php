@@ -337,13 +337,33 @@ class Contact extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
+     * Get the Notifications records associated with the contact.
      *
      * @return HasMany
      */
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the Conversation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class)->orderBy('conversations.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Message records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
     /**

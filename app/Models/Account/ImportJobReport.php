@@ -22,7 +22,7 @@ class ImportJobReport extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the import job report.
      *
      * @return BelongsTo
      */
@@ -32,7 +32,7 @@ class ImportJobReport extends Model
     }
 
     /**
-     * Get the user record associated with the gift.
+     * Get the user record associated with the import job report.
      *
      * @return BelongsTo
      */

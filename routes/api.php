@@ -73,6 +73,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]]);
     Route::get('/contacts/{contact}/calls', 'Api\\ApiCallController@calls');
 
+    // Conversations & messages
+    Route::resource('conversations', 'Api\\Contact\\ApiConversationController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+    Route::post('/conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController@store');
+    Route::put('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@update');
+    Route::delete('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@destroy');
+
     // Activities
     Route::resource('activities', 'Api\\ApiActivityController', ['except' => [
       'create', 'edit', 'patch',
