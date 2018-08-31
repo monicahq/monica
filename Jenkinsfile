@@ -1,8 +1,15 @@
 pipeline {
-  agent {label 'monica'}
+  agent {
+    label 'monica'
+    docker {
+      image 'monicahq/circleci-docker-centralperk'
+    }
+  }
   stages {
     stage('build') {
       steps {
+        sh 'mkdir -p results/coverage'
+        sh 'cp scripts/tests/.env.mysql .env'
         sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
       }
     }
