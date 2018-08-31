@@ -4,11 +4,11 @@ return [
 
     //index
     'people_list_number_kids' => '1 niño|:count niños',
-    'people_list_last_updated' => 'Last consulted:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
-    'people_list_blank_title' => 'You don’t have anyone in your account yet',
-    'people_list_blank_cta' => 'Add someone',
-    'people_list_sort' => 'Sort',
+    'people_list_last_updated' => 'Última consulta:',
+    'people_list_number_reminders' => '1 recordatorio|:count recordatorios',
+    'people_list_blank_title' => 'Todavía no tienes a nadie en tu cuenta',
+    'people_list_blank_cta' => 'Añade a alguien',
+    'people_list_sort' => 'Ordenar',
     'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
