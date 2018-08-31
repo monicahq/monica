@@ -21,6 +21,11 @@ return [
     'loading' => 'בטעינה…',
     'with' => 'עם',
     'days' => 'day|days',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
