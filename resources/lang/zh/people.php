@@ -88,7 +88,7 @@ return [
     'call_blank_desc' => '你打给:name',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
+    'conversation_blank' => '记录您与:name通过短信或社交媒体的心意记录',
     'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
