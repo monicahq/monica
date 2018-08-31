@@ -1,8 +1,8 @@
 pipeline {
   agent {
-
     docker {
       image 'monicahq/circleci-docker-centralperk'
+      label 'monica'
     }
   }
   stages {
