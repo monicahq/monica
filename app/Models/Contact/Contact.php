@@ -367,6 +367,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Life event records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class);
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria

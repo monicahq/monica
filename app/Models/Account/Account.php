@@ -19,6 +19,9 @@ use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
+use App\Models\Contact\LifeEventCategory;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +40,7 @@ use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
 
 class Account extends Model
 {
@@ -380,6 +384,36 @@ class Account extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Life Event Category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventCategories()
+    {
+        return $this->hasMany(LifeEventCategory::class);
+    }
+
+    /**
+     * Get the Life Event Type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventTypes()
+    {
+        return $this->hasMany(LifeEventType::class);
+    }
+
+    /**
+     * Get the Life Event records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class);
     }
 
     /**
@@ -798,6 +832,11 @@ class Account extends Model
         $this->populateModulesTable();
         $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
+
+        (new PopulateLifeEventsTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => 0
+        ]);
     }
 
     /**
@@ -917,5 +956,24 @@ class Account extends Model
         foreach ($changelogs as $changelog) {
             AddChangelogEntry::dispatch($this, $changelog->id);
         }
+    }
+
+    /**
+     * Get the first available locale in an account. This gets the first user
+     * in the account and reads his locale.
+     *
+     * @return string
+     *
+     * @throws ModelNotFoundException if there are no users.
+     */
+    public function getFirstLocale()
+    {
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            throw new ModelNotFoundException('Can not find the first user of the account.');
+        }
+
+        return $user->locale;
     }
 }

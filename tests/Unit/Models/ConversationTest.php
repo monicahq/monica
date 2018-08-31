@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ConversationTest extends TestCase
 {
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     public function test_it_belongs_to_an_account()
     {
