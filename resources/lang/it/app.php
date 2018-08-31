@@ -21,6 +21,11 @@ return [
     'loading' => 'Caricamento in corso...',
     'with' => 'con',
     'days' => 'giorno | giorni',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
