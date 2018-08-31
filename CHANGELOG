@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to log conversations made on social networks or SMS
 * Fix gifts not showing when value was not set
 * Fix phpunit not parsing all test files
 * Improve automatic route binding
@@ -9,6 +10,7 @@ UNRELEASED CHANGES:
 * Fix login remember with 2fa and u2f enabled
 * Fix gender update
 * Fix how comparing version is done
+* Fix search with wrong search field
 * Fix gift recipient relation
 
 RELEASED VERSIONS:

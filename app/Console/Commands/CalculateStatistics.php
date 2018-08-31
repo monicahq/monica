@@ -61,6 +61,8 @@ class CalculateStatistics extends Command
         $statistic->number_of_oauth_clients = DB::table('oauth_clients')->count();
         $statistic->number_of_relationships = DB::table('relationships')->count();
         $statistic->number_of_subscriptions = DB::table('subscriptions')->count();
+        $statistic->number_of_conversations = DB::table('conversations')->count();
+        $statistic->number_of_messages = DB::table('messages')->count();
 
         $statistic->save();
     }
