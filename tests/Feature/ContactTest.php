@@ -193,7 +193,7 @@ class ContactTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $old_gift = factory(Gift::class)->create([
+        $oldGift = factory(Gift::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
@@ -207,7 +207,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$old_gift->id.'/update',
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
             $gift
         );
 
@@ -228,7 +228,7 @@ class ContactTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $old_gift = factory(Gift::class)->create([
+        $oldGift = factory(Gift::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
@@ -248,7 +248,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$old_gift->id.'/update',
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
             $gift
         );
 
@@ -265,8 +265,8 @@ class ContactTest extends FeatureTestCase
             ]
         );
 
-        $new_gift = Gift::find($old_gift->id);
-        $this->assertEquals($otherContact->first_name, $new_gift->recipient_name);
+        $newGift = Gift::find($oldGift->id);
+        $this->assertEquals($otherContact->first_name, $newGift->recipient_name);
     }
 
     public function test_user_can_be_in_debt_to_a_contact()
