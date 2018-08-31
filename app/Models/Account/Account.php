@@ -18,11 +18,13 @@ use App\Models\Contact\Gender;
 use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
@@ -358,6 +360,26 @@ class Account extends Model
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the Conversation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    /**
+     * Get the Message records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
     /**

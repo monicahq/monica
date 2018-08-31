@@ -279,6 +279,32 @@ $factory->define(App\Models\User\Module::class, function (Faker\Generator $faker
     ];
 });
 
+$factory->define(App\Models\Contact\Conversation::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Models\Contact\Contact::class)->create();
+    $contactFieldType = factory(App\Models\Contact\ContactFieldType::class)->create([
+        'account_id' => $contact->account_id,
+    ]);
+
+    return [
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
+        'contact_field_type_id' => $contactFieldType->id,
+    ];
+});
+
+$factory->define(App\Models\Contact\Message::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Models\Contact\Contact::class)->create();
+    $conversation = factory(App\Models\Contact\Conversation::class)->create([
+        'account_id' => $contact->account_id,
+    ]);
+
+    return [
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
+        'conversation_id' => $conversation->id,
+    ];
+});
+
 $factory->define(App\Models\User\Changelog::class, function (Faker\Generator $faker) {
     return [];
 });
