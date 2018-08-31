@@ -143,16 +143,16 @@ return [
 
     // food preferencies
     'food_preferencies_add_success' => 'Las preferencias de comida han sido guardadas',
-    'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Save food preferences',
-    'food_preferencies_title' => 'Food preferences',
-    'food_preferencies_cta' => 'Add food preferences',
+    'food_preferencies_edit_description' => 'Tal vez :firstname o alguien en la familia :family tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que los invites a cenar',
+    'food_preferencies_edit_description_no_last_name' => 'Tal vez :firstname tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que lo invites a cenar',
+    'food_preferencies_edit_title' => 'Indica preferencias en comida',
+    'food_preferencies_edit_cta' => 'Guardar preferencias en comida',
+    'food_preferencies_title' => 'Preferencias de comida',
+    'food_preferencies_cta' => 'Añadir preferencias en comida',
 
     // reminders
-    'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
-    'reminders_blank_add_activity' => 'Add a reminder',
+    'reminders_blank_title' => '¿Hay algo en lo que quisieras ser recordado sobre :nombre?',
+    'reminders_blank_add_activity' => 'Agregar un recordatorio',
     'reminders_add_title' => 'What would you like to be reminded of about :name?',
     'reminders_add_description' => 'Please remind me to...',
     'reminders_add_next_time' => 'When is the next time you would like to be reminded about this?',
