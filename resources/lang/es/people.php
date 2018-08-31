@@ -153,8 +153,8 @@ return [
     // reminders
     'reminders_blank_title' => '¿Hay algo en lo que quisieras ser recordado sobre :nombre?',
     'reminders_blank_add_activity' => 'Agregar un recordatorio',
-    'reminders_add_title' => 'What would you like to be reminded of about :name?',
-    'reminders_add_description' => 'Please remind me to...',
+    'reminders_add_title' => '¿Qué te gustaría que se te recordara sobre :nombre?',
+    'reminders_add_description' => 'Por favor recordarme...',
     'reminders_add_next_time' => 'When is the next time you would like to be reminded about this?',
     'reminders_add_once' => 'Remind me about this just once',
     'reminders_add_recurrent' => 'Remind me about this every',
