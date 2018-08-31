@@ -11,6 +11,7 @@ UNRELEASED CHANGES:
 * Fix gender update
 * Fix how comparing version is done
 * Fix search with wrong search field
+* Fix gift recipient relation
 
 RELEASED VERSIONS:
 
