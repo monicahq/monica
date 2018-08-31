@@ -21,6 +21,11 @@ return [
     'loading' => '正在加载...',
     'with' => '与',
     'days' => '天|天',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
