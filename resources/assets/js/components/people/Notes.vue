@@ -19,7 +19,7 @@
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
-        <li v-for="note in notes" class="note">
+        <li v-for="note in notes" class="note" v-bind:key="note.id">
           <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
               <span v-html="note.parsed_body"></span>
