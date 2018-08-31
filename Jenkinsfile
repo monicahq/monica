@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'monicahq/circleci-docker-centralperk'
-    }
-
-  }
+  agent any
   stages {
     stage('build') {
       steps {
