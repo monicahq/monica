@@ -2,13 +2,11 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Account\Account;
 use App\Models\User\User;
+use App\Models\Account\Account;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 
 class PopulateLifeEventsTableTest extends TestCase

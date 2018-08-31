@@ -12,7 +12,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use Illuminate\Database\QueryException;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateLifeEvent extends BaseService
@@ -39,7 +38,7 @@ class CreateLifeEvent extends BaseService
      */
     public function execute(array $data) : LifeEvent
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
+        if (! $this->validateDataStructure($data, $this->structure)) {
             throw new \Exception('Missing parameters');
         }
 

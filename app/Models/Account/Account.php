@@ -19,11 +19,9 @@ use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\LifeEventCategory;
-use App\Models\Contact\LifeEventType;
-use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
@@ -32,9 +30,11 @@ use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
+use App\Models\Contact\LifeEventType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
@@ -835,7 +835,7 @@ class Account extends Model
 
         (new PopulateLifeEventsTable)->execute([
             'account_id' => $this->id,
-            'migrate_existing_data' => 0
+            'migrate_existing_data' => 0,
         ]);
     }
 

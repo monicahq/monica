@@ -134,6 +134,6 @@ class ApiLifeEventController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$lifeEventId);
+        return $this->respondObjectDeleted((int) $lifeEventId);
     }
 }

@@ -7,14 +7,13 @@
 
 namespace App\Services\Auth\Population;
 
-use Illuminate\Support\Facades\DB;
 use App\Services\BaseService;
-use Illuminate\Support\Facades\App;
 use App\Models\Account\Account;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\App;
 use App\Models\Contact\LifeEventType;
-use App\Models\Contact\LifeEventCategory;
 use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Contact\LifeEventCategory;
 
 /**
  * Populate life event types and life event categories for a given account.
@@ -29,7 +28,7 @@ class PopulateLifeEventsTable extends BaseService
      */
     private $structure = [
         'account_id',
-        'migrate_existing_data'
+        'migrate_existing_data',
     ];
 
     /**
@@ -49,7 +48,7 @@ class PopulateLifeEventsTable extends BaseService
     {
         $this->data = $givenData;
 
-        if (!$this->validateDataStructure($this->data, $this->structure)) {
+        if (! $this->validateDataStructure($this->data, $this->structure)) {
             throw new \Exception('Missing parameters');
         }
 
@@ -123,7 +122,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param Object $defaultLifeEventCategory
+     * @param object $defaultLifeEventCategory
      * @return void
      */
     private function feedLifeEventCategory($defaultLifeEventCategory): LifeEventCategory
@@ -144,7 +143,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Create an entry in the life event type table.
      *
-     * @param Object $defaultLifeEventType
+     * @param object $defaultLifeEventType
      * @return void
      */
     private function feedLifeEventType($defaultLifeEventType, $lifeEventCategory)

@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
-use App\Models\Contact\LifeEventType;
 use App\Models\Contact\LifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
