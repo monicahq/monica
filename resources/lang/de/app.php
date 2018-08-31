@@ -21,6 +21,11 @@ return [
     'loading' => 'Lade mehr...',
     'with' => 'mit',
     'days' => 'Tag|Tage',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
