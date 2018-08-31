@@ -21,6 +21,11 @@ return [
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
     'days' => 'يوم|أيام',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'مونيكا – مدير العلاقات الشخصية',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
