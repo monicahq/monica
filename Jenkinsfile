@@ -28,27 +28,27 @@ node('monica') {
       sh '''
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
-        yarn --verbose global add greenkeeper-lockfile@1
-        ls /home/slave/.yarn/bin/
+        yarn global add greenkeeper-lockfile@1
       '''
 
       // Composer
-      sh '''
-        composer install --no-interaction --no-suggest --ignore-platform-reqs
-      '''
+      sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
+      stash includes: 'vendor/', name: 'composer'
 
       // Node.js
+      /*
       sh '''
         CIRCLE_PREVIOUS_BUILD_NUM=$(test "`git rev-parse --abbrev-ref HEAD`" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
         yarn install --frozen-lockfile
-        CIRCLE_PREVIOUS_BUILD_NUM=$(test "`git rev-parse --abbrev-ref HEAD`" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
+        "CIRCLE_PREVIOUS_BUILD_NUM=$(test "`git rev-parse --abbrev-ref HEAD`" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
         cat gk-lockfile-git-push.err || true
         rm -f gk-lockfile-git-push.err || true
       '''
+      */
+      sh 'yarn install --frozen-lockfile'
 
       // Update js and css assets eventually
-      //sh 'scripts/ci/update-assets.sh'
-      stash includes: 'vendor/', name: 'composer'
+      sh 'scripts/ci/update-assets.sh'
     }
   }
   stage('Tests') {
