@@ -1,6 +1,5 @@
 node('monica') {
 
-  def workspace = pwd()
   def centralperk = docker.image('monicahq/circleci-docker-centralperk')
   centralperk.pull()
   
@@ -52,8 +51,8 @@ node('monica') {
     }
   }
   stage('Tests') {
-    parallel {
-      stage('tests-7.2') {
+    parallel tests72: {
+      node('tests72') {
         docker.image('circleci/mysql:5.7-ram')
         .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
           centralperk.inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
