@@ -91,6 +91,7 @@ class MoveAvatars extends Command
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $this->line('File not found: '.$avatarFileName);
             }
+
             return;
         }
         $avatarFile = $storage->get($avatarFileName);

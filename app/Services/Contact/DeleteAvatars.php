@@ -10,7 +10,6 @@ namespace App\Services\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 
 /**
  * Delete the avatars files of a contact.
@@ -45,7 +44,7 @@ class DeleteAvatars extends BaseService
             $this->deleteAvatarSize($contact, 110);
             $this->deleteAvatarSize($contact, 174);
         }
-                
+
         return true;
     }
 

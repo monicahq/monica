@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
