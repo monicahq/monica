@@ -52,7 +52,7 @@ node('monica') {
   }
   stage('Tests') {
     parallel tests72: {
-      node('tests72') {
+      node('monica') {
         docker.image('circleci/mysql:5.7-ram')
         .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
           centralperk.inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
