@@ -967,42 +967,6 @@ class Contact extends Model
     }
 
     /**
-     * Delete avatars files.
-     */
-    public function deleteAvatars()
-    {
-        if ($this->avatar_location == 'external') {
-            return;
-        }
-
-        $this->deleteAvatarSize();
-        $this->deleteAvatarSize(110);
-        $this->deleteAvatarSize(174);
-    }
-
-    /**
-     * Delete avatar file for one size.
-     */
-    private function deleteAvatarSize($size = null)
-    {
-        $avatarFileName = $this->avatar_file_name;
-        if (! is_null($size)) {
-            $filename = pathinfo($avatar_file_name, PATHINFO_FILENAME);
-            $extension = pathinfo($avatar_file_name, PATHINFO_EXTENSION);
-            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
-        }
-
-        try {
-            $storage = Storage::disk($this->avatar_location);
-            if ($storage->exists($avatarFileName)) {
-                $storage->delete($avatarFileName);
-            }
-        } catch (FileNotFoundException $e) {
-            return;
-        }
-    }
-
-    /**
      * Returns the source of the avatar, or null if avatar is undefined.
      */
     public function getAvatarSource()

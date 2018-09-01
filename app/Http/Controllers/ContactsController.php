@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Contact\DeleteAvatars;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -277,7 +278,13 @@ class ContactsController extends Controller
 
         if ($request->file('avatar') != '') {
             if ($contact->has_avatar) {
-                $contact->deleteAvatars();
+                try {
+                    (new DeleteAvatars)->execute(['contact' => $contact]);
+                } catch (\Exception $e) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(trans('app.error_save'));
+                }
             }
 
             $contact->has_avatar = true;

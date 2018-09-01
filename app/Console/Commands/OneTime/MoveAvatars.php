@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\OneTime;
 
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
+use App\Services\Contact\DeleteAvatars;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\ConfirmableTrait;
+use Symfony\Component\Console\Output\OutputInterface;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class MoveAvatars extends Command
 {
@@ -35,28 +40,40 @@ class MoveAvatars extends Command
         }
 
         Contact::where('has_avatar', true)
-            ->chunk(200, function ($contact) {
-                if ($contact->avatar_location == config('filesystems.default')) {
-                    return;
-                }
+            ->chunk(200, function ($contacts) {
+                foreach ($contacts as $contact) {
+                    if ($contact->avatar_location == config('filesystems.default')) {
+                        return;
+                    }
 
-                $storage = Storage::disk($contact->avatar_location);
-                if (! $storage->exists($contact->avatar_file_name)) {
-                    return;
-                }
+                    try {
+                        // move avatars to new location
+                        $this->moveAvatarSize($contact);
+                        $this->moveAvatarSize($contact, 110);
+                        $this->moveAvatarSize($contact, 174);
 
-                try {
-                    // move avatars to new location
-                    $this->moveAvatarSize($contact);
-                    $this->moveAvatarSize($contact, 110);
-                    $this->moveAvatarSize($contact, 174);
+                        $this->deleteAvatars($contact);
 
-                    $contact->deleteAvatars();
-                    $contact->avatar_location = config('filesystems.default');
-                } catch (FileNotFoundException $e) {
-                    return;
+                        // Update location. The filename has not changed.
+                        $contact->avatar_location = config('filesystems.default');
+                        $contact->save();
+                    } catch (FileNotFoundException $e) {
+                        continue;
+                    }
                 }
             });
+    }
+
+    /**
+     * Delete avatars files of the contact.
+     */
+    private function deleteAvatars($contact)
+    {
+        try {
+            (new DeleteAvatars)->execute(['contact' => $contact]);
+        } catch (\Exception $e) {
+            // skip it
+        }
     }
 
     private function moveAvatarSize($contact, $size = null)
@@ -70,9 +87,19 @@ class MoveAvatars extends Command
         }
 
         $storage = Storage::disk($contact->avatar_location);
-        $avatarFile = $storage->get('avatars/'.$avatarFileName);
+        if (! $storage->exists($avatarFileName)) {
+            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                $this->line('File not found: '.$avatarFileName);
+            }
+            return;
+        }
+        $avatarFile = $storage->get($avatarFileName);
 
         $newStorage = Storage::disk(config('filesystems.default'));
-        $newStorage->putFileAs('avatars', $avatarFile, $avatarFileName, 'public');
+        $newStorage->put($avatarFileName, $avatarFile, 'public');
+
+        if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->line('Moved file '.$avatarFileName);
+        }
     }
 }

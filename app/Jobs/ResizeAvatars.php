@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
+use Intervention\Image\Facades\Image;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Intervention\Image\Facades\Image as Image;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ResizeAvatars implements ShouldQueue
