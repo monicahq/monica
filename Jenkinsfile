@@ -35,7 +35,6 @@ node('monica') {
       sh '''
         composer install --no-interaction --no-suggest --ignore-platform-reqs
       '''
-      stash includes: 'vendor/', name: 'composer'
 
       // Node.js
       sh '''
@@ -48,6 +47,7 @@ node('monica') {
 
       // Update js and css assets eventually
       //sh 'scripts/ci/update-assets.sh'
+      stash includes: 'vendor/', name: 'composer'
     }
   }
   stage('Tests') {
