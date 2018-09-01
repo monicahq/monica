@@ -21,7 +21,7 @@ node('monica') {
     SONAR_VERSION = credentials('SONAR_VERSION')
   }
   stage('Build') {
-    centralperk.inside("-v /etc/passwd:/etc/passwd --tmpfs $HOME/.yarn -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+    centralperk.inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
       checkout scm
 
       // Prepare environment
