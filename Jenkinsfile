@@ -31,35 +31,37 @@ node('monica') {
     }
   }
   stage('Tests') {
-    parralel tests-7.2: {
-      docker.image('circleci/mysql:5.7-ram')
+    parralel {
+      stage('tests-7.2') {
+        docker.image('circleci/mysql:5.7-ram')
         .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
           centralperk.inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache") {
-          try {
-            checkout scm
+            try {
+              checkout scm
 
-            unstash 'composer'
-            // Prepare environment
-            sh 'mkdir -p results/coverage'
-            sh 'cp scripts/tests/.env.mysql .env'
+              unstash 'composer'
+              // Prepare environment
+              sh 'mkdir -p results/coverage'
+              sh 'cp scripts/tests/.env.mysql .env'
 
-            // Remove xdebug
-            sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+              // Remove xdebug
+              sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
 
-            // Prepare database
-            sh 'dockerize -wait tcp://127.0.0.1:3306 -timeout 60s'
-            sh 'mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"'
-            sh 'php artisan migrate --no-interaction -vvv'
+              // Prepare database
+              sh 'dockerize -wait tcp://127.0.0.1:3306 -timeout 60s'
+              sh 'mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"'
+              sh 'php artisan migrate --no-interaction -vvv'
 
-            // Seed database
-            sh 'php artisan db:seed --no-interaction -vvv'
+              // Seed database
+              sh 'php artisan db:seed --no-interaction -vvv'
 
-            // Run unit tests
-            sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
-          }
-          finally {
-            junit 'results/junit/*.xml'
-            stash includes: 'results', name: 'results/junit' 
+              // Run unit tests
+              sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
+            }
+            finally {
+              junit 'results/junit/*.xml'
+              stash includes: 'results', name: 'results/junit' 
+            }
           }
         }
       }
