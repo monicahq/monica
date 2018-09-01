@@ -52,7 +52,7 @@ node('monica') {
     }
   }
   stage('Tests') {
-    parralel {
+    parallel {
       stage('tests-7.2') {
         docker.image('circleci/mysql:5.7-ram')
         .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
