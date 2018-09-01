@@ -4,16 +4,16 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\LifeEventType;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class FakeContentTableSeeder extends Seeder
@@ -514,7 +514,7 @@ class FakeContentTableSeeder extends Seeder
                     'life_event_type_id' => $lifeEventType->id,
                     'happened_at' => $this->faker->dateTimeThisCentury(),
                     'name' => $this->faker->realText(),
-                    'note' => $this->faker->realText()
+                    'note' => $this->faker->realText(),
                 ]);
             }
         }

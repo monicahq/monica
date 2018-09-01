@@ -6,7 +6,7 @@ use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Models\Contact\LifeEvent;
+
 // use App\Services\Contact\LifeEvent\DestroyMessage;
 // use App\Services\Contact\LifeEvent\CreateLifeEvent;
 // use App\Services\Contact\LifeEvent\UpdateConversation;
