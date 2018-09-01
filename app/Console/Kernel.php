@@ -19,7 +19,6 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ImportCSV',
         'App\Console\Commands\ImportVCards',
         'App\Console\Commands\LangGenerate',
-        'App\Console\Commands\MoveAvatars',
         'App\Console\Commands\PingVersionServer',
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\SendReminders',
@@ -30,6 +29,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetPremiumAccount',
         'App\Console\Commands\Update',
         'App\Console\Commands\MigrateDatabaseCollation',
+        'App\Console\Commands\OneTime\MoveAvatars',
         'App\Console\Commands\Reminder\ProcessOldReminders',
     ];
 

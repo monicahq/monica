@@ -938,12 +938,12 @@ class Contact extends Model
             return $this->avatar_external_url;
         }
 
-        $original_avatar_url = $this->avatar_file_name;
-        $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
-        $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
-        $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
+        $originalAvatarUrl = $this->avatar_file_name;
+        $avatarFilename = pathinfo($originalAvatarUrl, PATHINFO_FILENAME);
+        $avatarExtension = pathinfo($originalAvatarUrl, PATHINFO_EXTENSION);
+        $resizedAvatar = 'avatars/'.$avatarFilename.'_'.$size.'.'.$avatarExtension;
 
-        return asset(Storage::disk($this->avatar_location)->url($resized_avatar));
+        return asset(Storage::disk($this->avatar_location)->url($resizedAvatar));
     }
 
     /**
@@ -965,17 +965,17 @@ class Contact extends Model
      */
     private function deleteAvatarSize($size = null)
     {
-        $avatar_file_name = $this->avatar_file_name;
+        $avatarFileName = $this->avatar_file_name;
         if (! is_null($size)) {
             $filename = pathinfo($avatar_file_name, PATHINFO_FILENAME);
             $extension = pathinfo($avatar_file_name, PATHINFO_EXTENSION);
-            $avatar_file_name = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
         }
 
         try {
             $storage = Storage::disk($this->avatar_location);
-            if ($storage->exists($avatar_file_name)) {
-                $storage->delete($avatar_file_name);
+            if ($storage->exists($avatarFileName)) {
+                $storage->delete($avatarFileName);
             }
         } catch (FileNotFoundException $e) {
             return;

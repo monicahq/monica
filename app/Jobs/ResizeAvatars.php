@@ -45,24 +45,24 @@ class ResizeAvatars implements ShouldQueue
         }
 
         try {
-            $avatar_file = $storage->get($this->contact->avatar_file_name);
+            $avatarFile = $storage->get($this->contact->avatar_file_name);
             $filename = pathinfo($this->contact->avatar_file_name, PATHINFO_FILENAME);
             $extension = pathinfo($this->contact->avatar_file_name, PATHINFO_EXTENSION);
         } catch (FileNotFoundException $e) {
             return;
         }
 
-        $this->resize($avatar_file, $filename, $extension, $storage, 110);
-        $this->resize($avatar_file, $filename, $extension, $storage, 174);
+        $this->resize($avatarFile, $filename, $extension, $storage, 110);
+        $this->resize($avatarFile, $filename, $extension, $storage, 174);
     }
 
-    private function resize($avatar_file, $filename, $extension, $storage, $size)
+    private function resize($avatarFile, $filename, $extension, $storage, $size)
     {
-        $avatar_file_name = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+        $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
 
-        $avatar = Image::make($avatar_file);
+        $avatar = Image::make($avatarFile);
         $avatar->fit($size);
 
-        $storage->put($avatar_file_name, (string) $avatar->stream(), 'public');
+        $storage->put($avatarFileName, (string) $avatar->stream(), 'public');
     }
 }

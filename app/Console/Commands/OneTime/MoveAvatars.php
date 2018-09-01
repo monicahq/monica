@@ -64,15 +64,15 @@ class MoveAvatars extends Command
         $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME);
         $extension = pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
 
-        $avatar_file_name = 'avatars/'.$filename.'.'.$extension;
+        $avatarFileName = 'avatars/'.$filename.'.'.$extension;
         if (! is_null($size)) {
-            $avatar_file_name = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
         }
 
         $storage = Storage::disk($contact->avatar_location);
-        $avatar_file = $storage->get('avatars/'.$avatar_file_name);
+        $avatarFile = $storage->get('avatars/'.$avatarFileName);
 
         $newStorage = Storage::disk(config('filesystems.default'));
-        $newStorage->putFileAs('avatars', $avatar_file, $avatar_file_name, 'public');
+        $newStorage->putFileAs('avatars', $avatarFile, $avatarFileName, 'public');
     }
 }
