@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
@@ -963,6 +964,44 @@ class Contact extends Model
         $resizedAvatar = 'avatars/'.$avatarFilename.'_'.$size.'.'.$avatarExtension;
 
         return asset(Storage::disk($this->avatar_location)->url($resizedAvatar));
+    }
+
+    /**
+     * Delete avatars files.
+     * This does not touch avatar_location or avatar_file_name properties of the contact.
+     */
+    public function deleteAvatars()
+    {
+        if (! $this->has_avatar || $this->avatar_location == 'external') {
+            return;
+        }
+
+        $storage = Storage::disk($this->avatar_location);
+        $this->deleteAvatarSize($storage);
+        $this->deleteAvatarSize($storage, 110);
+        $this->deleteAvatarSize($storage, 174);
+    }
+
+    /**
+     * Delete avatar file for one size.
+     */
+    private function deleteAvatarSize(Storage $storage, int $size = null)
+    {
+        $avatarFileName = $this->avatar_file_name;
+
+        if (! is_null($size)) {
+            $filename = pathinfo($avatarFileName, PATHINFO_FILENAME);
+            $extension = pathinfo($avatarFileName, PATHINFO_EXTENSION);
+            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+        }
+
+        try {
+            if ($storage->exists($avatarFileName)) {
+                $storage->delete($avatarFileName);
+            }
+        } catch (FileNotFoundException $e) {
+            return;
+        }
     }
 
     /**

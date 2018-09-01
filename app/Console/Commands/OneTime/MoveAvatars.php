@@ -4,7 +4,6 @@ namespace App\Console\Commands\OneTime;
 
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use App\Services\Contact\DeleteAvatars;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +18,7 @@ class MoveAvatars extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:moveavatars {--force : Force the operation to run when in production.}';
+    protected $signature = 'monica:moveavatars {--force : Force the operation to run when in production.} {--dryrun : Simulate the execution but not write anything.}';
 
     /**
      * The console command description.
@@ -52,28 +51,18 @@ class MoveAvatars extends Command
                         $this->moveAvatarSize($contact, 110);
                         $this->moveAvatarSize($contact, 174);
 
-                        $this->deleteAvatars($contact);
+                        if (! $this->option('dryrun')) {
+                            $contact->deleteAvatars();
 
-                        // Update location. The filename has not changed.
-                        $contact->avatar_location = config('filesystems.default');
-                        $contact->save();
+                            // Update location. The filename has not changed.
+                            $contact->avatar_location = config('filesystems.default');
+                            $contact->save();
+                        }
                     } catch (FileNotFoundException $e) {
                         continue;
                     }
                 }
             });
-    }
-
-    /**
-     * Delete avatars files of the contact.
-     */
-    private function deleteAvatars($contact)
-    {
-        try {
-            (new DeleteAvatars)->execute(['contact' => $contact]);
-        } catch (\Exception $e) {
-            // skip it
-        }
     }
 
     private function moveAvatarSize($contact, $size = null)
@@ -97,7 +86,9 @@ class MoveAvatars extends Command
         $avatarFile = $storage->get($avatarFileName);
 
         $newStorage = Storage::disk(config('filesystems.default'));
-        $newStorage->put($avatarFileName, $avatarFile, 'public');
+        if (! $this->option('dryrun')) {
+            $newStorage->put($avatarFileName, $avatarFile, 'public');
+        }
 
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->line('Moved file '.$avatarFileName);

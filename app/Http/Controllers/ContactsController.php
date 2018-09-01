@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Contact\DeleteAvatars;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -279,7 +278,7 @@ class ContactsController extends Controller
         if ($request->file('avatar') != '') {
             if ($contact->has_avatar) {
                 try {
-                    (new DeleteAvatars)->execute(['contact' => $contact]);
+                    $contact->deleteAvatars();
                 } catch (\Exception $e) {
                     return back()
                         ->withInput()
@@ -303,7 +302,7 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
         }
@@ -327,7 +326,7 @@ class ContactsController extends Controller
                 );
 
                 if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
                 break;
