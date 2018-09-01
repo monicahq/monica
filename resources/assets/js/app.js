@@ -36,6 +36,15 @@ Vue.use(ToggleButton);
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
 
+// Select used on list items to display edit and delete buttons
+import vSelectMenu from 'v-selectmenu';
+Vue.use(vSelectMenu);
+
+// Tables
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -85,6 +94,10 @@ Vue.component(
     'form-radio',
     require('./components/partials/form/Radio.vue')
 );
+Vue.component(
+    'form-textarea',
+    require('./components/partials/form/Textarea.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -131,6 +144,21 @@ Vue.component(
 Vue.component(
     'stay-in-touch',
     require('./components/people/StayInTouch.vue')
+);
+
+Vue.component(
+    'conversation-list',
+    require('./components/people/conversation/ConversationList.vue')
+);
+
+Vue.component(
+    'conversation',
+    require('./components/people/conversation/Conversation.vue')
+);
+
+Vue.component(
+    'message',
+    require('./components/people/conversation/Message.vue')
 );
 
 // Journal

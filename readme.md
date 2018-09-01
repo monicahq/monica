@@ -74,6 +74,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Ability to set custom genders
 * Ability to define custom activity types
 * Ability to favorite contacts
+* Track conversations
 * Multi users
 * Labels to organize contacts
 * Ability to define what section should appear on the contact sheet

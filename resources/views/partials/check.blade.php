@@ -2,7 +2,7 @@
 
 @if (config('monica.check_version'))
 
-    @if (\App\Models\Instance\Instance::first()->latest_version != config('monica.app_version'))
+    @if (version_compare(\App\Models\Instance\Instance::first()->latest_version, config('monica.app_version')) > 0)
     <li>
         <a href="#showVersion" data-toggle="modal" class="badge badge-success">{{ trans('app.footer_new_version') }}</a>
     </li>

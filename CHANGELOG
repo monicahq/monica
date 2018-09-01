@@ -1,7 +1,18 @@
 UNRELEASED CHANGES:
 
+* Add ability to log conversations made on social networks or SMS
+* Fix gifts not showing when value was not set
 * Fix phpunit not parsing all test files
 * Improve automatic route binding
+* Support Arabic language
+* Split app css in two files for better support of ltr/rtl text direction
+* Add helper function htmldir()
+* Fix login remember with 2fa and u2f enabled
+* Fix gender update
+* Fix how comparing version is done
+* Fix search with wrong search field
+* Fix gift recipient relation
+* Fix subscription cancel on account deletion
 
 RELEASED VERSIONS:
 
@@ -136,10 +147,6 @@ v2.1.0 - 2018-05-03
 * Add ability to stay in touch with a contact by sending reminders at a given interval
 * Add secure Oauth route for the API login
 * Fix removal of tags
-* Support Arabic language
-* Split app css in two files for better support of ltr/rtl text direction
-* Add helper function htmldir()
-* Fix login remember with 2fa and u2f enabled
 
 v2.0.1 - 2018-04-17
 -------------------

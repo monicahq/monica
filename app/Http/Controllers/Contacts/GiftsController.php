@@ -23,6 +23,12 @@ class GiftsController extends Controller
         $gifts = $contact->gifts()->get();
 
         foreach ($gifts as $gift) {
+            $value = $gift->value;
+
+            if ($gift->value == '') {
+                $value = 0;
+            }
+
             $data = [
                 'contact_hash' => $contact->hashID(),
                 'id' => $gift->id,
@@ -30,8 +36,8 @@ class GiftsController extends Controller
                 'recipient_name' => $gift->recipient_name,
                 'comment' => $gift->comment,
                 'url' => $gift->url,
-                'value' => MoneyHelper::format($gift->value),
-                'does_value_exist' => (bool) $gift->value,
+                'value' => MoneyHelper::format($value),
+                'does_value_exist' => (bool) $value,
                 'is_an_idea' => $gift->is_an_idea,
                 'has_been_offered' => $gift->has_been_offered,
                 'has_been_received' => $gift->has_been_received,
@@ -166,7 +172,9 @@ class GiftsController extends Controller
             $gift->update($array);
         }
 
-        if ($request->get('has_recipient')) {
+        if ($request->get('has_recipient')
+            && Contact::where('account_id', auth()->user()->account_id)
+                ->find($request->get('recipient')) != null) {
             $gift->recipient = $request->get('recipient');
             $gift->save();
         }
