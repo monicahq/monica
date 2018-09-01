@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
 
 class ApiLifeEventController extends ApiController
