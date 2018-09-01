@@ -21,14 +21,14 @@ node('monica') {
     SONAR_VERSION = credentials('SONAR_VERSION')
   }
   stage('Build') {
-    centralperk.inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+    centralperk.inside("-v /etc/passwd:/etc/passwd --tmpfs $HOME/.yarn -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
       checkout scm
 
       // Prepare environment
       sh '''
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
-        yarn global add greenkeeper-lockfile@1
+        yarn --verbose global add greenkeeper-lockfile@1
         ls /home/slave/.yarn/bin/
       '''
 
