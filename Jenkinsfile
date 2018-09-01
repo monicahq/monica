@@ -29,7 +29,7 @@ node('monica') {
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
         yarn global add greenkeeper-lockfile@1
-        ls /home/slave/.yarn/bin/greenkeeper-lockfile-update
+        ls /home/slave/.yarn/bin/
       '''
 
       // Composer
