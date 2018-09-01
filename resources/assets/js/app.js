@@ -161,6 +161,11 @@ Vue.component(
     require('./components/people/conversation/Message.vue')
 );
 
+Vue.component(
+    'life-event',
+    require('./components/people/lifeevent/LifeEvent.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',

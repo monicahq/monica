@@ -373,7 +373,7 @@ class Contact extends Model
      */
     public function lifeEvents()
     {
-        return $this->hasMany(LifeEvent::class);
+        return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');;
     }
 
     /**

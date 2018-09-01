@@ -55,6 +55,10 @@
 
           <div class="col-xs-12 col-sm-9">
 
+            <div class="row section">
+              @include('people.life-events.index')
+            </div>
+
             @if ($modules->contains('key', 'notes'))
             <div class="row section notes">
               <div class="col-xs-12 section-title">
@@ -64,7 +68,7 @@
             @endif
 
             @if ($modules->contains('key', 'conversations'))
-            <div class="row section calls">
+            <div class="row section">
               @include('people.conversations.index')
             </div>
             @endif

@@ -60,6 +60,11 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::post('/people/{contact}/update', 'ContactsController@update')->name('update');
         Route::delete('/people/{contact}', 'ContactsController@delete')->name('delete');
 
+        // Life events
+        Route::name('lifeevent.')->group(function () {
+            Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');
+        });
+
         // Contact information
         Route::get('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@getContactFields');
         Route::post('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@storeContactField');
