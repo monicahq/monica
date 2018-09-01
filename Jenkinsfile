@@ -19,7 +19,6 @@ node('monica') {
 
       // Composer
       sh '''
-        sudo composer self-update
         composer install --no-interaction --no-suggest --ignore-platform-reqs
       '''
       stash includes: 'vendor', name: 'composer'
@@ -54,7 +53,7 @@ node('monica') {
               '''
 
               // Remove xdebug
-              sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+              sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
 
               // Prepare database
               sh '''
