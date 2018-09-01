@@ -1,6 +1,5 @@
 pipeline {
   agent none
-  label 'monica'
   environment {
     ASSETS_EMAIL = credentials('ASSETS_EMAIL')
     ASSETS_GITHUB_TOKEN = credentials('ASSETS_GITHUB_TOKEN')
@@ -17,9 +16,7 @@ pipeline {
   }
   stages {
     stage('Build') {
-      agent { 
-        label 'monica'
-      }
+      agent { label 'monica' }
       steps {
         script {
           def centralperk = docker.image('monicahq/circleci-docker-centralperk')
@@ -54,47 +51,45 @@ pipeline {
         }
       }
     }
-  }
-  stage('Run Tests') {
-    parallel {
-      stage ('Test php 7.2') {
-        agent { 
-          label 'monica'
-        }
-        steps {
-          script {
-            docker.image('circleci/mysql:5.7-ram')
-            .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
-              docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
-                try {
-                  checkout scm
+    stage('Run Tests') {
+      parallel {
+        stage ('Test php 7.2') {
+          agent { label 'monica' }
+          steps {
+            script {
+              docker.image('circleci/mysql:5.7-ram')
+              .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
+                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
+                  try {
+                    checkout scm
 
-                  unstash 'composer'
-                  // Prepare environment
-                  sh '''
-                    mkdir -p results/coverage
-                    cp scripts/tests/.env.mysql .env
-                  '''
+                    unstash 'composer'
+                    // Prepare environment
+                    sh '''
+                      mkdir -p results/coverage
+                      cp scripts/tests/.env.mysql .env
+                    '''
 
-                  // Remove xdebug
-                  sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+                    // Remove xdebug
+                    sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
 
-                  // Prepare database
-                  sh '''
-                    dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
-                    mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-                    php artisan migrate --no-interaction -vvv
-                  '''
+                    // Prepare database
+                    sh '''
+                      dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
+                      mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+                      php artisan migrate --no-interaction -vvv
+                    '''
 
-                  // Seed database
-                  sh 'php artisan db:seed --no-interaction -vvv'
+                    // Seed database
+                    sh 'php artisan db:seed --no-interaction -vvv'
 
-                  // Run unit tests
-                  sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
-                }
-                finally {
-                  junit 'results/junit/*.xml'
-                  stash includes: 'results/junit/', name: 'results/junit' 
+                    // Run unit tests
+                    sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
+                  }
+                  finally {
+                    junit 'results/junit/*.xml'
+                    stash includes: 'results/junit/', name: 'results/junit' 
+                  }
                 }
               }
             }
