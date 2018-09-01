@@ -6,7 +6,7 @@ node('monica') {
   checkout scm
 
   stage('Build') {
-    centralperk.inside('-v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache') {
+    centralperk.inside("-v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
       checkout scm
 
       // Prepare environment
@@ -35,7 +35,7 @@ node('monica') {
       stage('tests-7.2') {
         docker.image('circleci/mysql:5.7-ram')
         .withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
-          centralperk.inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache") {
+          centralperk.inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             try {
               checkout scm
 
