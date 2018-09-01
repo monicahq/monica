@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\Conversation;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Conversation\UpdateConversation;
-use App\Services\Contact\Conversation\DestroyConversation;
-use App\Http\Resources\Conversation\Conversation as LifeEventResource;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use App\Services\Contact\LifeEvent\UpdateLifeEvent;
+use App\Services\Contact\LifeEvent\DestroyLifeEvent;
+use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
 
 class ApiLifeEventController extends ApiController
 {
@@ -22,7 +22,7 @@ class ApiLifeEventController extends ApiController
     public function index(Request $request)
     {
         try {
-            $lifeEvents = auth()->user()->account->conversations()
+            $lifeEvents = auth()->user()->account->lifeEvents()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
@@ -38,11 +38,11 @@ class ApiLifeEventController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $lifeEventId)
+    public function show(Request $request, int $lifeEventId)
     {
         try {
-            $lifeEvent = Conversation::where('account_id', auth()->user()->account_id)
-                ->findOrFail($lifeEventId);
+            $lifeEvent = LifeEvent::where('account_id', auth()->user()->account_id)
+                                    ->findOrFail($lifeEventId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -59,10 +59,10 @@ class ApiLifeEventController extends ApiController
     public function store(Request $request)
     {
         try {
-            $lifeEvent = (new CreateConversation)->execute(
+            $lifeEvent = (new CreateLifeEvent)->execute(
                 $request->all()
-                    +
-                    [
+                +
+                [
                     'account_id' => auth()->user()->account->id,
                 ]
             );
@@ -89,12 +89,12 @@ class ApiLifeEventController extends ApiController
     public function update(Request $request, $lifeEventId)
     {
         try {
-            $lifeEvent = (new UpdateConversation)->execute(
+            $lifeEvent = (new UpdateLifeEvent)->execute(
                 $request->all()
                     +
                     [
                     'account_id' => auth()->user()->account->id,
-                    'conversation_id' => $lifeEventId,
+                    'life_event_id' => $lifeEventId,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -120,9 +120,9 @@ class ApiLifeEventController extends ApiController
     public function destroy(Request $request, $lifeEventId)
     {
         try {
-            (new DestroyConversation)->execute([
+            (new DestroyLifeEvent)->execute([
                 'account_id' => auth()->user()->account->id,
-                'conversation_id' => $lifeEventId,
+                'life_event_id' => $lifeEventId,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
