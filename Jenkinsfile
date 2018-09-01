@@ -21,7 +21,7 @@ node('monica') {
       sh '''
         composer install --no-interaction --no-suggest --ignore-platform-reqs
       '''
-      stash includes: 'vendor', name: 'composer'
+      stash includes: 'vendor/', name: 'composer'
 
       // Node.js
       sh '''
@@ -70,7 +70,7 @@ node('monica') {
             }
             finally {
               junit 'results/junit/*.xml'
-              stash includes: 'results', name: 'results/junit' 
+              stash includes: 'results/junit/', name: 'results/junit' 
             }
           }
         }
