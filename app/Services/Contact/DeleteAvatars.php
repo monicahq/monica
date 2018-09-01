@@ -10,6 +10,7 @@ namespace App\Services\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 /**
  * Delete the avatars files of a contact.
@@ -34,7 +35,7 @@ class DeleteAvatars extends BaseService
     public function execute(array $data) : bool
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \MissingParameterException('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
         $contact = $data['contact'];
