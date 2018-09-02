@@ -417,6 +417,17 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are actives.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 0);
+    }
+
+    /**
      * Get the first name of the contact.
      *
      * @return string
