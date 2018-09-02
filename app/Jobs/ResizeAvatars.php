@@ -4,12 +4,12 @@ namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
+use Intervention\Image\Facades\Image;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Intervention\Image\Facades\Image as Image;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ResizeAvatars implements ShouldQueue
@@ -35,27 +35,34 @@ class ResizeAvatars implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->contact->has_avatar) {
-            try {
-                $avatar_file = Storage::disk($this->contact->avatar_location)->get($this->contact->avatar_file_name);
-                $avatar_path = Storage::disk($this->contact->avatar_location)->url($this->contact->avatar_file_name);
-                $avatar_filename_without_extension = pathinfo($avatar_path, PATHINFO_FILENAME);
-                $avatar_extension = pathinfo($avatar_path, PATHINFO_EXTENSION);
-            } catch (FileNotFoundException $e) {
-                return;
-            }
-
-            $size = 110;
-            $avatar_cropped_path = 'avatars/'.$avatar_filename_without_extension.'_'.$size.'.'.$avatar_extension;
-            $avatar = Image::make($avatar_file);
-            $avatar->fit($size);
-            Storage::disk($this->contact->avatar_location)->put($avatar_cropped_path, $avatar->stream()->__toString());
-
-            $size = 174;
-            $avatar_cropped_path = 'avatars/'.$avatar_filename_without_extension.'_'.$size.'.'.$avatar_extension;
-            $avatar = Image::make($avatar_file);
-            $avatar->fit($size);
-            Storage::disk($this->contact->avatar_location)->put($avatar_cropped_path, $avatar->stream()->__toString());
+        if (! $this->contact->has_avatar) {
+            return;
         }
+
+        $storage = Storage::disk($this->contact->avatar_location);
+        if (! $storage->exists($this->contact->avatar_file_name)) {
+            return;
+        }
+
+        try {
+            $avatarFile = $storage->get($this->contact->avatar_file_name);
+            $filename = pathinfo($this->contact->avatar_file_name, PATHINFO_FILENAME);
+            $extension = pathinfo($this->contact->avatar_file_name, PATHINFO_EXTENSION);
+        } catch (FileNotFoundException $e) {
+            return;
+        }
+
+        $this->resize($avatarFile, $filename, $extension, $storage, 110);
+        $this->resize($avatarFile, $filename, $extension, $storage, 174);
+    }
+
+    private function resize($avatarFile, $filename, $extension, $storage, $size)
+    {
+        $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+
+        $avatar = Image::make($avatarFile);
+        $avatar->fit($size);
+
+        $storage->put($avatarFileName, (string) $avatar->stream(), 'public');
     }
 }
