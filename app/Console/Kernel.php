@@ -29,6 +29,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SetPremiumAccount',
         'App\Console\Commands\Update',
         'App\Console\Commands\MigrateDatabaseCollation',
+        'App\Console\Commands\OneTime\MoveAvatars',
         'App\Console\Commands\Reminder\ProcessOldReminders',
     ];
 
