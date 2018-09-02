@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\LifeEventCategory;
-use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
+use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
+
 // use App\Services\Contact\LifeEvent\DestroyMessage;
 // use App\Services\Contact\LifeEvent\CreateLifeEvent;
 // use App\Services\Contact\LifeEvent\UpdateConversation;
@@ -26,6 +27,7 @@ class LifeEventsController extends Controller
     public function categories(Request $request)
     {
         $lifeEventCategories = auth()->user()->account->lifeEventCategories;
+
         return LifeEventCategoryResource::collection($lifeEventCategories);
     }
 
@@ -39,6 +41,7 @@ class LifeEventsController extends Controller
     {
         $lifeEventCategory = LifeEventCategory::findOrFail($lifeEventCategoryId);
         $lifeEventTypes = $lifeEventCategory->lifeEventTypes;
+
         return LifeEventTypeResource::collection($lifeEventTypes);
     }
 
