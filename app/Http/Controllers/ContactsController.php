@@ -41,7 +41,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Display contacts
+     * Display contacts.
      *
      * @param Request $request
      * @return \Illuminate\Http\Response
@@ -572,7 +572,7 @@ class ContactsController extends Controller
 
     /**
      * Toggle archive of a contact.
-     * 
+     *
      * @param  Request $request
      * @param  Contact $contact
      * @return array
