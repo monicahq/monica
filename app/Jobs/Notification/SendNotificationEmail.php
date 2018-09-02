@@ -4,10 +4,10 @@ namespace App\Jobs\Notification;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use App\Mail\NotificationEmail;
 use App\Models\Contact\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
+use App\Notifications\NotificationEmail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -38,7 +38,7 @@ class SendNotificationEmail implements ShouldQueue
     {
         // send notification only if the reminder rule is ON
         if ($this->notification->shouldBeSent()) {
-            Mail::to($this->user->email)->send(new NotificationEmail($this->notification, $this->user));
+            $this->user->notifyNow(new NotificationEmail($this->notification));
         }
 
         $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();

@@ -12,7 +12,7 @@ use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use App\Jobs\Reminder\SendReminderEmail;
+use App\Notifications\UserRemindedMail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -423,6 +423,6 @@ class User extends Authenticatable
      */
     public function sendReminder(Reminder $reminder)
     {
-        dispatch(new SendReminderEmail($reminder, $this));
+        $this->notifyNow(new UserRemindedMail($reminder));
     }
 }

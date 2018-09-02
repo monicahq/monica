@@ -13,6 +13,7 @@ use App\Models\Contact\Notification;
 use Illuminate\Support\Facades\Mail;
 use App\Jobs\Notification\ScheduleNotification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as LaravelNotification;
 
 class ScheduleNotificationTest extends TestCase
 {
@@ -20,7 +21,7 @@ class ScheduleNotificationTest extends TestCase
 
     public function test_it_dispatches_an_email_and_deletes_the_notification()
     {
-        Mail::fake();
+        LaravelNotification::fake();
         Bus::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));

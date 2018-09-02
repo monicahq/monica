@@ -10,6 +10,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -19,6 +20,7 @@ class SendRemindersTest extends TestCase
 
     public function test_it_schedules_a_reminder_email_job_and_a_set_next_expected_date_job()
     {
+        Mail::fake();
         Bus::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
@@ -42,6 +44,7 @@ class SendRemindersTest extends TestCase
 
     public function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
     {
+        Mail::fake();
         Bus::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
@@ -66,6 +69,7 @@ class SendRemindersTest extends TestCase
 
     public function test_it_doesnt_schedule_email_if_on_unpaid_plan()
     {
+        Mail::fake();
         Bus::fake();
 
         config(['monica.requires_subscription' => true]);

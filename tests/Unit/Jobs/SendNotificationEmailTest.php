@@ -5,15 +5,16 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Mail\NotificationEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
-use Illuminate\Support\Facades\Mail;
+use App\Notifications\NotificationEmail;
 use App\Jobs\Notification\SendNotificationEmail;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as LaravelNotification;
 
 class SendNotificationEmailTest extends TestCase
 {
@@ -21,7 +22,7 @@ class SendNotificationEmailTest extends TestCase
 
     public function test_it_sends_a_reminder_email_and_delete_the_notification()
     {
-        Mail::fake();
+        LaravelNotification::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -53,9 +54,12 @@ class SendNotificationEmailTest extends TestCase
 
         dispatch(new SendNotificationEmail($notification, $user));
 
-        Mail::assertSent(NotificationEmail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
+        LaravelNotification::assertSentTo($user, NotificationEmail::class,
+            function ($param, $channels) use ($notification) {
+                return $channels[0] == 'mail'
+                    && $param->assertSentFor($notification);
+            }
+        );
 
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,
@@ -67,7 +71,7 @@ class SendNotificationEmailTest extends TestCase
      */
     public function test_it_doesnt_send_a_notification()
     {
-        Mail::fake();
+        LaravelNotification::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -99,9 +103,7 @@ class SendNotificationEmailTest extends TestCase
 
         dispatch(new SendNotificationEmail($notification, $user));
 
-        Mail::assertNotSent(NotificationEmail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
+        LaravelNotification::assertNotSentTo($user, NotificationEmail::class);
 
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,

@@ -62,9 +62,7 @@ class CreateConversationTest extends TestCase
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $contact = factory(Contact::class)->create();
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $contact->account_id,
         ]);

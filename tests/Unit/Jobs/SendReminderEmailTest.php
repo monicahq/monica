@@ -5,12 +5,12 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Mail\UserRemindedMail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Mail;
-use App\Jobs\Reminder\SendReminderEmail;
+use App\Notifications\UserRemindedMail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendReminderEmailTest extends TestCase
@@ -19,9 +19,9 @@ class SendReminderEmailTest extends TestCase
 
     public function test_it_sends_a_reminder_email()
     {
-        Mail::fake();
+        Notification::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
 
         $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '07:00',
@@ -30,6 +30,7 @@ class SendReminderEmailTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
+            'timezone' => 'America/New_York',
         ]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
@@ -37,14 +38,13 @@ class SendReminderEmailTest extends TestCase
             'next_expected_date' => '2017-01-01',
         ]);
 
-        dispatch(new SendReminderEmail($reminder, $user));
+        $user->sendReminder($reminder);
 
-        Mail::assertSent(UserRemindedMail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
-
-        Mail::assertNotSent(UserRemindedMail::class, function ($mail) {
-            return $mail->hasTo('jane@doe.com');
-        });
+        Notification::assertSentTo($user, UserRemindedMail::class,
+            function ($notification, $channels) use ($reminder) {
+                return $channels[0] == 'mail'
+                && $notification->assertSentFor($reminder);
+            }
+        );
     }
 }
