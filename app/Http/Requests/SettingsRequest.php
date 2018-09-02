@@ -26,7 +26,7 @@ class SettingsRequest extends FormRequest
         return [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
-            'email' => 'required|email|max:2083|unique:users,email,'.$this->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$this->id,
             'timezone' => '',
             'layout' => '',
             'locale' => '',
