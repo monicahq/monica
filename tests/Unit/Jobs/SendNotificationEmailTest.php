@@ -12,7 +12,6 @@ use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Notifications\NotificationEmail;
 use App\Jobs\Notification\SendNotificationEmail;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as LaravelNotification;
 

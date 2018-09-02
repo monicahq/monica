@@ -5,7 +5,6 @@ namespace App\Jobs\Notification;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Notification;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use App\Notifications\NotificationEmail;
 use Illuminate\Queue\InteractsWithQueue;

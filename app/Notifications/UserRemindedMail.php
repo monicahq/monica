@@ -9,7 +9,6 @@ use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class UserRemindedMail extends Notification
@@ -63,13 +62,14 @@ class UserRemindedMail extends Notification
             $message = $message
                 ->line(trans('mail.comment', ['comment' => $this->reminder->description]));
         }
+
         return $message
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
     }
 
     /**
-     * Use in test to check the parameter notification
-     * 
+     * Use in test to check the parameter notification.
+     *
      * @param Reminder $reminder
      * @return bool
      */

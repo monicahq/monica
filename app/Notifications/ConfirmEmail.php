@@ -37,6 +37,7 @@ class ConfirmEmail extends Notification implements ShouldQueue
     public function toMail($user)
     {
         App::setLocale($user->locale);
+
         return (new MailMessage)
             ->subject(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_title'))

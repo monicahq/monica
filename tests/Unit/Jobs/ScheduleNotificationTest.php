@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Bus;
 use App\Models\Contact\Notification;
-use Illuminate\Support\Facades\Mail;
 use App\Jobs\Notification\ScheduleNotification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as LaravelNotification;

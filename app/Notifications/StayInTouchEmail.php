@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class StayInTouchEmail extends Notification
@@ -49,6 +48,7 @@ class StayInTouchEmail extends Notification
     public function toMail($user)
     {
         App::setLocale($user->locale);
+
         return (new MailMessage)
             ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->name]))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
@@ -60,8 +60,8 @@ class StayInTouchEmail extends Notification
     }
 
     /**
-     * Use in test to check the parameter notification
-     * 
+     * Use in test to check the parameter notification.
+     *
      * @param Contact $contact
      * @return bool
      */

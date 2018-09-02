@@ -4,14 +4,12 @@ namespace App\Notifications;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Reminder;
 use App\Models\Contact\Contact;
-use \App\Models\Contact\Notification;
 use Illuminate\Support\Facades\App;
+use App\Models\Contact\Notification;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Notifications\Notification as LaravelNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as LaravelNotification;
 
 class NotificationEmail extends LaravelNotification
 {
@@ -60,7 +58,7 @@ class NotificationEmail extends LaravelNotification
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
             ->line(trans_choice('mail.notification_description', $this->notification->scheduled_number_days_before, [
                 'count' => $this->notification->scheduled_number_days_before,
-                'date' => $this->notification->reminder->next_expected_date->toDateString()
+                'date' => $this->notification->reminder->next_expected_date->toDateString(),
             ]))
             ->line($this->notification->reminder->title)
             ->line(trans('mail.for', ['name' => $contact->name]));
@@ -68,13 +66,14 @@ class NotificationEmail extends LaravelNotification
             $message = $message
                 ->line(trans('mail.comment', ['comment' => $this->notification->reminder->description]));
         }
+
         return $message
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
     }
 
     /**
-     * Use in test to check the parameter notification
-     * 
+     * Use in test to check the parameter notification.
+     *
      * @param Notification $notification
      * @return bool
      */
