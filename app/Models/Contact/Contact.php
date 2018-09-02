@@ -985,7 +985,7 @@ class Contact extends Model
 
     /**
      * Delete avatar file for one size.
-     * 
+     *
      * @param Filesystem $storage
      * @param int $size
      */
