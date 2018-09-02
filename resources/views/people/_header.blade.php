@@ -29,7 +29,7 @@
           <h3>
             <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
 
-            <contact-favorite hash="{!! $contact->hashID() !!}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
+            <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
 
             @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
@@ -92,6 +92,9 @@
           <ul class="horizontal quick-actions">
             <li>
               <a href="{{ route('people.edit', $contact) }}" class="btn edit-information" id="button-edit-contact">{{ trans('people.edit_contact_information') }}</a>
+            </li>
+            <li>
+              <contact-archive hash="{{ $contact->hashID() }}" active="{{ json_encode($contact->is_active) }}"></contact-archive>
             </li>
           </ul>
         </div>

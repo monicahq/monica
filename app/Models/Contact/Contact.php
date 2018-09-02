@@ -417,12 +417,23 @@ class Contact extends Model
     }
 
     /**
-     * Scope a query to only include contacts who are actives.
+     * Scope a query to only include contacts who are active.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    /**
+     * Scope a query to only include contacts who are not active.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotActive($query)
     {
         return $query->where('is_active', 0);
     }
