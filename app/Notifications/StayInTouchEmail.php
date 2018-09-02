@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -53,7 +52,7 @@ class StayInTouchEmail extends Notification implements ShouldQueue
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
             ->line(trans_choice('mail.stay_in_touch_subject_description', $this->contact->stay_in_touch_frequency, [
                 'name' => $this->contact->name,
-                'frequency' => $this->contact->stay_in_touch_frequency
+                'frequency' => $this->contact->stay_in_touch_frequency,
             ]))
             ->action(trans('mail.footer_contact_info2', ['name' => $this->contact->name]), route('people.show', $this->contact));
     }

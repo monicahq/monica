@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
