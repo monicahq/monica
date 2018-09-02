@@ -21,6 +21,7 @@ class LifeEventType extends Resource
             'object' => 'lifeeventtype',
             'name' => $this->name,
             'core_monica_data' => (bool) $this->core_monica_data,
+            'default_life_event_type_key' => $this->default_life_event_type_key,
             'life_event_category' => new LifeEventCategoryResource($this->lifeEventCategory),
             'account' => [
                 'id' => $this->account->id,

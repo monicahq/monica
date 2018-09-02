@@ -20,6 +20,7 @@ class LifeEventCategory extends Resource
             'object' => 'lifeeventcategory',
             'name' => $this->name,
             'core_monica_data' => (bool) $this->core_monica_data,
+            'default_life_event_category_key' => $this->default_life_event_category_key,
             'account' => [
                 'id' => $this->account->id,
             ],

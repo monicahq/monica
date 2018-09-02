@@ -162,6 +162,11 @@ Vue.component(
 );
 
 Vue.component(
+    'create-life-event',
+    require('./components/people/lifeevent/CreateLifeEvent.vue')
+);
+
+Vue.component(
     'life-event',
     require('./components/people/lifeevent/LifeEvent.vue')
 );

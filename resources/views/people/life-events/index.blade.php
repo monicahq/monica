@@ -3,7 +3,7 @@
     Life events
 
     <span class="relative {{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}" style="top: -7px;">
-      <a href="{{ route('people.conversation.new', $contact) }}" class="btn edit-information">{{ trans('people.conversation_list_cta') }}</a>
+      <a href="{{ route('people.conversation.new', $contact) }}" class="btn edit-information">Add life event</a>
     </span>
   </h3>
 </div>

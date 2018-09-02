@@ -16,6 +16,7 @@
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
+$bg-hover-monica: #f1f5fd;
 $htmldir: ltr !default;
 
 @import "buttons";
@@ -171,6 +172,19 @@ $htmldir: ltr !default;
       background-color: transparent;
       color: #fff;
     }
+  }
+}
+
+.life-event {
+  .life-event-add-row {
+    &:hover {
+      background-color: $bg-hover-monica;
+    }
+  }
+
+  .life-event-add-arrow {
+    right: 10px;
+    top: 12px;
   }
 }
 

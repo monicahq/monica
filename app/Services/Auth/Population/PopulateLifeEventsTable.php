@@ -130,8 +130,9 @@ class PopulateLifeEventsTable extends BaseService
         try {
             $lifeEventCategory = LifeEventCategory::create([
                 'account_id' => $this->data['account_id'],
-                'name' => trans($defaultLifeEventCategory->translation_key),
+                'name' => trans('settings.personalization_life_event_category_'.$defaultLifeEventCategory->translation_key),
                 'core_monica_data' => true,
+                'default_life_event_category_key' => $defaultLifeEventCategory->translation_key,
             ]);
         } catch (QueryException $e) {
             throw new QueryException('Can not create a life event category.');
@@ -152,8 +153,9 @@ class PopulateLifeEventsTable extends BaseService
             LifeEventType::create([
                 'account_id' => $this->data['account_id'],
                 'life_event_category_id' => $lifeEventCategory->id,
-                'name' => trans($defaultLifeEventType->translation_key),
+                'name' => trans('settings.personalization_life_event_type_'.$defaultLifeEventType->translation_key),
                 'core_monica_data' => true,
+                'default_life_event_type_key' => $defaultLifeEventType->translation_key,
             ]);
         } catch (QueryException $e) {
             throw new QueryException('Can not create a life event type.');

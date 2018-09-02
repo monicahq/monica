@@ -19683,6 +19683,15 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   color: #fff;
 }
 
+.life-event .life-event-add-row:hover {
+  background-color: #f1f5fd;
+}
+
+.life-event .life-event-add-arrow {
+  right: 10px;
+  top: 12px;
+}
+
 .chart-activities {
   display: table;
   table-layout: fixed;

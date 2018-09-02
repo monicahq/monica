@@ -40,6 +40,7 @@ class CreateLifeEventsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->string('name');
+            $table->string('default_life_event_category_key')->nullable();
             $table->boolean('core_monica_data')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
@@ -50,6 +51,7 @@ class CreateLifeEventsTable extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('life_event_category_id');
             $table->string('name');
+            $table->string('default_life_event_type_key')->nullable();
             $table->boolean('core_monica_data')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
@@ -80,49 +82,49 @@ class CreateLifeEventsTable extends Migration
         // POPULATE DEFAULT TABLES
         // WORK AND EDUCATION
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
-            'translation_key' => 'settings.personalization_life_event_category_work_education',
+            'translation_key' => 'work_education',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_job',
+            'translation_key' => 'new_job',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_retirement',
+            'translation_key' => 'retirement',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_school',
+            'translation_key' => 'new_school',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_study_abroad',
+            'translation_key' => 'study_abroad',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_volunteer_work',
+            'translation_key' => 'volunteer_work',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_published_book_or_paper',
+            'translation_key' => 'published_book_or_paper',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_military_service',
+            'translation_key' => 'military_service',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
@@ -130,72 +132,72 @@ class CreateLifeEventsTable extends Migration
 
         // HOME LIVING
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
-            'translation_key' => 'settings.personalization_life_event_category_family_relationships',
+            'translation_key' => 'family_relationships',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_first_met',
+            'translation_key' => 'first_met',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_relationship',
+            'translation_key' => 'new_relationship',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_engagement',
+            'translation_key' => 'engagement',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_marriage',
+            'translation_key' => 'marriage',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_anniversary',
+            'translation_key' => 'anniversary',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_expecting_a_baby',
+            'translation_key' => 'expecting_a_baby',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_child',
+            'translation_key' => 'new_child',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_family_member',
+            'translation_key' => 'new_family_member',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_pet',
+            'translation_key' => 'new_pet',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_end_of_relationship',
+            'translation_key' => 'end_of_relationship',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_loss_of_a_loved_one',
+            'translation_key' => 'loss_of_a_loved_one',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
@@ -203,43 +205,43 @@ class CreateLifeEventsTable extends Migration
 
         // HOME & LIVING
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
-            'translation_key' => 'settings.personalization_life_event_category_home_living',
+            'translation_key' => 'home_living',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_moved',
+            'translation_key' => 'moved',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_bought_a_home',
+            'translation_key' => 'bought_a_home',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_home_improvement',
+            'translation_key' => 'home_improvement',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_holidays',
+            'translation_key' => 'holidays',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_vehicule',
+            'translation_key' => 'new_vehicule',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_roommate',
+            'translation_key' => 'new_roommate',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
@@ -247,67 +249,67 @@ class CreateLifeEventsTable extends Migration
 
         // TRAVEL AND EXPERIENCES
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
-            'translation_key' => 'settings.personalization_life_event_category_travel_experiences',
+            'translation_key' => 'health_wellness',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_organ_donor',
+            'translation_key' => 'organ_donor',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_overcame_an_illness',
+            'translation_key' => 'overcame_an_illness',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_quit_a_habit',
+            'translation_key' => 'quit_a_habit',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_eating_habits',
+            'translation_key' => 'new_eating_habits',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_weight_loss',
+            'translation_key' => 'weight_loss',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_wear_glass_or_contact',
+            'translation_key' => 'wear_glass_or_contact',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_broken_bone',
+            'translation_key' => 'broken_bone',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_removed_braces',
+            'translation_key' => 'removed_braces',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_surgery',
+            'translation_key' => 'surgery',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_dentist',
+            'translation_key' => 'dentist',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
@@ -315,73 +317,73 @@ class CreateLifeEventsTable extends Migration
 
         // HEALTH AND WELLNESS
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
-            'translation_key' => 'settings.personalization_life_event_category_health_wellness',
+            'translation_key' => 'travel_experiences',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_sport',
+            'translation_key' => 'new_sport',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_hobby',
+            'translation_key' => 'new_hobby',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_instrument',
+            'translation_key' => 'new_instrument',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_language',
+            'translation_key' => 'new_language',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_tatoo_or_piercing',
+            'translation_key' => 'tatoo_or_piercing',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_new_license',
+            'translation_key' => 'new_license',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_travel',
+            'translation_key' => 'travel',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_achievement_or_award',
+            'translation_key' => 'achievement_or_award',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_changed_beliefs',
+            'translation_key' => 'changed_beliefs',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_first_word',
+            'translation_key' => 'first_word',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'settings.personalization_life_event_type_first_kiss',
+            'translation_key' => 'first_kiss',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
