@@ -13,6 +13,7 @@ UNRELEASED CHANGES:
 * Fix search with wrong search field
 * Fix gift recipient relation
 * Fix subscription cancel on account deletion
+* Fix reminder link in email sent
 
 RELEASED VERSIONS:
 
