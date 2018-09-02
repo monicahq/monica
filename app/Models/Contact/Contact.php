@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
 use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -984,8 +985,11 @@ class Contact extends Model
 
     /**
      * Delete avatar file for one size.
+     * 
+     * @param Filesystem $storage
+     * @param int $size
      */
-    private function deleteAvatarSize(Storage $storage, int $size = null)
+    private function deleteAvatarSize(Filesystem $storage, int $size = null)
     {
         $avatarFileName = $this->avatar_file_name;
 
