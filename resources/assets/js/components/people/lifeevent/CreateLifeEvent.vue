@@ -8,11 +8,12 @@
             <!-- Breadcrumb -->
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
                 <li class="di"><a class="pointer" @click="view = 'categories'">All categories</a></li>
-                <li class="di" v-if="view == 'types'">{{ this.activeCategory }}</li>
-                <li class="di" v-if="view == 'add'"><a class="pointer" @click="view = 'types'">{{ this.activeType }}</a></li>
-                <li class="di">Add life event</li>
+                <li class="di" v-if="view == 'types'">{{ this.activeCategory.name }}</li>
+                <li class="di" v-if="view == 'add'"><a class="pointer" @click="view = 'types'">{{ this.activeType.name }}</a></li>
+                <li class="di" v-if="view == 'add'">Add life event</li>
             </ul>
 
+            <!-- List of events -->
             <ul class="ba b--gray-monica br2">
 
                 <!-- CATEGORIES -->
@@ -42,11 +43,46 @@
 
             <!-- ADD SCREEN -->
             <div class="ba b--gray-monica br2" v-if="view == 'add'">
-                <h3>{{ this.activeType }}</h3>
+                <div class="dib mr2">
+                    <img :src="'/img/people/life-events/types/' + this.activeType.default_life_event_type_key + '.svg'">
+                </div>
 
-                <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
-                </svg>
+                <h3 class="f3 fw5">{{ this.activeType.name }}</h3>
+
+                <form-input
+                  value=""
+                  v-bind:input-type="'text'"
+                  v-bind:id="'name'"
+                  v-bind:required="false"
+                  v-bind:title="'Title)'">
+                </form-input>
+
+                <label for="another" class="mr2">Date it happened</label>
+                <form-date
+                    v-bind:id="'happenedAt'"
+                    v-bind:default-date="''"
+                    v-bind:locale="''">
+                </form-date>
+
+                <label for="another" class="mr2">Story (optional)</label>
+                <form-textarea
+                  v-bind:required="true"
+                  v-bind:noLabel="true"
+                  v-bind:rows="4"
+                  v-bind:placeholder="'Placeholder'"
+                  v-bind:id="'note'">
+                </form-textarea>
+
+                <div class="ph4-ns ph3 pv3 bb b--gray-monica">
+                    <div class="flex-ns justify-between">
+                        <div>
+                            <a class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">Add</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -106,12 +142,12 @@
                         });
 
                 this.view = 'types'
-                this.activeCategory = category.name
+                this.activeCategory = category
             },
 
             displayAddScreen(type) {
                 this.view = 'add'
-                this.activeType = type.name
+                this.activeType = type
             }
         }
     }
