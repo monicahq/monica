@@ -1875,16 +1875,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.1.2",
+            "version": "v7.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "3f8b198f85431012d18f9645179bac35a03753e6"
+                "reference": "534049509cdd483c5a685bd08adea49789a4a133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/3f8b198f85431012d18f9645179bac35a03753e6",
-                "reference": "3f8b198f85431012d18f9645179bac35a03753e6",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/534049509cdd483c5a685bd08adea49789a4a133",
+                "reference": "534049509cdd483c5a685bd08adea49789a4a133",
                 "shasum": ""
             },
             "require": {
@@ -1936,7 +1936,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2018-06-06T13:37:08+00:00"
+            "time": "2018-08-31T13:01:07+00:00"
         },
         {
             "name": "laravel/framework",
