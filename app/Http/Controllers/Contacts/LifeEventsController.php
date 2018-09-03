@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\LifeEventCategory;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
 
 // use App\Services\Contact\LifeEvent\DestroyMessage;
-// use App\Services\Contact\LifeEvent\CreateLifeEvent;
-// use App\Services\Contact\LifeEvent\UpdateConversation;
-// use App\Services\Contact\LifeEvent\DestroyConversation;
-// use App\Services\Contact\LifeEvent\AddMessageToConversation;
 
 class LifeEventsController extends Controller
 {
@@ -68,5 +65,35 @@ class LifeEventsController extends Controller
         }
 
         return $lifeEventsCollection;
+    }
+
+    /**
+     * Store the life event.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, Contact $contact)
+    {
+        $date = $request->get('conversationDate');
+
+        $data = [
+            'happened_at' => $date,
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $request->get('contactFieldTypeId'),
+        ];
+
+        // create the conversation
+        try {
+            $lifeEvent = (new CreateLifeEvent)->execute($data);
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(trans('app.error_save'));
+        }
+
+        return $lifeEvent;
     }
 }
