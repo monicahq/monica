@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Helpers\LocaleHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Models\Account\Account;
+use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -48,14 +50,16 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $first = ! Account::hasAny();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
 
-        return view('auth.register', ['first' => $first]);
+        return view('auth.register')
+            ->withFirst($first)
+            ->withLocales(CollectionHelper::sortByCollator(LocaleHelper::getLocaleList(), 'lang'));
     }
 
     /**
@@ -89,7 +93,8 @@ class RegisterController extends Controller
             $data['last_name'],
             $data['email'],
             $data['password'],
-            \Request::ip()
+            \Request::ip(),
+            $data['lang']
         );
         $user = $account->users()->first();
 
