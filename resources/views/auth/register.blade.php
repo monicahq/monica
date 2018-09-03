@@ -5,6 +5,19 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+          <div class="tc">
+            <ul class="horizontal">
+            @foreach($locales as $locale)
+              <li>
+                @if (App::getLocale() == $locale['lang'])
+                  {{ $locale['lang'] }}
+                @else
+                  <a href="?lang={{ $locale['lang'] }}" title="{{ trans('auth.switch_lang', ['lang' => $locale['name']]) }}">{{ $locale['lang'] }}</a>
+                @endif
+              </li>
+            @endforeach
+            </ul>
+          </div>
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -69,6 +82,7 @@
               </div>
 
               <div class="form-group actions">
+                <input type="hidden" name="lang" value="{{ App::getLocale() }}" />
                 <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
 

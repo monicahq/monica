@@ -38,6 +38,7 @@ return [
     'signup_no_account' => 'Don’t have an account?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
+    'switch_lang' => 'Switch to :lang',
 
     'password_reset_title' => 'Reset Password',
     'password_reset_email' => 'E-Mail Address',
