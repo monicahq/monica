@@ -14,6 +14,7 @@ UNRELEASED CHANGES:
 * Fix gift recipient relation
 * Fix subscription cancel on account deletion
 * Fix email maximum size on settings
+* Fix reminder link in email sent
 
 RELEASED VERSIONS:
 
