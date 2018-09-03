@@ -3,17 +3,21 @@
 namespace App\Notifications;
 
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\App;
 use App\Models\Contact\Notification;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
 
-class NotificationEmail extends LaravelNotification
+class NotificationEmail extends LaravelNotification implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @return Notification
@@ -49,6 +53,7 @@ class NotificationEmail extends LaravelNotification
     public function toMail($user)
     {
         App::setLocale($user->locale);
+        DateHelper::setLocale($user->locale);
 
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->notification->reminder->contact_id);
@@ -58,7 +63,7 @@ class NotificationEmail extends LaravelNotification
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
             ->line(trans_choice('mail.notification_description', $this->notification->scheduled_number_days_before, [
                 'count' => $this->notification->scheduled_number_days_before,
-                'date' => $this->notification->reminder->next_expected_date->toDateString(),
+                'date' => DateHelper::getShortDate($this->notification->reminder->next_expected_date),
             ]))
             ->line($this->notification->reminder->title)
             ->line(trans('mail.for', ['name' => $contact->name]));
@@ -67,8 +72,12 @@ class NotificationEmail extends LaravelNotification
                 ->line(trans('mail.comment', ['comment' => $this->notification->reminder->description]));
         }
 
-        return $message
+        $message = $message
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+
+        $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
+
+        return $message;
     }
 
     /**

@@ -21,10 +21,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Notification as LaravelNotification;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ContactTest extends FeatureTestCase
 {
@@ -1545,7 +1546,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sends_the_stay_in_touch_email()
     {
-        LaravelNotification::fake();
+        NotificationFacade::fake();
 
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([
@@ -1558,9 +1559,9 @@ class ContactTest extends FeatureTestCase
             'timezone' => 'America/New_York',
         ]);
 
-        $contact->sendStayInTouchEmail($user);
+        dispatch(new ScheduleStayInTouch($contact));
 
-        LaravelNotification::assertSentTo($user, StayInTouchEmail::class,
+        NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {
                 return $channels[0] == 'mail'
                 && $notification->assertSentFor($contact);

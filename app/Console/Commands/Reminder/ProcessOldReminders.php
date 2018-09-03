@@ -34,25 +34,26 @@ class ProcessOldReminders extends Command
      */
     public function handle()
     {
-        $reminders = Reminder::where('next_expected_date', '<', now()->subDays(1))
-                                ->get();
+        Reminder::where('next_expected_date', '<', now()->subDays(1))
+                    ->chunk(500, function ($reminders) {
 
-        foreach ($reminders as $reminder) {
-            // Skip the reminder if the contact has been deleted (and for some
-            // reasons, the reminder hasn't)
-            if (! $reminder->contact) {
-                $reminder->delete();
-                continue;
-            }
+            foreach ($reminders as $reminder) {
+                // Skip the reminder if the contact has been deleted (and for some
+                // reasons, the reminder hasn't)
+                if (! $reminder->contact) {
+                    $reminder->delete();
+                    continue;
+                }
 
-            if ($reminder->frequency_type == 'one_time') {
-                $reminder->delete();
-            }
+                if ($reminder->frequency_type == 'one_time') {
+                    $reminder->delete();
+                }
 
-            if ($reminder->frequency_type != 'one_time') {
-                $reminder->calculateNextExpectedDate('UTC');
-                $reminder->save();
+                if ($reminder->frequency_type != 'one_time') {
+                    $reminder->calculateNextExpectedDate('UTC');
+                    $reminder->save();
+                }
             }
-        }
+        });
     }
 }

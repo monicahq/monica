@@ -8,12 +8,15 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Notifications\Notification;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as LaravelNotification;
 
-class UserRemindedMail extends Notification
+class UserRemindedMail extends LaravelNotification implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * @return Reminder

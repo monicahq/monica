@@ -10,6 +10,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\UserRemindedMail;
+use App\Jobs\Reminders\ScheduleReminders;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -38,7 +39,7 @@ class SendReminderEmailTest extends TestCase
             'next_expected_date' => '2017-01-01',
         ]);
 
-        $user->sendReminder($reminder);
+        dispatch(new ScheduleReminders($contact));
 
         Notification::assertSentTo($user, UserRemindedMail::class,
             function ($notification, $channels) use ($reminder) {

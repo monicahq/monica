@@ -12,7 +12,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use App\Notifications\StayInTouchEmail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -1535,16 +1534,5 @@ class Contact extends Model
         }
 
         $this->save();
-    }
-
-    /**
-     * Send the email about staying in touch with the contact.
-     *
-     * @param  User $user
-     * @return void
-     */
-    public function sendStayInTouchEmail(User $user)
-    {
-        $user->notifyNow(new StayInTouchEmail($this));
     }
 }

@@ -5,13 +5,15 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
-use Illuminate\Notifications\Notification;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as LaravelNotification;
 
-class ConfirmEmail extends Notification implements ShouldQueue
+class ConfirmEmail extends LaravelNotification implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * Get the notification's delivery channels.
