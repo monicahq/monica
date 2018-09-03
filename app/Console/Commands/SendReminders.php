@@ -2,13 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User\User;
-use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use App\Models\Contact\Reminder;
-use App\Notifications\UserRemindedMail;
 use App\Jobs\Reminders\ScheduleReminders;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class SendReminders extends Command
 {
@@ -40,16 +36,15 @@ class SendReminders extends Command
         Reminder::where('next_expected_date', '<', now()->addDays(2))
                                 ->orderBy('next_expected_date', 'asc')
                                 ->chunk(500, function ($reminders) {
-
-            foreach ($reminders as $reminder) {
-                // Skip the reminder if the contact has been deleted (and for some
-                // reasons, the reminder hasn't)
-                if (! $reminder->contact) {
-                    $reminder->delete();
-                    continue;
-                }
-                ScheduleReminders::dispatch($reminder);
-            }
-        });
+                                    foreach ($reminders as $reminder) {
+                                        // Skip the reminder if the contact has been deleted (and for some
+                                        // reasons, the reminder hasn't)
+                                        if (! $reminder->contact) {
+                                            $reminder->delete();
+                                            continue;
+                                        }
+                                        ScheduleReminders::dispatch($reminder);
+                                    }
+                                });
     }
 }

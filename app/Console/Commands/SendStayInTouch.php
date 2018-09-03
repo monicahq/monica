@@ -33,10 +33,9 @@ class SendStayInTouch extends Command
         Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
                     ->orderBy('stay_in_touch_trigger_date', 'asc')
                     ->chunk(500, function ($contacts) {
-
-            foreach ($contacts as $contact) {
-                ScheduleStayInTouch::dispatch($contact);
-            }
-        });
+                        foreach ($contacts as $contact) {
+                            ScheduleStayInTouch::dispatch($contact);
+                        }
+                    });
     }
 }

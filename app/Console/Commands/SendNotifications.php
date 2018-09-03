@@ -32,15 +32,14 @@ class SendNotifications extends Command
         Notification::where('trigger_date', '<', now()->addDays(2))
                     ->orderBy('trigger_date', 'asc')
                     ->chunk(500, function ($notifications) {
+                        foreach ($notifications as $notification) {
+                            if (! $notification->contact) {
+                                $notification->delete();
+                                continue;
+                            }
 
-            foreach ($notifications as $notification) {
-                if (! $notification->contact) {
-                    $notification->delete();
-                    continue;
-                }
-
-                ScheduleNotification::dispatch($notification);
-            }
-        });
+                            ScheduleNotification::dispatch($notification);
+                        }
+                    });
     }
 }

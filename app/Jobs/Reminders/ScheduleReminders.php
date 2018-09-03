@@ -3,7 +3,6 @@
 namespace App\Jobs\Reminders;
 
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Queue\SerializesModels;
