@@ -15,6 +15,7 @@ UNRELEASED CHANGES:
 * Fix subscription cancel on account deletion
 * Fix email maximum size on settings
 * Fix reminder link in email sent
+* Add language selector on register page
 
 RELEASED VERSIONS:
 
