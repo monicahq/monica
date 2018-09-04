@@ -88,15 +88,15 @@ class ScheduleNotificationTest extends TestCase
         dispatch(new ScheduleNotification($notification));
 
         $fake->assertSentTo($user, NotificationEmail::class,
-            function ($param, $channels) use ($notification) {
+            function ($theNotification, $channels) use ($user, $notification) {
+
+                $message = $theNotification->toMail($user);
+
                 return $channels[0] == 'mail'
-                    && $param->assertSentFor($notification);
+                    && $param->assertSentFor($notification)
+                    && in_array('In 7 days (1 jan 2017), the following event will happen:', $message->introLines);
             }
         );
-        $notifications = $fake->sent($user, NotificationEmail::class);
-        foreach ($notifications as $aNotification) {
-            $aNotification->toMail($user);
-        }
 
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,

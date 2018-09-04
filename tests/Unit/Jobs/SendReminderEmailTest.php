@@ -37,14 +37,20 @@ class SendReminderEmailTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'next_expected_date' => '2017-01-01',
+            'title' => 'Wish happy birthday'
         ]);
 
-        dispatch(new ScheduleReminders($contact));
+        dispatch(new ScheduleReminders($reminder));
 
         Notification::assertSentTo($user, UserRemindedMail::class,
-            function ($notification, $channels) use ($reminder) {
+            function ($notification, $channels) use ($user, $reminder) {
+
+                // generate message
+                $message = $notification->toMail($user);
+
                 return $channels[0] == 'mail'
-                && $notification->assertSentFor($reminder);
+                && $notification->assertSentFor($reminder)
+                && in_array('This is a reminder for Wish happy birthday', $message->introLines);
             }
         );
     }

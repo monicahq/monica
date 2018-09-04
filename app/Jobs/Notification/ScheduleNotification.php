@@ -48,12 +48,13 @@ class ScheduleNotification implements ShouldQueue
         foreach ($account->users as $user) {
             if ($user->isTheRightTimeToBeReminded($this->notification->trigger_date)
                 && ! $account->hasLimitations()) {
+
                 // send notification only if the reminder rule is ON
                 if ($this->notification->shouldBeSent()) {
                     array_push($users, $user);
-                } else {
-                    $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
                 }
+
+                $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
             }
         }
 

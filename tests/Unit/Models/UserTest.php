@@ -339,21 +339,4 @@ class UserTest extends TestCase
             $user->getNameOrderForForms()
         );
     }
-
-    public function test_it_sends_reminder()
-    {
-        Notification::fake();
-
-        $user = factory(User::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
-            'contact_id' => $contact->id,
-            'next_expected_date' => '2018-01-01',
-        ]);
-
-        $user->sendReminder($reminder);
-
-        Notification::assertSentTo($user, UserRemindedMail::class);
-    }
 }

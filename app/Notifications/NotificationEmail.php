@@ -75,8 +75,6 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
         $message = $message
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
 
-        $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
-
         return $message;
     }
 

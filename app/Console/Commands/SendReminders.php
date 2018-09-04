@@ -34,17 +34,23 @@ class SendReminders extends Command
         // between two timezones and we need to take into accounts reminders
         // that are not in the same timezone.
         Reminder::where('next_expected_date', '<', now()->addDays(2))
-                                ->orderBy('next_expected_date', 'asc')
-                                ->chunk(500, function ($reminders) {
-                                    foreach ($reminders as $reminder) {
-                                        // Skip the reminder if the contact has been deleted (and for some
-                                        // reasons, the reminder hasn't)
-                                        if (! $reminder->contact) {
-                                            $reminder->delete();
-                                            continue;
-                                        }
-                                        ScheduleReminders::dispatch($reminder);
-                                    }
-                                });
+                    ->orderBy('next_expected_date', 'asc')
+                    ->chunk(500, function ($reminders) {
+                        $this->schedule($reminders);
+                    });
+    }
+
+    private function schedule($reminders)
+    {
+        foreach ($reminders as $reminder) {
+            // Skip the reminder if the contact has been deleted (and for some
+            // reasons, the reminder hasn't)
+            if (! $reminder->contact) {
+                $reminder->delete();
+                continue;
+            }
+
+            ScheduleReminders::dispatch($reminder);
+        }
     }
 }
