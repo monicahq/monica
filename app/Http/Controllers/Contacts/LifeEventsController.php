@@ -57,6 +57,7 @@ class LifeEventsController extends Controller
             $data = [
                 'id' => $lifeEvent->id,
                 'life_event_type' => $lifeEvent->lifeEventType->name,
+                'default_life_event_type_key' => $lifeEvent->lifeEventType->default_life_event_type_key,
                 'name' => $lifeEvent->name,
                 'note' => $lifeEvent->note,
                 'happened_at' => DateHelper::getShortDate($lifeEvent->happened_at),
@@ -79,10 +80,12 @@ class LifeEventsController extends Controller
         $date = $request->get('conversationDate');
 
         $data = [
-            'happened_at' => $date,
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
-            'contact_field_type_id' => $request->get('contactFieldTypeId'),
+            'life_event_type_id' => $request->get('life_event_type_id'),
+            'happened_at' => $request->get('happened_at'),
+            'name' => $request->get('name'),
+            'note' => $request->get('note'),
         ];
 
         // create the conversation

@@ -52,16 +52,17 @@
                 <form-input
                   value=""
                   v-bind:input-type="'text'"
-                  v-bind:id="'name'"
+                  v-model="newLifeEvent.name"
                   v-bind:required="false"
                   v-bind:title="'Title)'">
                 </form-input>
 
                 <label for="another" class="mr2">Date it happened</label>
                 <form-date
-                    v-bind:id="'happenedAt'"
-                    v-bind:default-date="''"
-                    v-bind:locale="''">
+                    v-model="newLifeEvent.happened_at"
+                    :default-date="newLifeEvent.happened_at"
+                    v-on:dateChanged="updateDate($event, message)"
+                    :locale="''">
                 </form-date>
 
                 <label for="another" class="mr2">Story (optional)</label>
@@ -70,7 +71,7 @@
                   v-bind:noLabel="true"
                   v-bind:rows="4"
                   v-bind:placeholder="'Placeholder'"
-                  v-bind:id="'note'">
+                  v-on:contentChange="broadcastContentChange($event)">
                 </form-textarea>
 
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
@@ -79,7 +80,7 @@
                             <a class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
                         </div>
                         <div>
-                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">Add</button>
+                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store">Add</button>
                         </div>
                     </div>
                 </div>
@@ -89,13 +90,20 @@
 </template>
 
 <script>
+    import moment from 'moment';
+
     export default {
         /*
          * The component's data.
          */
         data() {
             return {
-                lifeEvents: [],
+                newLifeEvent: {
+                    name: '',
+                    note: '',
+                    happened_at: '',
+                    life_event_type_id: 0
+                },
                 categories: [],
                 activeCategory: '',
                 activeType: '',
@@ -105,13 +113,6 @@
         },
 
         props: ['hash'],
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent()
-        },
 
         /**
          * Prepare the component (Vue 2.x).
@@ -125,10 +126,11 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.getLifeEvents()
+                this.getCategories()
+                this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD')
             },
 
-            getLifeEvents() {
+            getCategories() {
                 axios.get('/lifeevents/categories')
                         .then(response => {
                             this.categories = response.data.data;
@@ -145,10 +147,23 @@
                 this.activeCategory = category
             },
 
+            broadcastContentChange(note) {
+                this.newLifeEvent.note = note
+            },
+
             displayAddScreen(type) {
                 this.view = 'add'
                 this.activeType = type
-            }
+                this.newLifeEvent.life_event_type_id = type.id
+            },
+
+            store() {
+                axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
+                        .then(response => {
+                            console.log('sdafsdfa')
+                            this.$emit('updateLifeEventTimeline', this.newLifeEvent)
+                      });
+            },
         }
     }
 </script>

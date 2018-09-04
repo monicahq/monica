@@ -8,7 +8,8 @@
                 :language="language"
                 :monday-first="mondayFirst"
                 @input="update"
-                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'">
+                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+                v-on:selected="$emit('dateChanged', $event)">
     </datepicker>
     <input :name="id" type="hidden" :value="value" />
   </div>
@@ -63,7 +64,7 @@
                 return moment(date).format('L');
             },
 
-            /** 
+            /**
              * Update the value of hidden input, in exchange format value
              */
             update(date) {
@@ -74,7 +75,7 @@
                 this.value = mdate.format(this.exchangeFormat());
             },
 
-            /** 
+            /**
              * Exchange format with controller (moment format type)
              */
             exchangeFormat() {

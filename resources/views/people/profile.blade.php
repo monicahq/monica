@@ -55,13 +55,11 @@
 
           <div class="col-xs-12 col-sm-9">
 
-            <create-life-event></create-life-event>
-
             {{-- @include('people.life-events.blank') --}}
 
-            {{-- <div class="row section">
+            <div class="row section">
               @include('people.life-events.index')
-            </div> --}}
+            </div>
 
             @if ($modules->contains('key', 'notes'))
             <div class="row section notes">

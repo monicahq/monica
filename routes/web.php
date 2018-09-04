@@ -65,7 +65,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');
             Route::get('/lifeevents/categories', 'Contacts\\LifeEventsController@categories')->name('categories');
             Route::get('/lifeevents/categories/{lifeEventCategory}/types', 'Contacts\\LifeEventsController@types')->name('types');
-            Route::post('/people/{contact}/lifeevents/store', 'Contacts\\LifeEventsController@store')->name('store');
+            Route::post('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@store')->name('store');
         });
 
         // Contact information

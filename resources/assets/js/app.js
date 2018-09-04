@@ -167,8 +167,8 @@ Vue.component(
 );
 
 Vue.component(
-    'life-event',
-    require('./components/people/lifeevent/LifeEvent.vue')
+    'life-event-list',
+    require('./components/people/lifeevent/LifeEventList.vue')
 );
 
 // Journal
