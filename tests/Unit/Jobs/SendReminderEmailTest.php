@@ -37,7 +37,7 @@ class SendReminderEmailTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'next_expected_date' => '2017-01-01',
-            'title' => 'Wish happy birthday'
+            'title' => 'Wish happy birthday',
         ]);
 
         dispatch(new ScheduleReminders($reminder));

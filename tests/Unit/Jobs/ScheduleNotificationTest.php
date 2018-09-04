@@ -89,7 +89,6 @@ class ScheduleNotificationTest extends TestCase
 
         $fake->assertSentTo($user, NotificationEmail::class,
             function ($theNotification, $channels) use ($user, $notification) {
-
                 $message = $theNotification->toMail($user);
 
                 return $channels[0] == 'mail'

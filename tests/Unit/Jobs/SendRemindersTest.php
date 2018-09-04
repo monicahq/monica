@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Jobs\SetNextReminderDate;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
