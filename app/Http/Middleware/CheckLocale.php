@@ -18,7 +18,11 @@ class CheckLocale
      */
     public function handle($request, Closure $next)
     {
-        $locale = LocaleHelper::getLocale();
+        $locale = $request->query('lang');
+
+        if (empty($locale)) {
+            $locale = LocaleHelper::getLocale();
+        }
 
         App::setLocale($locale);
         DateHelper::setLocale($locale);
