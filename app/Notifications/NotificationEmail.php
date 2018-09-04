@@ -48,9 +48,9 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  User $user
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
-    public function toMail($user)
+    public function toMail(User $user) : MailMessage
     {
         App::setLocale($user->locale);
 
