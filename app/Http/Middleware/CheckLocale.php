@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Helpers\DateHelper;
 use App\Helpers\LocaleHelper;
 use Illuminate\Support\Facades\App;
 
