@@ -50,7 +50,7 @@
         <!-- LISTING OF LIFE EVENTS -->
         <div class="bt b--gray-monica" style="margin-left: 20px;">
             <div v-for="lifeEvent in lifeEvents">
-                <div class="bl bb b--gray-monica relative pa3 life-event-list-content">
+                <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
                     <div class="absolute life-event-list-icon">
                         <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'">
                     </div>
@@ -58,7 +58,7 @@
                         <span>{{ lifeEvent.happened_at }}</span>
                         <span></span>
                     </div>
-                    <p><span class="b">{{ lifeEvent.life_event_type }}</span> {{ lifeEvent.name }}</p>
+                    <p class="pt2"><span class="b">{{ lifeEvent.life_event_type }}</span> {{ lifeEvent.name }}</p>
                     <p>{{ lifeEvent.note }}</p>
                 </div>
             </div>

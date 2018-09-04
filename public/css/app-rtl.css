@@ -19561,6 +19561,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   border-color: #dde2e9;
 }
 
+.bg-hover-monica:hover {
+  background-color: #f1f5fd;
+}
+
 .w-5 {
   width: 5%;
 }

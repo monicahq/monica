@@ -42,6 +42,12 @@ $htmldir: ltr !default;
   border-color: #dde2e9;
 }
 
+.bg-hover-monica {
+  &:hover {
+    background-color: $bg-hover-monica;
+  }
+}
+
 .w-5 {
   width: 5%;
 }
