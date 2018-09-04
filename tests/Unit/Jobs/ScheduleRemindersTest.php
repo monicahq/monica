@@ -8,12 +8,8 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Jobs\SetNextReminderDate;
 use Illuminate\Support\Facades\Bus;
-use App\Models\Contact\Notification;
-use App\Models\Contact\ReminderRule;
 use App\Notifications\UserRemindedMail;
-use App\Notifications\NotificationEmail;
 use App\Jobs\Reminders\ScheduleReminders;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -34,7 +30,7 @@ class ScheduleRemindersTest extends TestCase
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $user = factory(User::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,

@@ -8,9 +8,9 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Jobs\Reminders\ScheduleReminders;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;
+use App\Jobs\Reminders\ScheduleReminders;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendRemindersTest extends TestCase
