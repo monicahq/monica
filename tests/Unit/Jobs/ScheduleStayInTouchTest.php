@@ -9,9 +9,9 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
-use Illuminate\Support\Facades\Notification;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ScheduleStayInTouchTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ScheduleStayInTouchTest extends TestCase
 
     public function test_it_dispatches_an_email()
     {
-        Notification::fake();
+        NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
 
@@ -40,12 +40,17 @@ class ScheduleStayInTouchTest extends TestCase
 
         dispatch(new ScheduleStayInTouch($contact));
 
-        Notification::assertSentTo($user, StayInTouchEmail::class,
+        NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
             function ($notification, $channels) use ($contact) {
                 return $channels[0] == 'mail'
                 && $notification->assertSentFor($contact);
             }
         );
+
+        $notifications = NotificationFacade::sent($user, StayInTouchEmail::class);
+        $message = $notifications[0]->toMail($user);
+
+        $this->assertArraySubset(['You asked to be reminded to stay in touch with John Doe every 5 days.'], $message->introLines);
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-06 07:00:00',
@@ -54,7 +59,7 @@ class ScheduleStayInTouchTest extends TestCase
 
     public function test_it_doesnt_dispatches_an_email_if_free_account()
     {
-        Notification::fake();
+        NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
 
@@ -77,7 +82,8 @@ class ScheduleStayInTouchTest extends TestCase
 
         dispatch(new ScheduleStayInTouch($contact));
 
-        Notification::assertNotSentTo($user, StayInTouchEmail::class);
+        NotificationFacade::assertNotSentTo($user, StayInTouchEmail::class);
+        NotificationFacade::assertNothingSent();
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',

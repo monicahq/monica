@@ -1548,10 +1548,13 @@ class ContactTest extends FeatureTestCase
     {
         NotificationFacade::fake();
 
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));
+
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_frequency' => 3,
+            'stay_in_touch_trigger_date' => '2017-01-01 00:00:00',
         ]);
         $user = factory(User::class)->create([
             'account_id' => $account->id,

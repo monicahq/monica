@@ -39,15 +39,15 @@ class ScheduleReminders implements ShouldQueue
 
         $users = [];
         foreach ($account->users as $user) {
-            if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)
+            if ($user->isTheRightTimeToBeReminded($this->reminder->next_expected_date)
                 && ! $account->hasLimitations()) {
                 array_push($users, $user);
             }
         }
 
         if (count($users) > 0) {
-            NotificationFacade::send($users, new UserRemindedMail($reminder));
-            dispatch(new SetNextReminderDate($reminder));
+            NotificationFacade::send($users, new UserRemindedMail($this->reminder));
         }
+        dispatch(new SetNextReminderDate($this->reminder));
     }
 }

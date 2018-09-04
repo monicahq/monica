@@ -54,7 +54,7 @@ class ScheduleNotificationTest extends TestCase
 
     public function test_it_sends_a_reminder_email_and_delete_the_notification()
     {
-        $fake = NotificationFacade::fake();
+        NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -87,15 +87,17 @@ class ScheduleNotificationTest extends TestCase
 
         dispatch(new ScheduleNotification($notification));
 
-        $fake->assertSentTo($user, NotificationEmail::class,
-            function ($theNotification, $channels) use ($user, $notification) {
-                $message = $theNotification->toMail($user);
-
+        NotificationFacade::assertSentTo($user, NotificationEmail::class,
+            function ($theNotification, $channels) use ($notification) {
                 return $channels[0] == 'mail'
-                    && $param->assertSentFor($notification)
-                    && in_array('In 7 days (1 jan 2017), the following event will happen:', $message->introLines);
+                    && $theNotification->assertSentFor($notification);
             }
         );
+
+        $notifications = NotificationFacade::sent($user, NotificationEmail::class);
+        $message = $notifications[0]->toMail($user);
+
+        $this->assertArraySubset(['In 7 days (on Jan 01, 2017), the following event will happen:'], $message->introLines);
 
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,
@@ -107,7 +109,7 @@ class ScheduleNotificationTest extends TestCase
      */
     public function test_it_doesnt_send_a_notification()
     {
-        $fake = NotificationFacade::fake();
+        NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
@@ -140,8 +142,8 @@ class ScheduleNotificationTest extends TestCase
 
         dispatch(new ScheduleNotification($notification));
 
-        $fake->assertNotSentTo($user, NotificationEmail::class);
-        $fake->assertNothingSent();
+        NotificationFacade::assertNotSentTo($user, NotificationEmail::class);
+        NotificationFacade::assertNothingSent();
 
         $this->assertDatabaseMissing('notifications', [
             'id' => $notification->id,
