@@ -29,9 +29,23 @@
 
 <template>
     <div class="">
+        <div class="col-xs-12">
+          <h3>
+            Life events
+
+            <span class="relative" style="top: -7px;">
+              <a class="btn edit-information" @click="showAdd = true">Add life event</a>
+            </span>
+          </h3>
+        </div>
 
         <!-- CREATE LIFE EVENT BOX -->
-        <create-life-event :hash="hash" v-on:updateLifeEventTimeline="getLifeEvents"></create-life-event>
+        <create-life-event :hash="hash"
+                            v-if="showAdd == true"
+                            v-on:updateLifeEventTimeline="getLifeEvents"
+                            v-on:dismissModal="showAdd = false"
+                            >
+        </create-life-event>
 
         <!-- LISTING OF LIFE EVENTS -->
         <div class="bt b--gray-monica" style="margin-left: 20px;">
@@ -60,6 +74,7 @@
         data() {
             return {
                 lifeEvents: [],
+                showAdd: false,
             };
         },
 
@@ -90,7 +105,8 @@
             getLifeEvents() {
                 axios.get('/people/' + this.hash + '/lifeevents')
                         .then(response => {
-                            this.lifeEvents = response.data;
+                            this.lifeEvents = response.data
+                            this.showAdd = false
                         });
             },
         }

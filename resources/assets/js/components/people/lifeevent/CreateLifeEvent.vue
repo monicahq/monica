@@ -77,7 +77,7 @@
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
                         <div>
-                            <a class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
+                            <a @click="$emit('dismissModal')" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
                         </div>
                         <div>
                             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store">Add</button>
@@ -160,7 +160,8 @@
             store() {
                 axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
                         .then(response => {
-                            console.log('sdafsdfa')
+                            this.activeCategory = ''
+                            this.activeType = ''
                             this.$emit('updateLifeEventTimeline', this.newLifeEvent)
                       });
             },
