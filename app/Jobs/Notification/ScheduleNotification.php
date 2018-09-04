@@ -52,9 +52,9 @@ class ScheduleNotification implements ShouldQueue
                 // send notification only if the reminder rule is ON
                 if ($this->notification->shouldBeSent()) {
                     array_push($users, $user);
+                } else {
+                    $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
                 }
-
-                $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
             }
         }
 

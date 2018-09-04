@@ -72,7 +72,12 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
                 ->line(trans('mail.comment', ['comment' => $this->notification->reminder->description]));
         }
 
-        return $message->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+        $message = $message
+            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+
+        $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
+
+        return $message;
     }
 
     /**
