@@ -25,7 +25,6 @@ class CheckLocale
         }
 
         App::setLocale($locale);
-        DateHelper::setLocale($locale);
 
         return $next($request);
     }

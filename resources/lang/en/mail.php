@@ -4,7 +4,7 @@ return [
 
     'subject_line' => 'Reminder for :contact',
     'greetings' => 'Hi :username',
-    'want_reminded_of' => 'This is a reminder for :reason',
+    'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',

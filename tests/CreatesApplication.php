@@ -20,7 +20,6 @@ trait CreatesApplication
         $app->make(Kernel::class)->bootstrap();
 
         App::setLocale('en');
-        DateHelper::setLocale('en');
 
         return $app;
     }

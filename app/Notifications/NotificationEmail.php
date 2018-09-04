@@ -53,7 +53,6 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
     public function toMail($user)
     {
         App::setLocale($user->locale);
-        DateHelper::setLocale($user->locale);
 
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->notification->reminder->contact_id);

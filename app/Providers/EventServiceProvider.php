@@ -20,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\LoginListener',
         ],
+        'Illuminate\Foundation\Events\LocaleUpdated' => [
+            'App\Listeners\LocaleUpdate',
+        ],
     ];
 
     /**
