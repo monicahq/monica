@@ -1,5 +1,5 @@
 pipeline {
-  agent none
+  agent { label 'monica' }
   environment {
     ASSETS_EMAIL = credentials('ASSETS_EMAIL')
     ASSETS_GITHUB_TOKEN = credentials('ASSETS_GITHUB_TOKEN')
