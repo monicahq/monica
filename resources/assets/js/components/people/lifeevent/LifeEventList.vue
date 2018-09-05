@@ -29,11 +29,11 @@
 
 <template>
     <div class="">
-        <div class="col-xs-12">
-          <h3>
-            Life events
+        <div class="">
+          <h3 class="mb3">
+            🎭 Life events
 
-            <span class="relative" style="top: -7px;">
+            <span class="absolute" style="top: -5px; right: 14px;">
               <a class="btn edit-information" @click="showAdd = true">Add life event</a>
             </span>
           </h3>
@@ -48,7 +48,7 @@
         </create-life-event>
 
         <!-- LISTING OF LIFE EVENTS -->
-        <div class="bt b--gray-monica" style="margin-left: 20px;">
+        <div class="bt b--gray-monica" style="margin-left: 20px;" v-if="showAdd == false">
             <div v-for="lifeEvent in lifeEvents">
                 <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
                     <div class="absolute life-event-list-icon">

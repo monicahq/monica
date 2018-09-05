@@ -8,13 +8,13 @@
             <!-- Breadcrumb -->
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
                 <li class="di"><a class="pointer" @click="view = 'categories'">All categories</a></li>
-                <li class="di" v-if="view == 'types'">{{ this.activeCategory.name }}</li>
-                <li class="di" v-if="view == 'add'"><a class="pointer" @click="view = 'types'">{{ this.activeType.name }}</a></li>
-                <li class="di" v-if="view == 'add'">Add life event</li>
+                <li class="di" v-if="view == 'types'">> {{ this.activeCategory.name }}</li>
+                <li class="di" v-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeType.name }}</a></li>
+                <li class="di" v-if="view == 'add'">> Add life event</li>
             </ul>
 
             <!-- List of events -->
-            <ul class="ba b--gray-monica br2">
+            <ul class="ba b--gray-monica br2" v-if="view != 'add'">
 
                 <!-- CATEGORIES -->
                 <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'">
@@ -43,36 +43,38 @@
 
             <!-- ADD SCREEN -->
             <div class="ba b--gray-monica br2" v-if="view == 'add'">
-                <div class="dib mr2">
-                    <img :src="'/img/people/life-events/types/' + this.activeType.default_life_event_type_key + '.svg'">
+                <h3 class="pt3 ph4 f3 fw5">{{ this.activeType.name }}</h3>
+
+                <div class="ph4 pb4 mb3 mb0-ns bb b--gray-monica">
+                    <form-input
+                      value=""
+                      v-bind:input-type="'text'"
+                      v-model="newLifeEvent.name"
+                      v-bind:required="false"
+                      v-bind:title="'Title'">
+                    </form-input>
                 </div>
 
-                <h3 class="f3 fw5">{{ this.activeType.name }}</h3>
+                <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+                    <label for="another" class="mr2">Date it happened</label>
+                    <form-date
+                        v-model="newLifeEvent.happened_at"
+                        :default-date="newLifeEvent.happened_at"
+                        v-on:dateChanged="updateDate($event, message)"
+                        :locale="''">
+                    </form-date>
+                </div>
 
-                <form-input
-                  value=""
-                  v-bind:input-type="'text'"
-                  v-model="newLifeEvent.name"
-                  v-bind:required="false"
-                  v-bind:title="'Title)'">
-                </form-input>
-
-                <label for="another" class="mr2">Date it happened</label>
-                <form-date
-                    v-model="newLifeEvent.happened_at"
-                    :default-date="newLifeEvent.happened_at"
-                    v-on:dateChanged="updateDate($event, message)"
-                    :locale="''">
-                </form-date>
-
-                <label for="another" class="mr2">Story (optional)</label>
-                <form-textarea
-                  v-bind:required="true"
-                  v-bind:noLabel="true"
-                  v-bind:rows="4"
-                  v-bind:placeholder="'Placeholder'"
-                  v-on:contentChange="broadcastContentChange($event)">
-                </form-textarea>
+                <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+                    <label for="another" class="mr2">Story (optional)</label>
+                    <form-textarea
+                      v-bind:required="true"
+                      v-bind:noLabel="true"
+                      v-bind:rows="4"
+                      v-bind:placeholder="'Placeholder'"
+                      v-on:contentChange="broadcastContentChange($event)">
+                    </form-textarea>
+                </div>
 
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
