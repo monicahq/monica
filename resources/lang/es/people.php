@@ -206,7 +206,7 @@ return [
     'tasks_form_description' => 'Descripción (opcional)',
     'tasks_add_task' => 'Añadir una tarea',
     'tasks_delete_success' => 'La tarea ha sido eliminada exitosamente',
-    'tasks_complete_success' => 'The task has changed status successfully',
+    'tasks_complete_success' => 'La tarea ha cambiado de estado exitosamente',
 
     // activities
     'activity_title' => 'Actividades',
@@ -272,13 +272,13 @@ return [
     'gifts_for' => 'Para:',
     'gifts_delete_cta' => 'Eliminar',
     'gifts_add_title' => 'Gift management for :name',
-    'gifts_add_gift_idea' => 'Gift idea',
+    'gifts_add_gift_idea' => 'Idea de regalo',
     'gifts_add_gift_already_offered' => 'Gift offered',
     'gifts_add_gift_received' => 'Gift received',
     'gifts_add_gift_title' => 'What is this gift?',
-    'gifts_add_link' => 'Link to the web page (optional)',
-    'gifts_add_value' => 'Value (optional)',
-    'gifts_add_comment' => 'Comment (optional)',
+    'gifts_add_link' => 'Enlace al sitio web (opcional)',
+    'gifts_add_value' => 'Valor (opcional)',
+    'gifts_add_comment' => 'Comentario (opcional)',
     'gifts_add_someone' => 'This gift is for someone in :name’s family in particular',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
@@ -328,9 +328,9 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Anniversary of the death of :name',
-    'deceased_mark_person_deceased' => 'Mark this person as deceased',
+    'deceased_mark_person_deceased' => 'Marcar esta persona como fallecida',
     'deceased_know_date' => 'Conozco la fecha que esta persona falleció',
-    'deceased_add_reminder' => 'Add a reminder for this date',
+    'deceased_add_reminder' => 'Añadir un recordatorio para esta fecha',
     'deceased_label' => 'Fallecido',
     'deceased_label_with_date' => 'Fallecido el',
     'deceased_age' => 'Age at death',
