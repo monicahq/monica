@@ -58,7 +58,9 @@ pipeline {
           steps {
             script {
               docker.image('circleci/mysql:5.7-ram').withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
-                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id} -v /etc/passwd:/etc/passwd") {
+                sh "docker logs ${c.id}"
+
+                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
                   try {
                     unstash 'composer'
                     // Prepare environment
