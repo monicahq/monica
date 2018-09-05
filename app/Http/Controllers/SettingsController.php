@@ -474,6 +474,5 @@ class SettingsController extends Controller
 
     public function updateDefaultProfileView(Request $request, $view)
     {
-
     }
 }
