@@ -19,5 +19,4 @@ class NotificationSent
             $event->notification->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
         }
     }
-
 }
