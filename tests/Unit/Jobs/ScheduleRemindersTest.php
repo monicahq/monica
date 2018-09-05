@@ -137,6 +137,6 @@ class ScheduleRemindersTest extends TestCase
         $notifications = NotificationFacade::sent($user, UserRemindedMail::class);
         $message = $notifications[0]->toMail($user);
 
-        $this->assertArraySubset(['This is a reminder for Wish happy birthday'], $message->introLines);
+        $this->assertArraySubset(['You wanted to be reminded of Wish happy birthday'], $message->introLines);
     }
 }
