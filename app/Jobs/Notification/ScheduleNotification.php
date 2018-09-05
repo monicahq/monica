@@ -36,6 +36,7 @@ class ScheduleNotification implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @see \App\Listeners\NotificationSent
      */
     public function handle()
     {

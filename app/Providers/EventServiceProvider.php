@@ -21,7 +21,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\LoginListener',
         ],
         'Illuminate\Foundation\Events\LocaleUpdated' => [
-            'App\Listeners\LocaleUpdate',
+            'App\Listeners\LocaleUpdated',
+        ],
+        'Illuminate\Notifications\Events\NotificationSent' => [
+            'App\Listeners\NotificationSent',
         ],
     ];
 

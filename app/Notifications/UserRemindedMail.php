@@ -19,7 +19,7 @@ class UserRemindedMail extends LaravelNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @return Reminder
+     * @var Reminder
      */
     protected $reminder;
 

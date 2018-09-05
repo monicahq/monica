@@ -18,7 +18,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @return Contact
+     * @var Contact
      */
     protected $contact;
 

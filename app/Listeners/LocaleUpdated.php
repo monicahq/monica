@@ -3,17 +3,17 @@
 namespace App\Listeners;
 
 use App\Helpers\DateHelper;
-use Illuminate\Foundation\Events\LocaleUpdated;
+use Illuminate\Foundation\Events\LocaleUpdated as LocaleUpdatedEvent;
 
-class LocaleUpdate
+class LocaleUpdated
 {
     /**
      * Handle the Locale change event.
      *
-     * @param  LocaleUpdated $event
+     * @param  LocaleUpdatedEvent $event
      * @return void
      */
-    public function handle(LocaleUpdated $event)
+    public function handle(LocaleUpdatedEvent $event)
     {
         DateHelper::setLocale($event->locale);
     }

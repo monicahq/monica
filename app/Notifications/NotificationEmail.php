@@ -20,9 +20,9 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @return Notification
+     * @var Notification
      */
-    protected $notification;
+    public $notification;
 
     /**
      * Create a new message instance.
@@ -71,12 +71,8 @@ class NotificationEmail extends LaravelNotification implements ShouldQueue
                 ->line(trans('mail.comment', ['comment' => $this->notification->reminder->description]));
         }
 
-        $message = $message
+        return $message
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
-
-        $this->notification->incrementNumberOfEmailsSentAndCheckDeletioNStatus();
-
-        return $message;
     }
 
     /**
