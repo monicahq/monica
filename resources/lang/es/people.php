@@ -65,8 +65,8 @@ return [
     'set_favorite' => 'Los contactos favoritos son colocados en la parte superior de la lista de contactos',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch' => 'Mantenerse en contacto',
+    'stay_in_touch_frequency' => 'Mantenerse en contacto cada día|Mantenerse en contacto cada {count} días',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
