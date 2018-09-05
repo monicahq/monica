@@ -2,14 +2,14 @@
 
 return [
     'sidebar_settings' => 'Configuración de cuenta',
-    'sidebar_personalization' => 'Personalization',
+    'sidebar_personalization' => 'Personalización',
     'sidebar_settings_export' => 'Exportar datos',
-    'sidebar_settings_users' => 'Users',
+    'sidebar_settings_users' => 'Usuarios',
     'sidebar_settings_subscriptions' => 'Subscripción',
     'sidebar_settings_import' => 'Importar datos',
     'sidebar_settings_tags' => 'Administrar tags',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_security' => 'Security',
+    'sidebar_settings_security' => 'Seguridad',
 
     'export_title' => 'Exportar los datos de tu cuenta',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
