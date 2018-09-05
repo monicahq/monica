@@ -294,6 +294,8 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
 
+        Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
+
         // Security
         Route::name('security.')->group(function () {
             Route::get('/settings/security', 'SettingsController@security')->name('index');

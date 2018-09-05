@@ -471,4 +471,9 @@ class SettingsController extends Controller
     {
         return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
     }
+
+    public function updateDefaultProfileView(Request $request, $view)
+    {
+
+    }
 }

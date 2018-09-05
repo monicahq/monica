@@ -287,14 +287,20 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     me.app = new Vue({
       i18n,
       data: {
-        activities_description_show: false,
         reminders_frequency: 'once',
         accept_invite_user: false,
         date_met_the_contact: 'known',
         global_relationship_form_new_contact: true,
         htmldir: window.Laravel.htmldir,
+        global_profile_default_view: window.Laravel.profileDefaultView
       },
       methods: {
+        updateDefaultProfileView(view) {
+            axios.post('/settings/updateDefaultProfileView', view)
+                        .then(response => {
+                            this.$emit('updateLifeEventTimeline', this.newLifeEvent)
+                      });
+        }
       },
       mounted: function() {
 

@@ -55,61 +55,73 @@
 
           <div class="col-xs-12 col-sm-9">
 
-            {{-- @include('people.life-events.blank') --}}
+            <ul>
+              <li>
+                <a href="" @click="updateDefaultProfileView('lifeEvents')">Life events</a>
+              </li>
+              <li>
+                <a href="" @click="updateDefaultProfileView('notes')">Notes, reminders, ...</a>
+              </li>
+            </ul>
 
-            <div class="row section">
-              @include('people.life-events.index')
-            </div>
-
-            @if ($modules->contains('key', 'notes'))
-            <div class="row section notes">
-              <div class="col-xs-12 section-title">
-                <contact-note hash={{ $contact->hashID() }}></contact-note>
+            <div v-if="global_profile_default_view == 'life-events'">
+              {{-- @include('people.life-events.blank') --}}
+              <div class="row section">
+                @include('people.life-events.index')
               </div>
             </div>
-            @endif
 
-            @if ($modules->contains('key', 'conversations'))
-            <div class="row section">
-              @include('people.conversations.index')
-            </div>
-            @endif
+            <div v-if="global_profile_default_view != 'life-events'">
+              @if ($modules->contains('key', 'notes'))
+              <div class="row section notes">
+                <div class="col-xs-12 section-title">
+                  <contact-note hash={{ $contact->hashID() }}></contact-note>
+                </div>
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'phone_calls'))
-            <div class="row section calls">
-              @include('people.calls.index')
-            </div>
-            @endif
+              @if ($modules->contains('key', 'conversations'))
+              <div class="row section">
+                @include('people.conversations.index')
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'activities'))
-            <div class="row section activities">
-              @include('activities.index')
-            </div>
-            @endif
+              @if ($modules->contains('key', 'phone_calls'))
+              <div class="row section calls">
+                @include('people.calls.index')
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'reminders'))
-            <div class="row section reminders">
-              @include('people.reminders.index')
-            </div>
-            @endif
+              @if ($modules->contains('key', 'activities'))
+              <div class="row section activities">
+                @include('activities.index')
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'tasks'))
-            <div class="row section">
-              @include('people.tasks.index')
-            </div>
-            @endif
+              @if ($modules->contains('key', 'reminders'))
+              <div class="row section reminders">
+                @include('people.reminders.index')
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'gifts'))
-            <div class="row section">
-              @include('people.gifts.index')
-            </div>
-            @endif
+              @if ($modules->contains('key', 'tasks'))
+              <div class="row section">
+                @include('people.tasks.index')
+              </div>
+              @endif
 
-            @if ($modules->contains('key', 'debts'))
-            <div class="row section debts">
-              @include('people.debt.index')
+              @if ($modules->contains('key', 'gifts'))
+              <div class="row section">
+                @include('people.gifts.index')
+              </div>
+              @endif
+
+              @if ($modules->contains('key', 'debts'))
+              <div class="row section debts">
+                @include('people.debt.index')
+              </div>
+              @endif
             </div>
-            @endif
           </div>
         </div>
 
