@@ -16,7 +16,7 @@ return [
 
     'notifications_whoops' => 'Oups !',
     'notifications_hello' => 'Bonjour !',
-    'notifications_regards' => 'Cordialement,',
+    'notifications_regards' => 'Cordialement',
     'notifications_footer' => 'Si vous rencontrez des problèmes en cliquant sur le bouton « :actionText », copiez et collez l’URL ci-dessous dans votre navigateur web : [:actionURL](:actionURL)',
 
     'confirmation_email_title' => 'Monica – vérification d’adresse courriel',
