@@ -21,6 +21,11 @@ return [
     'loading' => 'A carregar...',
     'with' => 'com',
     'days' => 'day|days',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
     'error_save' => 'We had an error trying to save the data.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'The data has been saved.',
 

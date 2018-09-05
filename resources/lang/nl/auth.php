@@ -38,6 +38,8 @@ return [
     'signup_no_account' => 'Heb je nog geen account?',
     'signup' => 'Aanmelden',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Wachtwoord resetten',
     'password_reset_email' => 'E-mailadres',

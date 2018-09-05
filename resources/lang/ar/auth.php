@@ -13,11 +13,11 @@ return [
     |
     */
 
-    'failed' => 'Tyto přihlašovací údaje neodpovídají uloženým záznamům.',
-    'throttle' => 'Příliš mnoho pokusů o přihlášení. Opakujte pokus za :seconds sekund.',
-    'not_authorized' => 'Nejste oprávněni provést tuto akci',
-    'signup_disabled' => 'Nové registrace jsou aktuálně zastaveny',
-    'back_homepage' => 'Zpět na domovskou stránku',
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'not_authorized' => 'You are not authorized to execute this action',
+    'signup_disabled' => 'Registration is currently disabled',
+    'back_homepage' => 'Back to homepage',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
     '2fa_title' => 'Two Factor Authentication',
@@ -38,8 +38,8 @@ return [
     'signup_no_account' => 'Don’t have an account?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
-    'change_language_title' => 'Change language:',
-    'change_language' => 'Change language to :lang',
+    'change_language_title' => 'تغيير اللغة:',
+    'change_language' => 'تغيير اللغة إلى :lang',
 
     'password_reset_title' => 'Reset Password',
     'password_reset_email' => 'E-Mail Address',

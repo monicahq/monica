@@ -87,6 +87,25 @@ return [
     'call_blank_title' => 'Tieni traccia delle tue chiamate con :name',
     'call_blank_desc' => 'Hai chiamato :name',
 
+    // Conversation
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
+    'conversation_delete_link' => 'Delete the conversation',
+    'conversation_edit_title' => 'Edit conversation',
+    'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_delete_success' => 'The conversation has been successfully deleted.',
+    'conversation_add_title' => 'Record a new conversation',
+    'conversation_add_when' => 'When did you have this conversation?',
+    'conversation_add_who_wrote' => 'Who said this message?',
+    'conversation_add_how' => 'How did you communicate?',
+    'conversation_add_you' => 'You',
+    'conversation_add_content' => 'Write down what was said',
+    'conversation_add_what_was_said' => 'What did you say?',
+    'conversation_add_another' => 'Add another message',
+    'conversation_list_table_messages' => 'Messages',
+    'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_title' => 'Conversations',
+    'conversation_list_cta' => 'Log conversation',
+
     // age - birthday
     'birthdate_not_set' => 'Data di nascita assente',
     'age_approximate_in_years' => 'circa :age anni',

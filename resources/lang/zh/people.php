@@ -87,6 +87,25 @@ return [
     'call_blank_title' => '记录您与:name的通话记录',
     'call_blank_desc' => '你打给:name',
 
+    // Conversation
+    'conversation_blank' => '记录您与:name通过短信或社交媒体的信息记录',
+    'conversation_delete_link' => '删除对话',
+    'conversation_edit_title' => '编辑对话',
+    'conversation_edit_delete' => '您是否要删除这个对话？操作无法撤销。',
+    'conversation_delete_success' => '对话成功删除',
+    'conversation_add_title' => '记录一个新对话',
+    'conversation_add_when' => '你们何时进行的对话？',
+    'conversation_add_who_wrote' => '谁说的？',
+    'conversation_add_how' => '你们怎么交流？',
+    'conversation_add_you' => '您',
+    'conversation_add_content' => '写下你们说的话',
+    'conversation_add_what_was_said' => '您说了什么？',
+    'conversation_add_another' => '添加另一条消息',
+    'conversation_list_table_messages' => '消息',
+    'conversation_list_table_content' => '部分内容(最新消息)',
+    'conversation_list_title' => '对话',
+    'conversation_list_cta' => '记录对话',
+
     // age - birthday
     'birthdate_not_set' => '未设置生日',
     'age_approximate_in_years' => '大概:age岁',
@@ -285,7 +304,7 @@ return [
     'debt_add_add_cta' => '增加债务',
     'debt_edit_update_cta' => '更新债务',
     'debt_edit_success' => '债务已成功更新',
-    'debts_blank_title' => '管理您欠的债务您欠:name的或:name欠您的',
+    'debts_blank_title' => '管理您与:name之间的债务关系',
 
     // tags
     'tag_edit' => '编辑标签',

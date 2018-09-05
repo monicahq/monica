@@ -21,6 +21,11 @@ return [
     'loading' => 'בטעינה…',
     'with' => 'עם',
     'days' => 'day|days',
+    'today' => 'היום',
+    'yesterday' => 'אתמול',
+    'another_day' => 'יום אחר',
+    'date' => 'תאריך',
+    'type' => 'סוג',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
+    'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 
