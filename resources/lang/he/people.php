@@ -87,6 +87,25 @@ return [
     'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם :name',
     'call_blank_desc' => 'התקשרת אל :name',
 
+    // Conversation
+    'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
+    'conversation_delete_link' => 'מחיקת הדיון',
+    'conversation_edit_title' => 'עריכת הדיון',
+    'conversation_edit_delete' => 'למחוק את הדיון? מחיקה היא לצמיתות.',
+    'conversation_delete_success' => 'הדיון נמחק בהצלחה.',
+    'conversation_add_title' => 'תיעוד דיון חדש',
+    'conversation_add_when' => 'מתי הדיון הזה התרחש?',
+    'conversation_add_who_wrote' => 'למי שייכת ההודעה הזו?',
+    'conversation_add_how' => 'איך תקשרתם?',
+    'conversation_add_you' => 'אני',
+    'conversation_add_content' => 'נא לכתוב את מה שאמרת',
+    'conversation_add_what_was_said' => 'מה אמרת?',
+    'conversation_add_another' => 'הוספת הודעה נוספת',
+    'conversation_list_table_messages' => 'הודעות',
+    'conversation_list_table_content' => 'תוכן חלקי (הודעה אחרונה)',
+    'conversation_list_title' => 'דיונים',
+    'conversation_list_cta' => 'תיעוד דיון ביומן',
+
     // age - birthday
     'birthdate_not_set' => 'תאריך הלידה לא הוגדר',
     'age_approximate_in_years' => 'הגיל הוא בערך :age',

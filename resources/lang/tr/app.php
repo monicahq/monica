@@ -21,6 +21,11 @@ return [
     'loading' => 'Yükleniyor...',
     'with' => 'ile',
     'days' => 'gün/günler',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
     'error_save' => 'We had an error trying to save the data.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'The data has been saved.',
 
