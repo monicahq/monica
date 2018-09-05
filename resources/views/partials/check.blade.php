@@ -2,7 +2,7 @@
 
 @if (config('monica.check_version'))
 
-    @if (\App\Models\Instance\Instance::first()->latest_version != config('monica.app_version'))
+    @if (version_compare(\App\Models\Instance\Instance::first()->latest_version, config('monica.app_version')) > 0)
     <li>
         <a href="#showVersion" data-toggle="modal" class="badge badge-success">{{ trans('app.footer_new_version') }}</a>
     </li>
@@ -14,7 +14,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ trans('app.footer_modal_version_whats_new') }}</h5>
-            <button type="button" class="close {{ \App\Helpers\LocaleHelper::getDirection() }}" data-dismiss="modal">
+            <button type="button" class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>

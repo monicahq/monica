@@ -37,7 +37,7 @@
             <div class="pa3 bb b--gray-monica">
               <h2>{{ trans('settings.import_upload_title') }}</h2>
 
-              <div class="warning-zone {{ \App\Helpers\LocaleHelper::getDirection() }}">
+              <div class="warning-zone">
                 <p>{{ trans('settings.import_upload_rules_desc') }}</p>
                 <ul>
                     <li>{!! trans('settings.import_upload_rule_format') !!}</li>

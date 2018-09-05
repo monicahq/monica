@@ -3,7 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gender extends Model
@@ -34,7 +34,7 @@ class Gender extends Model
     ];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the gender.
      *
      * @return BelongsTo
      */
@@ -44,7 +44,7 @@ class Gender extends Model
     }
 
     /**
-     * Get the contact records associated with the gift.
+     * Get the contact records associated with the gender.
      *
      * @return BelongsTo
      */

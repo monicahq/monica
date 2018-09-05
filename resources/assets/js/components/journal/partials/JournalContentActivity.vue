@@ -20,7 +20,7 @@
     <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
-    <div class="fl journal-calendar-content">
+    <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
       <div class="br3 ba b--gray-monica bg-white mb3 journal-line">
         <!-- Actual log -->
         <div class="flex pb3 pt3">
@@ -97,7 +97,9 @@
         data() {
             return {
                 showDescription: false,
-                activity: []
+                activity: [],
+
+                dirltr: true,
             };
         },
 
@@ -122,6 +124,7 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.dirltr = this.$root.htmldir == 'ltr';
                 // not necessary, just a way to add more clarity to the code
                 this.activity = this.journalEntry.object;
             },

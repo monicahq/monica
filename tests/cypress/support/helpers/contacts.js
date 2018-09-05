@@ -10,7 +10,11 @@ Cypress.Commands.add('createContact', (firstname, lastname, gender, action = 'sa
 })
 
 Cypress.Commands.add('createActivity', () => {
-    cy.visit('/people/1')
+    cy.visit('/people')
+
+    // this gets the first content of the list
+    cy.get('li.people-list-item.bg-white.pointer').click()
+
     cy.get('[cy-name=add-activity-button]').should('be.visible')
     cy.get('[cy-name=add-activity-button]').click()
     cy.url().should('include', '/activities/add/h:')

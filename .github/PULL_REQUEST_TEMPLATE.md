@@ -4,13 +4,14 @@
 - [ ] Read the [CONTRIBUTING document](https://github.com/monicahq/monica/blob/master/CONTRIBUTING.md) before submitting your PR.
 - [ ] If the PR is related to an issue or fix one, don't forget to indicate it.
 - [ ] Make sure that the change you propose is the smallest possible.
+- [ ] If you change the UI, make sure to ask repositories administrators first about your changes.
 - [ ] Screenshots are included if the PR changes the UI.
-- [ ] If you change the UI, make sure the user experience is consistent with the current interface.
 
 #### Code-related tasks
 - [ ] Tests added for this feature/bug.
 - [ ] Impact on the seeders.
 - [ ] Impact on the API.
+- [ ] If API is impacted, maintain the API's documentation.
 
 #### If the code changes the SQL schema
 - [ ] Impact on account export.
