@@ -1,12 +1,20 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.7.0 - 2018-09-04
+-------------------
+
 * Add ability to log conversations made on social networks or SMS
-* Fix gifts not showing when value was not set
-* Fix phpunit not parsing all test files
-* Improve automatic route binding
+* Add language selector on register page
 * Support Arabic language
+* Improve automatic route binding
 * Split app css in two files for better support of ltr/rtl text direction
 * Add helper function htmldir()
+* Fix gifts not showing when value was not set
+* Fix phpunit not parsing all test files
 * Fix login remember with 2fa and u2f enabled
 * Fix gender update
 * Fix how comparing version is done
@@ -15,9 +23,6 @@ UNRELEASED CHANGES:
 * Fix subscription cancel on account deletion
 * Fix email maximum size on settings
 * Fix reminder link in email sent
-* Add language selector on register page
-
-RELEASED VERSIONS:
 
 v2.6.0 - 2018-08-17
 -------------------
