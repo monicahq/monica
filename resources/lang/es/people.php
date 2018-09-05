@@ -21,11 +21,11 @@ return [
     'people_list_contacts_per_tags' => '1 contacto|:count contactos',
     'people_search' => 'Buscar en tus contactos...',
     'people_search_no_results' => 'Ningun contacto pertinente encontrado :(',
-    'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
+    'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
-    'people_list_untagged' => 'View untagged contacts',
-    'people_list_filter_untag' => 'Showing all untagged contacts',
+    'people_list_untagged' => 'Ver contactos sin etiqueta',
+    'people_list_filter_untag' => 'Mostrando todos los contactos sin etiqueta',
 
     // people add
     'people_add_title' => 'Añade a una nueva persona',
@@ -62,7 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Editar información de contacto',
     'call_button' => 'Registrar una llamada',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'Los contactos favoritos son colocados en la parte superior de la lista de contactos',
 
     // Stay in touch
     'stay_in_touch' => 'Stay in touch',
