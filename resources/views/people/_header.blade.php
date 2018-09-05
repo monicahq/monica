@@ -93,9 +93,6 @@
             <li>
               <a href="{{ route('people.edit', $contact) }}" class="btn edit-information" id="button-edit-contact">{{ trans('people.edit_contact_information') }}</a>
             </li>
-            <li>
-              <contact-archive hash="{{ $contact->hashID() }}" active="{{ json_encode($contact->is_active) }}"></contact-archive>
-            </li>
           </ul>
         </div>
       </div>

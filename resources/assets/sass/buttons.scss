@@ -88,3 +88,24 @@
   width: 15px;
   margin-right: 3px;
 }
+
+$btn-special-light: #A9BCF5;
+$btn-special: #819FF7;
+$btn-special-hover-light: #5882FA;
+$btn-special-hover: #2E64FE;
+
+.btn-special {
+  color: #fff;
+  background-color: $btn-special;
+  background-image: -webkit-linear-gradient(270deg, $btn-special-light 0%, $btn-special 90%);
+  background-image: linear-gradient(-180deg, $btn-special-light 0%, $btn-special 90%);
+
+  &:hover {
+    color: #fff;
+    background-color: $btn-special-hover;
+    background-image: -webkit-linear-gradient(270deg, $btn-special-hover-light 0%, $btn-special-hover 90%);
+    background-image: linear-gradient(-180deg, $btn-special-hover-light 0%, $btn-special-hover 90%);
+    background-position: 0 -0.5em;
+    border-color: rgba(27,31,35,0.5);
+  }
+}

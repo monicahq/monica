@@ -5,7 +5,7 @@
     <div>
         <notifications group="archive" position="top middle" duration=5000 width="400" />
 
-        <a href="#" class="btn edit-information" @click="toggle">{{ active ? $t('people.contact_archive') : $t('people.contact_unarchive') }}</a>
+        <a class="btn btn-special" @click="toggle" :title="$t('people.contact_archive_help')">{{ active ? $t('people.contact_archive') : $t('people.contact_unarchive') }}</a>
     </div>
 </template>
 

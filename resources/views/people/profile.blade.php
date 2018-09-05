@@ -44,8 +44,11 @@
 
             <p><a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a></p>
             <p>
+              <contact-archive hash="{{ $contact->hashID() }}" active="{{ json_encode($contact->is_active) }}"></contact-archive>
+            </p>
+            <p>
               {{ trans('people.people_delete_message') }}
-              <a href="#" id="link-delete-contact" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
+              <a id="link-delete-contact" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
               <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
                 {{ method_field('DELETE') }}
                 {{ csrf_field() }}

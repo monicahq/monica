@@ -63,6 +63,7 @@ return [
     'edit_contact_information' => 'Edit contact information',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contact will not appear on contact lists',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
