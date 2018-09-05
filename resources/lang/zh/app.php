@@ -21,6 +21,11 @@ return [
     'loading' => '正在加载...',
     'with' => '与',
     'days' => '天|天',
+    'today' => '今天',
+    'yesterday' => '昨天',
+    'another_day' => '某一天',
+    'date' => '日期',
+    'type' => '类型',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
@@ -82,6 +87,7 @@ return [
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
     'error_save' => '当储存数据时出现了一个错误',
+    'error_try_again' => '出了点问题，请再试一次。',
 
     'default_save_success' => '数据已被保存',
 
@@ -226,5 +232,5 @@ return [
     'relationship_type_ex_husband' => '前夫',
     'relationship_type_ex_husband_female' => '前妻',
     'relationship_type_ex_husband_with_name' => ':name的前夫',
-    'relationship_type_ex_husband_female_with_name' => '前妻',
+    'relationship_type_ex_husband_female_with_name' => ':name的前妻',
 ];

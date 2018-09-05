@@ -38,6 +38,8 @@ return [
     'signup_no_account' => 'Haben Sie noch kein Konto?',
     'signup' => 'Registrieren',
     'create_account' => 'Erstellen Sie ihr erstes Konto, indem sie sich <a href=":url">registrieren</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Passwort zurücksetzen',
     'password_reset_email' => 'E-Mail-Adresse',

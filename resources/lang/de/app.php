@@ -21,6 +21,11 @@ return [
     'loading' => 'Lade mehr...',
     'with' => 'mit',
     'days' => 'Tag|Tage',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 

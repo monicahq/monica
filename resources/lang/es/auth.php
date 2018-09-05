@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Estas credenciales no concuerdas con nuestros registros.',
-    'throttle' => 'Demasiados intentos de ingreso. Por favor intente nuevamente en :seconds segundos.',
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
     'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
     'back_homepage' => 'Volver al inicio',
@@ -38,6 +38,8 @@ return [
     'signup_no_account' => 'Don’t have an account?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Reset Password',
     'password_reset_email' => 'E-Mail Address',
