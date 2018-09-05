@@ -16,7 +16,7 @@ return [
 
     'notifications_whoops' => 'Oeps!',
     'notifications_hello' => 'Hallo!',
-    'notifications_regards' => 'Met vriendelijke groet,',
+    'notifications_regards' => 'Met vriendelijke groet',
     'notifications_footer' => 'Als de ":actionText" knop niet werkt, kopieer en plak de onderstaande URL in uw webbrowser: [:actionURL](:actionURL)',
 
     'confirmation_email_title' => 'Monica – E-mail verificatie',
