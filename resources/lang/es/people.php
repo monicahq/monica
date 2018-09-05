@@ -67,10 +67,10 @@ return [
     // Stay in touch
     'stay_in_touch' => 'Mantenerse en contacto',
     'stay_in_touch_frequency' => 'Mantenerse en contacto cada día|Mantenerse en contacto cada {count} días',
-    'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
-    'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
-    'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
+    'stay_in_touch_invalid' => 'La frecuencia debe ser un número mayor que 0.',
+    'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
+    'stay_in_touch_modal_title' => 'Mantenerse en contacto',
+    'stay_in_touch_modal_desc' => 'Podemos recordarte que te mantengas en contacto con {firstname} regularmente por correo electrónico.',
     'stay_in_touch_modal_label' => 'Send me an email every...',
 
     // Calls
