@@ -57,10 +57,10 @@
 
             <ul>
               <li>
-                <a href="" @click="updateDefaultProfileView('lifeEvents')">Life events</a>
+                <a @click="updateDefaultProfileView('lifeEvents')">Life events</a>
               </li>
               <li>
-                <a href="" @click="updateDefaultProfileView('notes')">Notes, reminders, ...</a>
+                <a @click="updateDefaultProfileView('notes')">Notes, reminders, ...</a>
               </li>
             </ul>
 
