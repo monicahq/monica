@@ -192,7 +192,7 @@ return [
     'relationship_type_godson' => 'ahijado',
     'relationship_type_godson_female' => 'ahijada',
     'relationship_type_godson_with_name' => 'ahijado de :name',
-    'relationship_type_godson_female_with_name' => ':name’s goddaughter',
+    'relationship_type_godson_female_with_name' => 'madrina de :name',
 
     'relationship_type_friend' => 'amigo',
     'relationship_type_friend_female' => 'amigo',
