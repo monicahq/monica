@@ -1,9 +1,6 @@
 <?php
 
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
@@ -25,7 +22,7 @@ class MarkModulesMigrated extends Migration
                 $uniqueModules = collect([]);
                 foreach ($modules as $module) {
                     $deleted = false;
-                    foreach($uniqueModules as $uniqueModule) {
+                    foreach ($uniqueModules as $uniqueModule) {
                         if ($uniqueModule['translation_key'] == $module->translation_key) {
                             $module->delete();
                             $deleted = true;
