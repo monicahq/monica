@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use UnexpectedValueException;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
@@ -478,7 +477,7 @@ class SettingsController extends ApiController
      * Update the default view when viewing a contact.
      * The default view can be either the life events feed or the general data
      * about the contact (notes, reminders, ...).
-     * Possible values: life-events | notes
+     * Possible values: life-events | notes.
      *
      * @param  Request $request
      * @return bool

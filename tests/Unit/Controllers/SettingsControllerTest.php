@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Controllers;
 
-use UnexpectedValueException;
 use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -15,7 +14,7 @@ class SettingsControllerTest extends FeatureTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/settings/updateDefaultProfileView', [
-            'name' => 'life-events'
+            'name' => 'life-events',
         ]);
 
         $response->assertStatus(200);
@@ -26,7 +25,7 @@ class SettingsControllerTest extends FeatureTestCase
         ]);
 
         $response = $this->json('POST', '/settings/updateDefaultProfileView', [
-            'name' => 'notes'
+            'name' => 'notes',
         ]);
 
         $response->assertStatus(200);
@@ -37,12 +36,12 @@ class SettingsControllerTest extends FeatureTestCase
         ]);
 
         $response = $this->json('POST', '/settings/updateDefaultProfileView', [
-            'name' => 'nawak'
+            'name' => 'nawak',
         ]);
 
         $response->assertStatus(500);
         $response->assertJsonFragment([
             'error_code' => 33,
-        ]);;
+        ]);
     }
 }
