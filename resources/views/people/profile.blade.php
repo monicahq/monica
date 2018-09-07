@@ -57,8 +57,8 @@
 
             <div class="flex items-center justify-center flex-column">
               <div class='cf dib'>
-                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl link bb bt bl ph3 pv2 dib b br2 br--left bl mb4' : 'f6 fl hover-bg-purple hover-white b--purple link bb bt ph3 pv2 dib purple br2 br--left bl pointer mb4']">Life events</span>
-                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view != 'life-events' ? 'f6 fl link bb bt bl ph3 pv2 dib b br2 br--right br mb4' : 'f6 fl hover-bg-purple hover-white b--purple link bb bt ph3 pv2 dib purple br2 br--right br pointer mb4']">Notes, reminders, ...</span>
+                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">Life events</span>
+                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view != 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Notes, reminders, ...</span>
               </div>
             </div>
 
