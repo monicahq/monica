@@ -296,9 +296,9 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       },
       methods: {
         updateDefaultProfileView(view) {
-            axios.post('/settings/updateDefaultProfileView', view)
+            axios.post('/settings/updateDefaultProfileView', { 'name': view })
                         .then(response => {
-                            this.$emit('updateLifeEventTimeline', this.newLifeEvent)
+                            this.global_profile_default_view = view
                       });
         }
       },

@@ -16,58 +16,22 @@
 }
 
 .life-event-list-actions {
-    right: 0;
+    right: 10px;
     color: #909090;
-    top: 18px;
+    top: 25px;
 }
 
 .life-event-list-content {
     padding-left: 40px;
-    padding-right: 70px;
+    padding-right: 90px;
 }
 </style>
 
 <template>
     <div class="">
-        <div class="">
-          <h3 class="mb3">
-            🎭 Life events
-
-            <span class="absolute" style="top: -5px; right: 14px;">
-              <a class="btn edit-information" @click="showAdd = true">Add life event</a>
-            </span>
-          </h3>
-        </div>
-
-        <!-- CREATE LIFE EVENT BOX -->
-        <create-life-event :hash="hash"
-                            v-if="showAdd == true"
-                            v-on:updateLifeEventTimeline="getLifeEvents"
-                            v-on:dismissModal="showAdd = false"
-                            >
-        </create-life-event>
-
-        <!-- LISTING OF LIFE EVENTS -->
-        <div class="bt b--gray-monica" style="margin-left: 20px;" v-if="showAdd == false">
-            <div v-for="lifeEvent in lifeEvents">
-                <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
-                    <div class="absolute life-event-list-icon">
-                        <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'">
-                    </div>
-                    <div class="absolute life-event-list-actions f7">
-                        <span>{{ lifeEvent.happened_at }}</span>
-                        <span></span>
-                    </div>
-                    <p class="pt2"><span class="b">{{ lifeEvent.life_event_type }}</span> {{ lifeEvent.name }}</p>
-                    <p>{{ lifeEvent.note }}</p>
-                </div>
-            </div>
-        </div>
-
         <!-- BLANK STATE -->
         <section class="ph3 ph0-ns" v-if="lifeEvents.length == 0">
             <div class="mt4 mw7 center mb3">
-                <h3 class="tc mb4">Life events</h3>
                 <div class="tc mb4">
                     <svg class="center" width="337" height="249" viewBox="0 0 337 249" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.1" d="M192.191 206.296C218.596 206.296 240.002 202.875 240.002 198.656C240.002 194.436 218.596 191.016 192.191 191.016C165.786 191.016 144.38 194.436 144.38 198.656C144.38 202.875 165.786 206.296 192.191 206.296Z" fill="#4285F4"/>
@@ -492,6 +456,44 @@
                 </div>
             </div>
         </section>
+
+        <div v-if="lifeEvents.length != 0">
+          <h3 class="mb3 relative">
+            🎭 Life events
+
+            <span class="absolute" style="top: -5px; right: 0;">
+              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">Add life event</a>
+              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd == true">Cancel</a>
+            </span>
+          </h3>
+        </div>
+
+        <!-- CREATE LIFE EVENT BOX -->
+        <create-life-event :hash="hash"
+                            v-if="showAdd == true"
+                            v-on:updateLifeEventTimeline="getLifeEvents"
+                            v-on:dismissModal="showAdd = false"
+                            >
+        </create-life-event>
+
+        <!-- LISTING OF LIFE EVENTS -->
+        <div v-if="lifeEvents.length != 0">
+            <div class="bt b--gray-monica" style="margin-left: 20px;">
+                <div v-for="lifeEvent in lifeEvents">
+                    <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
+                        <div class="absolute life-event-list-icon">
+                            <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'">
+                        </div>
+                        <div class="absolute life-event-list-actions f7">
+                            <span>{{ lifeEvent.happened_at }}</span>
+                            <span></span>
+                        </div>
+                        <p class="pt2"><span class="b">{{ lifeEvent.life_event_type }}</span> {{ lifeEvent.name }}</p>
+                        <p>{{ lifeEvent.note }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use UnexpectedValueException;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
@@ -23,8 +24,9 @@ use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
 use PragmaRX\Google2FALaravel\Google2FA;
+use App\Http\Controllers\Api\ApiController;
 
-class SettingsController extends Controller
+class SettingsController extends ApiController
 {
     protected $ignoredTables = [
         'accounts',
@@ -472,7 +474,27 @@ class SettingsController extends Controller
         return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
     }
 
-    public function updateDefaultProfileView(Request $request, $view)
+    /**
+     * Update the default view when viewing a contact.
+     * The default view can be either the life events feed or the general data
+     * about the contact (notes, reminders, ...).
+     * Possible values: life-events | notes
+     *
+     * @param  Request $request
+     * @return bool
+     */
+    public function updateDefaultProfileView(Request $request)
     {
+        $allowedValues = ['life-events', 'notes'];
+        $view = $request->get('name');
+
+        if (! in_array($view, $allowedValues)) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        auth()->user()->profile_active_tab = $view;
+        auth()->user()->save();
+
+        return $view;
     }
 }

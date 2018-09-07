@@ -429,6 +429,24 @@ input:disabled {
   }
 }
 
+.profile-selected {
+  .profile-selected-left {
+    border-left: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .profile-selected-right {
+    border-right: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}
+
 .full-page-modal {
   background: #fff;
   border: 1px solid #eee;
