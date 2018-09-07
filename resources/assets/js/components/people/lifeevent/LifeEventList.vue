@@ -452,7 +452,7 @@
                 </div>
                 <p class="tc mb4 measure center">Life Events let you add experiences from the different parts of Leo's life and record them for your future reference.</p>
                 <div class="tc">
-                    <a href="" class="mb4 btn">Add life event</a>
+                    <a @click="showAdd = true" class="mb4 btn">Add life event</a>
                 </div>
             </div>
         </section>
