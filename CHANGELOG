@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix confirm email sent when signup_double_optin is false
 
 RELEASED VERSIONS:
 
