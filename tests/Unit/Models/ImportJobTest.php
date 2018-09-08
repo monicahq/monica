@@ -436,20 +436,37 @@ END:VCARD
         );
     }
 
-    public function test_it_returns_a_name_of_the_current_entry()
+    public function test_it_returns_a_name_for_N()
     {
         $importJob = $this->createImportJob();
-        $vcard = new VCard([
+        $importJob->currentEntry = new VCard([
             'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $importJob->currentEntry = $vcard;
+        $this->assertEquals('Doe  John john@doe.com', $importJob->name());
+    }
 
-        $this->assertEquals(
-            'Doe  John john@doe.com',
-            $importJob->name()
-        );
+    public function test_it_returns_a_name_for_NICKNAME()
+    {
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'NICKNAME' => 'John',
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('John john@doe.com', $importJob->name());
+    }
+
+    public function test_it_returns_a_name_for_FN()
+    {
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John Doe',
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('John Doe john@doe.com', $importJob->name());
     }
 
     public function test_it_files_an_import_job_report()

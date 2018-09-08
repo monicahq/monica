@@ -395,14 +395,20 @@ class ImportJob extends Model
      */
     public function name(): string
     {
-        if (is_null($this->currentEntry->N)) {
-            return trans('settings.import_vcard_unknown_entry');
+        if($this->hasFirstnameInN()) {
+            $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
+            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
+            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+        } elseif ($this->hasNICKNAME()) {
+            $name = $this->formatValue($this->currentEntry->NICKNAME);
+            $name .= ' ' . $this->formatValue($this->currentEntry->EMAIL);
+        } elseif ($this->hasFN()){
+            $name = $this->formatValue($this->currentEntry->FN);
+            $name .= ' ' . $this->formatValue($this->currentEntry->EMAIL);
+        } else {
+            $name = trans('settings.import_vcard_unknown_entry');
         }
-
-        $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
-        $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
 
         return $name;
     }
