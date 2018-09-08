@@ -55,6 +55,8 @@ class PopulateLifeEventsTable extends BaseService
         $locale = $this->getLocaleOfAccount($this->data['account_id']);
 
         $this->createEntries($locale);
+
+        $this->markTableAsMigrated();
     }
 
     /**
@@ -155,10 +157,29 @@ class PopulateLifeEventsTable extends BaseService
                 'life_event_category_id' => $lifeEventCategory->id,
                 'name' => trans('settings.personalization_life_event_type_'.$defaultLifeEventType->translation_key),
                 'core_monica_data' => true,
+                'specific_information' => $defaultLifeEventType->specific_information_structure,
                 'default_life_event_type_key' => $defaultLifeEventType->translation_key,
             ]);
         } catch (QueryException $e) {
             throw new QueryException('Can not create a life event type.');
+        }
+    }
+
+    /**
+     * Mark the table as migrated.
+     *
+     * @return void
+     */
+    private function markTableAsMigrated()
+    {
+        try {
+            DB::table('default_life_event_categories')
+                ->update(['migrated' => 1]);
+
+            DB::table('default_life_event_types')
+                ->update(['migrated' => 1]);
+        } catch (QueryException $e) {
+            throw new QueryException('Can not mark tables as migrated.');
         }
     }
 }

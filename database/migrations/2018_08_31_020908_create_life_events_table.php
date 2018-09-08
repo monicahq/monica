@@ -24,6 +24,7 @@ class CreateLifeEventsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('default_life_event_category_id');
             $table->string('translation_key');
+            $table->json('specific_information_structure');
             $table->boolean('migrated')->default(0);
             $table->timestamps();
             $table->foreign('default_life_event_category_id')->references('id')->on('default_life_event_categories')->onDelete('cascade');
@@ -53,6 +54,7 @@ class CreateLifeEventsTable extends Migration
             $table->string('name');
             $table->string('default_life_event_type_key')->nullable();
             $table->boolean('core_monica_data')->default(0);
+            $table->json('specific_information_structure')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('life_event_category_id')->references('id')->on('life_event_categories')->onDelete('cascade');
@@ -66,6 +68,7 @@ class CreateLifeEventsTable extends Migration
             $table->string('name')->nullable();
             $table->mediumText('note')->nullable();
             $table->dateTime('happened_at');
+            $table->json('specific_information')->nullable;
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
@@ -90,42 +93,49 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'new_job',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"employer": {"type": "string", "value": ""}, "job_title": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'retirement',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"profession": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'new_school',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'study_abroad',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'volunteer_work',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"organization": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'published_book_or_paper',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"full_citation": {"type": "string", "value": ""}, "url": {"type": "string", "value": ""}, "citation": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'military_service',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"end_date": {"type": "date", "value": ""}, "branch": {"type": "string", "value": ""}, "division": {"type": "string", "value": ""}, "country": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -133,12 +143,6 @@ class CreateLifeEventsTable extends Migration
         // HOME LIVING
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([
             'translation_key' => 'family_relationships',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('default_life_event_types')->insert([
-            'translation_key' => 'first_met',
-            'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -9,7 +9,7 @@
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
                 <li class="di"><a class="pointer" @click="view = 'categories'">All categories</a></li>
                 <li class="di" v-if="view == 'types'">> {{ this.activeCategory.name }}</li>
-                <li class="di" v-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeType.name }}</a></li>
+                <li class="di" v-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
                 <li class="di" v-if="view == 'add'">> Add life event</li>
             </ul>
 
@@ -43,15 +43,20 @@
 
             <!-- ADD SCREEN -->
             <div class="ba b--gray-monica br2" v-if="view == 'add'">
-                <h3 class="pt3 ph4 f3 fw5">{{ this.activeType.name }}</h3>
+                <div class="dib mr2">
+
+                </div>
+                <h3 class="pt3 ph4 f3 fw5">
+                    <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'">
+                    {{ this.activeType.name }}
+                </h3>
 
                 <div class="ph4 pb4 mb3 mb0-ns bb b--gray-monica">
                     <form-input
                       value=""
                       v-bind:input-type="'text'"
                       v-model="newLifeEvent.name"
-                      v-bind:required="false"
-                      v-bind:title="'Title'">
+                      v-bind:required="false">
                     </form-input>
                 </div>
 
@@ -60,7 +65,7 @@
                     <form-date
                         v-model="newLifeEvent.happened_at"
                         :default-date="newLifeEvent.happened_at"
-                        v-on:dateChanged="updateDate($event, message)"
+                        v-on:dateChanged="updateDate($event)"
                         :locale="''">
                     </form-date>
                 </div>
@@ -151,6 +156,10 @@
 
             broadcastContentChange(note) {
                 this.newLifeEvent.note = note
+            },
+
+            updateDate(date) {
+                this.newLifeEvent.happened_at = date
             },
 
             displayAddScreen(type) {

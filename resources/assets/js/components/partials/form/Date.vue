@@ -8,8 +8,7 @@
                 :language="language"
                 :monday-first="mondayFirst"
                 @input="update"
-                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-                v-on:selected="$emit('dateChanged', $event)">
+                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'">
     </datepicker>
     <input :name="id" type="hidden" :value="value" />
   </div>

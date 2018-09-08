@@ -55,12 +55,21 @@ class PopulateLifeEventsTableTest extends TestCase
         );
 
         $this->assertEquals(
-            45,
+            44,
             DB::table('life_event_types')->get()->count()
         );
+
+        // make sure tables have been set to migrated = 1
+        $this->assertDatabaseMissing('default_life_event_categories', [
+            'migrated' => 0,
+        ]);
+
+        $this->assertDatabaseMissing('default_life_event_types', [
+            'migrated' => 0,
+        ]);
     }
 
-    public function test_it_populate_partial_life_event_tables()
+    public function test_it_only_populates_life_event_tables_partially()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
@@ -68,7 +77,7 @@ class PopulateLifeEventsTableTest extends TestCase
         ]);
 
         DB::table('default_life_event_categories')
-            ->where('translation_key', 'settings.personalization_life_event_category_work_education')
+            ->where('translation_key', 'work_education')
             ->update(['migrated' => 1]);
 
         // we will only migrate the ones that haven't been populated yet
@@ -86,7 +95,7 @@ class PopulateLifeEventsTableTest extends TestCase
         );
 
         $this->assertEquals(
-            38,
+            37,
             DB::table('life_event_types')->get()->count()
         );
     }
