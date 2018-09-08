@@ -326,12 +326,23 @@ END:VCARD
         $this->assertFalse($importJob->canImportCurrentEntry());
     }
 
-    public function test_it_can_not_import_because_no_nickname_in_vcard()
+    public function test_it_can_not_import_because_empty_nickname_in_vcard()
     {
         $importJob = $this->createImportJob();
 
         $importJob->currentEntry = new VCard([
             'NICKNAME'   => '',
+        ]);
+
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_empty_fullname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'FN'   => '',
         ]);
 
         $this->assertFalse($importJob->canImportCurrentEntry());
@@ -354,6 +365,17 @@ END:VCARD
 
         $importJob->currentEntry = new VCard([
             'NICKNAME'   => 'John',
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_import_fullname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'FN'   => 'John Doe',
         ]);
 
         $this->assertTrue($importJob->canImportCurrentEntry());

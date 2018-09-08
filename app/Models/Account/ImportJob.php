@@ -302,7 +302,8 @@ class ImportJob extends Model
     {
         return
             $this->hasFirstnameInN() or
-            $this->hasNickname();
+            $this->hasNickname() or
+            $this->hasFullname();
     }
 
     private function hasFirstnameInN(): bool
@@ -313,6 +314,11 @@ class ImportJob extends Model
     private function hasNickname(): bool
     {
         return ! empty((string)$this->currentEntry->NICKNAME);
+    }
+
+    private function hasFullname(): bool
+    {
+        return ! empty((string)$this->currentEntry->FN);
     }
 
     /**
