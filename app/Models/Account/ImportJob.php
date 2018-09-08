@@ -303,7 +303,7 @@ class ImportJob extends Model
         return
             $this->hasFirstnameInN() or
             $this->hasNickname() or
-            $this->hasFullname();
+            $this->hasFN();
     }
 
     private function hasFirstnameInN(): bool
@@ -311,12 +311,12 @@ class ImportJob extends Model
         return $this->currentEntry->N !== null && ! empty($this->currentEntry->N->getParts()[1]);
     }
 
-    private function hasNickname(): bool
+    private function hasNICKNAME(): bool
     {
         return ! empty((string)$this->currentEntry->NICKNAME);
     }
 
-    private function hasFullname(): bool
+    private function hasFN(): bool
     {
         return ! empty((string)$this->currentEntry->FN);
     }
@@ -456,23 +456,32 @@ class ImportJob extends Model
      */
     public function importNames(Contact $contact): void
     {
-        $contact->first_name = $this->getFirstname();
-
         if ($this->hasFirstnameInN()) {
-            $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
-            $contact->last_name   = $this->formatValue($this->currentEntry->N->getParts()[0]);
+            $this->importFromN($contact);
+        } elseif ($this->hasNICKNAME()) {
+            $this->importFromNICKNAME($contact);
+        } elseif($this->hasFN()) {
+            $this->importFromFN($contact);
+        } else {
+            throw new \LogicException('Check if you can import entry!');
         }
     }
 
-    private function getFirstname()
+    private function importFromN(Contact $contact)
     {
-        if ($this->hasFirstnameInN()) {
-            $firstname = $this->currentEntry->N->getParts()[1];
-        } else {
-            $firstname = $this->currentEntry->NICKNAME;
-        }
+        $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+        $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
+        $contact->last_name   = $this->formatValue($this->currentEntry->N->getParts()[0]);
+    }
 
-        return (string)$firstname;
+    private function importFromNICKNAME(Contact $contact) {
+        $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
+    }
+
+    private function importFromFN(Contact $contact) {
+        $fullnameParts =  preg_split('/ +/', $this->currentEntry->FN);
+        $contact->first_name = $this->formatValue($fullnameParts[0]);
+        $contact->last_name = $this->formatValue($fullnameParts[1]);
     }
 
     /**

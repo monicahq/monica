@@ -574,6 +574,34 @@ END:VCARD
         $this->assertEquals('John', $contact->first_name);
     }
 
+    public function test_it_imports_names_FN()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John Doe',
+        ]);
+        $importJob->importNames($contact);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
+    }
+
+    public function test_it_imports_names_FN_extra_space()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John  Doe',
+        ]);
+        $importJob->importNames($contact);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
+    }
+
     public function test_it_imports_work_information()
     {
         $importJob = $this->createImportJob();
