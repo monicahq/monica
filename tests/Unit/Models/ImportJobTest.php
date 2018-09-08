@@ -306,31 +306,35 @@ END:VCARD
         ]);
     }
 
-    public function test_it_checks_import_feasibility()
+    public function test_it_can_not_import_because_no_firstname_or_nickname_in_vcard()
     {
         $importJob = $this->createImportJob();
 
-        // false because no N entry in the vcard
-        $vcard = new VCard([]);
-        $importJob->currentEntry = $vcard;
-        $this->assertFalse($importJob->checkImportFeasibility());
+        $importJob->currentEntry = new VCard([]);
 
-        // false because no firstname
-        $vcard = new VCard([
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_no_firstname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
             'N'   => ['John', '', '', '', ''],
         ]);
-        $importJob->currentEntry = $vcard;
-        $this->assertFalse($importJob->checkImportFeasibility());
 
-        // false because no nickname
-        $vcard = new VCard([
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_no_nickname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
             'NICKNAME'   => '',
-            'N'   => '',
         ]);
-        $importJob->currentEntry = $vcard;
 
-        // false because no firstname
-        $this->assertFalse($importJob->checkImportFeasibility());
+        $this->assertFalse($importJob->canImportCurrentEntry());
     }
 
     public function test_it_validates_email()

@@ -263,7 +263,7 @@ class ImportJob extends Model
      */
     public function processSingleEntry($behaviour = self::BEHAVIOUR_ADD)
     {
-        if (! $this->checkImportFeasibility()) {
+        if (! $this->canImportCurrentEntry()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
 
             return;
@@ -298,7 +298,7 @@ class ImportJob extends Model
      * @param VCard $vcard
      * @return bool
      */
-    public function checkImportFeasibility(): bool
+    public function canImportCurrentEntry(): bool
     {
         if (is_null($this->currentEntry->N)) {
             return false;
