@@ -456,13 +456,23 @@ class ImportJob extends Model
      */
     public function importNames(Contact $contact): void
     {
-        if ($this->currentEntry->N && ! empty($this->currentEntry->N->getParts()[1])) {
-            $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+        $contact->first_name = $this->getFirstname();
+
+        if ($this->hasFirstnameInN()) {
             $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
-            $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
-        } else {
-            $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
+            $contact->last_name   = $this->formatValue($this->currentEntry->N->getParts()[0]);
         }
+    }
+
+    private function getFirstname()
+    {
+        if ($this->hasFirstnameInN()) {
+            $firstname = $this->currentEntry->N->getParts()[1];
+        } else {
+            $firstname = $this->currentEntry->NICKNAME;
+        }
+
+        return (string)$firstname;
     }
 
     /**

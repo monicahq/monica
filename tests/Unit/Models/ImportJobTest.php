@@ -546,38 +546,32 @@ END:VCARD
         );
     }
 
-    public function test_it_imports_names()
+    public function test_it_imports_names_N()
     {
-        $importJob = $this->createImportJob();
-        $vcard = new VCard([
-            'N' => ['John', 'Doe', '', '', ''],
-        ]);
-
-        $importJob->currentEntry = $vcard;
         $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'N' => ['Doe', 'John', 'Jane', '', ''],
+        ]);
         $importJob->importNames($contact);
 
-        $this->assertEquals(
-            'Doe',
-            $contact->first_name
-        );
-        $this->assertEquals(
-            'John',
-            $contact->last_name
-        );
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
+        $this->assertEquals('Jane', $contact->middle_name);
+    }
 
-        $vcard = new VCard([
+    public function test_it_imports_names_NICKNAME()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
             'NICKNAME' => 'John',
         ]);
-
-        $importJob->currentEntry = $vcard;
-        $contact = new Contact;
         $importJob->importNames($contact);
 
-        $this->assertEquals(
-            'John',
-            $contact->first_name
-        );
+        $this->assertEquals('John', $contact->first_name);
     }
 
     public function test_it_imports_work_information()
