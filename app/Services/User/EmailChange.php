@@ -40,6 +40,7 @@ class EmailChange extends BaseService
             $user->save();
 
             $user->notify(new ConfirmEmail);
+
             return;
         }
 
