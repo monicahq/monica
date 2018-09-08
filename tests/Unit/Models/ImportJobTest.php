@@ -337,6 +337,28 @@ END:VCARD
         $this->assertFalse($importJob->canImportCurrentEntry());
     }
 
+    public function test_it_can_import_firstname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'N'   => ['', 'John', '', '', ''],
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_import_nickname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'NICKNAME'   => 'John',
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
+    }
+
     public function test_it_validates_email()
     {
         $importJob = $this->createImportJob();

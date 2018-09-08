@@ -300,11 +300,19 @@ class ImportJob extends Model
      */
     public function canImportCurrentEntry(): bool
     {
-        if (is_null($this->currentEntry->N)) {
-            return false;
-        }
+        return
+            $this->hasFirstnameInN() or
+            $this->hasNickname();
+    }
 
-        return ! empty($this->currentEntry->N->getParts()[1]) || ! empty((string) $this->currentEntry->NICKNAME);
+    private function hasFirstnameInN(): bool
+    {
+        return $this->currentEntry->N !== null && ! empty($this->currentEntry->N->getParts()[1]);
+    }
+
+    private function hasNickname(): bool
+    {
+        return ! empty((string)$this->currentEntry->NICKNAME);
     }
 
     /**
