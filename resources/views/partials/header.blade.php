@@ -2,8 +2,8 @@
   <div class="ph3 ph5-ns pv2 cf w-100">
     <div class="mw9 center dt w-100">
       <div class="w-50-l w-100 dtc-l v-mid">
-        <div class="tc tl-l dib-l">
-          <a href="{{ route('dashboard.index') }}" class="header-logo mr2">
+        <div class="tc dib-l">
+          <a href="{{ route('dashboard.index') }}" class="header-logo {{ htmldir() == 'rtl' ? 'ml2' : 'mr2' }}">
             <img src="/img/monica_reverse.svg" width="40" height="43" />
           </a>
         </div>
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="w-50-l w-100 dtc-l v-mid tl tr-l">
-        <div class="{{ \App\Helpers\LocaleHelper::getDirection() }} header-nav">
+        <div class="header-nav">
           <a href="{{ route('dashboard.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_dashboard') }}</a>
           <a href="{{ route('people.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_family') }}</a>
           <a href="{{ route('journal.index') }}" class="header-nav-item-link dib">{{ trans('app.main_nav_journal') }}</a>

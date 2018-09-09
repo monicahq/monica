@@ -12,6 +12,7 @@
         <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
+            <file name="app/Helpers/helpers.php" />
         </ignoreFiles>
     </projectFiles>
 

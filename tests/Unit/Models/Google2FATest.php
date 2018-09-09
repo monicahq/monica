@@ -7,9 +7,12 @@ use App\Models\User\User;
 use Illuminate\Session\Store;
 use App\Http\Requests\Request;
 use Illuminate\Session\NullSessionHandler;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class Google2FATest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * A basic test example.
      *

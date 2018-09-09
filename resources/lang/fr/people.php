@@ -87,6 +87,25 @@ return [
     'call_blank_title' => 'Gardez la trace des appels téléphoniques que vous faites avec :name',
     'call_blank_desc' => 'Vous avez appelé :name',
 
+    // Conversation
+    'conversation_blank' => 'Enregistrer les discussions que vous avez avec :name sur les réseaux sociaux, par SMS, etc.',
+    'conversation_delete_link' => 'Supprimer la discussion',
+    'conversation_edit_title' => 'Éditer la discussion',
+    'conversation_edit_delete' => 'Êtes-vous sûr de vouloir supprimer la discussion ? La suppression est permanente.',
+    'conversation_delete_success' => 'La discussion a été supprimée avec succès.',
+    'conversation_add_title' => 'Enregistrer une discussion',
+    'conversation_add_when' => 'Quand avez-vous eu cette discussion ?',
+    'conversation_add_who_wrote' => 'Qui a écrit ce message ?',
+    'conversation_add_how' => 'Comment avez-vous communiqué ?',
+    'conversation_add_you' => 'Vous',
+    'conversation_add_content' => 'Écrivez ce que vous avez dit',
+    'conversation_add_what_was_said' => 'Qu’avez-vous dit ?',
+    'conversation_add_another' => 'Ajoutez un nouveau message',
+    'conversation_list_table_messages' => 'Messages',
+    'conversation_list_table_content' => 'Contenu partiel (dernier message)',
+    'conversation_list_title' => 'Discussions',
+    'conversation_list_cta' => 'Journal de conversation',
+
     // age - birthday
     'birthdate_not_set' => 'Non indiqué.',
     'age_approximate_in_years' => 'env. :age ans',

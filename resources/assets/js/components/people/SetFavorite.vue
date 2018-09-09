@@ -23,7 +23,6 @@
         data() {
             return {
                 isFavorite: false,
-                dirltr: true,
             };
         },
 
@@ -55,7 +54,6 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
                 this.isFavorite = this.starred;
             },
 

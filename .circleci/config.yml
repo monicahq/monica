@@ -150,7 +150,7 @@ jobs:
           name: Prepare environment
           command: |
             sudo composer self-update
-            yarn global add greenkeeper-lockfile
+            yarn global add greenkeeper-lockfile@1
 
       ## COMPOSER
       - *restore_composer
@@ -173,7 +173,10 @@ jobs:
           paths: ~/.cache
       - run:
           name: Upload yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
+          command: |
+            CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeperio-bot" = "`git log --format="%an" -n 1`" || echo false) $(yarn global bin)/greenkeeper-lockfile-upload
+            cat gk-lockfile-git-push.err || true
+            rm -f gk-lockfile-git-push.err || true
 
       # Update js and css assets eventually
       - run:

@@ -6,7 +6,7 @@
         <!-- Timezone -->
         <div class="form-group">
             <form-select
-                :value="timezone"
+                :value="updatedTimezone"
                 :id="'timezone'"
                 :options="timezones"
                 :title="$t('settings.timezone')"
@@ -19,7 +19,7 @@
         <!-- Reminders -->
         <div class="form-group">
             <form-select
-                :value="reminder"
+                :value="updatedReminder"
                 :id="'reminder_time'"
                 :options="hours"
                 :title="$t('settings.reminder_time_to_send')"
@@ -40,6 +40,8 @@
         data() {
             return {
                 message: '',
+                updatedTimezone: '',
+                updatedReminder: ''
             };
         },
 
@@ -77,14 +79,30 @@
              * Prepare the component.
              */
             prepareComponent() {
+                this.updatedReminder = this.reminder
+                this.updatedTimezone = this.timezone
+                this.computeMessage()
+            },
+
+            timezoneUpdate: function(event) {
+                this.updatedTimezone = event;
+                this.computeMessage();
+            },
+
+            reminderUpdate: function(event) {
+                this.updatedReminder = event;
+                this.computeMessage();
+            },
+
+            computeMessage() {
                 var moment = require('moment-timezone');
                 moment.locale(this._i18n.locale);
                 moment.tz.setDefault('UTC');
 
                 var now = moment();
-                var t = now.format('YYYY-MM-DD '+this.reminder+':00');
+                var t = now.format('YYYY-MM-DD ' + this.updatedReminder + ':00');
 
-                var date = moment.tz(t, this.timezone);
+                var date = moment.tz(t, this.updatedTimezone);
 
                 if (date.isBefore(now)) {
                   date = date.add(1, 'days');
@@ -94,17 +112,7 @@
                     dateTime: date.format('LLL'),
                     dateTimeUtc: date.utc().format('YYYY-MM-DD HH:mm z')
                 });
-            },
-
-            timezoneUpdate: function(event) {
-                this.timezone = event.target.value;
-                this.prepareComponent();
-            },
-
-            reminderUpdate: function(event) {
-                this.reminder = event.target.value;
-                this.prepareComponent();
-            },
+            }
         }
     }
 </script>

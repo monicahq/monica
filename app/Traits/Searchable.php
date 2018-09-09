@@ -15,7 +15,7 @@ trait Searchable
      * @param  int  $accountId
      * @param  int $limitPerPage
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $sortOrder, $whereCondition = null)
     {

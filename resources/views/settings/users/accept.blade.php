@@ -9,14 +9,14 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img class="" src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="/img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('settings.users_accept_title') }}</h2>
 
             @include ('partials.errors')
 
-            <form class="" action="{{ route('invitations.accept', $key) }}" method="post">
+            <form action="{{ route('invitations.accept', $key) }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
