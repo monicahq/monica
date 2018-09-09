@@ -32,8 +32,8 @@ The preferred OS distribution is Ubuntu 16.04, simply because all the developmen
 <a id="markdown-platforms" name="platforms"></a>
 ### Platforms
 
-* [Cloudron](/docs/installation/cloudron.md)
 * [Docker](/docs/installation/docker.md)
 * [Heroku](/docs/installation/heroku.md)
 * [Vagrant](/docs/installation/vagrant.md)
 * [YunoHost](https://github.com/YunoHost-Apps/monica_ynh)
+* [Cloudron](/docs/installation/cloudron.md)
