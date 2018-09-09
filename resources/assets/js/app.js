@@ -167,6 +167,11 @@ Vue.component(
 );
 
 Vue.component(
+    'create-default-life-event-type',
+    require('./components/people/lifeevent/content/CreateDefaultLifeEvent.vue')
+);
+
+Vue.component(
     'life-event-list',
     require('./components/people/lifeevent/LifeEventList.vue')
 );

@@ -43,43 +43,16 @@
 
             <!-- ADD SCREEN -->
             <div class="ba b--gray-monica br2" v-if="view == 'add'">
-                <div class="dib mr2">
-
-                </div>
                 <h3 class="pt3 ph4 f3 fw5">
                     <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'">
                     {{ this.activeType.name }}
                 </h3>
 
-                <div class="ph4 pb4 mb3 mb0-ns bb b--gray-monica">
-                    <form-input
-                      value=""
-                      v-bind:input-type="'text'"
-                      v-model="newLifeEvent.name"
-                      v-bind:required="false">
-                    </form-input>
-                </div>
-
-                <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-                    <label for="another" class="mr2">Date it happened</label>
-                    <form-date
-                        v-model="newLifeEvent.happened_at"
-                        :default-date="newLifeEvent.happened_at"
-                        v-on:dateChanged="updateDate($event)"
-                        :locale="''">
-                    </form-date>
-                </div>
-
-                <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-                    <label for="another" class="mr2">Story (optional)</label>
-                    <form-textarea
-                      v-bind:required="true"
-                      v-bind:noLabel="true"
-                      v-bind:rows="4"
-                      v-bind:placeholder="'Placeholder'"
-                      v-on:contentChange="broadcastContentChange($event)">
-                    </form-textarea>
-                </div>
+                <create-default-life-event-type
+                            v-bind:months="months"
+                            v-bind:days="days"
+                            v-bind:years="years">
+                </create-default-life-event-type>
 
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
@@ -87,7 +60,7 @@
                             <a @click="$emit('dismissModal')" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
                         </div>
                         <div>
-                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store">Add</button>
+                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store()">Add</button>
                         </div>
                     </div>
                 </div>
@@ -100,9 +73,6 @@
     import moment from 'moment';
 
     export default {
-        /*
-         * The component's data.
-         */
         data() {
             return {
                 newLifeEvent: {
@@ -119,19 +89,13 @@
             };
         },
 
-        props: ['hash'],
+        props: ['hash', 'years', 'months', 'days'],
 
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent()
         },
 
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.getCategories()
                 this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD')

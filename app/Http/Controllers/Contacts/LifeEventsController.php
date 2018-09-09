@@ -11,8 +11,6 @@ use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
 
-// use App\Services\Contact\LifeEvent\DestroyMessage;
-
 class LifeEventsController extends Controller
 {
     /**

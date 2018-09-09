@@ -258,12 +258,15 @@ class DateHelper
      */
     public static function getListOfYears($max = 120, $min = 0)
     {
-        $years = [];
+        $years = collect([]);
         $maxYear = now(static::getTimezone())->subYears($min)->year;
         $minYear = now(static::getTimezone())->subYears($max)->year;
 
         for ($year = $maxYear; $year >= $minYear; $year--) {
-            array_push($years, $year);
+            $years->push([
+                'id' => $year,
+                'name' => $year,
+            ]);
         }
 
         return $years;

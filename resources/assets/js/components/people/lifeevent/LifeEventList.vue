@@ -473,6 +473,9 @@
                             v-if="showAdd == true"
                             v-on:updateLifeEventTimeline="getLifeEvents"
                             v-on:dismissModal="showAdd = false"
+                            v-bind:months="months"
+                            v-bind:days="days"
+                            v-bind:years="years"
                             >
         </create-life-event>
 
@@ -509,7 +512,7 @@
             };
         },
 
-        props: ['hash'],
+        props: ['hash', 'years', 'months', 'days'],
 
         /**
          * Prepare the component (Vue 1.x).
@@ -539,7 +542,7 @@
                             this.lifeEvents = response.data
                             this.showAdd = false
                         });
-            },
+            }
         }
     }
 </script>

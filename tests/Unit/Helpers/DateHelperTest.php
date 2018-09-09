@@ -392,6 +392,16 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function test_it_returns_a_list_with_the_years()
+    {
+        $currentYear = now()->year;
+        $difference = $currentYear - 1900;
+        $this->assertCount(
+            $difference,
+            DateHelper::getListOfYears()
+        );
+    }
+
     public function test_it_returns_a_list_with_twenty_four_hours()
     {
         $this->assertCount(

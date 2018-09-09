@@ -208,7 +208,10 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withDays(DateHelper::getListOfDays())
+            ->withMonths(DateHelper::getListOfMonths())
+            ->withYears(DateHelper::getListOfYears());
     }
 
     /**
