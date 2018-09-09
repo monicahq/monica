@@ -19,14 +19,12 @@ Monica doesn't require a lot of power - it means it will run on the free plan pr
 
 Note the configuration of your app should look like this:
 
-![Picture Of Configuration]
-(https://user-images.githubusercontent.com/25419741/45253146-9f904800-b362-11e8-916b-8980fc2a83d8.png)
+![Picture Of Configuration](https://user-images.githubusercontent.com/25419741/45253146-9f904800-b362-11e8-916b-8980fc2a83d8.png)
 
 Note that when you deploy with the heroku button, only 1 dyno is activated for the "web" one - that is OK.
 The "queue" dyno is only helpful if you set `QUEUE_DRIVER=database` (default is 'sync').
 
-In addition, Make sure to setup a new job that runs every hour using the Heroku Scheudler, on the bottom of the screen shown above.
-After creating a new job, set it to be: `php artisan schedule:run`.
+In addition, Make sure to setup a new job that runs every hour using the Heroku Scheudler, on the bottom of the screen shown above. After creating a new job, set it to be: `php artisan schedule:run`.
 
 ### Generating Personal Access Tokens
 
@@ -43,7 +41,6 @@ Read the general [setup instructions](https://github.com/monicahq/monica/blob/ma
 
 * No email by default. Email configuration isn't required to use Monica on Heroku, but it's recommended. Mailgun has a [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun) that is easy to set up.
 * No upload of photos for your contacts. Heroku doesn't support storage.
-* No crons on the free version. That means no reminders by email, nor automatic checking of new versions of Monica.
 
 ## Updating Heroku instance
 
