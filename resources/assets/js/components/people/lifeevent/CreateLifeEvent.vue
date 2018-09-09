@@ -42,10 +42,13 @@
             </ul>
 
             <!-- ADD SCREEN -->
-            <div class="ba b--gray-monica br2" v-if="view == 'add'">
-                <h3 class="pt3 ph4 f3 fw5">
+            <div class="ba b--gray-monica br2 pt4" v-if="view == 'add'">
+                <div class="life-event-add-icon tc center">
                     <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'">
-                    {{ this.activeType.name }}
+                </div>
+
+                <h3 class="pt3 ph4 f3 fw5 tc">
+                    {{ $t('people.life_event_sentence_' + this.activeType.default_life_event_type_key) }}
                 </h3>
 
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">

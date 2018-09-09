@@ -41,6 +41,10 @@ class PopulateLifeEventsTableTest extends TestCase
             'account_id' => $account->id,
         ]);
 
+        DB::table('default_life_event_categories')
+            ->where('translation_key', 'work_education')
+            ->update(['migrated' => 0]);
+
         $request = [
             'account_id' => $account->id,
             'migrate_existing_data' => 1,

@@ -19696,6 +19696,17 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   top: 12px;
 }
 
+.life-event .life-event-add-icon {
+  background-color: #d7e3ec;
+  border-radius: 50%;
+  padding: 20px;
+  width: 65px;
+}
+
+.life-event .life-event-add-icon img {
+  width: 70px;
+}
+
 .chart-activities {
   display: table;
   table-layout: fixed;

@@ -368,7 +368,6 @@ return [
     'personalization_life_event_type_holidays' => 'Holidays',
     'personalization_life_event_type_new_vehicule' => 'New vehicule',
     'personalization_life_event_type_new_roommate' => 'New roommate',
-    'personalization_life_event_type_organ_donor' => 'Organ donor',
     'personalization_life_event_type_overcame_an_illness' => 'Overcame an illness',
     'personalization_life_event_type_quit_a_habit' => 'Quit a habit',
     'personalization_life_event_type_new_eating_habits' => 'New eating habits',

@@ -192,6 +192,17 @@ $htmldir: ltr !default;
     right: 10px;
     top: 12px;
   }
+
+  .life-event-add-icon {
+    background-color: #d7e3ec;
+    border-radius: 50%;
+    padding: 20px;
+    width: 65px;
+
+    img {
+      width: 70px;
+    }
+  }
 }
 
 .chart-activities {

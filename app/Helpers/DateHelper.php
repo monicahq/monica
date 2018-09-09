@@ -254,7 +254,7 @@ class DateHelper
      * @param int min
      * @param int max
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfYears($max = 120, $min = 0)
     {

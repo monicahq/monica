@@ -328,29 +328,22 @@ class DateHelperTest extends FeatureTestCase
             3,
             DateHelper::getListOfYears(2)
         );
-    }
-
-    public function test_it_returns_a_list_with_years2()
-    {
-        $user = $this->signIn();
-        $user->locale = 'en';
-        $user->save();
 
         $this->assertEquals(
             now()->year,
-            DateHelper::getListOfYears(2)[0]
+            DateHelper::getListOfYears(2)->first()['name']
         );
         $this->assertEquals(
             now()->subYears(2)->year,
-            DateHelper::getListOfYears(2)[2]
+            DateHelper::getListOfYears(2)->last()['name']
         );
         $this->assertEquals(
             now()->subYears(-2)->year,
-            DateHelper::getListOfYears(2, -2)[0]
+            DateHelper::getListOfYears(2, -2)->first()['name']
         );
         $this->assertEquals(
             now()->year,
-            DateHelper::getListOfYears(2, -2)[2]
+            DateHelper::getListOfYears(2, -2)[2]['name']
         );
     }
 
@@ -389,16 +382,6 @@ class DateHelperTest extends FeatureTestCase
         $this->assertCount(
             31,
             DateHelper::getListOfDays()
-        );
-    }
-
-    public function test_it_returns_a_list_with_the_years()
-    {
-        $currentYear = now()->year;
-        $difference = $currentYear - 1900;
-        $this->assertCount(
-            $difference,
-            DateHelper::getListOfYears()
         );
     }
 

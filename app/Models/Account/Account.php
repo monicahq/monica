@@ -851,7 +851,7 @@ class Account extends Model
 
         (new PopulateLifeEventsTable)->execute([
             'account_id' => $this->id,
-            'migrate_existing_data' => 0,
+            'migrate_existing_data' => true,
         ]);
     }
 

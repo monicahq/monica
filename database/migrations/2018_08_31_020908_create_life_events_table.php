@@ -261,12 +261,6 @@ class CreateLifeEventsTable extends Migration
         ]);
 
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'organ_donor',
-            'default_life_event_category_id' => $defaultCategoryId,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        DB::table('default_life_event_types')->insert([
             'translation_key' => 'overcame_an_illness',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
