@@ -59,7 +59,7 @@ class PopulateLifeEventsTableTest extends TestCase
         );
 
         $this->assertEquals(
-            44,
+            43,
             DB::table('life_event_types')->get()->count()
         );
 
@@ -99,7 +99,7 @@ class PopulateLifeEventsTableTest extends TestCase
         );
 
         $this->assertEquals(
-            37,
+            36,
             DB::table('life_event_types')->get()->count()
         );
     }

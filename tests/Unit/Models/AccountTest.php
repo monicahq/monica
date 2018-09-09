@@ -840,7 +840,7 @@ class AccountTest extends FeatureTestCase
         );
 
         $this->assertEquals(
-            45,
+            43,
             DB::table('life_event_types')->get()->count()
         );
     }

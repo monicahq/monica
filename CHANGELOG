@@ -14,7 +14,6 @@ v2.7.1 - 2018-09-05
 v2.7.0 - 2018-09-04
 -------------------
 
->>>>>>> master
 * Add ability to log conversations made on social networks or SMS
 * Add language selector on register page
 * Support Arabic language
