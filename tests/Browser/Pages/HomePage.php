@@ -3,9 +3,12 @@
 namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class HomePage extends Page
 {
+    use DatabaseTransactions;
+
     /**
      * Get the URL for the page.
      *
