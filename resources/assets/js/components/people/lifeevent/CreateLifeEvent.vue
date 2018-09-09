@@ -81,7 +81,7 @@
                     </div>
                 </div>
 
-                <create-default-life-event-type></create-default-life-event-type>
+                <create-default-life-event v-on:contentChange="updateLifeEventContent($event)"></create-default-life-event>
 
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
@@ -113,7 +113,8 @@
                     happened_at: '',
                     life_event_type_id: 0,
                     happened_at_month_unknown: false,
-                    happened_at_day_unknown: false
+                    happened_at_day_unknown: false,
+                    specific_information: '',
                 },
                 categories: [],
                 activeCategory: '',
@@ -140,6 +141,12 @@
                 this.selectedDay = moment().date()
             },
 
+            displayAddScreen(type) {
+                this.view = 'add'
+                this.activeType = type
+                this.newLifeEvent.life_event_type_id = type.id
+            },
+
             getCategories() {
                 axios.get('/lifeevents/categories')
                         .then(response => {
@@ -157,10 +164,19 @@
                 this.activeCategory = category
             },
 
-            broadcastContentChange(note) {
-                this.newLifeEvent.note = note
+            updateLifeEventContent(lifeEvent) {
+                this.newLifeEvent.note = lifeEvent.note
+                this.newLifeEvent.name = lifeEvent.name
+                this.newLifeEvent.specific_information = lifeEvent.specific_information
             },
 
+            /**
+             * Sets the date when the user chooses either an empty month
+             * or an empty day of the month.
+             * If the user chooses an empty day, the day is set to 1 and we use
+             * a boolean to indicate that the day is unknown.
+             * Same for the month.
+             */
             updateDate() {
                 this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay
                 this.newLifeEvent.happened_at_month_unknown = false
@@ -177,12 +193,6 @@
                     this.newLifeEvent.happened_at = this.selectedYear + '-01-01'
                     this.selectedDay = 0
                 }
-            },
-
-            displayAddScreen(type) {
-                this.view = 'add'
-                this.activeType = type
-                this.newLifeEvent.life_event_type_id = type.id
             },
 
             store() {
