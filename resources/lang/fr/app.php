@@ -21,6 +21,11 @@ return [
     'loading' => 'Chargement...',
     'with' => 'avec',
     'days' => 'jour|jour|jours',
+    'today' => 'aujourd\'hui',
+    'yesterday' => 'hier',
+    'another_day' => 'un autre jour',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
+    'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 

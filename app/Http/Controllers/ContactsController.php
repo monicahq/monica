@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
@@ -201,6 +202,19 @@ class ContactsController extends Controller
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
+        // add `---` at the top of the dropdowns
+        $days = DateHelper::getListOfDays();
+        $days->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
+        $months = DateHelper::getListOfMonths();
+        $months->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
@@ -209,8 +223,8 @@ class ContactsController extends Controller
             ->withReminders($reminders)
             ->withModules($modules)
             ->withContact($contact)
-            ->withDays(DateHelper::getListOfDays())
-            ->withMonths(DateHelper::getListOfMonths())
+            ->withDays($days)
+            ->withMonths($months)
             ->withYears(DateHelper::getListOfYears());
     }
 
@@ -278,9 +292,19 @@ class ContactsController extends Controller
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
+            if ($contact->has_avatar) {
+                try {
+                    $contact->deleteAvatars();
+                } catch (\Exception $e) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(trans('app.error_save'));
+                }
+            }
+
             $contact->has_avatar = true;
             $contact->avatar_location = config('filesystems.default');
-            $contact->avatar_file_name = $request->avatar->store('avatars', config('filesystems.default'));
+            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
         }
 
         // Is the person deceased?
@@ -294,7 +318,7 @@ class ContactsController extends Controller
                 $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
 
                 if ($request->input('addReminderDeceased') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
                 }
             }
         }
@@ -318,7 +342,7 @@ class ContactsController extends Controller
                 );
 
                 if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+                    $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
                 }
 
                 break;

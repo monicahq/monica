@@ -17,7 +17,7 @@
             <ul class="ba b--gray-monica br2" v-if="view != 'add'">
 
                 <!-- CATEGORIES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'">
+                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'" v-bind:key="category.id">
                     <div class="dib mr2">
                         <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'">
                     </div>
@@ -29,7 +29,7 @@
                 </li>
 
                 <!-- TYPES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'">
+                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'" v-bind:key="type.id">
                     <div class="dib mr2">
                         <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'">
                     </div>
@@ -48,11 +48,40 @@
                     {{ this.activeType.name }}
                 </h3>
 
-                <create-default-life-event-type
-                            v-bind:months="months"
-                            v-bind:days="days"
-                            v-bind:years="years">
-                </create-default-life-event-type>
+                <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
+                    <label for="another" class="mr2">Date it happened</label>
+                    <div class="flex">
+                        <div class="mr2">
+                            <form-select
+                                v-model="selectedYear"
+                                :options="years"
+                                :id="'year'"
+                                @input="updateDate"
+                                :title="''" :class="[ dirltr ? 'mr2' : '' ]">
+                            </form-select>
+                        </div>
+                        <div class="mr2">
+                            <form-select
+                                v-model="selectedMonth"
+                                :options="months"
+                                :id="'month'"
+                                @input="updateDate"
+                                :title="''" :class="[ dirltr ? 'mr2' : '' ]">
+                            </form-select>
+                        </div>
+                        <div>
+                            <form-select
+                                v-model="selectedDay"
+                                :options="days"
+                                :id="'day'"
+                                @input="updateDate"
+                                :title="''" :class="[ dirltr ? '' : 'mr2' ]">
+                            </form-select>
+                        </div>
+                    </div>
+                </div>
+
+                <create-default-life-event-type></create-default-life-event-type>
 
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
@@ -75,17 +104,23 @@
     export default {
         data() {
             return {
+                selectedDay: 0,
+                selectedMonth: 0,
+                selectedYear: 0,
                 newLifeEvent: {
                     name: '',
                     note: '',
                     happened_at: '',
-                    life_event_type_id: 0
+                    life_event_type_id: 0,
+                    happened_at_month_unknown: false,
+                    happened_at_day_unknown: false
                 },
                 categories: [],
                 activeCategory: '',
                 activeType: '',
                 types: [],
                 view: 'categories',
+                dirltr: true,
             };
         },
 
@@ -98,7 +133,11 @@
         methods: {
             prepareComponent() {
                 this.getCategories()
+                this.dirltr = this.$root.htmldir == 'ltr'
                 this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD')
+                this.selectedYear = moment().year()
+                this.selectedMonth = moment().month() + 1 // month is zero indexed (O_o) in moments.js
+                this.selectedDay = moment().date()
             },
 
             getCategories() {
@@ -122,8 +161,22 @@
                 this.newLifeEvent.note = note
             },
 
-            updateDate(date) {
-                this.newLifeEvent.happened_at = date
+            updateDate() {
+                this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay
+                this.newLifeEvent.happened_at_month_unknown = false
+                this.newLifeEvent.happened_at_day_unknown = false
+
+                if (this.selectedDay == 0) {
+                    this.newLifeEvent.happened_at_day_unknown = true
+                    this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01'
+                }
+
+                if (this.selectedMonth == 0) {
+                    this.newLifeEvent.happened_at_month_unknown = true
+                    this.newLifeEvent.happened_at_day_unknown = true
+                    this.newLifeEvent.happened_at = this.selectedYear + '-01-01'
+                    this.selectedDay = 0
+                }
             },
 
             displayAddScreen(type) {

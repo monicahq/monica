@@ -4,7 +4,7 @@ return [
     'dashboard_blank_title' => '¡Bienvenido/a a tu cuenta!',
     'dashboard_blank_description' => 'Monica es el lugar donde organizar todas las interacciones con los que te importan.',
     'dashboard_blank_cta' => 'Añade tu primer contacto',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_illustration' => 'Ilustración por <a href=":url">Freepik</a>',
 
     'notes_title' => 'Todavía no tienes notas destacadas.',
 
@@ -14,7 +14,7 @@ return [
     'tab_debts' => 'Deudas',
     'tab_debts_blank' => 'Todavía no has registrado una deuda.',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Le debes a',
 
     'statistics_contacts' => 'Contactos',
     'statistics_activities' => 'Actividades',

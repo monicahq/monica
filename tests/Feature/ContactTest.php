@@ -119,11 +119,81 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_user_can_add_a_gift_idea_with_recipient()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $otherContact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $gift = [
+            'offered' => 'idea',
+            'name' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1, 2000),
+            'comment' => $this->faker->sentence(),
+            'has_recipient' => true,
+            'recipient' => $otherContact->id,
+        ];
+
+        $this->post(
+            '/people/'.$contact->hashID().'/gifts/store',
+            $gift
+        );
+
+        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+
+        $this->assertDatabaseHas(
+            'gifts',
+            $gift + [
+                'is_an_idea' => true,
+                'has_been_offered' => false,
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+                'is_for' => $otherContact->id,
+            ]
+        );
+    }
+
+    public function test_user_can_add_a_gift_idea_with_bad_recipient()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $gift = [
+            'offered' => 'idea',
+            'name' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1, 2000),
+            'comment' => $this->faker->sentence(),
+            'has_recipient' => true,
+            'recipient' => 0,
+        ];
+
+        $this->post(
+            '/people/'.$contact->hashID().'/gifts/store',
+            $gift
+        );
+
+        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+
+        $this->assertDatabaseHas(
+            'gifts',
+            $gift + [
+                'is_an_idea' => true,
+                'has_been_offered' => false,
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+                'is_for' => null,
+            ]
+        );
+    }
+
     public function test_user_can_edit_a_gift_()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $old_gift = factory(Gift::class)->create([
+        $oldGift = factory(Gift::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
@@ -137,7 +207,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$old_gift->id.'/update',
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
             $gift
         );
 
@@ -152,6 +222,51 @@ class ContactTest extends FeatureTestCase
                 'account_id' => $user->account_id,
             ]
         );
+    }
+
+    public function test_user_can_add_recipient_to_a_gift()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $oldGift = factory(Gift::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+        ]);
+
+        $otherContact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $gift = [
+            'offered' => 'idea',
+            'name' => $this->faker->word,
+            'url' => $this->faker->url,
+            'value' => $this->faker->numberBetween(1, 2000),
+            'comment' => $this->faker->sentence(),
+            'has_recipient' => true,
+            'recipient' => $otherContact->id,
+        ];
+
+        $this->post(
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
+            $gift
+        );
+
+        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+
+        $this->assertDatabaseHas(
+            'gifts',
+            $gift + [
+                'is_an_idea' => true,
+                'has_been_offered' => false,
+                'contact_id' => $contact->id,
+                'account_id' => $user->account_id,
+                'is_for' => $otherContact->id,
+            ]
+        );
+
+        $newGift = Gift::find($oldGift->id);
+        $this->assertEquals($otherContact->first_name, $newGift->recipient_name);
     }
 
     public function test_user_can_be_in_debt_to_a_contact()

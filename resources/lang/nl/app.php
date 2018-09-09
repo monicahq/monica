@@ -21,6 +21,11 @@ return [
     'loading' => 'Laden...',
     'with' => 'met',
     'days' => 'dag|dagen',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
@@ -82,6 +87,7 @@ return [
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 

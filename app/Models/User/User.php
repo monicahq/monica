@@ -67,7 +67,7 @@ class User extends Authenticatable
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create the user
         $user = new self;
@@ -78,7 +78,7 @@ class User extends Authenticatable
         $user->password = bcrypt($password);
         $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = App::getLocale();
+        $user->locale = $lang ?: App::getLocale();
         $user->save();
 
         $user->acceptPolicy($ipAddress);

@@ -750,7 +750,9 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->stripe_plan;
+        if (! is_null($plan)) {
+            return $plan->stripe_plan;
+        }
     }
 
     /**
@@ -762,7 +764,21 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->name;
+        if (! is_null($plan)) {
+            return $plan->name;
+        }
+    }
+
+    /**
+     * Cancel the plan the account is subscribed to.
+     */
+    public function subscriptionCancel()
+    {
+        $plan = $this->subscriptions()->first();
+
+        if (! is_null($plan)) {
+            return $plan->cancelNow();
+        }
     }
 
     /**
@@ -802,7 +818,7 @@ class Account extends Model
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create new account
         $account = new self;
@@ -811,7 +827,7 @@ class Account extends Model
         $account->save();
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
 
         $account->populateDefaultFields();
 
