@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add ability to track life events
 * Fix select boxes not working anymore
+* fix now() without timezone functions
 
 RELEASED VERSIONS:
 

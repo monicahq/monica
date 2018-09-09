@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use App\Helpers\TimezoneHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DateHelperTest extends FeatureTestCase
 {
+    use DatabaseTransactions;
+
     public function testParseDateTime()
     {
         $date = '2017-01-22 17:56:03';

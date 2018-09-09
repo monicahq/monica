@@ -225,7 +225,7 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month)
     {
-        $date = Date::now()->addMonthsNoOverflow($month);
+        $date = Date::now(static::getTimezone())->addMonthsNoOverflow($month);
         $format = trans('format.short_month_year', [], Date::getLocale());
 
         return $date->format($format) ?: '';
