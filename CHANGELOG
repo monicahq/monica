@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* fix now() without timezone functions
 
 RELEASED VERSIONS:
 
