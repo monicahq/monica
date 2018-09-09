@@ -50,7 +50,7 @@ class ProcessOldReminders extends Command
             }
 
             if ($reminder->frequency_type != 'one_time') {
-                $reminder->calculateNextExpectedDate('UTC');
+                $reminder->calculateNextExpectedDate();
                 $reminder->save();
             }
         }
