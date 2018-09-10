@@ -114,3 +114,4 @@ between runs. See `docker-compose.yml` for examples.
 #### Other documents to read	
 
 [Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
+[Use mobile app with standalone server](/docs/installation/mobile.md)

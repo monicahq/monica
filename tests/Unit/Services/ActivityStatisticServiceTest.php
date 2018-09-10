@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityStatisticServiceTest extends TestCase
 {
-    //use DatabaseTransactions;
+    use DatabaseTransactions;
 
     public function test_it_gets_a_list_of_activities_since_a_given_number_of_months()
     {

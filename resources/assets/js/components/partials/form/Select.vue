@@ -15,7 +15,7 @@ select:focus {
     <label :for="id" class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</label>
     <select
         :value="selectedOption"
-        v-on:input="$emit('input', $event)"
+        @input="event => { $emit('input', event.target.value) }"
         :id="id"
         :name="id"
         required
