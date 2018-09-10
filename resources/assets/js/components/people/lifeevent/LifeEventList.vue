@@ -450,20 +450,21 @@
                         </defs>
                     </svg>
                 </div>
-                <p class="tc mb4 measure center">Life Events let you add experiences from the different parts of Leo's life and record them for your future reference.</p>
+                <p class="tc mb4 measure center">{{ $t('people.life_event_blank') }}</p>
                 <div class="tc">
-                    <a @click="showAdd = true" class="mb4 btn">Add life event</a>
+                    <a @click="showAdd = true" class="mb4 btn">{{ $t('people.life_event_list_cta') }}</a>
                 </div>
             </div>
         </section>
 
+        <!-- TITLE -->
         <div v-if="lifeEvents.length != 0">
           <h3 class="mb3 relative">
-            🎭 Life events
+            🎭 {{ $t('people.life_event_list_title') }}
 
             <span class="absolute" style="top: -5px; right: 0;">
-              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">Add life event</a>
-              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd == true">Cancel</a>
+              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">{{ $t('people.life_event_list_cta') }}</a>
+              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd == true">{{ $t('app.cancel') }}</a>
             </span>
           </h3>
         </div>
@@ -471,7 +472,7 @@
         <!-- CREATE LIFE EVENT BOX -->
         <create-life-event :hash="hash"
                             v-if="showAdd == true"
-                            v-on:updateLifeEventTimeline="getLifeEvents"
+                            v-on:updateLifeEventTimeline="updateLifeEventsList($event)"
                             v-on:dismissModal="showAdd = false"
                             v-bind:months="months"
                             v-bind:days="days"
@@ -542,6 +543,15 @@
                             this.lifeEvents = response.data
                             this.showAdd = false
                         });
+            },
+
+            /**
+             * @TODO: do not refresh the list from the server, simply add
+             * the new object to the collection
+             */
+            updateLifeEventsList(updatedLifeEvent) {
+                this.getLifeEvents()
+                window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id
             }
         }
     }

@@ -4,17 +4,17 @@
 <template>
     <div>
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-            <label for="another" class="mr2">Title (optional)</label>
+            <label for="another" class="mr2">{{ $t('people.life_event_create_default_title') }}</label>
             <input v-model="defaultEvent.name" @input="broadcastContentChange" autofocus class="br2 f5 w-100 ba b--black-40 pa2 outline-0">
         </div>
 
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-            <label for="another" class="mr2">Story (optional)</label>
+            <label for="another" class="mr2">{{ $t('people.life_event_create_default_story') }}</label>
             <form-textarea
               v-bind:required="false"
               v-bind:noLabel="true"
               v-bind:rows="4"
-              v-bind:placeholder="'Placeholder'"
+              v-bind:placeholder="$t('people.life_event_create_default_description')"
               v-on:contentChange="updateNote($event)">
             </form-textarea>
         </div>

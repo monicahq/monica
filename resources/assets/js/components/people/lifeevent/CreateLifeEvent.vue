@@ -3,14 +3,17 @@
 
 <template>
     <section class="ph3 ph0-ns life-event">
+
+        <notifications group="main" position="top middle" width="400" />
+
         <div class="mt4 mw7 center mb3">
 
             <!-- Breadcrumb -->
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
-                <li class="di"><a class="pointer" @click="view = 'categories'">All categories</a></li>
+                <li class="di"><a class="pointer" @click="view = 'categories'">{{ $t('people.life_event_create_category') }}</a></li>
                 <li class="di" v-if="view == 'types'">> {{ this.activeCategory.name }}</li>
                 <li class="di" v-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
-                <li class="di" v-if="view == 'add'">> Add life event</li>
+                <li class="di" v-if="view == 'add'">> {{ $t('people.life_event_create_life_event') }}</li>
             </ul>
 
             <!-- List of events -->
@@ -51,8 +54,9 @@
                     {{ $t('people.life_event_sentence_' + this.activeType.default_life_event_type_key) }}
                 </h3>
 
+                <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-                    <label for="another" class="mr2">Date it happened</label>
+                    <label for="another" class="mr2">{{ $t('people.life_event_date_it_happened') }}</label>
                     <div class="flex">
                         <div class="mr2">
                             <form-select
@@ -89,10 +93,10 @@
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
                         <div>
-                            <a @click="$emit('dismissModal')" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">Cancel</a>
+                            <a @click="$emit('dismissModal')" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ $t('app.cancel') }}</a>
                         </div>
                         <div>
-                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store()">Add</button>
+                            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="store()">{{ $t('app.add') }}</button>
                         </div>
                     </div>
                 </div>
@@ -203,7 +207,14 @@
                         .then(response => {
                             this.activeCategory = ''
                             this.activeType = ''
-                            this.$emit('updateLifeEventTimeline', this.newLifeEvent)
+                            this.$emit('updateLifeEventTimeline', response.data)
+
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('people.life_event_create_success'),
+                                text: '',
+                                type: 'success'
+                          });
                       });
             },
         }

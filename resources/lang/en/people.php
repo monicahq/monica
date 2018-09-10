@@ -371,6 +371,16 @@ return [
     'pets_other' => 'Other',
 
     // life events
+    'life_event_list_title' => 'Life events',
+    'life_event_blank' => 'Log what happens to the life of this experience for your future reference.',
+    'life_event_list_cta' => 'Add life event',
+    'life_event_create_category' => 'All categories',
+    'life_event_create_life_event' => 'Add life event',
+    'life_event_create_default_title' => 'Title (optional)',
+    'life_event_create_default_story' => 'Story (optional)',
+    'life_event_create_default_description' => 'Add information about what you know',
+    'life_event_create_success' => 'The life event has been added',
+    'life_event_date_it_happened' => 'Date it happened',
     'life_event_sentence_new_job' => 'Started a new job',
     'life_event_sentence_retirement' => 'Retired',
     'life_event_sentence_new_school' => 'Started school',
