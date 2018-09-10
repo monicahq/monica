@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class InstanceTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Check if, by default, the disable signups feature is turned off in an
      * instance.

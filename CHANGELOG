@@ -1,8 +1,14 @@
 UNRELEASED CHANGES:
 
 * Add ability to archive a contact
+* fix now() without timezone functions
 
 RELEASED VERSIONS:
+
+v2.7.1 - 2018-09-05
+-------------------
+
+* Fix duplication of modules in the Settings page
 
 v2.7.0 - 2018-09-04
 -------------------
