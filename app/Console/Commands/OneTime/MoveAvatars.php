@@ -69,7 +69,7 @@ class MoveAvatars extends Command
         $this->line(' > Avatar location:'.$contact->avatar_location);
         $this->line(' > File name:'.$contact->avatar_file_name);
 
-        $avatars = [];
+        $avatarFileNames = [];
         array_push($avatars, $this->getFileName($contact));
         array_push($avatars, $this->getFileName($contact, 110));
         array_push($avatars, $this->getFileName($contact, 174));
@@ -77,15 +77,20 @@ class MoveAvatars extends Command
         $storage = Storage::disk($contact->avatar_location);
         $newStorage = Storage::disk($this->newStorage());
 
-        foreach ($avatars as $avatar) {
-            $avatarFile = $storage->get($avatar);
-
+        foreach ($avatarFileNames as $avatarFileName) {
+            if ($newStorage->exists($avatarFileName)) {
+                if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                    $this->line('  File already pushed: '.$avatarFileName);
+                }
+                continue;
+            }
             if (! $this->option('dryrun')) {
-                $newStorage->put($avatar, $avatarFile, 'public');
+                $avatarFile = $storage->get($avatarFileName);
+                $newStorage->put($avatarFileName, $avatarFile, 'public');
             }
 
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  Moved file '.$avatar);
+                $this->line('  Moved file: '.$avatarFileName);
             }
         }
     }
