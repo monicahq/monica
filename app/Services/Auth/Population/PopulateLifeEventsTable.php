@@ -115,7 +115,7 @@ class PopulateLifeEventsTable extends BaseService
                     ->get();
             }
         } catch (QueryException $e) {
-            throw new QueryException('Can not get default life event categories.');
+            throw $e;
         }
 
         return $defaultLifeEventCategories;
@@ -137,7 +137,7 @@ class PopulateLifeEventsTable extends BaseService
                 'default_life_event_category_key' => $defaultLifeEventCategory->translation_key,
             ]);
         } catch (QueryException $e) {
-            throw new QueryException('Can not create a life event category.');
+            throw $e;
         }
 
         return $lifeEventCategory;
@@ -157,11 +157,11 @@ class PopulateLifeEventsTable extends BaseService
                 'life_event_category_id' => $lifeEventCategory->id,
                 'name' => trans('settings.personalization_life_event_type_'.$defaultLifeEventType->translation_key),
                 'core_monica_data' => true,
-                'specific_information' => $defaultLifeEventType->specific_information_structure,
+                'specific_information_structure' => $defaultLifeEventType->specific_information_structure,
                 'default_life_event_type_key' => $defaultLifeEventType->translation_key,
             ]);
         } catch (QueryException $e) {
-            throw new QueryException('Can not create a life event type.');
+            throw $e;
         }
     }
 
@@ -179,7 +179,7 @@ class PopulateLifeEventsTable extends BaseService
             DB::table('default_life_event_types')
                 ->update(['migrated' => 1]);
         } catch (QueryException $e) {
-            throw new QueryException('Can not mark tables as migrated.');
+            throw $e;
         }
     }
 }

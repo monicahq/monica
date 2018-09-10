@@ -70,7 +70,7 @@ class CreateLifeEventsTable extends Migration
             $table->dateTime('happened_at');
             $table->boolean('happened_at_month_unknown')->default(false);
             $table->boolean('happened_at_day_unknown')->default(false);
-            $table->json('specific_information')->nullable;
+            $table->json('specific_information')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
