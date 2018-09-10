@@ -57,7 +57,7 @@ pipeline {
           agent { label 'monica' }
           steps {
             script {
-              docker.image('circleci/mysql:5.7-ram').withRun('-e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
+              docker.image('circleci/mysql:5.7-ram').withRun('--rm --shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
                 sh "docker logs ${c.id}"
 
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
