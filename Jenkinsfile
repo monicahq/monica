@@ -74,8 +74,8 @@ pipeline {
 
                     // Prepare database
                     sh '''
-                      dockerize -wait tcp://127.0.0.1:3306 -timeout 60s
-                      mysql --protocol=tcp -u root -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+                      dockerize -wait tcp://mysql:3306 -timeout 60s
+                      mysql --protocol=tcp -u root -h mysql -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
                       php artisan migrate --no-interaction -vvv
                     '''
 
