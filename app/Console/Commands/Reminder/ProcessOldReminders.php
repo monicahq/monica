@@ -59,5 +59,5 @@ class ProcessOldReminders extends Command
                 $reminder->save();
             }
         }
-}
+    }
 }
