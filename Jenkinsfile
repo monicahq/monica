@@ -57,7 +57,7 @@ pipeline {
           agent { label 'monica' }
           steps {
             script {
-              docker.image('circleci/mysql:5.7-ram').withRun('--rm --shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
+              docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
                 sh "docker logs ${c.id}"
 
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
@@ -70,7 +70,7 @@ pipeline {
                     '''
 
                     // Remove xdebug
-                    sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+                    //sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
 
                     // Prepare database
                     sh '''
@@ -84,9 +84,9 @@ pipeline {
 
                     // Run unit tests
                     sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
+                    junit 'results/junit/*.xml'
                   }
                   finally {
-                    junit 'results/junit/*.xml'
                     stash includes: 'results/junit/', name: 'results/junit' 
                   }
                 }
