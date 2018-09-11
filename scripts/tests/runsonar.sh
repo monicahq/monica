@@ -1,5 +1,6 @@
 #!/bin/bash
 
+RUNREVPARSE=false
 if [ "$CIRCLECI" == "true" ]; then
   if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
     CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
@@ -13,6 +14,7 @@ if [ "$CIRCLECI" == "true" ]; then
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
   BUILD=$CIRCLE_BUILD_NUM
   SHA1=$CIRCLE_SHA1
+  RUNREVPARSE=true
 elif [ "$TRAVIS" == "true" ]; then
   REPO=$TRAVIS_REPO_SLUG
   BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
@@ -101,7 +103,7 @@ function gitFetch {
   echo '== gitFetch'
   echo '# git fetch --all'
   git fetch --all
-  if [ "$CIRCLECI" == "true" ]; then
+  if [ "$RUNREVPARSE" == "true" ]; then
     if [ -n "${PULL_REQUEST_BASEBRANCH:-}" ]; then
       echo "# git branch -D $PULL_REQUEST_BASEBRANCH"
       git branch -D $PULL_REQUEST_BASEBRANCH
