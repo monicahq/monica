@@ -36,3 +36,4 @@ The preferred OS distribution is Ubuntu 16.04, simply because all the developmen
 * [Heroku](/docs/installation/heroku.md)
 * [Vagrant](/docs/installation/vagrant.md)
 * [YunoHost](https://github.com/YunoHost-Apps/monica_ynh)
+* [Cloudron](/docs/installation/cloudron.md)
