@@ -135,7 +135,7 @@ pipeline {
                     sh 'JENKINS_NODE_COOKIE=x vendor/bin/chromedriver &'
 
                     // Run http server
-                    sh 'JENKINS_NODE_COOKIE=x php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null'
+                    sh 'JENKINS_NODE_COOKIE=x php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null &'
 
                     // Wait for http server
                     sh 'dockerize -wait tcp://localhost:8000 -timeout 60s'
