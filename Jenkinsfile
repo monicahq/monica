@@ -35,7 +35,6 @@ pipeline {
 
             // Composer
             sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
-            stash includes: 'vendor/', name: 'composer'
 
             // Node.js
             /*
@@ -64,15 +63,17 @@ pipeline {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
                 sh "docker logs ${c.id}"
 
-                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
+                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
-                    unstash 'composer'
                     // Prepare environment
                     sh '''
                       # Prepare environment
                       mkdir -p results/coverage
                       cp scripts/ci/.env.jenkins.mysql .env
                     '''
+
+                    // Composer
+                    sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
 
                     // Remove xdebug
                     sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true'
@@ -108,15 +109,17 @@ pipeline {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
                 sh "docker logs ${c.id}"
 
-                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
+                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
-                    unstash 'composer'
                     // Prepare environment
                     sh '''
                       # Prepare environment
                       mkdir -p results/coverage
                       cp scripts/ci/.env.jenkins.mysql .env
                     '''
+
+                    // Composer
+                    sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
 
                     // Prepare database
                     sh '''
@@ -159,14 +162,17 @@ pipeline {
           agent { label 'monica' }
           steps {
             script {
-              docker.image('monicahq/circleci-docker-centralperk') {
-                unstash 'composer'
+              docker.image('monicahq/circleci-docker-centralperk')
+              .inside("-v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                 // Prepare environment
                 sh '''
                   # Prepare environment
                   mkdir -p results/coverage
                   cp scripts/ci/.env.jenkins.mysql .env
                 '''
+
+                // Composer
+                sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
 
                 // Run psalm
                 sh 'vendor/bin/psalm --show-info=false'
@@ -182,8 +188,7 @@ pipeline {
       steps {
         script {
           docker.image('circleci/php:7.2-node')
-          .inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
-            unstash 'composer'
+          .inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             unstash 'results_unit'
             unstash 'coverage_unit'
             unstash 'results_dusk'
@@ -195,6 +200,9 @@ pipeline {
               mkdir -p results/coverage
               cp scripts/ci/.env.jenkins.mysql .env
             '''
+
+            // Composer
+            sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
 
             // Merge junit files
             sh '''
