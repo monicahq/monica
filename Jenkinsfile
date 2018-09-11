@@ -19,6 +19,11 @@ pipeline {
       agent { label 'monica' }
       steps {
         script {
+          sh '''
+            # Prebuild   
+            mkdir -p $HOME/.yarn $HOME/.composer $HOME/.cache $HOME/.config
+            touch $HOME/.yarnrc
+          '''
           def centralperk = docker.image('monicahq/circleci-docker-centralperk')
           centralperk.pull()
           def mysql = docker.image('circleci/mysql:5.7-ram')
