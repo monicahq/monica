@@ -151,7 +151,7 @@ pipeline {
                     stash includes: 'results/junit/', name: 'results_dusk'
                     stash includes: 'results/*.xml', name: 'coverage_dusk'
                     archiveArtifacts artifacts: 'results/junit/', fingerprint: true
-                    archiveArtifacts artifacts: 'tests/Browser/screenshots/', fingerprint: true
+                    //archiveArtifacts artifacts: 'tests/Browser/screenshots/', fingerprint: true
                   }
                 }
               }
