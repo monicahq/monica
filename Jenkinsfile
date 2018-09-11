@@ -94,6 +94,7 @@ pipeline {
                   finally {
                     stash includes: 'results/junit/', name: 'results_unit'
                     stash includes: 'results/*.xml', name: 'coverage_unit'
+                    archiveArtifacts artifacts: 'results/junit/', fingerprint: true
                   }
                 }
               }
@@ -117,9 +118,6 @@ pipeline {
                       cp scripts/ci/.env.jenkins.mysql .env
                     '''
 
-                    // Remove xdebug
-                    sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true'
-
                     // Prepare database
                     sh '''
                       dockerize -wait tcp://mysql:3306 -timeout 60s
@@ -131,7 +129,7 @@ pipeline {
                     sh 'php artisan db:seed --no-interaction -vvv'
 
                     // Run selenium chromedriver
-                    sh 'vendor/bin/chromedriver'
+                    sh 'vendor/bin/chromedriver &'
 
                     // Run http server
                     sh 'command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null'
@@ -145,12 +143,12 @@ pipeline {
                     sh 'rm -rf results/coverage'
 
                     junit 'results/junit/dusk/*.xml'
-
-                    // TODO tests/Browser/screenshots
                   }
                   finally {
                     stash includes: 'results/junit/', name: 'results_dusk'
                     stash includes: 'results/*.xml', name: 'coverage_dusk'
+                    archiveArtifacts artifacts: 'results/junit/', fingerprint: true
+                    archiveArtifacts artifacts: 'tests/Browser/screenshots/', fingerprint: true
                   }
                 }
               }
