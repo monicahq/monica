@@ -13,13 +13,32 @@ if [ "$CIRCLECI" == "true" ]; then
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
   BUILD=$CIRCLE_BUILD_NUM
   SHA1=$CIRCLE_SHA1
-else
+elif [ "$TRAVIS" == "true" ]; then
   REPO=$TRAVIS_REPO_SLUG
   BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   PR_NUMBER=$TRAVIS_PULL_REQUEST
   BUILD=$TRAVIS_BUILD_NUMBER
   SHA1=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
+elif [[ -n $BUILD_NUMBER ]]; then
+  if [[ ! -z $CHANGE_ID ]] ; then
+    REPO=$CHANGE_URL
+    REPO=${REPO##https://github.com/}
+    REPO=${REPO%%/pull/$CHANGE_ID}
+  else
+    REPO=$CHANGE_URL
+    REPO=${REPO##https://github.com/}
+  fi
+  PR_NUMBER=${CHANGE_ID:-false}
+  BRANCH=$BRANCH_NAME
+  BUILD=$BUILD_NUMBER
+  SHA1=$GIT_COMMIT
 fi
+
+echo "REPO=$REPO"
+echo "BRANCH=$BRANCH"
+echo "PR_NUMBER=$PR_NUMBER"
+echo "BUILD=$BUILD"
+echo "SHA1=$SHA1"
 
 set -euo pipefail
 

@@ -23,11 +23,10 @@ pipeline {
           centralperk.pull()
           def mysql = docker.image('circleci/mysql:5.7-ram')
           mysql.pull()
-
-          centralperk.inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+          centralperk.inside("-v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             // Prepare environment
             sh '''
-              # Prepare environment
+              # Prepare environment   
               mkdir -p results/coverage
               cp scripts/ci/.env.jenkins.mysql .env
               yarn global add greenkeeper-lockfile@1
@@ -67,7 +66,7 @@ pipeline {
                   try {
                     // Prepare environment
                     sh '''
-                      # Prepare environment
+                      # Prepare environment   
                       mkdir -p results/coverage
                       cp scripts/ci/.env.jenkins.mysql .env
                     '''
@@ -80,6 +79,7 @@ pipeline {
 
                     // Prepare database
                     sh '''
+                      # Prepare database   
                       dockerize -wait tcp://mysql:3306 -timeout 60s
                       mysql --protocol=tcp -u root -h mysql -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
                       php artisan migrate --no-interaction -vvv
@@ -113,7 +113,7 @@ pipeline {
                   try {
                     // Prepare environment
                     sh '''
-                      # Prepare environment
+                      # Prepare environment   
                       mkdir -p results/coverage
                       cp scripts/ci/.env.jenkins.mysql .env
                     '''
@@ -123,6 +123,7 @@ pipeline {
 
                     // Prepare database
                     sh '''
+                      # Prepare database   
                       dockerize -wait tcp://mysql:3306 -timeout 60s
                       mysql --protocol=tcp -u root -h mysql -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
                       php artisan migrate --no-interaction -vvv
@@ -166,7 +167,7 @@ pipeline {
               .inside("-v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                 // Prepare environment
                 sh '''
-                  # Prepare environment
+                  # Prepare environment   
                   mkdir -p results/coverage
                   cp scripts/ci/.env.jenkins.mysql .env
                 '''
@@ -196,7 +197,7 @@ pipeline {
 
             // Prepare environment
             sh '''
-              # Prepare environment
+              # Prepare environment   
               mkdir -p results/coverage
               cp scripts/ci/.env.jenkins.mysql .env
             '''
@@ -206,15 +207,15 @@ pipeline {
 
             // Merge junit files
             sh '''
+              # Merge junit files   
               yarn global add junit-merge
               $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
             '''
 
             // Run sonar scanner
             sh '''
-              export SONAR_RESULT=./results/results.xml
-              export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml
-              scripts/tests/runsonar.sh
+              # Run sonar scanner   
+              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml scripts/tests/runsonar.sh
             '''
           }
         }
