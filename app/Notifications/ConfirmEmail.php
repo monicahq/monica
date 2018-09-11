@@ -15,9 +15,10 @@ class ConfirmEmail extends Notification implements ShouldQueue
     /**
      * @var bool
      */
-    var $force;
+    public $force;
 
-    public function __construct($force = false) {
+    public function __construct($force = false)
+    {
         $this->force = $force;
     }
 
