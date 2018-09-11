@@ -76,8 +76,12 @@ class EmailChangeController extends Controller
      */
     protected function validateAndEmailChange(EmailChangeRequest $request)
     {
+        $user = $request->user();
+
         (new EmailChange)->execute([
+            'account_id' => $user->account_id,
             'email' => $request->get('newmail'),
+            'user_id' => $user->id,
         ]);
 
         // Logout the user

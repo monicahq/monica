@@ -114,7 +114,9 @@ class SettingsController extends Controller
 
         if ($user->email != $request->get('email')) {
             (new EmailChange)->execute([
+                'account_id' => $user->account_id,
                 'email' => $request->get('email'),
+                'user_id' => $user->id,
             ]);
         }
 
