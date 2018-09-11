@@ -21,11 +21,15 @@ pipeline {
         script {
           def centralperk = docker.image('monicahq/circleci-docker-centralperk')
           centralperk.pull()
+          def mysql = docker.image('circleci/mysql:5.7-ram')
+          mysql.pull()
+
           centralperk.inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             // Prepare environment
             sh '''
+              # Prepare environment
               mkdir -p results/coverage
-              cp scripts/tests/.env.mysql .env
+              cp scripts/ci/.env.jenkins.mysql .env
               yarn global add greenkeeper-lockfile@1
             '''
 
@@ -53,11 +57,11 @@ pipeline {
     }
     stage('Run Tests') {
       parallel {
-        stage ('Test php 7.2') {
+        stage ('Test php unit') {
           agent { label 'monica' }
           steps {
             script {
-              docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD="') { c ->
+              docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
                 sh "docker logs ${c.id}"
 
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
@@ -65,12 +69,13 @@ pipeline {
                     unstash 'composer'
                     // Prepare environment
                     sh '''
+                      # Prepare environment
                       mkdir -p results/coverage
-                      cp scripts/tests/.env.mysql .env
+                      cp scripts/ci/.env.jenkins.mysql .env
                     '''
 
                     // Remove xdebug
-                    //sh 'rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'
+                    sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true'
 
                     // Prepare database
                     sh '''
@@ -84,14 +89,127 @@ pipeline {
 
                     // Run unit tests
                     sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
-                    junit 'results/junit/*.xml'
+                    junit 'results/junit/unit/*.xml'
                   }
                   finally {
-                    stash includes: 'results/junit/', name: 'results/junit' 
+                    stash includes: 'results/junit/', name: 'results_unit'
+                    stash includes: 'results/*.xml', name: 'coverage_unit'
                   }
                 }
               }
             }
+          }
+        }
+        stage ('Test browser') {
+          agent { label 'monica' }
+          steps {
+            script {
+              docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
+                sh "docker logs ${c.id}"
+
+                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd") {
+                  try {
+                    unstash 'composer'
+                    // Prepare environment
+                    sh '''
+                      # Prepare environment
+                      mkdir -p results/coverage
+                      cp scripts/ci/.env.jenkins.mysql .env
+                    '''
+
+                    // Remove xdebug
+                    sh 'sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini || true'
+
+                    // Prepare database
+                    sh '''
+                      dockerize -wait tcp://mysql:3306 -timeout 60s
+                      mysql --protocol=tcp -u root -h mysql -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+                      php artisan migrate --no-interaction -vvv
+                    '''
+
+                    // Seed database
+                    sh 'php artisan db:seed --no-interaction -vvv'
+
+                    // Run selenium chromedriver
+                    sh 'vendor/bin/chromedriver'
+
+                    // Run http server
+                    sh 'command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null'
+
+                    // Wait for http server
+                    sh 'dockerize -wait tcp://localhost:8000 -timeout 60s'
+                    // Run browser tests
+                    sh 'php artisan dusk --log-junit results/junit/dusk/results.xml'
+                    // Fix coverage
+                    sh 'vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/'
+                    sh 'rm -rf results/coverage'
+
+                    junit 'results/junit/dusk/*.xml'
+
+                    // TODO tests/Browser/screenshots
+                  }
+                  finally {
+                    stash includes: 'results/junit/', name: 'results_dusk'
+                    stash includes: 'results/*.xml', name: 'coverage_dusk'
+                  }
+                }
+              }
+            }
+          }
+        }
+        stage ('Psalm') {
+          agent { label 'monica' }
+          steps {
+            script {
+              docker.image('monicahq/circleci-docker-centralperk') {
+                unstash 'composer'
+                // Prepare environment
+                sh '''
+                  # Prepare environment
+                  mkdir -p results/coverage
+                  cp scripts/ci/.env.jenkins.mysql .env
+                '''
+
+                // Run psalm
+                sh 'vendor/bin/psalm --show-info=false'
+              }
+            }
+          }
+        }
+      // end parallel
+      }
+    }
+    stage('Reporting') {
+      agent { label 'monica' }
+      steps {
+        script {
+          docker.image('circleci/php:7.2-node')
+          .inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+            unstash 'composer'
+            unstash 'results_unit'
+            unstash 'coverage_unit'
+            unstash 'results_dusk'
+            unstash 'coverage_dusk'
+
+            // Prepare environment
+            sh '''
+              # Prepare environment
+              mkdir -p results/coverage
+              cp scripts/ci/.env.jenkins.mysql .env
+            '''
+
+            // Merge junit files
+            sh '''
+              yarn global add junit-merge
+              $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+            '''
+
+            // Run sonar scanner
+            sh '''
+              export SONAR_RESULT=./results/results.xml
+              export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml
+              scripts/tests/runsonar.sh
+            '''
           }
         }
       }
