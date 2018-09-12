@@ -70,9 +70,9 @@ class MoveAvatars extends Command
         $this->line(' > File name:'.$contact->avatar_file_name);
 
         $avatarFileNames = [];
-        array_push($avatars, $this->getFileName($contact));
-        array_push($avatars, $this->getFileName($contact, 110));
-        array_push($avatars, $this->getFileName($contact, 174));
+        array_push($avatarFileNames, $this->getFileName($contact));
+        array_push($avatarFileNames, $this->getFileName($contact, 110));
+        array_push($avatarFileNames, $this->getFileName($contact, 174));
 
         $storage = Storage::disk($contact->avatar_location);
         $newStorage = Storage::disk($this->newStorage());
