@@ -14,11 +14,11 @@ return [
     */
 
     'password' => 'يجب أن تكون كلمة المرور ستة أحرف على الأقل و تكون متطابقة مع التأكيد.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'reset' => 'تم إعادة تعيين كلمة مرورك!',
+    'sent' => 'إذا كان البريد الذي أدخلته موجود في سجلاتنا، فلقد تم إرسال رابط إعادة تعيين كلمة المرور إليك.',
     'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfuly.',
-    'invalid' => 'Current password you entered is not correct.',
+    'user' => 'إذا كان البريد الذي أدخلته موجود في سجلاتنا، فلقد تم إرسال رابط إعادة تعيين كلمة المرور إليك.',
+    'changed' => 'تم تغيير كلمة المرور بنجاح.',
+    'invalid' => 'كلمة السر الحالية التي أدخلتها غير صحيحة.',
 
 ];
