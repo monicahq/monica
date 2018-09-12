@@ -101,7 +101,7 @@ pipeline {
                   }
                   finally {
                     stash includes: 'results/junit/', name: 'results1'
-                    stash includes: 'results/*.xml', name: 'coverage2'
+                    stash includes: 'results/*.xml', name: 'coverage1'
                     archiveArtifacts artifacts: 'results/junit/', fingerprint: true
                   }
                 }
