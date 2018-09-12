@@ -201,7 +201,8 @@ pipeline {
                     '''
 
                     // Run http server
-                    sh 'JENKINS_NODE_COOKIE=x php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null &'
+                    //sh 'JENKINS_NODE_COOKIE=x php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null &'
+                    sh 'JENKINS_NODE_COOKIE=x php artisan serve 2>/dev/null &'
 
                     // Wait for http server
                     sh 'dockerize -wait tcp://localhost:8000 -timeout 60s'
@@ -213,14 +214,14 @@ pipeline {
                     '''
 
                     // Fix coverage
-                    sh 'vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/'
-                    sh 'rm -rf results/coverage'
+                    //sh 'vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/'
+                    //sh 'rm -rf results/coverage'
 
                     junit 'results/junit/dusk/*.xml'
                   }
                   finally {
                     stash includes: 'results/junit/', name: 'results3'
-                    stash includes: 'results/*.xml', name: 'coverage3'
+                    //stash includes: 'results/*.xml', name: 'coverage3'
                     archiveArtifacts artifacts: 'results/junit/', fingerprint: true
                     //archiveArtifacts artifacts: 'tests/cypress/screenshots/', fingerprint: true
                   }
@@ -265,7 +266,7 @@ pipeline {
             unstash 'results3'
             unstash 'coverage1'
             unstash 'coverage2'
-            unstash 'coverage3'
+            //unstash 'coverage3'
 
             // Prepare environment
             sh '''
@@ -285,9 +286,13 @@ pipeline {
             '''
 
             // Run sonar scanner
+            //sh '''
+            //  # Run sonar scanner >
+            //  SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml scripts/tests/runsonar.sh
+            //'''
             sh '''
               # Run sonar scanner >
-              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml scripts/tests/runsonar.sh
+              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml scripts/tests/runsonar.sh
             '''
           }
         }
