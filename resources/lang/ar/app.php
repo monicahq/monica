@@ -22,13 +22,13 @@ return [
     'with' => 'مع',
     'days' => 'يوم|أيام',
     'today' => 'اليوم',
-    'yesterday' => 'yesterday',
-    'another_day' => 'another day',
-    'date' => 'Date',
-    'type' => 'Type',
+    'yesterday' => 'أمس',
+    'another_day' => 'يوم آخر',
+    'date' => 'التاريخ',
+    'type' => 'النوع',
 
     'application_title' => 'مونيكا – مدير العلاقات الشخصية',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
+    'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
@@ -50,7 +50,7 @@ return [
     'footer_privacy' => 'سياسة الخصوصية',
     'footer_release' => 'Release notes',
     'footer_newsletter' => 'النشرة الإخبارية',
-    'footer_source_code' => 'Contribute',
+    'footer_source_code' => 'ساهم',
     'footer_version' => 'الإصدار: :version',
     'footer_new_version' => 'يتوفر إصدار جديد',
 
@@ -71,30 +71,30 @@ return [
     'breadcrumb_settings_tags' => 'Tags',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
-    'breadcrumb_add_note' => 'Add a note',
+    'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
-    'breadcrumb_edit_introductions' => 'How did you meet',
-    'breadcrumb_settings_personalization' => 'Personalization',
-    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_edit_introductions' => 'كيف تقابلتما',
+    'breadcrumb_settings_personalization' => 'التخصيص',
+    'breadcrumb_settings_security' => 'الأمن',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
-    'breadcrumb_profile' => 'Profile of :name',
+    'breadcrumb_profile' => 'الملف الشخصي لـ :name',
 
     'gender_male' => 'رجل',
     'gender_female' => 'إمرأة',
-    'gender_none' => 'Rather not say',
+    'gender_none' => 'أُفَضل ألا أقول',
 
-    'error_title' => 'Whoops! Something went wrong.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_title' => 'عفواً! حصل خطأ ما.',
+    'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',
     'error_save' => 'We had an error trying to save the data.',
     'error_try_again' => 'حدث خطأ ما. الرجاء المحاولة مرة أخرى.',
 
     'default_save_success' => 'تم حفظ البيانات.',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_title' => 'نعتذر للإزعاج.',
+    'compliance_desc' => 'لقد قمنا بتغيير <a href=":urlterm" hreflang=":hreflang">شروط الإستخدام</a>و<a href=":url" hreflang=":hreflang">سياسة الخصوصية</a> الخاصة بنا. بموجب القانون، نطلب منك مراجعتها و قبولها لكي يمكنك الإستمرار في استخدام حسابك.',
     'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_terms' => 'القبول بالشروط و سياسة الخصوصية الجديدية',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -103,11 +103,11 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => 'علاقات حب',
+    'relationship_type_group_family' => 'علاقات عائلية',
+    'relationship_type_group_friend' => 'علاقات صداقة',
+    'relationship_type_group_work' => 'علاقات عمل',
+    'relationship_type_group_other' => 'نوع آخر من العلاقات',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -119,8 +119,8 @@ return [
     'relationship_type_spouse_with_name' => ':name’s spouse',
     'relationship_type_spouse_female_with_name' => ':name’s spouse',
 
-    'relationship_type_date' => 'date',
-    'relationship_type_date_female' => 'date',
+    'relationship_type_date' => 'موعد',
+    'relationship_type_date_female' => 'موعد',
     'relationship_type_date_with_name' => ':name’s date',
     'relationship_type_date_female_with_name' => ':name’s date',
 
