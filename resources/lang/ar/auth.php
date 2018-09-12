@@ -13,19 +13,19 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to execute this action',
-    'signup_disabled' => 'Registration is currently disabled',
+    'failed' => 'هذه البيانات لا تطابق سجلاتنا.',
+    'throttle' => 'هنالك عدد كبير من محاولات الدخول. الرجاء المحاولة مجدداً بعد :seconds ثوان.',
+    'not_authorized' => 'ليس لديك الصلاحية لتنفيذ هذا الأمر',
+    'signup_disabled' => 'تسجيل الإشتراك معطل حالياً',
     'back_homepage' => 'العودة إلى الصفحة الرئيسية',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
     '2fa_title' => 'Two Factor Authentication',
     '2fa_wrong_validation' => 'The two factor authentication has failed.',
-    '2fa_one_time_password' => 'Two factor authentication code',
+    '2fa_one_time_password' => 'رمز المصادقة الثنائية',
     '2fa_recuperation_code' => 'Enter a two factor recovery code',
-    '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
-    'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
+    '2fa_otp_help' => 'قم بفتح تطبيق المصادقة الثنائية في هاتفك و انسخ الرمز',
+    'u2f_otp_extension' => 'إن U2F مدعوم محلياً على متصفح كروم، <a href="{urlquantum}" lang="en">فايرفوكس</a> و أوبيرا. في إصدارات فايرفوكس القديمة، قم بتثبيت <a href="{urlext}">داعم U2F الإضافي</a>.',
 
     'login_to_account' => 'تسجيل الدخول إلى حسابك',
     'login_again' => 'الرجاء تسجيل الدخول مجدداً لحسابك',
