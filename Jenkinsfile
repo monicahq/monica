@@ -166,6 +166,7 @@ pipeline {
             }
           }
         }
+        /*
         stage ('Test e2e') {
           agent { label 'monica' }
           steps {
@@ -230,6 +231,7 @@ pipeline {
             }
           }
         }
+        */
         stage ('Psalm') {
           agent { label 'monica' }
           steps {
@@ -286,13 +288,9 @@ pipeline {
             '''
 
             // Run sonar scanner
-            //sh '''
-            //  # Run sonar scanner >
-            //  SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml scripts/tests/runsonar.sh
-            //'''
             sh '''
               # Run sonar scanner >
-              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml scripts/tests/runsonar.sh
+              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$/\n/') scripts/tests/runsonar.sh
             '''
           }
         }
