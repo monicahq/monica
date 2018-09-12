@@ -14,10 +14,10 @@ return [
     'revoke' => 'إلغاء',
     'done' => 'تم',
     'verify' => 'تحقق',
-    'for' => 'for',
+    'for' => 'من أجل',
     'new' => 'جديد',
     'unknown' => 'لا أعرف',
-    'load_more' => 'Load more',
+    'load_more' => 'تحميل المزيد',
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
     'days' => 'يوم|أيام',
@@ -31,7 +31,7 @@ return [
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
+    'markdown_description' => 'هل تريد تنسيق النص الخاص بك بطريقة لطيفة؟ نحن ندعم التحديد و إضافة السماكة، و الإمالة و القوائم و المزيد.',
     'markdown_link' => 'اقرأ الوثائق',
 
     'header_settings_link' => 'الإعدادات',
@@ -126,8 +126,8 @@ return [
 
     'relationship_type_lover' => 'عاشق',
     'relationship_type_lover_female' => 'عاشقة',
-    'relationship_type_lover_with_name' => 'حبيب :name',
-    'relationship_type_lover_female_with_name' => 'حبيبة :name',
+    'relationship_type_lover_with_name' => ':name’s lover',
+    'relationship_type_lover_female_with_name' => ':name’s lover',
 
     'relationship_type_inlovewith' => 'مغرم بـ',
     'relationship_type_inlovewith_female' => 'مغرمة بـ',
@@ -139,10 +139,10 @@ return [
     'relationship_type_lovedby_with_name' => ':name’s secret lover',
     'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
 
-    'relationship_type_ex' => 'حبيب',
-    'relationship_type_ex_female' => 'حبيبة',
-    'relationship_type_ex_with_name' => 'حبيب :name السابق',
-    'relationship_type_ex_female_with_name' => 'حبيبة :name السابقة',
+    'relationship_type_ex' => 'ex-boyfriend',
+    'relationship_type_ex_female' => 'ex-girlfriend',
+    'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
+    'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
 
     'relationship_type_parent' => 'أب',
     'relationship_type_parent_female' => 'أم',
@@ -171,18 +171,18 @@ return [
 
     'relationship_type_uncle' => 'عم/خال',
     'relationship_type_uncle_female' => 'عمة/خالة',
-    'relationship_type_uncle_with_name' => ':name’s uncle',
-    'relationship_type_uncle_female_with_name' => ':name’s aunt',
+    'relationship_type_uncle_with_name' => 'عم/خال :name',
+    'relationship_type_uncle_female_with_name' => 'عمة/خالة :name',
 
-    'relationship_type_nephew' => 'nephew',
-    'relationship_type_nephew_female' => 'niece',
-    'relationship_type_nephew_with_name' => ':name’s nephew',
-    'relationship_type_nephew_female_with_name' => ':name’s niece',
+    'relationship_type_nephew' => 'ابن شقيق',
+    'relationship_type_nephew_female' => 'ابنة شقيقة',
+    'relationship_type_nephew_with_name' => 'ابن شقيق :name',
+    'relationship_type_nephew_female_with_name' => 'ابنة شقيقة :name',
 
-    'relationship_type_cousin' => 'cousin',
-    'relationship_type_cousin_female' => 'cousin',
-    'relationship_type_cousin_with_name' => ':name’s cousin',
-    'relationship_type_cousin_female_with_name' => ':name’s cousin',
+    'relationship_type_cousin' => 'ابن عم/خال',
+    'relationship_type_cousin_female' => 'ابنة عمة/خالة',
+    'relationship_type_cousin_with_name' => 'ابن عم/خال :name',
+    'relationship_type_cousin_female_with_name' => 'ابنة عمة/خالة :name',
 
     'relationship_type_godfather' => 'godfather',
     'relationship_type_godfather_female' => 'godmother',
@@ -224,10 +224,10 @@ return [
     'relationship_type_mentor_with_name' => 'مرشد :name',
     'relationship_type_mentor_female_with_name' => 'مرشدة :name',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'متدرب',
+    'relationship_type_protege_female' => 'متدربة',
+    'relationship_type_protege_with_name' => 'متدرب :name',
+    'relationship_type_protege_female_with_name' => 'متدربة :name',
 
     'relationship_type_ex_husband' => 'طليق',
     'relationship_type_ex_husband_female' => 'طليقة',
