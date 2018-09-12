@@ -95,7 +95,7 @@ return [
     'conversation_delete_success' => 'The conversation has been successfully deleted.',
     'conversation_add_title' => 'Record a new conversation',
     'conversation_add_when' => 'When did you have this conversation?',
-    'conversation_add_who_wrote' => 'Who said this message?',
+    'conversation_add_who_wrote' => 'من قال هذه الرسالة؟',
     'conversation_add_how' => 'How did you communicate?',
     'conversation_add_you' => 'أنت',
     'conversation_add_content' => 'قم بتدوين ما قيل',
