@@ -29,7 +29,7 @@ return [
 
     'application_title' => 'مونيكا – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'امتلك علاقات أفضل مع أحبائك. مدير علاقات مجاني على الويب للعائلة و الأصدقاء.',
 
     'markdown_description' => 'هل تريد تنسيق النص الخاص بك بطريقة لطيفة؟ نحن ندعم التحديد و إضافة السماكة، و الإمالة و القوائم و المزيد.',
     'markdown_link' => 'اقرأ الوثائق',
@@ -77,7 +77,7 @@ return [
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
-    'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
+    'breadcrumb_settings_security_2fa' => 'المصادقة الثنائية',
     'breadcrumb_profile' => 'الملف الشخصي لـ :name',
 
     'gender_male' => 'رجل',
@@ -134,8 +134,8 @@ return [
     'relationship_type_inlovewith_with_name' => 'someone :name is in love with',
     'relationship_type_inlovewith_female_with_name' => 'someone :name is in love with',
 
-    'relationship_type_lovedby' => 'loved by',
-    'relationship_type_lovedby_female' => 'loved by',
+    'relationship_type_lovedby' => 'محبوب من قِبل',
+    'relationship_type_lovedby_female' => 'محبوبة من قِبل',
     'relationship_type_lovedby_with_name' => ':name’s secret lover',
     'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
 
