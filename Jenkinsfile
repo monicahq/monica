@@ -265,7 +265,7 @@ pipeline {
           .inside("-v /etc/passwd:/etc/passwd -v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             unstash 'results1'
             unstash 'results2'
-            unstash 'results3'
+            //unstash 'results3'
             unstash 'coverage1'
             unstash 'coverage2'
             //unstash 'coverage3'
