@@ -195,9 +195,10 @@ pipeline {
                       mysql --protocol=tcp -u root -h mysql -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
                       php artisan migrate --no-interaction -vvv
                     '''
-
-                    // Seed database
-                    sh 'php artisan db:seed --no-interaction -vvv'
+                    sh '''
+                      # Dump database >
+                      mysqldump -u root -h mysql -P 3306 monica > monicadump.sql
+                    '''
 
                     // Run http server
                     sh 'JENKINS_NODE_COOKIE=x php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null &'
@@ -208,7 +209,6 @@ pipeline {
                     // Run browser tests
                     sh '''
                       # Run browser tests (cypress) >
-                      mysqldump -u root -h mysql -P 3306 monica > monicadump.sql
                       $(yarn bin)/cypress run --config "baseUrl=http://localhost:8000" --record --reporter mocha-multi-reporters --reporter-options configFile=scripts/ci/cypressmocha.json
                     '''
 
