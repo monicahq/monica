@@ -2,25 +2,25 @@
 
 return [
     'dashboard_blank_title' => 'مرحباً في حسابك!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_description' => 'Monica هو المكان المناسب لتنظيم جميع التفاعلات لديك مع الأشخاص الذين تهتم بأمرهم.',
+    'dashboard_blank_cta' => 'أضف أول جهة اتصال لك',
+    'dashboard_blank_illustration' => 'الرسم التوضيحي بواسطة <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'لم تقم بتأشير أي ملاحظات بعد.',
 
     'tab_recent_calls' => 'المكالمات الأخيرة',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_favorite_notes' => 'الملاحظات المفضلة',
+    'tab_calls_blank' => 'لم تقم بتسجيل أي مكالمة بعد.',
     'tab_debts' => 'الديون',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_debts_blank' => 'لم تقم بتسجيل أي دَين بعد.',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'أنت مدين',
 
     'statistics_contacts' => 'جهات الإتصال',
     'statistics_activities' => 'الأنشطة',
     'statistics_gifts' => 'الهدايا',
 
-    'reminders_next_months' => 'Events in the next 3 months',
+    'reminders_next_months' => 'الأحداث التي ستقام في الأشهر الثلاث المقبلة',
     'reminders_none' => 'لا يوجد تذكير لهذا الشهر',
 
     'linkedin_profile' => 'LinkedIn',
