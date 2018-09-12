@@ -55,7 +55,7 @@ return [
     'footer_new_version' => 'يتوفر إصدار جديد',
 
     'footer_modal_version_whats_new' => 'ما الجديد؟',
-    'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
+    'footer_modal_version_release_away' => 'إن إصدارك أقدم من آخر إصدار متاح. يجب أن تقوم بالتحديث. | أنت متأخر بـ:number إصدارات من آخر إصدار متاح. يجب أن تقوم بالتحديث.',
 
     'breadcrumb_dashboard' => 'لوحة التحكم',
     'breadcrumb_list_contacts' => 'قائمة الأشخاص',
@@ -68,7 +68,7 @@ return [
     'breadcrumb_settings_import' => 'استيراد',
     'breadcrumb_settings_import_report' => 'استيراد التقرير',
     'breadcrumb_settings_import_upload' => 'رفع',
-    'breadcrumb_settings_tags' => 'Tags',
+    'breadcrumb_settings_tags' => 'العلامات',
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
     'breadcrumb_add_note' => 'أضف ملاحظة',
