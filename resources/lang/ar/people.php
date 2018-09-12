@@ -88,10 +88,10 @@ return [
     'call_blank_desc' => 'اتصلت بـ:name',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
+    'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
     'conversation_delete_link' => 'حذف المحادثة',
     'conversation_edit_title' => 'تحرير المحادثة',
-    'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_edit_delete' => 'هل أنت متأكد من حذف هذه المحادثة؟ الحذف دائم.',
     'conversation_delete_success' => 'The conversation has been successfully deleted.',
     'conversation_add_title' => 'Record a new conversation',
     'conversation_add_when' => 'When did you have this conversation?',
