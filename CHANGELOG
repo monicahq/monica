@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
-* fix now() without timezone functions
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
 
 RELEASED VERSIONS:
 
