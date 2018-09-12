@@ -3,7 +3,7 @@
 return [
     'journal_rate' => 'كيف كان يومك؟ يمكنك تقييمه مرة في اليوم.',
     'journal_come_back' => 'شكراً. تعال غداً لتقييم يومك مجدداً.',
-    'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
+    'journal_description' => 'ملاحظة: الملاحظة تُسجل كِلا التدوينات اليدوية، و التدوينات الفورية مثل الأنشطة التي فعلتَها مع أصدقائك. بينما يمكنك حذف تدوينات المذكرة يدوياً، لا يمكنك حذف الأنشطة إلا بحذفها مباشرة من صفحة أصدقائك.',
     'journal_add' => 'أضف تدويناً للمذكرة',
     'journal_created_automatically' => 'تم إنشائه تلقائياً',
     'journal_entry_type_journal' => 'تدوين المذكرة',
