@@ -116,8 +116,8 @@ return [
 
     'relationship_type_spouse' => 'زوج',
     'relationship_type_spouse_female' => 'زوجة',
-    'relationship_type_spouse_with_name' => ':name’s spouse',
-    'relationship_type_spouse_female_with_name' => ':name’s spouse',
+    'relationship_type_spouse_with_name' => 'زوج :name’s',
+    'relationship_type_spouse_female_with_name' => 'زوجة :name’s',
 
     'relationship_type_date' => 'موعد',
     'relationship_type_date_female' => 'موعد',
@@ -196,33 +196,33 @@ return [
 
     'relationship_type_friend' => 'صديق',
     'relationship_type_friend_female' => 'صديقة',
-    'relationship_type_friend_with_name' => ':name’s friend',
-    'relationship_type_friend_female_with_name' => ':name’s friend',
+    'relationship_type_friend_with_name' => 'صديق :name',
+    'relationship_type_friend_female_with_name' => 'صديقة :name',
 
-    'relationship_type_bestfriend' => 'best friend',
-    'relationship_type_bestfriend_female' => 'best friend',
-    'relationship_type_bestfriend_with_name' => ':name’s best friend',
-    'relationship_type_bestfriend_female_with_name' => ':name’s best friend',
+    'relationship_type_bestfriend' => 'الصديق المفضل',
+    'relationship_type_bestfriend_female' => 'الصديقة المفضلة',
+    'relationship_type_bestfriend_with_name' => 'صديق :name المفضل',
+    'relationship_type_bestfriend_female_with_name' => 'صديقة :name المفضلة',
 
     'relationship_type_colleague' => 'زميل',
     'relationship_type_colleague_female' => 'زميلة',
-    'relationship_type_colleague_with_name' => ':name’s colleague',
-    'relationship_type_colleague_female_with_name' => ':name’s colleague',
+    'relationship_type_colleague_with_name' => 'زميل :name',
+    'relationship_type_colleague_female_with_name' => 'زميلة :name',
 
-    'relationship_type_boss' => 'boss',
-    'relationship_type_boss_female' => 'boss',
-    'relationship_type_boss_with_name' => ':name’s boss',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss' => 'مدير',
+    'relationship_type_boss_female' => 'مديرة',
+    'relationship_type_boss_with_name' => 'مدير :name',
+    'relationship_type_boss_female_with_name' => 'مديرة :name',
 
     'relationship_type_subordinate' => 'subordinate',
     'relationship_type_subordinate_female' => 'subordinate',
     'relationship_type_subordinate_with_name' => ':name’s subordinate',
     'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
-    'relationship_type_mentor' => 'mentor',
-    'relationship_type_mentor_female' => 'mentor',
-    'relationship_type_mentor_with_name' => ':name’s mentor',
-    'relationship_type_mentor_female_with_name' => ':name’s mentor',
+    'relationship_type_mentor' => 'مرشد',
+    'relationship_type_mentor_female' => 'مرشدة',
+    'relationship_type_mentor_with_name' => 'مرشد :name',
+    'relationship_type_mentor_female_with_name' => 'مرشدة :name',
 
     'relationship_type_protege' => 'protege',
     'relationship_type_protege_female' => 'protege',
@@ -231,6 +231,6 @@ return [
 
     'relationship_type_ex_husband' => 'طليق',
     'relationship_type_ex_husband_female' => 'طليقة',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband_with_name' => 'زوج :name السابق',
+    'relationship_type_ex_husband_female_with_name' => 'زوجة :name السابقة',
 ];
