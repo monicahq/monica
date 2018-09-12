@@ -32,23 +32,23 @@ return [
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
-    'markdown_link' => 'Read documentation',
+    'markdown_link' => 'اقرأ الوثائق',
 
     'header_settings_link' => 'الإعدادات',
     'header_logout_link' => 'تسجيل الخروج',
-    'header_changelog_link' => 'Product changes',
+    'header_changelog_link' => 'تغيرات المنتج',
 
     'main_nav_cta' => 'إضافة أشخاص',
-    'main_nav_dashboard' => 'Dashboard',
+    'main_nav_dashboard' => 'لوحة التحكم',
     'main_nav_family' => 'جهات الاتصال',
     'main_nav_journal' => 'يوميات',
     'main_nav_activities' => 'الأنشطة',
     'main_nav_tasks' => 'المهام',
 
     'footer_remarks' => 'أي ملاحظات؟',
-    'footer_send_email' => 'Send me an email',
+    'footer_send_email' => 'أرسل لي رسالة',
     'footer_privacy' => 'سياسة الخصوصية',
-    'footer_release' => 'Release notes',
+    'footer_release' => 'ملاحظات الإصدار',
     'footer_newsletter' => 'النشرة الإخبارية',
     'footer_source_code' => 'ساهم',
     'footer_version' => 'الإصدار: :version',
@@ -57,7 +57,7 @@ return [
     'footer_modal_version_whats_new' => 'ما الجديد؟',
     'footer_modal_version_release_away' => 'You are 1 release behind the latest version available. You should update your instance.|You are :number releases behind the latest version available. You should update your instance.',
 
-    'breadcrumb_dashboard' => 'Dashboard',
+    'breadcrumb_dashboard' => 'لوحة التحكم',
     'breadcrumb_list_contacts' => 'قائمة الأشخاص',
     'breadcrumb_journal' => 'يوميات',
     'breadcrumb_settings' => 'الإعدادات',
@@ -72,8 +72,8 @@ return [
     'breadcrumb_add_significant_other' => 'Add significant other',
     'breadcrumb_edit_significant_other' => 'Edit significant other',
     'breadcrumb_add_note' => 'أضف ملاحظة',
-    'breadcrumb_edit_note' => 'Edit a note',
-    'breadcrumb_api' => 'API',
+    'breadcrumb_edit_note' => 'حرر ملاحظة',
+    'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
@@ -86,14 +86,14 @@ return [
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',
-    'error_save' => 'We had an error trying to save the data.',
+    'error_save' => 'لقد حصل خطأ بينما كنا نحاول حفظ البيانات.',
     'error_try_again' => 'حدث خطأ ما. الرجاء المحاولة مرة أخرى.',
 
     'default_save_success' => 'تم حفظ البيانات.',
 
     'compliance_title' => 'نعتذر للإزعاج.',
     'compliance_desc' => 'لقد قمنا بتغيير <a href=":urlterm" hreflang=":hreflang">شروط الإستخدام</a>و<a href=":url" hreflang=":hreflang">سياسة الخصوصية</a> الخاصة بنا. بموجب القانون، نطلب منك مراجعتها و قبولها لكي يمكنك الإستمرار في استخدام حسابك.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_desc_end' => 'نحن لن نسيء إلى بياناتك أو حسابك و لن نفعل ذلك أبداً.',
     'compliance_terms' => 'القبول بالشروط و سياسة الخصوصية الجديدية',
 
     // Relationship types
@@ -126,8 +126,8 @@ return [
 
     'relationship_type_lover' => 'عاشق',
     'relationship_type_lover_female' => 'عاشقة',
-    'relationship_type_lover_with_name' => ':name’s lover',
-    'relationship_type_lover_female_with_name' => ':name’s lover',
+    'relationship_type_lover_with_name' => 'حبيب :name',
+    'relationship_type_lover_female_with_name' => 'حبيبة :name',
 
     'relationship_type_inlovewith' => 'مغرم بـ',
     'relationship_type_inlovewith_female' => 'مغرمة بـ',
@@ -139,38 +139,38 @@ return [
     'relationship_type_lovedby_with_name' => ':name’s secret lover',
     'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
 
-    'relationship_type_ex' => 'ex-boyfriend',
-    'relationship_type_ex_female' => 'ex-girlfriend',
-    'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
-    'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
+    'relationship_type_ex' => 'حبيب',
+    'relationship_type_ex_female' => 'حبيبة',
+    'relationship_type_ex_with_name' => 'حبيب :name السابق',
+    'relationship_type_ex_female_with_name' => 'حبيبة :name السابقة',
 
     'relationship_type_parent' => 'أب',
     'relationship_type_parent_female' => 'أم',
-    'relationship_type_parent_with_name' => ':name’s father',
-    'relationship_type_parent_female_with_name' => ':name’s mother',
+    'relationship_type_parent_with_name' => 'والد :name',
+    'relationship_type_parent_female_with_name' => 'والدة :name',
 
     'relationship_type_child' => 'ابن',
     'relationship_type_child_female' => 'ابنة',
-    'relationship_type_child_with_name' => ':name’s son',
-    'relationship_type_child_female_with_name' => ':name’s daughter',
+    'relationship_type_child_with_name' => 'ابن :name',
+    'relationship_type_child_female_with_name' => 'ابنة :name',
 
     'relationship_type_sibling' => 'أخ',
     'relationship_type_sibling_female' => 'أخت',
-    'relationship_type_sibling_with_name' => ':name’s brother',
-    'relationship_type_sibling_female_with_name' => ':name’s sister',
+    'relationship_type_sibling_with_name' => 'شقيق :name',
+    'relationship_type_sibling_female_with_name' => 'شقيقة :name',
 
     'relationship_type_grandparent' => 'جد',
     'relationship_type_grandparent_female' => 'جدة',
-    'relationship_type_grandparent_with_name' => ':name’s grand parent',
-    'relationship_type_grandparent_female_with_name' => ':name’s grand parent',
+    'relationship_type_grandparent_with_name' => 'جد :name',
+    'relationship_type_grandparent_female_with_name' => 'جَدة :name',
 
     'relationship_type_grandchild' => 'حفيد',
     'relationship_type_grandchild_female' => 'حفيدة',
-    'relationship_type_grandchild_with_name' => ':name’s grand child',
-    'relationship_type_grandchild_female_with_name' => ':name’s grand child',
+    'relationship_type_grandchild_with_name' => 'حفيد :name',
+    'relationship_type_grandchild_female_with_name' => 'حفيدة :name',
 
-    'relationship_type_uncle' => 'uncle',
-    'relationship_type_uncle_female' => 'aunt',
+    'relationship_type_uncle' => 'عم/خال',
+    'relationship_type_uncle_female' => 'عمة/خالة',
     'relationship_type_uncle_with_name' => ':name’s uncle',
     'relationship_type_uncle_female_with_name' => ':name’s aunt',
 
@@ -214,10 +214,10 @@ return [
     'relationship_type_boss_with_name' => 'مدير :name',
     'relationship_type_boss_female_with_name' => 'مديرة :name',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'مرؤوس',
+    'relationship_type_subordinate_female' => 'مرؤوسة',
+    'relationship_type_subordinate_with_name' => 'مرؤوس :name',
+    'relationship_type_subordinate_female_with_name' => 'مرؤوسة :name',
 
     'relationship_type_mentor' => 'مرشد',
     'relationship_type_mentor_female' => 'مرشدة',
