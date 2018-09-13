@@ -18,7 +18,10 @@ class MoveAvatars extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:moveavatars {--force : Force the operation to run when in production.} {--dryrun : Simulate the execution but not write anything.} {--storage : new storage to move avatars to}';
+    protected $signature = 'monica:moveavatars
+                            {--force : Force the operation to run when in production.}
+                            {--dryrun : Simulate the execution but not write anything.}
+                            {--storage : new storage to move avatars to}';
 
     /**
      * The console command description.
@@ -51,7 +54,10 @@ class MoveAvatars extends Command
 
                         if (! $this->option('dryrun')) {
                             $contact->deleteAvatars();
-
+                            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                                $this->line('  Files deleted from old location.');
+                            }
+            
                             // Update location. The filename has not changed.
                             $contact->avatar_location = $this->newStorage();
                             $contact->save();
@@ -65,9 +71,7 @@ class MoveAvatars extends Command
 
     private function moveContactAvatars($contact)
     {
-        $this->line('Contact id:'.$contact->id);
-        $this->line(' > Avatar location:'.$contact->avatar_location);
-        $this->line(' > File name:'.$contact->avatar_file_name);
+        $this->line('Contact id:'.$contact->id.' | Avatar location:'.$contact->avatar_location.' | File name:'.$contact->avatar_file_name);
 
         $avatarFileNames = [];
         array_push($avatarFileNames, $this->getFileName($contact));
@@ -90,7 +94,7 @@ class MoveAvatars extends Command
             }
 
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  Moved file: '.$avatarFileName);
+                $this->line('  File pushed: '.$avatarFileName);
             }
         }
     }
