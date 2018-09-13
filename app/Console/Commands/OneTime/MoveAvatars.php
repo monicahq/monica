@@ -57,7 +57,7 @@ class MoveAvatars extends Command
                             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                                 $this->line('  Files deleted from old location.');
                             }
-            
+
                             // Update location. The filename has not changed.
                             $contact->avatar_location = $this->newStorage();
                             $contact->save();
