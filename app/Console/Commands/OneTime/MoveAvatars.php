@@ -43,30 +43,40 @@ class MoveAvatars extends Command
 
         Contact::where('has_avatar', true)
             ->chunk(200, function ($contacts) {
-                foreach ($contacts as $contact) {
-                    if ($contact->avatar_location == $this->newStorage()) {
-                        continue;
-                    }
-
-                    try {
-                        // move avatars to new location
-                        $this->moveContactAvatars($contact);
-
-                        if (! $this->option('dryrun')) {
-                            $contact->deleteAvatars();
-                            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                                $this->line('  Files deleted from old location.');
-                            }
-
-                            // Update location. The filename has not changed.
-                            $contact->avatar_location = $this->newStorage();
-                            $contact->save();
-                        }
-                    } catch (FileNotFoundException $e) {
-                        continue;
-                    }
-                }
+                $this->handleContacts($contacts);
             });
+    }
+
+    private function handleContacts($contacts)
+    {
+        foreach ($contacts as $contact) {
+            if ($contact->avatar_location == $this->newStorage()) {
+                continue;
+            }
+
+            try {
+                $this->handleOneContact($contact);
+            } catch (FileNotFoundException $e) {
+                continue;
+            }
+        }
+    }
+
+    private function handleOneContact($contact)
+    {
+        // move avatars to new location
+        $this->moveContactAvatars($contact);
+
+        if (! $this->option('dryrun')) {
+            $contact->deleteAvatars();
+            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                $this->line('  Files deleted from old location.');
+            }
+
+            // Update location. The filename has not changed.
+            $contact->avatar_location = $this->newStorage();
+            $contact->save();
+        }
     }
 
     private function moveContactAvatars($contact)
