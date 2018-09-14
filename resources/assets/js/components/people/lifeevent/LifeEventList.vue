@@ -28,7 +28,9 @@
 </style>
 
 <template>
-    <div class="">
+    <div>
+        <notifications group="main" position="bottom right" />
+
         <!-- BLANK STATE -->
         <section class="ph3 ph0-ns" v-if="lifeEvents.length == 0">
             <div class="mt4 mw7 center mb3">
@@ -494,46 +496,53 @@
                         </div>
                         <p class="pt2"><span class="b">{{ $t('people.life_event_sentence_' + lifeEvent.default_life_event_type_key) }}</span> {{ lifeEvent.name }}</p>
                         <p>{{ lifeEvent.note }}</p>
-                        <p class="f7"><a @click="destroy(lifeEvent)">Delete</a></p>
+                        <p class="f7"><a @click="showDeleteModal(lifeEvent)">{{ $t('app.delete') }}</a></p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Delete confirmation modal -->
+        <sweet-modal ref="deleteLifeEventModal" overlay-theme="dark" :title="$t('people.life_event_delete_title')">
+            <form>
+                <div class="mb4">
+                    <p class="mb2">{{ $t('people.life_event_delete_description') }}</p>
+                </div>
+            </form>
+            <div class="relative">
+                <span class="fr">
+                    <a @click="closeDeleteModal()" class="btn center">{{ $t('app.cancel') }}</a>
+                    <a @click="destroy(lifeEventToDelete)" :cy-name="'delete-life-event-button'" class="btn btn-primary">{{ $t('app.delete') }}</a>
+                </span>
+            </div>
+        </sweet-modal>
     </div>
 </template>
 
 <script>
+    import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+
     export default {
-        /*
-         * The component's data.
-         */
         data() {
             return {
                 lifeEvents: [],
+                lifeEventToDelete: null,
                 showAdd: false,
             };
         },
 
         props: ['hash', 'years', 'months', 'days'],
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent()
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent()
         },
 
+        components: {
+            SweetModal,
+            SweetModalTab
+        },
+
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.getLifeEvents()
             },
@@ -558,9 +567,26 @@
             destroy(lifeEvent) {
                 axios.delete('/lifeevents/' + lifeEvent.id)
                         .then(response => {
+                            this.closeDeleteModal()
                             this.getLifeEvents()
+
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('people.life_event_delete_success'),
+                                text: '',
+                                type: 'success'
+                          });
                         });
-            }
+            },
+
+            showDeleteModal(lifeEvent) {
+                this.$refs.deleteLifeEventModal.open();
+                this.lifeEventToDelete = lifeEvent
+            },
+
+            closeDeleteModal() {
+                this.$refs.deleteLifeEventModal.close();
+            },
         }
     }
 </script>
