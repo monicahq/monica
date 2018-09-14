@@ -21,7 +21,7 @@ class MoveAvatars extends Command
     protected $signature = 'monica:moveavatars
                             {--force : Force the operation to run when in production.}
                             {--dryrun : Simulate the execution but not write anything.}
-                            {--storage : new storage to move avatars to}';
+                            {--storage= : new storage to move avatars to}';
 
     /**
      * The console command description.
