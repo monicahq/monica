@@ -16,6 +16,5 @@ class AddDescriptionFieldToContacts extends Migration
         Schema::table('contacts', function (Blueprint $table) {
             $table->string('description')->after('gender_id')->nullable();
         });
-
     }
 }
